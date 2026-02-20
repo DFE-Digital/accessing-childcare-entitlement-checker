@@ -2,21 +2,62 @@
 
 A digital service to help parents and carers check their entitlement for childcare support schemes.
 
-## ⚠️ Status: Prototype
-This repository is currently in the initial setup phase. It is a Beta prototype and does not yet have a production environment.
+## Status
+
+Initial project scaffold.
+
+This repository currently contains a minimal ASP.NET Core MVC application with associated unit and integration tests.
 
 ## Tech Stack
-- **Framework:** ASP.NET Core MVC (.NET 8.0+)
 
-## Getting Started
+- .NET 8
+- ASP.NET Core MVC
+- xUnit (unit and integration testing)
+
+## Project Structure
+
+```
+src/
+  AccessingChildcareEntitlementChecker.Web
+
+tests/
+  AccessingChildcareEntitlementChecker.UnitTests
+```
+- `Web` contains the MVC application.
+- `UnitTests` contains controller-level unit tests.
+
+## Developer Setup
 
 ### Prerequisites
-- [.NET SDK](https://dotnet.microsoft.com/download)
-- An IDE (e.g., JetBrains Rider or VS Code)
 
-### Running locally
-1. Clone this repository.
-2. Open a terminal in the root folder.
-3. Run the application:
-   ```bash
-   dotnet run
+- .NET 8 SDK
+
+Verify installed SDKs:
+
+```
+dotnet --list-sdks
+```
+
+### Build the solution
+
+From the repository root:
+
+```
+dotnet build
+```
+
+### Run locally
+
+```
+dotnet run --project src/AccessingChildcareEntitlementChecker.Web
+```
+
+The application will start on a local development URL (for example, `https://localhost:xxxx`).
+
+### Run tests
+
+```
+dotnet test
+```
+
+This will execute both unit and integration tests.
