@@ -25,3 +25,96 @@ jobs:
 
       - name: Run tests
         run: dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj --configuration Release --no-build
+
+      - name: Publish web app
+        run: dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj --configuration Release --output publish
+
+      - name: Zip publish output
+        run: |
+          cd publish
+          zip -r ../webapp.zip .
+
+      - name: Upload web app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp-package
+          path: webapp.zip
+
+  deploy:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      ARM_USE_OIDC: true
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      TF_VAR_resource_group_name: rg-sjm-test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download web app artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: webapp-package
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Compute branch stack names
+        id: stack-names
+        run: |
+          branch_raw="${{ github.ref_name }}"
+          branch_slug=$(echo "$branch_raw" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g')
+
+          if [ -z "$branch_slug" ]; then
+            branch_slug="branch"
+          fi
+
+          branch_slug=$(echo "$branch_slug" | cut -c1-20)
+          branch_hash=$(echo -n "$branch_raw" | sha256sum | cut -c1-8)
+
+          app_service_plan_name="sjm-test-plan-$branch_slug-$branch_hash"
+          web_app_name="sjm-test-webapp-$branch_slug-$branch_hash"
+
+          echo "app_service_plan_name=$app_service_plan_name" >> "$GITHUB_OUTPUT"
+          echo "web_app_name=$web_app_name" >> "$GITHUB_OUTPUT"
+
+      - name: Terraform init
+        working-directory: infra/terraform
+        run: terraform init
+
+      - name: Terraform apply
+        working-directory: infra/terraform
+        env:
+          TF_VAR_app_service_plan_name: ${{ steps.stack-names.outputs.app_service_plan_name }}
+          TF_VAR_web_app_name: ${{ steps.stack-names.outputs.web_app_name }}
+        run: terraform apply -auto-approve
+
+      - name: Read Terraform outputs
+        id: tf-outputs
+        working-directory: infra/terraform
+        run: |
+          echo "resource_group_name=$(terraform output -raw resource_group_name)" >> "$GITHUB_OUTPUT"
+          echo "web_app_name=$(terraform output -raw web_app_name)" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy package to Web App
+        run: |
+          az webapp deploy \
+            --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
+            --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
+            --src-path webapp.zip \
+            --type zip
+
