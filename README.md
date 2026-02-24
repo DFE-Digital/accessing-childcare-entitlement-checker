@@ -81,6 +81,22 @@ The workflow at `.github/workflows/build-and-test.yml` now includes a `deploy` j
 
 These are used by Azure OIDC login in GitHub Actions and should be defined on the GitHub environment named `dev`.
 
+### Required GitHub Environment (`dev`) Variables
+
+- `TFSTATE_RESOURCE_GROUP_NAME`
+- `TFSTATE_STORAGE_ACCOUNT_NAME`
+- `TFSTATE_CONTAINER_NAME`
+
+These values are used by Terraform's `azurerm` backend so workflow runs share remote state in Azure Storage.
+
+If these variables are not set, the deploy workflow bootstraps defaults automatically:
+
+- Resource group: `rg-west-europe`
+- Container: `tfstate`
+- Storage account: deterministic name derived from repository + subscription ID
+
+Providing explicit values is recommended for production-grade setups.
+
 The workflows currently target the existing hardcoded resource group `rg-sjm-test`.
 
 Both deployment workflows are pinned to the `dev` environment so OIDC federation can target the environment subject claim.
@@ -89,8 +105,8 @@ Both deployment workflows are pinned to the `dev` environment so OIDC federation
 
 Deploy runs on every branch push.
 
-### Important note on Terraform state
+### Terraform state
 
-This is a deliberately simple setup. Terraform state is local to each workflow run.
+Terraform state is stored remotely in Azure Storage via the `azurerm` backend.
 
-For long-term/repeatable deployments, configure a remote backend (for example Azure Storage) so Terraform can track existing infrastructure across runs.
+The workflow uses a branch-derived state key so each branch stack has isolated state while still persisting across runs.
