@@ -11,6 +11,7 @@ terraform {
 
 provider "azurerm" {
   features {}
+  resource_provider_registrations = "none"
 }
 
 variable "resource_group_name" {
@@ -46,6 +47,10 @@ resource "azurerm_linux_web_app" "this" {
   resource_group_name = data.azurerm_resource_group.this.name
   service_plan_id     = azurerm_service_plan.this.id
 
+  app_settings = {
+    "WEBSITE_RUN_FROM_PACKAGE" = "1"
+  }
+
   site_config {
     application_stack {
       dotnet_version = "8.0"
@@ -61,4 +66,12 @@ output "resource_group_name" {
 
 output "web_app_name" {
   value = azurerm_linux_web_app.this.name
+}
+
+output "web_app_default_hostname" {
+  value = azurerm_linux_web_app.this.default_hostname
+}
+
+output "web_app_url" {
+  value = "https://${azurerm_linux_web_app.this.default_hostname}"
 }
