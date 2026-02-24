@@ -29,6 +29,12 @@ variable "web_app_name" {
   description = "Globally unique Linux Web App name."
 }
 
+variable "plan_sku" {
+  type        = string
+  description = "The SKU of the App Service Plan. E.g. F1, D1, B1"
+  default     = "F1"
+}
+
 data "azurerm_resource_group" "this" {
   name = var.resource_group_name
 }
@@ -38,7 +44,7 @@ resource "azurerm_service_plan" "this" {
   location            = data.azurerm_resource_group.this.location
   resource_group_name = data.azurerm_resource_group.this.name
   os_type             = "Linux"
-  sku_name            = "F1"
+  sku_name            = var.plan_sku
 }
 
 resource "azurerm_linux_web_app" "this" {
