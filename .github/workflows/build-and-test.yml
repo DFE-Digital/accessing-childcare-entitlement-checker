@@ -43,7 +43,7 @@ jobs:
           path: webapp.zip
 
   deploy:
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/')
     needs: build-and-test
     runs-on: ubuntu-latest
     environment: dev
