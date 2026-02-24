@@ -87,17 +87,9 @@ These are used by Azure OIDC login in GitHub Actions and should be defined on th
 - `TFSTATE_STORAGE_ACCOUNT_NAME`
 - `TFSTATE_CONTAINER_NAME`
 
-These values are used by Terraform's `azurerm` backend so workflow runs share remote state in Azure Storage.
+These are used by Terraform's `azurerm` backend configuration in the deploy job.
 
-If these variables are not set, the deploy workflow bootstraps defaults automatically:
-
-- Resource group: `rg-west-europe`
-- Container: `tfstate`
-- Storage account: deterministic name derived from repository + subscription ID
-
-Providing explicit values is recommended for production-grade setups.
-
-The workflows currently target the existing hardcoded resource group `rg-sjm-test`.
+The workflows currently target the existing hardcoded resource group `rg-west-europe`.
 
 Both deployment workflows are pinned to the `dev` environment so OIDC federation can target the environment subject claim.
 
@@ -105,8 +97,16 @@ Both deployment workflows are pinned to the `dev` environment so OIDC federation
 
 Deploy runs on every branch push.
 
-### Terraform state
+### Important note on Terraform state
 
-Terraform state is stored remotely in Azure Storage via the `azurerm` backend.
+Terraform state is persisted in Azure Storage using the `azurerm` backend.
 
-The workflow uses a branch-derived state key so each branch stack has isolated state while still persisting across runs.
+You must create the backend storage resources in Azure first, then set the three `TFSTATE_*` environment variables in GitHub environment `dev`.
+
+A typical backend setup is:
+
+- Resource group: existing infra resource group (or dedicated state RG)
+- Storage account: general purpose v2 account
+- Container: `tfstate`
+
+The workflow uses a branch-derived backend key (for example `feature-<slug>-<hash>.tfstate`) so each branch stack has isolated state.

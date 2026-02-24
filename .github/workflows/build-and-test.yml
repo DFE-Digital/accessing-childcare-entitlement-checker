@@ -42,79 +42,9 @@ jobs:
           name: webapp-package
           path: webapp.zip
 
-  prepare_terraform_backend:
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/')
-    runs-on: ubuntu-latest
-    environment: dev
-    permissions:
-      id-token: write
-      contents: read
-    outputs:
-      resource_group_name: ${{ steps.tf-backend.outputs.resource_group_name }}
-      storage_account_name: ${{ steps.tf-backend.outputs.storage_account_name }}
-      container_name: ${{ steps.tf-backend.outputs.container_name }}
-    env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      TFSTATE_RESOURCE_GROUP_NAME: ${{ vars.TFSTATE_RESOURCE_GROUP_NAME }}
-      TFSTATE_STORAGE_ACCOUNT_NAME: ${{ vars.TFSTATE_STORAGE_ACCOUNT_NAME }}
-      TFSTATE_CONTAINER_NAME: ${{ vars.TFSTATE_CONTAINER_NAME }}
-
-    steps:
-      - name: Azure login (OIDC)
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Ensure Terraform backend exists
-        id: tf-backend
-        env:
-          DEFAULT_LOCATION: westeurope
-        run: |
-          set -euo pipefail
-
-          tfstate_rg="${TFSTATE_RESOURCE_GROUP_NAME:-rg-west-europe}"
-          tfstate_container="${TFSTATE_CONTAINER_NAME:-tfstate}"
-
-          if [ -n "${TFSTATE_STORAGE_ACCOUNT_NAME:-}" ]; then
-            tfstate_sa="$TFSTATE_STORAGE_ACCOUNT_NAME"
-          else
-            repo_slug=$(echo "${GITHUB_REPOSITORY#*/}" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9')
-            sub_slug=$(echo "$ARM_SUBSCRIPTION_ID" | tr -d '-' | cut -c1-8)
-            tfstate_sa=$(echo "tf${repo_slug}${sub_slug}" | cut -c1-24)
-          fi
-
-          if ! az group exists --name "$tfstate_rg" | grep -q true; then
-            az group create --name "$tfstate_rg" --location "$DEFAULT_LOCATION" >/dev/null
-          fi
-
-          rg_location=$(az group show --name "$tfstate_rg" --query location --output tsv)
-
-          if ! az storage account show --resource-group "$tfstate_rg" --name "$tfstate_sa" >/dev/null 2>&1; then
-            az storage account create \
-              --name "$tfstate_sa" \
-              --resource-group "$tfstate_rg" \
-              --location "$rg_location" \
-              --sku Standard_LRS \
-              --kind StorageV2 \
-              --min-tls-version TLS1_2 \
-              --allow-blob-public-access false >/dev/null
-          fi
-
-          if ! az storage container show --name "$tfstate_container" --account-name "$tfstate_sa" --auth-mode login >/dev/null 2>&1; then
-            az storage container create --name "$tfstate_container" --account-name "$tfstate_sa" --auth-mode login >/dev/null
-          fi
-
-          echo "resource_group_name=$tfstate_rg" >> "$GITHUB_OUTPUT"
-          echo "storage_account_name=$tfstate_sa" >> "$GITHUB_OUTPUT"
-          echo "container_name=$tfstate_container" >> "$GITHUB_OUTPUT"
-
   deploy:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/')
-    needs: [build-and-test, prepare_terraform_backend]
+    needs: build-and-test
     runs-on: ubuntu-latest
     environment: dev
     permissions:
@@ -126,6 +56,9 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       TF_VAR_resource_group_name: rg-west-europe
+      TFSTATE_RESOURCE_GROUP_NAME: ${{ vars.TFSTATE_RESOURCE_GROUP_NAME }}
+      TFSTATE_STORAGE_ACCOUNT_NAME: ${{ vars.TFSTATE_STORAGE_ACCOUNT_NAME }}
+      TFSTATE_CONTAINER_NAME: ${{ vars.TFSTATE_CONTAINER_NAME }}
 
     steps:
       - name: Checkout
@@ -171,9 +104,9 @@ jobs:
         working-directory: infra/terraform
         run: |
           terraform init -reconfigure \
-            -backend-config="resource_group_name=${{ needs.prepare_terraform_backend.outputs.resource_group_name }}" \
-            -backend-config="storage_account_name=${{ needs.prepare_terraform_backend.outputs.storage_account_name }}" \
-            -backend-config="container_name=${{ needs.prepare_terraform_backend.outputs.container_name }}" \
+            -backend-config="resource_group_name=$TFSTATE_RESOURCE_GROUP_NAME" \
+            -backend-config="storage_account_name=$TFSTATE_STORAGE_ACCOUNT_NAME" \
+            -backend-config="container_name=$TFSTATE_CONTAINER_NAME" \
             -backend-config="key=${{ steps.stack-names.outputs.tf_state_key }}" \
             -backend-config="use_oidc=true" \
             -backend-config="use_azuread_auth=true" \
