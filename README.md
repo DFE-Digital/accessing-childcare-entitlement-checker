@@ -73,19 +73,17 @@ The workflow at `.github/workflows/build-and-test.yml` now includes a `deploy` j
 3. Deploys the zipped app to the Web App.
 4. Uses branch-derived names so each branch gets its own feature stack.
 
-### Required GitHub Secrets
+### Required GitHub Environment (`dev`) Secrets
 
 - `AZURE_CLIENT_ID`
 - `AZURE_TENANT_ID`
 - `AZURE_SUBSCRIPTION_ID`
 
-These are for Azure OIDC login in GitHub Actions.
+These are used by Azure OIDC login in GitHub Actions and should be defined on the GitHub environment named `dev`.
 
-### Required GitHub Repository Variables
+The workflows currently target the existing hardcoded resource group `rg-sjm-test`.
 
-- `AZURE_RESOURCE_GROUP_NAME`
-
-`AZURE_RESOURCE_GROUP_NAME` must already exist. The Terraform deployment uses that resource group's location automatically.
+Both deployment workflows are pinned to the `dev` environment so OIDC federation can target the environment subject claim.
 
 ### Deploy trigger
 

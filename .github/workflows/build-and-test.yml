@@ -44,6 +44,7 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
     needs: build-and-test
     runs-on: ubuntu-latest
+    environment: dev
     permissions:
       id-token: write
       contents: read
