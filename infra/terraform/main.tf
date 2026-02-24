@@ -52,6 +52,7 @@ resource "azurerm_linux_web_app" "this" {
   }
 
   site_config {
+    always_on = var.plan_sku == "F1" || var.plan_sku == "D1" ? false : true
     application_stack {
       dotnet_version = "8.0"
     }
