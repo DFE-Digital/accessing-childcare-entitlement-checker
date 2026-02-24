@@ -55,10 +55,6 @@ resource "azurerm_linux_web_app" "this" {
   resource_group_name = data.azurerm_resource_group.this.name
   service_plan_id     = azurerm_service_plan.this.id
 
-  app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = "1"
-  }
-
   site_config {
     always_on = var.plan_sku == "F1" || var.plan_sku == "D1" ? false : true
     application_stack {

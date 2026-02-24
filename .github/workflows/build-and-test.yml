@@ -153,8 +153,9 @@ jobs:
 
       - name: Deploy package to Web App
         run: |
-          az webapp deployment source config-zip \
+          az webapp deploy \
             --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
             --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
-            --src webapp.zip
+            --src-path webapp.zip \
+            --type zip
 
