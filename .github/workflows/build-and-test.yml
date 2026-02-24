@@ -113,11 +113,18 @@ jobs:
           echo "resource_group_name=$(terraform output -raw resource_group_name)" >> "$GITHUB_OUTPUT"
           echo "web_app_name=$(terraform output -raw web_app_name)" >> "$GITHUB_OUTPUT"
 
+      - name: Verify deploy package structure
+        run: |
+          unzip -l webapp.zip | head -n 200
+          if ! unzip -l webapp.zip | awk '{print $4}' | grep -Eq '^[^/]+\.runtimeconfig\.json$'; then
+            echo "Expected a .runtimeconfig.json at archive root, but none was found."
+            exit 1
+          fi
+
       - name: Deploy package to Web App
         run: |
-          az webapp deploy \
+          az webapp deployment source config-zip \
             --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
             --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
-            --src-path webapp.zip \
-            --type zip
+            --src webapp.zip
 
