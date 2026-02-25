@@ -61,3 +61,7 @@ dotnet test
 ```
 
 This will execute both unit and integration tests.
+
+### Build in CI
+
+The workflow at `.github/workflows/build-and-test.yml` builds the solution and runs tests.
