@@ -40,6 +40,17 @@ Verify installed SDKs:
 dotnet --list-sdks
 ```
 
+### Recommended Extensions
+
+
+#### Visual Studio
+
+- The [Reqnroll](https://marketplace.visualstudio.com/items?itemName=Reqnroll.ReqnrollForVisualStudio2022) extension might be handy.
+
+#### Visual Studio Code
+
+- Gherkin extension (?)
+
 ### Build the solution
 
 From the repository root:
@@ -50,16 +61,24 @@ dotnet build
 
 ### Run locally
 
+In Visual Studio, use F5 to run in the debugger, or Ctrl-F5 to run without debugging.
+
 ```
 dotnet run --project src/AccessingChildcareEntitlementChecker.Web
 ```
 
 The application will start on a local development URL (for example, `https://localhost:xxxx`).
 
-### Run tests
+### Integration and Unit tests
+
+In Visual Studio, you can use the test explorer to run tests.
+
+To run all unit, integration and E2E tests from the command line, use:
 
 ```
 dotnet test
 ```
 
-This will execute both unit and integration tests.
+### E2E tests
+
+See the documentation at [tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md](tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md).
