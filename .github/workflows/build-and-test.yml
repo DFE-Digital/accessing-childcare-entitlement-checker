@@ -21,7 +21,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore AccessingChildcareEntitlementChecker.sln
 
-      - name: Check formatting
+      - name: Lint
         run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
 
       - name: Build
