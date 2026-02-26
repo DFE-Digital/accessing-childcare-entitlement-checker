@@ -8,6 +8,11 @@ Initial project scaffold.
 
 This repository currently contains a minimal ASP.NET Core MVC application with associated unit and integration tests.
 
+### Known Issues/In Progress
+
+- Non functional!
+- Does not yet comply with DFE standards as per https://technical-guidance.education.gov.uk/
+
 ## Tech Stack
 
 - .NET 8
