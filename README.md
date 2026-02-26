@@ -28,7 +28,7 @@ tests/
 - `Web` contains the MVC application.
 - `UnitTests` contains controller-level unit tests.
 
-## Developer Setup
+## Developer Guide
 
 ### Prerequisites
 
@@ -39,6 +39,8 @@ Verify installed SDKs:
 ```
 dotnet --list-sdks
 ```
+
+You may want to restore tools using `dotnet tool restore`
 
 ### Build the solution
 
@@ -63,3 +65,7 @@ dotnet test
 ```
 
 This will execute both unit and integration tests.
+
+### Other tasks
+
+- To update packages, use Visual Studio or `dotnet tool run dotnet-outdated -u`
