@@ -32,7 +32,7 @@ tests/
 
 ### Prerequisites
 
-- .NET 8 SDK
+- [.NET SDK 8.0.418](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) - The projects is pinned to this with a `global.json`
 
 Verify installed SDKs:
 
