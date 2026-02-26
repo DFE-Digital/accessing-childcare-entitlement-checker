@@ -2,9 +2,11 @@
 
 A digital service to help parents and carers check their entitlement for childcare support schemes.
 
+This project will be a multi-step form.
+
 ## Status
 
-Initial project scaffold.
+Initial project scaffold - user research is ongoing.
 
 This repository currently contains a minimal ASP.NET Core MVC application with associated unit and integration tests.
 
@@ -37,13 +39,19 @@ tests/
 
 - .NET 8 SDK
 
-Verify installed SDKs:
+See https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+
+Alternatively install Visual Studio and select .NET 8 from the individual components tab.
+
+You can verify installed SDKs with:
 
 ```
 dotnet --list-sdks
 ```
 
 ### Build the solution
+
+#### With dotnet
 
 From the repository root:
 
@@ -67,6 +75,12 @@ dotnet test
 
 This will execute both unit and integration tests.
 
-### Build in CI
+#### With Visual Studio
 
-The workflow at `.github/workflows/build-and-test.yml` builds the solution and runs tests.
+This project is committed to an "F5 out of the box" experience, and tests are runnable via the test explorer.
+
+### CI/CD
+
+See the workflow at `.github/workflows/build-and-test.yml`
+
+CD is pending implementation - this will be to an Azure Web App via Terraform.
