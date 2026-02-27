@@ -1,0 +1,58 @@
+name: Teardown feature stack
+
+on:
+  delete:
+
+jobs:
+  teardown:
+    if: github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    environment: dev
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      RG_NAME: rg-sjm-test
+
+    steps:
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Compute branch stack names
+        id: stack-names
+        run: |
+          branch_raw="${{ github.event.ref }}"
+          branch_slug=$(echo "$branch_raw" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g')
+
+          if [ -z "$branch_slug" ]; then
+            branch_slug="branch"
+          fi
+
+          branch_slug=$(echo "$branch_slug" | cut -c1-20)
+          branch_hash=$(echo -n "$branch_raw" | sha256sum | cut -c1-8)
+
+          app_service_plan_name="sjm-test-plan-$branch_slug-$branch_hash"
+          web_app_name="sjm-test-webapp-$branch_slug-$branch_hash"
+
+          echo "app_service_plan_name=$app_service_plan_name" >> "$GITHUB_OUTPUT"
+          echo "web_app_name=$web_app_name" >> "$GITHUB_OUTPUT"
+
+      - name: Delete Web App if it exists
+        run: |
+          if az webapp show --resource-group "$RG_NAME" --name "${{ steps.stack-names.outputs.web_app_name }}" >/dev/null 2>&1; then
+            az webapp delete --resource-group "$RG_NAME" --name "${{ steps.stack-names.outputs.web_app_name }}"
+          else
+            echo "Web App not found, skipping."
+          fi
+
+      - name: Delete App Service Plan if it exists
+        run: |
+          if az appservice plan show --resource-group "$RG_NAME" --name "${{ steps.stack-names.outputs.app_service_plan_name }}" >/dev/null 2>&1; then
+            az appservice plan delete --resource-group "$RG_NAME" --name "${{ steps.stack-names.outputs.app_service_plan_name }}" --yes
+          else
+            echo "App Service Plan not found, skipping."
+          fi

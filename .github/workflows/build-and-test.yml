@@ -1,0 +1,161 @@
+name: Build and test
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln
+
+      - name: Build
+        run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj --configuration Release --no-build
+
+      - name: Publish web app
+        run: dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj --configuration Release --output publish
+
+      - name: Zip publish output
+        run: |
+          cd publish
+          zip -r ../webapp.zip .
+
+      - name: Upload web app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp-package
+          path: webapp.zip
+
+  deploy:
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/')
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: dev
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      ARM_USE_OIDC: true
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      TF_VAR_resource_group_name: rg-west-europe
+      TFSTATE_RESOURCE_GROUP_NAME: ${{ vars.TFSTATE_RESOURCE_GROUP_NAME || secrets.TFSTATE_RESOURCE_GROUP_NAME }}
+      TFSTATE_STORAGE_ACCOUNT_NAME: ${{ vars.TFSTATE_STORAGE_ACCOUNT_NAME || secrets.TFSTATE_STORAGE_ACCOUNT_NAME }}
+      TFSTATE_CONTAINER_NAME: ${{ vars.TFSTATE_CONTAINER_NAME || secrets.TFSTATE_CONTAINER_NAME || 'tfstate' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download web app artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: webapp-package
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Compute branch stack names
+        id: stack-names
+        run: |
+          branch_raw="${{ github.ref_name }}"
+          branch_slug=$(echo "$branch_raw" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g')
+
+          if [ -z "$branch_slug" ]; then
+            branch_slug="branch"
+          fi
+
+          branch_slug=$(echo "$branch_slug" | cut -c1-20)
+          branch_hash=$(echo -n "$branch_raw" | sha256sum | cut -c1-8)
+
+          app_service_plan_name="sjm-test-plan-$branch_slug-$branch_hash"
+          web_app_name="sjm-test-webapp-$branch_slug-$branch_hash"
+          tf_state_key="feature-$branch_slug-$branch_hash.tfstate"
+
+          echo "app_service_plan_name=$app_service_plan_name" >> "$GITHUB_OUTPUT"
+          echo "web_app_name=$web_app_name" >> "$GITHUB_OUTPUT"
+          echo "tf_state_key=$tf_state_key" >> "$GITHUB_OUTPUT"
+
+      - name: Validate Terraform backend config
+        run: |
+          missing=""
+          [ -z "$TFSTATE_RESOURCE_GROUP_NAME" ] && missing="$missing TFSTATE_RESOURCE_GROUP_NAME"
+          [ -z "$TFSTATE_STORAGE_ACCOUNT_NAME" ] && missing="$missing TFSTATE_STORAGE_ACCOUNT_NAME"
+          [ -z "$TFSTATE_CONTAINER_NAME" ] && missing="$missing TFSTATE_CONTAINER_NAME"
+
+          if [ -n "$missing" ]; then
+            echo "Missing required backend config:$missing"
+            echo "Set these in GitHub Environment 'dev' Variables."
+            exit 1
+          fi
+
+          echo "Using backend config: rg=$TFSTATE_RESOURCE_GROUP_NAME account=$TFSTATE_STORAGE_ACCOUNT_NAME container=$TFSTATE_CONTAINER_NAME"
+
+      - name: Terraform init
+        working-directory: infra/terraform
+        run: |
+          terraform init -reconfigure \
+            -backend-config="resource_group_name=$TFSTATE_RESOURCE_GROUP_NAME" \
+            -backend-config="storage_account_name=$TFSTATE_STORAGE_ACCOUNT_NAME" \
+            -backend-config="container_name=$TFSTATE_CONTAINER_NAME" \
+            -backend-config="key=${{ steps.stack-names.outputs.tf_state_key }}" \
+            -backend-config="use_oidc=true" \
+            -backend-config="use_azuread_auth=true" \
+            -backend-config="tenant_id=$ARM_TENANT_ID" \
+            -backend-config="client_id=$ARM_CLIENT_ID" \
+            -backend-config="subscription_id=$ARM_SUBSCRIPTION_ID"
+
+      - name: Terraform apply
+        working-directory: infra/terraform
+        env:
+          TF_VAR_app_service_plan_name: ${{ steps.stack-names.outputs.app_service_plan_name }}
+          TF_VAR_web_app_name: ${{ steps.stack-names.outputs.web_app_name }}
+        run: terraform apply -auto-approve
+
+      - name: Read Terraform outputs
+        id: tf-outputs
+        working-directory: infra/terraform
+        run: |
+          echo "resource_group_name=$(terraform output -raw resource_group_name)" >> "$GITHUB_OUTPUT"
+          echo "web_app_name=$(terraform output -raw web_app_name)" >> "$GITHUB_OUTPUT"
+
+      - name: Verify deploy package structure
+        run: |
+          unzip -l webapp.zip | head -n 200
+          if ! unzip -l webapp.zip | awk '{print $4}' | grep -Eq '^[^/]+\.runtimeconfig\.json$'; then
+            echo "Expected a .runtimeconfig.json at archive root, but none was found."
+            exit 1
+          fi
+
+      - name: Deploy package to Web App
+        run: |
+          az webapp deploy \
+            --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
+            --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
+            --src-path webapp.zip \
+            --type zip
+

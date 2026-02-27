@@ -63,3 +63,52 @@ dotnet test
 ```
 
 This will execute both unit and integration tests.
+
+## GitHub Actions deploy (Terraform + Azure Web App)
+
+The workflow at `.github/workflows/build-and-test.yml` now includes a `deploy` job that:
+
+1. Publishes and zips the ASP.NET app.
+2. Runs Terraform from `infra/terraform` to create/update, inside an existing Resource Group:
+  - Linux App Service Plan (B1)
+  - Linux Web App (.NET 8)
+3. Deploys the zipped app to the Web App.
+4. Uses branch-derived names so each branch gets its own feature stack.
+
+### Required GitHub Environment (`dev`) Secrets
+
+- `AZURE_CLIENT_ID`
+- `AZURE_TENANT_ID`
+- `AZURE_SUBSCRIPTION_ID`
+
+These are used by Azure OIDC login in GitHub Actions and should be defined on the GitHub environment named `dev`.
+
+### Required GitHub Environment (`dev`) Variables
+
+- `TFSTATE_RESOURCE_GROUP_NAME`
+- `TFSTATE_STORAGE_ACCOUNT_NAME`
+- `TFSTATE_CONTAINER_NAME`
+
+These are used by Terraform's `azurerm` backend configuration in the deploy job.
+
+The workflows currently target the existing hardcoded resource group `rg-west-europe`.
+
+Both deployment workflows are pinned to the `dev` environment so OIDC federation can target the environment subject claim.
+
+### Deploy trigger
+
+Deploy runs on every branch push.
+
+### Important note on Terraform state
+
+Terraform state is persisted in Azure Storage using the `azurerm` backend.
+
+You must create the backend storage resources in Azure first, then set the three `TFSTATE_*` environment variables in GitHub environment `dev`.
+
+A typical backend setup is:
+
+- Resource group: existing infra resource group (or dedicated state RG)
+- Storage account: general purpose v2 account
+- Container: `tfstate`
+
+The workflow uses a branch-derived backend key (for example `feature-<slug>-<hash>.tfstate`) so each branch stack has isolated state.
