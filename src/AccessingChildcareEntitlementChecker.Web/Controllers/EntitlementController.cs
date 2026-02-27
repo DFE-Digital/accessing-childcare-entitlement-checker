@@ -85,9 +85,7 @@ public class EntitlementController : Controller
 
     private IStringLocalizer LocalizerForPage(string pageName)
     {
-        const string controller = "Entitlement";
-
-        var baseName = $"Views.{controller}.{pageName}";
+        var baseName = $"Views.Entitlement.{pageName}";
         var appName = typeof(Program).Assembly.GetName().Name!;
 
         return _localizerFactory.Create(baseName, appName);
