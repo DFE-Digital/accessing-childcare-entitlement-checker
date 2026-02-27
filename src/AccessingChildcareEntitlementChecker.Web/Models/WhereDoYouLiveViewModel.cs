@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models;
 
+//TODO: Move to core project
 public enum CountryOfResidence
 {
     England,
