@@ -1,0 +1,54 @@
+﻿@model AccessingChildcareEntitlementChecker.Web.Models.WhereDoYouLiveViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+
+<form method="post" novalidate>
+
+    <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.Country)) && ViewData.ModelState[nameof(Model.Country)]!.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+
+        <fieldset class="govuk-fieldset" aria-describedby="country-error">
+      
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">
+                    @Localizer["Title"]
+                </h1>
+            </legend>
+
+            @if (ViewData.ModelState.ContainsKey(nameof(Model.Country)) &&
+                 ViewData.ModelState[nameof(Model.Country)]!.Errors.Count > 0)
+            {
+                <p id="country-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span>
+                    @ViewData.ModelState[nameof(Model.Country)]!.Errors[0].ErrorMessage
+                </p>
+            }
+
+            <div class="govuk-radios" data-module="govuk-radios">
+
+                @foreach (var value in Enum.GetValues<CountryOfResidence>())
+                {
+                    var id = $"{value}";
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input"
+                               id="@id"
+                               name="Country"
+                               type="radio"
+                               value="@value"
+                               @(Model.Country == value ? "checked" : "") />
+
+                        <label class="govuk-label govuk-radios__label" for="@id">
+                            @Localizer[$"Option_{value}"]
+                        </label>
+                    </div>
+                }
+
+            </div>
+        </fieldset>
+    </div>
+
+    <button type="submit" class="govuk-button" data-module="govuk-button">
+        @Shared["Button_Continue"]
+    </button>
+
+</form>
