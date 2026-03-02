@@ -35,7 +35,11 @@ tests/
 - `Web` contains the MVC application.
 - `UnitTests` contains controller-level unit tests.
 
-## Developer Setup
+## Developer quick-start
+
+See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+
 
 ### Prerequisites
 
