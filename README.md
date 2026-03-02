@@ -21,6 +21,8 @@ This repository currently contains a minimal ASP.NET Core MVC application with a
 - ASP.NET Core MVC
 - xUnit (unit and integration testing)
 
+The [devcontainer.json](./.devcontainer/devcontainer.json) illustrates prerequisites, see [containers.dev](https://containers.dev/implementors/json_reference/) for more information.
+
 ## Project Structure
 
 ```
@@ -81,6 +83,6 @@ This project is committed to an "F5 out of the box" experience, and tests are ru
 
 ### CI/CD
 
-See the workflow at `.github/workflows/build-and-test.yml`
+See the workflow at `.github/workflows/build-and-test.yml` which builds the solution and runs tests.
 
 CD is pending implementation - this will be to an Azure Web App via Terraform.

@@ -7,6 +7,7 @@ on:
 
 jobs:
   build-and-test:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork)
     runs-on: ubuntu-latest
 
     steps:
@@ -17,9 +18,12 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
 
       - name: Restore dependencies
-        run: dotnet restore AccessingChildcareEntitlementChecker.sln
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
 
       - name: Lint
         run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
