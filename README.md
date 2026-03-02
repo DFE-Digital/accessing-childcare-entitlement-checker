@@ -82,3 +82,7 @@ dotnet test
 ### E2E tests
 
 See the documentation at [tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md](tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md).
+
+### Build in CI
+
+The workflow at `.github/workflows/build-and-test.yml` builds the solution and runs tests.
