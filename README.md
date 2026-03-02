@@ -39,15 +39,9 @@ tests/
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)
 
-
-
 ### Prerequisites
 
-- .NET 8 SDK
-
-See https://dotnet.microsoft.com/en-us/download/dotnet/8.0
-
-Alternatively install Visual Studio and select .NET 8 from the individual components tab.
+- [.NET SDK 8.0.418](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) - The projects is pinned to this with a `global.json`
 
 You can verify installed SDKs with:
 
@@ -56,8 +50,6 @@ dotnet --list-sdks
 ```
 
 ### Build the solution
-
-#### With dotnet
 
 From the repository root:
 
@@ -80,13 +72,3 @@ dotnet test
 ```
 
 This will execute both unit and integration tests.
-
-#### With Visual Studio
-
-This project is committed to an "F5 out of the box" experience, and tests are runnable via the test explorer.
-
-### CI/CD
-
-See the workflow at `.github/workflows/build-and-test.yml` which builds the solution and runs tests.
-
-CD is pending implementation - this will be to an Azure Web App via Terraform.
