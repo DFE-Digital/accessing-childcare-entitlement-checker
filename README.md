@@ -69,3 +69,7 @@ This will execute both unit and integration tests.
 ### Other tasks
 
 - To update packages, use Visual Studio or `dotnet tool run dotnet-outdated -u`
+
+### Build in CI
+
+The workflow at `.github/workflows/build-and-test.yml` builds the solution and runs tests.
