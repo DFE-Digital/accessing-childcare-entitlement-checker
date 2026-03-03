@@ -1,1 +1,16 @@
-/target/
+# Build outputs
+/artifacts/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Visual Studio
+.vs/
+*.suo
+
+# Rider
+*.sln.iml
+.idea/
