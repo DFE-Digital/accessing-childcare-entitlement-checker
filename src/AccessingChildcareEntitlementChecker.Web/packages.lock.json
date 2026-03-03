@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "GovUk.Frontend.AspNetCore": {
+        "type": "Direct",
+        "requested": "[3.5.1, )",
+        "resolved": "3.5.1",
+        "contentHash": "G96jb/L5+jWFcWmFsA8xoFTUz0yVYD4ArR0A7H8m27qucUyoDdvLUjqY8E5BU+XqvRDhZKiKmFJ3lO8f0Z2g3g==",
+        "dependencies": {
+          "Fluid.Core": "[2.15.0, 3.0.0)",
+          "HtmlAgilityPack": "1.12.0",
+          "Microsoft.Extensions.FileProviders.Embedded": "8.0.23"
+        }
+      },
+      "Fluid.Core": {
+        "type": "Transitive",
+        "resolved": "2.15.0",
+        "contentHash": "J0x83Z99D2WwtUuMuD21w5b31T1P960IkK3MYvlwDiPUEWtqD5tndHguthI+JCkzlMgnfR4R9d3CQUmEwCNTAg==",
+        "dependencies": {
+          "Parlot": "1.2.2",
+          "TimeZoneConverter": "6.1.0"
+        }
+      },
+      "HtmlAgilityPack": {
+        "type": "Transitive",
+        "resolved": "1.12.0",
+        "contentHash": "VHtVZmfoYhQyA/POvZRLuTpCz1zhzIDrdYRJIRV73e9wKAzjW71biYNOHOWx8MxEX3TE4TWVfx1QDRoZcj2AWw=="
+      },
+      "Microsoft.Extensions.FileProviders.Embedded": {
+        "type": "Transitive",
+        "resolved": "8.0.23",
+        "contentHash": "r4LEloHJISvha0lZs26rUAGZr/zSTSuT1GeDLgmi3Ow4z7mZ7L48jtvGJCknAX4nlAaJH9YZvfc8RqkixJ38Ew=="
+      },
+      "Parlot": {
+        "type": "Transitive",
+        "resolved": "1.2.2",
+        "contentHash": "Vz4SFXeF5BKiQ8jjnkYxw3B8ZVXrl/TcT6RM9hH8+HGLeSqpnWmYi1BidUlchwVFlliW6lorv4TAcGPFvhPj0Q=="
+      },
+      "TimeZoneConverter": {
+        "type": "Transitive",
+        "resolved": "6.1.0",
+        "contentHash": "UGdtyKWJqXXinyvGB9X6NVoIYbTAidoZYmn3aXzxeEYC9+OL8vF36eDt1qjb6RqBkWDl4v7iE84ecI+dFhA80A=="
+      }
+    }
+  }
+}
