@@ -1,5 +1,6 @@
 using System.Globalization;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,13 @@ builder.Services.AddSession();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IJourneySession, JourneySession>();
+builder.Services.AddGovUkFrontend(options =>
+{
+    options.ErrorSummaryGeneration = ErrorSummaryGenerationOptions.None;
+    options.PrependErrorToTitle = false;
+    //options.PrependErrorSummaryToForms = false;
+    options.Rebrand = true;
+});
 
 var app = builder.Build();
 
@@ -45,6 +53,8 @@ app.UseRouting();
 app.UseSession();
 
 app.UseAuthorization();
+
+app.UseGovUkFrontend();
 
 app.MapControllerRoute(
     name: "default",
