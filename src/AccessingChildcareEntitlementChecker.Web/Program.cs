@@ -28,11 +28,11 @@ if (!app.Environment.IsDevelopment())
 
 var supportedCultures = new[] { new CultureInfo("en-GB") };
 app.UseRequestLocalization(new RequestLocalizationOptions
-    {
-        DefaultRequestCulture = new RequestCulture("en-GB"),
-        SupportedCultures = supportedCultures,
-        SupportedUICultures = supportedCultures
-    })
+{
+    DefaultRequestCulture = new RequestCulture("en-GB"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+})
     .UseHttpsRedirection()
     .UseStaticFiles()
     .UseRouting()
