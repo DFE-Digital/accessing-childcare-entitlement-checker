@@ -22,9 +22,10 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IJourneySession, JourneySession>();
 builder.Services.AddGovUkFrontend(options =>
 {
-    options.ErrorSummaryGeneration = ErrorSummaryGenerationOptions.None;
-    options.PrependErrorToTitle = false;
-    //options.PrependErrorSummaryToForms = false;
+    // Tried the following to get rid of this error summary, but
+    // they don't seem to work.
+    // options.ErrorSummaryGeneration = ErrorSummaryGenerationOptions.None;
+    // options.PrependErrorToTitle = false;
     options.Rebrand = true;
 });
 
