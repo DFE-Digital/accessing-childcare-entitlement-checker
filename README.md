@@ -29,12 +29,12 @@ The [devcontainer.json](./.devcontainer/devcontainer.json) illustrates prerequis
 - `src/`
   - `AccessingChildcareEntitlementChecker.Web` - contains the MVC application.
 - `tests/`
-  - `AccessingChildcareEntitlementChecker.Tests.E2e` E2e tests ([tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md](README.md))
+  - `AccessingChildcareEntitlementChecker.Tests.E2e` E2e tests ([README.md](tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md))
   - `AccessingChildcareEntitlementChecker.Tests.UnitTests` contains controller-level unit tests.
 
 ## Developer quick-start
 
-See [CONTRIBUTING.md](CONTRIBUTING.md)
+See [CONTRIBUTING.md](/CONTRIBUTING.md)
 
 ### Prerequisites
 
