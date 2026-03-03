@@ -1,10 +1,8 @@
 <Project>
-  
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
 </Project>
