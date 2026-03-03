@@ -50,6 +50,9 @@ From the repository root:
 dotnet build
 ```
 
+Note that the project uses a [Directory.Build.props](/Directory.Build.props) with `<UseArtifactsOutput />` so
+build artifacts will land in `/artifacts`.
+
 ### Run locally
 
 ```
