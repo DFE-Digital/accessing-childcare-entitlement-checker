@@ -1,5 +1,4 @@
 <Project>
-
   <!-- Common TFM/lang props -->
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>

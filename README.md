@@ -69,3 +69,4 @@ This will execute both unit and integration tests.
 ### Other tasks
 
 - To update packages, use Visual Studio or `dotnet tool run dotnet-outdated -u`
+
