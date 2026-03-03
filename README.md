@@ -34,7 +34,7 @@ The [devcontainer.json](./.devcontainer/devcontainer.json) illustrates prerequis
 
 ## Developer quick-start
 
-See [CONTRIBUTING.md](/CONTRIBUTING.md)
+See [CONTRIBUTING.md](/CONTRIBUTING.md) for more detailed information.
 
 ### Prerequisites
 
