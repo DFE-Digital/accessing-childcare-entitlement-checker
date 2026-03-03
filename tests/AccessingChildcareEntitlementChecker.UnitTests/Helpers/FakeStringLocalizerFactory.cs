@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Localization;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Helpers;
+
 public sealed class FakeStringLocalizerFactory : IStringLocalizerFactory
 {
     public IStringLocalizer Create(Type resourceSource) => new FakeStringLocalizer();

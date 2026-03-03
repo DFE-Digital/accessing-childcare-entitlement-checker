@@ -18,13 +18,14 @@ The [devcontainer.json](./.devcontainer/devcontainer.json) illustrates prerequis
 
 ## Project Structure
 
-```
+```text
 src/
   AccessingChildcareEntitlementChecker.Web
 
 tests/
   AccessingChildcareEntitlementChecker.UnitTests
 ```
+
 - `Web` contains the MVC application.
 - `UnitTests` contains controller-level unit tests.
 
@@ -36,7 +37,7 @@ tests/
 
 Verify installed SDKs:
 
-```
+```bash
 dotnet --list-sdks
 ```
 
@@ -46,7 +47,7 @@ You may want to restore tools using `dotnet tool restore`
 
 From the repository root:
 
-```
+```bash
 dotnet build
 ```
 
@@ -54,7 +55,7 @@ dotnet build
 
 In Visual Studio, use F5 to run in the debugger, or Ctrl-F5 to run without debugging.
 
-```
+```bash
 dotnet run --project src/AccessingChildcareEntitlementChecker.Web
 ```
 
@@ -66,7 +67,7 @@ In Visual Studio, you can use the test explorer to run tests.
 
 To run all unit, integration and E2E tests from the command line, use:
 
-```
+```bash
 dotnet test
 ```
 
