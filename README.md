@@ -28,11 +28,11 @@ tests/
 - `Web` contains the MVC application.
 - `UnitTests` contains controller-level unit tests.
 
-## Developer Setup
+## Developer Guide
 
 ### Prerequisites
 
-- .NET 8 SDK
+- [.NET SDK 8.0.418](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) - The projects is pinned to this with a `global.json`
 
 Verify installed SDKs:
 
@@ -40,16 +40,7 @@ Verify installed SDKs:
 dotnet --list-sdks
 ```
 
-### Recommended Extensions
-
-
-#### Visual Studio
-
-- The [Reqnroll](https://marketplace.visualstudio.com/items?itemName=Reqnroll.ReqnrollForVisualStudio2022) extension might be handy.
-
-#### Visual Studio Code
-
-- Gherkin extension (?)
+You may want to restore tools using `dotnet tool restore`
 
 ### Build the solution
 
@@ -82,6 +73,10 @@ dotnet test
 ### E2E tests
 
 See the documentation at [tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md](tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md).
+
+### Other tasks
+
+- To update packages, use Visual Studio or `dotnet tool run dotnet-outdated -u`
 
 ### Build in CI
 

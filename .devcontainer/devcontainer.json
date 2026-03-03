@@ -1,4 +1,5 @@
 {
 	"name": "C# (.NET)",
-	"image": "mcr.microsoft.com/devcontainers/dotnet:2-8.0"
+	"image": "mcr.microsoft.com/devcontainers/dotnet:2-8.0",
+	"postCreateCommand": "dotnet tool restore"
 }
