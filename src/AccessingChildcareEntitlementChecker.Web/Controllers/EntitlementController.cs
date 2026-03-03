@@ -18,24 +18,24 @@ public class EntitlementController : Controller
         _localizerFactory = localizerFactory;
         _journeySession = journeySession;
     }
-    
+
     private static class PageNames
     {
         public const string WhereDoYouLive = "WhereDoYouLive";
     }
-    
+
     private IActionResult? GuardJourneyStarted(JourneyState state) =>
         state.CountryOfResidence is null
             ? RedirectToAction(nameof(SessionExpired))
             : null;
 
-    
+
     [HttpGet]
     public IActionResult SessionExpired()
     {
         return View();
     }
-    
+
     [HttpGet]
     public IActionResult WhereDoYouLive()
     {
@@ -60,7 +60,7 @@ public class EntitlementController : Controller
 
             return View(model);
         }
-        
+
         var state = _journeySession.Get();
         state.CountryOfResidence = model.Country;
 

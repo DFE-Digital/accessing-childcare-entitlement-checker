@@ -8,14 +8,14 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
 public class EntitlementControllerTests
 {
-    
+
     private EntitlementController CreateController(FakeJourneySession session)
     {
         return new EntitlementController(
             new FakeStringLocalizerFactory(),
             session);
     }
-    
+
     [Fact]
     public void WhereDoYouLive_Get_PopulatesModel_FromState()
     {
@@ -31,7 +31,7 @@ public class EntitlementControllerTests
 
         Assert.Equal(CountryOfResidence.England, model.Country);
     }
-    
+
     [Fact]
     public void WhereDoYouLive_Post_InvalidSelection_ReturnsViewWithError()
     {
@@ -48,7 +48,7 @@ public class EntitlementControllerTests
         var view = Assert.IsType<ViewResult>(result);
         Assert.False(controller.ModelState.IsValid);
     }
-    
+
     [Fact]
     public void WhereDoYouLive_Post_ValidSelection_SavesState_AndRedirects()
     {
@@ -67,5 +67,5 @@ public class EntitlementControllerTests
         Assert.Equal(CountryOfResidence.England, session.State.CountryOfResidence);
         Assert.Equal(nameof(EntitlementController.PlaceholderNextStep), redirect.ActionName);
     }
-    
+
 }
