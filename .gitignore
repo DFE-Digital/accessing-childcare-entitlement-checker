@@ -10,6 +10,7 @@ Thumbs.db
 # Visual Studio
 .vs/
 *.suo
+*.user
 
 # Rider
 *.sln.iml
