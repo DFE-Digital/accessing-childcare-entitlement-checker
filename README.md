@@ -2,11 +2,18 @@
 
 A digital service to help parents and carers check their entitlement for childcare support schemes.
 
+This project will be a multi-step form.
+
 ## Status
 
-Initial project scaffold.
+Initial project scaffold - user research is ongoing.
 
 This repository currently contains a minimal ASP.NET Core MVC application with associated unit and integration tests.
+
+### Known Issues/In Progress
+
+- Non functional!
+- Does not yet comply with DFE standards as per https://technical-guidance.education.gov.uk/
 
 ## Tech Stack
 
@@ -16,32 +23,28 @@ This repository currently contains a minimal ASP.NET Core MVC application with a
 
 The [devcontainer.json](./.devcontainer/devcontainer.json) illustrates prerequisites, see [containers.dev](https://containers.dev/implementors/json_reference/) for more information.
 
-## Project Structure
+## Project Structure & Docs Index
 
-```text
-src/
-  AccessingChildcareEntitlementChecker.Web
+- [CONTRIBUTING.md](/CONTRIBUTING.md)
+- `src/`
+  - `AccessingChildcareEntitlementChecker.Web` - contains the MVC application.
+- `tests/`
+  - `AccessingChildcareEntitlementChecker.Tests.E2e` E2e tests ([tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md](README.md))
+  - `AccessingChildcareEntitlementChecker.Tests.UnitTests` contains controller-level unit tests.
 
-tests/
-  AccessingChildcareEntitlementChecker.UnitTests
-```
+## Developer quick-start
 
-- `Web` contains the MVC application.
-- `UnitTests` contains controller-level unit tests.
-
-## Developer Guide
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### Prerequisites
 
 - [.NET SDK 8.0.418](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) - The projects is pinned to this with a `global.json`
 
-Verify installed SDKs:
+You can verify installed SDKs with:
 
 ```bash
 dotnet --list-sdks
 ```
-
-You may want to restore tools using `dotnet tool restore`
 
 ### Build the solution
 
@@ -50,6 +53,9 @@ From the repository root:
 ```bash
 dotnet build
 ```
+
+Note that the project uses a [Directory.Build.props](/Directory.Build.props) with `<UseArtifactsOutput />` so
+build artifacts will land in `/artifacts`.
 
 ### Run locally
 
@@ -70,15 +76,3 @@ To run all unit, integration and E2E tests from the command line, use:
 ```bash
 dotnet test
 ```
-
-### E2E tests
-
-See the documentation at [tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md](tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md).
-
-### Other tasks
-
-- To update packages, use Visual Studio or `dotnet tool run dotnet-outdated -u`
-
-### Build in CI
-
-The workflow at `.github/workflows/build-and-test.yml` builds the solution and runs tests.
