@@ -4,13 +4,27 @@
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
+### Recommended Extensions
+
+#### Visual Studio
+
+Visual Studio 2026 is the recommended version.
+
+- The [Reqnroll](https://marketplace.visualstudio.com/items?itemName=Reqnroll.ReqnrollForVisualStudio2022) extension might be handy.
+
+#### Visual Studio Code
+
+- "Cucumber (Gherkin) Full Support" `alexkrechik.cucumberautocomplete`
+
+You may want to restore tools using `dotnet tool restore`
+
 ## Building the solution
 
 ### With dotnet
 
 From the repository root:
 
-```
+```bash
 dotnet build
 ```
 
@@ -20,7 +34,7 @@ This project is committed to an "F5 out of the box" experience, so you should be
 
 ## Run locally
 
-```
+```bash
 dotnet run --project src/AccessingChildcareEntitlementChecker.Web
 ```
 
@@ -28,15 +42,25 @@ The application will start on a local development URL (for example, `https://loc
 
 ## Run tests
 
-```
+Before running E2e tests, see the E2e [README.md](/tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md).
+
+To run all tests; use:
+
+```bash
 dotnet test
 ```
 
-This will execute both unit and integration tests.
+You'll likely want to exclude E2E tests from your regular runs:
 
-### With Visual Studio
+```powershell
+dotnet test --filter "FullyQualifiedName!~E2e"
+```
 
-Tests are runnable via the test explorer.
+```bash
+dotnet test --filter "FullyQualifiedName!~E2e"
+```
+
+In Visual Studio, tests are runnable via the test explorer.
 
 ## CI/CD
 

@@ -23,21 +23,18 @@ This repository currently contains a minimal ASP.NET Core MVC application with a
 
 The [devcontainer.json](./.devcontainer/devcontainer.json) illustrates prerequisites, see [containers.dev](https://containers.dev/implementors/json_reference/) for more information.
 
-## Project Structure
+## Project Structure & Docs Index
 
-```
-src/
-  AccessingChildcareEntitlementChecker.Web
-
-tests/
-  AccessingChildcareEntitlementChecker.UnitTests
-```
-- `Web` contains the MVC application.
-- `UnitTests` contains controller-level unit tests.
+- [CONTRIBUTING.md](/CONTRIBUTING.md)
+- `src/`
+  - `AccessingChildcareEntitlementChecker.Web` - contains the MVC application.
+- `tests/`
+  - `AccessingChildcareEntitlementChecker.Tests.E2e` E2e tests ([README.md](tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md))
+  - `AccessingChildcareEntitlementChecker.Tests.UnitTests` contains controller-level unit tests.
 
 ## Developer quick-start
 
-See [CONTRIBUTING.md](CONTRIBUTING.md)
+See [CONTRIBUTING.md](/CONTRIBUTING.md) for more detailed information.
 
 ### Prerequisites
 
@@ -45,15 +42,17 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 You can verify installed SDKs with:
 
-```
+```bash
 dotnet --list-sdks
 ```
+
+For Visual Studio, 2026 is the recommended version.
 
 ### Build the solution
 
 From the repository root:
 
-```
+```bash
 dotnet build
 ```
 
@@ -62,16 +61,20 @@ build artifacts will land in `/artifacts`.
 
 ### Run locally
 
-```
+In Visual Studio, use F5 to run in the debugger, or Ctrl-F5 to run without debugging.
+
+```bash
 dotnet run --project src/AccessingChildcareEntitlementChecker.Web
 ```
 
 The application will start on a local development URL (for example, `https://localhost:xxxx`).
 
-### Run tests
+### Integration and Unit tests
 
-```
+In Visual Studio, you can use the test explorer to run tests.
+
+To run all unit, integration and E2E tests from the command line, use:
+
+```bash
 dotnet test
 ```
-
-This will execute both unit and integration tests.
