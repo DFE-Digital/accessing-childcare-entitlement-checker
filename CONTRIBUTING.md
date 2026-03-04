@@ -14,7 +14,7 @@ Visual Studio 2026 is the recommended version.
 
 #### Visual Studio Code
 
-- Gherkin extension (?)
+- "Cucumber (Gherkin) Full Support" `alexkrechik.cucumberautocomplete`
 
 You may want to restore tools using `dotnet tool restore`
 
