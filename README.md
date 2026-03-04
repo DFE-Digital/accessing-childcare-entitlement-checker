@@ -17,7 +17,7 @@ This repository currently contains a minimal ASP.NET Core MVC application with a
 
 ## Tech Stack
 
-- .NET 8
+- .NET 10
 - ASP.NET Core MVC
 - xUnit (unit and integration testing)
 
@@ -38,7 +38,7 @@ See [CONTRIBUTING.md](/CONTRIBUTING.md) for more detailed information.
 
 ### Prerequisites
 
-- [.NET SDK 8.0.418](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) - The projects is pinned to this with a `global.json`
+- [.NET SDK 10.0.3](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) - The projects is pinned to this with a `global.json`
 
 You can verify installed SDKs with:
 
