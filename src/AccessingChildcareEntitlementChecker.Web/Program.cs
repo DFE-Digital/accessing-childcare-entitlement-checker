@@ -7,11 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-
 builder.Services
     .AddControllersWithViews(options =>
     {
         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+    })
+    .AddDataAnnotationsLocalization(options =>
+    {
+        options.DataAnnotationLocalizerProvider = (modelType, factory) =>
+            factory.Create(modelType);
     })
     .AddViewLocalization();
 
@@ -22,17 +26,12 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IJourneySession, JourneySession>();
 builder.Services.AddGovUkFrontend(options =>
 {
-    // Tried the following to get rid of this error summary, but
-    // they don't seem to work.
-    // options.ErrorSummaryGeneration = ErrorSummaryGenerationOptions.None;
-    // options.PrependErrorToTitle = false;
     options.Rebrand = true;
 });
 
 var app = builder.Build();
 
 var supportedCultures = new[] { new CultureInfo("en-GB") };
-
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
     DefaultRequestCulture = new RequestCulture("en-GB"),

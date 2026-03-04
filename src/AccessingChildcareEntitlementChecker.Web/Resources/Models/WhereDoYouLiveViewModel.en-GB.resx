@@ -18,22 +18,22 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Title" xml:space="preserve">
+    <data name="Country_Label" xml:space="preserve">
         <value>Where do you live?</value>
     </data>
-    <data name="Option_England" xml:space="preserve">
+    <data name="Country_Required" xml:space="preserve">
+        <value>Please select where you live</value>
+    </data>
+    <data name="Country_England" xml:space="preserve">
         <value>England</value>
     </data>
-    <data name="Option_Scotland" xml:space="preserve">
+    <data name="Country_Scotland" xml:space="preserve">
         <value>Scotland</value>
     </data>
-    <data name="Option_Wales" xml:space="preserve">
+    <data name="Country_Wales" xml:space="preserve">
         <value>Wales</value>
     </data>
-    <data name="Option_NorthernIreland" xml:space="preserve">
+    <data name="Country_NorthernIreland" xml:space="preserve">
         <value>Northern Ireland</value>
-    </data>
-    <data name="Error_SelectWhereYouLive" xml:space="preserve">
-        <value>Please select where you live</value>
     </data>
 </root>

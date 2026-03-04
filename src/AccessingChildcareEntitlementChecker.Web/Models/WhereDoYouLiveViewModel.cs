@@ -6,12 +6,17 @@ namespace AccessingChildcareEntitlementChecker.Web.Models;
 public enum CountryOfResidence
 {
     England,
+
     Scotland,
+
     Wales,
+
     NorthernIreland
 }
 
 public class WhereDoYouLiveViewModel
 {
+    [Required(ErrorMessage = "Country_Required")]
+    [Display(Name = "Country_Label")]
     public CountryOfResidence? Country { get; set; }
 }
