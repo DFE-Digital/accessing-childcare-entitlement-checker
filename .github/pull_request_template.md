@@ -2,12 +2,9 @@
 
 Link to the Jira ticket for this work.
 
-
-
 ## Summary
 
 Brief description of the change.
-
 
 ## Changes
 
@@ -15,9 +12,9 @@ Brief description of the change.
 - Change 2
 - Change 3
 
-
 ## Checklist
 
-- [ ] Linked to Jira ticket and meets acceptance criteria
-- [ ] Tested locally and passed
+- [ ] Linked to Jira ticket
+- [ ] Meets acceptance criteria
+
       
