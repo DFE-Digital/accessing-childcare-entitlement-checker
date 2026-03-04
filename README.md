@@ -46,6 +46,8 @@ You can verify installed SDKs with:
 dotnet --list-sdks
 ```
 
+For Visual Studio, 2026 is the recommended version.
+
 ### Build the solution
 
 From the repository root:

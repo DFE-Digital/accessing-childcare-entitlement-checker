@@ -8,6 +8,8 @@
 
 #### Visual Studio
 
+Visual Studio 2026 is the recommended version.
+
 - The [Reqnroll](https://marketplace.visualstudio.com/items?itemName=Reqnroll.ReqnrollForVisualStudio2022) extension might be handy.
 
 #### Visual Studio Code
