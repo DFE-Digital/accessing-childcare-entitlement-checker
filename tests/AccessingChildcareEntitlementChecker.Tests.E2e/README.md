@@ -14,7 +14,7 @@ dotnet tool restore
 dotnet tool run playwright install
 ```
 
-on Linux, you might want to also install any required system dependencies with
+test: on Linux, you might want to also install any required system dependencies with
 
 ```bash
 dotnet tool restore
