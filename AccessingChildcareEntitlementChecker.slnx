@@ -1,0 +1,18 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+
+  <Folder Name="/src/">
+    <Project Path="src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj" />
+  </Folder>
+
+  <Folder Name="/tests/">
+    <Project Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
+  </Folder>
+</Solution>
