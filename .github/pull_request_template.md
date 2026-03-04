@@ -16,5 +16,3 @@ Brief description of the change.
 
 - [ ] Linked to Jira ticket
 - [ ] Meets acceptance criteria
-
-      
