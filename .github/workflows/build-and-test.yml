@@ -5,14 +5,38 @@ on:
   push:
   pull_request:
 
-jobs:
-  build-and-test:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork)
-    runs-on: ubuntu-latest
+permissions:
+  contents: read
+  checks: write
 
+jobs:
+  lint:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork)
+    name: Lint
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+      
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+      
+      - name: dotnet format
+        run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v6
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -22,14 +46,78 @@ jobs:
           cache-dependency-path: |
             **/packages.lock.json
 
-      - name: Restore dependencies
+      - name: Restore
         run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
 
-      - name: Lint
-        run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
-
-      - name: Build
+      - name: Build (Release)
         run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
 
-      - name: Run tests
-        run: dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj --configuration Release --no-build
+      - name: Upload built outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          if-no-files-found: error
+          path: |
+            artifacts/bin/**
+
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      MIN_LINE_COVERAGE: "5"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+
+      - name: Download built artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: .
+
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+
+      - name: Unit tests with coverage (no build)
+        run: >
+          dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
+          --configuration Release
+          --no-build
+          --collect:"XPlat Code Coverage;Format=cobertura"
+          --logger "trx;LogFileName=unit-coverage.trx"
+          --results-directory ./TestResults/coverage
+
+      - name: Generate coverage report and gate
+        uses: danielpalme/ReportGenerator-GitHub-Action@v5
+        with:
+          reports: "TestResults/coverage/**/coverage.cobertura.xml"
+          targetdir: "coveragereport"
+          reporttypes: "HtmlInline;MarkdownSummaryGithub;TextSummary"
+          customSettings: "minimumCoverageThresholds:lineCoverage=${{ env.MIN_LINE_COVERAGE }}"
+
+      - name: Add coverage to job summary
+        run: cat coveragereport/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coveragereport
+          path: coveragereport
+
+      - name: Publish coverage test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Unit tests (coverage run)
+          path: TestResults/coverage/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
