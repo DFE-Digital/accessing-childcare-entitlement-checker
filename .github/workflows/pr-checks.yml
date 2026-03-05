@@ -7,6 +7,7 @@ on:
 permissions:
   contents: read
   checks: write
+  pull-requests: write
 
 jobs:
   lint:
@@ -84,11 +85,12 @@ jobs:
 
       - name: Unit tests + collect coverage (no build)
         run: >
-          dotnet vstest \
-            artifacts/bin/AccessingChildcareEntitlementChecker.UnitTests/release/AccessingChildcareEntitlementChecker.UnitTests.dll \
-            --collect:"XPlat Code Coverage;Format=cobertura" \
-            --logger:"trx;LogFileName=unit.trx" \
-            --ResultsDirectory:./TestResults/unit
+          dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
+          --configuration Release
+          --no-build
+          --collect:"XPlat Code Coverage;Format=cobertura"
+          --logger "trx;LogFileName=unit.trx"
+          --results-directory ./TestResults/unit
 
       - name: Publish unit test results
         if: always()
@@ -131,6 +133,21 @@ jobs:
           targetdir: "coveragereport"
           reporttypes: "HtmlInline;MarkdownSummaryGithub;TextSummary"
           customSettings: "minimumCoverageThresholds:lineCoverage=${{ env.MIN_LINE_COVERAGE }}"
+
+      - name: Prepare PR comment body
+        run: |
+          {
+            echo "## Coverage"
+            echo ""
+            cat coveragereport/SummaryGithub.md
+          } > coveragereport/PR_COMMENT.md
+
+      - name: Add coverage to PR
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: coverage
+          path: coveragereport/PR_COMMENT.md
 
       - name: Add coverage to job summary
         run: cat coveragereport/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
