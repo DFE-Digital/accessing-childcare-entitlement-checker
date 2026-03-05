@@ -82,14 +82,19 @@ jobs:
       - name: Restore
         run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
 
+      - name: Sanity check build outputs exist
+        run: |
+          tree -d
+          ls -la artifacts/bin/AccessingChildcareEntitlementChecker.UnitTests/release/
+          file artifacts/bin/AccessingChildcareEntitlementChecker.UnitTests/release/AccessingChildcareEntitlementChecker.UnitTests.dll
+
       - name: Unit tests + collect coverage (no build)
         run: >
-          dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
-          --configuration Release
-          --no-build
-          --collect:"XPlat Code Coverage;Format=cobertura"
-          --logger "trx;LogFileName=unit.trx"
-          --results-directory ./TestResults/unit
+          dotnet vstest \
+            artifacts/bin/AccessingChildcareEntitlementChecker.UnitTests/release/AccessingChildcareEntitlementChecker.UnitTests.dll \
+            --collect:"XPlat Code Coverage;Format=cobertura" \
+            --logger:"trx;LogFileName=unit.trx" \
+            --ResultsDirectory:./TestResults/unit
 
       - name: Publish unit test results
         if: always()
