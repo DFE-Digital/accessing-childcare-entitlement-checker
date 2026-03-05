@@ -12,6 +12,6 @@ Thumbs.db
 *.suo
 *.user
 
-# Rider main
+# Rider
 *.sln.iml
 .idea/
