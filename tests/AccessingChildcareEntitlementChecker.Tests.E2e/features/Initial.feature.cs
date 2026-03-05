@@ -167,21 +167,36 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 9
+<<<<<<< HEAD
  await testRunner.ThenAsync("the page header is \"Check your childcare entitlement\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+=======
+ await testRunner.ThenAsync("the page header is \"Where do you live?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+>>>>>>> main
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
+<<<<<<< HEAD
         [global::Xunit.SkippableFactAttribute(DisplayName="I can click the start now button and still see the title")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Initial")]
         [global::Xunit.TraitAttribute("Description", "I can click the start now button and still see the title")]
         public async global::System.Threading.Tasks.Task ICanClickTheStartNowButtonAndStillSeeTheTitle()
+=======
+        [global::Xunit.SkippableFactAttribute(DisplayName="If I don\'t select a country I get an error")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Initial")]
+        [global::Xunit.TraitAttribute("Description", "If I don\'t select a country I get an error")]
+        public async global::System.Threading.Tasks.Task IfIDontSelectACountryIGetAnError()
+>>>>>>> main
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
+<<<<<<< HEAD
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can click the start now button and still see the title", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+=======
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("If I don\'t select a country I get an error", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+>>>>>>> main
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 11
@@ -198,10 +213,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 12
+<<<<<<< HEAD
  await testRunner.WhenAsync("I click on Start Now", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 13
  await testRunner.ThenAsync("the page header is \"Check your childcare entitlement\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+=======
+ await testRunner.WhenAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 13
+ await testRunner.ThenAsync("the country error is \"Please select where you live\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+>>>>>>> main
 #line hidden
             }
             await this.ScenarioCleanupAsync();

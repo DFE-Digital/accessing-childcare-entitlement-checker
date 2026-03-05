@@ -1,0 +1,18 @@
+{
+  "name": "accessingchildcareentitlementchecker.web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "cp node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css wwwroot/css/site.css",
+    "build:js": "cp node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js wwwroot/js/site.js",
+    "build:assets": "cp -R node_modules/govuk-frontend/dist/govuk/assets wwwroot/",
+    "build": "npm run build:css && npm run build:js && npm run build:assets"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "govuk-frontend": "^6.0.0"
+  }
+}

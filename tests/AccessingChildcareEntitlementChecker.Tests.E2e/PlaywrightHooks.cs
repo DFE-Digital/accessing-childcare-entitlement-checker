@@ -14,10 +14,18 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e
         [BeforeTestRun]
         public static async Task BeforeTestRun()
         {
+<<<<<<< HEAD
             _playwright = await Playwright.CreateAsync();
             _browser = await _playwright.Chromium.LaunchAsync(new()
             {
                 Headless = true
+=======
+            var shouldRunHeadless = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != null;
+            _playwright = await Playwright.CreateAsync();
+            _browser = await _playwright.Chromium.LaunchAsync(new()
+            {
+                Headless = shouldRunHeadless,
+>>>>>>> main
             });
         }
 

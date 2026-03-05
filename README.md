@@ -2,68 +2,68 @@
 
 A digital service to help parents and carers check their entitlement for childcare support schemes.
 
+This project will be a multi-step form.
+
 ## Status
 
-Initial project scaffold.
+Initial project scaffold - user research is ongoing.
 
 This repository currently contains a minimal ASP.NET Core MVC application with associated unit and integration tests.
 
+### Known Issues/In Progress
+
+- Non functional!
+- Does not yet comply with DFE standards as per https://technical-guidance.education.gov.uk/
+
 ## Tech Stack
 
-- .NET 8
+- .NET 10
 - ASP.NET Core MVC
 - xUnit (unit and integration testing)
 
 The [devcontainer.json](./.devcontainer/devcontainer.json) illustrates prerequisites, see [containers.dev](https://containers.dev/implementors/json_reference/) for more information.
 
-## Project Structure
+## Project Structure & Docs Index
 
-```
-src/
-  AccessingChildcareEntitlementChecker.Web
+- [CONTRIBUTING.md](/CONTRIBUTING.md)
+- `src/`
+  - `AccessingChildcareEntitlementChecker.Web` - contains the MVC application.
+- `tests/`
+  - `AccessingChildcareEntitlementChecker.Tests.E2e` E2e tests ([README.md](tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md))
+  - `AccessingChildcareEntitlementChecker.Tests.UnitTests` contains controller-level unit tests.
 
-tests/
-  AccessingChildcareEntitlementChecker.UnitTests
-```
-- `Web` contains the MVC application.
-- `UnitTests` contains controller-level unit tests.
+## Developer quick-start
 
-## Developer Setup
+See [CONTRIBUTING.md](/CONTRIBUTING.md) for more detailed information.
 
 ### Prerequisites
 
-- .NET 8 SDK
+- [.NET SDK 10.0.3](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) - The projects is pinned to this with a `global.json`
 
-Verify installed SDKs:
+You can verify installed SDKs with:
 
-```
+```bash
 dotnet --list-sdks
 ```
 
-### Recommended Extensions
-
-
-#### Visual Studio
-
-- The [Reqnroll](https://marketplace.visualstudio.com/items?itemName=Reqnroll.ReqnrollForVisualStudio2022) extension might be handy.
-
-#### Visual Studio Code
-
-- Gherkin extension (?)
+For Visual Studio, 2026 is the recommended version.
 
 ### Build the solution
 
 From the repository root:
 
-```
+```bash
 dotnet build
 ```
+
+Note that the project uses a [Directory.Build.props](/Directory.Build.props) with `<UseArtifactsOutput />` so
+build artifacts will land in `/artifacts`.
 
 ### Run locally
 
 In Visual Studio, use F5 to run in the debugger, or Ctrl-F5 to run without debugging.
 
-```
+```bash
 dotnet run --project src/AccessingChildcareEntitlementChecker.Web
 ```
 
@@ -75,10 +75,6 @@ In Visual Studio, you can use the test explorer to run tests.
 
 To run all unit, integration and E2E tests from the command line, use:
 
-```
+```bash
 dotnet test
 ```
-
-### E2E tests
-
-See the documentation at [tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md](tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md).
