@@ -21,7 +21,7 @@ dotnet tool restore
 dotnet tool run playwright install --with-deps
 ```
 
-_TODO: This seems to take a long time to run in the devcontainer; it should just include it as part of the image._
+The devcontainer includes deps in the docker images, and installs the Playwright browsers via a `postCreateCommand`.
 
 Otherwise, See [the docs](https://playwright.dev/dotnet/docs/intro) for more information - you may
 need to install [Powershell 7](https://learn.microsoft.com/en-gb/powershell/scripting/install/install-powershell?view=powershell-7.5) and
