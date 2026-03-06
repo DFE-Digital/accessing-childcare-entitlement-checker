@@ -1,99 +1,36 @@
 # Contributing
 
-## Prerequisites
+We appreciate contributions of any kind. By participating in this project, you agree to abide by our code of conduct.
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+## How to Contribute
 
-### Recommended Extensions
+### Reporting Issues
 
-#### Visual Studio
+To report bugs, suggest enhancements, or raise any other issues, please create a new issue in the GitHub repository. We will review your issue promptly.
 
-Visual Studio 2026 is the recommended version.
+### Pull Requests
 
-- The [Reqnroll](https://marketplace.visualstudio.com/items?itemName=Reqnroll.ReqnrollForVisualStudio2022) extension might be handy.
+We love pull requests from everyone.
 
-#### Visual Studio Code
+1. **Fork** the repository to your GitHub account.
+2. **Clone** the forked repository to your local machine:
 
-- "Cucumber (Gherkin) Full Support" `alexkrechik.cucumberautocomplete`
+    ```bash
+    git clone git@github.com:your-username/DFE-Digital/accessing-childcare-entitlement-checker.git
+    ```
 
-You may want to restore tools using `dotnet tool restore`
+3. All changes should be based on the main branch.
 
-## Building the solution
+4. Make your changes, ensuring each commit has a clear and descriptive message summarising the purpose of the change.
 
-### With dotnet
+5. Push your changes to your fork.
 
-From the repository root:
+6. Open a pull request against the main branch of our repository.
 
-```bash
-dotnet build
-```
+7. After submitting a pull request, our team will review your changes. Please be patient during this process and respond to any feedback or comments provided by our reviewers.
 
-### With Visual Studio
+### Tips for Successful Pull Request
 
-This project is committed to an "F5 out of the box" experience, so you should be able to build & run with that.
-
-## Run locally
-
-```bash
-dotnet run --project src/AccessingChildcareEntitlementChecker.Web
-```
-
-The application will start on a local development URL (for example, `https://localhost:xxxx`).
-
-## Run tests
-
-Before running E2e tests, see the E2e [README.md](/tests/AccessingChildcareEntitlementChecker.Tests.E2e/README.md).
-
-To run all tests; use:
-
-```bash
-dotnet test
-```
-
-You'll likely want to exclude E2E tests from your regular runs:
-
-```powershell
-dotnet test --filter "FullyQualifiedName!~E2e"
-```
-
-```bash
-dotnet test --filter "FullyQualifiedName!~E2e"
-```
-
-In Visual Studio, tests are runnable via the test explorer.
-
-## CI/CD
-
-See the workflow at `.github/workflows/build-and-test.yml` which builds the solution and runs tests.
-
-CD is pending implementation - this will be to an Azure Web App via Terraform.
-
-## More tips
-
-### General
-
-- use `dotnet tool restore` to restore some commonly used tools.
-- use `dotnet format` to lint the codebase. This will be checked in QA. See below for setting up a Git hook.
-- To update packages use `dotnet tool run dotnet-outdated -u` (or Visual Studio)
-
-### Add a pre-push hook for linting
-
-You can add a local Git `pre-push` hook to run formatting checks before code is pushed.
-
-Create `.git/hooks/pre-push` with:
-
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-echo "Running dotnet format..."
-dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
-```
-
-Then make it executable:
-
-```bash
-chmod +x .git/hooks/pre-push
-```
-
-If formatting issues are found, the push is blocked until they are fixed.
+- Update README with any needed changes.
+- Ensure each commit has a clear and descriptive message summarising the purpose of the change. This helps us understand the rationale behind your modifications.
+- Follow our coding standards and conventions.
