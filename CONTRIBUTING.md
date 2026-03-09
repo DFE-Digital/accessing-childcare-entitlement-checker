@@ -10,8 +10,6 @@ To report bugs, suggest enhancements, or raise any other issues, please create a
 
 ### Pull Requests
 
-We love pull requests from everyone.
-
 1. **Fork** the repository to your GitHub account.
 2. **Clone** the forked repository to your local machine:
 
