@@ -142,3 +142,15 @@ jobs:
         with:
           name: coveragereport
           path: coveragereport
+
+  codeql:
+    uses: DFE-Digital/github-actions/.github/workflows/reusable-workflow-sast.yml@master
+    needs: build
+    with:
+      language: 'csharp' 
+      dotnet_project_locations: '["./"]' 
+      dotnet_version: '10.0.*' 
+      policy_action: 'break'
+    secrets:
+      CODEQL_AUTHENTICATION_PRIVATE_KEY: ${{ secrets.CODEQL_AUTHENTICATION_PRIVATE_KEY }} 
+      CODEQL_APP_ID: ${{ secrets.CODEQL_APP_ID }}
