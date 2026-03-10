@@ -38,12 +38,6 @@ dotnet run --project src/AccessingChildcareEntitlementChecker.Web
 
 The application will start on a local development URL (for example, `https://localhost:xxxx`).
 
-### Devcontainer
-
-The repo includes a [devcontainer](https://containers.dev/implementors/json_reference/) with prerequisites
-as well as recommended extensions. This can be used in e.g. [vscode](https://code.visualstudio.com/docs/devcontainers/containers) 
-or [rider](https://www.jetbrains.com/help/rider/Connect_to_DevContainer.html).
-
 ## Integration, Unit and E2E tests
 
 ### Unit tests
