@@ -77,7 +77,7 @@ jobs:
             **/packages.lock.json
 
       - name: Download built artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build-output
           path: artifacts/bin
@@ -118,7 +118,7 @@ jobs:
       MIN_LINE_COVERAGE: "5"
     steps:
       - name: Download unit test results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: testresults-unit
           path: TestResults/unit
