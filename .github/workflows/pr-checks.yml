@@ -87,6 +87,7 @@ jobs:
           dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
           --configuration Release
           --no-build
+          --results-directory ./TestResults/unit
           --logger "trx;LogFileName=unit.trx"
           -p:CollectCoverage=true
           -p:CoverletOutput=./TestResults/unit/coverage/
@@ -97,7 +98,7 @@ jobs:
         uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f # v2.6.0
         with:
           name: Tests (Unit) - Details
-          path: "**/unit.trx"
+          path: "TestResults/unit/*.trx"
           reporter: dotnet-trx
           fail-on-error: true
 
@@ -107,7 +108,6 @@ jobs:
         with:
           name: testresults-unit
           path: |
-            **/unit.trx
             TestResults/unit/**
 
   coverage:
