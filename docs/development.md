@@ -17,7 +17,7 @@ This repository currently contains a minimal ASP.NET Core MVC application with a
 - ASP.NET Core MVC
 - xUnit (unit and integration testing)
 
-## Building, testing and running on your workstation
+## Building and running on your workstation
 
 ### Build the solution
 
@@ -38,25 +38,63 @@ dotnet run --project src/AccessingChildcareEntitlementChecker.Web
 
 The application will start on a local development URL (for example, `https://localhost:xxxx`).
 
-### Integration and Unit tests
+### Devcontainer
 
-To run all unit, integration and E2E tests from the command line, use:
+The repo includes a [devcontainer](https://containers.dev/implementors/json_reference/) with prequisites
+as well as recommended extensions.
+
+## Integration, Unit and E2E tests
+
+### Unit tests
+
+To run the unit tests:
 
 ```bash
-dotnet test
+dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests
 ```
 
-You'll likely want to exclude the E2E tests from your regular runs, which can be done either
-by running tests for a specific project, or using a filter.
+### E2E tests
 
-```bash
-dotnet test --filter "FullyQualifiedName!~E2e"
-```
+#### Installing dependencies
 
+To run the E2E tests, you'll either need to use the devcontainer; 
+or make sure you first install Playwright dependencies:
 
 ```powershell
-dotnet test --filter "FullyQualifiedName!~E2e"
+dotnet tool restore
+dotnet tool run playwright install
 ```
+
+on Linux, you might want to also install any required system dependencies with
+
+```bash
+dotnet tool restore
+dotnet tool run playwright install --with-deps
+```
+
+The devcontainer includes deps in the docker images, and installs the Playwright browsers via a `postCreateCommand`.
+
+The above command using the dotnet tool works fine; but [the Playwright.net docs](https://playwright.dev/dotnet/docs/intro) suggest
+that you need to install [Powershell 7](https://learn.microsoft.com/en-gb/powershell/scripting/install/install-powershell?view=powershell-7.5) and
+then once you've built the project you can run
+`.\tests\AccessingChildcareEntitlementChecker.Tests.E2e\bin\Debug\net8.0\playwright.ps1 install`.
+
+#### Running tests
+
+You can run E2E tests against a local instance, or a deployed version of the web app
+by specifying a `TEST_URL` environment variable:
+
+```powershell
+$env:TEST_URL = "http://localhost:5252/"; dotnet test --filter "FullyQualifiedName~E2e"
+```
+
+```bash
+TEST_URL = "http://localhost:5252/"; dotnet test --filter "FullyQualifiedName~E2e"
+```
+
+The browser window will be visible on the desktop, but they are configured to run headlessly in GitHub actions - see `PlaywrightHooks.cs`.
+
+The tests only run against Chromium. _TODO: browser matrix is pending_
 
 ## CI/CD
 
@@ -80,13 +118,13 @@ Visual Studio 2026 is the recommended version.
 - the project will build out of the box. use F5 to run in the debugger, or Ctrl-F5 to run without debugging.
 - You can use the test explorer to run tests
   - To run the E2E tests, you'll need to start the app without debugging first.
+  - you may also need to set an environment variable BEFORE starting Visual Studio
 - Recommended extensions:
   - [Reqnroll](https://marketplace.visualstudio.com/items?itemName=Reqnroll.ReqnrollForVisualStudio2022)
 
 #### Visual Studio Code
 
-- Recommended extensions:
-  - "Cucumber (Gherkin) Full Support" `alexkrechik.cucumberautocomplete`
+- See the [devcontainer.json](/.devcontainer/devcontainer.json) for recommended extension ids
 
 #### Git
 
