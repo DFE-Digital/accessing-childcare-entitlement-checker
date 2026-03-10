@@ -18,7 +18,7 @@ This is an ASP.NET Core MVC C# application and should follow [Microsoft's coding
 
 You can use the `dotnet` command or Visual Studio 2026 to run the app.
 
-The repo includes a [devcontainer](https://containers.dev/implementors/json_reference/) with prequisites. 
+The repo includes a [devcontainer](https://containers.dev/implementors/json_reference/) which includes prerequisites.
 
 ### Before running the app (if applicable)
 
