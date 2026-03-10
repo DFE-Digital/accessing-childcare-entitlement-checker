@@ -2,6 +2,9 @@ name: PR Checks
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
   pull_request:
 
 jobs:
@@ -20,10 +23,10 @@ jobs:
           cache: true
           cache-dependency-path: |
             **/packages.lock.json
-      
+
       - name: Restore
         run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
-      
+
       - name: dotnet format
         run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
 
@@ -76,39 +79,36 @@ jobs:
           cache-dependency-path: |
             **/packages.lock.json
 
-      - name: Download built artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-output
-          path: artifacts/bin
-
       - name: Restore
         run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
 
-      - name: Unit tests + collect coverage (no build)
+      - name: Run unit tests + collect coverage
         run: >
           dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
           --configuration Release
           --no-build
-          --collect:"XPlat Code Coverage;Format=cobertura"
           --logger "trx;LogFileName=unit.trx"
-          --results-directory ./TestResults/unit
+          -p:CollectCoverage=true
+          -p:CoverletOutput=./TestResults/unit/coverage/
+          -p:CoverletOutputFormat=opencover,cobertura
 
       - name: Publish unit test results
         if: always()
         uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f # v2.6.0
         with:
           name: Tests (Unit) - Details
-          path: TestResults/unit/*.trx
+          path: "**/unit.trx"
           reporter: dotnet-trx
           fail-on-error: true
 
-      - name: Upload test + coverage outputs for gating
+      - name: Upload test + coverage outputs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: testresults-unit
-          path: TestResults/unit/**
+          path: |
+            **/unit.trx
+            TestResults/unit/**
 
   coverage:
     name: Coverage
@@ -121,17 +121,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: testresults-unit
-          path: TestResults/unit
+          path: downloaded-testresults
 
       - name: Sanity check test outputs exist
         run: |
-          tree -d
-          ls -la TestResults/unit
+          find downloaded-testresults -maxdepth 5 -type f | sort
 
       - name: Generate coverage report and gate
         uses: danielpalme/ReportGenerator-GitHub-Action@2a82782178b2816d9d6960a7345fdd164791b323 # v5.5.3
         with:
-          reports: "TestResults/unit/**/coverage.cobertura.xml"
+          reports: "downloaded-testresults/**/coverage.cobertura.xml"
           targetdir: "coveragereport"
           reporttypes: "HtmlInline;MarkdownSummaryGithub;TextSummary"
           customSettings: "minimumCoverageThresholds:lineCoverage=${{ env.MIN_LINE_COVERAGE }}"
@@ -147,42 +146,50 @@ jobs:
           path: coveragereport
 
   code-quality:
+    name: Code Quality
+    permissions:
+      contents: read
+      pull-requests: read
     runs-on: ubuntu-latest
-
+    needs:
+      - unit-tests
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
           cache: true
           cache-dependency-path: |
             **/packages.lock.json
 
-      - name: Install SonarCloud scanners
+      - name: Download test + coverage outputs
+        uses: actions/download-artifact@v4
+        with:
+          name: testresults-unit
+          path: downloaded-testresults
+
+      - name: Install SonarCloud scanner
         run: dotnet tool install --global dotnet-sonarscanner
 
-      - name: Install SonarCloud coverage
-        run: dotnet tool install --global dotnet-coverage
-
-      - name: Build, Test and Analyze
-        working-directory: .
+      - name: SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet-sonarscanner begin \
             /k:DFE-Digital_accessing-childcare-entitlement-checker \
             /o:dfe-digital \
-            /d:sonar.qualitygate.wait=true \
-            /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
-            /d:sonar.coverage.exclusions=**/Program.cs,**/*.html,**/*.json,**/*.scss,**/wwwroot/** \
-            /d:sonar.token="$SONAR_TOKEN" \
-            /d:sonar.dotnet.excludeTestProjects=true \
             /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.token="$SONAR_TOKEN" \
+            /d:sonar.qualitygate.wait=true \
+            /d:sonar.dotnet.excludeTestProjects=true \
+            /d:sonar.cs.opencover.reportsPaths="downloaded-testresults/**/coverage.opencover.xml" \
+            /d:sonar.coverage.exclusions="**/Program.cs,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
             /d:sonar.scanner.scanAll=false
-          dotnet build --no-incremental
-          dotnet-coverage collect --settings dotnet-cover-config.xml -f xml -o coverage.xml "dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj"
+
+          dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+          dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
           dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
