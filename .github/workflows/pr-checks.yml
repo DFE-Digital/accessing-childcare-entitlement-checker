@@ -93,6 +93,15 @@ jobs:
           -p:CoverletOutput=./TestResults/unit/coverage/
           -p:CoverletOutputFormat=opencover,cobertura
 
+      - name: Log files
+        run: |
+          echo "Directory tree:"
+          tree -d
+
+          echo
+          echo "Contents of TestResults/unit:"
+          ls -la TestResults/unit
+
       - name: Publish unit test results
         if: always()
         uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f # v2.6.0
