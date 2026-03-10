@@ -8,7 +8,7 @@ This repository currently contains a minimal ASP.NET Core MVC application with a
 
 ## Known Issues/In Progress
 
-- Non functional!
+- Not yet feature complete!
 - Does not yet comply with DFE standards as per https://technical-guidance.education.gov.uk/
 
 ## Tech Stack
@@ -40,8 +40,9 @@ The application will start on a local development URL (for example, `https://loc
 
 ### Devcontainer
 
-The repo includes a [devcontainer](https://containers.dev/implementors/json_reference/) with prequisites
-as well as recommended extensions.
+The repo includes a [devcontainer](https://containers.dev/implementors/json_reference/) with prerequisites
+as well as recommended extensions. This can be used in e.g. [vscode](https://code.visualstudio.com/docs/devcontainers/containers) 
+or [rider](https://www.jetbrains.com/help/rider/Connect_to_DevContainer.html).
 
 ## Integration, Unit and E2E tests
 
@@ -98,7 +99,7 @@ The tests only run against Chromium. _TODO: browser matrix is pending_
 
 ## CI/CD
 
-See the workflow at `.github/workflows/build-and-test.yml` which builds the solution and runs tests.
+See the workflow at `.github/workflows/pr-checks.yml` which builds the solution and runs tests.
 
 CD is pending implementation - this will be to an Azure Web App via Terraform.
 
