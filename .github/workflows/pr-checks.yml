@@ -174,7 +174,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet-sonarscanner begin \
-            /k:DFE-Digital_accessing_childcare_entitlement_checker \
+            /k:DFE-Digital_accessing-childcare-entitlement-checker \
             /o:dfe-digital \
             /d:sonar.qualitygate.wait=true \
             /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
