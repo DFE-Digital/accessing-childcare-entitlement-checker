@@ -86,11 +86,11 @@ You can run E2E tests against a local instance, or a deployed version of the web
 by specifying a `TEST_URL` environment variable:
 
 ```powershell
-$env:TEST_URL = "http://localhost:5252/"; dotnet test --filter "FullyQualifiedName~E2e"
+$env:TEST_URL="http://localhost:5252/"; dotnet test tests/AccessingChildcareEntitlementChecker.Tests.E2e/
 ```
 
 ```bash
-TEST_URL = "http://localhost:5252/"; dotnet test --filter "FullyQualifiedName~E2e"
+TEST_URL="http://localhost:5252/"; dotnet test tests/AccessingChildcareEntitlementChecker.Tests.E2e/
 ```
 
 The browser window will be visible on the desktop, but they are configured to run headlessly in GitHub actions - see `PlaywrightHooks.cs`.
