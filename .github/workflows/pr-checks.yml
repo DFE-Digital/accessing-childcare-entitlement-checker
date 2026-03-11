@@ -7,6 +7,10 @@ on:
       - main
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: Lint
@@ -51,16 +55,28 @@ jobs:
           cache-dependency-path: |
             **/packages.lock.json
 
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar-packages
+
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v4
+        with:
+          path: ./.sonar/scanner
+          key: ${{ runner.os }}-sonar-scanner
+
       - name: Install SonarCloud scanner
-        run: dotnet tool install --global dotnet-sonarscanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        run: dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
 
       - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          export PATH="$PATH:$HOME/.dotnet/tools"
-
-          dotnet-sonarscanner begin \
+          ./.sonar/scanner/dotnet-sonarscanner begin \
             /k:DFE-Digital_accessing-childcare-entitlement-checker \
             /o:dfe-digital \
             /d:sonar.host.url="https://sonarcloud.io" \
@@ -93,8 +109,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          export PATH="$PATH:$HOME/.dotnet/tools"
-          dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
 
       - name: Log files
         if: always()
@@ -134,9 +149,7 @@ jobs:
           name: build-output
           if-no-files-found: error
           path: |
-            **/bin/Release/**
-            !**/ref/**
-            !**/refint/**
+            artifacts/bin/**
 
   coverage:
     name: Coverage
