@@ -1,0 +1,39 @@
+graph TD
+    subgraph Azure_Cloud [Microsoft Entra ID]
+        UAMI[User-Assigned Identity]
+    end
+
+    subgraph App_Service_Plan [App Service Plan - Scaled]
+        subgraph Worker_1 [Worker Instance 1]
+            Host1[App Service Platform]
+            C1[Docker Container]
+        end
+        subgraph Worker_2 [Worker Instance 2]
+            Host2[App Service Platform]
+            C2[Docker Container]
+        end
+    end
+
+    subgraph Protected_Resources [Secure Data]
+        KV[Azure Key Vault]
+        Blob[(Blob Storage)]
+    end
+
+    %% Identity Assignment
+    UAMI -.->|Assigned To| Worker_1
+    UAMI -.->|Assigned To| Worker_2
+
+    %% The Token Request Flow
+    C1 -- "1. Get Token" --> Host1
+    Host1 -- "2. Identify as UAMI" --> UAMI
+    UAMI -- "3. Return OAuth Token" --> Host1
+    Host1 -- "4. Pass Token" --> C1
+
+    %% The Resource Access
+    C1 -->|Authenticated Request| KV
+    C1 -->|Authenticated Request| Blob
+    C2 -->|Identical Request| KV
+
+    style UAMI fill:#f9f,stroke:#333
+    style C1 fill:#bbf,stroke:#333
+    style Host1 fill:#eee,stroke:#333
