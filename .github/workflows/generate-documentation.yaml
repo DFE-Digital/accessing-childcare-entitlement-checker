@@ -1,43 +1,55 @@
-name: Generate - Documentation
+name: Generate Documentation
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'
   push:
-    branches: [ "docs/**" ]
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - '**.tf' # Triggers when any Terraform file changes
+      - '.github/workflows/generate-documentation.yaml'
+
+permissions:
+  contents: write
+
+env:
+  TERRAFORM_DOCS_VERSION: 0.17.0
 
 jobs:
-  generate-diagram:
+  deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
-      - uses: hashicorp/setup-terraform@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Install Terraform Docs
-        env:
-          TERRAFORM_DOCS_VERSION: 0.18.0
+      # --- 1. INSTALL TERRAFORM-DOCS (Direct Copy from Care-Leavers) ---
+      - name: Install terraform-docs
         run: |
           wget https://github.com/terraform-docs/terraform-docs/releases/download/v${{ env.TERRAFORM_DOCS_VERSION }}/terraform-docs-v${{ env.TERRAFORM_DOCS_VERSION }}-linux-amd64.tar.gz
           tar -xvf terraform-docs-v${{ env.TERRAFORM_DOCS_VERSION }}-linux-amd64.tar.gz terraform-docs
           sudo mv terraform-docs /usr/local/bin/
           rm terraform-docs-v${{ env.TERRAFORM_DOCS_VERSION }}-linux-amd64.tar.gz
 
-      - name: Terraform fmt
-        id: fmt
-        working-directory: ./src/infrastructure/terraform
-        run: terraform fmt -recursive
-
-      - name: Generate TF Documentation
-        run: terraform-docs markdown table src/infrastructure/terraform --output-file ../../../docs/architecture/Terraform.md
-
-      - name: Commit and Push Documentation
+      # --- 2. GENERATE INFRASTRUCTURE DOCS ---
+      # Matches the Care-Leavers pattern of generating a table into the docs folder
+      - name: Run terraform-docs
         run: |
-          git config --global user.name "Documentation Bot"
-          git config --global user.email "documentation-bot-bot@users.noreply.github.com"
-          git commit -am "Update documentation"
-          git push
-        continue-on-error: true
+          terraform-docs markdown table . > docs/infrastructure/terraform.md
+
+      # --- 3. BUILD MKDOCS SITE ---
+      - name: Set up Python
+        uses: azure/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          pip install mkdocs-material pymdown-extensions
+
+      - name: Build and Deploy to GitHub Pages
+        run: |
+          # The --force flag ensures it overwrites the gh-pages branch as per DfE standard
+          mkdocs gh-deploy --force
