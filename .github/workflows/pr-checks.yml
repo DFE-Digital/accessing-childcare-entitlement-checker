@@ -100,9 +100,8 @@ jobs:
           --no-build
           --results-directory ./TestResults/unit
           --logger "trx;LogFileName=unit.trx"
-          -p:CollectCoverage=true
-          -p:CoverletOutput=./TestResults/unit/coverage/
-          -p:CoverletOutputFormat=opencover
+          --collect:"XPlat Code Coverage"
+          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format="opencover,cobertura"
 
       - name: End SonarCloud analysis
         if: always()
