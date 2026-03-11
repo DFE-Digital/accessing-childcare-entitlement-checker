@@ -1,0 +1,7 @@
+aspnetcore_environment = "staging"
+caching_type           = "ff"
+elz_environment        = "Dev"
+environment_prefix     = "d01"
+gtaa_base_url          = "http://gg.com"
+scripts_clarity        = "ff"
+support_alert_email    = "ff@ff.com"
