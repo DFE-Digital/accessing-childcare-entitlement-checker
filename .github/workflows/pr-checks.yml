@@ -23,10 +23,10 @@ jobs:
           cache: true
           cache-dependency-path: |
             **/packages.lock.json
-
+      
       - name: Restore
         run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
-
+      
       - name: dotnet format
         run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
 
@@ -54,7 +54,7 @@ jobs:
         run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
 
       - name: Upload built outputs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-output
           if-no-files-found: error
@@ -79,10 +79,16 @@ jobs:
           cache-dependency-path: |
             **/packages.lock.json
 
+      - name: Download built artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: build-output
+          path: artifacts/bin
+
       - name: Restore
         run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
 
-      - name: Run unit tests + collect coverage
+      - name: Unit tests + collect coverage (no build)
         run: >
           dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
           --configuration Release
@@ -107,17 +113,16 @@ jobs:
         uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f # v2.6.0
         with:
           name: Tests (Unit) - Details
-          path: "TestResults/unit/*.trx"
+          path: TestResults/unit/*.trx
           reporter: dotnet-trx
           fail-on-error: true
 
-      - name: Upload test + coverage outputs
+      - name: Upload test + coverage outputs for gating
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: testresults-unit
-          path: |
-            TestResults/unit/**
+          path: TestResults/unit/**
 
   coverage:
     name: Coverage
@@ -127,19 +132,20 @@ jobs:
       MIN_LINE_COVERAGE: "5"
     steps:
       - name: Download unit test results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: testresults-unit
-          path: downloaded-testresults
+          path: TestResults/unit
 
       - name: Sanity check test outputs exist
         run: |
-          find downloaded-testresults -maxdepth 5 -type f | sort
+          tree -d
+          ls -la TestResults/unit
 
       - name: Generate coverage report and gate
         uses: danielpalme/ReportGenerator-GitHub-Action@2a82782178b2816d9d6960a7345fdd164791b323 # v5.5.3
         with:
-          reports: "downloaded-testresults/**/coverage.cobertura.xml"
+          reports: "TestResults/unit/**/coverage.cobertura.xml"
           targetdir: "coveragereport"
           reporttypes: "HtmlInline;MarkdownSummaryGithub;TextSummary"
           customSettings: "minimumCoverageThresholds:lineCoverage=${{ env.MIN_LINE_COVERAGE }}"
@@ -149,7 +155,7 @@ jobs:
 
       - name: Upload coverage report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coveragereport
           path: coveragereport
@@ -176,7 +182,7 @@ jobs:
             **/packages.lock.json
 
       - name: Download test + coverage outputs
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: testresults-unit
           path: downloaded-testresults
