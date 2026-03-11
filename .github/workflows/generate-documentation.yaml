@@ -1,0 +1,43 @@
+name: Generate - Documentation
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+    branches: [ "docs/**" ]
+
+jobs:
+  generate-diagram:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Install Terraform Docs
+        env:
+          TERRAFORM_DOCS_VERSION: 0.18.0
+        run: |
+          wget https://github.com/terraform-docs/terraform-docs/releases/download/v${{ env.TERRAFORM_DOCS_VERSION }}/terraform-docs-v${{ env.TERRAFORM_DOCS_VERSION }}-linux-amd64.tar.gz
+          tar -xvf terraform-docs-v${{ env.TERRAFORM_DOCS_VERSION }}-linux-amd64.tar.gz terraform-docs
+          sudo mv terraform-docs /usr/local/bin/
+          rm terraform-docs-v${{ env.TERRAFORM_DOCS_VERSION }}-linux-amd64.tar.gz
+
+      - name: Terraform fmt
+        id: fmt
+        working-directory: ./src/infrastructure/terraform
+        run: terraform fmt -recursive
+
+      - name: Generate TF Documentation
+        run: terraform-docs markdown table src/infrastructure/terraform --output-file ../../../docs/architecture/Terraform.md
+
+      - name: Commit and Push Documentation
+        run: |
+          git config --global user.name "Documentation Bot"
+          git config --global user.email "documentation-bot-bot@users.noreply.github.com"
+          git commit -am "Update documentation"
+          git push
+        continue-on-error: true

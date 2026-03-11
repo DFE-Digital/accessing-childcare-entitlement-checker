@@ -1,0 +1,48 @@
+site_name: Childcare Eligibility Service Docs
+site_description: Technical documentation for the Childcare Eligibility Service (aligned with DfE Standards)
+site_url: https://dfe-digital.github.io/childcare-eligibility/
+
+theme:
+  name: material
+  language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+# Navigation aligned with DFE-Digital/care-leavers patterns
+# nav:
+#   - Home: index.md
+#   - Architecture:
+#       - System Landscape: architecture/landscape.md
+#       - Deployment: architecture/deployment.md
+#       - Managed Identity: architecture/identity.md
+#       - Security & Compliance : architecture/compliance.md
+#       - Workspace Source (DSL): architecture/workspace.dsl
+#   - Development:
+#       - Environment Setup: development/setup.md
+#       - Terraform Guide: infrastructure/terraform.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
