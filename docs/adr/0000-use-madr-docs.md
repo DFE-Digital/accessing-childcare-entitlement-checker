@@ -17,8 +17,9 @@ We want to track decisions which can't be represented in C# types or infrastruct
 
 ## Decision Outcome
 
-We chose [Markdown Architectural Decision Records (MADR)](https://adr.github.io/madr/) because they're already encouraged by DfE,
-fit in with other Markdown docs in our repo, and provide a central discoverable place to surface otherwise implicit decision making.
+We chose [Markdown Architectural Decision Records (MADR)](https://adr.github.io/madr/) because they're already encouraged by DfE, fit in with other Markdown docs in our repo, and provide a central discoverable place to surface otherwise implicit decision making.
+
+We chose to make the frontmatter and other elements optional.
 
 ## More Information
 

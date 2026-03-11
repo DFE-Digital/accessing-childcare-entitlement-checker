@@ -6,8 +6,7 @@ We've added SonarQube to the repo to check code quality.
 
 However test/code coverage percentages are set centrally via SonarCloud. We don't have control over these.
 
-Note: This ADR does not intend to fix a particular standard; only make sure we retain the capability to
-set our own.
+Note: This ADR does not intend to fix a particular standard; only make sure we retain the capability to set our own.
 
 ## Decision Drivers
 
