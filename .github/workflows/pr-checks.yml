@@ -23,151 +23,21 @@ jobs:
           cache: true
           cache-dependency-path: |
             **/packages.lock.json
-      
+
       - name: Restore
         run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
-      
+
       - name: dotnet format
         run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
 
-  build:
-    name: Build
-    permissions:
-      contents: read
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '10.0.x'
-          cache: true
-          cache-dependency-path: |
-            **/packages.lock.json
-
-      - name: Restore
-        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
-
-      - name: Build (Release)
-        run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
-
-      - name: Upload built outputs
-        uses: actions/upload-artifact@v7
-        with:
-          name: build-output
-          if-no-files-found: error
-          path: |
-            artifacts/bin/**
-
-  unit-tests:
-    name: Tests (Unit)
+  verify:
+    name: Build, Tests & SonarCloud
     permissions:
       contents: read
       checks: write
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '10.0.x'
-          cache: true
-          cache-dependency-path: |
-            **/packages.lock.json
-
-      - name: Download built artifacts
-        uses: actions/download-artifact@v8
-        with:
-          name: build-output
-          path: artifacts/bin
-
-      - name: Restore
-        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
-
-      - name: Unit tests + collect coverage (no build)
-        run: >
-          dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
-          --configuration Release
-          --no-build
-          --results-directory ./TestResults/unit
-          --logger "trx;LogFileName=unit.trx"
-          -p:CollectCoverage=true
-          -p:CoverletOutput=./TestResults/unit/coverage/
-          "-p:CoverletOutputFormat=opencover,cobertura"
-
-      - name: Log files
-        run: |
-          echo "Directory tree:"
-          tree -d
-
-          echo
-          echo "Contents of TestResults/unit:"
-          ls -la TestResults/unit
-
-      - name: Publish unit test results
-        if: always()
-        uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f # v2.6.0
-        with:
-          name: Tests (Unit) - Details
-          path: TestResults/unit/*.trx
-          reporter: dotnet-trx
-          fail-on-error: true
-
-      - name: Upload test + coverage outputs for gating
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: testresults-unit
-          path: TestResults/unit/**
-
-  coverage:
-    name: Coverage
-    runs-on: ubuntu-latest
-    needs: unit-tests
-    env:
-      MIN_LINE_COVERAGE: "5"
-    steps:
-      - name: Download unit test results
-        uses: actions/download-artifact@v8
-        with:
-          name: testresults-unit
-          path: TestResults/unit
-
-      - name: Sanity check test outputs exist
-        run: |
-          tree -d
-          ls -la TestResults/unit
-
-      - name: Generate coverage report and gate
-        uses: danielpalme/ReportGenerator-GitHub-Action@2a82782178b2816d9d6960a7345fdd164791b323 # v5.5.3
-        with:
-          reports: "TestResults/unit/**/coverage.cobertura.xml"
-          targetdir: "coveragereport"
-          reporttypes: "HtmlInline;MarkdownSummaryGithub;TextSummary"
-          customSettings: "minimumCoverageThresholds:lineCoverage=${{ env.MIN_LINE_COVERAGE }}"
-
-      - name: Add coverage to job summary
-        run: cat coveragereport/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: coveragereport
-          path: coveragereport
-
-  code-quality:
-    name: Code Quality
-    permissions:
-      contents: read
       pull-requests: read
     runs-on: ubuntu-latest
-    needs:
-      - unit-tests
+    needs: lint
     steps:
       - uses: actions/checkout@v6
         with:
@@ -181,19 +51,15 @@ jobs:
           cache-dependency-path: |
             **/packages.lock.json
 
-      - name: Download test + coverage outputs
-        uses: actions/download-artifact@v8
-        with:
-          name: testresults-unit
-          path: downloaded-testresults
-
       - name: Install SonarCloud scanner
         run: dotnet tool install --global dotnet-sonarscanner
 
-      - name: SonarCloud analysis
+      - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
+          export PATH="$PATH:$HOME/.dotnet/tools"
+
           dotnet-sonarscanner begin \
             /k:DFE-Digital_accessing-childcare-entitlement-checker \
             /o:dfe-digital \
@@ -201,10 +67,110 @@ jobs:
             /d:sonar.token="$SONAR_TOKEN" \
             /d:sonar.qualitygate.wait=true \
             /d:sonar.dotnet.excludeTestProjects=true \
-            /d:sonar.cs.opencover.reportsPaths="downloaded-testresults/**/coverage.opencover.xml" \
+            /d:sonar.cs.opencover.reportsPaths="TestResults/unit/**/coverage.opencover.xml" \
             /d:sonar.coverage.exclusions="**/Program.cs,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
             /d:sonar.scanner.scanAll=false
 
-          dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
-          dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+
+      - name: Build (Release)
+        run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
+
+      - name: Unit tests + collect coverage
+        run: >
+          dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
+          --configuration Release
+          --no-build
+          --results-directory ./TestResults/unit
+          --logger "trx;LogFileName=unit.trx"
+          -p:CollectCoverage=true
+          -p:CoverletOutput=./TestResults/unit/coverage/
+          -p:CoverletOutputFormat=opencover
+
+      - name: End SonarCloud analysis
+        if: always()
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          export PATH="$PATH:$HOME/.dotnet/tools"
           dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+
+      - name: Log files
+        if: always()
+        run: |
+          echo "Directory tree:"
+          tree -d || true
+
+          echo
+          echo "Contents of TestResults/unit:"
+          ls -la TestResults/unit || true
+
+          echo
+          echo "Coverage/test files:"
+          find TestResults -type f \( -name "*.trx" -o -name "coverage.opencover.xml" \) | sort || true
+
+      - name: Publish unit test results
+        if: always()
+        uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f # v2.6.0
+        with:
+          name: Tests (Unit) - Details
+          path: TestResults/unit/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
+
+      - name: Upload test + coverage outputs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: testresults-unit
+          if-no-files-found: error
+          path: TestResults/unit/**
+
+      - name: Upload built outputs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-output
+          if-no-files-found: error
+          path: |
+            **/bin/Release/**
+            !**/ref/**
+            !**/refint/**
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    needs: verify
+    env:
+      MIN_LINE_COVERAGE: "5"
+    steps:
+      - name: Download unit test results
+        uses: actions/download-artifact@v8
+        with:
+          name: testresults-unit
+          path: TestResults/unit
+
+      - name: Sanity check test outputs exist
+        run: |
+          tree -d || true
+          ls -la TestResults/unit || true
+          find TestResults -type f | sort || true
+
+      - name: Generate coverage report and gate
+        uses: danielpalme/ReportGenerator-GitHub-Action@2a82782178b2816d9d6960a7345fdd164791b323 # v5.5.3
+        with:
+          reports: "TestResults/unit/**/coverage.opencover.xml"
+          targetdir: "coveragereport"
+          reporttypes: "HtmlInline;MarkdownSummaryGithub;TextSummary"
+          customSettings: "minimumCoverageThresholds:lineCoverage=${{ env.MIN_LINE_COVERAGE }}"
+
+      - name: Add coverage to job summary
+        run: cat coveragereport/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coveragereport
+          path: coveragereport
