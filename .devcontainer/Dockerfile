@@ -26,4 +26,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglib2.0-0 \
     ca-certificates \
     fonts-liberation \
+    nodejs \
+    npm \
     && rm -rf /var/lib/apt/lists/*
+
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+
+# Install browser binaries, pinned to 1.58.0
+RUN npx -y playwright@1.58.0 install chromium firefox webkit
