@@ -14,17 +14,16 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         }
 
         [Given("I am on the childcare entitlement checker website")]
-        public void GivenIAmOnTheChildcareEntitlementCheckerWebsite()
+        public async Task GivenIAmOnTheChildcareEntitlementCheckerWebsite()
         {
             var url = Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252/";
-            _context.Page.GotoAsync(url);
+            await _context.Page.GotoAsync(url);
         }
 
         [Then("the page header is {string}")]
         public async Task ThenThePageHeaderIs(string p0)
         {
-            var headerText = await _context.Page.Locator("h1").InnerTextAsync();
-            Assert.Equal(p0, headerText);
+            await Assertions.Expect(_context.Page.Locator("h1")).ToHaveTextAsync(p0);
         }
 
         [When("I click on Continue")]

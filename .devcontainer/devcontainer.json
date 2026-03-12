@@ -3,7 +3,7 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-	"postCreateCommand": "dotnet tool restore && dotnet tool run playwright install --with-deps",
+	"postCreateCommand": "dotnet tool restore && dotnet build tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj && dotnet tool run playwright install --with-deps",
 	"customizations": {
 		"vscode": {
 			"extensions": [

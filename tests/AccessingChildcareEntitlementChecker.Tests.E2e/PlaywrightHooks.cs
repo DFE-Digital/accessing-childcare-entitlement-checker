@@ -1,4 +1,5 @@
 ﻿
+using System.Diagnostics;
 using Microsoft.Playwright;
 using Reqnroll;
 
@@ -14,11 +15,11 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e
         [BeforeTestRun]
         public static async Task BeforeTestRun()
         {
-            var shouldRunHeadless = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != null;
             _playwright = await Playwright.CreateAsync();
-            _browser = await _playwright.Chromium.LaunchAsync(new()
+            _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = shouldRunHeadless,
+                Headless = !Debugger.IsAttached,
+                SlowMo = Debugger.IsAttached ? 1000 : 0
             });
         }
 
