@@ -67,7 +67,7 @@ variable "scripts_clarity" {
 variable "custom_domain" {
   description = "Custom front-door domain"
   type        = string
-  default     = ""
+  default     = "abcdefghijklmnopqrstuvwxyz0123456789.azurefd.net"
 }
 
 variable "aspnetcore_environment" {
