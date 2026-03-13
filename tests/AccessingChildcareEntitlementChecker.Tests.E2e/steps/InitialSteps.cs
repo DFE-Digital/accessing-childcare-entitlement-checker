@@ -21,9 +21,9 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         }
 
         [Then("the page header is {string}")]
-        public async Task ThenThePageHeaderIs(string p0)
+        public async Task ThenThePageHeaderIs(string expectedHeader)
         {
-            await Assertions.Expect(_context.Page.Locator("h1")).ToHaveTextAsync(p0);
+            await Assertions.Expect(_context.Page.Locator("h1")).ToHaveTextAsync(expectedHeader);
         }
 
         [When("I click on Continue")]
