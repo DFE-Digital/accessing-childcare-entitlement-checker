@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "core-rg" {
-  name     = "${local.prefix}rg-uks-cl-core"
+  name     = "${local.prefix}rg-uks-cec-core"
   location = local.location
   tags     = local.common_tags
 }
