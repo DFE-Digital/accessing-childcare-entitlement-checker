@@ -84,10 +84,10 @@ resource "azurerm_key_vault_secret" "application-insights-connection-string" {
 #   depends_on = [azurerm_key_vault_access_policy.github-kv-access]
 # }
 
-resource "azurerm_key_vault_secret" "azure-translation-access-key" {
-  key_vault_id = azurerm_key_vault.key-vault.id
-  name         = "azure-translation-access-key"
-  value        = azurerm_cognitive_account.ai-translator.primary_access_key
+# resource "azurerm_key_vault_secret" "azure-translation-access-key" {
+#   key_vault_id = azurerm_key_vault.key-vault.id
+#   name         = "azure-translation-access-key"
+#   value        = azurerm_cognitive_account.ai-translator.primary_access_key
 
-  depends_on = [azurerm_key_vault_access_policy.github-kv-access]
-}
+#   depends_on = [azurerm_key_vault_access_policy.github-kv-access]
+# }
