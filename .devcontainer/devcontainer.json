@@ -3,7 +3,10 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-	"postCreateCommand": "dotnet tool restore && dotnet tool run playwright install --with-deps",
+    "containerEnv": {
+      "PLAYWRIGHT_BROWSERS_PATH": "/ms-playwright"
+    },
+	"postCreateCommand": "dotnet tool restore",
 	"customizations": {
 		"vscode": {
 			"extensions": [
