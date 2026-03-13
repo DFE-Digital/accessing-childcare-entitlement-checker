@@ -5,6 +5,6 @@ locals {
     "Service Offering" = "Eligibility Service"
   }
   prefix         = "s279${var.environment_prefix}"
-  service_prefix = "s279${var.environment_prefix}-uks-cl"
+  service_prefix = "s279${var.environment_prefix}-uks-cec"
   location       = "uksouth"
 }
