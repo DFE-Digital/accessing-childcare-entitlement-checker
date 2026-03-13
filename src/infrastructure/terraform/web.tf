@@ -7,7 +7,7 @@ locals {
     # "ContentfulOptions__SpaceId"            = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-space-id.versionless_id})"
     # "ContentfulOptions__Environment"        = var.contentful_environment
     # "ContentfulOptions__UsePreviewApi"      = var.contentful_use_preview_api
-    "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
+    # "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
     # "Caching__Type"                         = var.caching_type
     # "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-enterprise-connection-string[0].versionless_id})" : ""
     # "Scripts__Clarity"                      = var.scripts_clarity
