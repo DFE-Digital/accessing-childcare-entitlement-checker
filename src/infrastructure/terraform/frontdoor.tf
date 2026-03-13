@@ -1,7 +1,7 @@
 resource "azurerm_cdn_frontdoor_profile" "frontdoor-web-profile" {
   name                = "${local.service_prefix}-web-fd-profile"
   resource_group_name = azurerm_resource_group.web-rg.name
-  sku_name            = "${var.azure_frontdoor_scale}_AzureFrontDoor"
+  sku_name            = "${var.azure_frontdoor_scale}"
   tags                = local.common_tags
 }
 
