@@ -74,8 +74,12 @@ Tests will run:
 #### Negatives
 
 - Browser tests are slower than lower-level tests.
-- Tests may require maintenence when UI changes.
+- Browser tests are more fragile than lower-level tests. Tests may require maintenence when UI changes.
 - CI runtime will increase
+- Large test suite - possible cognitive burden
+- Tests may overlap with:
+  - GDS component tests
+  - end to end/full user journey tests
 
 ### Confirmation
 
