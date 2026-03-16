@@ -35,6 +35,7 @@ jobs:
       # Terraform Variables
       TF_VAR_environment_prefix: "d01"
       TF_VAR_aspnetcore_environment: "staging"
+      TF_VAR_elz_environment: "dev"
 
     steps:
     - name: Checkout Code
