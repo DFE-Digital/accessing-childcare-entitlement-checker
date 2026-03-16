@@ -35,12 +35,6 @@ jobs:
       # Terraform Variables
       TF_VAR_environment_prefix: "d01"
       TF_VAR_aspnetcore_environment: "staging"
-      TF_VAR_caching_type: "RedisCache"
-      TF_VAR_elz_environment: "dev"
-      TF_VAR_gtaa_base_url: "http://gg.com"
-      TF_VAR_scripts_clarity: "ff"
-      TF_VAR_support_alert_email: "ff@ff.com"
-
 
     steps:
     - name: Checkout Code
@@ -51,7 +45,7 @@ jobs:
       with:
         terraform_wrapper: false
         terraform_version: 1.10.4 # Aligned with DfE care-leavers repo
-        
+
     - name: Azure Login
       uses: azure/login@v2
       with:
