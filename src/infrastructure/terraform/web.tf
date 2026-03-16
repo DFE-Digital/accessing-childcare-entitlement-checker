@@ -1,21 +1,6 @@
 locals {
   web_app_settings = {
     "ASPNETCORE_ENVIRONMENT"                = var.aspnetcore_environment
-    # "ContentfulOptions__DeliveryApiKey"     = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-delivery-api-key.versionless_id})"
-    # "ContentfulOptions__PreviewApiKey"      = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-preview-api-key.versionless_id})"
-    # "ContentfulOptions__ManagementApiKey"   = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-management-api-key.versionless_id})"
-    # "ContentfulOptions__SpaceId"            = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-space-id.versionless_id})"
-    # "ContentfulOptions__Environment"        = var.contentful_environment
-    # "ContentfulOptions__UsePreviewApi"      = var.contentful_use_preview_api
-    # "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
-    # "Caching__Type"                         = var.caching_type
-    # "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-enterprise-connection-string[0].versionless_id})" : ""
-    # "Scripts__Clarity"                      = var.scripts_clarity
-    #"AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
-   # "PdfGeneration__ApiKey"                 = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
-    # "PdfGeneration__Sandbox"                = var.pdf_generation_use_sandbox
-   # "Rebrand"                               = var.rebrand
-   # "GetToAnAnswer__BaseUrl"                = var.gtaa_base_url
   }
 }
 

@@ -7,53 +7,7 @@ variable "environment_prefix" {
   description = "Environment prefix (e.g. d01)"
   type        = string
 }
-/* 
-variable "contentful_delivery_api_key" {
-  description = "Contentful Delivery API Key"
-  type        = string
-  sensitive   = true
-}
 
-variable "contentful_preview_api_key" {
-  description = "Contentful Preview API Key"
-  type        = string
-  sensitive   = true
-}
-
-variable "contentful_management_api_key" {
-  description = "Contentful Management API Key"
-  type        = string
-  sensitive   = true
-}
-
-
-variable "contentful_space_id" {
-  description = "Contentful Space ID"
-  type        = string
-  sensitive   = true
-}
-
-variable "contentful_environment" {
-  description = "Contentful Environment"
-  type        = string
-}
-
-variable "contentful_use_preview_api" {
-  description = "Use Contentful Preview API?"
-  type        = bool
-}
-
-variable "pdf_generation_use_sandbox" {
-  description = "Generate PDFs in Sandbox Mode?"
-  type        = bool
-}
-
-variable "pdf_generation_api_key" {
-  description = "PDF Generation API Key"
-  type        = string
-  sensitive   = true
-}
- */
 variable "caching_type" {
   description = "Caching type"
   type        = string
