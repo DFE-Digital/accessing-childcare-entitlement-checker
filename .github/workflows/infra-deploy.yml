@@ -20,20 +20,19 @@ jobs:
         working-directory: ./src/infrastructure/terraform
 
     env:
-      # 1. AUTHENTICATION (Standard ARM variables)
+      # Authentication Secrets (Ensure these match your GitHub Secrets names)
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       
-      # 2. BACKEND CONFIGURATION (For terraform init)
+      # Backend Configuration
       BACKEND_RG: "s279d01rg-weu-childcare-mgmt"
       BACKEND_STORAGE: "s279d01stchildcare"
       BACKEND_CONTAINER: "tfstate"
       BACKEND_KEY: "accessing-childcare-entitlement-checker.tfstate"
 
-      # 3. TFVARS REPLACEMENT (Mapping your local variables to the pipeline)
-      # Terraform automatically maps TF_VAR_name to variable "name" in your .tf files
+      # Terraform Variables
       TF_VAR_environment_prefix: "d01"
       TF_VAR_aspnetcore_environment: "staging"
       TF_VAR_caching_type: "RedisCache"
@@ -43,9 +42,6 @@ jobs:
       TF_VAR_support_alert_email: "ff@ff.com"
 
 
-      # Add any other variables from your local terraform.tfvars here:
-      # TF_VAR_variable_name: "value"
-
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
@@ -53,7 +49,10 @@ jobs:
     - name: Azure Login
       uses: azure/login@v2
       with:
-        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
     - name: Terraform Init
       run: |
