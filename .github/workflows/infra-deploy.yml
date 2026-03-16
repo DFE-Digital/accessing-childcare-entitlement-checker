@@ -1,0 +1,70 @@
+name: 'CEC Infrastructure Deployment'
+
+on:
+  push:
+    branches: [ "main", "feature/hk-ac480-tf-script" ]
+  workflow_dispatch: # Allows you to trigger this manually from the GitHub UI
+  schedule:
+    # Runs at minute 0 of every 4th hour (00:00, 04:00, etc. UTC)
+    # This acts as your 'Plan A' to catch capacity in UK South automatically.
+    - cron: '0 */4 * * *'
+
+jobs:
+  terraform:
+    name: 'Terraform Plan & Apply'
+    runs-on: ubuntu-latest
+    environment: dev
+
+    defaults:
+      run:
+        working-directory: ./src/infrastructure/terraform
+
+    env:
+      # 1. AUTHENTICATION (Standard ARM variables)
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      
+      # 2. BACKEND CONFIGURATION (For terraform init)
+      BACKEND_RG: "s279d01rg-weu-childcare-mgmt"
+      BACKEND_STORAGE: "s279d01stchildcare"
+      BACKEND_CONTAINER: "tfstate"
+      BACKEND_KEY: "accessing-childcare-entitlement-checker.tfstate"
+
+      # 3. TFVARS REPLACEMENT (Mapping your local variables to the pipeline)
+      # Terraform automatically maps TF_VAR_name to variable "name" in your .tf files
+      TF_VAR_environment_prefix: "d01"
+      TF_VAR_aspnetcore_environment: "staging"
+      TF_VAR_caching_type: "RedisCache"
+      TF_VAR_elz_environment: "dev"
+      TF_VAR_gtaa_base_url: "http://gg.com"
+      TF_VAR_scripts_clarity: "ff"
+      TF_VAR_support_alert_email: "ff@ff.com"
+
+
+      # Add any other variables from your local terraform.tfvars here:
+      # TF_VAR_variable_name: "value"
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+    - name: Terraform Init
+      run: |
+        terraform init \
+          -backend-config="resource_group_name=$BACKEND_RG" \
+          -backend-config="storage_account_name=$BACKEND_STORAGE" \
+          -backend-config="container_name=$BACKEND_CONTAINER" \
+          -backend-config="key=$BACKEND_KEY"
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -out=main.tfplan
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve main.tfplan
