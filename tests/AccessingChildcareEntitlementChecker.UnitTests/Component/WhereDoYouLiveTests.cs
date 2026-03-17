@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Component
@@ -8,7 +9,8 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Component
         [Fact]
         public async Task GetRootReturnsWhereDoYouLivePage()
         {
-            var factory = new WebApplicationFactory<Program>();
+            var factory = new WebApplicationFactory<Program>()
+                .WithWebHostBuilder(builder => builder.UseEnvironment("Production"));
             var client = factory.CreateClient();
 
             var response = await client.GetAsync("/");
