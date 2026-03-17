@@ -1,0 +1,219 @@
+name: PR Checks
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+      
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+      
+      - name: dotnet format
+        run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
+
+  build:
+    name: Build
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+
+      - name: Build (Release)
+        run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
+
+      - name: Upload built outputs
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-output
+          if-no-files-found: error
+          path: |
+            artifacts/bin/**
+
+      - name: Publish web app
+        run: dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj --no-build --configuration Release --output publish
+
+      - name: Zip publish output
+        run: |
+          cd publish
+          zip -r ../webapp.zip .
+
+      - name: Upload web app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp-package
+          path: webapp.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Format
+        working-directory: src/infrastructure
+        run: terraform fmt -check 
+
+      - name: Terraform init
+        working-directory: src/infrastructure
+        run: |
+          terraform init
+
+      - name: Terraform validate
+        working-directory: src/infrastructure
+        run: |
+          terraform validate
+
+      - name: Terraform plan
+        working-directory: src/infrastructure
+        run: |
+          terraform plan -input=false
+
+      # Not yet used - these are the prefixes we would use for resources to deploy ephemeral environments for multiple branches.
+      - name: Compute resource names
+        id: stack-names
+        run: |
+          branch_raw="${{ github.ref_name }}"
+          branch_slug=$(echo "$branch_raw" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g')
+
+          if [ -z "$branch_slug" ]; then
+            branch_slug="branch"
+          fi
+
+          branch_slug=$(echo "$branch_slug" | cut -c1-20)
+          branch_hash=$(echo -n "$branch_raw" | sha256sum | cut -c1-8)
+          
+          web_app_name="acec-$branch_slug-$branch_hash"
+          echo "web_app_name=$web_app_name" >> "$GITHUB_OUTPUT"
+
+      # TODO - the actual deployment!
+      # * terraform apply
+      # * upload the webapp package to the deployed resource
+
+  unit-tests:
+    name: Tests (Unit)
+    permissions:
+      contents: read
+      checks: write
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+
+      - name: Download built artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: build-output
+          path: artifacts/bin
+
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+
+      - name: Unit tests + collect coverage (no build)
+        run: >
+          dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
+          --configuration Release
+          --no-build
+          --collect:"XPlat Code Coverage;Format=cobertura"
+          --logger "trx;LogFileName=unit.trx"
+          --results-directory ./TestResults/unit
+
+      - name: Publish unit test results
+        if: always()
+        uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f # v2.6.0
+        with:
+          name: Tests (Unit) - Details
+          path: TestResults/unit/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
+
+      - name: Upload test + coverage outputs for gating
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: testresults-unit
+          path: TestResults/unit/**
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    env:
+      MIN_LINE_COVERAGE: "5"
+    steps:
+      - name: Download unit test results
+        uses: actions/download-artifact@v8
+        with:
+          name: testresults-unit
+          path: TestResults/unit
+
+      - name: Sanity check test outputs exist
+        run: |
+          tree -d
+          ls -la TestResults/unit
+
+      - name: Generate coverage report and gate
+        uses: danielpalme/ReportGenerator-GitHub-Action@2a82782178b2816d9d6960a7345fdd164791b323 # v5.5.3
+        with:
+          reports: "TestResults/unit/**/coverage.cobertura.xml"
+          targetdir: "coveragereport"
+          reporttypes: "HtmlInline;MarkdownSummaryGithub;TextSummary"
+          customSettings: "minimumCoverageThresholds:lineCoverage=${{ env.MIN_LINE_COVERAGE }}"
+
+      - name: Add coverage to job summary
+        run: cat coveragereport/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coveragereport
+          path: coveragereport
