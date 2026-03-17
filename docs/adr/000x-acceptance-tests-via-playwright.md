@@ -12,13 +12,13 @@ This decision concerns **only** how ticket-level acceptance criteria are verifie
 
 Each screen of the eligility form is delivered via a Jira ticket. These contain multiple BDD style acceptance criteria (AC) describing expected UI behaviour. For example in [AC-446](https://dfedigital.atlassian.net/browse/AC-446):
 
-```
+```gherkin
 Given I have navigated to the “where do you live” page
 When the page loads
 Then I should see the heading “where do you live”, the subtext about childcare support differing by Country, and four radio button options: England, Scotland, Wales and Northern Ireland
 ```
 
-These AC constitute a test script. Without an automated mechanism to run them, verification relies on manual testing, which is time-consuming and difficult to repeat across browsers and releases. 
+These AC constitute a test script. Without an automated mechanism to run them, verification relies on manual testing, which is time-consuming and difficult to repeat across browsers and releases.
 
 Therefore, we need a repeatable automated mechanism to verify that AC are satisified before a ticket is considered complete.
 
@@ -41,11 +41,13 @@ Dimension: test types (how)
 * Playwright tests - covering each individual AC.
 
 Dimension: granularity of tests (what)
+
 * All tests (including all browser matrix)
 * All tests on one browser
 * Some tests
 
 Dimension: Frequency of tests (when)
+
 * Every change (push)
 * Every merge to main
 * Every release to UAT/staging environment
@@ -59,31 +61,35 @@ Each acceptance criteria will be represented by one Playwright test.
 
 Tests will run:
 
-- on every push
-- across the supported browser matrix
+* on every push to a PR
+* across the supported browser matrix
+
+We can scale this back if it becomes too detrimental to developer experience; e.g. running tests only on pushes to main.
 
 ### Consequences
 
 #### Positive
 
-- Acceptance criteria become executable specifications.
-- Behaviour described in tickets is automatically verified.
-- Regression tests accumulate naturally as features are delivered
-- Test steps can be reused when writing end-to-end full user journey tests
+* Acceptance criteria become executable specifications.
+* Behaviour described in tickets is automatically verified.
+* Regression tests accumulate naturally as features are delivered
+* Test steps can be reused when writing end-to-end full user journey tests
 
 #### Negatives
 
-- Browser tests are slower than lower-level tests.
-- Browser tests are more fragile than lower-level tests. Tests may require maintenence when UI changes.
-- CI runtime will increase
-- Large test suite - possible cognitive burden
-- Tests may overlap with:
-  - GDS component tests
-  - end to end/full user journey tests
+* Browser tests are slower than lower-level tests.
+* Browser tests are more fragile than lower-level tests. Tests may require maintenence when UI changes.
+* CI runtime will increase
+* Large test suite - possible cognitive burden
+* Tests may overlap with:
+  * GDS component tests
+  * end to end/full user journey tests
 
 ### Confirmation
 
 Compliance is via code review; checking that the implementation includes a test covering any AC specified in the ticket.
+
+This is because UI tests are not easily or conventionally gated via coverage metrics.
 
 ## Pros and Cons of the Options
 
