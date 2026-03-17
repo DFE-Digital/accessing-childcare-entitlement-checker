@@ -40,13 +40,17 @@ The application will start on a local development URL (for example, `https://loc
 
 ## Integration, Unit and E2E tests
 
-### Unit tests
+### Unit & Component tests
 
-To run the unit tests:
+To run the unit tests and component tests:
 
 ```bash
 dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests
 ```
+
+Component tests use `WebApplicationFactory` to create an in-memory test server, so they run quickly and don't require any additional setup.
+
+These check the dependency injection, routing configuration and a few other basic elements.
 
 ### E2E tests
 
