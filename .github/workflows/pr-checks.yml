@@ -168,8 +168,7 @@ jobs:
     name: Deploy
     needs: build
     # TODO: review when deciding deployment strategy/ephemeral environments
-    if: >
-      github.event_name == 'push' &&
+    if:
       (github.ref_name == 'feature/hk-ac480-tf-script' ||
       github.ref_name == 'feature/ac-364_stub_terraform')
     uses: ./.github/workflows/infra-deploy.yml
