@@ -27,10 +27,14 @@ jobs:
       - name: Restore tools
         run: dotnet tool restore
 
+      # TODO we'll be rebuilding here - should use same bin
+      - name: Build (Release)
+        run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
+
+      # TODO would surely want some sort of cache or container here
       - name: Install Playwright browsers and Linux dependencies
         run: dotnet tool run playwright install --with-deps chromium
-
-      # TODO we'll be rebuilding here - should use same bin
+      
       - name: Start app
         run: |
           dotnet run --project src/AccessingChildcareEntitlementChecker.Web --configuration Release --no-restore --urls http://127.0.0.1:5252 > app.log 2>&1 &
