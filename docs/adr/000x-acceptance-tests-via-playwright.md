@@ -8,9 +8,6 @@ status: proposed
 
 This ADR assumes the project follows standard testing practices; e.g. [test pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) with unit, integration/component, ui tests, end to end (full user journey) tests and manual tests.
 
-> [!IMPORTANT]
-> This decision concerns **only** how ticket-level acceptance criteria are verified. It **does not** make any statement on unit testing, integration/component testing, end to end testing, or manual testing.
-
 Each screen of the eligility form is delivered via a Jira ticket. These contain multiple BDD style acceptance criteria (AC) describing expected UI behaviour. For example in [AC-446](https://dfedigital.atlassian.net/browse/AC-446):
 
 ```gherkin
@@ -22,6 +19,9 @@ Then I should see the heading “where do you live”, the subtext about childca
 These AC constitute a test script. Without an automated mechanism to run them, verification relies on manual testing, which is time-consuming and difficult to repeat across browsers and releases.
 
 Therefore, we need a repeatable automated mechanism to verify that AC are satisified before a ticket is considered complete.
+
+> [!IMPORTANT]
+> This decision concerns **only** how ticket-level acceptance criteria, that span multiple layers of the system (routing, controller, razor, validation, business logic) are verified. It **does not** make any statement on unit testing, integration/component testing, end to end testing, or manual testing.
 
 ## Decision Drivers
 
