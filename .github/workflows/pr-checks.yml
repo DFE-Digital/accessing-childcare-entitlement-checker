@@ -1,0 +1,147 @@
+name: PR Checks
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+      
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+      
+      - name: dotnet format
+        run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
+
+  build:
+    name: Build
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+
+      - name: Build (Release)
+        run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
+
+      - name: Upload built outputs
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-output
+          if-no-files-found: error
+          path: |
+            artifacts/bin/**
+
+  unit-tests:
+    name: Tests (Unit)
+    permissions:
+      contents: read
+      checks: write
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+
+      - name: Download built artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: build-output
+          path: artifacts/bin
+
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+
+      - name: Unit tests + collect coverage (no build)
+        run: >
+          dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
+          --configuration Release
+          --no-build
+          --collect:"XPlat Code Coverage;Format=cobertura"
+          --logger "trx;LogFileName=unit.trx"
+          --results-directory ./TestResults/unit
+
+      - name: Publish unit test results
+        if: always()
+        uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f # v2.6.0
+        with:
+          name: Tests (Unit) - Details
+          path: TestResults/unit/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
+
+      - name: Upload test + coverage outputs for gating
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: testresults-unit
+          path: TestResults/unit/**
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    env:
+      MIN_LINE_COVERAGE: "5"
+    steps:
+      - name: Download unit test results
+        uses: actions/download-artifact@v8
+        with:
+          name: testresults-unit
+          path: TestResults/unit
+
+      - name: Sanity check test outputs exist
+        run: |
+          tree -d
+          ls -la TestResults/unit
+
+      - name: Generate coverage report and gate
+        uses: danielpalme/ReportGenerator-GitHub-Action@cf6fe1b38ed5becc89ffe056c1f240825993be5b # v5.5.4
+        with:
+          reports: "TestResults/unit/**/coverage.cobertura.xml"
+          targetdir: "coveragereport"
+          reporttypes: "HtmlInline;MarkdownSummaryGithub;TextSummary"
+          customSettings: "minimumCoverageThresholds:lineCoverage=${{ env.MIN_LINE_COVERAGE }}"
+
+      - name: Add coverage to job summary
+        run: cat coveragereport/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coveragereport
+          path: coveragereport

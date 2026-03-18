@@ -1,5 +1,22 @@
 {
-	"name": "C# (.NET)",
-	"image": "mcr.microsoft.com/devcontainers/dotnet:2-8.0",
-	"postCreateCommand": "dotnet tool restore"
+	"name": "dotnet + playwright",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+    "containerEnv": {
+      "PLAYWRIGHT_BROWSERS_PATH": "/ms-playwright"
+    },
+	"postCreateCommand": "dotnet tool restore",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-dotnettools.csharp",
+				"ms-azuretools.vscode-containers",
+				"ms-dotnettools.csdevkit",
+				"github.vscode-github-actions",
+				"ms-azuretools.vscode-azureterraform",
+				"alexkrechik.cucumberautocomplete"
+			]
+		}
+	}
 }
