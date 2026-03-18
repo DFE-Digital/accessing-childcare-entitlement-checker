@@ -1,0 +1,82 @@
+name: E2E Tests
+
+on:
+  workflow_call:
+
+jobs:
+  e2e-tests:
+    name: Tests (E2E)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Install Playwright browsers and Linux dependencies
+        run: dotnet tool run playwright install --with-deps chromium
+
+      # TODO we'll be rebuilding here - should use same bin
+      - name: Start app
+        run: |
+          dotnet run --project src/AccessingChildcareEntitlementChecker.Web --configuration Release --no-restore --urls http://127.0.0.1:5252 > app.log 2>&1 &
+          echo $! > app.pid
+
+      - name: Wait for app
+        run: |
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:5252/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "App failed to start in time"
+          cat app.log
+          exit 1
+
+      - name: Run E2E tests
+        env:
+          TEST_URL: http://127.0.0.1:5252/
+        run: >
+          dotnet test tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj
+          --configuration Release
+          --no-restore
+          --logger "trx;LogFileName=e2e.trx"
+          --results-directory ./TestResults/e2e
+
+      - name: Stop app
+        if: always()
+        run: |
+          kill "$(cat app.pid)" || true
+
+      - name: Publish E2E test results
+        if: always()
+        uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f # v2.6.0
+        with:
+          name: Tests (E2E) - Details
+          path: TestResults/e2e/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
+
+      - name: Upload E2E outputs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: testresults-e2e
+          path: |
+            TestResults/e2e/**
+            app.log

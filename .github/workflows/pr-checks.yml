@@ -110,6 +110,14 @@ jobs:
           name: testresults-unit
           path: TestResults/unit/**
 
+  e2e-tests:
+    name: Tests (E2E)
+    needs: build
+    permissions:
+      contents: read
+      checks: write
+    uses: ./.github/workflows/e2e-tests.yml
+
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
