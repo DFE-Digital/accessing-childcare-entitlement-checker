@@ -2,6 +2,10 @@ name: PR Checks
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - feature/hk-ac480-tf-script # TODO: Remove after creating a PR for this.
   pull_request:
 
 jobs:
@@ -159,3 +163,15 @@ jobs:
         with:
           name: coveragereport
           path: coveragereport
+
+  deploy:
+    name: Deploy
+    needs: build
+    # TODO: review when deciding deployment strategy/ephemeral environments
+    if: >
+      github.event_name == 'push' &&
+      (github.ref_name == 'main' ||
+      github.ref_name == 'feature/hk-ac480-tf-script' ||
+      github.ref_name == 'feature/ac-364_stub_terraform')
+    uses: ./.github/workflows/infra-deploy.yml
+    secrets: inherit
