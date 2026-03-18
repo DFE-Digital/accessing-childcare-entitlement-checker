@@ -8,8 +8,8 @@ status: proposed
 
 This ADR assumes the project follows standard testing practices; e.g. [test pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) with unit, integration/component, ui tests, end to end (full user journey) tests and manual tests.
 
-[!IMPORTANT]
-This decision concerns **only** how ticket-level acceptance criteria are verified. It **does not** make any statement on unit testing, integration/component testing, end to end testing, or manual testing.
+> [!IMPORTANT]
+> This decision concerns **only** how ticket-level acceptance criteria are verified. It **does not** make any statement on unit testing, integration/component testing, end to end testing, or manual testing.
 
 Each screen of the eligility form is delivered via a Jira ticket. These contain multiple BDD style acceptance criteria (AC) describing expected UI behaviour. For example in [AC-446](https://dfedigital.atlassian.net/browse/AC-446):
 
@@ -49,10 +49,13 @@ The current design [Lucid](https://lucid.app/lucidspark/11f9401a-a9db-4a4a-99c9-
 The current Jira tickets e.g. [AC-446](https://dfedigital.atlassian.net/browse/AC-446) contain approx. 5
 acceptance criteria per page. So we can expect to write somewhere in the region of 200 tests total.
 
-The [service manual](https://www.gov.uk/service-manual/technology/designing-for-different-browsers-and-devices)) describes 12 combinations of browser and operating system, equalling ~2,400 executions for a comprehensive run of acceptance criteria. This includes testing on Android and iOS - although at the moment we don't have an implementation strategy for that.
+The [service manual](https://www.gov.uk/service-manual/technology/designing-for-different-browsers-and-devices)) describes 12 combinations of browser and operating system, equalling ~2,400 executions for a comprehensive run of acceptance criteria.
 
-[!IMPORTANT]
-This decision concerns **only** how ticket-level acceptance criteria are verified, and there may be additional UI or E2E tests, which may or may not run during CI.
+> [!NOTE]
+> This includes testing on Android and iOS - although at the moment we don't have an implementation strategy for that.
+
+> [!IMPORTANT]
+> This decision concerns **only** how ticket-level acceptance criteria are verified, and there may be additional UI or E2E tests, which may or may not run during CI.
 
 ## Considered Options
 
@@ -89,8 +92,9 @@ Tests will run:
 * on every push to a PR
 * across the supported browser matrix
 
-[!IMPORTANT]
-We will scale this back if it becomes too detrimental to developer experience; e.g. running tests only on pushes to `main`, or reconsidering the testing approach entirely. No ADR is set in stone and can always be superceded by another one.
+> [!IMPORTANT]
+> We will scale this back if it becomes too detrimental to developer experience; e.g. running tests only on pushes to `main`, or reconsidering the testing approach entirely.
+> No ADR is set in stone and can always be superceded by another one.
 
 ### Consequences
 
