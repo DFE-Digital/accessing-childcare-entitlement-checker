@@ -1,28 +1,20 @@
-﻿@model AccessingChildcareEntitlementChecker.Web.Models.WhereDoYouLiveViewModel
-@using Microsoft.AspNetCore.Mvc.Localization
-@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
-@inject IViewLocalizer Localizer
-﻿
+@model WhereDoYouLiveViewModel
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<WhereDoYouLiveViewModel> Localizer
+
 <form method="post" novalidate>
-    <govuk-radios name="Country">
+    <govuk-radios for="Country">
         <govuk-radios-fieldset>
             <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                @Localizer["Title"]
+                @Html.DisplayNameFor(m => m.Country)
             </govuk-radios-fieldset-legend>
 
-            @if (ViewData.ModelState.ContainsKey(nameof(Model.Country)) &&
-                                                                ViewData.ModelState[nameof(Model.Country)]!.Errors.Count > 0)
-                        {
-                    <govuk-radios-error-message>
-                        @ViewData.ModelState[nameof(Model.Country)]!.Errors[0].ErrorMessage
-                    </govuk-radios-error-message>
-            }
+            <govuk-radios-error-message asp-validation-for="Country" />
 
-            @foreach (var value in Enum.GetValues<CountryOfResidence>())
+            @foreach (var country in Enum.GetValues<CountryOfResidence>())
             {
-                <govuk-radios-item value="@value">@Localizer[$"Option_{value}"]</govuk-radios-item>
-
-
+                var key = $"Country_{country}";
+                <govuk-radios-item value="@country" checked="@(Model.Country == country)">@Localizer[key]</govuk-radios-item>
             }
         </govuk-radios-fieldset>
     </govuk-radios>

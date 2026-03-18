@@ -8,20 +8,15 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
 public class EntitlementController : Controller
 {
-    private readonly IStringLocalizerFactory _localizerFactory;
+    private readonly IStringLocalizer<WhereDoYouLiveViewModel> _whereDoYouLiveLocalizer;
     private readonly IJourneySession _journeySession;
 
     public EntitlementController(
-        IStringLocalizerFactory localizerFactory,
+        IStringLocalizer<WhereDoYouLiveViewModel> whereDoYouLiveLocalizer,
         IJourneySession journeySession)
     {
-        _localizerFactory = localizerFactory;
+        _whereDoYouLiveLocalizer = whereDoYouLiveLocalizer;
         _journeySession = journeySession;
-    }
-
-    private static class PageNames
-    {
-        public const string WhereDoYouLive = "WhereDoYouLive";
     }
 
     private IActionResult? GuardJourneyStarted(JourneyState state) =>
@@ -50,14 +45,15 @@ public class EntitlementController : Controller
     [HttpPost]
     public IActionResult WhereDoYouLive(WhereDoYouLiveViewModel model)
     {
-        var pageTexts = LocalizerForPage(PageNames.WhereDoYouLive);
-
         if (model.Country is null)
         {
             ModelState.AddModelError(
                 nameof(model.Country),
-                pageTexts["Error_SelectWhereYouLive"]);
+                _whereDoYouLiveLocalizer["Country_Required"]);
+        }
 
+        if (!ModelState.IsValid)
+        {
             return View(model);
         }
 
@@ -81,13 +77,5 @@ public class EntitlementController : Controller
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
         });
-    }
-
-    private IStringLocalizer LocalizerForPage(string pageName)
-    {
-        var baseName = $"Views.Entitlement.{pageName}";
-        var appName = typeof(Program).Assembly.GetName().Name!;
-
-        return _localizerFactory.Create(baseName, appName);
     }
 }

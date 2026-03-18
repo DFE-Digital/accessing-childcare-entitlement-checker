@@ -12,7 +12,7 @@ public class EntitlementControllerTests
     private EntitlementController CreateController(FakeJourneySession session)
     {
         return new EntitlementController(
-            new FakeStringLocalizerFactory(),
+            new FakeStringLocalizer<WhereDoYouLiveViewModel>(),
             session);
     }
 
