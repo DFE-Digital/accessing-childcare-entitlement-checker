@@ -56,7 +56,3 @@ terraform.rc
 *.tfvars
 !example.tfvars
 terraform.tfstate*
-.terraform/
-*.bin
-
-**/schema.json
