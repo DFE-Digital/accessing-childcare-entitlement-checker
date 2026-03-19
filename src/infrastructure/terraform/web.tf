@@ -1,6 +1,6 @@
 locals {
   web_app_settings = {
-    "ASPNETCORE_ENVIRONMENT"                = var.aspnetcore_environment
+    "ASPNETCORE_ENVIRONMENT" = var.aspnetcore_environment
   }
 }
 
@@ -57,7 +57,6 @@ resource "azurerm_linux_web_app" "web-app-service" {
   name                = "${local.service_prefix}-web-app-service"
   resource_group_name = azurerm_resource_group.web-rg.name
   https_only          = true
-  
 
   site_config {
     always_on = true
