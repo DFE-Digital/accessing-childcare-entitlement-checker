@@ -123,7 +123,7 @@ This is because UI tests are not easily or conventionally gated via coverage met
 
 ## Pros and Cons of the Options
 
-### Manual Testing
+### Only Testing Manually
 
 Manual testing would involve having the project available in some environment (probably the dev or UAT/staging environment) and running through each AC.
 
@@ -133,7 +133,7 @@ Manual testing would involve having the project available in some environment (p
 * Bad, because manual testing is boring. (bad DX)
 * Bad, because depending on the other dimensions, we may need to test repeatedly many times across many browsers.
 
-### unit tests, component tests, or integration tests
+### Only automating with unit tests, component tests, or integration tests
 
 Unit testing
 
@@ -143,12 +143,12 @@ Unit testing
 * Bad, because they don't cover the full stack. I can't see how you could write unit tests that cover the AC.
 * Bad, because they don't test integration between backend and frontend.
 
-### Playwright tests - covering only user journeys and not individual AC
+### UI tests - covering only user journeys (E2E) and not individual AC
 
 * Good, because it ensures the full end to end user journey works
 * Bad, because the AC doesn't describe a full user journey test - these types of tests can't cover the AC
 
-### Playwright tests - covering each individual AC.
+### UI tests - covering each individual AC.
 
 * Good, because they can trivially cover the AC
 * Bad, because it's a lot of small tests
