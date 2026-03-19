@@ -6,5 +6,5 @@ locals {
   }
   prefix         = "s279${var.environment_prefix}"
   service_prefix = "s279${var.environment_prefix}-uks-cec"
-  location       = "uksouth"
+  location       = "ukwest"
 }

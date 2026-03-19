@@ -61,12 +61,12 @@ resource "azurerm_linux_web_app" "web-app-service" {
   site_config {
     always_on = true
 
-    ip_restriction_default_action = "Deny"
+    #ip_restriction_default_action = "Deny"
 
-    ip_restriction {
-      name        = "Access from Front Door"
-      service_tag = "AzureFrontDoor.Backend"
-    }
+    # ip_restriction {
+    #   name        = "Access from Front Door"
+    #   service_tag = "AzureFrontDoor.Backend"
+    # }
 
     health_check_path                 = "/health"
     health_check_eviction_time_in_min = 5
