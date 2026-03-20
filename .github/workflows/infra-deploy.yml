@@ -100,3 +100,15 @@ jobs:
           --slot "${{ steps.tf-outputs.outputs.web_app_slot_name }}" \
           --src-path "$DEPLOY_ZIP_PATH" \
           --type zip
+
+    - name: Publish deployment summary
+      run: |
+        DEPLOY_URL="https://${{ steps.tf-outputs.outputs.web_app_name }}-${{ steps.tf-outputs.outputs.web_app_slot_name }}.azurewebsites.net"
+        {
+          echo "## Deployment"
+          echo
+          echo "- Resource group: \`${{ steps.tf-outputs.outputs.resource_group_name }}\`"
+          echo "- Web app: \`${{ steps.tf-outputs.outputs.web_app_name }}\`"
+          echo "- Slot: \`${{ steps.tf-outputs.outputs.web_app_slot_name }}\`"
+          echo "- URL: [${DEPLOY_URL}](${DEPLOY_URL})"
+        } >> "$GITHUB_STEP_SUMMARY"
