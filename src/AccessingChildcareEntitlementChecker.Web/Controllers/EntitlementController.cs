@@ -21,6 +21,7 @@ public class EntitlementController : Controller
 
     private static class PageNames
     {
+        public const string Start = "Start";
         public const string WhereDoYouLive = "WhereDoYouLive";
     }
 
@@ -32,6 +33,12 @@ public class EntitlementController : Controller
 
     [HttpGet]
     public IActionResult SessionExpired()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    public IActionResult Start()
     {
         return View();
     }
