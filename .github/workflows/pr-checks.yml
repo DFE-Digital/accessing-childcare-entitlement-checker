@@ -2,6 +2,9 @@ name: PR Checks
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
   pull_request:
 
 jobs:
@@ -57,6 +60,20 @@ jobs:
           if-no-files-found: error
           path: |
             artifacts/bin/**
+
+      - name: Publish web app
+        run: dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj --no-build --configuration Release --output publish
+
+      - name: Zip publish output
+        run: |
+          cd publish
+          zip -r ../webapp.zip .
+
+      - name: Upload web app artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: webapp-package
+          path: webapp.zip
 
   unit-tests:
     name: Tests (Unit)
@@ -145,3 +162,16 @@ jobs:
         with:
           name: coveragereport
           path: coveragereport
+
+  deploy:
+    name: Deploy
+    needs: build
+    # TODO: review when deciding deployment strategy/ephemeral environments
+    # remove feature branch before merge
+    if: |
+      (github.event_name == 'push' &&
+      github.ref_name == 'main') ||
+      (github.event_name == 'pull_request' &&
+      github.head_ref == 'feature/ac-364_stub_terraform')
+    uses: ./.github/workflows/infra-deploy.yml
+    secrets: inherit
