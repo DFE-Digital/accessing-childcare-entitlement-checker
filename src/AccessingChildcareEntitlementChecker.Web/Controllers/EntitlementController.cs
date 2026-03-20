@@ -21,6 +21,7 @@ public class EntitlementController : Controller
 
     private static class PageNames
     {
+        public const string Start = "Start";
         public const string WhereDoYouLive = "WhereDoYouLive";
     }
 
@@ -37,6 +38,11 @@ public class EntitlementController : Controller
     }
 
     [HttpGet]
+    public IActionResult Start()
+    {
+        return View();
+    }
+    
     public IActionResult WhereDoYouLive()
     {
         var state = _journeySession.Get();
@@ -46,7 +52,7 @@ public class EntitlementController : Controller
             Country = state.CountryOfResidence
         });
     }
-
+    
     [HttpPost]
     public IActionResult WhereDoYouLive(WhereDoYouLiveViewModel model)
     {
