@@ -42,7 +42,7 @@ public class EntitlementController : Controller
     {
         return View();
     }
-    
+
     public IActionResult WhereDoYouLive()
     {
         var state = _journeySession.Get();
@@ -52,7 +52,7 @@ public class EntitlementController : Controller
             Country = state.CountryOfResidence
         });
     }
-    
+
     [HttpPost]
     public IActionResult WhereDoYouLive(WhereDoYouLiveViewModel model)
     {

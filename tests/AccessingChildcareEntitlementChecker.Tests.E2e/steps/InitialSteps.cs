@@ -27,7 +27,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
                 _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 })
             ).ToHaveTextAsync(expectedHeader);
         }
-        
+
         [When("I click the start button")]
         public async Task WhenIClickTheStartButton()
         {
@@ -46,7 +46,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         public async Task ThenTheCountryErrorIs(string expectedError)
         {
             var error = _context.Page.Locator("#country-error");
-            
+
             await Assertions.Expect(error).ToBeVisibleAsync();
             await Assertions.Expect(error).ToContainTextAsync(expectedError);
         }
