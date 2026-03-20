@@ -43,6 +43,7 @@ public class EntitlementController : Controller
         return View();
     }
 
+    [HttpGet]
     public IActionResult WhereDoYouLive()
     {
         var state = _journeySession.Get();
