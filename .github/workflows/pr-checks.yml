@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - feature/hk-ac480-tf-script # TODO: Remove after creating a PR for this.
+      - feature/ac-364_stub_terraform # TODO: Remove before merge
   pull_request:
 
 jobs:
@@ -168,8 +168,9 @@ jobs:
     name: Deploy
     needs: build
     # TODO: review when deciding deployment strategy/ephemeral environments
+    # remove feature branch before merge
     if:
-      (github.ref_name == 'feature/hk-ac480-tf-script' ||
-      github.head_ref == 'feature/ac-364_stub_terraform')
+      (github.head_ref == 'feature/ac-364_stub_terraform' || 
+      github.head_ref == 'main')
     uses: ./.github/workflows/infra-deploy.yml
     secrets: inherit
