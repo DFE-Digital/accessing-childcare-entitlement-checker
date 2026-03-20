@@ -170,7 +170,7 @@ jobs:
     # TODO: review when deciding deployment strategy/ephemeral environments
     # remove feature branch before merge
     if:
-      (github.head_ref == 'feature/ac-364_stub_terraform' || 
+      (github.ref_name == 'feature/ac-364_stub_terraform' || 
       github.head_ref == 'main')
     uses: ./.github/workflows/infra-deploy.yml
     secrets: inherit
