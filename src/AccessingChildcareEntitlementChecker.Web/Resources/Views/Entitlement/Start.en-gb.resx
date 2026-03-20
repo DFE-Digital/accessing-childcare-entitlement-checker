@@ -20,19 +20,19 @@
     <data name="Intro" xml:space="preserve">
         <value>Use this tool to check what help you could get from the government for childcare costs, including:</value>
     </data>
-    <data name="Point1" xml:space="preserve">
+    <data name="Scheme1" xml:space="preserve">
         <value>30 hours for working parents</value>
     </data>
-    <data name="Point2" xml:space="preserve">
+    <data name="Scheme2" xml:space="preserve">
         <value>15 hours for 2 year olds if you or your child gets extra support</value>
     </data>
-    <data name="Point3" xml:space="preserve">
+    <data name="Scheme3" xml:space="preserve">
         <value>15 hours for 3 to 4 year olds</value>
     </data>
-    <data name="Point4" xml:space="preserve">
+    <data name="Scheme4" xml:space="preserve">
         <value>Tax-Free Childcare</value>
     </data>
-    <data name="Point5" xml:space="preserve">
+    <data name="Scheme5" xml:space="preserve">
         <value>Universal Credit Childcare</value>
     </data>
     <data name="WhatYouNeedHeading" xml:space="preserve">
@@ -41,13 +41,13 @@
     <data name="WhatYouNeedIntro" xml:space="preserve">
         <value>We’ll need to know about you and your partner (if you have one)</value>
     </data>
-    <data name="Need1" xml:space="preserve">
+    <data name="Parent_Need1" xml:space="preserve">
         <value>your age</value>
     </data>
-    <data name="Need2" xml:space="preserve">
+    <data name="Parent_Need2" xml:space="preserve">
         <value>your work status</value>
     </data>
-    <data name="Need3" xml:space="preserve">
+    <data name="Parent_Need3" xml:space="preserve">
         <value>your working hours and income</value>
     </data>
     <data name="WhatYouNeedChildIntro" xml:space="preserve">
@@ -62,7 +62,7 @@
     <data name="Time" xml:space="preserve">
         <value>Checking your eligibility takes round 5 minutes</value>
     </data>
-    <data name="Need4" xml:space="preserve">
+    <data name="Parent_Need4" xml:space="preserve">
         <value>benefits you recieve</value>
     </data>
 </root>
