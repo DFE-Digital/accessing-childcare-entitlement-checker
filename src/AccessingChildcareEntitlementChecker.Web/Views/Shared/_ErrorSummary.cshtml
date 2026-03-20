@@ -1,0 +1,27 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">
+            @Shared["ErrorSummary_Title"]
+        </h2>
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list">
+                @foreach (var entry in ViewData.ModelState)
+                {
+                    var linkId = entry.Key.Replace(".", "_");
+
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        <li>
+                            <a href="#@linkId">@error.ErrorMessage</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+}

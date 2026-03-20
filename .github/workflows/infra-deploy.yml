@@ -2,13 +2,7 @@ name: 'CEC Infrastructure Deployment'
 
 on:
   workflow_call:
-  # TODO: once we actually deploy; the below won't work without providing an artifact
-  workflow_dispatch:
-  schedule:
-    # Runs at minute 0 of every 4th hour (00:00, 04:00, etc. UTC)
-    # This acts as your 'Plan A' to catch capacity in UK South automatically.
-    - cron: '0 */4 * * *'
-
+  
 jobs:
   terraform:
     name: 'Terraform Plan & Apply'

@@ -3,6 +3,8 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 
+<partial name="_ErrorSummary" />
+
 <form method="post" novalidate>
 
     <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.Country)) && ViewData.ModelState[nameof(Model.Country)]!.Errors.Count > 0 ? "govuk-form-group--error" : "")">
@@ -26,18 +28,24 @@
 
             <div class="govuk-radios" data-module="govuk-radios">
 
-                @foreach (var value in Enum.GetValues<CountryOfResidence>())
+                @{
+                    var countries = Enum.GetValues<CountryOfResidence>();
+                }
+                
+                @foreach (var value in countries)
                 {
-                    var id = $"{value}";
+                    bool isFirst = value == countries.First();
+                    var inputId = isFirst ? nameof(Model.Country) : $"Country-{value}";
+                    
                     <div class="govuk-radios__item">
                         <input class="govuk-radios__input"
-                               id="@id"
+                               id="@inputId"
                                name="Country"
                                type="radio"
                                value="@value"
                                @(Model.Country == value ? "checked" : "") />
 
-                        <label class="govuk-label govuk-radios__label" for="@id">
+                        <label class="govuk-label govuk-radios__label" for="@inputId">
                             @Localizer[$"Option_{value}"]
                         </label>
                     </div>

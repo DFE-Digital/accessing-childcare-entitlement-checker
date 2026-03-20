@@ -34,6 +34,6 @@
         <value>Northern Ireland</value>
     </data>
     <data name="Error_SelectWhereYouLive" xml:space="preserve">
-        <value>Please select where you live</value>
+        <value>Select where you live</value>
     </data>
 </root>
