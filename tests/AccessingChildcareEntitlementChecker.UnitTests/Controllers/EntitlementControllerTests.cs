@@ -15,6 +15,18 @@ public class EntitlementControllerTests
             new FakeStringLocalizerFactory(),
             session);
     }
+    
+    [Fact]
+    public void Start_ReturnsView()
+    {
+        var session = new FakeJourneySession();
+        var controller = CreateController(session);
+
+        var result = controller.Start();
+
+        Assert.IsType<ViewResult>(result);
+    }
+    
 
     [Fact]
     public void WhereDoYouLive_Get_PopulatesModel_FromState()
@@ -66,6 +78,17 @@ public class EntitlementControllerTests
 
         Assert.Equal(CountryOfResidence.England, session.State.CountryOfResidence);
         Assert.Equal(nameof(EntitlementController.PlaceholderNextStep), redirect.ActionName);
+    }
+    
+    [Fact]
+    public void SessionExpired_ReturnsView()
+    {
+        var session = new FakeJourneySession();
+        var controller = CreateController(session);
+
+        var result = controller.SessionExpired();
+
+        Assert.IsType<ViewResult>(result);
     }
 
 }
