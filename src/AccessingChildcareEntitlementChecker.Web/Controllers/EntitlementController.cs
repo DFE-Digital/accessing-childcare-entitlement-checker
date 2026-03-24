@@ -19,12 +19,6 @@ public class EntitlementController : Controller
         _journeySession = journeySession;
     }
 
-    private static class PageNames
-    {
-        public const string Start = "Start";
-        public const string WhereDoYouLive = "WhereDoYouLive";
-    }
-
     private IActionResult? GuardJourneyStarted(JourneyState state) =>
         state.CountryOfResidence is null
             ? RedirectToAction(nameof(SessionExpired))
@@ -57,7 +51,7 @@ public class EntitlementController : Controller
     [HttpPost]
     public IActionResult WhereDoYouLive(WhereDoYouLiveViewModel model)
     {
-        var pageTexts = LocalizerForPage(PageNames.WhereDoYouLive);
+        var pageTexts = LocalizerForPage(nameof(WhereDoYouLive));
 
         if (model.Country is null)
         {
