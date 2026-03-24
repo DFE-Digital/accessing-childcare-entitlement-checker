@@ -29,10 +29,10 @@ jobs:
             **/packages.lock.json
 
       - name: Restore
-        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+        run: dotnet restore AccessingChildcareEntitlementChecker.slnx --locked-mode
 
       - name: dotnet format
-        run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
+        run: dotnet format AccessingChildcareEntitlementChecker.slnx --verify-no-changes --no-restore
 
   verify:
     name: Build, Tests & SonarCloud
@@ -88,10 +88,10 @@ jobs:
             /d:sonar.scanner.scanAll=false
 
       - name: Restore
-        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+        run: dotnet restore AccessingChildcareEntitlementChecker.slnx --locked-mode
 
       - name: Build (Release)
-        run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
+        run: dotnet build AccessingChildcareEntitlementChecker.slnx --configuration Release --no-restore
 
       - name: Unit tests + collect coverage
         run: >
