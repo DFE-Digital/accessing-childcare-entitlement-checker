@@ -2,7 +2,14 @@ name: PR Checks
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
   pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:
@@ -20,21 +27,25 @@ jobs:
           cache: true
           cache-dependency-path: |
             **/packages.lock.json
-      
+
       - name: Restore
         run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
-      
+
       - name: dotnet format
         run: dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
 
-  build:
-    name: Build
+  verify:
+    name: Build, Tests & SonarCloud
     permissions:
       contents: read
+      checks: write
+      pull-requests: read
     runs-on: ubuntu-latest
     needs: lint
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -43,6 +54,38 @@ jobs:
           cache: true
           cache-dependency-path: |
             **/packages.lock.json
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v5.0.3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar-packages
+
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v5.0.3
+        with:
+          path: ./.sonar/scanner
+          key: ${{ runner.os }}-sonar-scanner
+
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        run: dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+
+      - name: Begin SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          ./.sonar/scanner/dotnet-sonarscanner begin \
+            /k:DFE-Digital_accessing-childcare-entitlement-checker \
+            /o:dfe-digital \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.token="$SONAR_TOKEN" \
+            /d:sonar.qualitygate.wait=true \
+            /d:sonar.dotnet.excludeTestProjects=true \
+            /d:sonar.cs.opencover.reportsPaths="TestResults/unit/**/coverage.opencover.xml" \
+            /d:sonar.coverage.exclusions="**/Program.cs,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
+            /d:sonar.scanner.scanAll=false
 
       - name: Restore
         run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
@@ -50,49 +93,22 @@ jobs:
       - name: Build (Release)
         run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
 
-      - name: Upload built outputs
-        uses: actions/upload-artifact@v7
-        with:
-          name: build-output
-          if-no-files-found: error
-          path: |
-            artifacts/bin/**
-
-  unit-tests:
-    name: Tests (Unit)
-    permissions:
-      contents: read
-      checks: write
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '10.0.x'
-          cache: true
-          cache-dependency-path: |
-            **/packages.lock.json
-
-      - name: Download built artifacts
-        uses: actions/download-artifact@v8
-        with:
-          name: build-output
-          path: artifacts/bin
-
-      - name: Restore
-        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
-
-      - name: Unit tests + collect coverage (no build)
+      - name: Unit tests + collect coverage
         run: >
           dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
           --configuration Release
           --no-build
-          --collect:"XPlat Code Coverage;Format=cobertura"
-          --logger "trx;LogFileName=unit.trx"
           --results-directory ./TestResults/unit
+          --logger "trx;LogFileName=unit.trx"
+          --collect:"XPlat Code Coverage"
+          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format="opencover,cobertura"
+
+      - name: End SonarCloud analysis
+        if: always()
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
 
       - name: Publish unit test results
         if: always()
@@ -103,17 +119,41 @@ jobs:
           reporter: dotnet-trx
           fail-on-error: true
 
-      - name: Upload test + coverage outputs for gating
+      - name: Upload test + coverage outputs
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: testresults-unit
+          if-no-files-found: error
           path: TestResults/unit/**
+
+      - name: Upload built outputs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-output
+          if-no-files-found: error
+          path: |
+            artifacts/bin/**
+
+      - name: Publish web app
+        run: dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj --no-build --configuration Release --output publish
+
+      - name: Zip publish output
+        run: |
+          cd publish
+          zip -r ../webapp.zip .
+
+      - name: Upload web app artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: webapp-package
+          path: webapp.zip
 
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: verify
     env:
       MIN_LINE_COVERAGE: "5"
     steps:
@@ -123,15 +163,10 @@ jobs:
           name: testresults-unit
           path: TestResults/unit
 
-      - name: Sanity check test outputs exist
-        run: |
-          tree -d
-          ls -la TestResults/unit
-
       - name: Generate coverage report and gate
         uses: danielpalme/ReportGenerator-GitHub-Action@cf6fe1b38ed5becc89ffe056c1f240825993be5b # v5.5.4
         with:
-          reports: "TestResults/unit/**/coverage.cobertura.xml"
+          reports: "TestResults/unit/**/coverage.opencover.xml"
           targetdir: "coveragereport"
           reporttypes: "HtmlInline;MarkdownSummaryGithub;TextSummary"
           customSettings: "minimumCoverageThresholds:lineCoverage=${{ env.MIN_LINE_COVERAGE }}"
@@ -145,3 +180,16 @@ jobs:
         with:
           name: coveragereport
           path: coveragereport
+
+  deploy:
+    name: Deploy
+    needs: verify
+    # TODO: review when deciding deployment strategy/ephemeral environments
+    # remove feature branch before merge
+    if: |
+      (github.event_name == 'push' &&
+      github.ref_name == 'main') ||
+      (github.event_name == 'pull_request' &&
+      github.head_ref == 'feature/ac-364_stub_terraform')
+    uses: ./.github/workflows/infra-deploy.yml
+    secrets: inherit

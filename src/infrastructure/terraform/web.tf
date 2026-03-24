@@ -28,6 +28,10 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
   site_config {
     always_on = true
 
+    application_stack {
+      dotnet_version = "10.0"
+    }
+
     ip_restriction_default_action = "Deny"
 
     ip_restriction {
@@ -60,6 +64,10 @@ resource "azurerm_linux_web_app" "web-app-service" {
 
   site_config {
     always_on = true
+
+    application_stack {
+      dotnet_version = "10.0"
+    }
 
     ip_restriction_default_action = "Deny"
 

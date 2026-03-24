@@ -21,6 +21,18 @@ We chose [Markdown Architectural Decision Records (MADR)](https://adr.github.io/
 
 We chose to make the frontmatter and other elements optional.
 
+ADRs will be stored in `/docs/adr` and follow a sequential naming convention:`NNNN-short-title.md`.
+
+ADRs are immutable once accepted. If a decision changes, a new ADR should be created that supersedes the previous one.
+
+### When to Create an ADR
+
+Create an ADR when a decision:
+
+* has multiple viable options or trade-offs
+* is not obvious from the code or infrastructure
+* is likely to be questioned or revisited in the future
+
 ## More Information
 
 See [https://github.com/adr/madr/blob/develop/template/adr-template.md](https://github.com/adr/madr/blob/develop/template/adr-template.md) for a template.

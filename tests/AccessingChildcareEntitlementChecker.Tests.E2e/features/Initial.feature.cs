@@ -24,7 +24,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "features", "Initial", "Stub feature just to get the E2E tests set up.", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "features", "Initial", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -105,9 +105,9 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features
         
         public virtual async global::System.Threading.Tasks.Task FeatureBackgroundAsync()
         {
-#line 5
+#line 3
 #line hidden
-#line 6
+#line 4
  await testRunner.GivenAsync("I am on the childcare entitlement checker website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
         }
@@ -142,18 +142,18 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="I can open the website")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="I can start the journey")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Initial")]
-        [global::Xunit.TraitAttribute("Description", "I can open the website")]
-        public async global::System.Threading.Tasks.Task ICanOpenTheWebsite()
+        [global::Xunit.TraitAttribute("Description", "I can start the journey")]
+        public async global::System.Threading.Tasks.Task ICanStartTheJourney()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can open the website", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can start the journey", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 8
+#line 6
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -163,8 +163,14 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 5
+#line 3
 await this.FeatureBackgroundAsync();
+#line hidden
+#line 7
+ await testRunner.ThenAsync("the page header is \"Check what help you could get with childcare costs\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 8
+ await testRunner.WhenAsync("I click the start button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 9
  await testRunner.ThenAsync("the page header is \"Where do you live?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
@@ -194,14 +200,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 5
+#line 3
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 12
- await testRunner.WhenAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I click the start button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 13
- await testRunner.ThenAsync("the country error is \"Please select where you live\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.AndAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 14
+ await testRunner.ThenAsync("the country error is \"Select where you live\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
