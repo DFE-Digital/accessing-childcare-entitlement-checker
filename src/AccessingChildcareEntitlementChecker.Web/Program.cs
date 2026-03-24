@@ -18,7 +18,9 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<IJourneySession, JourneySession>();
+builder.Services
+    .AddScoped<IJourneySession, JourneySession>()
+    .AddHealthChecks();
 
 var app = builder.Build();
 
@@ -46,8 +48,10 @@ app.UseSession();
 
 app.UseAuthorization();
 
+app.MapHealthChecks("/health");
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Entitlement}/{action=WhereDoYouLive}/{id?}");
+    pattern: "{controller=Entitlement}/{action=Start}/{id?}");
 
 app.Run();

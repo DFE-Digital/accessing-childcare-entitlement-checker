@@ -23,7 +23,17 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Then("the page header is {string}")]
         public async Task ThenThePageHeaderIs(string expectedHeader)
         {
-            await Assertions.Expect(_context.Page.Locator("h1")).ToHaveTextAsync(expectedHeader);
+            await Assertions.Expect(
+                _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 })
+            ).ToHaveTextAsync(expectedHeader);
+        }
+
+        [When("I click the start button")]
+        public async Task WhenIClickTheStartButton()
+        {
+            await _context.Page
+                .GetByRole(AriaRole.Link, new() { Name = "Start now" })
+                .ClickAsync();
         }
 
         [When("I click on Continue")]
@@ -33,10 +43,12 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         }
 
         [Then("the country error is {string}")]
-        public async Task ThenTheCountryErrorIs(string p0)
+        public async Task ThenTheCountryErrorIs(string expectedError)
         {
-            await Assertions.Expect(_context.Page.Locator("#country-error")).ToBeVisibleAsync();
-            await Assertions.Expect(_context.Page.Locator("#country-error")).ToContainTextAsync("Please select where you live");
+            var error = _context.Page.Locator("#country-error");
+
+            await Assertions.Expect(error).ToBeVisibleAsync();
+            await Assertions.Expect(error).ToContainTextAsync(expectedError);
         }
     }
 }

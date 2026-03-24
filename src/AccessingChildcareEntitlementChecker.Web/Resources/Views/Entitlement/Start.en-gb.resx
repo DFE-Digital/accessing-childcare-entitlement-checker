@@ -1,0 +1,68 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Title" xml:space="preserve">
+        <value>Check what help you could get with childcare costs</value>
+    </data>
+    <data name="Button_Start" xml:space="preserve">
+        <value>Start now</value>
+    </data>
+    <data name="Intro" xml:space="preserve">
+        <value>Use this tool to check what help you could get from the government for childcare costs, including:</value>
+    </data>
+    <data name="Scheme1" xml:space="preserve">
+        <value>30 hours for working parents</value>
+    </data>
+    <data name="Scheme2" xml:space="preserve">
+        <value>15 hours for 2 year olds if you or your child gets extra support</value>
+    </data>
+    <data name="Scheme3" xml:space="preserve">
+        <value>15 hours for 3 to 4 year olds</value>
+    </data>
+    <data name="Scheme4" xml:space="preserve">
+        <value>Tax-Free Childcare</value>
+    </data>
+    <data name="Scheme5" xml:space="preserve">
+        <value>Universal Credit Childcare</value>
+    </data>
+    <data name="WhatYouNeedHeading" xml:space="preserve">
+        <value>What you’ll need</value>
+    </data>
+    <data name="WhatYouNeedIntro" xml:space="preserve">
+        <value>We’ll need to know about you and your partner (if you have one)</value>
+    </data>
+    <data name="Parent_Need1" xml:space="preserve">
+        <value>your age</value>
+    </data>
+    <data name="Parent_Need2" xml:space="preserve">
+        <value>your work status</value>
+    </data>
+    <data name="Parent_Need3" xml:space="preserve">
+        <value>your working hours and income</value>
+    </data>
+    <data name="WhatYouNeedChildIntro" xml:space="preserve">
+        <value>You will also need information about your children or expecting children including:</value>
+    </data>
+    <data name="Child_Need1" xml:space="preserve">
+        <value>their date of birth</value>
+    </data>
+    <data name="Child_Need2" xml:space="preserve">
+        <value>any disability benefits they get</value>
+    </data>
+    <data name="Time" xml:space="preserve">
+        <value>Checking your eligibility takes round 5 minutes</value>
+    </data>
+    <data name="Parent_Need4" xml:space="preserve">
+        <value>benefits you recieve</value>
+    </data>
+</root>
