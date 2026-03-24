@@ -18,7 +18,9 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<IJourneySession, JourneySession>();
+builder.Services
+    .AddScoped<IJourneySession, JourneySession>()
+    .AddHealthChecks();
 
 var app = builder.Build();
 
@@ -45,6 +47,8 @@ app.UseRouting();
 app.UseSession();
 
 app.UseAuthorization();
+
+app.MapHealthChecks("/health");
 
 app.MapControllerRoute(
     name: "default",
