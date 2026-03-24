@@ -17,7 +17,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Component
             var body = await response.Content.ReadAsStringAsync();
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Contains("Where do you live?", body);
+            Assert.Contains("Check what help you could get with childcare costs", body);
         }
     }
 }
