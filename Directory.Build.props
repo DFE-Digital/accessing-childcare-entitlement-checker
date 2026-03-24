@@ -4,5 +4,6 @@
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 </Project>
