@@ -65,9 +65,10 @@
 </div>
 
 <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" id="main-content" role="main">
-        @RenderBody()
-    </main>
+  @await RenderSectionAsync("BeforeMainContent", required: false)
+  <main class="govuk-main-wrapper" id="main-content" role="main">
+    @RenderBody()
+  </main>
 </div>
 
 <div class="govuk-footer">

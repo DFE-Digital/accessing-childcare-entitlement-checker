@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using AccessingChildcareEntitlementChecker.Web.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,8 @@ public class EntitlementController : Controller
     {
         var state = _journeySession.Get();
 
+        this.SetBackButton("/");
+
         return View(new WhereDoYouLiveViewModel
         {
             Country = state.CountryOfResidence
@@ -55,6 +58,7 @@ public class EntitlementController : Controller
 
         if (model.Country is null)
         {
+            this.SetBackButton("/");
             ModelState.AddModelError(
                 nameof(model.Country),
                 pageTexts["Error_SelectWhereYouLive"]);

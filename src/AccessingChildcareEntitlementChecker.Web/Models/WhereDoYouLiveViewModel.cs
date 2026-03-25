@@ -13,5 +13,6 @@ public enum CountryOfResidence
 
 public class WhereDoYouLiveViewModel
 {
+    public NavigationLinkModel? BackButton { get; set; }
     public CountryOfResidence? Country { get; set; }
 }
