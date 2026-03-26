@@ -1,0 +1,52 @@
+<Solution>
+  <Configurations>
+
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+
+  <Folder Name="/.devcontainer/">
+    <File Path=".devcontainer/Dockerfile" />
+  </Folder>
+
+  <Folder Name="/.github/">
+    <File Path=".github/pull_request_template.md" />
+    <Folder Name="/.github/workflows/">
+      <File Path=".github/workflows/infra-deploy.yml" />
+      <File Path=".github/workflows/pr-checks.yml" />
+    </Folder>
+  </Folder>
+
+  <Folder Name="/docs/">
+    <File Path="docs/adrs.md" />
+    <File Path="docs/development.md" />
+  </Folder>
+
+  <Folder Name="/docs/adr/">
+    <File Path="docs/adr/0000-use-madr-docs.md" />
+    <File Path="docs/adr/0001-acceptance-tests-via-playwright.md" />
+    <File Path="docs/adr/0002-retain-a-team-coverage-gate-capability.md" />
+  </Folder>
+
+  <Folder Name="/src/">
+    <Project
+      Path="src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj" />
+  </Folder>
+
+  <Folder Name="/tests/">
+    <Project
+      Path="tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj" />
+    <Project
+      Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
+  </Folder>
+
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+    <File Path="CODEOWNERS" />
+    <File Path="CONTRIBUTING.md" />
+    <File Path="global.json" />
+    <File Path="LICENCE" />
+    <File Path="README.md" />
+  </Folder>
+</Solution>
