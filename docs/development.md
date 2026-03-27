@@ -136,7 +136,7 @@ Create `.git/hooks/pre-push` with:
 set -euo pipefail
 
 echo "Running dotnet format..."
-dotnet format AccessingChildcareEntitlementChecker.sln --verify-no-changes --no-restore
+dotnet format AccessingChildcareEntitlementChecker.slnx --verify-no-changes --no-restore
 ```
 
 Then make it executable:
