@@ -35,7 +35,7 @@ jobs:
         run: dotnet format AccessingChildcareEntitlementChecker.slnx --verify-no-changes --no-restore
 
   verify:
-    name: Build, Tests & SonarCloud
+    name: Build, Tests (Unit) & SonarCloud
     permissions:
       contents: read
       checks: write
