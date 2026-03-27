@@ -1,0 +1,42 @@
+﻿@model AccessingChildcareEntitlementChecker.Web.Models.WhatIsYourChildsDueDateModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+﻿
+<form method="post" novalidate>
+    <govuk-fieldset>
+        <govuk-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+            @Localizer["Title"]
+        </govuk-fieldset-legend>
+
+        @if (ViewData.ModelState.ContainsKey(nameof(Model.DueDate)) &&
+                                                            ViewData.ModelState[nameof(Model.DueDate)]!.Errors.Count > 0)
+                    {
+                <govuk-error-message>
+                    @ViewData.ModelState[nameof(Model.DueDate)]!.Errors[0].ErrorMessage
+                </govuk-error-message>
+        }
+
+        <govuk-date-input name="DueDate" value="@Model.DueDate?.ToString("yyyy-MM-dd")">
+            <govuk-date-input-item date-part="day">
+                <govuk-label>
+                    @Localizer["Day"]
+                </govuk-label>
+            </govuk-date-input-item>
+            <govuk-date-input-item date-part="month">
+                <govuk-label>
+                    @Localizer["Month"]
+                </govuk-label>
+            </govuk-date-input-item>
+            <govuk-date-input-item date-part="year">
+                <govuk-label>
+                    @Localizer["Year"]
+                </govuk-label>
+            </govuk-date-input-item>
+        </govuk-date-input>
+    </govuk-fieldset>
+
+    <govuk-button type="submit">
+        @Shared["Button_Continue"]
+    </govuk-button>
+</form>

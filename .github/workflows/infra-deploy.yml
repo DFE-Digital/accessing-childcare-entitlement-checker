@@ -1,0 +1,114 @@
+name: 'CEC Infrastructure Deployment'
+
+on:
+  workflow_call:
+  
+jobs:
+  terraform:
+    name: 'Terraform Plan & Apply'
+    runs-on: ubuntu-latest
+    environment: dev
+    permissions:
+      contents: read
+
+    defaults:
+      run:
+        working-directory: ./src/infrastructure/terraform
+
+    env:
+      # Authentication Secrets (Ensure these match your GitHub Secrets names)
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      
+      # Backend Configuration
+      BACKEND_RG: "s279d01rg-weu-childcare-mgmt"
+      BACKEND_STORAGE: "s279d01stchildcare"
+      BACKEND_CONTAINER: "tfstate"
+      BACKEND_KEY: "accessing-childcare-entitlement-checker.tfstate"
+      DEPLOY_ZIP_PATH: "../../../artifacts/webapp-package/webapp.zip"
+
+      # Terraform Variables
+      TF_VAR_environment_prefix: "d01"
+      TF_VAR_aspnetcore_environment: "staging"
+      TF_VAR_elz_environment: "dev"
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v6
+
+    - name: Download web app artifact
+      uses: actions/download-artifact@v8
+      with:
+        name: webapp-package
+        path: ./artifacts/webapp-package
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v4
+      with:
+        terraform_wrapper: false
+        terraform_version: 1.10.4 # Aligned with DfE care-leavers repo
+
+    - name: Azure Login
+      uses: azure/login@v3
+      with:
+        # Inspired by DfE care-leavers: using the JSON creds block is more robust
+        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+    - name: Terraform Format
+      run: terraform fmt -check 
+
+    - name: Terraform Init
+      run: |
+        terraform init \
+          -backend-config="resource_group_name=$BACKEND_RG" \
+          -backend-config="storage_account_name=$BACKEND_STORAGE" \
+          -backend-config="container_name=$BACKEND_CONTAINER" \
+          -backend-config="key=$BACKEND_KEY"
+
+    - name: Terraform validate
+      run: |
+        terraform validate
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -out=main.tfplan
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve main.tfplan
+
+    - name: Read Terraform outputs
+      id: tf-outputs
+      run: |
+        echo "resource_group_name=$(terraform output -raw resource_group_name)" >> "$GITHUB_OUTPUT"
+        echo "web_app_name=$(terraform output -raw web_app_name)" >> "$GITHUB_OUTPUT"
+        echo "web_app_slot_name=$(terraform output -raw web_app_slot_name)" >> "$GITHUB_OUTPUT"
+
+    - name: Verify deploy package structure
+      run: |
+        unzip -l "$DEPLOY_ZIP_PATH" | head -n 200
+        if ! unzip -l "$DEPLOY_ZIP_PATH" | awk '{print $4}' | grep -Eq '^[^/]+\.runtimeconfig\.json$'; then
+          echo "Expected a .runtimeconfig.json at archive root, but none was found."
+          exit 1
+        fi
+
+    - name: Deploy package to Web App
+      run: |
+        az webapp deploy \
+          --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
+          --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
+          --slot "${{ steps.tf-outputs.outputs.web_app_slot_name }}" \
+          --src-path "$DEPLOY_ZIP_PATH" \
+          --type zip
+
+    - name: Publish deployment summary
+      run: |
+        DEPLOY_URL="https://${{ steps.tf-outputs.outputs.web_app_name }}-${{ steps.tf-outputs.outputs.web_app_slot_name }}.azurewebsites.net"
+        {
+          echo "## Deployment"
+          echo
+          echo "- Resource group: \`${{ steps.tf-outputs.outputs.resource_group_name }}\`"
+          echo "- Web app: \`${{ steps.tf-outputs.outputs.web_app_name }}\`"
+          echo "- Slot: \`${{ steps.tf-outputs.outputs.web_app_slot_name }}\`"
+          echo "- URL: [${DEPLOY_URL}](${DEPLOY_URL})"
+        } >> "$GITHUB_STEP_SUMMARY"
