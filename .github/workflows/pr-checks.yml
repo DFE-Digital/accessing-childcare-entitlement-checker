@@ -35,7 +35,7 @@ jobs:
         run: dotnet format AccessingChildcareEntitlementChecker.slnx --verify-no-changes --no-restore
 
   verify:
-    name: Build, Tests & SonarCloud
+    name: Build, Tests (Unit) & SonarCloud
     permissions:
       contents: read
       checks: write
@@ -180,6 +180,14 @@ jobs:
         with:
           name: coveragereport
           path: coveragereport
+
+  e2e-tests:
+    name: Tests (E2E)
+    needs: verify
+    permissions:
+      contents: read
+      checks: write
+    uses: ./.github/workflows/e2e-tests.yml
 
   deploy:
     name: Deploy
