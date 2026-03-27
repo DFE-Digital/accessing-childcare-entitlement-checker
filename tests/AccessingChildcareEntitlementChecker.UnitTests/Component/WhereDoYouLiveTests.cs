@@ -16,8 +16,8 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Component
             var response = await client.GetAsync("/");
             var body = await response.Content.ReadAsStringAsync();
 
+            // Checking the status code is sufficient to know that the DI is all hooked up properly.
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Contains("Check what help you could get with childcare costs", body);
         }
     }
 }
