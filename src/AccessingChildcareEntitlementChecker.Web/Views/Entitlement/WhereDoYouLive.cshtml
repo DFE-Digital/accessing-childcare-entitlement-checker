@@ -1,4 +1,5 @@
 ﻿@model AccessingChildcareEntitlementChecker.Web.Models.WhereDoYouLiveViewModel
+@using AccessingChildcareEntitlementChecker.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
@@ -6,11 +7,19 @@
 <partial name="_ErrorSummary" />
 
 <form method="post" novalidate>
+    
+    @section BeforeMainContent {
+        <a asp-action="@nameof(EntitlementController.Start)"
+           asp-controller="Entitlement"
+           class="govuk-back-link">
+            @Shared["Button_Back"]
+        </a>
+    }
 
     <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.Country)) && ViewData.ModelState[nameof(Model.Country)]!.Errors.Count > 0 ? "govuk-form-group--error" : "")">
 
         <fieldset class="govuk-fieldset" aria-describedby="country-error">
-      
+
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h1 class="govuk-fieldset__heading">
                     @Localizer["Title"]
@@ -31,19 +40,19 @@
                 @{
                     var countries = Enum.GetValues<CountryOfResidence>();
                 }
-                
+
                 @foreach (var value in countries)
                 {
                     bool isFirst = value == countries.First();
                     var inputId = isFirst ? nameof(Model.Country) : $"Country-{value}";
-                    
+
                     <div class="govuk-radios__item">
                         <input class="govuk-radios__input"
                                id="@inputId"
                                name="@nameof(Model.Country)"
                                type="radio"
                                value="@value"
-                               @(Model.Country == value ? "checked" : "") />
+                               @(Model.Country == value ? "checked" : "")/>
 
                         <label class="govuk-label govuk-radios__label" for="@inputId">
                             @Localizer[$"Option_{value}"]
