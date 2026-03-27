@@ -1,4 +1,5 @@
 ﻿@model AccessingChildcareEntitlementChecker.Web.Models.WhereDoYouLiveViewModel
+@using AccessingChildcareEntitlementChecker.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
@@ -8,9 +9,11 @@
 <form method="post" novalidate>
     
     @section BeforeMainContent {
-        @{
-            @await Html.PartialAsync("BackButton", ViewData["BackButton"])
-        }
+        <a asp-action="@nameof(EntitlementController.Start)"
+           asp-controller="Entitlement"
+           class="govuk-back-link">
+            @Shared["Button_Back"]
+        </a>
     }
 
     <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.Country)) && ViewData.ModelState[nameof(Model.Country)]!.Errors.Count > 0 ? "govuk-form-group--error" : "")">
