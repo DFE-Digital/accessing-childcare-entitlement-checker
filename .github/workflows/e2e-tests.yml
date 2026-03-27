@@ -21,23 +21,36 @@ jobs:
           cache-dependency-path: |
             **/packages.lock.json
 
-      - name: Restore
-        run: dotnet restore AccessingChildcareEntitlementChecker.sln --locked-mode
+      - name: Download web app artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: webapp-package
+          path: ./artifacts/webapp-package
+
+      - name: Unzip web app artifact
+        run: unzip ./artifacts/webapp-package/webapp.zip -d ./artifacts/webapp
 
       - name: Restore tools
         run: dotnet tool restore
 
-      # TODO we'll be rebuilding here - should use same bin
-      - name: Build (Release)
-        run: dotnet build AccessingChildcareEntitlementChecker.sln --configuration Release --no-restore
+      - name: Restore E2E test project
+        run: >
+          dotnet restore tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj
+          --locked-mode
 
-      # TODO would surely want some sort of cache or container here
+      - name: Build E2E test project (Release)
+        run: >
+          dotnet build tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj
+          --configuration Release
+          --no-restore
+
+      # GitHub runner already includes most dependencies; and installs playwright extremely quickly.
       - name: Install Playwright browsers and Linux dependencies
         run: dotnet tool run playwright install --with-deps chromium
       
       - name: Start app
         run: |
-          dotnet run --project src/AccessingChildcareEntitlementChecker.Web --configuration Release --no-restore --urls http://127.0.0.1:5252 > app.log 2>&1 &
+          dotnet ./artifacts/webapp/AccessingChildcareEntitlementChecker.Web.dll --urls http://127.0.0.1:5252 > app.log 2>&1 &
           echo $! > app.pid
 
       - name: Wait for app
@@ -58,6 +71,7 @@ jobs:
         run: >
           dotnet test tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj
           --configuration Release
+          --no-build
           --no-restore
           --logger "trx;LogFileName=e2e.trx"
           --results-directory ./TestResults/e2e
