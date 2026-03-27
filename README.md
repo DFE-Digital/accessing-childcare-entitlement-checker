@@ -30,7 +30,7 @@ Then run with `dotnet run --project src/AccessingChildcareEntitlementChecker.Web
 
 ### Running the test suite
 
-Use `dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/` to run unit tests.
+Use `dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests/` to run unit tests and component tests.
 
 To run the full test suite, including end to end (E2E) tests, you can:
 - start a local server
