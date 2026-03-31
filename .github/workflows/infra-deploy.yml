@@ -6,23 +6,24 @@ on:
       - 'feature/hk-ac-485-fed-cred' # temp change to test run
   
 jobs:
-  terraform:
+ terraform:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
-    environment: dev
+    environment: development # Updated to match  environment names
     permissions:
       contents: read
+      id-token: write # MANDATORY for Federated Credentials (OIDC)
 
     defaults:
       run:
         working-directory: ./src/infrastructure/terraform
 
     env:
-      # Authentication Secrets (Ensure these match your GitHub Secrets names)
+      # OIDC Authentication (No Client Secret needed)
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true # Tells Terraform to use OIDC instead of Secret
       
       # Backend Configuration
       BACKEND_RG: "s279d01rg-weu-childcare-mgmt"
@@ -33,24 +34,31 @@ jobs:
 
       # Terraform Variables
       TF_VAR_environment_prefix: "d01"
-      TF_VAR_aspnetcore_environment: "staging"
-      TF_VAR_elz_environment: "dev"
+      TF_VAR_aspnetcore_environment: "staging" # Updated for consistency
+      TF_VAR_elz_environment: "development"
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v6
+      uses: actions/checkout@v4
+
+    # - name: Download web app artifact
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     name: webapp-package
+    #     path: ./artifacts/webapp-package
 
     - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v4
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_wrapper: false
-        terraform_version: 1.10.4 # Aligned with DfE care-leavers repo
+        terraform_version: 1.10.4
 
-    - name: Azure Login
-      uses: azure/login@v3
+    - name: Azure Login (OIDC)
+      uses: azure/login@v2
       with:
-        # Inspired by DfE care-leavers: using the JSON creds block is more robust
-        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Terraform Format
       run: terraform fmt -check 
@@ -61,11 +69,11 @@ jobs:
           -backend-config="resource_group_name=$BACKEND_RG" \
           -backend-config="storage_account_name=$BACKEND_STORAGE" \
           -backend-config="container_name=$BACKEND_CONTAINER" \
-          -backend-config="key=$BACKEND_KEY"
+          -backend-config="key=$BACKEND_KEY" \
+          -backend-config="use_oidc=true"
 
     - name: Terraform validate
-      run: |
-        terraform validate
+      run: terraform validate
 
     - name: Terraform Plan
       run: terraform plan -no-color -out=main.tfplan
@@ -80,31 +88,31 @@ jobs:
         echo "web_app_name=$(terraform output -raw web_app_name)" >> "$GITHUB_OUTPUT"
         echo "web_app_slot_name=$(terraform output -raw web_app_slot_name)" >> "$GITHUB_OUTPUT"
 
-    - name: Verify deploy package structure
-      run: |
-        unzip -l "$DEPLOY_ZIP_PATH" | head -n 200
-        if ! unzip -l "$DEPLOY_ZIP_PATH" | awk '{print $4}' | grep -Eq '^[^/]+\.runtimeconfig\.json$'; then
-          echo "Expected a .runtimeconfig.json at archive root, but none was found."
-          exit 1
-        fi
+    # - name: Verify deploy package structure
+    #   run: |
+    #     unzip -l "$DEPLOY_ZIP_PATH" | head -n 200
+    #     if ! unzip -l "$DEPLOY_ZIP_PATH" | awk '{print $4}' | grep -Eq '^[^/]+\.runtimeconfig\.json$'; then
+    #       echo "Expected a .runtimeconfig.json at archive root, but none was found."
+    #       exit 1
+    #     fi
 
-    - name: Deploy package to Web App
-      run: |
-        az webapp deploy \
-          --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
-          --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
-          --slot "${{ steps.tf-outputs.outputs.web_app_slot_name }}" \
-          --src-path "$DEPLOY_ZIP_PATH" \
-          --type zip
+    # - name: Deploy package to Web App
+    #   run: |
+    #     az webapp deploy \
+    #       --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
+    #       --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
+    #       --slot "${{ steps.tf-outputs.outputs.web_app_slot_name }}" \
+    #       --src-path "$DEPLOY_ZIP_PATH" \
+    #       --type zip
 
-    - name: Publish deployment summary
-      run: |
-        DEPLOY_URL="https://${{ steps.tf-outputs.outputs.web_app_name }}-${{ steps.tf-outputs.outputs.web_app_slot_name }}.azurewebsites.net"
-        {
-          echo "## Deployment"
-          echo
-          echo "- Resource group: \`${{ steps.tf-outputs.outputs.resource_group_name }}\`"
-          echo "- Web app: \`${{ steps.tf-outputs.outputs.web_app_name }}\`"
-          echo "- Slot: \`${{ steps.tf-outputs.outputs.web_app_slot_name }}\`"
-          echo "- URL: [${DEPLOY_URL}](${DEPLOY_URL})"
-        } >> "$GITHUB_STEP_SUMMARY"
+    # - name: Publish deployment summary
+    #   run: |
+    #     DEPLOY_URL="https://${{ steps.tf-outputs.outputs.web_app_name }}-${{ steps.tf-outputs.outputs.web_app_slot_name }}.azurewebsites.net"
+    #     {
+    #       echo "## Deployment"
+    #       echo
+    #       echo "- Resource group: \`${{ steps.tf-outputs.outputs.resource_group_name }}\`"
+    #       echo "- Web app: \`${{ steps.tf-outputs.outputs.web_app_name }}\`"
+    #       echo "- Slot: \`${{ steps.tf-outputs.outputs.web_app_slot_name }}\`"
+    #       echo "- URL: [${DEPLOY_URL}](${DEPLOY_URL})"
+    #     } >> "$GITHUB_STEP_SUMMARY"
