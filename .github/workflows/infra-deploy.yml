@@ -1,7 +1,9 @@
 name: 'CEC Infrastructure Deployment'
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - 'feature/hk-ac-485-fed-cred' # temp change to test run
   
 jobs:
   terraform:
@@ -37,12 +39,6 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v6
-
-    - name: Download web app artifact
-      uses: actions/download-artifact@v8
-      with:
-        name: webapp-package
-        path: ./artifacts/webapp-package
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v4
