@@ -13,7 +13,7 @@ public class UserControllerTests
             new FakeStringLocalizerFactory(),
             session);
     }
-    
+
     [Fact]
     public void Index_ReturnsContentResult_WithPlaceholderText()
     {
@@ -28,5 +28,5 @@ public class UserControllerTests
         var contentResult = Assert.IsType<ContentResult>(result);
         Assert.Equal("User controller placeholder", contentResult.Content);
     }
-    
+
 }
