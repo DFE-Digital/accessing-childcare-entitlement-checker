@@ -1,9 +1,7 @@
 name: 'CEC Infrastructure Deployment'
 
 on:
-  push:
-    branches:
-      - 'feature/hk-ac-485-fed-cred' # temp change to test run
+  workflow_call:
   
 jobs:
   terraform:
