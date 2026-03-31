@@ -1,7 +1,12 @@
 name: 'CEC Infrastructure Deployment'
 
 on:
-  workflow_call:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'development'
   
 jobs:
   terraform:
