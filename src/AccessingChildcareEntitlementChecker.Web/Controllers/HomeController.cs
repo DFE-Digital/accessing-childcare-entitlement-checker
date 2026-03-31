@@ -70,11 +70,6 @@ public class HomeController : Controller
         return RedirectToAction(nameof(UserController.Index), "User");
     }
 
-    public IActionResult PlaceholderNextStep()
-    {
-        return Content("Next step placeholder");
-    }
-
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

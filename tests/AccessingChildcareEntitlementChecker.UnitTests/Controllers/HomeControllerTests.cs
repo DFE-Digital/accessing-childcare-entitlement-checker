@@ -76,7 +76,7 @@ public class HomeControllerTests
         var redirect = Assert.IsType<RedirectToActionResult>(result);
 
         Assert.Equal(CountryOfResidence.England, session.State.CountryOfResidence);
-        Assert.Equal(nameof(HomeController.PlaceholderNextStep), redirect.ActionName);
+        Assert.Equal(nameof(UserController.Index), redirect.ActionName);
     }
 
     [Fact]
