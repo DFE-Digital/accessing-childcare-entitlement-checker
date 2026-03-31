@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Services;
 using AccessingChildcareEntitlementChecker.UnitTests.Helpers;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
