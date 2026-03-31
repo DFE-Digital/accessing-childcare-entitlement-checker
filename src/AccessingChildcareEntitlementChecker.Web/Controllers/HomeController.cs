@@ -6,12 +6,12 @@ using Microsoft.Extensions.Localization;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
-public class EntitlementController : Controller
+public class HomeController : Controller
 {
     private readonly IStringLocalizerFactory _localizerFactory;
     private readonly IJourneySession _journeySession;
 
-    public EntitlementController(
+    public HomeController(
         IStringLocalizerFactory localizerFactory,
         IJourneySession journeySession)
     {
@@ -67,7 +67,7 @@ public class EntitlementController : Controller
 
         _journeySession.Save(state);
 
-        return RedirectToAction(nameof(PlaceholderNextStep));
+        return RedirectToAction(nameof(UserController.Index), "User");
     }
 
     public IActionResult PlaceholderNextStep()
@@ -86,7 +86,7 @@ public class EntitlementController : Controller
 
     private IStringLocalizer LocalizerForPage(string pageName)
     {
-        var baseName = $"Views.Entitlement.{pageName}";
+        var baseName = $"Views.Home.{pageName}";
         var appName = typeof(Program).Assembly.GetName().Name!;
 
         return _localizerFactory.Create(baseName, appName);

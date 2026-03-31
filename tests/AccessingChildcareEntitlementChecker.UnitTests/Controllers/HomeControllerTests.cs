@@ -6,12 +6,12 @@ using AccessingChildcareEntitlementChecker.UnitTests.Helpers;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
-public class EntitlementControllerTests
+public class HomeControllerTests
 {
 
-    private EntitlementController CreateController(FakeJourneySession session)
+    private HomeController CreateController(FakeJourneySession session)
     {
-        return new EntitlementController(
+        return new HomeController(
             new FakeStringLocalizerFactory(),
             session);
     }
@@ -77,7 +77,7 @@ public class EntitlementControllerTests
         var redirect = Assert.IsType<RedirectToActionResult>(result);
 
         Assert.Equal(CountryOfResidence.England, session.State.CountryOfResidence);
-        Assert.Equal(nameof(EntitlementController.PlaceholderNextStep), redirect.ActionName);
+        Assert.Equal(nameof(HomeController.PlaceholderNextStep), redirect.ActionName);
     }
 
     [Fact]
