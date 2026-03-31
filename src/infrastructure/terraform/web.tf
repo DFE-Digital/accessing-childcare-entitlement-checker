@@ -23,7 +23,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
 # resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
 #   app_service_id = azurerm_linux_web_app.web-app-service.id
 #   name           = "staging"
-#   https_only     = true
+##   https_only     = true
 
 #   site_config {
 #     always_on = true
