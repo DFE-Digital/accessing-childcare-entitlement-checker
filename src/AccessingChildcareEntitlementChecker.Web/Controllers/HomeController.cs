@@ -19,10 +19,11 @@ public class HomeController : Controller
         _journeySession = journeySession;
     }
 
-    private IActionResult? GuardJourneyStarted(JourneyState state) =>
-        state.CountryOfResidence is null
-            ? RedirectToAction(nameof(SessionExpired))
-            : null;
+    //Commenting this out until we are ready to use it
+    //private IActionResult? GuardJourneyStarted(JourneyState state) =>
+    //state.CountryOfResidence is null
+    //? RedirectToAction(nameof(SessionExpired))
+    //: null;
 
 
     [HttpGet]
@@ -58,7 +59,10 @@ public class HomeController : Controller
             ModelState.AddModelError(
                 nameof(model.Country),
                 pageTexts["Error_SelectWhereYouLive"]);
+        }
 
+        if (!ModelState.IsValid)
+        {
             return View(model);
         }
 
