@@ -50,6 +50,8 @@ app.UseAuthorization();
 
 app.MapHealthChecks("/health");
 
+app.UseExceptionHandler("/Error");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Start}/{id?}");
