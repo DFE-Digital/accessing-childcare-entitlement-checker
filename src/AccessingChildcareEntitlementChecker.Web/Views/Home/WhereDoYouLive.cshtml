@@ -21,9 +21,11 @@
         <fieldset class="govuk-fieldset" aria-describedby="country-error">
 
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h1 class="govuk-fieldset__heading">
+                <h1 class="govuk-fieldset__heading govuk-body govuk-!-margin-bottom-1">
                     @Localizer["Title"]
                 </h1>
+                <span class="govuk-caption-m">@Localizer["Caption"]</span>
+                
             </legend>
 
             @if (ViewData.ModelState.ContainsKey(nameof(Model.Country)) &&

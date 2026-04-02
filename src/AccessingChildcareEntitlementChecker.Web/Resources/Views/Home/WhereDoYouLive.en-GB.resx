@@ -36,4 +36,7 @@
     <data name="Error_SelectWhereYouLive" xml:space="preserve">
         <value>Select where you live</value>
     </data>
+    <data name="Caption" xml:space="preserve">
+        <value>Childcare support is different between different countires in the UK</value>
+    </data>
 </root>
