@@ -6,12 +6,12 @@ using Microsoft.Extensions.Localization;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
-public class EntitlementController : Controller
+public class HomeController : Controller
 {
     private readonly IStringLocalizerFactory _localizerFactory;
     private readonly IJourneySession _journeySession;
 
-    public EntitlementController(
+    public HomeController(
         IStringLocalizerFactory localizerFactory,
         IJourneySession journeySession)
     {
@@ -19,10 +19,11 @@ public class EntitlementController : Controller
         _journeySession = journeySession;
     }
 
-    private IActionResult? GuardJourneyStarted(JourneyState state) =>
-        state.CountryOfResidence is null
-            ? RedirectToAction(nameof(SessionExpired))
-            : null;
+    //Commenting this out until we are ready to use it
+    //private IActionResult? GuardJourneyStarted(JourneyState state) =>
+    //state.CountryOfResidence is null
+    //? RedirectToAction(nameof(SessionExpired))
+    //: null;
 
 
     [HttpGet]
@@ -58,7 +59,10 @@ public class EntitlementController : Controller
             ModelState.AddModelError(
                 nameof(model.Country),
                 pageTexts["Error_SelectWhereYouLive"]);
+        }
 
+        if (!ModelState.IsValid)
+        {
             return View(model);
         }
 
@@ -67,26 +71,12 @@ public class EntitlementController : Controller
 
         _journeySession.Save(state);
 
-        return RedirectToAction(nameof(PlaceholderNextStep));
-    }
-
-    public IActionResult PlaceholderNextStep()
-    {
-        return Content("Next step placeholder");
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel
-        {
-            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-        });
+        return RedirectToAction(nameof(UserController.Index), "User");
     }
 
     private IStringLocalizer LocalizerForPage(string pageName)
     {
-        var baseName = $"Views.Entitlement.{pageName}";
+        var baseName = $"Views.Home.{pageName}";
         var appName = typeof(Program).Assembly.GetName().Name!;
 
         return _localizerFactory.Create(baseName, appName);
