@@ -4,17 +4,17 @@ on:
   push:
     branches:
       - 'feature/hk-ac-485-fed-cred' # temp change to test run
- # Allows this workflow to be called by other pipelines (Reusable Workflow)
+
   workflow_call:
     # Optional: You can define inputs or secrets if you want the caller to provide them
     inputs:
       environment:
         description: 'The target environment for deployment'
-        default: 'dev'
+        default: 'Dev'
         required: false
         type: string
 
-  # Allows this workflow to be run manually from the GitHub Actions tab (The Button)
+
   workflow_dispatch:
     inputs:
       reason:
