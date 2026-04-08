@@ -9,8 +9,8 @@ variable "environment_prefix" {
 }
 
 
-variable "aspnetcore_environment" {
-  description = "ASP.NET Core environment"
-  type        = string
-}
+# variable "aspnetcore_environment" {
+#   description = "ASP.NET Core environment"
+#   type        = string
+# }
 

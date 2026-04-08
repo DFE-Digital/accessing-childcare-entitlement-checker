@@ -1,8 +1,8 @@
-locals {
-  web_app_settings = {
-    "ASPNETCORE_ENVIRONMENT" = var.aspnetcore_environment
-  }
-}
+# locals {
+#   web_app_settings = {
+#     "ASPNETCORE_ENVIRONMENT" = var.aspnetcore_environment
+#   }
+# }
 
 resource "azurerm_resource_group" "web-rg" {
   name     = "${local.prefix}rg-uks-cec-web"
@@ -84,7 +84,7 @@ resource "azurerm_linux_web_app" "web-app-service" {
     type = "SystemAssigned"
   }
 
-  app_settings = local.web_app_settings
+  #app_settings = local.web_app_settings
 
   tags = local.common_tags
 }
