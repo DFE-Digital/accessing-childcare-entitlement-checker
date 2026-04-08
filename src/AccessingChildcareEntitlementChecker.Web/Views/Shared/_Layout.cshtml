@@ -17,7 +17,7 @@
 }
 
 @section BeforeContent {
-    @RenderSection("BeforeContent", required: false)
+    @await RenderSectionAsync("BeforeContent", required: false)
 }
 
 @RenderBody()
