@@ -9,6 +9,28 @@
 
   <ItemGroup>
     <Folder Include="Helpers\" />
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\bold-affa96571d-v2.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\bold-b542beb274-v2.woff2" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\light-94a07e06a1-v2.woff2" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\light-f591b13f7d-v2.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\favicon.ico" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\favicon.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-crest.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-icon-180.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-icon-192.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-icon-512.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-icon-mask.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-opengraph-image.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\manifest.json" />
   </ItemGroup>
 
 </Project>

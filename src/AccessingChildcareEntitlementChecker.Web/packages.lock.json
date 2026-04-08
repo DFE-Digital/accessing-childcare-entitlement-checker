@@ -1,6 +1,21 @@
 {
   "version": 1,
   "dependencies": {
-    "net10.0": {}
+    "net10.0": {
+      "GovUk.Frontend.AspNetCore": {
+        "type": "Direct",
+        "requested": "[4.0.1, )",
+        "resolved": "4.0.1",
+        "contentHash": "71l078sfNeIP8IJQxysbYGtswpIvCxur7FvWwqfmsGIry8bLwkLcc+s9DYDFgwDC3xgB7tDK0NUS81NxA0apeg==",
+        "dependencies": {
+          "Microsoft.Extensions.FileProviders.Embedded": "8.0.25"
+        }
+      },
+      "Microsoft.Extensions.FileProviders.Embedded": {
+        "type": "Transitive",
+        "resolved": "8.0.25",
+        "contentHash": "LBlxUQTtVrAH7gcUyEpqHwQ0ASx2/rbNIht/DWj+ofux4UH7PMUjyPodx1pGlb+Zdi03ItUZQFT8mRzi0Tiewg=="
+      }
+    }
   }
 }
