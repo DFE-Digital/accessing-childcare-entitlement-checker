@@ -60,8 +60,8 @@ jobs:
       #TF_VAR_environment_prefix: "d01"
      # TF_VAR_aspnetcore_environment: "staging" # Updated for consistency
       #TF_VAR_elz_environment: "development"
-      TF_VAR_environment_prefix: ${{ secrets.TF_VAR_PREFIX }}
-      TF_VAR_elz_environment: ${{ inputs.environment || 'development' }}
+      TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
+      TF_VAR_elz_environment: ${{ vars.TF_VAR_ELZ_ENV }}  #'test' #${{ inputs.environment || 'development' }}
 
     steps:
     - name: Checkout Code
