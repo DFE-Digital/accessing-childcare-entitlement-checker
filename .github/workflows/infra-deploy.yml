@@ -9,24 +9,30 @@ on:
     # Optional: You can define inputs or secrets if you want the caller to provide them
     inputs:
       environment:
-        description: 'The target environment for deployment'
-        default: 'Dev'
-        required: false
+        description: 'Target Environment'
+        required: true
         type: string
 
 
   workflow_dispatch:
     inputs:
-      reason:
-        description: 'Reason for manual trigger (e.g., Retrying capacity)'
-        required: false
-        default: 'Manual deployment'
+      environment:
+        description: 'Select Environment'
+        required: true
+        type: choice
+        options:
+          - development
+          - test
+          - staging
+        default: development
  
 jobs:
  terraform:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
-    environment: development # Updated to match  environment names
+    # Logic: Uses input if provided (manual/call), otherwise defaults based on branch
+    environment: ${{ inputs.environment || (github.ref == 'refs/heads/main' && 'test' || 'development') }}
+   
     permissions:
       contents: read
       id-token: write # MANDATORY for Federated Credentials (OIDC)
@@ -70,6 +76,13 @@ jobs:
       with:
         terraform_wrapper: false
         terraform_version: 1.10.4
+        
+    
+    - name: OIDC Debug (Non-Sensitive)
+      run: |
+        echo "Attempting OIDC Auth for Environment: ${{ inputs.environment || 'development' }}"
+        echo "Current Branch (Ref): ${{ github.ref }}"
+        echo "Expected Subject: repo:${{ github.repository }}:ref:${{ github.ref }}"
 
     - name: Azure Login (OIDC)
       uses: azure/login@v2
@@ -77,6 +90,16 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }} # todo: change the secret to be environment specific
         tenant-id: ${{ secrets.AZURE_TENANT_ID }} # todo: change the secret to be environment specific
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: 'Audit OIDC Subject'
+      run: |
+        if [ -n "${{ inputs.environment }}" ]; then
+          echo "AUTHENTICATION TYPE: Environment-based"
+          echo "SUBJECT CLAIM: repo:${{ github.repository }}:environment:${{ inputs.environment }}"
+        else
+          echo "AUTHENTICATION TYPE: Branch-based (Fallback)"
+          echo "SUBJECT CLAIM: repo:${{ github.repository }}:ref:${{ github.ref }}"
+        fi
 
     - name: Terraform Format
       run: terraform fmt -check 
