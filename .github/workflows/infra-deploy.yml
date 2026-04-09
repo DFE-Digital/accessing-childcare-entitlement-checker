@@ -49,10 +49,10 @@ jobs:
       ARM_USE_OIDC: true # Tells Terraform to use OIDC instead of Secret
       
       # Backend Configuration
-      BACKEND_RG: "s279d01rg-weu-childcare-mgmt"
-      BACKEND_STORAGE: "s279d01stchildcare"
+      BACKEND_RG: ${{ secrets.TF_BACKEND_RG }}
+      BACKEND_STORAGE: ${{ secrets.TF_BACKEND_STORAGE }}
       BACKEND_CONTAINER: "tfstate"
-      BACKEND_KEY: "accessing-childcare-entitlement-checker.tfstate"
+      BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
       DEPLOY_ZIP_PATH: "../../../artifacts/webapp-package/webapp.zip"
 
       # Terraform Variables
