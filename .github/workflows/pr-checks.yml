@@ -42,6 +42,8 @@ jobs:
       pull-requests: read
     runs-on: ubuntu-latest
     needs: lint
+    env:
+      SHOULD_RUN_SONARQUBE: ${{ github.actor != 'dependabot[bot]' && github.event.pull_request.head.repo.fork != true }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -56,6 +58,7 @@ jobs:
             **/packages.lock.json
 
       - name: Cache SonarCloud packages
+        if: env.SHOULD_RUN_SONARQUBE == 'true'
         uses: actions/cache@v5.0.3
         with:
           path: ~/.sonar/cache
@@ -63,16 +66,18 @@ jobs:
 
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
+        if: env.SHOULD_RUN_SONARQUBE == 'true'
         uses: actions/cache@v5.0.3
         with:
           path: ./.sonar/scanner
           key: ${{ runner.os }}-sonar-scanner
 
       - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        if: env.SHOULD_RUN_SONARQUBE == 'true' && steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
 
       - name: Begin SonarCloud analysis
+        if: env.SHOULD_RUN_SONARQUBE == 'true'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
@@ -104,7 +109,7 @@ jobs:
           -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format="opencover,cobertura"
 
       - name: End SonarCloud analysis
-        if: always()
+        if: always() && env.SHOULD_RUN_SONARQUBE == 'true'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
