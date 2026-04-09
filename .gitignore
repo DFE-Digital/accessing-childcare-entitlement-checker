@@ -56,3 +56,4 @@ terraform.rc
 *.tfvars
 !example.tfvars
 terraform.tfstate*
+node_modules
