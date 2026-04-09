@@ -2,7 +2,13 @@
   "defaults": {
     "standard": "WCAG2AA",
     "runners": ["axe", "htmlcs"],
-    "timeout": 10000
+    "timeout": 10000,
+    "chromeLaunchConfig": {
+      "args": [
+        "--no-sandbox",
+        "--disable-dev-shm-usage"
+      ]
+    }
   },
   "urls": [
     "http://localhost:5252/",
