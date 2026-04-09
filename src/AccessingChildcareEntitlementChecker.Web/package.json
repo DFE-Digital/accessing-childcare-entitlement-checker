@@ -6,7 +6,8 @@
     "build:css": "cp node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css wwwroot/css/site.css",
     "build:js": "cp node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js wwwroot/js/site.js",
     "build:assets": "cp -R node_modules/govuk-frontend/dist/govuk/assets wwwroot/",
-    "build": "npm run build:css && npm run build:js && npm run build:assets"
+    "build": "npm run build:css && npm run build:js && npm run build:assets",
+    "a11y": "pa11y-ci"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +15,9 @@
   "description": "",
   "dependencies": {
     "govuk-frontend": "^6.0.0"
+  },
+  "devDependencies": {
+    "@axe-core/cli": "^4.10.0",
+    "pa11y-ci": "^3.1.0"
   }
 }
