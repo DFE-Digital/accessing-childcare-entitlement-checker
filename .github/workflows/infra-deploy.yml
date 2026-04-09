@@ -31,7 +31,7 @@ jobs:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
     # Logic: Uses input if provided (manual/call), otherwise defaults based on branch
-    environment: ${{ inputs.environment || (github.ref == 'refs/heads/main' && 'test' || 'development') }}
+    #environment: ${{ inputs.environment || (github.ref == 'refs/heads/main' && 'test' || 'development') }}
    
     permissions:
       contents: read
