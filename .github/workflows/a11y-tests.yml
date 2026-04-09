@@ -1,0 +1,71 @@
+name: Accessibility Tests
+
+on:
+  workflow_call:
+
+jobs:
+  a11y-tests:
+    name: Tests (Accessibility)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Download web app artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: webapp-package
+          path: ./artifacts/webapp-package
+
+      - name: Unzip web app artifact
+        run: unzip ./artifacts/webapp-package/webapp.zip -d ./artifacts/webapp
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: src/AccessingChildcareEntitlementChecker.Web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: src/AccessingChildcareEntitlementChecker.Web
+
+      - name: Start app
+        run: |
+          dotnet ./artifacts/webapp/AccessingChildcareEntitlementChecker.Web.dll --urls http://127.0.0.1:5252 > app.log 2>&1 &
+          echo $! > app.pid
+
+      - name: Wait for app
+        run: |
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:5252/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "App failed to start in time"
+          cat app.log
+          exit 1
+
+      - name: Run accessibility checks
+        run: npm run a11y
+        working-directory: src/AccessingChildcareEntitlementChecker.Web
+
+      - name: Stop app
+        if: always()
+        run: |
+          kill "$(cat app.pid)" || true
+
+      - name: Upload app log
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: a11y-app-log
+          path: app.log
