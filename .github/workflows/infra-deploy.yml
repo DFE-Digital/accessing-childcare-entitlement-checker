@@ -31,8 +31,7 @@ jobs:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
     # Logic: Uses input if provided (manual/call), otherwise defaults based on branch
-    environment: test
-    #environment: ${{ inputs.environment || (github.ref == 'refs/heads/main' && 'test' || 'development') }}
+    environment: ${{ inputs.environment || (github.ref == 'refs/heads/main' && 'test' || 'development') }}
    
     permissions:
       contents: read
@@ -57,9 +56,11 @@ jobs:
       DEPLOY_ZIP_PATH: "../../../artifacts/webapp-package/webapp.zip"
 
       # Terraform Variables
-      TF_VAR_environment_prefix: "d01"
+      #TF_VAR_environment_prefix: "d01"
      # TF_VAR_aspnetcore_environment: "staging" # Updated for consistency
-      TF_VAR_elz_environment: "development"
+      #TF_VAR_elz_environment: "development"
+      TF_VAR_environment_prefix: ${{ secrets.TF_VAR_PREFIX }}
+      TF_VAR_elz_environment: ${{ inputs.environment || 'development' }}
 
     steps:
     - name: Checkout Code
