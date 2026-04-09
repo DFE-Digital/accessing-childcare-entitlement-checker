@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
+@model WhereDoYouLiveViewModel
 
 
 @section BeforeContent {
@@ -10,7 +11,7 @@
 }
 
 <form method="post" novalidate>
-    <govuk-radios name="Country" id="Country">
+    <govuk-radios for="Country">
         <govuk-radios-fieldset>
             <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
                 @Localizer["Title"]
@@ -20,18 +21,13 @@
                 @Localizer["Caption"]
             </govuk-radios-hint>
 
-            @if (ViewData.ModelState.ContainsKey(nameof(Model.Country)) &&
-                 ViewData.ModelState[nameof(Model.Country)]!.Errors.Count > 0)
-            {
-                <govuk-radios-error-message>
-                    @ViewData.ModelState[nameof(Model.Country)]!.Errors[0].ErrorMessage
-                </govuk-radios-error-message>
-            }
+            <govuk-radios-error-message />
 
             @foreach (var value in Enum.GetValues<CountryOfResidence>())
             {
-                <govuk-radios-item value="@value">@Localizer[$"Option_{value}"]</govuk-radios-item>
-                
+                <govuk-radios-item value="@value">
+                    @Localizer[$"Option_{value}"]
+                </govuk-radios-item>
             }
         </govuk-radios-fieldset>
     </govuk-radios>
