@@ -2,6 +2,16 @@ name: PR Checks
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target Environment'
+        required: true
+        type: choice
+        options:
+          - development
+          - test
+          - staging
+        default: development
   push:
     branches:
       - main
@@ -181,7 +191,7 @@ jobs:
           name: coveragereport
           path: coveragereport
 
- deploy:
+  deploy:
     name: Deploy
     needs: verify
     # TODO: review when deciding deployment strategy/ephemeral environments
