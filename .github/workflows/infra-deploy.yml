@@ -69,7 +69,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Download web app artifact
-      if: github.event_name == 'workflow_call'
+      if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch'
       uses: actions/download-artifact@v4
       with:
         name: webapp-package
@@ -127,7 +127,7 @@ jobs:
       run: terraform apply -auto-approve main.tfplan
 
     - name: Read Terraform outputs
-      if: github.event_name == 'workflow_call'
+      if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' 
       id: tf-outputs
       run: |
         echo "resource_group_name=$(terraform output -raw resource_group_name)" >> "$GITHUB_OUTPUT"
@@ -135,7 +135,7 @@ jobs:
         echo "web_app_slot_name=$(terraform output -raw web_app_slot_name)" >> "$GITHUB_OUTPUT"
 
     - name: Verify deploy package structure
-      if: github.event_name == 'workflow_call'
+      if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' 
       run: |
         unzip -l "$DEPLOY_ZIP_PATH" | head -n 200
         if ! unzip -l "$DEPLOY_ZIP_PATH" | awk '{print $4}' | grep -Eq '^[^/]+\.runtimeconfig\.json$'; then
@@ -144,7 +144,7 @@ jobs:
         fi
 
     - name: Deploy package to Web App
-      if: github.event_name == 'workflow_call'
+      if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' 
       run: |
         az webapp deploy \
           --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
@@ -154,7 +154,7 @@ jobs:
           --type zip
 
     - name: Publish deployment summary
-      if: github.event_name == 'workflow_call'
+      if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' 
       run: |
         DEPLOY_URL="https://${{ steps.tf-outputs.outputs.web_app_name }}-${{ steps.tf-outputs.outputs.web_app_slot_name }}.azurewebsites.net"
         {
