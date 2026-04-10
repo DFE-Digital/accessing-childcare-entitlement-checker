@@ -2,6 +2,16 @@ name: PR Checks
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target Environment'
+        required: true
+        type: choice
+        options:
+          - development
+          - test
+          - staging
+        default: development
   push:
     branches:
       - main
@@ -187,9 +197,13 @@ jobs:
     # TODO: review when deciding deployment strategy/ephemeral environments
     # remove feature branch before merge
     if: |
-      (github.event_name == 'push' &&
-      github.ref_name == 'main') ||
-      (github.event_name == 'pull_request' &&
-      github.head_ref == 'feature/ac-364_stub_terraform')
+      (github.event_name == 'push' && github.ref_name == 'main') ||
+      (github.event_name == 'pull_request' && github.head_ref == 'feature/hk-ac-485-fed-cred') ||
+      (github.event_name == 'workflow_dispatch' && github.ref_name == 'feature/hk-ac-485-fed-cred')
+    
     uses: ./.github/workflows/infra-deploy.yml
+    with:
+      # MANDATORY: You must pass the environment here because it is marked 'required: true' in infra-deploy.yml
+      # Logic: If it's main, we might want 'test', otherwise 'development'
+      environment: ${{ (github.ref_name == 'main' || inputs.environment == 'test') && 'test' || 'development' }}
     secrets: inherit
