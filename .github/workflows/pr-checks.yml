@@ -181,19 +181,20 @@ jobs:
           name: coveragereport
           path: coveragereport
 
-  deploy:
+
+deploy:
     name: Deploy
     needs: verify
     # TODO: review when deciding deployment strategy/ephemeral environments
     # remove feature branch before merge
     if: |
-      (github.event_name == 'push' &&
-      github.ref_name == 'main') ||
-      (
-      github.head_ref == 'feature/hk-ac-485-fed-cred')
+      (github.event_name == 'push' && github.ref_name == 'main') ||
+      (github.event_name == 'pull_request' && github.head_ref == 'feature/hk-ac-485-fed-cred') ||
+      (github.event_name == 'workflow_dispatch' && github.ref_name == 'feature/hk-ac-485-fed-cred')
+    
     uses: ./.github/workflows/infra-deploy.yml
     with:
       # MANDATORY: You must pass the environment here because it is marked 'required: true' in infra-deploy.yml
       # Logic: If it's main, we might want 'test', otherwise 'development'
-      environment: ${{ github.ref_name == 'main' && 'test' || 'development' }}
+      environment: ${{ (github.ref_name == 'main' || inputs.environment == 'test') && 'test' || 'development' }}
     secrets: inherit
