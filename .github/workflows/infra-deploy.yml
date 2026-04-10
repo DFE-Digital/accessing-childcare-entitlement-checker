@@ -59,6 +59,8 @@ jobs:
       # Terraform Variables
       TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
       TF_VAR_elz_environment: ${{ vars.TF_VAR_ELZ_ENV }}
+      TF_VAR_ELZ_ENV: ${{ vars.TF_VAR_ELZ_ENV }}
+      TF_VAR_PREFIX: ''
 
     steps:
     - name: Checkout Code
