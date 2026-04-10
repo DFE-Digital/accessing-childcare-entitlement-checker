@@ -146,12 +146,32 @@ jobs:
     - name: Deploy package to Web App
       if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' 
       run: |
-        az webapp deploy \
-          --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
-          --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
-          --slot "${{ steps.tf-outputs.outputs.web_app_slot_name }}" \
-          --src-path "$DEPLOY_ZIP_PATH" \
-          --type zip
+        RG_NAME="${{ steps.tf-outputs.outputs.resource_group_name }}"
+        APP_NAME="${{ steps.tf-outputs.outputs.web_app_name }}"
+        SLOT_NAME="${{ steps.tf-outputs.outputs.web_app_slot_name }}"
+
+        # Clean up common Terraform 'empty' strings
+        if [ "$SLOT_NAME" == "null" ] || [ -z "$SLOT_NAME" ]; then
+          TARGET_DESC="Production"
+          DEPLOY_ARGS="--resource-group \"$RG_NAME\" --name \"$APP_NAME\""
+        else
+          TARGET_DESC="Slot: $SLOT_NAME"
+          DEPLOY_ARGS="--resource-group \"$RG_NAME\" --name \"$APP_NAME\" --slot \"$SLOT_NAME\""
+        fi
+
+        echo "Deploying to $TARGET_DESC..."
+
+        # Execute deployment with retry logic
+        for i in {1..5}; do
+          az webapp deploy $DEPLOY_ARGS --src-path "$DEPLOY_ZIP_PATH" --type zip && break || {
+            echo "Deployment attempt $i failed. Retrying in $((2**i))s..."
+            sleep $((2**i))
+          }
+          if [ $i -eq 5 ]; then
+            echo "ERROR: Deployment failed after 5 attempts. Verify B1 SKU constraints and networking."
+            exit 1
+          fi
+        done
 
     - name: Publish deployment summary
       if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' 
