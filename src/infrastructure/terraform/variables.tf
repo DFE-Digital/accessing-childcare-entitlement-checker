@@ -14,3 +14,14 @@ variable "environment_prefix" {
 #   type        = string
 # }
 
+variable "azure_frontdoor_scale" {
+  description = "Azure Front Door Scale"
+  type        = string
+  default     = "Standard_AzureFrontDoor"
+}
+
+variable "custom_domain" {
+  description = "Custom front-door domain"
+  type        = string
+  default     = ""
+}
