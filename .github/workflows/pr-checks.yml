@@ -181,8 +181,7 @@ jobs:
           name: coveragereport
           path: coveragereport
 
-
-deploy:
+ deploy:
     name: Deploy
     needs: verify
     # TODO: review when deciding deployment strategy/ephemeral environments
