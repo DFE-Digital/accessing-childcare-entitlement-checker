@@ -12,6 +12,7 @@ on:
         description: 'Target Environment'
         required: true
         type: string
+        default: development
 
 
   workflow_dispatch:
