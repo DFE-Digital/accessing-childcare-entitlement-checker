@@ -1,5 +1,6 @@
 using System.Globalization;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,8 @@ builder.Services
     .AddScoped<IJourneySession, JourneySession>()
     .AddHealthChecks();
 
+builder.Services.AddGovUkFrontend();
+
 var app = builder.Build();
 
 var supportedCultures = new[] { new CultureInfo("en-GB") };
@@ -41,6 +44,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseGovUkFrontend();
 
 app.UseRouting();
 

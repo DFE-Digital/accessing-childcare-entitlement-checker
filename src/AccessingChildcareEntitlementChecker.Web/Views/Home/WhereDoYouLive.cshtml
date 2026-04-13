@@ -1,73 +1,38 @@
-﻿@model AccessingChildcareEntitlementChecker.Web.Models.WhereDoYouLiveViewModel
-@using AccessingChildcareEntitlementChecker.Web.Controllers
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
+@model WhereDoYouLiveViewModel
 
-<partial name="_ErrorSummary" />
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="Home" asp-action="Start">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
 
 <form method="post" novalidate>
-    
-    @section BeforeMainContent {
-        <a asp-action="@nameof(HomeController.Start)"
-           asp-controller="Home"
-           class="govuk-back-link">
-            @Shared["Button_Back"]
-        </a>
-    }
+    <govuk-radios for="Country">
+        <govuk-radios-fieldset>
+            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                @Localizer["Title"]
+            </govuk-radios-fieldset-legend>
+            
+            <govuk-radios-hint>
+                @Localizer["Caption"]
+            </govuk-radios-hint>
 
-    <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.Country)) && ViewData.ModelState[nameof(Model.Country)]!.Errors.Count > 0 ? "govuk-form-group--error" : "")">
+            <govuk-radios-error-message />
 
-        <fieldset class="govuk-fieldset" aria-describedby="country-error">
-
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h1 class="govuk-fieldset__heading govuk-body govuk-!-margin-bottom-1">
-                    @Localizer["Title"]
-                </h1>
-                <span class="govuk-caption-m">@Localizer["Caption"]</span>
-                
-            </legend>
-
-            @if (ViewData.ModelState.ContainsKey(nameof(Model.Country)) &&
-                 ViewData.ModelState[nameof(Model.Country)]!.Errors.Count > 0)
+            @foreach (var value in Enum.GetValues<CountryOfResidence>())
             {
-                <p id="country-error" class="govuk-error-message">
-                    <span class="govuk-visually-hidden">Error:</span>
-                    @ViewData.ModelState[nameof(Model.Country)]!.Errors[0].ErrorMessage
-                </p>
+                <govuk-radios-item value="@value">
+                    @Localizer[$"Option_{value}"]
+                </govuk-radios-item>
             }
+        </govuk-radios-fieldset>
+    </govuk-radios>
 
-            <div class="govuk-radios" data-module="govuk-radios">
-
-                @{
-                    var countries = Enum.GetValues<CountryOfResidence>();
-                }
-
-                @foreach (var value in countries)
-                {
-                    bool isFirst = value == countries.First();
-                    var inputId = isFirst ? nameof(Model.Country) : $"Country-{value}";
-
-                    <div class="govuk-radios__item">
-                        <input class="govuk-radios__input"
-                               id="@inputId"
-                               name="@nameof(Model.Country)"
-                               type="radio"
-                               value="@value"
-                               @(Model.Country == value ? "checked" : "")/>
-
-                        <label class="govuk-label govuk-radios__label" for="@inputId">
-                            @Localizer[$"Option_{value}"]
-                        </label>
-                    </div>
-                }
-
-            </div>
-        </fieldset>
-    </div>
-
-    <button type="submit" class="govuk-button" data-module="govuk-button">
+    <govuk-button type="submit">
         @Shared["Button_Continue"]
-    </button>
-
+    </govuk-button>
 </form>

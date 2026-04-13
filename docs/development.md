@@ -101,6 +101,16 @@ See the workflow at `.github/workflows/pr-checks.yml` which builds the solution 
 
 CD is pending implementation - this will be to an Azure Web App via Terraform.
 
+## Dependency Management
+
+We use Dependabot to monitor and update dependencies.
+
+* Security updates are prioritised.
+* All updates are validated via CI.
+  * includes Playwright tests.
+  * excludes SonarQube to prevent exfiltration of the SonarCloud token.
+* Dependencies are version-locked for reproducible builds.
+
 ## More tips
 
 ### `dotnet`
