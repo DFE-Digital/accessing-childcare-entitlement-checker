@@ -21,8 +21,6 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult NextStepPlaceholder()
     {
-        var state = _journeySession.Get();
-
         return Content("Next step placeholder");
     }
 
