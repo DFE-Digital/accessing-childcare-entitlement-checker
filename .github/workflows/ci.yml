@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    uses: ./.github/workflows/build-and-test.yml
+    secrets: inherit
+
+  e2e-tests:
+    name: Tests (E2E)
+    needs: build-and-test
+    uses: ./.github/workflows/e2e-tests.yml
+
+  deploy:
+    name: Deploy
+    needs: build-and-test
+    # TODO: review when deciding deployment strategy/ephemeral environments
+    # remove feature branch before merge
+    if: |
+      (github.event_name == 'push' &&
+      github.ref_name == 'main') ||
+      (github.event_name == 'pull_request' &&
+      github.head_ref == 'feature/ac-364_stub_terraform')
+    uses: ./.github/workflows/infra-deploy.yml
+    secrets: inherit
