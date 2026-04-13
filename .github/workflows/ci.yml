@@ -25,12 +25,6 @@ jobs:
   deploy:
     name: Deploy
     needs: build-and-test
-    # TODO: review when deciding deployment strategy/ephemeral environments
-    # remove feature branch before merge
-    if: |
-      (github.event_name == 'push' &&
-      github.ref_name == 'main') ||
-      (github.event_name == 'pull_request' &&
-      github.head_ref == 'feature/ac-364_stub_terraform')
+    if: github.event_name == 'push' && github.ref_name == 'main'
     uses: ./.github/workflows/infra-deploy.yml
     secrets: inherit
