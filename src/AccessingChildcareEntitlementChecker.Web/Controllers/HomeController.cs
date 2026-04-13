@@ -71,7 +71,7 @@ public class HomeController : Controller
 
         _journeySession.Save(state);
 
-        return RedirectToAction(nameof(UserController.Index), "User");
+        return RedirectToAction(nameof(UserController.HasPartner), "User");
     }
 
     private IStringLocalizer LocalizerForPage(string pageName)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Playwright;
+using static Microsoft.Playwright.Assertions;
 using Reqnroll;
 
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
@@ -42,13 +43,54 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
             await _context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
         }
 
-        [Then("the country error is {string}")]
-        public async Task ThenTheCountryErrorIs(string expectedError)
+        [Then("the {string} error is {string}")]
+        public async Task ThenTheFieldErrorIs(string fieldName, string expectedError)
         {
-            var error = _context.Page.Locator("#Country-error");
+            var error = _context.Page.Locator($"#{fieldName}-error");
 
             await Assertions.Expect(error).ToBeVisibleAsync();
             await Assertions.Expect(error).ToContainTextAsync(expectedError);
+        }
+
+
+        [When("I select {string} for {string}")]
+        public async Task WhenISelectOptionForField(string value, string fieldName)
+        {
+            await _context.Page
+                .GetByLabel(value)
+                .CheckAsync();
+        }
+
+        [Then("I see {string}")]
+        public async Task ThenISeeOption(string option)
+        {
+            var radio = _context.Page.GetByRole(AriaRole.Radio, new() { Name = option });
+
+            await Assertions.Expect(radio).ToBeVisibleAsync();
+        }
+
+        [Given("I am on the has partner page")]
+        public async Task GivenIAmOnTheHasPartnerPage()
+        {
+            await GivenIAmOnTheChildcareEntitlementCheckerWebsite();
+            await WhenIClickTheStartButton();
+            await WhenISelectOptionForField("England", "Country");
+            await WhenIClickOnContinue();
+        }
+
+        [When("I click the back link")]
+        public async Task WhenIClickTheBackLink()
+        {
+            await _context.Page
+                .Locator(".govuk-back-link")
+                .ClickAsync();
+        }
+
+        [Then("I see the text {string}")]
+        public async Task ThenISeeTheText(string expectedText)
+        {
+            await Expect(_context.Page.Locator("body"))
+                .ToContainTextAsync(expectedText);
         }
     }
 }

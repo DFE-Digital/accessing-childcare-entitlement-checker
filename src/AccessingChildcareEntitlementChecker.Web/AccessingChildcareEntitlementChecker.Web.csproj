@@ -5,6 +5,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SessionExpired.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\User\HasPartner.en-GB.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   
   <ItemGroup>

@@ -114,7 +114,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("features/Initial.feature.ndjson", 4);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("features/Initial.feature.ndjson", 8);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -210,7 +210,164 @@ await this.FeatureBackgroundAsync();
  await testRunner.AndAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 14
- await testRunner.ThenAsync("the country error is \"Select where you live\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync("the \"Country\" error is \"Select where you live\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Partner page displays correctly")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Initial")]
+        [global::Xunit.TraitAttribute("Description", "Partner page displays correctly")]
+        public async global::System.Threading.Tasks.Task PartnerPageDisplaysCorrectly()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "2";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Partner page displays correctly", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 16
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 17
+ await testRunner.GivenAsync("I am on the has partner page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 18
+ await testRunner.ThenAsync("the page header is \"Do you live with a partner?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 19
+ await testRunner.AndAsync("I see \"Yes\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 20
+ await testRunner.AndAsync("I see \"No\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="If I don\'t select a partner response I get an error")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Initial")]
+        [global::Xunit.TraitAttribute("Description", "If I don\'t select a partner response I get an error")]
+        public async global::System.Threading.Tasks.Task IfIDontSelectAPartnerResponseIGetAnError()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "3";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("If I don\'t select a partner response I get an error", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 22
+ this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 23
+    await testRunner.GivenAsync("I am on the childcare entitlement checker website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 24
+    await testRunner.AndAsync("I am on the has partner page", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 25
+    await testRunner.WhenAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 26
+    await testRunner.ThenAsync("the \"HasPartner\" error is \"Select do you live with a partner\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="I can select an option and continue")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Initial")]
+        [global::Xunit.TraitAttribute("Description", "I can select an option and continue")]
+        public async global::System.Threading.Tasks.Task ICanSelectAnOptionAndContinue()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "4";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can select an option and continue", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 29
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 30
+ await testRunner.GivenAsync("I am on the has partner page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 31
+ await testRunner.WhenAsync("I select \"Yes\" for \"HasPartner\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 32
+ await testRunner.AndAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 33
+ await testRunner.ThenAsync("I see the text \"Next step placeholder\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="I can navigate from the has partner page back to the where do you live page")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Initial")]
+        [global::Xunit.TraitAttribute("Description", "I can navigate from the has partner page back to the where do you live page")]
+        public async global::System.Threading.Tasks.Task ICanNavigateFromTheHasPartnerPageBackToTheWhereDoYouLivePage()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "5";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("I can navigate from the has partner page back to the where do you live page", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 35
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 36
+ await testRunner.GivenAsync("I am on the has partner page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 37
+ await testRunner.WhenAsync("I click the back link", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 38
+ await testRunner.ThenAsync("the page header is \"Where do you live?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
