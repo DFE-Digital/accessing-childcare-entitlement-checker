@@ -17,7 +17,7 @@ variable "environment_prefix" {
 variable "azure_frontdoor_scale" {
   description = "Azure Front Door Scale"
   type        = string
-  default     = "Standard_AzureFrontDoor"
+  default     = "Standard"
 }
 
 variable "custom_domain" {
