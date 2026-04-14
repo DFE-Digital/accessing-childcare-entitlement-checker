@@ -1,6 +1,7 @@
 namespace AccessingChildcareEntitlementChecker.Web.Models;
 
-public enum AgeEnum {
+public enum AgeEnum
+{
     UnderEighteen,
 
     EighteenToTwenty,

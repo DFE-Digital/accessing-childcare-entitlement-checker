@@ -106,7 +106,7 @@ public class UserController : Controller
     public IActionResult HowOldIsYourPartner()
     {
         throw new NotImplementedException();
-    }   
+    }
 
     private IStringLocalizer LocalizerForPage(string pageName)
     {
