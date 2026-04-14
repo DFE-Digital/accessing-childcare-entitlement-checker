@@ -92,7 +92,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
             await Expect(_context.Page.Locator("body"))
                 .ToContainTextAsync(expectedText);
         }
-        
+
         [Then("{string} is selected for {string}")]
         public async Task ThenOptionIsSelectedForField(string value, string fieldName)
         {
