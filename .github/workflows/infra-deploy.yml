@@ -9,10 +9,6 @@ on:
         type: string
         default: development
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   terraform:
     name: 'Terraform Plan & Apply'
@@ -21,6 +17,10 @@ jobs:
     defaults:
       run:
         working-directory: ./src/infrastructure/terraform
+
+    permissions:
+      id-token: write
+      contents: read
 
     env:
       # OIDC Authentication
