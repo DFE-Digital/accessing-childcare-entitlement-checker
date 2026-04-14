@@ -5,4 +5,5 @@ namespace AccessingChildcareEntitlementChecker.Web.Services;
 public class JourneyState
 {
     public CountryOfResidence? CountryOfResidence { get; set; }
+    public bool? HasPartner { get; set; }
 }
