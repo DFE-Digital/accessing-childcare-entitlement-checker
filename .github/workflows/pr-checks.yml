@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/hk-ac-485-fed-cred
   pull_request:
 
 concurrency:
@@ -198,7 +199,7 @@ jobs:
     needs: verify
     if: |
       (github.event_name == 'push' && github.ref_name == 'main') ||
-      (github.event_name == 'pull_request' && github.head_ref == 'feature/hk-ac-485-fed-cred')
+      (github.event_name == 'push' && github.head_ref == 'feature/hk-ac-485-fed-cred')
     
     uses: ./.github/workflows/infra-deploy.yml
     with:

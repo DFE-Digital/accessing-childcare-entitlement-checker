@@ -1,7 +1,7 @@
 locals {
-   web_app_settings = {
-     "ASPNETCORE_ENVIRONMENT" = var.aspnetcore_environment
-   }
+  web_app_settings = {
+    "ASPNETCORE_ENVIRONMENT" = var.aspnetcore_environment
+  }
 }
 
 resource "azurerm_resource_group" "web-rg" {
