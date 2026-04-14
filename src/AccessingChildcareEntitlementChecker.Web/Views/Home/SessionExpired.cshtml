@@ -1,7 +1,6 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
-
 <h1 class="govuk-heading-l">@Localizer["Title"]</h1>
 
 <p class="govuk-body">
@@ -12,8 +11,6 @@
     @Localizer["Info2"]
 </p>
 
-<a asp-action="WhereDoYouLive"
-   class="govuk-button"
-   role="button">
+<govuk-button asp-action="WhereDoYouLive">
     @Localizer["Button_StartAgain"]
-</a>
+</govuk-button>

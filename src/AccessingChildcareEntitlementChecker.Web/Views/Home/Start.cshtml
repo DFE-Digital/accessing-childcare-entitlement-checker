@@ -51,7 +51,8 @@
         @Localizer["Time"]
     </p>
     
-    <a asp-action="@nameof(EntitlementController.WhereDoYouLive)"
+    <!-- NOSONAR -->
+    <a asp-action="@nameof(HomeController.WhereDoYouLive)"
        class="govuk-button govuk-button--start"
        data-module="govuk-button">
         
@@ -68,5 +69,4 @@
                   d="M0 0h13l20 20-20 20H0l20-20z"/>
         </svg>
     </a>
-    
 </form>

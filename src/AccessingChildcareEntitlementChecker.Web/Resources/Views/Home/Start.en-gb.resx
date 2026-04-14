@@ -39,7 +39,7 @@
         <value>What you’ll need</value>
     </data>
     <data name="WhatYouNeedIntro" xml:space="preserve">
-        <value>We’ll need to know about you and your partner (if you have one)</value>
+        <value>What we’ll need to know about you and your partner (if you have one):</value>
     </data>
     <data name="Parent_Need1" xml:space="preserve">
         <value>your age</value>
@@ -51,7 +51,7 @@
         <value>your working hours and income</value>
     </data>
     <data name="WhatYouNeedChildIntro" xml:space="preserve">
-        <value>You will also need information about your children or expecting children including:</value>
+        <value>You will also need information about your children or expecting children, including:</value>
     </data>
     <data name="Child_Need1" xml:space="preserve">
         <value>their date of birth</value>
@@ -60,7 +60,7 @@
         <value>any disability benefits they get</value>
     </data>
     <data name="Time" xml:space="preserve">
-        <value>Checking your eligibility takes round 5 minutes</value>
+        <value>Checking your eligibility takes around 5 minutes.</value>
     </data>
     <data name="Parent_Need4" xml:space="preserve">
         <value>benefits you recieve</value>

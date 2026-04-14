@@ -6,9 +6,9 @@
       <LastGenOutput>SessionExpired.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
+  
   <ItemGroup>
-    <Folder Include="Helpers\" />
+    <PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.0.1" />
   </ItemGroup>
-
+  
 </Project>

@@ -45,7 +45,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Then("the country error is {string}")]
         public async Task ThenTheCountryErrorIs(string expectedError)
         {
-            var error = _context.Page.Locator("#country-error");
+            var error = _context.Page.Locator("#Country-error");
 
             await Assertions.Expect(error).ToBeVisibleAsync();
             await Assertions.Expect(error).ToContainTextAsync(expectedError);

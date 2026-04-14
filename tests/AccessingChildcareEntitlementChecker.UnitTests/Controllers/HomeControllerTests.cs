@@ -1,17 +1,18 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Services;
 using AccessingChildcareEntitlementChecker.UnitTests.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
-public class EntitlementControllerTests
+public class HomeControllerTests
 {
 
-    private EntitlementController CreateController(FakeJourneySession session)
+    private HomeController CreateController(FakeJourneySession session)
     {
-        return new EntitlementController(
+        return new HomeController(
             new FakeStringLocalizerFactory(),
             session);
     }
@@ -77,7 +78,7 @@ public class EntitlementControllerTests
         var redirect = Assert.IsType<RedirectToActionResult>(result);
 
         Assert.Equal(CountryOfResidence.England, session.State.CountryOfResidence);
-        Assert.Equal(nameof(EntitlementController.PlaceholderNextStep), redirect.ActionName);
+        Assert.Equal(nameof(UserController.Index), redirect.ActionName);
     }
 
     [Fact]
@@ -90,5 +91,4 @@ public class EntitlementControllerTests
 
         Assert.IsType<ViewResult>(result);
     }
-
 }
