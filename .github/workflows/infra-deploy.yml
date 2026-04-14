@@ -96,6 +96,7 @@ jobs:
           --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
           --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
           --src-path "$DEPLOY_ZIP_PATH" \
+          --type zip
 
     - name: Publish deployment summary
       run: |
