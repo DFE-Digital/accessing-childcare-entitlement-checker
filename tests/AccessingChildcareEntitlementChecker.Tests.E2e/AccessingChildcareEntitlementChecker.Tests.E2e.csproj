@@ -27,7 +27,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="features\" />
+	  <ReqnrollFeatureFile Update="features\journey\Initial.feature">
+	    <NormalizedLogicalName>features/Initial.feature</NormalizedLogicalName>
+	    <NormalizedRelativeDir>features/</NormalizedRelativeDir>
+	    <CodeBehindFile>features/Initial.feature.cs</CodeBehindFile>
+	    <MessagesFile>/Users/carllouden/dev/DfE/accessing-childcare-entitlement-checker/artifacts/obj/AccessingChildcareEntitlementChecker.Tests.E2e/debug/features/Initial.feature.ndjson</MessagesFile>
+	    <MessagesResourceName>features/Initial.feature.ndjson</MessagesResourceName>
+	    <FeatureFileResourceName>features/Initial.feature</FeatureFileResourceName>
+	  </ReqnrollFeatureFile>
 	</ItemGroup>
 
 </Project>

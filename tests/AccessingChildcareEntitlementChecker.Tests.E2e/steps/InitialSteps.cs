@@ -69,8 +69,8 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
             await Assertions.Expect(radio).ToBeVisibleAsync();
         }
 
-        [Given("I am on the has partner page")]
-        public async Task GivenIAmOnTheHasPartnerPage()
+        [Given("I am on the partner page")]
+        public async Task GivenIAmOnThePartnerPage()
         {
             await GivenIAmOnTheChildcareEntitlementCheckerWebsite();
             await WhenIClickTheStartButton();
@@ -91,6 +91,22 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         {
             await Expect(_context.Page.Locator("body"))
                 .ToContainTextAsync(expectedText);
+        }
+        
+        [Then("{string} is selected for {string}")]
+        public async Task ThenOptionIsSelectedForField(string value, string fieldName)
+        {
+            var radio = _context.Page.GetByRole(AriaRole.Radio, new() { Name = value });
+
+            await Expect(radio).ToBeCheckedAsync();
+        }
+
+        [Then("{string} is not selected for {string}")]
+        public async Task ThenOptionIsNotSelectedForField(string value, string fieldName)
+        {
+            var radio = _context.Page.GetByRole(AriaRole.Radio, new() { Name = value });
+
+            await Expect(radio).Not.ToBeCheckedAsync();
         }
     }
 }
