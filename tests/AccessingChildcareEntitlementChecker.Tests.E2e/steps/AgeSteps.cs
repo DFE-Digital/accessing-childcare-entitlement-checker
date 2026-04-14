@@ -19,8 +19,6 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Given("I am on the 'How old are you?' page")]
         public async Task GivenIAmOnTheHowOldAreYouPage()
         {
-            // TODO - when the full journey is complete; we'll
-            // need to step through it to get to this point.
             var url = new Uri(_context.Uri, "/User/Age");
             await _context.Page.GotoAsync(url.AbsoluteUri);
         }
@@ -99,7 +97,5 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         {
             throw new PendingStepException();
         }
-
-
     }
 }
