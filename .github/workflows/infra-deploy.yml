@@ -53,12 +53,6 @@ jobs:
         name: webapp-package
         path: ./artifacts/webapp-package
 
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v4
-      with:
-        terraform_wrapper: false
-        terraform_version: 1.10.4
-    
     - name: Azure Login (OIDC)
       uses: azure/login@v3
       with:

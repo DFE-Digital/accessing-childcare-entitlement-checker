@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   lint:
-    name: Lint
+    name: Lint Code
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -33,6 +33,23 @@ jobs:
 
       - name: dotnet format
         run: dotnet format AccessingChildcareEntitlementChecker.slnx --verify-no-changes --no-restore
+
+  lint-terraform:
+    name: Lint Terraform
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+          terraform_version: 1.10.4
+
+      - name: Terraform Format
+        run: terraform fmt -check 
 
   verify:
     name: Build, Tests (Unit) & SonarCloud
@@ -196,10 +213,10 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: verify
+    needs: [verify, lint-terraform]
     if: |
       (github.event_name == 'push' && github.ref_name == 'main') ||
-      (github.event_name == 'push' && github.head_ref == 'feature/hk-ac-485-fed-cred')
+      (github.event_name == 'push' && github.ref_name == 'feature/hk-ac-485-fed-cred')
     
     uses: ./.github/workflows/infra-deploy.yml
     with:
