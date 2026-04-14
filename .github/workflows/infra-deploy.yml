@@ -14,14 +14,13 @@ jobs:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
 
     defaults:
       run:
         working-directory: ./src/infrastructure/terraform
-
-    permissions:
-      id-token: write
-      contents: read
 
     env:
       # OIDC Authentication
@@ -78,7 +77,8 @@ jobs:
           -backend-config="use_oidc=true"
 
     - name: Terraform Validate
-      run: terraform validate
+      run: |
+        terraform validate
 
     - name: Terraform Plan
       run: terraform plan -no-color -out=main.tfplan
