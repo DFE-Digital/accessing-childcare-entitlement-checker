@@ -8,11 +8,10 @@ variable "environment_prefix" {
   type        = string
 }
 
-
-# variable "aspnetcore_environment" {
-#   description = "ASP.NET Core environment"
-#   type        = string
-# }
+variable "aspnetcore_environment" {
+   description = "ASP.NET Core environment"
+   type        = string
+}
 
 variable "azure_frontdoor_scale" {
   description = "Azure Front Door Scale"

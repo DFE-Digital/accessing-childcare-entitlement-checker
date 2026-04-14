@@ -6,5 +6,5 @@ locals {
   }
   prefix         = "s279${var.environment_prefix}"
   service_prefix = "s279${var.environment_prefix}-uks-cec"
-  location       = "uksouth" # UK South is the only region that supports all the services we need, so this is fixed for now
+  location       = "uksouth"
 }

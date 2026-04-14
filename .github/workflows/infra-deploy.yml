@@ -1,10 +1,6 @@
 name: 'CEC Infrastructure Deployment'
 
 on:
-  push:
-    branches:
-      - 'feature/hk-ac-485-fed-cred' # Temporary branch for OIDC testing
-
   workflow_call:
     inputs:
       environment:
@@ -13,28 +9,14 @@ on:
         type: string
         default: development
 
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Select Environment'
-        required: true
-        type: choice
-        options:
-          - development
-          - test
-          - staging
-        default: development
-
 permissions:
-  id-token: write # MANDATORY for Federated Credentials (OIDC)
+  id-token: write
   contents: read
 
 jobs:
   terraform:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
-    # Logic: Uses input if provided (manual/call), otherwise defaults based on branch
-    environment: ${{ inputs.environment || (github.ref == 'refs/heads/main' && 'test' || 'development') }}
 
     defaults:
       run:
@@ -59,28 +41,26 @@ jobs:
       # Terraform Variables
       TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
       TF_VAR_elz_environment: ${{ vars.TF_VAR_ELZ_ENV }}
-      TF_VAR_ELZ_ENV: ${{ vars.TF_VAR_ELZ_ENV }}
-      TF_VAR_PREFIX: ''
+      TF_VAR_aspnetcore_environment: ${{ inputs.environment == 'development' && 'Development' || inputs.environment == 'test' && 'Staging' || inputs.environment == 'staging' && 'Staging' || 'Production' }}
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Download web app artifact
-      if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch'
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: webapp-package
         path: ./artifacts/webapp-package
 
     - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v3
+      uses: hashicorp/setup-terraform@v4
       with:
         terraform_wrapper: false
         terraform_version: 1.10.4
     
     - name: Azure Login (OIDC)
-      uses: azure/login@v2
+      uses: azure/login@v3
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -95,6 +75,9 @@ jobs:
           -backend-config="key=$BACKEND_KEY" \
           -backend-config="use_oidc=true"
 
+    - name: Terraform Validate
+      run: terraform validate
+
     - name: Terraform Plan
       run: terraform plan -no-color -out=main.tfplan
 
@@ -102,108 +85,28 @@ jobs:
       run: terraform apply -auto-approve main.tfplan
 
     - name: Read Terraform outputs
-      if: always() && (steps.terraform.outcome == 'success' || github.event_name == 'workflow_dispatch')
       id: tf-outputs
       run: |
-        echo "=== State Debugger ==="
-        # List resources to verify we are looking at the correct state file
-        terraform state list || echo "Warning: No resources found in state file."
-        
-        # Capture outputs in JSON format
-        TF_OUTPUTS=$(terraform output -json)
-        echo "Raw Outputs: $TF_OUTPUTS"
-
-        # Parse with jq
-        RG_NAME=$(echo "$TF_OUTPUTS" | jq -r '.resource_group_name.value // empty')
-        APP_NAME=$(echo "$TF_OUTPUTS" | jq -r '.web_app_name.value // empty')
-        SLOT_NAME=$(echo "$TF_OUTPUTS" | jq -r '.web_app_slot_name.value // empty')
-
-        # Raw Fallback if JSON parsing fails
-        if [ -z "$RG_NAME" ]; then
-          RG_NAME=$(terraform output -raw resource_group_name 2>/dev/null || echo "")
-        fi
-        if [ -z "$APP_NAME" ]; then
-          APP_NAME=$(terraform output -raw web_app_name 2>/dev/null || echo "")
-        fi
-
-        # Export to GitHub Outputs
-        echo "resource_group_name=$RG_NAME" >> "$GITHUB_OUTPUT"
-        echo "web_app_name=$APP_NAME" >> "$GITHUB_OUTPUT"
-        echo "web_app_slot_name=$SLOT_NAME" >> "$GITHUB_OUTPUT"
-        
-        echo "Captured RG: [$RG_NAME]"
-        echo "Captured App: [$APP_NAME]"
-
-    - name: Verify deploy package structure
-      if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' 
-      run: |
-        if [ ! -f "$DEPLOY_ZIP_PATH" ]; then
-          echo "ERROR: Deployment package not found at $DEPLOY_ZIP_PATH"
-          exit 1
-        fi
-        unzip -l "$DEPLOY_ZIP_PATH" | head -n 20
-        if ! unzip -l "$DEPLOY_ZIP_PATH" | awk '{print $4}' | grep -Eq '^[^/]+\.runtimeconfig\.json$'; then
-          echo "Expected a .runtimeconfig.json at archive root, but none was found."
-          exit 1
-        fi
+        echo "resource_group_name=$(terraform output -raw resource_group_name)" >> "$GITHUB_OUTPUT"
+        echo "web_app_name=$(terraform output -raw web_app_name)" >> "$GITHUB_OUTPUT"
 
     - name: Deploy package to Web App
-      if: github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' 
       run: |
-        RG_NAME="${{ steps.tf-outputs.outputs.resource_group_name }}"
-        APP_NAME="${{ steps.tf-outputs.outputs.web_app_name }}"
-        SLOT_NAME="${{ steps.tf-outputs.outputs.web_app_slot_name }}"
-
-        # Pre-flight Guard: Prevent malformed Azure CLI calls
-        if [ -z "$RG_NAME" ] || [ -z "$APP_NAME" ]; then
-          echo "ERROR: RG_NAME or APP_NAME is empty. Check Terraform outputs."
-          exit 1
-        fi
-
-        # Use Bash Array to prevent quoting issues
-        DEPLOY_ARGS=(
-          --resource-group "$RG_NAME"
-          --name "$APP_NAME"
-          --src-path "$DEPLOY_ZIP_PATH"
-          --type zip
-        )
-
-        if [ -n "$SLOT_NAME" ] && [ "$SLOT_NAME" != "null" ]; then
-          echo "Targeting Slot: [$SLOT_NAME]"
-          DEPLOY_ARGS+=(--slot "$SLOT_NAME")
-        else
-          echo "Targeting Production Environment"
-        fi
-
-        echo "Executing: az webapp deploy ${DEPLOY_ARGS[*]}"
-
-        # Execute with exponential backoff retry logic
-        for i in {1..5}; do
-          az webapp deploy "${DEPLOY_ARGS[@]}" && break || {
-            echo "Attempt $i failed. Retrying in $((2**i))s..."
-            sleep $((2**i))
-          }
-          if [ $i -eq 5 ]; then
-            echo "ERROR: Deployment failed after 5 attempts."
-            exit 1
-          fi
-        done
+        az webapp deploy \
+          --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
+          --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
+          --src-path "$DEPLOY_ZIP_PATH" \
 
     - name: Publish deployment summary
-      if: always() && steps.tf-outputs.outputs.web_app_name != ''
       run: |
+        RESOURCE_GROUP="${{ steps.tf-outputs.outputs.resource_group_name }}"
         APP_NAME="${{ steps.tf-outputs.outputs.web_app_name }}"
-        SLOT_NAME="${{ steps.tf-outputs.outputs.web_app_slot_name }}"
+        DEPLOY_URL="https://${APP_NAME}.azurewebsites.net"
         
-        if [ -n "$SLOT_NAME" ] && [ "$SLOT_NAME" != "null" ]; then
-          DEPLOY_URL="https://${APP_NAME}-${SLOT_NAME}.azurewebsites.net"
-        else
-          DEPLOY_URL="https://${APP_NAME}.azurewebsites.net"
-        fi
-
         {
           echo "## Deployment Details"
-          echo "- **Resource Group**: \`${{ steps.tf-outputs.outputs.resource_group_name }}\`"
-          echo "- **App Service**: \`$APP_NAME\`"
-          echo "- **URL**: [${DEPLOY_URL}](${DEPLOY_URL})"
+          echo 
+          echo "* **URL**: [${DEPLOY_URL}](${DEPLOY_URL})"
+          echo "* **Resource Group**: ${RESOURCE_GROUP}"
+          echo "* **Web App Name**: ${APP_NAME}"
         } >> "$GITHUB_STEP_SUMMARY"

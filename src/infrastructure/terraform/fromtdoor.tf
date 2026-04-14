@@ -224,21 +224,6 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     }
   }
 
-  /* custom_rule {
-    name     = "allowcontentful"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 100
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "X-Contentful-CRN"
-      operator       = "Contains"
-      match_values   = ["crn:contentful"]
-    }
-  } */
-
   custom_rule {
     name     = "blockarchiving"
     enabled  = true
