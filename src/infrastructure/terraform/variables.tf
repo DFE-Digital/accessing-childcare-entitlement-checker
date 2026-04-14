@@ -13,6 +13,13 @@ variable "aspnetcore_environment" {
    type        = string
 }
 
+variable "development_basic_auth_password" {
+  description = "Shared password for development-only basic auth"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 variable "azure_frontdoor_scale" {
   description = "Azure Front Door Scale"
   type        = string

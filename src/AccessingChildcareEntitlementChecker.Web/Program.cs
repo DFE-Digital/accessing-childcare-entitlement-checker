@@ -1,4 +1,5 @@
 using System.Globalization;
+using AccessingChildcareEntitlementChecker.Web;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Localization;
@@ -43,6 +44,13 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDevelopmentAuth(builder.Configuration);
+    app.MapRobotsExclusionProtocol();
+}
+
 app.UseStaticFiles();
 
 app.UseGovUkFrontend();
@@ -54,11 +62,6 @@ app.UseSession();
 app.UseAuthorization();
 
 app.MapHealthChecks("/health");
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapGet("/robots.txt", () => Results.Text("User-agent: *\nDisallow: /", "text/plain"));
-}
 
 app.UseExceptionHandler("/Error");
 

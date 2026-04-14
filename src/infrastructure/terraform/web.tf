@@ -1,7 +1,9 @@
 locals {
-  web_app_settings = {
+  web_app_settings = merge({
     "ASPNETCORE_ENVIRONMENT" = var.aspnetcore_environment
-  }
+    }, var.aspnetcore_environment == "Development" ? {
+    "DevelopmentBasicAuthPassword" = var.development_basic_auth_password
+  } : {})
 }
 
 resource "azurerm_resource_group" "web-rg" {
