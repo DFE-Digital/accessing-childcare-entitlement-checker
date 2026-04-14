@@ -54,4 +54,4 @@ app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Start}/{id?}");
 
-app.Run();
+await app.RunAsync();
