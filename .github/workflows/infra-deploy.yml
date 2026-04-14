@@ -90,6 +90,7 @@ jobs:
       run: |
         echo "resource_group_name=$(terraform output -raw resource_group_name)" >> "$GITHUB_OUTPUT"
         echo "web_app_name=$(terraform output -raw web_app_name)" >> "$GITHUB_OUTPUT"
+        echo "frontdoor_hostname=$(terraform output -raw frontdoor_hostname)" >> "$GITHUB_OUTPUT"
 
     - name: Deploy package to Web App
       run: |
@@ -103,12 +104,14 @@ jobs:
       run: |
         RESOURCE_GROUP="${{ steps.tf-outputs.outputs.resource_group_name }}"
         APP_NAME="${{ steps.tf-outputs.outputs.web_app_name }}"
-        DEPLOY_URL="https://${APP_NAME}.azurewebsites.net"
+        FRONTDOOR_HOSTNAME="${{ steps.tf-outputs.outputs.frontdoor_hostname }}"
+        DEPLOY_URL="https://${FRONTDOOR_HOSTNAME}"
         
         {
           echo "## Deployment Details"
           echo 
           echo "* **URL**: [${DEPLOY_URL}](${DEPLOY_URL})"
+          echo "* **Front Door Hostname**: ${FRONTDOOR_HOSTNAME}"
           echo "* **Resource Group**: ${RESOURCE_GROUP}"
           echo "* **Web App Name**: ${APP_NAME}"
         } >> "$GITHUB_STEP_SUMMARY"

@@ -55,6 +55,11 @@ app.UseAuthorization();
 
 app.MapHealthChecks("/health");
 
+if (app.Environment.IsDevelopment())
+{
+    app.MapGet("/robots.txt", () => Results.Text("User-agent: *\nDisallow: /", "text/plain"));
+}
+
 app.UseExceptionHandler("/Error");
 
 app.MapControllerRoute(
