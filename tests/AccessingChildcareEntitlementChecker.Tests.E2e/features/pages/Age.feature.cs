@@ -103,6 +103,15 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages
             await testRunner.CollectScenarioErrorsAsync();
         }
         
+        public virtual async global::System.Threading.Tasks.Task FeatureBackgroundAsync()
+        {
+#line 3
+#line hidden
+#line 4
+    await testRunner.GivenAsync("I am on the \'How old are you?\' page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+        }
+        
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("features/pages/Age.feature.ndjson", 7);
@@ -144,7 +153,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Page load", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 3
+#line 6
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -154,15 +163,22 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 4
-    await testRunner.GivenAsync("I have navigated to the page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 3
+await this.FeatureBackgroundAsync();
 #line hidden
-#line 5
-    await testRunner.WhenAsync("the page loads", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 7
+    await testRunner.GivenAsync("the page header is \"How old are you?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 6
-    await testRunner.ThenAsync("I should see the heading \"How old are you\", and three radio buttons with the foll" +
-                        "owing options: \"Under 18yrs old\", \"18-20yrs old\" and \"21years old or over\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "Option"});
+                table1.AddRow(new string[] {
+                            "Under 18 years old"});
+                table1.AddRow(new string[] {
+                            "18 to 20 years old"});
+                table1.AddRow(new string[] {
+                            "21 years old or over"});
+#line 8
+    await testRunner.ThenAsync("I should see three radio buttons with the following options:", ((string)(null)), table1, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -179,7 +195,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Radio button selection", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 8
+#line 14
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -189,15 +205,20 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 9
-    await testRunner.GivenAsync("the page has loaded", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 3
+await this.FeatureBackgroundAsync();
 #line hidden
-#line 10
-    await testRunner.WhenAsync("I select an age range option", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 15
+    await testRunner.WhenAsync("I select the \"Under 18 years old\" radio button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 11
-    await testRunner.ThenAsync("only that option should be selected and any previously selected option should be " +
-                        "deselected", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 16
+    await testRunner.AndAsync("I select the \"18 to 20 years old\" radio button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 17
+    await testRunner.ThenAsync("the \"18 to 20 years old\" radio button should be selected", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 18
+    await testRunner.AndAsync("all other options should be deselected", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -214,7 +235,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Continue without selection", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 13
+#line 20
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -224,44 +245,42 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 14
-    await testRunner.GivenAsync("I am on the \"How old are you\" page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 3
+await this.FeatureBackgroundAsync();
 #line hidden
-#line 15
-    await testRunner.AndAsync("I have not selected an option", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 21
+    await testRunner.GivenAsync("I have not selected an option", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 16
-    await testRunner.WhenAsync("I click continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 22
+    await testRunner.WhenAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 17
-    await testRunner.ThenAsync("I should remain on the same page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 23
+    await testRunner.ThenAsync("an error summary box should appear at the top of the page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 18
-    await testRunner.AndAsync("an error summary box should appear at the top of the page", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 24
+    await testRunner.AndAsync("the error summary title should be \"There is a problem\" with an error message \"Sel" +
+                        "ect your age\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 19
-    await testRunner.AndAsync("the error summary title should be “There is a problem”with an error message “Sele" +
-                        "ct your age”", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 20
-    await testRunner.AndAsync("inline validation should display with the error message “Select your age”", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 25
+    await testRunner.AndAsync("inline validation should display with the error message \"Select your age\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Continue with selection")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Continue with selection", Skip="Ignored")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Age")]
         [global::Xunit.TraitAttribute("Description", "Continue with selection")]
         public async global::System.Threading.Tasks.Task ContinueWithSelection()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "3";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Continue with selection", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 22
+#line 28
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -271,32 +290,36 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 23
-    await testRunner.GivenAsync("I have selected an option", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 3
+await this.FeatureBackgroundAsync();
 #line hidden
-#line 24
-    await testRunner.WhenAsync("I click the continue button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 29
+    await testRunner.GivenAsync("I have selected the \"Under 18 years old\" radio button", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 25
-    await testRunner.ThenAsync("I will be directed to the next page in the user journey (How old is your partner)" +
+#line 30
+    await testRunner.WhenAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 31
+    await testRunner.ThenAsync("I will be directed to the next page in the user journey \"How old is your partner\"" +
                         "", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Back navigation")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Back navigation", Skip="Ignored")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Age")]
         [global::Xunit.TraitAttribute("Description", "Back navigation")]
         public async global::System.Threading.Tasks.Task BackNavigation()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "4";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Back navigation", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 27
+#line 34
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -306,15 +329,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 28
-    await testRunner.GivenAsync("I am on the \"How old are you\" page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 3
+await this.FeatureBackgroundAsync();
 #line hidden
-#line 29
+#line 35
     await testRunner.WhenAsync("I click the back link", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 30
-    await testRunner.ThenAsync("I should be returned to the previous page in the user journey (children\'s details" +
-                        ")", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 36
+    await testRunner.ThenAsync("I should be returned to the previous page in the user journey \"Children\'s Details" +
+                        "\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

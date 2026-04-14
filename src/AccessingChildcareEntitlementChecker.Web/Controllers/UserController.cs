@@ -99,13 +99,13 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult ChildrensDetails()
     {
-        throw new NotImplementedException();
+        return View();
     }
 
     [HttpGet]
     public IActionResult HowOldIsYourPartner()
     {
-        throw new NotImplementedException();
+        return View();
     }
 
     private IStringLocalizer LocalizerForPage(string pageName)
