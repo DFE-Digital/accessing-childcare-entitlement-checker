@@ -43,9 +43,9 @@ public class UserControllerTests
     [Fact]
     public void Age_Get_PopulatesModel_FromState()
     {
-        _fakeJourneySession.State.Age = AgeEnum.EighteenToTwenty;
+        _fakeJourneySession.State.Age = Age.EighteenToTwenty;
         var result = _sut.Age();
-        Assert.Equal(AgeEnum.EighteenToTwenty, result.Model<AgeModel>().Age);
+        Assert.Equal(Age.EighteenToTwenty, result.Model<AgeModel>().Age);
     }
 
     [Fact]
@@ -95,13 +95,13 @@ public class UserControllerTests
     {
         var model = new AgeModel()
         {
-            Age = AgeEnum.EighteenToTwenty
+            Age = Age.EighteenToTwenty
         };
 
         var result = _sut.Age(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal(AgeEnum.EighteenToTwenty, _fakeJourneySession.State.Age);
+        Assert.Equal(Age.EighteenToTwenty, _fakeJourneySession.State.Age);
         Assert.True(_sut.ModelState.IsValid);
         Assert.Equal(nameof(UserController.HowOldIsYourPartner), redirect.ActionName);
     }
