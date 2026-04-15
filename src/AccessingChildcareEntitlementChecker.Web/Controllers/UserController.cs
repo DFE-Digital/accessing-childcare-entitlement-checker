@@ -2,6 +2,7 @@ using AccessingChildcareEntitlementChecker.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -25,7 +26,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    public IActionResult HasPartner()
+    public ViewResult HasPartner()
     {
         var state = _journeySession.Get();
 
@@ -61,7 +62,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    public IActionResult Age()
+    public ViewResult Age()
     {
         var state = _journeySession.Get();
 
@@ -97,12 +98,14 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage]
     public IActionResult ChildrensDetails()
     {
         throw new NotImplementedException();
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage]
     public IActionResult HowOldIsYourPartner()
     {
         throw new NotImplementedException();
