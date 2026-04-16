@@ -10,9 +10,27 @@ on:
         default: development
 
 jobs:
+  lint-terraform:
+    name: Lint Terraform
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+          terraform_version: 1.10.4
+
+      - name: Terraform Format
+        run: terraform fmt -check 
+
   terraform:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
+    needs: lint-terraform
     environment: ${{ inputs.environment }}
     permissions:
       id-token: write
