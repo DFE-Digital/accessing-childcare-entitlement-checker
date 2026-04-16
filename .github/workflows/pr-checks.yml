@@ -1,11 +1,11 @@
 name: PR Checks
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   lint:
-    name: Lint
+    name: Lint Code
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -197,12 +197,10 @@ jobs:
   deploy:
     name: Deploy
     needs: verify
-    # TODO: review when deciding deployment strategy/ephemeral environments
-    # remove feature branch before merge
     if: |
-      (github.event_name == 'push' &&
-      github.ref_name == 'main') ||
-      (github.event_name == 'pull_request' &&
-      github.head_ref == 'feature/ac-364_stub_terraform')
+      github.event_name == 'push' && github.ref_name == 'main'
+      
     uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: 'development'
     secrets: inherit
