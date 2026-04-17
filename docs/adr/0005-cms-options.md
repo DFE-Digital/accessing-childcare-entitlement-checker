@@ -51,7 +51,7 @@ The current path (Decision 001) relies on hardcoding each page as a unique contr
     * **Vendor Lock-in & Financial Risk:** This approach creates an artificial, permanent dependency on developers for even minor content changes. It appears designed to sustain long-term contractor dependency rather than project efficiency.
     * **Authoring Failure:** Content ownership is locked within the dev team; editors cannot perform their roles.
     * **Dead-End Architecture:** Extremely difficult and manual to migrate to a CMS or integrate global analytics in the future.
-    * **Incompatibility with Future Rule Engine:** Hardcoded logic is resistant to dynamic integration with an external Rule Engine...hk
+    * **Incompatibility with Future Rule Engine:** Hardcoded logic is resistant to dynamic integration with an flexible/generic Rule Engine
 
 ### Option 3: Logic Engine Refactor (JSON-led)
 * **Description:** Abstracting the journey into a generic "Engine" driven by a centralised JSON schema in Git.
