@@ -1,5 +1,5 @@
 ---
-id: ADR 0005: Refactoring Options for Entitlement Checker Journey Logic
+id: ADR 0005- Refactoring Options for Entitlement Checker Journey Logic
 title: Refactoring Options for Entitlement Checker Journey Logic
 status: Under Review
 date: 2026-04-17
