@@ -19,7 +19,7 @@ The current path (Decision 001) relies on hardcoding each page as a unique contr
 
 ## New Insights & Drivers for Change
 
-1. **Input Pattern Predictability:** Audit of the 40+ planned pages on the **[Round 3 beta- planning: Lucidspark](https://lucid.app/lucidspark/example-link-uuid)** board reveals an ultra-consistent structure. Roughly 25 pages are standard GDS Radio Buttons, 5–10 are Checkboxes, and the remainder are Text Boxes. Hardcoding 40 unique C# views for identical input types is an inefficient use of DfE resource and a fundamental violation of **DRY (Don't Repeat Yourself)** principles.
+1. **Input Pattern Predictability:** Audit of the 40+ planned pages on the **[Round 3 beta- planning: Lucidspark](ADR 0005: Refactoring Options for Entitlement Checker Journey Logic)** board reveals an ultra-consistent structure. Roughly 25 pages are standard GDS Radio Buttons, 5–10 are Checkboxes, and the remainder are Text Boxes. Hardcoding 40 unique C# views for identical input types is an inefficient use of DfE resource and a fundamental violation of **DRY (Don't Repeat Yourself)** principles.
 
 2. **Scaling for Public Beta Requirements:** Significant future requirements have been "parked" for the Public Beta phase that require a global configuration approach:
    * **Analytics & Insights:** Integration of Google Analytics (GA), Google Tag Manager (GTM), and Microsoft Clarity across all 40+ screens.
@@ -76,7 +76,7 @@ The current path (Decision 001) relies on hardcoding each page as a unique contr
 
 ---
 ### Reference Documentation
-* **Project Design Overview:** [Current Architecture Diagram](/images/Round%203%20beta-%20planning-pages.png)
-* **Journey Map:** [Round 3 beta- planning: Lucidspark](https://lucid.app/lucidspark/example-link-uuid)
+* **Project Design Overview:** [Current Architecture Diagram](../../images/Round%203%20beta-%20planning-pages.png)
+* **Journey Map:** [Round 3 beta- planning: Lucidspark](ADR 0005: Refactoring Options for Entitlement Checker Journey Logic)
 
 *End of ADR*
