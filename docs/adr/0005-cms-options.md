@@ -26,7 +26,8 @@ The current path relies on hardcoding each page as a unique controller and view.
     * **External Dependencies:** Potential for No. 10 department-led policy pivots and external data dependencies.
     * **Financial Tooling:** A dedicated Financial Calculator planned for Phase 2.
     Option 2 would require manual, repetitive updates across 40+ separate controllers (potentially inside both Get and Post methods) to implement these, whereas Options 1 and 3 allow for global injection.
-    * **Rule Engine Parallelism:** We are at the initial stage of defining the Rule Engine architecture, which will drive the result page generation. Implementing Option 1 or 3 provides a data-driven interface that can consume Rule Engine outputs more efficiently than a bespoke controller-based architecture.
+   * **Rule Engine Parallelism:** We are at the initial stage of defining the Rule Engine architecture. Implementing Option 1 or 3 provides a data-driven interface that can consume Rule Engine outputs far more efficiently than a bespoke controller-based architecture.
+   * **Separation of Concerns (SoC):** Following DfE best practices, we aim to separate "Presentation Logic" (C# code) from "Domain Content" (Question text/Logic). Options 1 and 3 allow the C# code to remain content-agnostic, focusing solely on rendering, while the journey logic resides in a governed data file or CMS.
    * **URL Agility & SEO:** Public Beta testing often requires refining URL slugs for user clarity and SEO. Option 2 requires static route definitions for every controller, whereas Options 1 and 3 support dynamic routing based on data-driven slugs, allowing for instant SEO updates.
    * **Accessibility & WCAG Compliance:** DfE services must meet WCAG 2.2 standards. Options 1 and 3 allow for "Centralised Accessibility Fixes," where a correction to an aria-label or fieldset legend in a single component template propagates across all 40+ pages. Option 2 introduces a risk of inconsistent compliance, as fixes must be manually replicated across 40+ views.
 3. **Authoring & Content Ownership:** 
@@ -55,6 +56,7 @@ The current path relies on hardcoding each page as a unique controller and view.
 * **Cons:**
     * **Extensive Maintenance Surface Area:** Global changes (e.g., analytics tags or GDS updates) require manual edits to 40+ separate files.
     * **Limited Authoring Capability:** Content management is technically coupled to the engineering team.
+    * **Mixing of Concerns:** Policy logic, UI text, and routing are tightly coupled within the C# controllers. This increases the "Blast Radius" of simple content changes, as any edit requires touching the core application code.
   * **Rigid Routing:** URL structures and SEO metadata are "hard-wired" to controllers, making route changes a deployment-dependent task.
    * **Compliance Risk:** Maintaining high accessibility standards across 40+ unique files increases the likelihood of "Human Error," where one screen might miss a critical compliance update.
     
@@ -66,6 +68,7 @@ The current path relies on hardcoding each page as a unique controller and view.
    * **Zero licensing cost**; adheres to DRY principles; acts as a data-mapping bridge for a future CMS transition 
    * supoorts **Dynamic Routing** where URL slugs are governed by the JSON schema rather than static C# attributes.
    * and ensures **Systemic Accessibility**, where compliance is enforced through shared, audited templates rather than repetitive bespoke code.
+   * and enforces **Separation of Concerns**, making the codebase easier to test and maintain.
 * **Cons:** 
 
     * **Loss of Compile-time Validation:** Journey logic errors are caught at runtime. 
@@ -91,6 +94,7 @@ The current path relies on hardcoding each page as a unique controller and view.
 * **Resource Allocation:** Can we justify the effort to build the Engine to ensure we can easily integrate global analytics, manage dynamic SEO routes, and satisfy upcoming Public Beta requirements?
 * **Future-Proofing:** How do we ensure the journey architecture we choose today is compatible with the upcoming Rule Engine definitions?
 * **WCAG Maintenance:** Does the team agree that a centralized template approach (Option 3) reduces the risk of accessibility regressions compared to managing 40+ separate Razor views?
+* **Architectural Cleanliness:** How much value does the team place on decoupling our content from our code to ensure we meet GDS standards for long-term service sustainability?
 * **POC:** Does it make sense to see the POC I did earlier?
 
 ---
