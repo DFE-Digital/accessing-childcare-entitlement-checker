@@ -3,11 +3,11 @@ id: 005
 title: Refactoring Options for Entitlement Checker Journey Logic
 status: Under Review
 date: 2026-04-17
-author: Senior Lead Architect
+author: Hemant Khanduja
 consulted: PM, Technical Team, Jon (Hippo), DfE Portfolio Leads
 ---
 
-# ADR 005: Refactoring Options for Entitlement Checker Journey Logic
+# ADR 0005: Refactoring Options for Entitlement Checker Journey Logic
 
 ## Status
 Under Review (Pending internal technical review with Hippo and then with DfE leads)
