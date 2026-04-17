@@ -48,7 +48,6 @@ The current path (Decision 001) relies on hardcoding each page as a unique contr
 * **Cons:**
     * **Violation of DRY Principle:** Requires 40+ near-identical Controllers. 
     * **Maintenance Nightmare:** A single global change (e.g., GDS footer or GA tag) requires manual edits to 40+ separate files.
-    * **Vendor Lock-in & Financial Risk:** This approach creates an artificial, permanent dependency on developers for even minor content changes. It appears designed to sustain long-term contractor dependency rather than project efficiency.
     * **Authoring Failure:** Content ownership is locked within the dev team; editors cannot perform their roles.
     * **Dead-End Architecture:** Extremely difficult and manual to migrate to a CMS or integrate global analytics in the future.
     * **Incompatibility with Future Rule Engine:** Hardcoded logic is resistant to dynamic integration with an flexible/generic Rule Engine
