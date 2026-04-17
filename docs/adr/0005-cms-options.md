@@ -19,7 +19,7 @@ The current path (Decision 001) relies on hardcoding each page as a unique contr
 
 ## New Insights & Drivers for Change
 
-1. **Input Pattern Predictability:** Audit of the 40+ planned pages on the **[Round 3 beta- planning: Lucidspark](https://lucid.app/lucidspark/510fe235-2efe-42af-8dc4-6b46c0aa5a83/edit?invitationId=inv_4fcca63f-2f2b-437e-b228-890279248a44&page=0_0#)** board reveals an ultra-consistent structure. Roughly 25 pages are standard GDS Radio Buttons, 5–10 are Checkboxes, and the remainder are Text Boxes. Hardcoding 40 unique C# views for identical input types is an inefficient use of DfE resource and a fundamental violation of **DRY (Don't Repeat Yourself)** principles.
+1. **Input Pattern Predictability:** Audit of the 40+ planned pages on the **[Round 3 beta- planning: Lucidspark](https://lucid.app/lucidspark/510fe235-2efe-42af-8dc4-6b46c0aa5a83/edit?invitationId=inv_4fcca63f-2f2b-437e-b228-890279248a44&page=0_0#)** board reveals an ultra-consistent structure. Roughly around 25 pages are standard GDS Radio Buttons, 5–10 are Checkboxes, and the remainder are Text Boxes. Hardcoding 40 unique C# views for identical input types is an inefficient use of DfE resource and a fundamental violation of **DRY (Don't Repeat Yourself)** principles.
 
 2. **Scaling for Public Beta Requirements:** Significant future requirements have been "parked" for the Public Beta phase that require a global configuration approach:
    * **Analytics & Insights:** Integration of Google Analytics (GA), Google Tag Manager (GTM), and Microsoft Clarity across all 40+ screens.
