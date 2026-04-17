@@ -20,7 +20,7 @@ The initial assumption (Decision 001) was based on a smaller-scale journey where
 While the team has made efforts to organise this growing complexity—such as introducing "Categories" in the solution explorer to group controllers—new insights have emerged which suggest the original architecture may no longer be fit for purpose. We must re-evaluate the technical strategy to avoid severe "Technical Debt" that will likely compromise the August 2026 launch.
 
 ## New Insights & Drivers for Change
-Since Decision 001 was made, the following technical and operational insights have been uncovered, rendering the previous hardcoded path obsolete:
+Since decision was made during discovery phase, the following technical and operational insights have been uncovered, rendering the previous hardcoded path obsolete:
 
 1.  **Repeatable GDS Design Patterns:** An audit of the 40+ planned pages reveals an ultra-consistent structure. Roughly 25 pages are standard **GDS Radio Buttons** (single-choice), 5–10 are **Checkboxes** (multi-choice), and the remainder are standard **Text Boxes**. Hardcoding 40 unique C# views when the input types are so predictable is a fundamental violation of modern software design principles.
 
@@ -34,6 +34,7 @@ Since Decision 001 was made, the following technical and operational insights ha
 The following image provides a high-level overview of the current hardcoded architecture, which this ADR proposes to refactor. The image highlights the code duplication and fragmentation across numerous controllers.
 
 > *[Attached: Picture demonstrating the current design, showing code fragmentation and multiple distinct controllers for individual screens. Filename: image_1.png]*
+
 
 ## Options Considered
 
