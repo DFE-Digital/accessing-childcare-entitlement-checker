@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using AccessingChildcareEntitlementChecker.Web.Services;
@@ -17,8 +18,53 @@ public class UserController : Controller
         _journeySession = journeySession;
     }
 
-    public IActionResult Index()
+    [HttpGet]
+    public IActionResult NextStepPlaceholder()
     {
-        return Content("User controller placeholder");
+        return Content("Next step placeholder");
+    }
+
+    [HttpGet]
+    public IActionResult HasPartner()
+    {
+        var state = _journeySession.Get();
+
+        return View(new HasPartnerViewModel
+        {
+            HasPartner = state.HasPartner
+        });
+    }
+
+    [HttpPost]
+    public IActionResult HasPartner(HasPartnerViewModel model)
+    {
+        var pageTexts = LocalizerForPage(nameof(HasPartner));
+
+        if (model.HasPartner is null)
+        {
+            ModelState.AddModelError(
+                nameof(model.HasPartner),
+                pageTexts["Error_SelectIfYouHavePartner"]);
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var state = _journeySession.Get();
+        state.HasPartner = model.HasPartner ?? false;
+
+        _journeySession.Save(state);
+
+        return RedirectToAction(nameof(UserController.NextStepPlaceholder), "User");
+    }
+
+    private IStringLocalizer LocalizerForPage(string pageName)
+    {
+        var baseName = $"Views.User.{pageName}";
+        var appName = typeof(Program).Assembly.GetName().Name!;
+
+        return _localizerFactory.Create(baseName, appName);
     }
 }

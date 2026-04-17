@@ -5,7 +5,7 @@ on:
 
 jobs:
   lint:
-    name: Lint
+    name: Lint Code
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
 
       - name: Cache SonarCloud packages
         if: ${{ fromJSON(env.SHOULD_RUN_SONARQUBE) }}
-        uses: actions/cache@v5.0.4
+        uses: actions/cache@v5.0.5
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar-packages
@@ -59,7 +59,7 @@ jobs:
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
         if: ${{ fromJSON(env.SHOULD_RUN_SONARQUBE) }}
-        uses: actions/cache@v5.0.4
+        uses: actions/cache@v5.0.5
         with:
           path: ./.sonar/scanner
           key: ${{ runner.os }}-sonar-scanner

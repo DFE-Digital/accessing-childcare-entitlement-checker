@@ -11,4 +11,6 @@ Scenario: I can start the journey
 Scenario: If I don't select a country I get an error
 	When I click the start button
 	And I click on Continue
-	Then the country error is "Select where you live"
+	Then the "Country" error is "Select where you live"
+
+    

@@ -2,13 +2,38 @@ name: 'CEC Infrastructure Deployment'
 
 on:
   workflow_call:
-  
+    inputs:
+      environment:
+        description: 'Target Environment'
+        required: true
+        type: string
+        default: development
+
 jobs:
+  lint-terraform:
+    name: Lint Terraform
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+          terraform_version: 1.10.4
+
+      - name: Terraform Format
+        run: terraform fmt -check 
+
   terraform:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
-    environment: dev
+    needs: lint-terraform
+    environment: ${{ inputs.environment }}
     permissions:
+      id-token: write
       contents: read
 
     defaults:
@@ -16,23 +41,26 @@ jobs:
         working-directory: ./src/infrastructure/terraform
 
     env:
-      # Authentication Secrets (Ensure these match your GitHub Secrets names)
+      # OIDC Authentication
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true
       
       # Backend Configuration
-      BACKEND_RG: "s279d01rg-weu-childcare-mgmt"
-      BACKEND_STORAGE: "s279d01stchildcare"
+      BACKEND_RG: ${{ secrets.TF_BACKEND_RG }}
+      BACKEND_STORAGE: ${{ secrets.TF_BACKEND_STORAGE }}
       BACKEND_CONTAINER: "tfstate"
-      BACKEND_KEY: "accessing-childcare-entitlement-checker.tfstate"
+      BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
+      
+      # Pathing for Artifacts
       DEPLOY_ZIP_PATH: "../../../artifacts/webapp-package/webapp.zip"
 
       # Terraform Variables
-      TF_VAR_environment_prefix: "d01"
-      TF_VAR_aspnetcore_environment: "staging"
-      TF_VAR_elz_environment: "dev"
+      TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
+      TF_VAR_elz_environment: ${{ vars.TF_VAR_ELZ_ENV }}
+      TF_VAR_aspnetcore_environment: ${{ inputs.environment == 'development' && 'Development' || inputs.environment == 'test' && 'Staging' || inputs.environment == 'staging' && 'Staging' || 'Production' }}
+      TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
 
     steps:
     - name: Checkout Code
@@ -44,20 +72,18 @@ jobs:
         name: webapp-package
         path: ./artifacts/webapp-package
 
+    - name: Azure Login (OIDC)
+      uses: azure/login@v3
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v4
       with:
         terraform_wrapper: false
-        terraform_version: 1.10.4 # Aligned with DfE care-leavers repo
-
-    - name: Azure Login
-      uses: azure/login@v3
-      with:
-        # Inspired by DfE care-leavers: using the JSON creds block is more robust
-        creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
-
-    - name: Terraform Format
-      run: terraform fmt -check 
+        terraform_version: 1.10.4
 
     - name: Terraform Init
       run: |
@@ -65,9 +91,10 @@ jobs:
           -backend-config="resource_group_name=$BACKEND_RG" \
           -backend-config="storage_account_name=$BACKEND_STORAGE" \
           -backend-config="container_name=$BACKEND_CONTAINER" \
-          -backend-config="key=$BACKEND_KEY"
+          -backend-config="key=$BACKEND_KEY" \
+          -backend-config="use_oidc=true"
 
-    - name: Terraform validate
+    - name: Terraform Validate
       run: |
         terraform validate
 
@@ -82,33 +109,28 @@ jobs:
       run: |
         echo "resource_group_name=$(terraform output -raw resource_group_name)" >> "$GITHUB_OUTPUT"
         echo "web_app_name=$(terraform output -raw web_app_name)" >> "$GITHUB_OUTPUT"
-        echo "web_app_slot_name=$(terraform output -raw web_app_slot_name)" >> "$GITHUB_OUTPUT"
-
-    - name: Verify deploy package structure
-      run: |
-        unzip -l "$DEPLOY_ZIP_PATH" | head -n 200
-        if ! unzip -l "$DEPLOY_ZIP_PATH" | awk '{print $4}' | grep -Eq '^[^/]+\.runtimeconfig\.json$'; then
-          echo "Expected a .runtimeconfig.json at archive root, but none was found."
-          exit 1
-        fi
+        echo "frontdoor_hostname=$(terraform output -raw frontdoor_hostname)" >> "$GITHUB_OUTPUT"
 
     - name: Deploy package to Web App
       run: |
         az webapp deploy \
           --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
           --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
-          --slot "${{ steps.tf-outputs.outputs.web_app_slot_name }}" \
           --src-path "$DEPLOY_ZIP_PATH" \
           --type zip
 
     - name: Publish deployment summary
       run: |
-        DEPLOY_URL="https://${{ steps.tf-outputs.outputs.web_app_name }}-${{ steps.tf-outputs.outputs.web_app_slot_name }}.azurewebsites.net"
+        RESOURCE_GROUP="${{ steps.tf-outputs.outputs.resource_group_name }}"
+        APP_NAME="${{ steps.tf-outputs.outputs.web_app_name }}"
+        FRONTDOOR_HOSTNAME="${{ steps.tf-outputs.outputs.frontdoor_hostname }}"
+        DEPLOY_URL="https://${FRONTDOOR_HOSTNAME}"
+        
         {
-          echo "## Deployment"
-          echo
-          echo "- Resource group: \`${{ steps.tf-outputs.outputs.resource_group_name }}\`"
-          echo "- Web app: \`${{ steps.tf-outputs.outputs.web_app_name }}\`"
-          echo "- Slot: \`${{ steps.tf-outputs.outputs.web_app_slot_name }}\`"
-          echo "- URL: [${DEPLOY_URL}](${DEPLOY_URL})"
+          echo "## Deployment Details"
+          echo 
+          echo "* **URL**: [${DEPLOY_URL}](${DEPLOY_URL})"
+          echo "* **Front Door Hostname**: ${FRONTDOOR_HOSTNAME}"
+          echo "* **Resource Group**: ${RESOURCE_GROUP}"
+          echo "* **Web App Name**: ${APP_NAME}"
         } >> "$GITHUB_STEP_SUMMARY"
