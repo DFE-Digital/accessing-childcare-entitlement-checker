@@ -7,3 +7,4 @@ This index lists all ADRs in this repository.
 3. [0002: Retain a Team Coverage Gate Capability](adr/0002-retain-a-team-coverage-gate-capability.md)
 4. [0003: Use govuk-frontend-aspnetcore Library for GDS Elements](adr/0003-use-govuk-frontend-aspnetcore.md)
 5. [0004: Use GitHub Runners for UI Tests on PR Push](adr/0004-use-github-runners-for-ui-tests.md)
+6. [0005: Compare CMS ](adr/0005-cms-options.md)
