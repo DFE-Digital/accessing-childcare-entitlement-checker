@@ -1,15 +1,7 @@
-name: PR Checks
+name: Build and Test
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  workflow_call:
 
 jobs:
   lint:
@@ -34,7 +26,7 @@ jobs:
       - name: dotnet format
         run: dotnet format AccessingChildcareEntitlementChecker.slnx --verify-no-changes --no-restore
 
-  verify:
+  build:
     name: Build, Tests (Unit) & SonarCloud
     permissions:
       contents: read
@@ -158,7 +150,7 @@ jobs:
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
-    needs: verify
+    needs: build
     env:
       MIN_LINE_COVERAGE: "5"
     steps:
@@ -185,22 +177,3 @@ jobs:
         with:
           name: coveragereport
           path: coveragereport
-
-  e2e-tests:
-    name: Tests (E2E)
-    needs: verify
-    permissions:
-      contents: read
-      checks: write
-    uses: ./.github/workflows/e2e-tests.yml
-
-  deploy:
-    name: Deploy
-    needs: verify
-    if: |
-      github.event_name == 'push' && github.ref_name == 'main'
-      
-    uses: ./.github/workflows/infra-deploy.yml
-    with:
-      environment: 'development'
-    secrets: inherit
