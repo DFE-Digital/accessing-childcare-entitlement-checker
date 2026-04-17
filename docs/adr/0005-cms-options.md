@@ -15,7 +15,7 @@ Under Review (Pending internal technical review with Hippo and then with DfE lea
 ## Context
 The Accessing Childcare Entitlement (CEC) service requires a sustainable architecture to manage an extensive 40+ page eligibility journey. We must ensure the August 2026 Private Beta deadline is met while maintaining high accuracy, security, and "Value for Money" for the DfE. 
 
-The current path (Decision 001) relies on hardcoding each page as a unique controller and view. While the development team has recently introduced "Categories" within the solution explorer to organise these files, this refactoring is primarily navigational. It makes the solution a little bit easier to navigate for developers, but it does not reduce the actual volume of code to be maintained, nor does it address the lack of policy transparency or authoring capability for non-technical stakeholders.
+The current path relies on hardcoding each page as a unique controller and view. While the development team has recently introduced "Categories" within the solution explorer to organise these files, this refactoring is primarily navigational. It makes the solution a little bit easier to navigate for developers, but it does not reduce the actual volume of code to be maintained, nor does it address the lack of policy transparency or authoring capability for non-technical stakeholders.
 
 ## New Insights & Drivers for Change
 
