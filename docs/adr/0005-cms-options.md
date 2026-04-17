@@ -27,7 +27,8 @@ The current path relies on hardcoding each page as a unique controller and view.
     * **Financial Tooling:** A dedicated Financial Calculator planned for Phase 2.
     Option 2 would require manual, repetitive updates across 40+ separate controllers (potentially inside both Get and Post methods) to implement these, whereas Options 1 and 3 allow for global injection.
     * **Rule Engine Parallelism:** We are at the initial stage of defining the Rule Engine architecture, which will drive the result page generation. Implementing Option 1 or 3 provides a data-driven interface that can consume Rule Engine outputs more efficiently than a bespoke controller-based architecture.
-
+   * **URL Agility & SEO:** Public Beta testing often requires refining URL slugs for user clarity and SEO. Option 2 requires static route definitions for every controller, whereas Options 1 and 3 support dynamic routing based on data-driven slugs, allowing for instant SEO updates.
+   * **Accessibility & WCAG Compliance:** DfE services must meet WCAG 2.2 standards. Options 1 and 3 allow for "Centralised Accessibility Fixes," where a correction to an aria-label or fieldset legend in a single component template propagates across all 40+ pages. Option 2 introduces a risk of inconsistent compliance, as fixes must be manually replicated across 40+ views.
 3. **Authoring & Content Ownership:** 
 
     * **Option 1 (Contentful):** Provides a native interface for Policy Leads and Editors to author content directly without developer intervention.
@@ -54,11 +55,17 @@ The current path relies on hardcoding each page as a unique controller and view.
 * **Cons:**
     * **Extensive Maintenance Surface Area:** Global changes (e.g., analytics tags or GDS updates) require manual edits to 40+ separate files.
     * **Limited Authoring Capability:** Content management is technically coupled to the engineering team.
+  * **Rigid Routing:** URL structures and SEO metadata are "hard-wired" to controllers, making route changes a deployment-dependent task.
+   * **Compliance Risk:** Maintaining high accessibility standards across 40+ unique files increases the likelihood of "Human Error," where one screen might miss a critical compliance update.
+    
     * **Migration Complexity:** Manual effort required to move logic to a CMS or integrate a dynamic Rule Engine in the future.
 
 ### Option 3: Logic Engine Refactor (JSON-led)
 * **Description:** Abstracting the journey into a generic "Engine" driven by a centralised JSON schema.
-* **Pros:** Zero licensing cost; adheres to DRY principles; acts as a data-mapping bridge for a future CMS transition.
+* **Pros:** 
+   * **Zero licensing cost**; adheres to DRY principles; acts as a data-mapping bridge for a future CMS transition 
+   * supoorts **Dynamic Routing** where URL slugs are governed by the JSON schema rather than static C# attributes.
+   * and ensures **Systemic Accessibility**, where compliance is enforced through shared, audited templates rather than repetitive bespoke code.
 * **Cons:** 
 
     * **Loss of Compile-time Validation:** Journey logic errors are caught at runtime. 
@@ -81,8 +88,9 @@ The current path relies on hardcoding each page as a unique controller and view.
 
 ## Discussion Points for Internal Review
 * **The "Migration Bridge":** Does the team agree that Option 3 simplifies the future move to a CMS compared to the current manual approach?
-* **Resource Allocation:** Can we justify the effort to build the Engine to ensure we can easily integrate GA/GTM and satisfy Public Beta requirements?
+* **Resource Allocation:** Can we justify the effort to build the Engine to ensure we can easily integrate global analytics, manage dynamic SEO routes, and satisfy upcoming Public Beta requirements?
 * **Future-Proofing:** How do we ensure the journey architecture we choose today is compatible with the upcoming Rule Engine definitions?
+* **WCAG Maintenance:** Does the team agree that a centralized template approach (Option 3) reduces the risk of accessibility regressions compared to managing 40+ separate Razor views?
 * **POC:** Does it make sense to see the POC I did earlier?
 
 ---
