@@ -1,83 +1,67 @@
-# ADR 002: Content Management Strategy for Entitlement Checker
+---
+id: 002
+title: Refactoring Options for Entitlement Checker Journey Logic
+status: Proposed
+date: 2026-04-17
+decided_by: Senior Lead Architect
+consulted: PM, Technical Team, Hippo Jon
+---
 
-**Status:** Proposed
-**Date:** 17 April 2026
-**Author:** Senior Lead Architect
+# ADR 002: Refactoring Options for Entitlement Checker Journey Logic
 
-## Context and Problem Statement
+## Status
+Proposed (Pending PM/Stakeholder Review)
 
-The Accessing Childcare Entitlement (CEC) service must handle a complex, high-stakes eligibility journey (40+ pages). We need a mechanism to manage the journey flow, question content, and logic rules. We must decide between using a headless CMS, a purely hardcoded approach, or a hybrid "Middle Ground" solution to ensure delivery for Private Beta in August 2026.
+## Context
+The Accessing Childcare Entitlement (CEC) service requires a sustainable architecture to manage an extensive 40+ page eligibility journey. We must ensure the August 2026 Private Beta deadline is met while maintaining high accuracy, security, and "Value for Money" for the DfE. 
 
-## Decision Options
+The current development path involves hardcoding each page as a unique controller/view (Option 2). While the team has recently introduced "Categories" within the solution explorer to help organise these controllers, this refactoring is primarily navigational. It makes the solution a little bit easier to navigate for developers, but it does not reduce the actual volume of code to be maintained, nor does it address the lack of policy transparency for non-technical stakeholders.
 
-### Option 1: Headless CMS (Contentful)
+## Options Considered
 
-*Logic and content are managed in an external SaaS platform and fetched via API.*
+### Option 1: Headless CMS Integration (Contentful)
+* **Pros:** Externalises content and logic to a governed platform; proven in the **Care Leavers** project.
+* **Cons:** Monthly SaaS costs; requires procurement and security onboarding.
 
-* **Note:** Currently utilised by the **Care Leavers** project within the same DfE portfolio, providing a proven precedent for procurement and security assurance.
+### Option 2: Hardcoded Logic (Existing Path)
+* **Pros:** Fast start for isolated pages; no initial platform overhead.
+* **Cons:** Violates **DRY (Don't Repeat Yourself)** principles. Even with the current controller categorisation, this approach requires 40+ unique files. This creates massive maintenance overhead and "Vendor Lock-in," as simple content changes remain dependent on full developer sprint cycles.
 
-### Option 2: Hardcoded (C# / Razor)
-
-*Every page, question, and routing rule is a unique View/Controller action.*
-
-### Option 3: "Middle Ground" (JSON-led Logic Engine)
-
-*Logic is stored as structured JSON files within the Git repository; the application is a generic "Engine" that renders pages based on this data.*
+### Option 3: Logic Engine Refactor (JSON-led)
+* **Pros:** Implements "Logic-as-Data" via Git-based JSON (Transparent, Rule-Based Logic); zero licensing cost; high agility for Private Beta.
+* **Cons:** Requires technical knowledge for initial JSON mapping.
 
 ## Scoring Matrix
-
 *Scale: 1 (Poor) to 5 (Excellent). Weighted against DfE Digital Standards.*
 
 | Criteria | Weight | Option 1: CMS | Option 2: Hardcoded | Option 3: JSON Engine |
 | :--- | :--- | :--- | :--- | :--- |
-| **Suitability for 40+ Pages** | 20% | 5 | 1 | 5 |
-| **Flexibility (Policy Changes)** | 20% | 5 | 1 | 4 |
-| **Development Velocity** | 15% | 4 | 2 | 5 |
-| **Infrastructure Cost (SaaS)** | 10% | 3 | 5 | 5 |
-| **Auditability (AZ-500)** | 15% | 5 | 2 | 5 |
-| **Maintenance & DRY** | 10% | 5 | 1 | 5 |
-| **Scaling & Resilience** | 10% | 5 | 5 | 5 |
+| Suitability for 40+ Pages | 20% | 5 | 1 | 5 |
+| Flexibility (Policy Changes) | 20% | 5 | 1 | 4 |
+| Development Velocity | 15% | 4 | 2 | 5 |
+| Infrastructure Cost (SaaS) | 10% | 3 | 5 | 5 |
+| Auditability (AZ-500) | 15% | 5 | 2 | 5 |
+| Maintenance & DRY | 10% | 5 | 1 | 5 |
+| Scaling & Resilience | 10% | 5 | 5 | 5 |
 | **Weighted Total** | **100%** | **4.6** | **2.0** | **4.8** |
 
-## Comparative Analysis
+## Decision
+We will proceed with **Option 3 (Logic Engine Refactor)** for the Private Beta development. We will build this using the `ICmsFormService` interface to ensure a seamless "Hot-Swap" to **Option 1 (CMS)** if the DfE decides to move content ownership to policy leads later.
 
-### Option 1: Headless CMS (Contentful) - [Score: 4.6]
+We **strongly reject Option 2** as it fails to meet DfE standards for maintainability and scalability, regardless of how controllers are categorised in the solution explorer.
 
-* **Pros:** Best-in-class for non-technical content management. It empowers Policy Leads to own the "Source of Truth."
-* **Cons:** The primary hurdle is the **SaaS Onboarding Process**. However, this is significantly mitigated by the existing use of Contentful in the **Care Leavers** project, establishing a clear pathway for DfE security and legal approval.
+## Consequences
 
-### Option 2: Hardcoded (C# / Razor) - [Score: 2.0]
+### Positive
+* **Agility:** Policy changes can be made in hours via JSON updates rather than days via C# code changes.
+* **Auditability:** Provides a single "Source of Truth" for eligibility rules that is visible outside of the compiled binary.
+* **Professional Alignment:** Matches the standard refactoring patterns used in the **Care Leavers** and **Benchmarking** portfolios.
 
-**This approach is strongly rejected based on the following critical failures:**
+### Negative
+* **Technical Entry Barrier:** Developers must learn the generic "Engine" pattern rather than building bespoke pages.
 
-* **Violation of DRY Principle:** Requires 40+ near-identical Controllers and Views. This leads to "Copy-Paste" technical debt where logic is duplicated, increasing the likelihood of bugs.
-* **Maintenance Nightmare:** A single global change (e.g., updating a common footer or a shared threshold) requires manual edits to 40+ separate files.
-* **Poor Auditability (AZ-500):** Policy logic is buried deep within imperative C# code. There is no single "Source of Truth" for eligibility rules, making it impossible for non-technical stakeholders to verify accuracy.
-* **Inflexible Routing:** Complex branching becomes a nested `if/else` mess that is difficult to unit test and prone to "Broken Link" errors.
-* **Vendor Lock-in & Financial Risk:** This approach creates an artificial, permanent dependency on developers for even minor content changes. This results in poor "Value for Money" for the DfE and appears designed to sustain long-term contractor dependency rather than project efficiency.
-* **Impact:** Choosing this would create a "Developer Bottleneck," making it statistically unlikely to meet the August 2026 deadline.
+### Neutral
+* **Architecture Handover:** Requires a robust handover to ensure the team understands how to extend the JSON schema.
 
-### Option 3: JSON-led Logic Engine - [Score: 4.8]
-
-* **Pros:** The strongest technical choice for the POC. It provides the same architectural benefits as a CMS but with zero procurement delay and 100% Git-based auditability. It enforces strict separation of concerns.
-
-## Delivery & Delivery Indications
-
-| Metric | Option 1: CMS | Option 2: Hardcoded | Option 3: JSON Engine |
-| :--- | :--- | :--- | :--- |
-| **Dev Time Concentration** | Start (Integration) | End (Bug-fixing debt) | Middle (Engine build) |
-| **Policy Change Speed** | Minutes (Sighted) | Days (Dev Sprint) | Hours (PR Cycle) |
-| **August 2026 Confidence** | High | **Critically Low** | **Maximum** |
-
-## AZ-500 & Compliance Mapping
-
-1. **Supply Chain Security:** **Option 3** offers the highest security by keeping all logic within the DfE-controlled Git and Azure perimeter.
-2. **Governance:** Option 1 and 3 both support **Transparent, Rule-Based Logic**, allowing policy leads to verify accuracy without reading code. Option 2 creates "Dark Logic" buried in binary files, which is a failure of modern governance.
-
-## Recommendation
-
-We **strongly reject Option 2** as it is functionally, financially, and architecturally unfit for a project of this complexity.
-
-We recommend **Option 3** as the primary engine for the POC/Beta launch, with the architecture built against the **`ICmsFormService` interface**. This allows for a seamless "Hot-Swap" to **Option 1 (Contentful)** as soon as the onboarding process is finalised, ensuring the DfE benefits from a proven enterprise tool already in use by neighbouring teams.
-
+---
 *End of ADR*
