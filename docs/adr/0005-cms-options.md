@@ -30,7 +30,7 @@ The current path relies on hardcoding each page as a unique controller and view.
 
 3. **Authoring & Content Ownership:** 
 
-* **Option 1 (Contentful):** Provides a native interface for Policy Leads and Editors to author content directly without developer intervention.
+    * **Option 1 (Contentful):** Provides a native interface for Policy Leads and Editors to author content directly without developer intervention.
     * **Option 3 (JSON):** Centralises content but remains technical to author, requiring a developer or technical editor to manage the JSON schema.
     * **Option 2 (Hardcoded):** Content ownership is technically bound to the codebase; changes require code modification and a full deployment cycle.
 
@@ -41,7 +41,10 @@ The current path relies on hardcoding each page as a unique controller and view.
 ### Option 1: Headless CMS (Contentful)
 * **Description:** SaaS platform for managing journey logic and content.
 * **Pros:** Best-in-class for non-technical ownership; removes developer dependency for content updates.
-* **Cons:** Procurement and onboarding lead times may impact the immediate Private Beta timeline.
+* **Cons:** :
+  * **Onboarding:** Procurement and onboarding lead times may impact the immediate Private Beta timeline.
+  * **Compile-time Safety:** CMS content is fetched at runtime via API.
+    * **Mitigation:** Can be offset by using strongly typed C# clients and code generation tools to map CMS schemas to C# classes, ensuring type integrity at build-time.
 
 ### Option 2: Hardcoded Logic (Baseline Strategy)
 * **Description:** Continuing with "One Controller Per Page," using solution explorer categories for navigation.
@@ -67,19 +70,20 @@ The current path relies on hardcoding each page as a unique controller and view.
 | Criteria | Weight | Option 1: CMS | Option 2: Baseline | Option 3: JSON Engine |
 | :--- | :--- | :--- | :--- | :--- |
 | **Initial Simplicity** | 10% | 2 | **5** | 3 |
-| **Compile-time Safety** | 10% | 1 | **5** | 3 |
+| **Compile-time Safety** | 10% | **3** | **5** | **3** |
 | **Suitability for 40+ Pages** | 15% | 5 | 2 | 5 |
 | **Global Flexibility (GA/GTM)** | 15% | 5 | 2 | 4 |
 | **Ease of CMS Migration** | 20% | 5 | 1 | 4 |
 | **Authoring Independence** | 10% | 5 | 1 | 3 |
 | **Development Velocity** | 10% | 4 | 3 | 4 |
 | **Maintenance Sustainability** | 10% | 5 | 2 | 5 |
-| **Weighted Total** | **100%** | **4.2** | **2.5** | **4.1** |
+| **Weighted Total** | **100%** | **4.4** | **2.5** | **4.1** |
 
 ## Discussion Points for Internal Review
 * **The "Migration Bridge":** Does the team agree that Option 3 simplifies the future move to a CMS compared to the current manual approach?
 * **Resource Allocation:** Can we justify the effort to build the Engine to ensure we can easily integrate GA/GTM and satisfy Public Beta requirements?
 * **Future-Proofing:** How do we ensure the journey architecture we choose today is compatible with the upcoming Rule Engine definitions?
+* **POC:** Does it make sense to see the POC I did earlier?
 
 ---
 ### Reference Documentation
