@@ -76,7 +76,7 @@ The current path (Decision 001) relies on hardcoding each page as a unique contr
 
 ---
 ### Reference Documentation
-* **Project Design Overview:** [Current Architecture Diagram](https://github.com.mcas.ms/DFE-Digital/accessing-childcare-entitlement-checker/blob/feature/hk-ac-546-adr-cms/docs/images/Round%203%20beta-%20planning-pages.png)
+* **Project Design Overview:** ![User Flow Diagram](../images/Round%203%20beta-%20planning-pages.png)
 * **Journey Map:** [Round 3 beta- planning: Lucidspark](https://lucid.app/lucidspark/510fe235-2efe-42af-8dc4-6b46c0aa5a83/edit?invitationId=inv_4fcca63f-2f2b-437e-b228-890279248a44&page=0_0#)
 
 *End of ADR*
