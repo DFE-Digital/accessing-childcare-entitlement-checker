@@ -19,13 +19,16 @@ The current path (Decision 001) relies on hardcoding each page as a unique contr
 
 ## New Insights & Drivers for Change
 
-1. **Input Pattern Predictability:** Audit of the 40+ planned pages on the **[Round 3 beta- planning: Lucidspark](https://lucid.app/lucidspark/510fe235-2efe-42af-8dc4-6b46c0aa5a83/edit?invitationId=inv_4fcca63f-2f2b-437e-b228-890279248a44&page=0_0#)** board reveals an ultra-consistent structure. Roughly around 25 pages are standard GDS Radio Buttons, 5–10 are Checkboxes, and the remainder are Text Boxes. Hardcoding 40 unique C# views for identical input types is an inefficient use of DfE resource and a fundamental violation of **DRY (Don't Repeat Yourself)** principles.
+1. **Input Pattern Predictability:** Audit of around 40+ planned pages as per **Project Design Overview:** ![User Flow Diagram](../images/Round%203%20beta-%20planning-pages.png) on the **[Round 3 beta- planning: Lucidspark](https://lucid.app/lucidspark/510fe235-2efe-42af-8dc4-6b46c0aa5a83/edit?invitationId=inv_4fcca63f-2f2b-437e-b228-890279248a44&page=0_0#)** board reveals an ultra-consistent structure. Roughly around 25 pages are standard GDS Radio Buttons, 5–10 are Checkboxes, and the remainder are Text Boxes. Hardcoding 40 unique C# views for identical input types is an inefficient use of DfE resource and a fundamental violation of **DRY (Don't Repeat Yourself)** principles.
 
 2. **Scaling for Public Beta Requirements:** Significant future requirements have been "parked" for the Public Beta phase that require a global configuration approach:
    * **Analytics & Insights:** Integration of Google Analytics (GA), Google Tag Manager (GTM), and Microsoft Clarity across all 40+ screens.
    * **External Dependencies:** Potential for No. 10 department-led policy pivots and external data dependencies.
    * **Financial Tooling:** A dedicated Financial Calculator in Phase 2.
    Option 2 would require manual, repetitive updates across 40+ separate controllers to implement these, whereas Options 1 and 3 allow for global injection.
+   * **Rule Engine Parallelism:** We are at the initial stage of defining the Rule Engine architecture. This engine will be the primary driver for result page generation. As the Rule Engine is still being evaluated, we cannot delay the development of the journey logic until the end of Public Beta. Implementing Option 1 or 3 provides a data-driven interface that can consume Rule Engine outputs far more efficiently than a hardcoded controller-based architecture.
+
+
 
 3. **Authoring & Content Ownership:** * **Option 1 (Contentful):** Provides a native interface for Policy Leads and Editors to author content directly without developer intervention.
    * **Option 3 (JSON):** Centralises content but remains "technical" to author, requiring a developer or technical editor to manage the JSON schema.
@@ -48,6 +51,7 @@ The current path (Decision 001) relies on hardcoding each page as a unique contr
     * **Vendor Lock-in & Financial Risk:** This approach creates an artificial, permanent dependency on developers for even minor content changes. It appears designed to sustain long-term contractor dependency rather than project efficiency.
     * **Authoring Failure:** Content ownership is locked within the dev team; editors cannot perform their roles.
     * **Dead-End Architecture:** Extremely difficult and manual to migrate to a CMS or integrate global analytics in the future.
+    * **Incompatibility with Future Rule Engine:** Hardcoded logic is resistant to dynamic integration with an external Rule Engine...hk
 
 ### Option 3: Logic Engine Refactor (JSON-led)
 * **Description:** Abstracting the journey into a generic "Engine" driven by a centralised JSON schema in Git.
@@ -55,7 +59,7 @@ The current path (Decision 001) relies on hardcoding each page as a unique contr
 * **Cons:** Requires technical knowledge for initial JSON mapping; harder for non-technical editors to author than Option 1.
 
 ## Scoring Matrix
-*Scale: 1 (Poor) to 5 (Excellent). Weighted against DfE Digital Standards.*
+*Scale: 1 (Poor) to 5 (Excellent). 
 
 | Criteria | Weight | Option 1: CMS | Option 2: Hardcoded | Option 3: JSON Engine |
 | :--- | :--- | :--- | :--- | :--- |
