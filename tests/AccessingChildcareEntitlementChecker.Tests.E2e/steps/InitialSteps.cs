@@ -8,25 +8,18 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
     public class InitialSteps
     {
         private Context _context;
+        private SharedSteps _sharedSteps;
 
         public InitialSteps(Context context)
         {
             _context = context;
+            _sharedSteps = new SharedSteps(context);
         }
 
         [Given("I am on the childcare entitlement checker website")]
         public async Task GivenIAmOnTheChildcareEntitlementCheckerWebsite()
         {
-            var url = Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252/";
-            await _context.Page.GotoAsync(url);
-        }
-
-        [Then("the page header is {string}")]
-        public async Task ThenThePageHeaderIs(string expectedHeader)
-        {
-            await Assertions.Expect(
-                _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 })
-            ).ToHaveTextAsync(expectedHeader);
+            await _context.Page.GotoAsync(_context.Uri.ToString());
         }
 
         [When("I click the start button")]
@@ -35,12 +28,6 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
             await _context.Page
                 .GetByRole(AriaRole.Link, new() { Name = "Start now" })
                 .ClickAsync();
-        }
-
-        [When("I click on Continue")]
-        public async Task WhenIClickOnContinue()
-        {
-            await _context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
         }
 
         [Then("the {string} error is {string}")]
@@ -75,15 +62,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
             await GivenIAmOnTheChildcareEntitlementCheckerWebsite();
             await WhenIClickTheStartButton();
             await WhenISelectOptionForField("England", "Country");
-            await WhenIClickOnContinue();
-        }
-
-        [When("I click the back link")]
-        public async Task WhenIClickTheBackLink()
-        {
-            await _context.Page
-                .Locator(".govuk-back-link")
-                .ClickAsync();
+            await _sharedSteps.WhenIClickOnContinue();
         }
 
         [Then("I see the text {string}")]
