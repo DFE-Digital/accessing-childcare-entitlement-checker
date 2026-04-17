@@ -13,7 +13,7 @@ consulted: PM, Technical Team, Jon (Hippo), DfE Portfolio Leads
 Under Review (Pending internal technical review with Hippo and then with DfE leads)
 
 ## Context
-The Accessing Childcare Entitlement (CEC) service must deliver a robust, 40+ page eligibility journey for the August 2026 Private Beta. The design of this journey, as captured on the **[Round 3 beta- planning: Lucidspark]** board, shows a highly structured and repeatable flow.
+The Accessing Childcare Entitlement (CEC) service must deliver a robust, 40+ page eligibility journey for the August 2026 Private Beta. The design of this journey, as captured on the **[Round 3 beta- planning: Lucidspark] https://lucid.app/lucidspark/510fe235-2efe-42af-8dc4-6b46c0aa5a83/edit?invitationId=inv_4fcca63f-2f2b-437e-b228-890279248a44&page=0_0#** board, shows a highly structured and repeatable flow.
 
 The initial assumption was based on a smaller-scale journey where hardcoding individual controllers and views was considered sufficient for a rapid start.
 
