@@ -8,12 +8,12 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 public class UserControllerTests
 {
     private readonly FakeJourneySession _fakeJourneySession;
-    private readonly UserController _sut;
+    private readonly UserController _controller;
 
     public UserControllerTests()
     {
         _fakeJourneySession = new FakeJourneySession();
-        _sut = new UserController(
+        _controller = new UserController(
             new FakeStringLocalizerFactory(),
             _fakeJourneySession);
     }
@@ -21,14 +21,14 @@ public class UserControllerTests
     [Fact]
     public void HasPartner_ReturnsView()
     {
-        var result = _sut.HasPartner();
+        var result = _controller.HasPartner();
         Assert.Null(result.Model<HasPartnerViewModel>().HasPartner);
     }
 
     [Fact]
     public void Age_ReturnsView()
     {
-        var result = _sut.Age();
+        var result = _controller.Age();
         Assert.Null(result.Model<AgeModel>().Age);
     }
 
@@ -36,7 +36,7 @@ public class UserControllerTests
     public void HasPartner_Get_PopulatesModel_FromState()
     {
         _fakeJourneySession.State.HasPartner = true;
-        var result = _sut.HasPartner();
+        var result = _controller.HasPartner();
         Assert.True(result.Model<HasPartnerViewModel>().HasPartner);
     }
 
@@ -44,7 +44,7 @@ public class UserControllerTests
     public void Age_Get_PopulatesModel_FromState()
     {
         _fakeJourneySession.State.Age = Age.EighteenToTwenty;
-        var result = _sut.Age();
+        var result = _controller.Age();
         Assert.Equal(Age.EighteenToTwenty, result.Model<AgeModel>().Age);
     }
 
@@ -56,9 +56,9 @@ public class UserControllerTests
             HasPartner = null,
         };
 
-        _sut.HasPartner(model);
-        Assert.False(_sut.ModelState.IsValid);
-        Assert.True(_sut.ModelState.ContainsKey(nameof(model.HasPartner)));
+        _controller.HasPartner(model);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.HasPartner)));
     }
 
     [Fact]
@@ -69,9 +69,9 @@ public class UserControllerTests
             Age = null,
         };
 
-        _sut.Age(model);
-        Assert.False(_sut.ModelState.IsValid);
-        Assert.True(_sut.ModelState.ContainsKey(nameof(model.Age)));
+        _controller.Age(model);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.Age)));
     }
 
     [Fact]
@@ -82,11 +82,11 @@ public class UserControllerTests
             HasPartner = true
         };
 
-        var result = _sut.HasPartner(model);
+        var result = _controller.HasPartner(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal(true, _fakeJourneySession.State.HasPartner);
-        Assert.True(_sut.ModelState.IsValid);
+        Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(UserController.NextStepPlaceholder), redirect.ActionName);
     }
 
@@ -98,11 +98,11 @@ public class UserControllerTests
             Age = Age.EighteenToTwenty
         };
 
-        var result = _sut.Age(model);
+        var result = _controller.Age(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal(Age.EighteenToTwenty, _fakeJourneySession.State.Age);
-        Assert.True(_sut.ModelState.IsValid);
+        Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(UserController.HowOldIsYourPartner), redirect.ActionName);
     }
 }
