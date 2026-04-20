@@ -81,7 +81,7 @@ public class UserController : Controller
         {
             ModelState.AddModelError(
                 nameof(model.Age),
-                pageTexts["Select your age"]);
+                pageTexts["Error_Select-your-age"]);
         }
 
         if (!ModelState.IsValid)
