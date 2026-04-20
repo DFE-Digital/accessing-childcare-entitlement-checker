@@ -72,6 +72,8 @@ We created a proof of concept using Contentful; and found that with upfront deve
 
 However; because the content (text and form structure) is extremely tightly bound to the rules; allowing users to edit the content carries extreme risk of breaking the application unless internal users can also edit the rules for checking eligibility.
 
+Any rules engine dictates the required inputs, their structure, and how they're used to produce outputs. That creates a hard dependency on the form configuration. That means the form layer can't be treated as fully flexible. It has to be constrained and validated against the rules engine requirements.
+
 ### Option 3: Logic Engine Refactor (JSON-led)
 
 This was an experimental option where the journey and rules are abstracted into a generic "Engine" driven by a centralised JSON schema.
