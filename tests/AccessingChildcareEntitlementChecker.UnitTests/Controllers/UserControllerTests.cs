@@ -29,7 +29,7 @@ public class UserControllerTests
     public void Age_ReturnsView()
     {
         var result = _controller.Age();
-        Assert.Null(result.Model<AgeModel>().Age);
+        Assert.Null(result.Model<AgeViewModel>().Age);
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class UserControllerTests
     {
         _fakeJourneySession.State.Age = Age.EighteenToTwenty;
         var result = _controller.Age();
-        Assert.Equal(Age.EighteenToTwenty, result.Model<AgeModel>().Age);
+        Assert.Equal(Age.EighteenToTwenty, result.Model<AgeViewModel>().Age);
     }
 
     [Fact]
@@ -64,7 +64,7 @@ public class UserControllerTests
     [Fact]
     public void Age_Post_InvalidSelection_ReturnsViewWithError()
     {
-        var model = new AgeModel()
+        var model = new AgeViewModel()
         {
             Age = null,
         };
@@ -93,7 +93,7 @@ public class UserControllerTests
     [Fact]
     public void Age_Post_ValidSelection_SavesState_AndRedirects()
     {
-        var model = new AgeModel()
+        var model = new AgeViewModel()
         {
             Age = Age.EighteenToTwenty
         };

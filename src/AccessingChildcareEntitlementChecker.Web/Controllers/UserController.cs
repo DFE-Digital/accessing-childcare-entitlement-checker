@@ -66,14 +66,14 @@ public class UserController : Controller
     {
         var state = _journeySession.Get();
 
-        return View(new AgeModel
+        return View(new AgeViewModel
         {
             Age = state.Age
         });
     }
 
     [HttpPost]
-    public IActionResult Age(AgeModel model)
+    public IActionResult Age(AgeViewModel model)
     {
         var pageTexts = LocalizerForPage(nameof(Age));
 
