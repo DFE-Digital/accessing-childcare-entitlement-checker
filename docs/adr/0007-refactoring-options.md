@@ -1,4 +1,4 @@
-# ADR 0005: Refactoring Options
+# Refactoring Options
 
 ## Context and Problem Statement
 
