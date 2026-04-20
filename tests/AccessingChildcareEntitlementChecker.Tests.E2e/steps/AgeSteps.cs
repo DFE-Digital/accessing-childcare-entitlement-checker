@@ -26,11 +26,11 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Then("I should see three radio buttons with the following options:")]
         public async Task ThenIShouldSeeThreeRadioButtonsWithTheFollowingOptions(DataTable dataTable)
         {
-            var expected = dataTable.Rows.Select(r => r[0]).ToArray();
-            await Expect(_context.Page.GetByRole(AriaRole.Radio)).ToHaveCountAsync(expected.Length);
-            foreach (var label in expected)
+            var expectedOptions = dataTable.Rows.Select(r => r[0]).ToArray();
+            await Expect(_context.Page.GetByRole(AriaRole.Radio)).ToHaveCountAsync(expectedOptions.Length);
+            foreach (var option in expectedOptions)
             {
-                await Expect(_context.Page.GetByRole(AriaRole.Radio, new() { Name = label })).ToBeVisibleAsync();
+                await Expect(_context.Page.GetByRole(AriaRole.Radio, new() { Name = option })).ToBeVisibleAsync();
             }
         }
 
