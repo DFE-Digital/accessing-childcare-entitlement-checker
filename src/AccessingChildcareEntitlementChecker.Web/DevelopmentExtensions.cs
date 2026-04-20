@@ -11,8 +11,10 @@ public static class DevelopmentExtensions
         var developmentBasicAuthPassword = configuration[DevelopmentBasicAuthPasswordSettingName];
 
         if (string.IsNullOrEmpty(developmentBasicAuthPassword))
+        {
             return app;
-        
+        }
+
         app.Use(async (context, next) =>
         {
             if (context.Request.Path.Equals("/health", StringComparison.OrdinalIgnoreCase) ||
