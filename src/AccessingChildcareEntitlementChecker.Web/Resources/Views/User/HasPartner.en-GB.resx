@@ -22,7 +22,7 @@
         <value>Do you live with a partner?</value>
     </data>
     <data name="Caption" xml:space="preserve">
-        <value>Select "Yes" if your partner normally lives with you.</value>
+        <value>Select "Yes" if your partner normally lives with you, but they are away because of work.</value>
     </data>
     <data name="Error_SelectIfYouHavePartner" xml:space="preserve">
         <value>Select do you live with a partner</value>
