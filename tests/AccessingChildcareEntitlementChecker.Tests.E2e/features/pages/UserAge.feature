@@ -1,4 +1,4 @@
-Feature: Age
+Feature: User Age
 
 Background:
     Given I am on the 'How old are you?' page

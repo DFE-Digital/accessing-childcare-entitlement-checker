@@ -62,25 +62,25 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    public ViewResult Age()
+    public ViewResult UserAge()
     {
         var state = _journeySession.Get();
 
-        return View(new AgeViewModel
+        return View(new UserAgeViewModel
         {
-            Age = state.Age
+            UserAge = state.UserAge
         });
     }
 
     [HttpPost]
-    public IActionResult Age(AgeViewModel model)
+    public IActionResult UserAge(UserAgeViewModel model)
     {
-        var pageTexts = LocalizerForPage(nameof(Age));
+        var pageTexts = LocalizerForPage(nameof(UserAge));
 
-        if (model.Age is null)
+        if (model.UserAge is null)
         {
             ModelState.AddModelError(
-                nameof(model.Age),
+                nameof(model.UserAge),
                 pageTexts["Error_Select-your-age"]);
         }
 
@@ -90,7 +90,7 @@ public class UserController : Controller
         }
 
         var state = _journeySession.Get();
-        state.Age = model.Age;
+        state.UserAge = model.UserAge;
 
         _journeySession.Save(state);
 

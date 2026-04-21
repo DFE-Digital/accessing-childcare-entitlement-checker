@@ -26,10 +26,10 @@ public class UserControllerTests
     }
 
     [Fact]
-    public void Age_ReturnsView()
+    public void UserAge_ReturnsView()
     {
-        var result = _controller.Age();
-        Assert.Null(result.Model<AgeViewModel>().Age);
+        var result = _controller.UserAge();
+        Assert.Null(result.Model<UserAgeViewModel>().UserAge);
     }
 
     [Fact]
@@ -41,11 +41,11 @@ public class UserControllerTests
     }
 
     [Fact]
-    public void Age_Get_PopulatesModel_FromState()
+    public void UserAge_Get_PopulatesModel_FromState()
     {
-        _fakeJourneySession.State.Age = Age.EighteenToTwenty;
-        var result = _controller.Age();
-        Assert.Equal(Age.EighteenToTwenty, result.Model<AgeViewModel>().Age);
+        _fakeJourneySession.State.UserAge = AgeRange.EighteenToTwenty;
+        var result = _controller.UserAge();
+        Assert.Equal(AgeRange.EighteenToTwenty, result.Model<UserAgeViewModel>().UserAge);
     }
 
     [Fact]
@@ -62,16 +62,16 @@ public class UserControllerTests
     }
 
     [Fact]
-    public void Age_Post_InvalidSelection_ReturnsViewWithError()
+    public void UserAge_Post_InvalidSelection_ReturnsViewWithError()
     {
-        var model = new AgeViewModel()
+        var model = new UserAgeViewModel()
         {
-            Age = null,
+            UserAge = null,
         };
 
-        _controller.Age(model);
+        _controller.UserAge(model);
         Assert.False(_controller.ModelState.IsValid);
-        Assert.True(_controller.ModelState.ContainsKey(nameof(model.Age)));
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.UserAge)));
     }
 
     [Fact]
@@ -91,17 +91,17 @@ public class UserControllerTests
     }
 
     [Fact]
-    public void Age_Post_ValidSelection_SavesState_AndRedirects()
+    public void UserAge_Post_ValidSelection_SavesState_AndRedirects()
     {
-        var model = new AgeViewModel()
+        var model = new UserAgeViewModel()
         {
-            Age = Age.EighteenToTwenty
+            UserAge = AgeRange.EighteenToTwenty
         };
 
-        var result = _controller.Age(model);
+        var result = _controller.UserAge(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal(Age.EighteenToTwenty, _fakeJourneySession.State.Age);
+        Assert.Equal(AgeRange.EighteenToTwenty, _fakeJourneySession.State.UserAge);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(UserController.HowOldIsYourPartner), redirect.ActionName);
     }

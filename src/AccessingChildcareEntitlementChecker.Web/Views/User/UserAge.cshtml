@@ -1,7 +1,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
-@model AgeViewModel
+@model UserAgeViewModel
 
 @section BeforeContent {
     <govuk-back-link asp-controller="User" asp-action="ChildrensDetails">
@@ -10,7 +10,7 @@
 }
 
 <form method="post" novalidate>
-    <govuk-radios for="Age">
+    <govuk-radios for="UserAge">
         <govuk-radios-fieldset>
             <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
                 @Localizer["Title"]

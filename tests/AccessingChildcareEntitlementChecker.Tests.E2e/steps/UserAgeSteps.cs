@@ -7,11 +7,11 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
 {
     [Binding]
-    public class AgeSteps
+    public class UserAgeSteps
     {
         private Context _context;
 
-        public AgeSteps(Context context)
+        public UserAgeSteps(Context context)
         {
             _context = context;
         }
@@ -19,7 +19,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Given("I am on the 'How old are you?' page")]
         public async Task GivenIAmOnTheHowOldAreYouPage()
         {
-            var url = new Uri(_context.Uri, "/User/Age");
+            var url = new Uri(_context.Uri, "/User/UserAge");
             await _context.Page.GotoAsync(url.AbsoluteUri);
         }
 

@@ -17,21 +17,21 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class AgeFeature : object, global::Xunit.IClassFixture<AgeFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class UserAgeFeature : object, global::Xunit.IClassFixture<UserAgeFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "features/pages", "Age", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "features/pages", "User Age", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Age.feature"
+#line 1 "UserAge.feature"
 #line hidden
         
-        public AgeFeature(AgeFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public UserAgeFeature(UserAgeFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -114,7 +114,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("features/pages/Age.feature.ndjson", 7);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("features/pages/UserAge.feature.ndjson", 7);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -143,7 +143,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Page load")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Age")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
         [global::Xunit.TraitAttribute("Description", "Page load")]
         public async global::System.Threading.Tasks.Task PageLoad()
         {
@@ -185,7 +185,7 @@ await this.FeatureBackgroundAsync();
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Radio button selection")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Age")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
         [global::Xunit.TraitAttribute("Description", "Radio button selection")]
         public async global::System.Threading.Tasks.Task RadioButtonSelection()
         {
@@ -225,7 +225,7 @@ await this.FeatureBackgroundAsync();
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Continue without selection")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Age")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
         [global::Xunit.TraitAttribute("Description", "Continue without selection")]
         public async global::System.Threading.Tasks.Task ContinueWithoutSelection()
         {
@@ -269,7 +269,7 @@ await this.FeatureBackgroundAsync();
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Continue with selection", Skip="Ignored")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Age")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
         [global::Xunit.TraitAttribute("Description", "Continue with selection")]
         public async global::System.Threading.Tasks.Task ContinueWithSelection()
         {
@@ -308,7 +308,7 @@ await this.FeatureBackgroundAsync();
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Back navigation", Skip="Ignored")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Age")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
         [global::Xunit.TraitAttribute("Description", "Back navigation")]
         public async global::System.Threading.Tasks.Task BackNavigation()
         {
@@ -350,12 +350,12 @@ await this.FeatureBackgroundAsync();
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await AgeFeature.FeatureSetupAsync();
+                await UserAgeFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await AgeFeature.FeatureTearDownAsync();
+                await UserAgeFeature.FeatureTearDownAsync();
             }
         }
     }
