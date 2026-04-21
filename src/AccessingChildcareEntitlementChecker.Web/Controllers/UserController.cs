@@ -101,7 +101,7 @@ public class UserController : Controller
     [ExcludeFromCodeCoverage]
     public IActionResult ChildDetails()
     {
-        throw new NotImplementedException();
+        return View();
     }
 
     private IStringLocalizer LocalizerForPage(string pageName)

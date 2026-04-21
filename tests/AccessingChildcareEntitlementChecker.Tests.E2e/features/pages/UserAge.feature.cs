@@ -268,19 +268,18 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Continue with selection", Skip="Ignored")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Continue with selection")]
         [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
         [global::Xunit.TraitAttribute("Description", "Continue with selection")]
         public async global::System.Threading.Tasks.Task ContinueWithSelection()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "3";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Continue with selection", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 28
+#line 27
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -293,33 +292,32 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 29
+#line 28
     await testRunner.GivenAsync("I have selected the \"Under 18 years old\" radio button", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 30
+#line 29
     await testRunner.WhenAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 31
-    await testRunner.ThenAsync("I will be directed to the next page in the user journey \"How old is your partner\"" +
-                        "", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 30
+    await testRunner.ThenAsync("I will be directed to the next page in the user journey \"What is your partner\'s a" +
+                        "ge?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Back navigation", Skip="Ignored")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Back navigation")]
         [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
         [global::Xunit.TraitAttribute("Description", "Back navigation")]
         public async global::System.Threading.Tasks.Task BackNavigation()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "4";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Back navigation", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 34
+#line 32
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -332,12 +330,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 35
+#line 33
     await testRunner.WhenAsync("I click the back link", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 36
-    await testRunner.ThenAsync("I should be returned to the previous page in the user journey \"Children\'s Details" +
-                        "\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 34
+    await testRunner.ThenAsync("I should be returned to the previous page in the user journey \"Add details of a c" +
+                        "hild\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

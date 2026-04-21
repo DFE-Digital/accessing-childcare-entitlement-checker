@@ -8,6 +8,6 @@ public class PartnerController : Controller
     [ExcludeFromCodeCoverage]
     public IActionResult PartnerAge()
     {
-        throw new NotImplementedException();
+        return View();
     }
 }

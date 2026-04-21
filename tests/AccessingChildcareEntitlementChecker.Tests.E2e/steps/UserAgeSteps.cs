@@ -1,7 +1,5 @@
 ﻿using Microsoft.Playwright;
-using Newtonsoft.Json.Linq;
 using Reqnroll;
-using System.Diagnostics.CodeAnalysis;
 using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
@@ -87,15 +85,22 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         }
 
         [Then("I will be directed to the next page in the user journey {string}")]
-        public void ThenIWillBeDirectedToTheNextPageInTheUserJourney(string p0)
+        public async Task ThenIWillBeDirectedToTheNextPageInTheUserJourney(string expectedHeader)
         {
-            throw new PendingStepException();
+            await AssertHeader(expectedHeader);
         }
 
         [Then("I should be returned to the previous page in the user journey {string}")]
-        public void ThenIShouldBeReturnedToThePreviousPageInTheUserJourney(string p0)
+        public async Task ThenIShouldBeReturnedToThePreviousPageInTheUserJourney(string expectedHeader)
         {
-            throw new PendingStepException();
+            await AssertHeader(expectedHeader);
+        }
+
+        private async Task AssertHeader(string expectedHeader)
+        {
+            await Assertions.Expect(
+                _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 })
+            ).ToHaveTextAsync(expectedHeader);
         }
     }
 }

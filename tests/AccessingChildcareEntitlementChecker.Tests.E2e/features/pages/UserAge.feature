@@ -24,13 +24,11 @@ Scenario: Continue without selection
     And the error summary title should be "There is a problem" with an error message "Select your age"
     And inline validation should display with the error message "Select your age"
 
-@ignore
 Scenario: Continue with selection
     Given I have selected the "Under 18 years old" radio button
     When I click on Continue
-    Then I will be directed to the next page in the user journey "How old is your partner"
+    Then I will be directed to the next page in the user journey "What is your partner's age?"
 
-@ignore
 Scenario: Back navigation
     When I click the back link
-    Then I should be returned to the previous page in the user journey "Children's Details"
+    Then I should be returned to the previous page in the user journey "Add details of a child"
