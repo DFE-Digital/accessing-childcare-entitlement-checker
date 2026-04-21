@@ -103,6 +103,6 @@ public class UserControllerTests
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal(AgeRange.EighteenToTwenty, _fakeJourneySession.State.UserAge);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.HowOldIsYourPartner), redirect.ActionName);
+        Assert.Equal(nameof(PartnerController.PartnerAge), redirect.ActionName);
     }
 }

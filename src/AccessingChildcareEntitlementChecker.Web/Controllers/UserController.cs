@@ -94,19 +94,12 @@ public class UserController : Controller
 
         _journeySession.Save(state);
 
-        return RedirectToAction(nameof(HowOldIsYourPartner), "User");
+        return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
     }
 
     [HttpGet]
     [ExcludeFromCodeCoverage]
-    public IActionResult ChildrensDetails()
-    {
-        throw new NotImplementedException();
-    }
-
-    [HttpGet]
-    [ExcludeFromCodeCoverage]
-    public IActionResult HowOldIsYourPartner()
+    public IActionResult ChildDetails()
     {
         throw new NotImplementedException();
     }
