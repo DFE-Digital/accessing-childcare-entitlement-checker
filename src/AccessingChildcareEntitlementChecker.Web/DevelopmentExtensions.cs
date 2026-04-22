@@ -8,8 +8,12 @@ public static class DevelopmentExtensions
 
     public static IApplicationBuilder UseDevelopmentAuth(this IApplicationBuilder app, IConfiguration configuration)
     {
-        var developmentBasicAuthPassword = configuration[DevelopmentBasicAuthPasswordSettingName]
-            ?? throw new InvalidOperationException($"{DevelopmentBasicAuthPasswordSettingName} must be configured in Development.");
+        var developmentBasicAuthPassword = configuration[DevelopmentBasicAuthPasswordSettingName];
+
+        if (string.IsNullOrEmpty(developmentBasicAuthPassword))
+        {
+            return app;
+        }
 
         app.Use(async (context, next) =>
         {
