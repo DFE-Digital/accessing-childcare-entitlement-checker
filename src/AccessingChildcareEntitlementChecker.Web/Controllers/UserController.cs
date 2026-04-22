@@ -2,6 +2,7 @@ using AccessingChildcareEntitlementChecker.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -25,7 +26,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    public IActionResult HasPartner()
+    public ViewResult HasPartner()
     {
         var state = _journeySession.Get();
 
@@ -58,6 +59,49 @@ public class UserController : Controller
         _journeySession.Save(state);
 
         return RedirectToAction(nameof(UserController.NextStepPlaceholder), "User");
+    }
+
+    [HttpGet]
+    public ViewResult UserAge()
+    {
+        var state = _journeySession.Get();
+
+        return View(new UserAgeViewModel
+        {
+            UserAge = state.UserAge
+        });
+    }
+
+    [HttpPost]
+    public IActionResult UserAge(UserAgeViewModel model)
+    {
+        var pageTexts = LocalizerForPage(nameof(UserAge));
+
+        if (model.UserAge is null)
+        {
+            ModelState.AddModelError(
+                nameof(model.UserAge),
+                pageTexts["Error_Select-your-age"]);
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var state = _journeySession.Get();
+        state.UserAge = model.UserAge;
+
+        _journeySession.Save(state);
+
+        return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
+    }
+
+    [HttpGet]
+    [ExcludeFromCodeCoverage]
+    public IActionResult ChildDetails()
+    {
+        return View();
     }
 
     private IStringLocalizer LocalizerForPage(string pageName)
