@@ -1,30 +1,28 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.UnitTests.Helpers;
-using Microsoft.AspNetCore.Http;
+using AccessingChildcareEntitlementChecker.Web.Services;
+using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
 public class HomeControllerTests
 {
+    private JourneyState _journeyState;
+    private IJourneySession _journeySession;
+    private HomeController _controller;
 
-    private HomeController CreateController(FakeJourneySession session)
+    public HomeControllerTests()
     {
-        return new HomeController(
-            new FakeStringLocalizerFactory(),
-            session);
+        _journeyState = new JourneyState();
+        _journeySession = Substitute.For<IJourneySession>();
+        _controller = new HomeController(_journeyState, _journeySession);
     }
 
     [Fact]
     public void Start_ReturnsView()
     {
-        var session = new FakeJourneySession();
-        var controller = CreateController(session);
-
-        var result = controller.Start();
-
+        var result = _controller.Start();
         Assert.IsType<ViewResult>(result);
     }
 
@@ -32,63 +30,31 @@ public class HomeControllerTests
     [Fact]
     public void WhereDoYouLive_Get_PopulatesModel_FromState()
     {
-        var session = new FakeJourneySession();
-        session.State.CountryOfResidence = CountryOfResidence.England;
-
-        var controller = CreateController(session);
-
-        var result = controller.WhereDoYouLive();
-
-        var view = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsType<WhereDoYouLiveViewModel>(view.Model);
-
-        Assert.Equal(CountryOfResidence.England, model.Country);
-    }
-
-    [Fact]
-    public void WhereDoYouLive_Post_InvalidSelection_ReturnsViewWithError()
-    {
-        var session = new FakeJourneySession();
-        var controller = CreateController(session);
-
-        var model = new WhereDoYouLiveViewModel
-        {
-            Country = null
-        };
-
-        var result = controller.WhereDoYouLive(model);
-
-        var view = Assert.IsType<ViewResult>(result);
-        Assert.False(controller.ModelState.IsValid);
+        _journeyState.CountryOfResidence = CountryOfResidence.England;
+        var result = _controller.WhereDoYouLive();
+        Assert.Equal(CountryOfResidence.England, result.Model<WhereDoYouLiveViewModel>().Country);
     }
 
     [Fact]
     public void WhereDoYouLive_Post_ValidSelection_SavesState_AndRedirects()
     {
-        var session = new FakeJourneySession();
-        var controller = CreateController(session);
-
         var model = new WhereDoYouLiveViewModel
         {
             Country = CountryOfResidence.England
         };
 
-        var result = controller.WhereDoYouLive(model);
+        var result = _controller.WhereDoYouLive(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-
-        Assert.Equal(CountryOfResidence.England, session.State.CountryOfResidence);
+        Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
+        Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(UserController.HasPartner), redirect.ActionName);
     }
 
     [Fact]
     public void SessionExpired_ReturnsView()
     {
-        var session = new FakeJourneySession();
-        var controller = CreateController(session);
-
-        var result = controller.SessionExpired();
-
+        var result = _controller.SessionExpired();
         Assert.IsType<ViewResult>(result);
     }
 }

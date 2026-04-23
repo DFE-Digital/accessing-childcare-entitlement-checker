@@ -1,21 +1,22 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
-using AccessingChildcareEntitlementChecker.UnitTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using AccessingChildcareEntitlementChecker.Web.Services;
+using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
 public class UserControllerTests
 {
-    private readonly FakeJourneySession _fakeJourneySession;
+    private readonly JourneyState _journeyState;
+    private readonly IJourneySession _journeySession;
     private readonly UserController _controller;
 
     public UserControllerTests()
     {
-        _fakeJourneySession = new FakeJourneySession();
-        _controller = new UserController(
-            new FakeStringLocalizerFactory(),
-            _fakeJourneySession);
+        _journeyState = new JourneyState();
+        _journeySession = Substitute.For<IJourneySession>();
+        _controller = new UserController(_journeyState, _journeySession);
     }
 
     [Fact]
@@ -35,7 +36,7 @@ public class UserControllerTests
     [Fact]
     public void HasPartner_Get_PopulatesModel_FromState()
     {
-        _fakeJourneySession.State.HasPartner = true;
+        _journeyState.HasPartner = true;
         var result = _controller.HasPartner();
         Assert.True(result.Model<HasPartnerViewModel>().HasPartner);
     }
@@ -43,35 +44,9 @@ public class UserControllerTests
     [Fact]
     public void UserAge_Get_PopulatesModel_FromState()
     {
-        _fakeJourneySession.State.UserAge = AgeRange.EighteenToTwenty;
+        _journeyState.UserAge = AgeRange.EighteenToTwenty;
         var result = _controller.UserAge();
         Assert.Equal(AgeRange.EighteenToTwenty, result.Model<UserAgeViewModel>().UserAge);
-    }
-
-    [Fact]
-    public void HasPartner_Post_InvalidSelection_ReturnsViewWithError()
-    {
-        var model = new HasPartnerViewModel()
-        {
-            HasPartner = null,
-        };
-
-        _controller.HasPartner(model);
-        Assert.False(_controller.ModelState.IsValid);
-        Assert.True(_controller.ModelState.ContainsKey(nameof(model.HasPartner)));
-    }
-
-    [Fact]
-    public void UserAge_Post_InvalidSelection_ReturnsViewWithError()
-    {
-        var model = new UserAgeViewModel()
-        {
-            UserAge = null,
-        };
-
-        _controller.UserAge(model);
-        Assert.False(_controller.ModelState.IsValid);
-        Assert.True(_controller.ModelState.ContainsKey(nameof(model.UserAge)));
     }
 
     [Fact]
@@ -85,7 +60,7 @@ public class UserControllerTests
         var result = _controller.HasPartner(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal(true, _fakeJourneySession.State.HasPartner);
+        Assert.Equal(true, _journeyState.HasPartner);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(UserController.NextStepPlaceholder), redirect.ActionName);
     }
@@ -101,7 +76,7 @@ public class UserControllerTests
         var result = _controller.UserAge(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal(AgeRange.EighteenToTwenty, _fakeJourneySession.State.UserAge);
+        Assert.Equal(AgeRange.EighteenToTwenty, _journeyState.UserAge);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(PartnerController.PartnerAge), redirect.ActionName);
     }

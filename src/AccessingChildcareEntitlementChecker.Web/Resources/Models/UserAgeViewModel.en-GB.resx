@@ -21,16 +21,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0,
       Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Title" xml:space="preserve">
-    <value>How old are you?</value>
-  </data>
-  <data name="Option_Under-18-years-old" xml:space="preserve">
-    <value>Under 18 years old</value>
-  </data>
-  <data name="Option_18-to-20-years-old" xml:space="preserve">
-    <value>18 to 20 years old</value>
-  </data>
-  <data name="Option_21-years-old-or-over" xml:space="preserve">
-    <value>21 years old or over</value>
+  <data name="Error_Select-your-age" xml:space="preserve">
+    <value>Select your age</value>
   </data>
 </root>
