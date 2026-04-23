@@ -9,4 +9,6 @@ public class JourneyState
     public bool? HasPartner { get; set; }
 
     public AgeRange? UserAge { get; set; }
+
+    public AgeRange? PartnerAge { get; set; }
 }

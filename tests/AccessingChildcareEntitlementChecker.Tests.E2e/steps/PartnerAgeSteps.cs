@@ -1,25 +1,33 @@
-﻿using Microsoft.Playwright;
+using Microsoft.Playwright;
 using Reqnroll;
 using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
 {
     [Binding]
-    [Scope(Feature = "User Age")]
-    public class UserAgeSteps
+    [Scope(Feature = "Partner Age")]
+    public class PartnerAgeSteps
     {
-        private Context _context;
+        private readonly Context _context;
 
-        public UserAgeSteps(Context context)
+        public PartnerAgeSteps(Context context)
         {
             _context = context;
         }
 
-        [Given("I am on the 'How old are you?' page")]
-        public async Task GivenIAmOnTheHowOldAreYouPage()
+        [Given("I am on the 'How old is your partner?' page")]
+        public async Task GivenIAmOnThePartnerAgePage()
         {
-            var url = new Uri(_context.Uri, "/User/UserAge");
+            var url = new Uri(_context.Uri, "/Partner/PartnerAge");
             await _context.Page.GotoAsync(url.AbsoluteUri);
+        }
+
+        [Then("the page header is {string}")]
+        public async Task ThenThePageHeaderIs(string expectedHeader)
+        {
+            await Expect(
+                _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 })
+            ).ToHaveTextAsync(expectedHeader);
         }
 
         [Then("I should see three radio buttons with the following options:")]
@@ -43,7 +51,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         }
 
         [Then("the {string} radio button should be selected")]
-        public async Task ThenTheRadioButtonShouldShouldBeSelected(string label)
+        public async Task ThenTheRadioButtonShouldBeSelected(string label)
         {
             await Expect(_context.Page.GetByLabel(label)).ToBeCheckedAsync();
         }
@@ -51,7 +59,10 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Then("all other options should be deselected")]
         public async Task ThenAllOtherOptionsShouldBeDeselected()
         {
-            var checkedRadios = _context.Page.GetByRole(AriaRole.Radio).And(_context.Page.Locator(":checked"));
+            var checkedRadios = _context.Page
+                .GetByRole(AriaRole.Radio)
+                .And(_context.Page.Locator(":checked"));
+
             await Expect(checkedRadios).ToHaveCountAsync(1);
         }
 
@@ -68,27 +79,34 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Then("an error summary box should appear at the top of the page")]
         public async Task ThenAnErrorSummaryBoxShouldAppear()
         {
-            await Expect(_context.Page.Locator(".govuk-error-summary")).ToBeVisibleAsync();
+            await Expect(_context.Page.Locator(".govuk-error-summary"))
+                .ToBeVisibleAsync();
         }
 
         [Then("the error summary title should be {string} with an error message {string}")]
         public async Task ThenTheErrorSummaryTitleShouldBeWithAnErrorMessage(string title, string message)
         {
             var summary = _context.Page.Locator(".govuk-error-summary");
-            await Expect(summary.Locator(".govuk-error-summary__title")).ToHaveTextAsync(title);
-            await Expect(summary.GetByRole(AriaRole.Link, new() { Name = message })).ToBeVisibleAsync();
+
+            await Expect(summary.Locator(".govuk-error-summary__title"))
+                .ToHaveTextAsync(title);
+
+            await Expect(summary.GetByRole(AriaRole.Link, new() { Name = message }))
+                .ToBeVisibleAsync();
         }
 
         [Then("inline validation should display with the error message {string}")]
         public async Task ThenInlineValidationShouldDisplay(string message)
         {
-            await Expect(_context.Page.Locator(".govuk-error-message")).ToContainTextAsync(message);
+            await Expect(_context.Page.Locator(".govuk-error-message"))
+                .ToContainTextAsync(message);
         }
 
         [Then("I will be directed to the next page in the user journey {string}")]
         public async Task ThenIWillBeDirectedToTheNextPageInTheUserJourney(string expectedHeader)
         {
-            await AssertHeader(expectedHeader);
+            await Expect(_context.Page.Locator("body"))
+                .ToContainTextAsync(expectedHeader);
         }
 
         [Then("I should be returned to the previous page in the user journey {string}")]
@@ -99,7 +117,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
 
         private async Task AssertHeader(string expectedHeader)
         {
-            await Assertions.Expect(
+            await Expect(
                 _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 })
             ).ToHaveTextAsync(expectedHeader);
         }
