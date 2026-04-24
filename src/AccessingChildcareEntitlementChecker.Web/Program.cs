@@ -30,7 +30,7 @@ if (app.Environment.IsDevelopment())
 
     app.MapGet("/throw", () =>
     {
-        throw new Exception("Test exception for error page");
+        throw new InvalidOperationException("Test exception for error page");
     });
 }
 else

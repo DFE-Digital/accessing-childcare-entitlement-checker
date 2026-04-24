@@ -46,7 +46,5 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         {
             Assert.Equal(500, _lastResponse?.Status);
         }
-
-
     }
 }

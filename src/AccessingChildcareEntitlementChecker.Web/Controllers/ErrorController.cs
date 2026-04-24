@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
+[Route("Error")]
 public class ErrorController : Controller
 {
     [Route("error")]
@@ -13,8 +15,10 @@ public class ErrorController : Controller
     }
 
     [Route("error/{statusCode:int}")]
+    [SuppressMessage("SonarQube", "S6967", Justification = "Route constraint :int guarantees a valid integer; ModelState check is redundant.")]
     public ViewResult StatusCodePage(int statusCode)
     {
+
         Response.StatusCode = statusCode;
         return statusCode switch
         {
