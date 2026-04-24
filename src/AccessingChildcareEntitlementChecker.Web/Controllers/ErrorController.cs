@@ -6,7 +6,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 [Route("Error")]
 public class ErrorController : Controller
 {
-    [Route("error")]
+    [Route("")]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public ViewResult InternalServerError()
     {
@@ -14,7 +14,7 @@ public class ErrorController : Controller
         return View();
     }
 
-    [Route("error/{statusCode:int}")]
+    [Route("{statusCode:int}")]
     [SuppressMessage("SonarQube", "S6967", Justification = "Route constraint :int guarantees a valid integer; ModelState check is redundant.")]
     public ViewResult StatusCodePage(int statusCode)
     {
