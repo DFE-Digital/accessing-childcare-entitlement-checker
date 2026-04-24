@@ -27,6 +27,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="features\pages\error.feature.cs">
+	    <DependentUpon>Error.feature</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ReqnrollFeatureFile Update="features\journey\Initial.feature">
 	    <NormalizedLogicalName>features/Initial.feature</NormalizedLogicalName>
 	    <NormalizedRelativeDir>features/</NormalizedRelativeDir>

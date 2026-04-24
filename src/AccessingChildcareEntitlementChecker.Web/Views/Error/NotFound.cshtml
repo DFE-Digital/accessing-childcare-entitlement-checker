@@ -1,0 +1,19 @@
+@using AccessingChildcareEntitlementChecker.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Localizer["Title"]
+        </h1>
+    
+        <p class="govuk-body">
+            @Localizer["body-a"]
+        </p>
+
+        <p class="govuk-body">
+            @Localizer["body-b"]
+        </p>
+    </div>
+</div>

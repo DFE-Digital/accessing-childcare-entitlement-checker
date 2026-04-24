@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
