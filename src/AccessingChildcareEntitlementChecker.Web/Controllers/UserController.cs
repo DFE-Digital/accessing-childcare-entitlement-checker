@@ -58,6 +58,11 @@ public class UserController : Controller
 
         _journeySession.Save(state);
 
+        if (state.HasPartner == true)
+        {
+            return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
+        }
+
         return RedirectToAction(nameof(UserController.NextStepPlaceholder), "User");
     }
 
@@ -81,7 +86,7 @@ public class UserController : Controller
         {
             ModelState.AddModelError(
                 nameof(model.UserAge),
-                pageTexts["Error_Select-your-age"]);
+                pageTexts["Error_SelectYourAge"]);
         }
 
         if (!ModelState.IsValid)

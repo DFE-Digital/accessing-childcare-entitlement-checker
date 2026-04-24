@@ -17,21 +17,21 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class UserAgeFeature : object, global::Xunit.IClassFixture<UserAgeFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class PartnerAgeFeature : object, global::Xunit.IClassFixture<PartnerAgeFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "features/pages", "User Age", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "features/pages", "Partner Age", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "UserAge.feature"
+#line 1 "PartnerAge.feature"
 #line hidden
         
-        public UserAgeFeature(UserAgeFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public PartnerAgeFeature(PartnerAgeFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -108,13 +108,13 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages
 #line 3
 #line hidden
 #line 4
-    await testRunner.GivenAsync("I am on the \'How old are you?\' page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("I am on the \'How old is your partner?\' page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
         }
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("features/pages/UserAge.feature.ndjson", 7);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("features/pages/PartnerAge.feature.ndjson", 7);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -143,7 +143,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Page load")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Partner Age")]
         [global::Xunit.TraitAttribute("Description", "Page load")]
         public async global::System.Threading.Tasks.Task PageLoad()
         {
@@ -167,25 +167,25 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 7
-    await testRunner.GivenAsync("the page header is \"How old are you?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.ThenAsync("the page header is \"How old is your partner?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
                             "Option"});
-                table2.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Under 18 years old"});
-                table2.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "18 to 20 years old"});
-                table2.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "21 years old or over"});
 #line 8
-    await testRunner.ThenAsync("I should see three radio buttons with the following options:", ((string)(null)), table2, "Then ");
+    await testRunner.AndAsync("I should see three radio buttons with the following options:", ((string)(null)), table1, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Radio button selection")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Partner Age")]
         [global::Xunit.TraitAttribute("Description", "Radio button selection")]
         public async global::System.Threading.Tasks.Task RadioButtonSelection()
         {
@@ -225,7 +225,7 @@ await this.FeatureBackgroundAsync();
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Continue without selection")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Partner Age")]
         [global::Xunit.TraitAttribute("Description", "Continue without selection")]
         public async global::System.Threading.Tasks.Task ContinueWithoutSelection()
         {
@@ -259,17 +259,18 @@ await this.FeatureBackgroundAsync();
 #line hidden
 #line 24
     await testRunner.AndAsync("the error summary title should be \"There is a problem\" with an error message \"Sel" +
-                        "ect your age\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+                        "ect your partner\'s age\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 25
-    await testRunner.AndAsync("inline validation should display with the error message \"Select your age\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("inline validation should display with the error message \"Select your partner\'s ag" +
+                        "e\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Continue with selection")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Partner Age")]
         [global::Xunit.TraitAttribute("Description", "Continue with selection")]
         public async global::System.Threading.Tasks.Task ContinueWithSelection()
         {
@@ -299,15 +300,14 @@ await this.FeatureBackgroundAsync();
     await testRunner.WhenAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 30
-    await testRunner.ThenAsync("I will be directed to the next page in the user journey \"How old is your partner?" +
-                        "\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("I will be directed to the next page in the user journey \"Next step placeholder\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Back navigation")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "User Age")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Partner Age")]
         [global::Xunit.TraitAttribute("Description", "Back navigation")]
         public async global::System.Threading.Tasks.Task BackNavigation()
         {
@@ -334,8 +334,8 @@ await this.FeatureBackgroundAsync();
     await testRunner.WhenAsync("I click the back link", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 34
-    await testRunner.ThenAsync("I should be returned to the previous page in the user journey \"Add details of a c" +
-                        "hild\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("I should be returned to the previous page in the user journey \"Do you live with a" +
+                        " partner?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -348,12 +348,12 @@ await this.FeatureBackgroundAsync();
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await UserAgeFeature.FeatureSetupAsync();
+                await PartnerAgeFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await UserAgeFeature.FeatureTearDownAsync();
+                await PartnerAgeFeature.FeatureTearDownAsync();
             }
         }
     }
