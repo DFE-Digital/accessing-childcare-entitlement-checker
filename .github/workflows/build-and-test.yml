@@ -73,6 +73,7 @@ jobs:
         if: ${{ fromJSON(env.SHOULD_RUN_SONARQUBE) }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        # SQ exclusions to be reviewed in AC-605
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin \
             /k:DFE-Digital_accessing-childcare-entitlement-checker \
@@ -83,7 +84,6 @@ jobs:
             /d:sonar.dotnet.excludeTestProjects=true \
             /d:sonar.cs.opencover.reportsPaths="TestResults/unit/**/coverage.opencover.xml" \
             /d:sonar.coverage.exclusions="**/Program.cs,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
-            # SQ exclusions to be reviewed in AC-605
             /d:sonar.cpd.exclusions="src/AccessingChildcareEntitlementChecker.Web/Views/Partner/PartnerAge.cshtml" \
             /d:sonar.scanner.scanAll=false
 
