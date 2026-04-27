@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Session;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using System.Text.Json;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Services
@@ -61,6 +62,36 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Services
             Assert.Equal(CountryOfResidence.England, result.CountryOfResidence);
             Assert.True(result.HasPartner);
             Assert.Equal(AgeRange.EighteenToTwenty, result.PartnerAge);
+        }
+
+        [Fact]
+        public void Get_RetrievesNewJourneyStateIfHttpContextIsNull()
+        {
+            _httpContextAccessor.HttpContext.ReturnsNull();
+
+            var result = _journeySession.Get();
+
+            Assert.NotNull(result);
+            Assert.Null(result.CountryOfResidence);
+            Assert.Null(result.HasPartner);
+            Assert.Null(result.PartnerAge);
+        }
+
+        [Fact]
+        public void Get_RetrievesNewJourneyStateIfSessionStringIsNull()
+        {
+            _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
+            {
+                x[1] = null;
+                return true;
+            });
+
+            var result = _journeySession.Get();
+
+            Assert.NotNull(result);
+            Assert.Null(result.CountryOfResidence);
+            Assert.Null(result.HasPartner);
+            Assert.Null(result.PartnerAge);
         }
     }
 }
