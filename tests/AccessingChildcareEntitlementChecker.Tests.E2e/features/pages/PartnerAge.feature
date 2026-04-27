@@ -27,7 +27,7 @@ Scenario: Continue without selection
 Scenario: Continue with selection
     Given I have selected the "Under 18 years old" radio button
     When I click on Continue
-    Then I will be directed to the next page in the user journey "Next step placeholder"
+    Then I will be directed to the next page in the user journey "What is Jack's date of birth?"
 
 Scenario: Back navigation
     When I click the back link

@@ -84,6 +84,42 @@ public class UserControllerTests
         var result = _controller.UserAge();
         Assert.Equal(AgeRange.EighteenToTwenty, result.Model<UserAgeViewModel>().UserAge);
     }
+    
+    [Fact]
+    public void ChildDateOfBirth_ReturnsView()
+    {
+        var result = _controller.ChildDateOfBirth();
+        Assert.Null(result.Model<ChildDateOfBirthViewModel>().DateOfBirth);
+    }
+
+    [Fact]
+    public void ChildDateOfBirth_Get_PopulatesModel_FromState()
+    {
+        var dateOfBirth = new DateTime(2020, 3, 31);
+        _journeyState.ChildDateOfBirth = dateOfBirth;
+        _journeyState.HasPartner = true;
+
+        var result = _controller.ChildDateOfBirth();
+
+        Assert.Equal(dateOfBirth, result.Model<ChildDateOfBirthViewModel>().DateOfBirth);
+        Assert.True(result.Model<ChildDateOfBirthViewModel>().HasPartner);
+    }
+
+    [Fact]
+    public void HasPartner_Post_NoPartner_SavesState_AndRedirectsToChildDateOfBirth()
+    {
+        var model = new HasPartnerViewModel()
+        {
+            HasPartner = false
+        };
+
+        var result = _controller.HasPartner(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.False(_journeyState.HasPartner);
+        Assert.Equal(nameof(UserController.ChildDateOfBirth), redirect.ActionName);
+    }
 
     [Fact]
     public void UserAge_Post_ValidSelection_SavesState_AndRedirects()
@@ -117,5 +153,22 @@ public class UserControllerTests
         var view = Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.UserAge)));
+    }
+
+    [Fact]
+    public void ChildDateOfBirth_Post_ValidSelection_SavesState_AndRedirects()
+    {
+        var model = new ChildDateOfBirthViewModel()
+        {
+            DateOfBirth = DateTime.Today.AddDays(-1)
+        };
+
+        var result = _controller.ChildDateOfBirth(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(DateTime.Today.AddDays(-1), _journeyState.ChildDateOfBirth);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(UserController.NextStepPlaceholder), redirect.ActionName);
     }
 }

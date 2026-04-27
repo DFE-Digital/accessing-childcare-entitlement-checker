@@ -12,6 +12,8 @@ public class JourneyState
 
     public AgeRange? PartnerAge { get; set; }
 
+    public DateTime? ChildDateOfBirth { get; set; }
+
     public void Apply(LocationViewModel model)
     {
         CountryOfResidence = model.Country;
@@ -30,5 +32,10 @@ public class JourneyState
     public void Apply(PartnerAgeViewModel model)
     {
         PartnerAge = model.PartnerAge;
+    }
+
+    public void Apply(ChildDateOfBirthViewModel model)
+    {
+        ChildDateOfBirth = model.DateOfBirth;
     }
 }

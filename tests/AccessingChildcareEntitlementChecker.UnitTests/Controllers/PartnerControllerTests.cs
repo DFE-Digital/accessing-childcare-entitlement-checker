@@ -48,7 +48,7 @@ public class PartnerControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(AgeRange.EighteenToTwenty, _journeyState.PartnerAge);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.NextStepPlaceholder), redirect.ActionName);
+        Assert.Equal(nameof(UserController.ChildDateOfBirth), redirect.ActionName);
     }
 
     [Fact]

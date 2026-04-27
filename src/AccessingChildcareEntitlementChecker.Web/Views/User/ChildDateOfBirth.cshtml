@@ -1,0 +1,50 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@model ChildDateOfBirthViewModel
+
+@section BeforeContent {
+    @if (Model.HasPartner == true)
+    {
+        <govuk-back-link asp-controller="Partner" asp-action="PartnerAge">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="User" asp-action="HasPartner">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+}
+
+<form method="post" novalidate>
+    <govuk-date-input for="DateOfBirth">
+        <govuk-date-input-fieldset>
+            <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                @Localizer["Title"]
+            </govuk-date-input-fieldset-legend>
+
+            <govuk-date-input-hint>
+                @Localizer["Hint"]
+            </govuk-date-input-hint>
+
+            <govuk-date-input-error-message />
+        </govuk-date-input-fieldset>
+    </govuk-date-input>
+
+    <govuk-details>
+        <govuk-details-summary>
+            @Localizer["Details_Summary"]
+        </govuk-details-summary>
+        <govuk-details-text>
+            <p class="govuk-body">
+                @Localizer["Details_Body"]
+            </p>
+        </govuk-details-text>
+    </govuk-details>
+
+    <govuk-button type="submit">
+        @Shared["Button_Continue"]
+    </govuk-button>
+</form>

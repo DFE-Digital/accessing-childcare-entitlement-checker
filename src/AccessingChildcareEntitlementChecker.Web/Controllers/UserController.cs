@@ -44,7 +44,7 @@ public class UserController : Controller
             return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
         }
 
-        return RedirectToAction(nameof(UserController.NextStepPlaceholder), "User");
+        return RedirectToAction(nameof(ChildDateOfBirth), "User");
     }
 
     [HttpGet]
@@ -71,5 +71,25 @@ public class UserController : Controller
     public IActionResult ChildDetails()
     {
         return View();
+    }
+
+    [HttpGet]
+    public ViewResult ChildDateOfBirth()
+    {
+        return View(new ChildDateOfBirthViewModel(_journeyState));
+    }
+
+    [HttpPost]
+    public IActionResult ChildDateOfBirth(ChildDateOfBirthViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            model.HasPartner = _journeyState.HasPartner;
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        return RedirectToAction(nameof(NextStepPlaceholder), "User");
     }
 }

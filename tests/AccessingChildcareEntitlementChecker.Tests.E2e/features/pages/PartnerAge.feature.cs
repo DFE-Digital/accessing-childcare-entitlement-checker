@@ -300,7 +300,8 @@ await this.FeatureBackgroundAsync();
     await testRunner.WhenAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 30
-    await testRunner.ThenAsync("I will be directed to the next page in the user journey \"Next step placeholder\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("I will be directed to the next page in the user journey \"What is Jack\'s date of b" +
+                        "irth?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

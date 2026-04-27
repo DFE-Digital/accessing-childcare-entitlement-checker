@@ -32,6 +32,6 @@ public class PartnerController : Controller
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
 
-        return RedirectToAction(nameof(UserController.NextStepPlaceholder), "User");
+        return RedirectToAction(nameof(UserController.ChildDateOfBirth), "User");
     }
 }
