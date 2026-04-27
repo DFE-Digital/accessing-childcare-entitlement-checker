@@ -30,8 +30,11 @@ public class JourneySession : IJourneySession
 
     public void Set(JourneyState journeyState)
     {
+        var httpContext = _httpContextAccessor.HttpContext
+            ?? throw new InvalidOperationException("No HttpContext available");
+
         var json = JsonSerializer.Serialize(journeyState);
-        _httpContextAccessor.HttpContext?
+        httpContext
             .Session
             .SetString(Key, json);
     }

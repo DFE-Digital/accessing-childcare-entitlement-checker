@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Session;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using System.Text;
 using System.Text.Json;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Services
@@ -37,6 +38,13 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Services
             _journeySession.Set(journeyState);
 
             _session.Received(1).Set("JourneyState", Arg.Any<byte[]>());
+        }
+
+        [Fact]
+        public void Set_ThrowsExceptionIfHttpContextIsNull()
+        {
+            _httpContextAccessor.HttpContext.ReturnsNull();
+            Assert.Throws<InvalidOperationException>(() => _journeySession.Set(new JourneyState()));
         }
 
         [Fact]
@@ -83,6 +91,23 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Services
             _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
             {
                 x[1] = null;
+                return true;
+            });
+
+            var result = _journeySession.Get();
+
+            Assert.NotNull(result);
+            Assert.Null(result.CountryOfResidence);
+            Assert.Null(result.HasPartner);
+            Assert.Null(result.PartnerAge);
+        }
+
+        [Fact]
+        public void Get_RetrievesNewJourneyStateIfSavedSessionEvaluatesToNull()
+        {
+            _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
+            {
+                x[1] = Encoding.UTF8.GetBytes("null");
                 return true;
             });
 
