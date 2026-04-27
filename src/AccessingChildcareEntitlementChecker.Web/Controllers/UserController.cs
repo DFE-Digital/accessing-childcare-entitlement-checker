@@ -38,7 +38,13 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return RedirectToAction(nameof(NextStepPlaceholder), "User");
+
+        if (_journeyState.HasPartner == true)
+        {
+            return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
+        }
+
+        return RedirectToAction(nameof(UserController.NextStepPlaceholder), "User");
     }
 
     [HttpGet]

@@ -21,7 +21,7 @@ Scenario: Continue with selection
 	Given I am on the partner page
 	When I select "Yes" for "HasPartner"
 	And I click on Continue
-	Then I see the text "Next step placeholder"
+	Then I see the text "How old is your partner?"
 
 Scenario: Back navigation
 	Given I am on the partner page

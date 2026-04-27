@@ -60,9 +60,10 @@ public class UserControllerTests
         var result = _controller.HasPartner(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(true, _journeyState.HasPartner);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.NextStepPlaceholder), redirect.ActionName);
+        Assert.Equal(nameof(PartnerController.PartnerAge), redirect.ActionName);
     }
 
     [Fact]
@@ -76,6 +77,7 @@ public class UserControllerTests
         var result = _controller.UserAge(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(AgeRange.EighteenToTwenty, _journeyState.UserAge);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(PartnerController.PartnerAge), redirect.ActionName);

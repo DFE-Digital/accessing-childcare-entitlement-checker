@@ -15,6 +15,6 @@ public class UserAgeViewModel
         UserAge = journeyState.UserAge;
     }
 
-    [Required(ErrorMessage = "Error_Select-your-age")]
+    [Required(ErrorMessage = "Error_SelectYourAge")]
     public AgeRange? UserAge { get; set; }
 }
