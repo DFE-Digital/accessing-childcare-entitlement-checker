@@ -37,14 +37,22 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
                 .ClickAsync();
         }
 
-        [Then("I should see three radio buttons with the following options:")]
-        public async Task ThenIShouldSeeThreeRadioButtonsWithTheFollowingOptions(DataTable dataTable)
+        [Then(@"I should see (\d+) radio buttons with the following options:")]
+        public async Task ThenIShouldSeeRadioButtonsWithTheFollowingOptions(int expectedCount, DataTable dataTable)
         {
             var expectedOptions = dataTable.Rows.Select(r => r[0]).ToArray();
-            await Expect(_context.Page.GetByRole(AriaRole.Radio)).ToHaveCountAsync(expectedOptions.Length);
+
+            // Sanity check (optional but useful)
+            if (expectedOptions.Length != expectedCount)
+                throw new Exception($"Step says {expectedCount} options but table has {expectedOptions.Length}");
+
+            await Expect(_context.Page.GetByRole(AriaRole.Radio))
+                .ToHaveCountAsync(expectedCount);
+
             foreach (var option in expectedOptions)
             {
-                await Expect(_context.Page.GetByRole(AriaRole.Radio, new() { Name = option })).ToBeVisibleAsync();
+                await Expect(_context.Page.GetByRole(AriaRole.Radio, new() { Name = option }))
+                    .ToBeVisibleAsync();
             }
         }
 

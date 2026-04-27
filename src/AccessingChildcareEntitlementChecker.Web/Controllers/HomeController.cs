@@ -39,26 +39,26 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult WhereDoYouLive()
+    public IActionResult Location()
     {
         var state = _journeySession.Get();
 
-        return View(new WhereDoYouLiveViewModel
+        return View(new Location
         {
             Country = state.CountryOfResidence
         });
     }
 
     [HttpPost]
-    public IActionResult WhereDoYouLive(WhereDoYouLiveViewModel model)
+    public IActionResult Location(Location model)
     {
-        var pageTexts = LocalizerForPage(nameof(WhereDoYouLive));
+        var pageTexts = LocalizerForPage(nameof(Location));
 
         if (model.Country is null)
         {
             ModelState.AddModelError(
                 nameof(model.Country),
-                pageTexts["Error_SelectWhereYouLive"]);
+                pageTexts["Error_SelectLocation"]);
         }
 
         if (!ModelState.IsValid)

@@ -1,4 +1,4 @@
-@model AccessingChildcareEntitlementChecker.Web.Models.WhereDoYouLiveViewModel
+@model AccessingChildcareEntitlementChecker.Web.Models.Location
 @using AccessingChildcareEntitlementChecker.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
@@ -52,7 +52,7 @@
     </p>
     
     <!-- NOSONAR -->
-    <a asp-action="@nameof(HomeController.WhereDoYouLive)"
+    <a asp-action="@nameof(HomeController.Location)"
        class="govuk-button govuk-button--start"
        data-module="govuk-button">
         

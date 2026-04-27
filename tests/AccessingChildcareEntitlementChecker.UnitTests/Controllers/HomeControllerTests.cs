@@ -37,10 +37,10 @@ public class HomeControllerTests
 
         var controller = CreateController(session);
 
-        var result = controller.WhereDoYouLive();
+        var result = controller.Location();
 
         var view = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsType<WhereDoYouLiveViewModel>(view.Model);
+        var model = Assert.IsType<Location>(view.Model);
 
         Assert.Equal(CountryOfResidence.England, model.Country);
     }
@@ -51,12 +51,12 @@ public class HomeControllerTests
         var session = new FakeJourneySession();
         var controller = CreateController(session);
 
-        var model = new WhereDoYouLiveViewModel
+        var model = new Location
         {
             Country = null
         };
 
-        var result = controller.WhereDoYouLive(model);
+        var result = controller.Location(model);
 
         var view = Assert.IsType<ViewResult>(result);
         Assert.False(controller.ModelState.IsValid);
@@ -68,12 +68,12 @@ public class HomeControllerTests
         var session = new FakeJourneySession();
         var controller = CreateController(session);
 
-        var model = new WhereDoYouLiveViewModel
+        var model = new Location
         {
             Country = CountryOfResidence.England
         };
 
-        var result = controller.WhereDoYouLive(model);
+        var result = controller.Location(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
 
