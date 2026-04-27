@@ -53,6 +53,23 @@ public class HomeControllerTests
     }
 
     [Fact]
+    public void WhereDoYouLive_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new WhereDoYouLiveViewModel
+        {
+            Country = null
+        };
+
+        _controller.ModelState.AddModelError(nameof(model.Country), "Faked Model Binding Error");
+
+        var result = _controller.WhereDoYouLive(model);
+
+        var view = Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.Country)));
+    }
+
+    [Fact]
     public void SessionExpired_ReturnsView()
     {
         var result = _controller.SessionExpired();

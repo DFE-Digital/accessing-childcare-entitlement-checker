@@ -82,4 +82,38 @@ public class UserControllerTests
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(PartnerController.PartnerAge), redirect.ActionName);
     }
+
+    [Fact]
+    public void HasPartner_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new HasPartnerViewModel
+        {
+            HasPartner = null
+        };
+
+        _controller.ModelState.AddModelError(nameof(model.HasPartner), "Faked Model Binding Error");
+
+        var result = _controller.HasPartner(model);
+
+        var view = Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.HasPartner)));
+    }
+
+    [Fact]
+    public void UserAge_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new UserAgeViewModel
+        {
+            UserAge = null
+        };
+
+        _controller.ModelState.AddModelError(nameof(model.UserAge), "Faked Model Binding Error");
+
+        var result = _controller.UserAge(model);
+
+        var view = Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.UserAge)));
+    }
 }
