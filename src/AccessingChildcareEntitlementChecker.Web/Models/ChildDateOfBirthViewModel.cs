@@ -1,5 +1,6 @@
 using AccessingChildcareEntitlementChecker.Web.Services;
 using GovUk.Frontend.AspNetCore;
+using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models;
@@ -26,8 +27,14 @@ public class ChildDateOfBirthViewModel : IValidatableObject
     {
         if (DateOfBirth.HasValue && DateOfBirth.Value.Date >= DateTime.Today)
         {
+            var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
+            var errorMessage = localizerFactory?
+                .Create(typeof(ChildDateOfBirthViewModel))
+                ["Error_ChildDateOfBirthMustBeInPast"].Value
+                ?? "Error_ChildDateOfBirthMustBeInPast";
+
             yield return new ValidationResult(
-                "Error_ChildDateOfBirthMustBeInPast",
+                errorMessage,
                 new[] { nameof(DateOfBirth) });
         }
     }

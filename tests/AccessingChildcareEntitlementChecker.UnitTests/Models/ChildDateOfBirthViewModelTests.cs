@@ -1,5 +1,8 @@
 using AccessingChildcareEntitlementChecker.Web.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Models;
 
@@ -29,7 +32,7 @@ public class ChildDateOfBirthViewModelTests
         var validationResults = Validate(model);
 
         var validationError = Assert.Single(validationResults);
-        Assert.Equal("Error_ChildDateOfBirthMustBeInPast", validationError.ErrorMessage);
+        Assert.Equal("Jack's date of birth must be in the past", validationError.ErrorMessage);
         Assert.Equal(nameof(ChildDateOfBirthViewModel.DateOfBirth), Assert.Single(validationError.MemberNames));
     }
 
@@ -44,14 +47,34 @@ public class ChildDateOfBirthViewModelTests
         var validationResults = Validate(model);
 
         var validationError = Assert.Single(validationResults);
-        Assert.Equal("Error_ChildDateOfBirthMustBeInPast", validationError.ErrorMessage);
+        Assert.Equal("Jack's date of birth must be in the past", validationError.ErrorMessage);
         Assert.Equal(nameof(ChildDateOfBirthViewModel.DateOfBirth), Assert.Single(validationError.MemberNames));
     }
 
     private static List<ValidationResult> Validate(ChildDateOfBirthViewModel model)
     {
-        var validationResults = new List<ValidationResult>();
-        Validator.TryValidateObject(model, new ValidationContext(model), validationResults, validateAllProperties: true);
-        return validationResults;
+        var originalCulture = CultureInfo.CurrentCulture;
+        var originalUiCulture = CultureInfo.CurrentUICulture;
+
+        CultureInfo.CurrentCulture = new CultureInfo("en-GB");
+        CultureInfo.CurrentUICulture = new CultureInfo("en-GB");
+
+        var services = new ServiceCollection()
+            .AddLogging()
+            .AddLocalization(options => options.ResourcesPath = "Resources")
+            .BuildServiceProvider();
+
+        try
+        {
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(model, services, items: null);
+            Validator.TryValidateObject(model, validationContext, validationResults, validateAllProperties: true);
+            return validationResults;
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = originalCulture;
+            CultureInfo.CurrentUICulture = originalUiCulture;
+        }
     }
 }
