@@ -40,7 +40,7 @@ public class HomeControllerTests
         var result = controller.Location();
 
         var view = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsType<Location>(view.Model);
+        var model = Assert.IsType<LocationViewModel>(view.Model);
 
         Assert.Equal(CountryOfResidence.England, model.Country);
     }
@@ -51,7 +51,7 @@ public class HomeControllerTests
         var session = new FakeJourneySession();
         var controller = CreateController(session);
 
-        var model = new Location
+        var model = new LocationViewModel
         {
             Country = null
         };
@@ -68,7 +68,7 @@ public class HomeControllerTests
         var session = new FakeJourneySession();
         var controller = CreateController(session);
 
-        var model = new Location
+        var model = new LocationViewModel
         {
             Country = CountryOfResidence.England
         };

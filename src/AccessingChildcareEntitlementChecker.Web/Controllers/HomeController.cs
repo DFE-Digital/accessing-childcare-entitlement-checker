@@ -43,14 +43,14 @@ public class HomeController : Controller
     {
         var state = _journeySession.Get();
 
-        return View(new Location
+        return View(new LocationViewModel
         {
             Country = state.CountryOfResidence
         });
     }
 
     [HttpPost]
-    public IActionResult Location(Location model)
+    public IActionResult Location(LocationViewModel model)
     {
         var pageTexts = LocalizerForPage(nameof(Location));
 
