@@ -1,4 +1,5 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Services;
+﻿using AccessingChildcareEntitlementChecker.Web.Controllers;
+using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.Web
 {
@@ -7,6 +8,7 @@ namespace AccessingChildcareEntitlementChecker.Web
         public static IServiceCollection AddJourneyServices(this IServiceCollection services)
         {
             services.AddScoped<IJourneySession, JourneySession>();
+            services.AddScoped<JourneyActions.Factory>();
             services.AddScoped(sp =>
             {
                 var journeySession = sp.GetRequiredService<IJourneySession>();

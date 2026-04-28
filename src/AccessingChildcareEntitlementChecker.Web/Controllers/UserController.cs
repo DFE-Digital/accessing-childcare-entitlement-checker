@@ -8,12 +8,12 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 public class UserController : Controller
 {
     private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
+    private readonly JourneyActions _journeyActions;
 
-    public UserController(JourneyState journeyState, IJourneySession journeySession)
+    public UserController(JourneyState journeyState, JourneyActions.Factory journeyActionsFactory)
     {
         _journeyState = journeyState;
-        _journeySession = journeySession;
+        _journeyActions = journeyActionsFactory.Create(this);
     }
 
     [HttpGet]
@@ -31,20 +31,10 @@ public class UserController : Controller
     [HttpPost]
     public IActionResult HasPartner(HasPartnerViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-
-        if (_journeyState.HasPartner == true)
-        {
-            return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
-        }
-
-        return RedirectToAction(nameof(UserController.NextStepPlaceholder), "User");
+        return _journeyActions.HandlePost(
+            model,
+            (state) => state.Apply(model),
+            (UserController c) => c.NextStepPlaceholder());
     }
 
     [HttpGet]
@@ -56,14 +46,10 @@ public class UserController : Controller
     [HttpPost]
     public IActionResult UserAge(UserAgeViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
+        return _journeyActions.HandlePost(
+           model,
+           (state) => state.Apply(model),
+           (PartnerController c) => c.PartnerAge());
     }
 
     [HttpGet]

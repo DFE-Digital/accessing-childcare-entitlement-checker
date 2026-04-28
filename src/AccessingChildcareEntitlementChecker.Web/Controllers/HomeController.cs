@@ -7,12 +7,12 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 public class HomeController : Controller
 {
     private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
+    private readonly JourneyActions _journeyActions;
 
-    public HomeController(JourneyState journeyState, IJourneySession journeySession)
+    public HomeController(JourneyState journeyState, JourneyActions.Factory journeyActionsFactory)
     {
         _journeyState = journeyState;
-        _journeySession = journeySession;
+        _journeyActions = journeyActionsFactory.Create(this);
     }
 
     [HttpGet]
@@ -36,13 +36,9 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Location(LocationViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        return RedirectToAction(nameof(UserController.HasPartner), "User");
+        return _journeyActions.HandlePost(
+            model,
+            (state) => state.Apply(model),
+            (UserController c) => c.HasPartner());
     }
 }
