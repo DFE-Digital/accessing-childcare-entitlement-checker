@@ -1,6 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using System.Diagnostics.CodeAnalysis;
 
@@ -8,14 +7,12 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
 public class UserController : Controller
 {
-    private readonly IStringLocalizerFactory _localizerFactory;
+    private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
-    public UserController(
-        IStringLocalizerFactory localizerFactory,
-        IJourneySession journeySession)
+    public UserController(JourneyState journeyState, IJourneySession journeySession)
     {
-        _localizerFactory = localizerFactory;
+        _journeyState = journeyState;
         _journeySession = journeySession;
     }
 
@@ -28,35 +25,24 @@ public class UserController : Controller
     [HttpGet]
     public ViewResult HasPartner()
     {
-        var state = _journeySession.Get();
-
-        return View(new HasPartnerViewModel
-        {
-            HasPartner = state.HasPartner
-        });
+        return View(new HasPartnerViewModel(_journeyState));
     }
 
     [HttpPost]
     public IActionResult HasPartner(HasPartnerViewModel model)
     {
-        var pageTexts = LocalizerForPage(nameof(HasPartner));
-
-        if (model.HasPartner is null)
-        {
-            ModelState.AddModelError(
-                nameof(model.HasPartner),
-                pageTexts["Error_SelectIfYouHavePartner"]);
-        }
-
         if (!ModelState.IsValid)
         {
             return View(model);
         }
 
-        var state = _journeySession.Get();
-        state.HasPartner = model.HasPartner ?? false;
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
 
-        _journeySession.Save(state);
+        if (_journeyState.HasPartner == true)
+        {
+            return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
+        }
 
         return RedirectToAction(nameof(UserController.NextStepPlaceholder), "User");
     }
@@ -64,36 +50,19 @@ public class UserController : Controller
     [HttpGet]
     public ViewResult UserAge()
     {
-        var state = _journeySession.Get();
-
-        return View(new UserAgeViewModel
-        {
-            UserAge = state.UserAge
-        });
+        return View(new UserAgeViewModel(_journeyState));
     }
 
     [HttpPost]
     public IActionResult UserAge(UserAgeViewModel model)
     {
-        var pageTexts = LocalizerForPage(nameof(UserAge));
-
-        if (model.UserAge is null)
-        {
-            ModelState.AddModelError(
-                nameof(model.UserAge),
-                pageTexts["Error_Select-your-age"]);
-        }
-
         if (!ModelState.IsValid)
         {
             return View(model);
         }
 
-        var state = _journeySession.Get();
-        state.UserAge = model.UserAge;
-
-        _journeySession.Save(state);
-
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
         return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
     }
 
@@ -102,13 +71,5 @@ public class UserController : Controller
     public IActionResult ChildDetails()
     {
         return View();
-    }
-
-    private IStringLocalizer LocalizerForPage(string pageName)
-    {
-        var baseName = $"Views.User.{pageName}";
-        var appName = typeof(Program).Assembly.GetName().Name!;
-
-        return _localizerFactory.Create(baseName, appName);
     }
 }

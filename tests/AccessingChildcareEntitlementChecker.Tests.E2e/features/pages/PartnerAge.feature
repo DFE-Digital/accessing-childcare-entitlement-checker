@@ -1,11 +1,11 @@
-Feature: User Age
+Feature: Partner Age
 
 Background:
-    Given I am on the 'How old are you?' page
+    Given I am on the 'How old is your partner?' page
 
 Scenario: Page load
-    Given the page header is "How old are you?"
-    Then I should see 3 radio buttons with the following options:
+    Then the page header is "How old is your partner?"
+    And I should see 3 radio buttons with the following options:
     | Option               |
     | Under 18 years old   |
     | 18 to 20 years old   |
@@ -21,14 +21,14 @@ Scenario: Continue without selection
     Given I have not selected an option
     When I click on Continue
     Then an error summary box should appear at the top of the page 
-    And the error summary title should be "There is a problem" with an error message "Select your age"
-    And inline validation should display with the error message "Select your age"
+    And the error summary title should be "There is a problem" with an error message "Select your partner's age"
+    And inline validation should display with the error message "Select your partner's age"
 
 Scenario: Continue with selection
     Given I have selected the "Under 18 years old" radio button
     When I click on Continue
-    Then I will be directed to the next page in the user journey "How old is your partner?"
+    Then I will be directed to the next page in the user journey "Next step placeholder"
 
 Scenario: Back navigation
     When I click the back link
-    Then I should be returned to the previous page in the user journey "Add details of a child"
+    Then I should be returned to the previous page in the user journey "Do you live with a partner?"
