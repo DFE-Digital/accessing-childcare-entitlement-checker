@@ -12,7 +12,7 @@ public class JourneyState
 
     public AgeRange? PartnerAge { get; set; }
 
-    public void Apply(WhereDoYouLiveViewModel model)
+    public void Apply(LocationViewModel model)
     {
         CountryOfResidence = model.Country;
     }

@@ -6,7 +6,7 @@ using System.Net;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Component
 {
-    public class WhereDoYouLiveTests
+    public class ComponentTests
     {
         private static WebApplicationFactory<Program> CreateFactory(string environmentName) =>
             new WebApplicationFactory<Program>()
@@ -23,7 +23,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Component
                 });
 
         [Fact]
-        public async Task GetRootReturnsWhereDoYouLivePage()
+        public async Task GetRootReturnsSuccess()
         {
             var factory = CreateFactory("Production");
             var client = factory.CreateClient();

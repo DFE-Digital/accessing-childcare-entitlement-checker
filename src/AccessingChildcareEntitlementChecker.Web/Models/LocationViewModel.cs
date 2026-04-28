@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models;
 
-public class WhereDoYouLiveViewModel
+public class LocationViewModel
 {
-    public WhereDoYouLiveViewModel()
+    public LocationViewModel()
     {
 
     }
 
-    public WhereDoYouLiveViewModel(JourneyState journeyState)
+    public LocationViewModel(JourneyState journeyState)
     {
         Country = journeyState.CountryOfResidence;
     }

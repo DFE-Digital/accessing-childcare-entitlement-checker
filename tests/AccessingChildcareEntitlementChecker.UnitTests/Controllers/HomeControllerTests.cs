@@ -28,22 +28,22 @@ public class HomeControllerTests
 
 
     [Fact]
-    public void WhereDoYouLive_Get_PopulatesModel_FromState()
+    public void Location_Get_PopulatesModel_FromState()
     {
         _journeyState.CountryOfResidence = CountryOfResidence.England;
-        var result = _controller.WhereDoYouLive();
-        Assert.Equal(CountryOfResidence.England, result.Model<WhereDoYouLiveViewModel>().Country);
+        var result = _controller.Location();
+        Assert.Equal(CountryOfResidence.England, result.Model<LocationViewModel>().Country);
     }
 
     [Fact]
-    public void WhereDoYouLive_Post_ValidSelection_SavesState_AndRedirects()
+    public void Location_Post_ValidSelection_SavesState_AndRedirects()
     {
-        var model = new WhereDoYouLiveViewModel
+        var model = new LocationViewModel
         {
             Country = CountryOfResidence.England
         };
 
-        var result = _controller.WhereDoYouLive(model);
+        var result = _controller.Location(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
@@ -53,16 +53,16 @@ public class HomeControllerTests
     }
 
     [Fact]
-    public void WhereDoYouLive_Post_InvalidSelection_ReturnsViewWithError()
+    public void Location_Post_InvalidSelection_ReturnsViewWithError()
     {
-        var model = new WhereDoYouLiveViewModel
+        var model = new LocationViewModel
         {
             Country = null
         };
 
         _controller.ModelState.AddModelError(nameof(model.Country), "Faked Model Binding Error");
 
-        var result = _controller.WhereDoYouLive(model);
+        var result = _controller.Location(model);
 
         var view = Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);

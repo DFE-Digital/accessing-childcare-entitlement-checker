@@ -28,13 +28,13 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public ViewResult WhereDoYouLive()
+    public ViewResult Location()
     {
-        return View(new WhereDoYouLiveViewModel(_journeyState));
+        return View(new LocationViewModel(_journeyState));
     }
 
     [HttpPost]
-    public IActionResult WhereDoYouLive(WhereDoYouLiveViewModel model)
+    public IActionResult Location(LocationViewModel model)
     {
         if (!ModelState.IsValid)
         {
