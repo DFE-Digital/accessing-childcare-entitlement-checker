@@ -1,0 +1,41 @@
+name: Promote to Test
+
+on:
+  workflow_run:
+    workflows: ['CI']
+    types: [completed]
+    branches: [main]
+
+concurrency:
+  group: deploy-test
+  cancel-in-progress: true
+
+jobs:
+  stage-artifact:
+    name: Prepare artifact from CI run
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    permissions:
+      actions: read
+    steps:
+      - name: Download artifact from CI run
+        uses: actions/download-artifact@v8
+        with:
+          name: webapp-package
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          path: ./artifacts/webapp-package
+
+      - name: Re-upload artifact for deployment
+        uses: actions/upload-artifact@v7
+        with:
+          name: webapp-package
+          path: ./artifacts/webapp-package/webapp.zip
+
+  deploy:
+    name: Deploy to Test
+    needs: stage-artifact
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: test
+    secrets: inherit
