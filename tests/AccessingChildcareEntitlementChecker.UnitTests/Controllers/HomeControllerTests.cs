@@ -1,94 +1,78 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.UnitTests.Helpers;
-using Microsoft.AspNetCore.Http;
+using AccessingChildcareEntitlementChecker.Web.Services;
+using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
 public class HomeControllerTests
 {
+    private JourneyState _journeyState;
+    private IJourneySession _journeySession;
+    private HomeController _controller;
 
-    private HomeController CreateController(FakeJourneySession session)
+    public HomeControllerTests()
     {
-        return new HomeController(
-            new FakeStringLocalizerFactory(),
-            session);
+        _journeyState = new JourneyState();
+        _journeySession = Substitute.For<IJourneySession>();
+        _controller = new HomeController(_journeyState, _journeySession);
     }
 
     [Fact]
     public void Start_ReturnsView()
     {
-        var session = new FakeJourneySession();
-        var controller = CreateController(session);
-
-        var result = controller.Start();
-
+        var result = _controller.Start();
         Assert.IsType<ViewResult>(result);
     }
 
 
     [Fact]
-    public void WhereDoYouLive_Get_PopulatesModel_FromState()
+    public void Location_Get_PopulatesModel_FromState()
     {
-        var session = new FakeJourneySession();
-        session.State.CountryOfResidence = CountryOfResidence.England;
-
-        var controller = CreateController(session);
-
-        var result = controller.Location();
-
-        var view = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsType<LocationViewModel>(view.Model);
-
-        Assert.Equal(CountryOfResidence.England, model.Country);
+        _journeyState.CountryOfResidence = CountryOfResidence.England;
+        var result = _controller.Location();
+        Assert.Equal(CountryOfResidence.England, result.Model<LocationViewModel>().Country);
     }
 
     [Fact]
-    public void WhereDoYouLive_Post_InvalidSelection_ReturnsViewWithError()
+    public void Location_Post_ValidSelection_SavesState_AndRedirects()
     {
-        var session = new FakeJourneySession();
-        var controller = CreateController(session);
-
-        var model = new LocationViewModel
-        {
-            Country = null
-        };
-
-        var result = controller.Location(model);
-
-        var view = Assert.IsType<ViewResult>(result);
-        Assert.False(controller.ModelState.IsValid);
-    }
-
-    [Fact]
-    public void WhereDoYouLive_Post_ValidSelection_SavesState_AndRedirects()
-    {
-        var session = new FakeJourneySession();
-        var controller = CreateController(session);
-
         var model = new LocationViewModel
         {
             Country = CountryOfResidence.England
         };
 
-        var result = controller.Location(model);
+        var result = _controller.Location(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-
-        Assert.Equal(CountryOfResidence.England, session.State.CountryOfResidence);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
+        Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(UserController.HasPartner), redirect.ActionName);
+    }
+
+    [Fact]
+    public void Location_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new LocationViewModel
+        {
+            Country = null
+        };
+
+        _controller.ModelState.AddModelError(nameof(model.Country), "Faked Model Binding Error");
+
+        var result = _controller.Location(model);
+
+        var view = Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.Country)));
     }
 
     [Fact]
     public void SessionExpired_ReturnsView()
     {
-        var session = new FakeJourneySession();
-        var controller = CreateController(session);
-
-        var result = controller.SessionExpired();
-
+        var result = _controller.SessionExpired();
         Assert.IsType<ViewResult>(result);
     }
 }

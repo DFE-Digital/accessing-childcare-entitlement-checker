@@ -33,10 +33,4 @@
   <data name="Option_21OrOver" xml:space="preserve">
     <value>21 years old or over</value>
   </data>
-  <data name="Error_SelectYourPartnersAge" xml:space="preserve">
-    <value>Select your partner's age</value>
-  </data>
-  <data name="Error_SelectYourAge" xml:space="preserve">
-    <value />
-  </data>
 </root>

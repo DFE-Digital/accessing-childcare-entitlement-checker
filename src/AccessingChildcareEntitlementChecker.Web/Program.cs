@@ -1,26 +1,28 @@
 using System.Globalization;
 using AccessingChildcareEntitlementChecker.Web;
-using AccessingChildcareEntitlementChecker.Web.Services;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services
+var services = builder.Services;
+services
     .AddLocalization(options => options.ResourcesPath = "Resources")
     .AddDistributedMemoryCache()
     .AddSession()
     .AddHttpContextAccessor()
-    .AddScoped<IJourneySession, JourneySession>()
-    .AddGovUkFrontend();
+    .AddGovUkFrontend()
+    .AddHealthChecks();
 
-builder.Services.AddControllersWithViews(options =>
+services
+    .AddControllersWithViews(options =>
         {
             options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
         })
+    .AddDataAnnotationsLocalization()
     .AddViewLocalization();
 
-builder.Services.AddHealthChecks();
+services.AddJourneyServices();
 
 var app = builder.Build();
 if (!app.Environment.IsProduction())

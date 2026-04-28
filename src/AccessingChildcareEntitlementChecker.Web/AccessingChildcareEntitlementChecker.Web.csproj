@@ -1,6 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Models\HasPartnerViewModel.en-GB.resx">
+      <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\PartnerAgeViewModel.en-GB.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Entitlement\SessionExpired.en-GB.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SessionExpired.Designer.cs</LastGenOutput>

@@ -1,30 +1,19 @@
-using System.Diagnostics;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly IStringLocalizerFactory _localizerFactory;
+    private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
-    public HomeController(
-        IStringLocalizerFactory localizerFactory,
-        IJourneySession journeySession)
+    public HomeController(JourneyState journeyState, IJourneySession journeySession)
     {
-        _localizerFactory = localizerFactory;
+        _journeyState = journeyState;
         _journeySession = journeySession;
     }
-
-    //Commenting this out until we are ready to use it
-    //private IActionResult? GuardJourneyStarted(JourneyState state) =>
-    //state.CountryOfResidence is null
-    //? RedirectToAction(nameof(SessionExpired))
-    //: null;
-
 
     [HttpGet]
     public IActionResult SessionExpired()
@@ -39,46 +28,21 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult Location()
+    public ViewResult Location()
     {
-        var state = _journeySession.Get();
-
-        return View(new LocationViewModel
-        {
-            Country = state.CountryOfResidence
-        });
+        return View(new LocationViewModel(_journeyState));
     }
 
     [HttpPost]
     public IActionResult Location(LocationViewModel model)
     {
-        var pageTexts = LocalizerForPage(nameof(Location));
-
-        if (model.Country is null)
-        {
-            ModelState.AddModelError(
-                nameof(model.Country),
-                pageTexts["Error_SelectLocation"]);
-        }
-
         if (!ModelState.IsValid)
         {
             return View(model);
         }
 
-        var state = _journeySession.Get();
-        state.CountryOfResidence = model.Country;
-
-        _journeySession.Save(state);
-
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
         return RedirectToAction(nameof(UserController.HasPartner), "User");
-    }
-
-    private IStringLocalizer LocalizerForPage(string pageName)
-    {
-        var baseName = $"Views.Home.{pageName}";
-        var appName = typeof(Program).Assembly.GetName().Name!;
-
-        return _localizerFactory.Create(baseName, appName);
     }
 }
