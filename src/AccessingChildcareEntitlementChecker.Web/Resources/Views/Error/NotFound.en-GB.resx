@@ -21,10 +21,10 @@
     <data name="Title" xml:space="preserve">
         <value>Page not found</value>
     </data>
-    <data name="body-a" xml:space="preserve">
+    <data name="Body_TypedAddress" xml:space="preserve">
         <value>If you typed the web address, check it is correct.</value>
     </data>
-	<data name="body-b" xml:space="preserve">
+	<data name="Body_PastedAddress" xml:space="preserve">
         <value>If you pasted the web address, check you copied the entire address. </value>
     </data>
 </root>

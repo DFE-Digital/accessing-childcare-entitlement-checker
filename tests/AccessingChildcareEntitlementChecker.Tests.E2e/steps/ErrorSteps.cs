@@ -17,7 +17,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Given("I visit a non-existent page")]
         public async Task GivenIVisitANon_ExistentPage()
         {
-            var url = new Uri(_context.Uri, "/this-page-does-not-exist");
+            var url = new Uri(_context.Uri, "/ThisPageDoesNotExist");
             _lastResponse = await _context.Page.GotoAsync(url.AbsoluteUri);
         }
 
