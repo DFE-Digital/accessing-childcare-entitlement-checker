@@ -169,16 +169,16 @@ await this.FeatureBackgroundAsync();
 #line 7
     await testRunner.GivenAsync("the page header is \"How old are you?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
                             "Option"});
-                table2.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Under 18 years old"});
-                table2.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "18 to 20 years old"});
-                table2.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "21 years old or over"});
 #line 8
-    await testRunner.ThenAsync("I should see three radio buttons with the following options:", ((string)(null)), table2, "Then ");
+    await testRunner.ThenAsync("I should see 3 radio buttons with the following options:", ((string)(null)), table4, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

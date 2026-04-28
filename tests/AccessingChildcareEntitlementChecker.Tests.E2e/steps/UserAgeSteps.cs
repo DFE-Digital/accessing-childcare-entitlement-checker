@@ -1,6 +1,4 @@
-﻿using Microsoft.Playwright;
-using Reqnroll;
-using static Microsoft.Playwright.Assertions;
+﻿using Reqnroll;
 
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
 {
