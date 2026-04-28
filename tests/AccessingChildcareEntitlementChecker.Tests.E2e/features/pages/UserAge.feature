@@ -5,7 +5,7 @@ Background:
 
 Scenario: Page load
     Given the page header is "How old are you?"
-    Then I should see three radio buttons with the following options:
+    Then I should see 3 radio buttons with the following options:
     | Option               |
     | Under 18 years old   |
     | 18 to 20 years old   |

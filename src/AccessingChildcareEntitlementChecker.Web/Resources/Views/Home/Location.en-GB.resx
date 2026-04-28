@@ -33,7 +33,7 @@
     <data name="Option_NorthernIreland" xml:space="preserve">
         <value>Northern Ireland</value>
     </data>
-    <data name="Error_SelectWhereYouLive" xml:space="preserve">
+    <data name="Error_SelectLocation" xml:space="preserve">
         <value>Select where you live</value>
     </data>
     <data name="Caption" xml:space="preserve">

@@ -11,7 +11,7 @@ public enum CountryOfResidence
     NorthernIreland
 }
 
-public class WhereDoYouLiveViewModel
+public class LocationViewModel
 {
     public CountryOfResidence? Country { get; set; }
 }
