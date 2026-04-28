@@ -41,8 +41,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         public async Task ThenIShouldSeeRadioButtonsWithTheFollowingOptions(int expectedCount, DataTable dataTable)
         {
             var expectedOptions = dataTable.Rows.Select(r => r[0]).ToArray();
-
-            // Sanity check (optional but useful)
+            
             if (expectedOptions.Length != expectedCount)
                 throw new Exception($"Step says {expectedCount} options but table has {expectedOptions.Length}");
 
