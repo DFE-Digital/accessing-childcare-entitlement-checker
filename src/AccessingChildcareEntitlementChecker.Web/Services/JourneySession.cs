@@ -1,3 +1,5 @@
+using AccessingChildcareEntitlementChecker.Web.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text.Json;
 
 namespace AccessingChildcareEntitlementChecker.Web.Services;
@@ -19,17 +21,20 @@ public class JourneySession : IJourneySession
             .GetString(Key);
 
         if (string.IsNullOrWhiteSpace(json))
+        {
             return new JourneyState();
+        }
 
-        return JsonSerializer.Deserialize<JourneyState>(json)
-               ?? new JourneyState();
+        return JsonSerializer.Deserialize<JourneyState>(json) ?? new JourneyState();
     }
 
-    public void Save(JourneyState state)
+    public void Set(JourneyState journeyState)
     {
-        var json = JsonSerializer.Serialize(state);
+        var httpContext = _httpContextAccessor.HttpContext
+            ?? throw new InvalidOperationException("No HttpContext available");
 
-        _httpContextAccessor.HttpContext?
+        var json = JsonSerializer.Serialize(journeyState);
+        httpContext
             .Session
             .SetString(Key, json);
     }

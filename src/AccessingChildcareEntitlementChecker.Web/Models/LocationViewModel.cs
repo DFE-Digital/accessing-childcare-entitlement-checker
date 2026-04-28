@@ -1,17 +1,20 @@
+using AccessingChildcareEntitlementChecker.Web.Services;
 using System.ComponentModel.DataAnnotations;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models;
 
-//TODO: Move to core project
-public enum CountryOfResidence
-{
-    England,
-    Scotland,
-    Wales,
-    NorthernIreland
-}
-
 public class LocationViewModel
 {
+    public LocationViewModel()
+    {
+
+    }
+
+    public LocationViewModel(JourneyState journeyState)
+    {
+        Country = journeyState.CountryOfResidence;
+    }
+
+    [Required(ErrorMessage = "Error_SelectLocation")]
     public CountryOfResidence? Country { get; set; }
 }
