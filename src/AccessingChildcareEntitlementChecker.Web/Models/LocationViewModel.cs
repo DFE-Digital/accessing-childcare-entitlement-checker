@@ -15,6 +15,6 @@ public class LocationViewModel
         Country = journeyState.CountryOfResidence;
     }
 
-    [Required(ErrorMessage = "Error_SelectWhereYouLive")]
+    [Required(ErrorMessage = "Error_SelectLocation")]
     public CountryOfResidence? Country { get; set; }
 }
