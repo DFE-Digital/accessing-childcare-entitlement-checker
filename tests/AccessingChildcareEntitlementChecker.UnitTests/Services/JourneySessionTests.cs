@@ -32,7 +32,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Services
             var journeyState = new JourneyState
             {
                 CountryOfResidence = CountryOfResidence.England,
-                HasPartner = true,
+                HasPartner = YesNo.Yes,
                 PartnerAge = AgeRange.EighteenToTwenty
             };
             _journeySession.Set(journeyState);
@@ -53,7 +53,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Services
             var journeyState = new JourneyState
             {
                 CountryOfResidence = CountryOfResidence.England,
-                HasPartner = true,
+                HasPartner = YesNo.Yes,
                 PartnerAge = AgeRange.EighteenToTwenty
             };
 
@@ -68,7 +68,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Services
 
             Assert.NotNull(result);
             Assert.Equal(CountryOfResidence.England, result.CountryOfResidence);
-            Assert.True(result.HasPartner);
+            Assert.Equal(YesNo.Yes, result.HasPartner);
             Assert.Equal(AgeRange.EighteenToTwenty, result.PartnerAge);
         }
 

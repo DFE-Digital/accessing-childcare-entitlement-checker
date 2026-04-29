@@ -15,6 +15,7 @@ public class PartnerAgeViewModel
         PartnerAge = journeyState.PartnerAge;
     }
 
+    [Display(Name = "Title")]
     [Required(ErrorMessage = "Error_SelectYourPartnersAge")]
     public AgeRange? PartnerAge { get; set; }
 }

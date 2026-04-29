@@ -1,8 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
-@inject IViewLocalizer Localizer
 @model LocationViewModel
-
 
 @section BeforeContent {
     <govuk-back-link asp-controller="Home" asp-action="Start">
@@ -11,26 +8,7 @@
 }
 
 <form method="post" novalidate>
-    <govuk-radios for="Country">
-        <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                @Localizer["Title"]
-            </govuk-radios-fieldset-legend>
-            
-            <govuk-radios-hint>
-                @Localizer["Caption"]
-            </govuk-radios-hint>
-
-            <govuk-radios-error-message />
-
-            @foreach (var value in Enum.GetValues<CountryOfResidence>())
-            {
-                <govuk-radios-item value="@value">
-                    @Localizer[$"Option_{value}"]
-                </govuk-radios-item>
-            }
-        </govuk-radios-fieldset>
-    </govuk-radios>
+    <cec-enum-radios asp-for="Country" />
 
     <govuk-button type="submit">
         @Shared["Button_Continue"]

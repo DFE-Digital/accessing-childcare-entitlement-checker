@@ -39,7 +39,7 @@ public class UserController : Controller
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
 
-        if (_journeyState.HasPartner == true)
+        if (_journeyState.HasPartner == YesNo.Yes)
         {
             return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
         }

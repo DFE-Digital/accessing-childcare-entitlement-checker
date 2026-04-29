@@ -29,15 +29,15 @@ public class UserControllerTests
     [Fact]
     public void HasPartner_Get_PopulatesModel_FromState()
     {
-        _journeyState.HasPartner = true;
+        _journeyState.HasPartner = YesNo.Yes;
         var result = _controller.HasPartner();
-        Assert.True(result.Model<HasPartnerViewModel>().HasPartner);
+        Assert.Equal(YesNo.Yes, result.Model<HasPartnerViewModel>().HasPartner);
     }
 
     [Theory]
-    [InlineData(true, nameof(PartnerController.PartnerAge))]
-    [InlineData(false, nameof(UserController.NextStepPlaceholder))]
-    public void HasPartner_Post_ValidSelection_SavesState_AndRedirects(bool hasPartner, string redirectsTo)
+    [InlineData(YesNo.Yes, nameof(PartnerController.PartnerAge))]
+    [InlineData(YesNo.No, nameof(UserController.NextStepPlaceholder))]
+    public void HasPartner_Post_ValidSelection_SavesState_AndRedirects(YesNo hasPartner, string redirectsTo)
     {
         var model = new HasPartnerViewModel()
         {

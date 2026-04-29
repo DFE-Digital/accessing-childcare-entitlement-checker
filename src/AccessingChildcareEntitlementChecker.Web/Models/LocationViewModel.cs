@@ -15,6 +15,7 @@ public class LocationViewModel
         Country = journeyState.CountryOfResidence;
     }
 
+    [Display(Name = "Title", Description = "Caption")]
     [Required(ErrorMessage = "Error_SelectLocation")]
     public CountryOfResidence? Country { get; set; }
 }

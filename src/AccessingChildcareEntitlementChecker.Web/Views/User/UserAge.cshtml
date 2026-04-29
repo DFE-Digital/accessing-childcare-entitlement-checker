@@ -1,6 +1,4 @@
-@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
-@inject IViewLocalizer Localizer
 @model UserAgeViewModel
 
 @section BeforeContent {
@@ -10,28 +8,7 @@
 }
 
 <form method="post" novalidate>
-    <govuk-radios for="UserAge">
-        <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                @Localizer["Title"]
-            </govuk-radios-fieldset-legend>
-
-            <govuk-radios-error-message />
-
-            <govuk-radios-item value="UnderEighteen">
-                @Localizer["Option_Under18"]
-            </govuk-radios-item>
-
-            <govuk-radios-item value="EighteenToTwenty">
-                @Localizer["Option_18To20"]
-            </govuk-radios-item>
-
-            <govuk-radios-item value="TwentyOneOrOver">
-                @Localizer["Option_21OrOver"]
-            </govuk-radios-item>
-
-        </govuk-radios-fieldset>
-    </govuk-radios>
+    <cec-enum-radios asp-for="UserAge" />
 
     <govuk-button type="submit">
         @Shared["Button_Continue"]

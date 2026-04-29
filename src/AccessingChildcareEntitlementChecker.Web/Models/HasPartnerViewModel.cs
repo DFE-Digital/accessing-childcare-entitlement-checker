@@ -16,6 +16,7 @@ public class HasPartnerViewModel
     }
 
 
+    [Display(Name = "Title", Description = "Caption")]
     [Required(ErrorMessage = "Error_SelectIfYouHavePartner")]
-    public bool? HasPartner { get; set; }
+    public YesNo? HasPartner { get; set; }
 }

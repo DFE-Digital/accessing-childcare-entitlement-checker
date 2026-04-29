@@ -6,7 +6,7 @@ public class JourneyState
 {
     public CountryOfResidence? CountryOfResidence { get; set; }
 
-    public bool? HasPartner { get; set; }
+    public YesNo? HasPartner { get; set; }
 
     public AgeRange? UserAge { get; set; }
 
