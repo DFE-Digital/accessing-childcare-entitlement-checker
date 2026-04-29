@@ -1,6 +1,12 @@
 name: Promote to Test
 
 on:
+  workflow_dispatch:
+    inputs:
+      run-id:
+        description: 'CI workflow run ID'
+        required: true
+        type: string
   workflow_run:
     workflows: ['CI']
     types: [completed]
@@ -14,7 +20,7 @@ jobs:
   stage-artifact:
     name: Prepare artifact from CI run
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     permissions:
       actions: read
     steps:
@@ -22,7 +28,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: webapp-package
-          run-id: ${{ github.event.workflow_run.id }}
+          run-id: ${{ github.event.workflow_run.id || inputs['run-id'] }}
           github-token: ${{ github.token }}
           path: ./artifacts/webapp-package
 
