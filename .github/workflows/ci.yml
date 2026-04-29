@@ -29,7 +29,7 @@ jobs:
   deploy:
     name: Deploy
     needs: build-and-test
-    if: github.event_name == 'push' && github.ref_name == 'main'
+    if: (github.event_name == 'push' && github.ref_name == 'main') || (github.event_name == 'pull_request' && github.head_ref == 'feature/ac-501_deploy-to-test')
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: development
