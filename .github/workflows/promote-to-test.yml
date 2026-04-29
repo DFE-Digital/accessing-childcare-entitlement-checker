@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ['CI']
     types: [completed]
-    branches: [main]
+    branches: [main, feature/ac-501_deploy-to-test]
 
 concurrency:
   group: deploy-test
