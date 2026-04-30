@@ -29,11 +29,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDevelopmentAuth(builder.Configuration);
     app.MapRobotsExclusionProtocol();
+
+    app.MapGet("/throw", () =>
+    {
+        throw new InvalidOperationException("Test exception for error page");
+    });
 }
 else
 {
-    app.UseExceptionHandler("/Entitlement/Error")
-        .UseHsts();
+    app.UseHsts();
 }
 
 var supportedCultures = new[] { new CultureInfo("en-GB") };
@@ -49,7 +53,8 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     .UseRouting()
     .UseSession()
     .UseAuthorization()
-    .UseExceptionHandler("/Error");
+    .UseExceptionHandler("/Error")
+    .UseStatusCodePagesWithReExecute("/error/{0}");
 
 app.MapHealthChecks("/health");
 app.MapControllerRoute(
