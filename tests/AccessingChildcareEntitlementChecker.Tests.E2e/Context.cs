@@ -13,6 +13,6 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e
             _page = page;
         }
 
-        public Uri Uri => new Uri(Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252/");
+        public Uri Uri => new Uri(Environment.GetEnvironmentVariable("TEST_URL") ?? "https://localhost:5252/");
     }
 }
