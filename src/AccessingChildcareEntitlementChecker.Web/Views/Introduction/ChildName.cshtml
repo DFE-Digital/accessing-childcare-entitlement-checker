@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@model ChildNameViewModel
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="Home" asp-action="Location">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Localizer["Title"]
+        </h1>
+
+        <p class="govuk-body">
+            @Localizer["Body"]
+        </p>
+
+        <p class="govuk-body">
+            @Localizer["Body2"]
+        </p>
+
+        <form method="post" novalidate>
+            <govuk-input for="ChildName" label-class="govuk-label--m" input-class="govuk-input--width-20" />
+
+            <govuk-details>
+                <govuk-details-summary>
+                    @Localizer["Details_Title"]
+                </govuk-details-summary>
+                <govuk-details-text>
+                    <p>
+                        @Localizer["Details_Text"]
+                    </p>
+                    <p>
+                        @Localizer["Details_Text2"]
+                    </p>
+                </govuk-details-text>
+            </govuk-details>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

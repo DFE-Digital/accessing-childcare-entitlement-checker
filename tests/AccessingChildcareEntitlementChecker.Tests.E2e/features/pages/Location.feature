@@ -28,7 +28,7 @@ Scenario: Continue without selection
 Scenario: Continue with selection
     Given I have selected the "England" radio button
     When I click on Continue
-    Then I will be directed to the next page in the user journey "Do you live with a partner?"
+    Then I will be directed to the next page in the user journey "Add details of a child"
 
 Scenario: Back navigation
     When I click the back link

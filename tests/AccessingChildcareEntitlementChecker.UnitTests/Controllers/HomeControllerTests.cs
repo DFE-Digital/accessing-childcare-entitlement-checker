@@ -49,7 +49,7 @@ public class HomeControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.HasPartner), redirect.ActionName);
+        Assert.Equal(nameof(IntroductionController.ChildName), redirect.ActionName);
     }
 
     [Fact]
