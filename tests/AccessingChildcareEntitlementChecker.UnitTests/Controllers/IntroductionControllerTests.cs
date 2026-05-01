@@ -67,4 +67,55 @@ public class IntroductionControllerTests
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildName)));
     }
+
+    [Fact]
+    public void ChildIsBorn_ReturnsView()
+    {
+        var result = _controller.IsChildBorn();
+        Assert.Null(result.Model<ChildIsBornViewModel>().ChildIsBorn);
+    }
+
+    [Fact]
+    public void ChildIsBorn_Get_PopulatesModel_FromState()
+    {
+        _journeyState.ChildIsBorn = BirthStatus.Born;
+        var result = _controller.IsChildBorn();
+        Assert.Equal(BirthStatus.Born, result.Model<ChildIsBornViewModel>().ChildIsBorn);
+    }
+
+    [Theory]
+    [InlineData(BirthStatus.Due, nameof(ChildDetailsController.ChildDueDate))]
+    [InlineData(BirthStatus.Born, nameof(ChildDetailsController.ChildBirthDate))]
+    public void ChildIsBorn_Post_ValidSelection_SavesState_AndRedirects(BirthStatus birthStatus, string redirectsTo)
+    {
+        var model = new ChildIsBornViewModel()
+        {
+            ChildIsBorn = birthStatus,
+        };
+
+        var result = _controller.IsChildBorn(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(birthStatus, _journeyState.ChildIsBorn);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(redirectsTo, redirect.ActionName);
+    }
+
+    [Fact]
+    public void ChildIsBorn_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new ChildIsBornViewModel
+        {
+            ChildIsBorn = null
+        };
+
+        _controller.ModelState.AddModelError(nameof(model.ChildIsBorn), "Faked Model Binding Error");
+
+        var result = _controller.IsChildBorn(model);
+
+        var view = Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildIsBorn)));
+    }
 }

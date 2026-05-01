@@ -169,18 +169,18 @@ await this.FeatureBackgroundAsync();
 #line 7
     await testRunner.GivenAsync("the page header is \"Where do you live?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
                             "Option"});
-                table1.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "England"});
-                table1.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "Scotland"});
-                table1.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "Wales"});
-                table1.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "Northern Ireland"});
 #line 8
-    await testRunner.ThenAsync("I should see 4 radio buttons with the following options:", ((string)(null)), table1, "Then ");
+    await testRunner.ThenAsync("I should see 4 radio buttons with the following options:", ((string)(null)), table5, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
