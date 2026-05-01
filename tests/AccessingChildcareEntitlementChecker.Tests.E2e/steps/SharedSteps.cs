@@ -18,9 +18,9 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Then("the page header is {string}")]
         public async Task ThenThePageHeaderIs(string expectedHeader)
         {
-            await Assertions.Expect(
-                _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 })
-            ).ToHaveTextAsync(expectedHeader);
+            await _context.Page
+                .GetByRole(AriaRole.Heading, new() { Name = expectedHeader })
+                .WaitForAsync();
         }
 
         [When("I click on Continue")]
@@ -143,13 +143,22 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
                .GetByRole(AriaRole.Link, new() { Name = "Start now" })
                .ClickAsync();
 
-            foreach (var row in dataTable.Rows)
+            foreach (var step in dataTable.Rows)
             {
-                var question = row[0];
-                var answer = row[1];
-                var heading = _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 });
+                var question = step[0];
+                var answer = step[1];
+                await _context.Page.GetByRole(AriaRole.Heading, new() { Name = question }).WaitForAsync();
                 await AssertHeader(question);
-                await _context.Page.GetByLabel(answer).CheckAsync();
+                var textboxes = _context.Page.GetByRole(AriaRole.Textbox);
+                if (await textboxes.CountAsync() > 0)
+                {
+                    await textboxes.First.FillAsync(answer);
+                }
+                else
+                {
+                    await _context.Page.GetByRole(AriaRole.Radio, new() { Name = answer }).CheckAsync();
+                }
+
                 await _context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
                 await Expect(heading).Not.ToHaveTextAsync(question);
             }

@@ -110,14 +110,17 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages.Introduc
 #line 4
     await testRunner.GivenAsync("I am on the childcare entitlement checker website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-            global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+            global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
                         "Question",
                         "Answer"});
-            table1.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "Where do you live?",
                         "England"});
 #line 5
-    await testRunner.AndAsync("I start the journey and answer the questions as follows:", ((string)(null)), table1, "And ");
+    await testRunner.AndAsync("I start the journey and answer the questions as follows:", ((string)(null)), table4, "And ");
+#line hidden
+#line 8
+    await testRunner.AndAsync("the page header is \"Add details of a child\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
         }
         
@@ -162,7 +165,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages.Introduc
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Page load", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 9
+#line 10
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -174,9 +177,6 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                 await this.ScenarioStartAsync();
 #line 3
 await this.FeatureBackgroundAsync();
-#line hidden
-#line 10
-    await testRunner.GivenAsync("the page header is \"Add details of a child\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 11
     await testRunner.ThenAsync("I should see a text box with the label \"What name should we use for this child?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");

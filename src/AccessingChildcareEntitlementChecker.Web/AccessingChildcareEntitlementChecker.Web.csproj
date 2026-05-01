@@ -1,6 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Models\BirthStatus.en-GB.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ChildIsBornViewModel.en-GB.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Models\ChildNameViewModel.en-GB.resx">
       <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -10,6 +20,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Models\PartnerAgeViewModel.en-GB.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ChildDetails\ChildBirthDate.en-GB.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ChildDetails\ChildDueDate.en-GB.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Entitlement\SessionExpired.en-GB.resx">
