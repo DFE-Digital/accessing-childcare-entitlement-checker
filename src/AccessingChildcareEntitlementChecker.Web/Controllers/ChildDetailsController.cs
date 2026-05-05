@@ -6,13 +6,8 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
     public class ChildDetailsController : Controller
     {
-        private readonly JourneyState _journeyState;
-        private readonly IJourneySession _journeySession;
-
-        public ChildDetailsController(JourneyState journeyState, IJourneySession journeySession)
+        public ChildDetailsController()
         {
-            _journeyState = journeyState;
-            _journeySession = journeySession;
         }
 
         [HttpGet]

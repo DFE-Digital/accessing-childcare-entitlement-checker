@@ -147,7 +147,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
             {
                 var question = step[0];
                 var answer = step[1];
-                await _context.Page.GetByRole(AriaRole.Heading, new() { Name = question }).WaitForAsync();
+                var heading = _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 });
                 await AssertHeader(question);
                 var textboxes = _context.Page.GetByRole(AriaRole.Textbox);
                 if (await textboxes.CountAsync() > 0)
