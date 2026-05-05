@@ -110,17 +110,17 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages.Introduc
 #line 4
     await testRunner.GivenAsync("I am on the childcare entitlement checker website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-            global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+            global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
                         "Question",
                         "Answer"});
-            table1.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "Where do you live?",
                         "England"});
-            table1.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "Add details of a child",
                         "Jack"});
 #line 5
-    await testRunner.AndAsync("I start the journey and answer the questions as follows:", ((string)(null)), table1, "And ");
+    await testRunner.AndAsync("I start the journey and answer the questions as follows:", ((string)(null)), table2, "And ");
 #line hidden
         }
         
@@ -181,14 +181,14 @@ await this.FeatureBackgroundAsync();
 #line 11
     await testRunner.GivenAsync("the page header is \"Has this child been born yet?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
                             "Option"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Yes"});
-                table2.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "No"});
 #line 12
-    await testRunner.ThenAsync("I should see 2 radio buttons with the following options:", ((string)(null)), table2, "Then ");
+    await testRunner.ThenAsync("I should see 2 radio buttons with the following options:", ((string)(null)), table3, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

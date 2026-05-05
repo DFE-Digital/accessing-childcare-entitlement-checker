@@ -110,14 +110,14 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Features.Pages.Introduc
 #line 4
     await testRunner.GivenAsync("I am on the childcare entitlement checker website", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-            global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+            global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
                         "Question",
                         "Answer"});
-            table3.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "Where do you live?",
                         "England"});
 #line 5
-    await testRunner.AndAsync("I start the journey and answer the questions as follows:", ((string)(null)), table3, "And ");
+    await testRunner.AndAsync("I start the journey and answer the questions as follows:", ((string)(null)), table4, "And ");
 #line hidden
 #line 8
     await testRunner.AndAsync("the page header is \"Add details of a child\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
