@@ -39,6 +39,6 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         public ViewResult IsChildBorn()
         {
             return View();
-        }        
+        }
     }
 }
