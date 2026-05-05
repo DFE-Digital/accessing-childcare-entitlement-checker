@@ -1,0 +1,4 @@
+[submodule "lib/govuk-frontend-aspnetcore"]
+	path = lib/govuk-frontend-aspnetcore
+	url = https://github.com/x-govuk/govuk-frontend-aspnetcore.git
+	branch = expose-pageerrorcontext

@@ -48,7 +48,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.0.1" />
+    <ProjectReference Include="..\..\lib\govuk-frontend-aspnetcore\src\GovUk.Frontend.AspNetCore\GovUk.Frontend.AspNetCore.csproj" />
   </ItemGroup>
   
 </Project>

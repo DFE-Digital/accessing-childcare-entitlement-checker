@@ -1,4 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.ComponentGeneration;
+﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.ComponentGeneration;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -53,6 +54,10 @@ public class CecEnumRadiosTagHelper : TagHelper
             .ToList();
 
         var errors = ViewContext.ModelState[fieldName]?.Errors;
+        if (errors?.Count > 0)
+        {
+            ViewContext.HttpContext.AddPageError(errors[0].ErrorMessage, "#" + idPrefix);
+        }
 
         var component = await _componentGenerator.GenerateRadiosAsync(new RadiosOptions
         {
