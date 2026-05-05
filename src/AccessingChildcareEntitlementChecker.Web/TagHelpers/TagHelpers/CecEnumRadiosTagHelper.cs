@@ -1,10 +1,11 @@
+using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ComponentGeneration;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace AccessingChildcareEntitlementChecker.Web.Infrastructure.TagHelpers;
+namespace AccessingChildcareEntitlementChecker.Web.TagHelpers;
 
 [HtmlTargetElement("cec-enum-radios", TagStructure = TagStructure.WithoutEndTag)]
 public class CecEnumRadiosTagHelper : TagHelper
@@ -18,7 +19,7 @@ public class CecEnumRadiosTagHelper : TagHelper
         _metadataProvider = metadataProvider;
     }
 
-    [HtmlAttributeName("asp-for")]
+    [HtmlAttributeName("for")]
     public ModelExpression For { get; set; } = null!;
 
     [ViewContext]
@@ -53,6 +54,10 @@ public class CecEnumRadiosTagHelper : TagHelper
             .ToList();
 
         var errors = ViewContext.ModelState[fieldName]?.Errors;
+        if (errors?.Count > 0)
+        {
+            ViewContext.HttpContext.AddPageError(errors[0].ErrorMessage, "#" + idPrefix);
+        }
 
         var component = await _componentGenerator.GenerateRadiosAsync(new RadiosOptions
         {
