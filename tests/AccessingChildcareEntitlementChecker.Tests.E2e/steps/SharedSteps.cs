@@ -148,12 +148,9 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
                 var question = row[0];
                 var answer = row[1];
                 var heading = _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 });
-
                 await AssertHeader(question);
                 await _context.Page.GetByLabel(answer).CheckAsync();
                 await _context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
-
-                // Make the step deterministic by waiting for the next page heading.
                 await Expect(heading).Not.ToHaveTextAsync(question);
             }
         }
