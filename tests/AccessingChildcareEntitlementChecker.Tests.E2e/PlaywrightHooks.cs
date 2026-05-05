@@ -19,7 +19,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e
             _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
                 Headless = !Debugger.IsAttached,
-                SlowMo = Debugger.IsAttached ? 1000 : 0,
+                SlowMo = Debugger.IsAttached ? 1000 : 0
             });
         }
 
