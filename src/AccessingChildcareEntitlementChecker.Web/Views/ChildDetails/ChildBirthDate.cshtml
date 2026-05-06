@@ -1,6 +1,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
+@model ChildBirthDateViewModel
 
 @section BeforeContent {
     <govuk-back-link asp-controller="Introduction" asp-action="IsChildBorn">
@@ -10,8 +11,31 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Localizer["Title"]
-        </h1>
+        <form method="post" novalidate>
+            <govuk-date-input for="ChildBirthDate">
+                <govuk-date-input-fieldset>
+                    <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Localizer["Title", Model.ChildName ?? "child"]
+                    </govuk-date-input-fieldset-legend>
+
+                    <govuk-date-input-error-message />
+                </govuk-date-input-fieldset>
+            </govuk-date-input>
+
+            <govuk-details>
+                <govuk-details-summary>
+                    @Localizer["Details_Title"]
+                </govuk-details-summary>
+                <govuk-details-text>
+                    <p>
+                        @Localizer["Details_Text"]
+                    </p>
+                </govuk-details-text>
+            </govuk-details>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
     </div>
 </div>

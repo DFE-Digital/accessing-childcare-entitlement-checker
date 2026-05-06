@@ -1,0 +1,40 @@
+﻿using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.Extensions.Localization;
+using System.ComponentModel.DataAnnotations;
+
+namespace AccessingChildcareEntitlementChecker.Web.Models
+{
+    public class ChildBirthDateViewModel : IValidatableObject
+    {
+        public ChildBirthDateViewModel()
+        {
+
+        }
+
+        public ChildBirthDateViewModel(JourneyState journeyState)
+        {
+            ChildName = journeyState.ChildName;
+            ChildBirthDate = journeyState.ChildBirthDate;
+        }
+
+        public string? ChildName { get; set; }
+
+        [Display(Name = "Label_ChildBirthDate", Description = "Description_ChildBirthDate")]
+        [Required(ErrorMessage = "Error_ChildBirthDate")]
+        public DateTime? ChildBirthDate { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var dateTimeFactory = validationContext.GetService(typeof(IDateTimeFactory)) as IDateTimeFactory;
+            var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
+
+            var utcNow = dateTimeFactory!.UtcNow;
+            if (ChildBirthDate.HasValue && ChildBirthDate.Value.ToUniversalTime() > utcNow)
+            {
+                var localizer = localizerFactory!.Create(typeof(ChildBirthDateViewModel));
+                var localised = localizer["Error_ChildBirthDateInFuture"];
+                yield return new ValidationResult(localised, [nameof(ChildBirthDate)]);
+            }
+        }
+    }
+}

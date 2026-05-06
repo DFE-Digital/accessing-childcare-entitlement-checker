@@ -1,25 +1,72 @@
 ﻿using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
     public class ChildDetailsController : Controller
     {
-        public ChildDetailsController()
+        private readonly JourneyState _journeyState;
+        private readonly IJourneySession _journeySession;
+        private readonly IStringLocalizer<ChildBirthDateViewModel> _childBirthDateLocalizer;
+
+        public ChildDetailsController(
+            JourneyState journeyState,
+            IJourneySession journeySession,
+            IStringLocalizer<ChildBirthDateViewModel> childBirthDateLocalizer)
         {
+            _journeyState = journeyState;
+            _journeySession = journeySession;
+            _childBirthDateLocalizer = childBirthDateLocalizer;
         }
 
         [HttpGet]
         public ViewResult ChildBirthDate()
         {
-            return View();
+            return View(new ChildBirthDateViewModel(_journeyState));
+        }
+
+        [HttpPost]
+        public IActionResult ChildBirthDate(ChildBirthDateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ReplaceDateInputParseErrorMessage();
+                model.ChildName = _journeyState.ChildName;
+                return View(model);
+            }
+
+            _journeyState.Apply(model);
+            _journeySession.Set(_journeyState);
+            return RedirectToAction(nameof(ChildRelationship), "ChildDetails");
         }
 
         [HttpGet]
         public ViewResult ChildDueDate()
         {
             return View();
+        }
+
+        [HttpGet]
+        public ViewResult ChildRelationship()
+        {
+            return View(new ChildRelationshipViewModel(_journeyState));
+        }
+
+        private void ReplaceDateInputParseErrorMessage()
+        {
+            foreach (var entry in ModelState)
+            {
+                var errors = entry.Value?.Errors;
+                if (errors is null || errors.All(error => !error.ErrorMessage.Contains("must be a real date")))
+                {
+                    continue;
+                }
+
+                errors.Clear();
+                errors.Add(_childBirthDateLocalizer["Error_ChildBirthDateInvalid"]);
+            }
         }
     }
 }

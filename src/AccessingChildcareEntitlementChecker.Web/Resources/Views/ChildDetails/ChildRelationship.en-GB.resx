@@ -22,12 +22,6 @@
       Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Title" xml:space="preserve">
-    <value>What is {0}'s date of birth?</value>
-  </data>
-  <data name="Details_Title" xml:space="preserve">
-	<value>Why we ask for a date of birth</value>
-  </data>
-  <data name="Details_Text" xml:space="preserve">
-	<value>We use this data to give you accurate results, such as when you may be able to apply and when your childcare support could start and end.</value>
+    <value>What is your relationship to {0}?</value>
   </data>
 </root>
