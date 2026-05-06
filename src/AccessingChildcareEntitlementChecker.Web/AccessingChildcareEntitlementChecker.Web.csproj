@@ -28,4 +28,8 @@
     <PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.0.1" />
   </ItemGroup>
   
+  <ItemGroup>
+    <ProjectReference Include="..\AccessingChildcareEntitlementChecker.RulesEngine\AccessingChildcareEntitlementChecker.RulesEngine.csproj" />
+  </ItemGroup>
+  
 </Project>
