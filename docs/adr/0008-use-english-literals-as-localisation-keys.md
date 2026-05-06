@@ -29,7 +29,9 @@ Key based localisation uses stable identifiers; usually with some semantic struc
 
 * Changing wording is consistent across all languages - edit the relevant resource file.
 * Altering text for the default language doesn't alter the key - no change required to resource files other than the affected language.
-* Sufficiently descriptive or structured keys can give hints to translators even when viewed in isolation from the app.
+* Sufficiently descriptive or structured keys can give hints to translators even when viewed in isolation from the app,
+* Keys will tend to be shorter than literals. These might be more convenient to use in tooling as well as less distracting to translators.
+* Reuse and consistency - Common text (Yes/No/Continue/Back) can be defined once and reused across the app. This avoids duplication and makes global changes much simpler.
 
 #### Cons
 
