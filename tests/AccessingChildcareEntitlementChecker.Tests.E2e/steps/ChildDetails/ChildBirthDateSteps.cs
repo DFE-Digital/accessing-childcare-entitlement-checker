@@ -5,7 +5,6 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps.ChildDetails;
 
 [Binding]
-[Scope(Feature = "What is <child>'s date of birth?")]
 public class ChildBirthDateSteps
 {
     private readonly Context _context;

@@ -32,7 +32,6 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ReplaceDateInputParseErrorMessage();
                 model.ChildName = _journeyState.ChildName;
                 return View(model);
             }
@@ -52,21 +51,6 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         public ViewResult ChildRelationship()
         {
             return View(new ChildRelationshipViewModel(_journeyState));
-        }
-
-        private void ReplaceDateInputParseErrorMessage()
-        {
-            foreach (var entry in ModelState)
-            {
-                var errors = entry.Value?.Errors;
-                if (errors is null || errors.All(error => !error.ErrorMessage.Contains("must be a real date")))
-                {
-                    continue;
-                }
-
-                errors.Clear();
-                errors.Add(_childBirthDateLocalizer["Error_ChildBirthDateInvalid"]);
-            }
         }
     }
 }
