@@ -2,20 +2,27 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      deploy_to_test:
+        description: 'Auto-deploy to Test environment?'
+        type: boolean
+        default: false
   push:
     branches:
       - main
+      - 'feature/ac-501*'
     paths-ignore:
-      - docs/**
+      - 'docs/**'
   pull_request:
     paths-ignore:
-      - docs/**
+      - 'docs/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
+  # This modular approach assumes build-and-test.yml and e2e-tests.yml exist in .github/workflows
   build-and-test:
     name: Build and Test
     uses: ./.github/workflows/build-and-test.yml
@@ -29,8 +36,24 @@ jobs:
   deploy:
     name: Deploy
     needs: build-and-test
-    if: (github.event_name == 'push' && github.ref_name == 'main') || (github.event_name == 'pull_request' && github.head_ref == 'feature/ac-501_deploy-to-test')
+    # Logic: Deploy on main merge, manual check, or specific feature branch PR
+    if: |
+      (github.event_name == 'push' && github.ref_name == 'main') ||
+      (github.event.inputs.deploy_to_test == 'true') ||
+      (github.event_name == 'pull_request' && github.head_ref == 'feature/ac-501_deploy-to-test')
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: development
+    secrets: inherit
+
+  # Keeping the Promotion Engine call as an alternative "Senior Architect" path
+  # This ensures the linear checks we built are still available for Test/Staging/Prod
+  promote:
+    name: Promote to Higher Env
+    needs: build-and-test
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_to_test == 'true'
+    uses: ./.github/workflows/promote-to-test.yml
+    with:
+      environment: test
+      run-id: ${{ github.run_id }}
     secrets: inherit

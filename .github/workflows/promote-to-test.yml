@@ -8,26 +8,22 @@ on:
         description: 'Target Environment'
         required: true
         type: choice
-        options:
-          - test
-          - staging
-          - production
+        options: [test, staging, production]
         default: test
       run-id:
         description: 'The CI Workflow Run ID to promote'
         required: true
         type: string
-  
-  # 2. DEBUG TRIGGER: Run directly when you push to this feature branch
-  push:
-    branches:
-      - 'feature/ac-501_deploy-to-test'
 
-  # 3. AUTOMATION TRIGGER: Fires after CI completes (Only works once merged to main)
-  workflow_run:
-    workflows: ['CI']
-    types: [completed]
-    branches: [main, 'feature/ac-501_deploy-to-test']
+  # 2. REUSABLE CALL: Called by CI.yml
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        default: test
+      run-id:
+        type: string
+        required: true
 
 permissions:
   id-token: write
@@ -43,89 +39,54 @@ jobs:
       - name: Check Prerequisite Environment
         env:
           GH_TOKEN: ${{ github.token }}
-          TARGET_ENV: ${{ inputs.environment || 'test' }}
-          # Logic: Use manual input, then workflow_run ID, then current run ID for pushes
-          RUN_ID: ${{ inputs['run-id'] || github.event.workflow_run.id || github.run_id }}
+          TARGET_ENV: ${{ inputs.environment }}
+          RUN_ID: ${{ inputs.run-id }}
         run: |
           echo "--- PROMOTION DIAGNOSTICS ---"
-          echo "Trigger Event: ${{ github.event_name }}"
           echo "Target Environment: $TARGET_ENV"
-          echo "Source Run ID: $RUN_ID"
-          echo "----------------------------"
+          echo "Validated Run ID: $RUN_ID"
           
-          # Skip validation for 'test' or if we are triggering via a direct 'push' for debugging
-          if [ "$TARGET_ENV" == "test" ] || [ "${{ github.event_name }}" == "push" ]; then
-            echo "LOG: Direct promotion to 'test' or Debug 'push' detected. Bypassing linear gate checks."
+          # Skip validation for 'test'
+          if [ "$TARGET_ENV" == "test" ]; then
+            echo "LOG: Bypassing linear gate checks for initial test environment."
             exit 0
           fi
 
           if [ "$TARGET_ENV" == "staging" ]; then PRE_REQ="test"; fi
           if [ "$TARGET_ENV" == "production" ]; then PRE_REQ="staging"; fi
 
-          echo "LOG: Validating that Run ID $RUN_ID achieved 'success' status in prerequisite: $PRE_REQ"
-          
-          # Query GitHub API for deployments of this run-id in the pre-req environment
           STATUS=$(gh api repos/${{ github.repository }}/deployments \
             -f environment=$PRE_REQ \
             --jq ".[] | select(.payload.run_id == \"$RUN_ID\") | .id" | xargs -I {} gh api repos/${{ github.repository }}/deployments/{}/statuses --jq ".[0].state" | grep "success" || echo "not_found")
 
-          echo "LOG: API query returned status: [$STATUS]"
-
           if [ "$STATUS" != "success" ]; then
-            echo "!!! PROMOTION DENIED !!!"
-            echo "Reason: Run ID $RUN_ID has no record of a successful deployment in '$PRE_REQ'."
-            echo "Action: Ensure $RUN_ID has been deployed to $PRE_REQ before promoting to $TARGET_ENV."
+            echo "!!! PROMOTION DENIED: $RUN_ID has not passed $PRE_REQ !!!"
             exit 1
           fi
-          
-          echo "SUCCESS: Promotion path validated: $PRE_REQ -> $TARGET_ENV"
 
   stage-artifact:
     name: Prepare artifact
     needs: validate-promotion
     runs-on: ubuntu-latest
-    # FIXED: Added 'push' to the allowed event list
-    if: |
-      github.event_name == 'workflow_dispatch' || 
-      github.event_name == 'push' ||
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     steps:
-      - name: Debug Workflow Context
-        run: |
-          echo "Preparing artifact for environment: ${{ inputs.environment || 'test' }}"
-          echo "Context Event: ${{ github.event_name }}"
-          echo "Fetching artifact from Run ID: ${{ inputs['run-id'] || github.event.workflow_run.id || github.run_id }}"
-
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: webapp-package
-          run-id: ${{ inputs['run-id'] || github.event.workflow_run.id || github.run_id }}
+          run-id: ${{ inputs.run-id }}
           github-token: ${{ github.token }}
           path: ./artifacts/webapp-package
-
-      - name: Verify Downloaded Content
-        run: |
-          echo "Verifying ./artifacts/webapp-package content:"
-          ls -R ./artifacts/webapp-package
-          if [ ! -f ./artifacts/webapp-package/webapp.zip ]; then
-            echo "ERROR: webapp.zip not found in download path!"
-            exit 1
-          fi
 
       - name: Re-upload for deployment
         uses: actions/upload-artifact@v4
         with:
           name: webapp-package-deployment
           path: ./artifacts/webapp-package/webapp.zip
-        
-      - name: Completion Log
-        run: echo "Artifact re-uploaded as 'webapp-package-deployment'. Transitioning to infra-deploy..."
 
   deploy:
-    name: Deploy to ${{ inputs.environment || 'test' }}
+    name: Deploy to ${{ inputs.environment }}
     needs: stage-artifact
     uses: ./.github/workflows/infra-deploy.yml
     with:
-      environment: ${{ inputs.environment || 'test' }}
+      environment: ${{ inputs.environment }}
     secrets: inherit
