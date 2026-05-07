@@ -60,7 +60,7 @@ public class ChildBirthDateViewModelTests
 
         var validationContext = new ValidationContext(model);
         validationContext.InitializeServiceProvider(_serviceProviderFunc);
-        
+
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
