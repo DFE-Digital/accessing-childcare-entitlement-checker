@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "a11y": "pa11y-ci"
+  },
+  "devDependencies": {
+    "pa11y-ci": "^4.1.0"
+  }
+}

@@ -31,11 +31,11 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: src/AccessingChildcareEntitlementChecker.Web/package-lock.json
+          cache-dependency-path: tests/AccessingChildcareEntitlementChecker.Tests.Accessibility/package-lock.json
 
       - name: Install dependencies
         run: npm ci
-        working-directory: src/AccessingChildcareEntitlementChecker.Web
+        working-directory: tests/AccessingChildcareEntitlementChecker.Tests.Accessibility
 
       - name: Start app
         run: |
@@ -58,7 +58,7 @@ jobs:
         run: npm run a11y
         # Pa11y always exits with non-zero. Until we complete AC-604; just ignore the outcome.
         continue-on-error: true
-        working-directory: src/AccessingChildcareEntitlementChecker.Web
+        working-directory: tests/AccessingChildcareEntitlementChecker.Tests.Accessibility
 
       - name: Stop app
         if: always()
