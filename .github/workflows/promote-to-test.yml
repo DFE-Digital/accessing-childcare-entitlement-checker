@@ -18,9 +18,9 @@ on:
         type: string
   
   workflow_run:
-    workflows: ['PR Checks']
+    workflows: ['CI']
     types: [completed]
-    branches: [main]
+    branches: [main, 'feature/ac-501*']
 
 permissions:
   id-token: write
