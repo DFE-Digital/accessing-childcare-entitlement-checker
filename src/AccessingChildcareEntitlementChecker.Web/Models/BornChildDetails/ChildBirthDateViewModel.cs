@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
-namespace AccessingChildcareEntitlementChecker.Web.Models
+namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
 {
     public class ChildBirthDateViewModel : IValidatableObject
     {

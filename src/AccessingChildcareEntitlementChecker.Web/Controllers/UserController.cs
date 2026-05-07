@@ -67,7 +67,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    [ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
     public IActionResult ChildDetails()
     {
         return View();

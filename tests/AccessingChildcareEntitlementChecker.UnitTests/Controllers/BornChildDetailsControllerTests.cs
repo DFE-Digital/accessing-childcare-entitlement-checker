@@ -1,5 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
-using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
@@ -72,5 +72,13 @@ public class BornChildDetailsControllerTests
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildBirthDate)));
         Assert.Equal("Child A", viewModel.ChildName);
+    }
+
+    [Fact]
+    public void ChildBirthDate_Post_NoChildName_ReturnsViewWithError()
+    {
+        _journeyState.ChildName = null;
+        var model = new ChildBirthDateViewModel();
+        Assert.Throws<InvalidOperationException>(() => _controller.ChildBirthDate(model));
     }
 }

@@ -1,4 +1,6 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,12 +41,14 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         }
 
         [HttpGet]
+        [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
         public ViewResult ChildDueDate()
         {
             return View();
         }
 
         [HttpGet]
+        [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
         public ViewResult ChildRelationship()
         {
             return View(new ChildRelationshipViewModel(_journeyState));

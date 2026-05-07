@@ -11,7 +11,7 @@ public static class HtmlHelperExtensions
     /// Could potentially be replaced with a custom tag helper if the team can agree on it. See AC-605.
     /// Because of that, we won't bother unit testing this method - the radio buttons are asserted by the UI tests anyway.
     /// </remarks>
-    [ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage(Justification = "May be replaced and covered by UI tests")]
     public static string EnumDisplayName<TEnum>(this IHtmlHelper html, TEnum value)
         where TEnum : struct, Enum
     {
