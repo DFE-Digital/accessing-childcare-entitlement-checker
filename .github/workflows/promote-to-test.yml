@@ -16,11 +16,14 @@ on:
         description: 'The CI Workflow Run ID to promote'
         required: true
         type: string
-  
+     # 2. DEBUG TRIGGER: Run directly when you push to this feature branch
+  push:
+    branches:
+      - 'feature/ac-501-deploy-to-test'
   workflow_run:
     workflows: ['CI']
     types: [completed]
-    branches: [main, 'feature/ac-501*']
+    branches: [main, 'feature/ac-501-deploy-to-test']
 
 permissions:
   id-token: write
