@@ -437,9 +437,13 @@
           "xunit.extensibility.core": "[2.9.3]"
         }
       },
+      "accessingchildcareentitlementchecker.rulesengine": {
+        "type": "Project"
+      },
       "accessingchildcareentitlementchecker.web": {
         "type": "Project",
         "dependencies": {
+          "AccessingChildcareEntitlementChecker.RulesEngine": "[1.0.0, )",
           "GovUk.Frontend.AspNetCore": "[4.0.1, )"
         }
       }

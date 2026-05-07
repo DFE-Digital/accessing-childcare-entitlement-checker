@@ -30,15 +30,13 @@
   </Folder>
 
   <Folder Name="/src/">
-    <Project
-      Path="src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj" />
+    <Project Path="src/AccessingChildcareEntitlementChecker.RulesEngine/AccessingChildcareEntitlementChecker.RulesEngine.csproj" />
+    <Project Path="src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj" />
   </Folder>
 
   <Folder Name="/tests/">
-    <Project
-      Path="tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj" />
-    <Project
-      Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
+    <Project Path="tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj" />
+    <Project Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
   </Folder>
 
   <Folder Name="/Solution Items/">
