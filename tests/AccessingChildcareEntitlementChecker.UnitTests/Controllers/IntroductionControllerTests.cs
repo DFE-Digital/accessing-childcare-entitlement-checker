@@ -84,8 +84,8 @@ public class IntroductionControllerTests
     }
 
     [Theory]
-    [InlineData(BirthStatus.Due, nameof(ChildDetailsController.ChildDueDate))]
-    [InlineData(BirthStatus.Born, nameof(ChildDetailsController.ChildBirthDate))]
+    [InlineData(BirthStatus.Due, nameof(BornChildDetailsController.ChildDueDate))]
+    [InlineData(BirthStatus.Born, nameof(BornChildDetailsController.ChildBirthDate))]
     public void ChildIsBorn_Post_ValidSelection_SavesState_AndRedirects(BirthStatus birthStatus, string redirectsTo)
     {
         var model = new ChildIsBornViewModel()

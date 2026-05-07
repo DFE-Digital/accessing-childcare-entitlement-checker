@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
-    public class ChildDetailsController : Controller
+    public class BornChildDetailsController : Controller
     {
-        public ChildDetailsController()
+        public BornChildDetailsController()
         {
         }
 
