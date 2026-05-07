@@ -16,7 +16,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
         {
             if (journeyState.ChildName == null)
             {
-                throw new ArgumentNullException(nameof(journeyState.ChildName));
+                throw new ArgumentNullException(
+                    nameof(journeyState),
+                    $"{nameof(journeyState.ChildName)} must not be null.");
             }
 
             ChildName = journeyState.ChildName;
