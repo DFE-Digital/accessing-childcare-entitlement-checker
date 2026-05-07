@@ -1,47 +1,99 @@
-name: Promote to Test
+name: Promote Artifact
 
 on:
   workflow_dispatch:
     inputs:
+      environment:
+        description: 'Target Environment'
+        required: true
+        type: choice
+        options:
+          - test
+          - staging
+          - production
+        default: test
       run-id:
-        description: 'CI workflow run ID'
+        description: 'The CI Workflow Run ID to promote'
         required: true
         type: string
+  
   workflow_run:
-    workflows: ['CI']
+    workflows: ['PR Checks']
     types: [completed]
-    branches: [main, feature/ac-501_deploy-to-test]
+    branches: [main]
 
-concurrency:
-  group: deploy-test
-  cancel-in-progress: true
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+  deployments: read # Required to check previous deployment status
 
 jobs:
-  stage-artifact:
-    name: Prepare artifact from CI run
+  # NEW: Enforce Linear Promotion Rules
+  validate-promotion:
+    name: Verify Promotion Path
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
-    permissions:
-      actions: read
     steps:
-      - name: Download artifact from CI run
-        uses: actions/download-artifact@v8
+      - name: Check Prerequisite Environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_ENV: ${{ inputs.environment || 'test' }}
+          RUN_ID: ${{ inputs.run-id || github.event.workflow_run.id }}
+        run: |
+          echo "Promoting Run ID: $RUN_ID to $TARGET_ENV"
+          
+          if [ "$TARGET_ENV" == "test" ]; then
+            echo "Direct promotion to Test allowed for successful builds."
+            exit 0
+          fi
+
+          # Determine the required previous stage
+          if [ "$TARGET_ENV" == "staging" ]; then PRE_REQ="test"; fi
+          if [ "$TARGET_ENV" == "prod" ]; then PRE_REQ="staging"; fi
+
+          echo "Verifying that Run ID $RUN_ID was successful in $PRE_REQ..."
+          
+          # Query GitHub API for deployments of this run-id in the pre-req environment
+          # We look for a 'success' status
+          STATUS=$(gh api repos/${{ github.repository }}/deployments \
+            -f environment=$PRE_REQ \
+            --jq ".[] | select(.payload.run_id == \"$RUN_ID\") | .id" | xargs -I {} gh api repos/${{ github.repository }}/deployments/{}/statuses --jq ".[0].state" | grep "success" || echo "failed")
+
+          if [ "$STATUS" != "success" ]; then
+            echo "ERROR: Cannot promote to $TARGET_ENV. Run ID $RUN_ID has not successfully passed the $PRE_REQ environment gate."
+            exit 1
+          fi
+          
+          echo "Promotion path validated: $PRE_REQ -> $TARGET_ENV"
+
+  stage-artifact:
+    name: Prepare artifact
+    needs: validate-promotion
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
         with:
           name: webapp-package
-          run-id: ${{ github.event.workflow_run.id || inputs['run-id'] }}
+          run-id: ${{ inputs['run-id'] || github.event.workflow_run.id }}
           github-token: ${{ github.token }}
           path: ./artifacts/webapp-package
 
-      - name: Re-upload artifact for deployment
-        uses: actions/upload-artifact@v7
+      - name: Re-upload for deployment
+        uses: actions/upload-artifact@v4
         with:
-          name: webapp-package
+          name: webapp-package-deployment
           path: ./artifacts/webapp-package/webapp.zip
 
   deploy:
-    name: Deploy to Test
+    name: Deploy to ${{ inputs.environment || 'test' }}
     needs: stage-artifact
+    # Removed environment tag from here as it is not supported for jobs that 'uses' a workflow.
+    # The environment gates are handled inside infra-deploy.yml.
     uses: ./.github/workflows/infra-deploy.yml
     with:
-      environment: test
+      environment: ${{ inputs.environment || 'test' }}
     secrets: inherit
