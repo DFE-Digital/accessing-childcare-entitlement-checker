@@ -1,14 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
-@using Microsoft.AspNetCore.Mvc.ModelBinding
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
-@inject IModelMetadataProvider MetadataProvider
 @model ChildIsBornViewModel
-@{
-    var enumMetadata = MetadataProvider.GetMetadataForType(typeof(BirthStatus));
-    var numericToLabel = enumMetadata.EnumGroupedDisplayNamesAndValues!
-        .ToDictionary(kvp => kvp.Value, kvp => kvp.Key.Name ?? kvp.Value);
-}
 
 @section BeforeContent {
     <govuk-back-link asp-controller="Introduction" asp-action="ChildName">
@@ -27,10 +20,8 @@
 
             @foreach (var value in Enum.GetValues<BirthStatus>())
             {
-                var numericValue = Convert.ToInt64(value).ToString();
-
                 <govuk-radios-item value="@value">
-                    @numericToLabel.GetValueOrDefault(numericValue, value.ToString())
+                    @Html.EnumDisplayName(value)
                 </govuk-radios-item>
             }
         </govuk-radios-fieldset>

@@ -5,20 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
-    public class ChildDetailsController : Controller
+    public class BornChildDetailsController : Controller
     {
         private readonly JourneyState _journeyState;
         private readonly IJourneySession _journeySession;
-        private readonly IStringLocalizer<ChildBirthDateViewModel> _childBirthDateLocalizer;
 
         public ChildDetailsController(
             JourneyState journeyState,
-            IJourneySession journeySession,
-            IStringLocalizer<ChildBirthDateViewModel> childBirthDateLocalizer)
+            IJourneySession journeySession)
         {
             _journeyState = journeyState;
             _journeySession = journeySession;
-            _childBirthDateLocalizer = childBirthDateLocalizer;
         }
 
         [HttpGet]

@@ -53,10 +53,10 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             if (model.ChildIsBorn == BirthStatus.Born)
             {
-                return RedirectToAction(nameof(ChildDetailsController.ChildBirthDate), "ChildDetails");
+                return RedirectToAction(nameof(BornChildDetailsController.ChildBirthDate), "BornChildDetails");
             }
 
-            return RedirectToAction(nameof(ChildDetailsController.ChildDueDate), "ChildDetails");
+            return RedirectToAction(nameof(BornChildDetailsController.ChildDueDate), "BornChildDetails");
         }
     }
 }
