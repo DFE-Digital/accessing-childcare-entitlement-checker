@@ -4,7 +4,7 @@
 @model ChildRelationshipViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="ChildDetails" asp-action="ChildBirthDate">
+    <govuk-back-link asp-controller="BornChildDetails" asp-action="ChildBirthDate">
         @Shared["Button_Back"]
     </govuk-back-link>
 }
@@ -12,7 +12,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">
-            @Localizer["Title", Model.ChildName ?? "this child"]
+            @Localizer["Title", Model.ChildName]
         </h1>
     </div>
 </div>

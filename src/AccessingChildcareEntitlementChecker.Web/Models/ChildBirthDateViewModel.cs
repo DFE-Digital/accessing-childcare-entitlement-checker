@@ -1,4 +1,5 @@
 ﻿using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,11 +14,17 @@ namespace AccessingChildcareEntitlementChecker.Web.Models
 
         public ChildBirthDateViewModel(JourneyState journeyState)
         {
+            if (journeyState.ChildName == null)
+            {
+                throw new ArgumentNullException(nameof(journeyState.ChildName));
+            }
+
             ChildName = journeyState.ChildName;
             ChildBirthDate = journeyState.ChildBirthDate;
         }
 
-        public string? ChildName { get; set; }
+        [BindNever]
+        public string ChildName { get; set; } = string.Empty;
 
         [Display(Name = "Label_ChildBirthDate", Description = "Description_ChildBirthDate")]
         [Required(ErrorMessage = "Error_ChildBirthDate")]

@@ -1,6 +1,5 @@
 ﻿using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
-using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
@@ -10,7 +9,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         private readonly JourneyState _journeyState;
         private readonly IJourneySession _journeySession;
 
-        public ChildDetailsController(
+        public BornChildDetailsController(
             JourneyState journeyState,
             IJourneySession journeySession)
         {
@@ -29,13 +28,14 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.ChildName = _journeyState.ChildName;
+                model.ChildName = _journeyState.ChildName
+                    ?? throw new InvalidOperationException($"{nameof(JourneyState.ChildName)} must be available before rendering {nameof(ChildBirthDate)}.");
                 return View(model);
             }
 
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
-            return RedirectToAction(nameof(ChildRelationship), "ChildDetails");
+            return RedirectToAction(nameof(ChildRelationship), "BornChildDetails");
         }
 
         [HttpGet]
