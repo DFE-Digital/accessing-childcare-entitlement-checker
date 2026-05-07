@@ -1,14 +1,16 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 
+namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
 public class ErrorControllerTests
 {
-    private ErrorController CreateController()
+    private readonly ErrorController _errorController;
+
+    public ErrorControllerTests()
     {
-        return new ErrorController(NullLogger<ErrorController>.Instance)
+        _errorController = new ErrorController
         {
             ControllerContext = new ControllerContext
             {
@@ -18,13 +20,33 @@ public class ErrorControllerTests
     }
 
     [Fact]
-    public void Error_ReturnsView_WithStatusCode500()
+    public void InternalServerError_ReturnsView_WithStatusCode500()
     {
-        var controller = CreateController();
-
-        var result = controller.Error();
+        var result = _errorController.InternalServerError();
 
         var view = Assert.IsType<ViewResult>(result);
-        Assert.Equal(500, controller.Response.StatusCode);
+        Assert.Equal(500, _errorController.Response.StatusCode);
+    }
+
+    [Theory]
+    [InlineData(403, "InternalServerError")]
+    [InlineData(404, "NotFound")]
+    public void StatusCodePage_ReturnsView_WithMatchingStatusCode(int statusCode, string viewName)
+    {
+        var result = _errorController.StatusCodePage(statusCode);
+
+        var view = Assert.IsType<ViewResult>(result);
+        Assert.Equal(viewName, view.ViewName);
+        Assert.Equal(statusCode, _errorController.Response.StatusCode);
+    }
+
+    [Fact]
+    public void StatusCodePage_ReturnsErrorIf500()
+    {
+        var result = _errorController.StatusCodePage(500);
+
+        var view = Assert.IsType<ViewResult>(result);
+        Assert.Equal("InternalServerError", view.ViewName);
+        Assert.Equal(500, _errorController.Response.StatusCode);
     }
 }

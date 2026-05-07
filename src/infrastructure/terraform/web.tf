@@ -1,7 +1,9 @@
 locals {
-  web_app_settings = {
+  web_app_settings = merge({
     "ASPNETCORE_ENVIRONMENT" = var.aspnetcore_environment
-  }
+    }, var.aspnetcore_environment == "Development" ? {
+    "DevelopmentBasicAuthPassword" = var.development_basic_auth_password
+  } : {})
 }
 
 resource "azurerm_resource_group" "web-rg" {
@@ -15,42 +17,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
   name                = "${local.service_prefix}-web-app-service-plan"
   resource_group_name = azurerm_resource_group.web-rg.name
   os_type             = "Linux"
-  sku_name            = "P0v3"
-
-  tags = local.common_tags
-}
-
-resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
-  app_service_id = azurerm_linux_web_app.web-app-service.id
-  name           = "staging"
-  https_only     = true
-
-  site_config {
-    always_on = true
-
-    application_stack {
-      dotnet_version = "10.0"
-    }
-
-    ip_restriction_default_action = "Deny"
-
-    ip_restriction {
-      name        = "Access from Front Door"
-      service_tag = "AzureFrontDoor.Backend"
-    }
-
-    health_check_path                 = "/health"
-    health_check_eviction_time_in_min = 5
-
-    minimum_tls_version     = "1.3"
-    scm_minimum_tls_version = "1.3"
-  }
-
-  identity {
-    type = "SystemAssigned"
-  }
-
-  app_settings = local.web_app_settings
+  sku_name            = "B1"
 
   tags = local.common_tags
 }

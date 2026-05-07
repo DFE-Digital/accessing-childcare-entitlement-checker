@@ -1,28 +1,29 @@
-using System.Diagnostics;
-using AccessingChildcareEntitlementChecker.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
 [Route("Error")]
 public class ErrorController : Controller
 {
-    private readonly ILogger<ErrorController> _logger;
-
-    public ErrorController(ILogger<ErrorController> logger)
+    [Route("")]
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public ViewResult InternalServerError()
     {
-        _logger = logger;
+        Response.StatusCode = 500;
+        return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    [Route("{statusCode:int}")]
+    [SuppressMessage("SonarQube", "S6967", Justification = "Route constraint :int guarantees a valid integer; ModelState check is redundant.")]
+    public ViewResult StatusCodePage(int statusCode)
     {
-        var traceId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
 
-        _logger.LogError("Unhandled error occurred. TraceIdentifier: {TraceId}", traceId);
-
-        Response.StatusCode = 500;
-
-        return View();
+        Response.StatusCode = statusCode;
+        return statusCode switch
+        {
+            404 => View("NotFound"),
+            _ => View("InternalServerError"),
+        };
     }
 }
