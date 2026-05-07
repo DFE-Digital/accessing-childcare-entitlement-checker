@@ -79,6 +79,7 @@ public class BornChildDetailsControllerTests
     {
         _journeyState.ChildName = null;
         var model = new ChildBirthDateViewModel();
+        _controller.ModelState.AddModelError(nameof(model.ChildBirthDate), "Faked Model Binding Error");
         Assert.Throws<InvalidOperationException>(() => _controller.ChildBirthDate(model));
     }
 }

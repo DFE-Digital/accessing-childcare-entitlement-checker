@@ -19,13 +19,13 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
 	<data name="Label_ChildBirthDate" xml:space="preserve">
-        <value>What is child's date of birth?</value>
+        <value>What is the child's date of birth?</value>
     </data>
 	<data name="Description_ChildBirthDate" xml:space="preserve">
         <value>For example, 31 3 2026</value>
     </data>
     <data name="Error_ChildBirthDate" xml:space="preserve">
-        <value>Enter your childs birth date</value>
+        <value>Enter your child's birth date</value>
     </data>
     <data name="Error_ChildBirthDateInvalid" xml:space="preserve">
         <value>Enter a valid date</value>

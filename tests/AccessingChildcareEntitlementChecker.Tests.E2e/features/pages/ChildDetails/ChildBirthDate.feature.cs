@@ -228,11 +228,12 @@ await this.FeatureBackgroundAsync();
     await testRunner.ThenAsync("an error summary box should appear at the top of the page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 23
-    await testRunner.AndAsync("the error summary title should be \"There is a problem\" with an error message \"Ent" +
-                        "er a valid date\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("the error summary title should be \"There is a problem\" with an error message \"Wha" +
+                        "t is the child\'s date of birth? must be a real date\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 24
-    await testRunner.AndAsync("inline validation should display with the error message \"Enter a valid date\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("inline validation should display with the error message \"What is the child\'s date" +
+                        " of birth? must be a real date\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -318,11 +319,11 @@ await this.FeatureBackgroundAsync();
 #line hidden
 #line 37
     await testRunner.AndAsync("the error summary title should be \"There is a problem\" with an error message \"Ent" +
-                        "er your childs birth date\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+                        "er your child\'s birth date\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 38
-    await testRunner.AndAsync("inline validation should display with the error message \"Enter your childs birth " +
-                        "date\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("inline validation should display with the error message \"Enter your child\'s birth" +
+                        " date\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

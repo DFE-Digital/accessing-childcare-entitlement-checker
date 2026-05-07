@@ -52,6 +52,7 @@ public class ChildBirthDateViewModelTests
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.UtcNow.Returns(now);
+        _journeyState.ChildName = "Child A";
         var model = new ChildBirthDateViewModel(_journeyState)
         {
             ChildBirthDate = now.AddDays(1),

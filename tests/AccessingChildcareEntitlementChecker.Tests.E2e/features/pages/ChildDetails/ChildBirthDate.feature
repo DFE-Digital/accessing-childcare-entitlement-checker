@@ -19,9 +19,9 @@ Scenario: Enter an invalid date
     Given I enter the day "46" month "3" and year "2026"
     When I click on Continue
     Then an error summary box should appear at the top of the page
-    # Update this error message with the GDS default
-    And the error summary title should be "There is a problem" with an error message "Enter a valid date"
-    And inline validation should display with the error message "Enter a valid date"
+    # These error messages come from the GDS component; so could be awkward to change.
+    And the error summary title should be "There is a problem" with an error message "What is the child's date of birth? must be a real date"
+    And inline validation should display with the error message "What is the child's date of birth? must be a real date"
 
 Scenario: Enter a a future date
     Given I enter tomorrow's date
@@ -34,8 +34,8 @@ Scenario: Continue without entering a date
     Given I have not entered a date
     When I click on Continue
     Then an error summary box should appear at the top of the page
-    And the error summary title should be "There is a problem" with an error message "Enter your childs birth date"
-    And inline validation should display with the error message "Enter your childs birth date"
+    And the error summary title should be "There is a problem" with an error message "Enter your child's birth date"
+    And inline validation should display with the error message "Enter your child's birth date"
 
 Scenario: Continue with a past date
     Given I have entered yesterdays date
