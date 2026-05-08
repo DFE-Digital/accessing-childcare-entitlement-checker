@@ -2,48 +2,26 @@
 
 ## Context and Problem Statement
 
-The childcare entitlement checker introduces a separate `RulesEngine` project responsible for evaluating entitlement eligibility independently from the MVC web application.
+The childcare entitlement checker introduces entitlement evaluation logic that could either live inside the MVC Web project or be separated into a dedicated `RulesEngine` project.
 
-A decision was required around ownership of shared enums and DTO types such as:
+A separate `RulesEngine` project gives a clearer boundary around entitlement logic, but it raises a question about how data should cross that boundary.
 
-* `CountryOfResidence`
-* `AgeRange`
-* `WorkStatus`
-* `Nationality`
+The Web project already has journey/view models and enums used by forms. The RulesEngine also needs similar concepts to evaluate entitlement rules.
 
-Initially a separate shared assembly was considered so both the Web project and RulesEngine could consume the same contract types.
+We therefore needed to decide whether to:
 
-The Web application has evolved toward using these enums within presentation-layer concerns
+- share the same types across Web and RulesEngine to avoid mapping
+- introduce a shared contract assembly
+- duplicate the concepts and map between Web models and RulesEngine DTOs
+- collapse the RulesEngine back into the Web project
 
-* `DisplayAttribute`
-* localisation resource keys
-* enum-driven rendering helpers in Razor views
-
-Example:
-
-```csharp
-public enum BirthStatus
-{
-    [Display(Name = "Option_Born")]
-    Born,
-
-    [Display(Name = "Option_Due")]
-    Due,
-}
-```
-Attempting to reference Web types directly from RulesEngine also introduced a circular dependency:
-
-Web → RulesEngine
-
-RulesEngine → Web
-
+The core question is whether sharing types across the boundary would couple the Web and RulesEngine closely enough that the separate project would no longer provide meaningful separation.
 
 ## Decision Drivers
 
 * Keep entitlement logic isolated from MVC/presentation concerns.
-* Avoid circular project references.
+* Reference Web enums/types directly from RulesEngine (rejected because it introduced unsupported circular project references between Web and RulesEngine).
 * Maintain a single dependency direction between Web and RulesEngine.
-* Avoid unnecessary coupling between MVC/presentation concerns and entitlement logic.
 
 ## Considered Options
 
@@ -86,9 +64,9 @@ Good, because entitlement logic remains isolated from MVC/presentation concerns.
 
 Good, because dependency direction remains.
 
-Good, because avoids circular project references.
-
 Good, because the mapping layer provides an explicit boundary between MVC journey models and entitlement domain models.
+
+Good because maintaining separate types allows the MVC application and RulesEngine to evolve independently during active development, with any model divergence resolved explicitly through the mapping layer.
 
 Bad, because some enums/types will exist in both projects.
 
