@@ -26,7 +26,6 @@ The core question is whether sharing types across the boundary would couple the 
 ## Considered Options
 
 * Create a shared assembly containing shared DTOs/enums/contracts.
-* Reference Web enums/types directly from RulesEngine.
 * Collapse RulesEngine into the Web project.
 * Keep RulesEngine separate and duplicate/map shared concepts.
 
