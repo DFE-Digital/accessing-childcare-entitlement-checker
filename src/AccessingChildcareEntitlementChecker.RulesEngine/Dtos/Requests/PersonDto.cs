@@ -8,7 +8,7 @@ public class PersonDto
 
     public bool? IsInPaidWork { get; set; }
 
-    public WorkStatus? WorkStatus { get; set; }
+    public List<WorkStatus> WorkStatuses { get; set; } = [];
 
     public bool? SelfEmployedLessThan12Months { get; set; }
 
