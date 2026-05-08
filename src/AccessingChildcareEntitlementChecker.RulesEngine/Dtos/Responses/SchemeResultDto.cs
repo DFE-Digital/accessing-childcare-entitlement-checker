@@ -9,8 +9,8 @@ public class SchemeResultDto
     public bool EligibleNow { get; set; }
 
     public bool EligibleInFuture { get; set; }
-    
+
     public DateOnly? EligibleFrom { get; set; }
-    
+
     public int? EligibleWhenChildTurns { get; set; }
 }
