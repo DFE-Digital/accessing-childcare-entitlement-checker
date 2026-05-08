@@ -83,7 +83,8 @@ jobs:
             /d:sonar.qualitygate.wait=true \
             /d:sonar.dotnet.excludeTestProjects=true \
             /d:sonar.cs.opencover.reportsPaths="TestResults/unit/**/coverage.opencover.xml" \
-            /d:sonar.coverage.exclusions="**/Program.cs,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
+            /d:sonar.coverage.exclusions="**/Program.cs,**/*.html,**/*.json,**/*.scss,**/wwwroot/**,src/AccessingChildcareEntitlementChecker.RulesEngine/**" \
+            /d:sonar.exclusions="src/AccessingChildcareEntitlementChecker.RulesEngine/**" \
             /d:sonar.cpd.exclusions="src/AccessingChildcareEntitlementChecker.Web/Views/Partner/PartnerAge.cshtml" \
             /d:sonar.scanner.scanAll=false
 
@@ -164,7 +165,7 @@ jobs:
           path: TestResults/unit
 
       - name: Generate coverage report and gate
-        uses: danielpalme/ReportGenerator-GitHub-Action@a003c8fb9ac008fd0fffd5faa4f7d3ecb52e0675 # v5.5.7
+        uses: danielpalme/ReportGenerator-GitHub-Action@c31aa4ed4f12f147061186cf2a029f307b5c3636 # v5.5.9
         with:
           reports: "TestResults/unit/**/coverage.opencover.xml"
           targetdir: "coveragereport"

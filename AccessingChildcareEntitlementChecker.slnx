@@ -27,18 +27,17 @@
     <File Path="docs/adr/0000-use-madr-docs.md" />
     <File Path="docs/adr/0001-acceptance-tests-via-playwright.md" />
     <File Path="docs/adr/0002-retain-a-team-coverage-gate-capability.md" />
+    <File Path="docs/adr/0008-dto-and-shared-types-ownership.md" />
   </Folder>
 
   <Folder Name="/src/">
-    <Project
-      Path="src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj" />
+    <Project Path="src/AccessingChildcareEntitlementChecker.RulesEngine/AccessingChildcareEntitlementChecker.RulesEngine.csproj" />
+    <Project Path="src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj" />
   </Folder>
 
   <Folder Name="/tests/">
-    <Project
-      Path="tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj" />
-    <Project
-      Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
+    <Project Path="tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj" />
+    <Project Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
   </Folder>
 
   <Folder Name="/Solution Items/">
