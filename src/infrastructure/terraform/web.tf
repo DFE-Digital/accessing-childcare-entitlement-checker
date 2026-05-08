@@ -1,7 +1,7 @@
 locals {
   web_app_settings = merge({
     "ASPNETCORE_ENVIRONMENT" = var.aspnetcore_environment
-    }, var.aspnetcore_environment == "Development" ? {
+    }, var.aspnetcore_environment != "Production" ? {
     "DevelopmentBasicAuthPassword" = var.development_basic_auth_password
   } : {})
 }
