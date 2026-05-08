@@ -31,14 +31,10 @@
         "resolved": "8.0.0",
         "contentHash": "bXJEZrW9ny8vjMF1JV253WeLhpEVzFo1lyaZu1vQ4ZxWUlVvknZ/+ftFgVheLubb4eZPSwwxBeqS1JkCOjxd8g=="
       },
-      "accessingchildcareentitlementchecker.shared": {
-        "type": "Project"
-      },
       "accessingchildcareentitlementchecker.web": {
         "type": "Project",
         "dependencies": {
           "AccessingChildcareEntitlementChecker.RulesEngine": "[1.0.0, )",
-          "AccessingChildcareEntitlementChecker.Shared": "[1.0.0, )",
           "GovUk.Frontend.AspNetCore": "[4.0.1, )"
         }
       }

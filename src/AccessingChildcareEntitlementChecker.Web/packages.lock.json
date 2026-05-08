@@ -19,12 +19,8 @@
       "accessingchildcareentitlementchecker.rulesengine": {
         "type": "Project",
         "dependencies": {
-          "AccessingChildcareEntitlementChecker.Shared": "[1.0.0, )",
           "AccessingChildcareEntitlementChecker.Web": "[1.0.0, )"
         }
-      },
-      "accessingchildcareentitlementchecker.shared": {
-        "type": "Project"
       }
     }
   }
