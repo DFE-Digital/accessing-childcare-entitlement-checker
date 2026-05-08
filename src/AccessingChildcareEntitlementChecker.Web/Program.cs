@@ -23,7 +23,7 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     app.UseDevelopmentAuth(builder.Configuration);
     app.MapRobotsExclusionProtocol();
