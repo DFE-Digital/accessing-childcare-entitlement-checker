@@ -13,9 +13,9 @@ on:
       - 'feature/ac-501*'
     paths-ignore:
       - 'docs/**'
-  pull_request:
-    paths-ignore:
-      - 'docs/**'
+  # pull_request:
+  #   paths-ignore:
+  #     - 'docs/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -40,7 +40,7 @@ jobs:
     if: |
       (github.event_name == 'push' && github.ref_name == 'main') ||
       (github.event.inputs.deploy_to_test == 'true') ||
-      (github.event_name == 'pull_request' && github.head_ref == 'feature/ac-501_deploy-to-test')
+      (github.event_name == 'pull_request' && github.head_ref == 'feature/ac-501_deploy-to-test' && github.event.inputs.deploy_to_test != 'true')
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: development
