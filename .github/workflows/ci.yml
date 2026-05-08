@@ -39,7 +39,6 @@ jobs:
     # Logic: Deploy on main merge, manual check, or specific feature branch PR
     if: |
       (github.event_name == 'push' && github.ref_name == 'main') ||
-      (github.event.inputs.deploy_to_test == 'true') ||
       (github.event_name == 'pull_request' && github.head_ref == 'feature/ac-501_deploy-to-test' && github.event.inputs.deploy_to_test != 'true')
     uses: ./.github/workflows/infra-deploy.yml
     with:
