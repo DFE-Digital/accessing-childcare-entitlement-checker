@@ -6,7 +6,7 @@ public class ChildDto
 {
     public string Name { get; set; } = string.Empty;
 
-    public bool IsBorn { get; set; }
+    public BirthStatus BirthStatus { get; set; }
 
     public DateOnly? DateOfBirth { get; set; }
 
