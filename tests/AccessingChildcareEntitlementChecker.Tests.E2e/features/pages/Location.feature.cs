@@ -169,18 +169,18 @@ await this.FeatureBackgroundAsync();
 #line 7
     await testRunner.GivenAsync("the page header is \"Where do you live?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
                             "Option"});
-                table2.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "England"});
-                table2.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Scotland"});
-                table2.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Wales"});
-                table2.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Northern Ireland"});
 #line 8
-    await testRunner.ThenAsync("I should see 4 radio buttons with the following options:", ((string)(null)), table2, "Then ");
+    await testRunner.ThenAsync("I should see 4 radio buttons with the following options:", ((string)(null)), table1, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -301,8 +301,7 @@ await this.FeatureBackgroundAsync();
     await testRunner.WhenAsync("I click on Continue", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 31
-    await testRunner.ThenAsync("I will be directed to the next page in the user journey \"Do you live with a partn" +
-                        "er?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("I will be directed to the next page in the user journey \"Add details of a child\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

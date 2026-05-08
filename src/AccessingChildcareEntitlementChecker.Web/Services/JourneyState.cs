@@ -6,6 +6,8 @@ public class JourneyState
 {
     public CountryOfResidence? CountryOfResidence { get; set; }
 
+    public string? ChildName { get; set; }
+
     public bool? HasPartner { get; set; }
 
     public AgeRange? UserAge { get; set; }
@@ -15,6 +17,11 @@ public class JourneyState
     public void Apply(LocationViewModel model)
     {
         CountryOfResidence = model.Country;
+    }
+
+    public void Apply(ChildNameViewModel model)
+    {
+        ChildName = model.ChildName;
     }
 
     public void Apply(HasPartnerViewModel model)

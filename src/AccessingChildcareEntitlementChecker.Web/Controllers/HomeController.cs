@@ -43,6 +43,6 @@ public class HomeController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return RedirectToAction(nameof(UserController.HasPartner), "User");
+        return RedirectToAction(nameof(IntroductionController.ChildName), "Introduction");
     }
 }
