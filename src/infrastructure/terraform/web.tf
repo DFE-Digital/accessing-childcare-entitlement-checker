@@ -17,7 +17,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
   name                = "${local.service_prefix}-web-app-service-plan"
   resource_group_name = azurerm_resource_group.web-rg.name
   os_type             = "Linux"
-  sku_name            = "B1"
+  sku_name            = "B1" # todo: make it variable for more flexibility for staguing and production
 
   tags = local.common_tags
 }

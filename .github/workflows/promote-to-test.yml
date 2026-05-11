@@ -1,7 +1,6 @@
 name: Promote Artifact
 
 on:
-  # 1. Manual Promotion (Governance Gate)
   workflow_dispatch:
     inputs:
       environment:
@@ -14,8 +13,6 @@ on:
         description: 'The CI Workflow Run ID to promote'
         required: true
         type: string
-
-  # 2. REUSABLE CALL: Called by CI.yml
   workflow_call:
     inputs:
       environment:
@@ -60,10 +57,10 @@ jobs:
             -f environment=$PRE_REQ \
             --jq ".[] | select(.payload.run_id == \"$RUN_ID\") | .id" | head -n 1 | xargs -I {} gh api repos/${{ github.repository }}/deployments/{}/statuses --jq ".[0].state" || echo "not_found")
 
-          # if [ "$STATUS" != "success" ]; then
-          #   echo "!!! PROMOTION DENIED: $RUN_ID has not passed $PRE_REQ !!!"
-          #   exit 1
-          # fi
+          if [ "$STATUS" != "success" ]; then
+            echo "!!! PROMOTION DENIED: $RUN_ID has not passed $PRE_REQ !!!"
+            exit 1
+          fi
 
   stage-artifact:
     name: Prepare artifact

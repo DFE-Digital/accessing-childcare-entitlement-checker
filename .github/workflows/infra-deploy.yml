@@ -1,13 +1,6 @@
 name: 'CEC Infrastructure Deployment'
 
 on:
-  # Allows testing via direct push to your feature branch
-  # SECURITY NOTE: This should be removed once the OIDC handshake is verified.
-  # push:
-  #   branches:
-  #     - 'feature/ac-501_deploy-to-test'
-
-  # Triggered by the Promote Artifact (Canvas) workflow
   workflow_call:
     inputs:
       environment:
@@ -51,8 +44,6 @@ jobs:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
     needs: lint-terraform
-    # SECURITY FIX: Ensure environment is NEVER null. 
-    # Logic: Uses input if provided, otherwise defaults to 'development'
     environment: ${{ inputs.environment || 'development' }}
     permissions:
       id-token: write
@@ -84,7 +75,7 @@ jobs:
       
       # ASP.NET Core Environment Mapping
       # We map 'test' and 'staging' to 'Staging' because usually 
-      # we want the same binary configuration for both non-prod environments.
+      # we are putting both test and staging in the same Azure environment with different resource groups
       TF_VAR_aspnetcore_environment: >-
         ${{ 
           (inputs.environment == 'production') && 'Production' || 

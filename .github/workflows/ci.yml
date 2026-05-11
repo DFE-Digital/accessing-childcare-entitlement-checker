@@ -7,15 +7,15 @@ on:
         description: 'Auto-deploy to Test environment?'
         type: boolean
         default: false
-  push:
-    branches:
-      - main
-      - 'feature/ac-501*'
-    paths-ignore:
-      - 'docs/**'
-  # pull_request:
+  # push: potentially clean this as we have manual trigger above
+  #   branches:
+  #     - main
+  #     - 'feature/ac-501*'
   #   paths-ignore:
   #     - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -36,7 +36,7 @@ jobs:
   deploy:
     name: Deploy
     needs: build-and-test
-    # Logic: Deploy on main merge, manual check, or specific feature branch PR
+    # todo: check the 2nd condition logic to push to dev environment
     if: |
       (github.event_name == 'push' && github.ref_name == 'main') ||
       (github.event_name == 'pull_request' && github.head_ref == 'feature/ac-501_deploy-to-test' && github.event.inputs.deploy_to_test != 'true')
@@ -45,8 +45,6 @@ jobs:
       environment: development
     secrets: inherit
 
-  # Keeping the Promotion Engine call as an alternative "Senior Architect" path
-  # This ensures the linear checks we built are still available for Test/Staging/Prod
   promote:
     name: Promote to Higher Env
     needs: build-and-test
