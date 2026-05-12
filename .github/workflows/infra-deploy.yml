@@ -72,7 +72,7 @@ jobs:
       BACKEND_CONTAINER: "tfstate"
       BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
       
-   
+      FINAL_RUN_ID: ${{ inputs.run-id || github.run_id }}
       DEPLOY_ZIP_PATH: "${{ github.workspace }}/artifacts/webapp.zip" 
 
       # Terraform Variables
@@ -95,28 +95,34 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: 🔍 Enhanced Artifact Forensic Audit
+    - name: Artifact Forensic Audit
       env:
         GH_TOKEN: ${{ github.token }}
-        RUN_ID: ${{ inputs.run-id }}
+        # We map your declared variable here
+        FINAL_RUN_ID: ${{ env.FINAL_RUN_ID }}
       run: |
         echo "========================================================="
         echo "📊 FORENSIC ANALYSIS: ARTIFACT TRACEABILITY"
         echo "========================================================="
         
-        if [ -z "$INTERNAL_RUN_ID" ]; then
-          echo "❌ ERROR: No Run ID detected. Manual trigger was likely missing the input."
+        if [ -z "$FINAL_RUN_ID" ]; then
+          echo "❌ ERROR: No Run ID found in FINAL_RUN_ID environment variable."
           exit 1
         fi
 
-        echo "Attempting to query Run ID: $INTERNAL_RUN_ID"
+        echo "Querying Run ID: $FINAL_RUN_ID"
         
-        # 1. Detailed Run Metadata
+        # 1. Run Metadata
         echo "--- 📋 Run Identity ---"
-        # We use the internal variable we just verified
-        RUN_INFO=$(gh api repos/${{ github.repository }}/actions/runs/$INTERNAL_RUN_ID \
-          --jq '{id: .id, name: .name, status: .status, conclusion: .conclusion, created_at: .created_at}')
-        echo "$RUN_INFO" | jq .
+        gh api repos/${{ github.repository }}/actions/runs/$FINAL_RUN_ID \
+          --jq '{id: .id, name: .name, status: .status, conclusion: .conclusion}'
+
+        # 2. Artifact Inventory
+        echo "--- 📦 Storage Inventory ---"
+        gh api repos/${{ github.repository }}/actions/runs/$FINAL_RUN_ID/artifacts \
+          --jq '.artifacts[] | "- [\(.name)] (\(.size_in_bytes) bytes)"'
+        
+        echo "========================================================="
     # - name: Download web app artifact
     #   uses: actions/download-artifact@v4
     #   with:
@@ -131,10 +137,16 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        echo "Retrieving artifact from Run ID: ${{ inputs.run-id }}"
-        # We download into 'artifacts' directly so webapp.zip lands in the right spot
+        echo "Retrieving artifact from Run ID: $FINAL_RUN_ID"
+        
+        # Ensure the directory exists at the root
         mkdir -p artifacts
-        gh run download ${{ inputs.run-id }} --name webapp-package --dir ./artifacts
+        
+        # Download the content of webapp-package directly into the artifacts folder
+        gh run download $FINAL_RUN_ID --name webapp-package --dir ./artifacts
+        
+        echo "✅ Download complete. Contents of artifacts directory:"
+        ls -R ./artifacts
 
     - name: Azure Login (OIDC)
       uses: azure/login@v2
