@@ -149,7 +149,6 @@ jobs:
         with:
           name: webapp-package
           path: webapp.zip
-          retention-days: 1
 
   coverage:
     name: Coverage
