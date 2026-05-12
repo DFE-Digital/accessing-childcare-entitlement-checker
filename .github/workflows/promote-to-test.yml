@@ -57,8 +57,9 @@ jobs:
             # 2. Get the Deployment ID for that Run ID in the Pre-Req env
             # We use -X GET and query parameters explicitly to avoid 422 errors
             DEPLOYMENT_ID=$(gh api -X GET "repos/${{ github.repository }}/deployments" \
-              -f environment="$PRE_REQ" \
-              --jq ".[] | select(.payload.run_id == \"$RUN_ID\") | .id" | head -n 1)
+            -f environment="$PRE_REQ" \
+            -f sha="${{ github.sha }}" \
+            --jq ".[0].id")
 
             if [ -z "$DEPLOYMENT_ID" ]; then
               echo "!!! PROMOTION DENIED: No deployment record found for Run $RUN_ID in $PRE_REQ !!!"
