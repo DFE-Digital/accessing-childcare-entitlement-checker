@@ -5,9 +5,9 @@ Background:
     And I start the journey and answer the questions as follows:
     | Question           | Answer            |
     | Where do you live? | England           |
+    And the page header is "Add details of a child"
 
 Scenario: Page load
-    Given the page header is "Add details of a child"
     Then I should see a text box with the label "What name should we use for this child?"
 
 # Assumes the field is required - i.e. we don't generate a name like `Child A` when the text box is empty.

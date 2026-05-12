@@ -38,7 +38,25 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         [HttpGet]
         public ViewResult IsChildBorn()
         {
-            return View();
+            return View(new ChildIsBornViewModel(_journeyState));
+        }
+
+        [HttpPost]
+        public IActionResult IsChildBorn(ChildIsBornViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            _journeyState.Apply(model);
+            _journeySession.Set(_journeyState);
+
+            if (model.ChildIsBorn == BirthStatus.Born)
+            {
+                return RedirectToAction(nameof(BornChildDetailsController.ChildBirthDate), "BornChildDetails");
+            }
+
+            return RedirectToAction(nameof(BornChildDetailsController.ChildDueDate), "BornChildDetails");
         }
     }
 }
