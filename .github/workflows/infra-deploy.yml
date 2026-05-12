@@ -149,7 +149,9 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: |
         echo "Retrieving artifact from Run ID: ${{ inputs.run-id }}"
-        gh run download ${{ inputs.run-id }} --name webapp-package --dir ./artifacts/webapp-package
+        # We download into 'artifacts' directly so webapp.zip lands in the right spot
+        mkdir -p artifacts
+        gh run download ${{ inputs.run-id }} --name webapp-package --dir ./artifacts
 
     - name: Azure Login (OIDC)
       uses: azure/login@v2
