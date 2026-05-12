@@ -5,8 +5,7 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Derived;
 
 public class DerivedContextBuilder
 {
-
-    public DerivedContext Build(EntitlementRequest request, DateOnly today)
+    public static DerivedContext Build(EntitlementRequest request, DateOnly today)
     {
         var user = BuildPersonFacts(request.User);
         var partner = request.Partner is null ? null : BuildPersonFacts(request.Partner);
@@ -24,7 +23,6 @@ public class DerivedContextBuilder
         };
     }
 
-    #region Facts
     private static HouseholdFacts BuildHouseholdFacts(
         EntitlementRequest request,
         PersonFacts user,
@@ -75,9 +73,7 @@ public class DerivedContextBuilder
             AgeInYears = age
         };
     }
-    #endregion
 
-    #region Helpers
     private static bool HasAccessToPublicFunds(PersonDto person)
     {
         return person.Nationality == Nationality.BritishOrIrishCitizen
@@ -96,6 +92,4 @@ public class DerivedContextBuilder
 
         return age;
     }
-    #endregion
-
 }
