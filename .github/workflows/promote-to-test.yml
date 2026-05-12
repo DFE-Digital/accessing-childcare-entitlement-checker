@@ -39,76 +39,54 @@ jobs:
           TARGET_ENV: ${{ inputs.environment }}
           RUN_ID: ${{ inputs.run-id }}
         run: |
-          echo "========================================================="
-          echo "📊 DEEP DIAGNOSTIC: PROMOTION GATE VERIFICATION"
-          echo "========================================================="
-          echo "Target Environment: $TARGET_ENV"
-          echo "Input Run ID:       $RUN_ID"
-          echo "Current Branch:     ${{ github.ref }}"
-          echo "Current Context SHA: ${{ github.sha }}"
-
+          # Set prerequisite mapping
           if [ "$TARGET_ENV" == "test" ]; then
-            echo "LOG: Bypassing gates for initial 'test' environment."
+            echo "Initial environment deployment: skipping prerequisite check."
             exit 0
           fi
 
-          # 1. Determine Prerequisite
-          PRE_REQ=""
-          if [ "$TARGET_ENV" == "staging" ]; then PRE_REQ="test"; fi
+          PRE_REQ="test"
           if [ "$TARGET_ENV" == "production" ]; then PRE_REQ="staging"; fi
-          echo "Requirement: Must have successfully passed environment: [$PRE_REQ]"
 
-          # 2. Inspect the Run ID Metadata
-          echo "--- 🔍 Inspecting Run ID: $RUN_ID ---"
-          RUN_DATA=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID")
-          RUN_SHA=$(echo "$RUN_DATA" | jq -r ".head_sha")
-          RUN_STATUS=$(echo "$RUN_DATA" | jq -r ".conclusion")
+          echo "Promoting Run ID: $RUN_ID to $TARGET_ENV"
+          echo "Prerequisite check: verifying successful deployment in $PRE_REQ"
 
-          echo "Run ID SHA:    $RUN_SHA"
-          echo "Run Conclusion: $RUN_STATUS"
+          # 1. Resolve the Commit SHA for the provided Run ID
+          # This ensures we are validating the exact code bits from that specific run.
+          RUN_SHA=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID" --jq ".head_sha")
 
-          if [ "$RUN_SHA" == "null" ] || [ -z "$RUN_SHA" ]; then
-            echo "❌ ERROR: Could not retrieve SHA for Run ID $RUN_ID. Is the ID correct?"
+          if [ -z "$RUN_SHA" ] || [ "$RUN_SHA" == "null" ]; then
+            echo "Error: Could not resolve SHA for Run ID $RUN_ID."
             exit 1
           fi
 
-          # 3. List ALL Deployments for the Prerequisite Environment
-          echo "--- 📋 Listing last 5 deployments for [$PRE_REQ] ---"
-          ALL_DEPLOYS=$(gh api -X GET "repos/${{ github.repository }}/deployments" -f environment="$PRE_REQ" -f per_page=5)
-
-          echo "DEBUG: Raw Deployment IDs and SHAs found in [$PRE_REQ]:"
-          echo "$ALL_DEPLOYS" | jq -r '.[] | "ID: \(.id) | SHA: \(.sha) | Created: \(.created_at)"'
-
-          # 4. Attempt to find the specific match
-          echo "--- 🎯 Searching for match (SHA: $RUN_SHA) ---"
-          DEPLOYMENT_ID=$(echo "$ALL_DEPLOYS" | jq -r ".[] | select(.sha == \"$RUN_SHA\") | .id" | head -n 1)
+          # 2. Retrieve the Deployment record for the resolved SHA and environment
+          # We filter by environment and SHA to ensure mathematical certainty.
+          DEPLOYMENT_ID=$(gh api -X GET "repos/${{ github.repository }}/deployments" \
+            -f environment="$PRE_REQ" \
+            -f sha="$RUN_SHA" \
+            --jq ".[0].id")
 
           if [ -z "$DEPLOYMENT_ID" ] || [ "$DEPLOYMENT_ID" == "null" ]; then
-            echo "❌ FAILURE: No deployment found in [$PRE_REQ] matching SHA [$RUN_SHA]."
-            echo "This means the code from Run $RUN_ID hasn't been deployed to $PRE_REQ yet,"
-            echo "or it was deployed under a different environment name."
+            echo "Promotion Denied: No deployment record found for SHA $RUN_SHA in $PRE_REQ."
             exit 1
           fi
 
-          echo "✅ MATCH FOUND: Deployment ID is $DEPLOYMENT_ID"
+          # 3. Verify the Deployment Status
+          # We check that the latest status is 'success' before allowing the gate to open.
+          STATUS=$(gh api -X GET "repos/${{ github.repository }}/deployments/$DEPLOYMENT_ID/statuses" \
+            --jq ".[0].state")
 
-          # 5. Check Final Status
-          echo "--- 🚦 Verifying Success Status ---"
-          STATUS_DATA=$(gh api -X GET "repos/${{ github.repository }}/deployments/$DEPLOYMENT_ID/statuses")
-          LATEST_STATE=$(echo "$STATUS_DATA" | jq -r ".[0].state")
-
-          echo "All statuses for this deployment:"
-          echo "$STATUS_DATA" | jq -r '.[] | "- State: \(.state) | Created: \(.created_at)"'
-
-          if [ "$LATEST_STATE" != "success" ]; then
-            echo "❌ PROMOTION DENIED: Latest state is [$LATEST_STATE]. Expected [success]."
+          if [ "$STATUS" != "success" ]; then
+            echo "Promotion Denied: Deployment status for Run $RUN_ID in $PRE_REQ is '$STATUS'."
             exit 1
           fi
 
-          echo "========================================================="
-          echo "✅ GATE PASSED: Proceeding with promotion."
-          echo "========================================================="
+          echo "Validation successful: Run $RUN_ID is verified for promotion."
   stage-artifact:
+    permissions:
+      actions: read
+      contents: read
     name: Prepare artifact
     needs: validate-promotion
     runs-on: ubuntu-latest
