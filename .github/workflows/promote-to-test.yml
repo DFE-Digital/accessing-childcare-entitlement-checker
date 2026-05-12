@@ -39,28 +39,46 @@ jobs:
           TARGET_ENV: ${{ inputs.environment }}
           RUN_ID: ${{ inputs.run-id }}
         run: |
-          echo "--- PROMOTION DIAGNOSTICS ---"
-          echo "Target Environment: $TARGET_ENV"
-          echo "Validated Run ID: $RUN_ID"
-          
-          # Skip validation for 'test'
-          if [ "$TARGET_ENV" == "test" ]; then
-            echo "LOG: Bypassing linear gate checks for initial test environment."
-            exit 0
-          fi
+            echo "--- PROMOTION DIAGNOSTICS ---"
+            echo "Target Environment: $TARGET_ENV"
+            echo "Validated Run ID: $RUN_ID"
+            
+            if [ "$TARGET_ENV" == "test" ]; then
+              echo "LOG: Bypassing linear gate checks for initial test environment."
+              exit 0
+            fi
 
-          if [ "$TARGET_ENV" == "staging" ]; then PRE_REQ="test"; fi
-          if [ "$TARGET_ENV" == "production" ]; then PRE_REQ="staging"; fi
+            # 1. Determine Prerequisite
+            PRE_REQ=""
+            if [ "$TARGET_ENV" == "staging" ]; then PRE_REQ="test"; fi
+            if [ "$TARGET_ENV" == "production" ]; then PRE_REQ="staging"; fi
+            echo "Requirement: Must have passed $PRE_REQ"
 
-          # Refined check inside the validate-promotion job
-          STATUS=$(gh api repos/${{ github.repository }}/deployments \
-            -f environment=$PRE_REQ \
-            --jq ".[] | select(.payload.run_id == \"$RUN_ID\") | .id" | head -n 1 | xargs -I {} gh api repos/${{ github.repository }}/deployments/{}/statuses --jq ".[0].state" || echo "not_found")
+            # 2. Get the Deployment ID for that Run ID in the Pre-Req env
+            # We use -X GET and query parameters explicitly to avoid 422 errors
+            DEPLOYMENT_ID=$(gh api -X GET "repos/${{ github.repository }}/deployments" \
+              -f environment="$PRE_REQ" \
+              --jq ".[] | select(.payload.run_id == \"$RUN_ID\") | .id" | head -n 1)
 
-          if [ "$STATUS" != "success" ]; then
-            echo "!!! PROMOTION DENIED: $RUN_ID has not passed $PRE_REQ !!!"
-            exit 1
-          fi
+            if [ -z "$DEPLOYMENT_ID" ]; then
+              echo "!!! PROMOTION DENIED: No deployment record found for Run $RUN_ID in $PRE_REQ !!!"
+              exit 1
+            fi
+
+            echo "Found Deployment ID: $DEPLOYMENT_ID"
+
+            # 3. Check the status of that specific Deployment
+            STATUS=$(gh api -X GET "repos/${{ github.repository }}/deployments/$DEPLOYMENT_ID/statuses" \
+              --jq ".[0].state" || echo "not_found")
+
+            echo "Current Status in $PRE_REQ: $STATUS"
+
+            if [ "$STATUS" != "success" ]; then
+              echo "!!! PROMOTION DENIED: Run $RUN_ID status is '$STATUS' (not 'success') in $PRE_REQ !!!"
+              exit 1
+            fi
+
+            echo "✅ Logic Validated: Proceeding with promotion."
 
   stage-artifact:
     name: Prepare artifact
