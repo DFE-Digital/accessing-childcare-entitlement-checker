@@ -15,7 +15,7 @@ public class ChildNameViewModel
         ChildName = journeyState.ChildName;
     }
 
-    [Display(Name = "Label_ChildName", Description = "Description_ChildName")]
-    [Required(ErrorMessage = "Error_ChildName")]
+    [Display(Name = "What name should we use for this child?", Description = "You can use any name you want. For example, 'Baby Smith'.")]
+    [Required(ErrorMessage = "Enter a name for your child")]
     public string? ChildName { get; set; }
 }
