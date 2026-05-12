@@ -21,7 +21,10 @@ on:
           - staging
           - production
         default: development
-
+permissions:
+  id-token: write  # Required for OIDC Azure Login
+  contents: read   # Required to checkout the repository
+  actions: read    # Required to download artifacts in PR context
 jobs:
   lint-terraform:
     name: Lint Terraform
