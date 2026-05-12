@@ -24,8 +24,8 @@ Scenario: Continue without selection
     Given I have not selected an option
     When I click on Continue
     Then an error summary box should appear at the top of the page
-    And the error summary title should be "There is a problem" with an error message "Select whether the child has been born"
-    And inline validation should display with the error message "Select whether the child has been born"
+    And the error summary title should be "There is a problem" with an error message "Select if this child has been born"
+    And inline validation should display with the error message "Select if this child has been born"
 
 Scenario: Continue with yes
     Given I have selected the "Yes" radio button

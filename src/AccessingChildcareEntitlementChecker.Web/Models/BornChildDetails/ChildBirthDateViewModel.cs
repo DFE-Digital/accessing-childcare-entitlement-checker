@@ -1,4 +1,5 @@
 ﻿using AccessingChildcareEntitlementChecker.Web.Services;
+using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
@@ -28,8 +29,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
         [BindNever]
         public string ChildName { get; set; } = string.Empty;
 
-        [Display(Name = "Label_ChildBirthDate", Description = "Description_ChildBirthDate")]
-        [Required(ErrorMessage = "Error_ChildBirthDate")]
+        [Display(Name = "What is the child's date of birth?", Description = "For example, 31 3 2026")]
+        [Required(ErrorMessage = "Enter this child's date of birth")]
+        [DateInput(ErrorMessagePrefix = "The date of birth")]
         public DateTime? ChildBirthDate { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -41,7 +43,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
             if (ChildBirthDate.HasValue && ChildBirthDate.Value.ToUniversalTime() > utcNow)
             {
                 var localizer = localizerFactory!.Create(typeof(ChildBirthDateViewModel));
-                var localised = localizer["Error_ChildBirthDateInFuture"];
+                var localised = localizer["Enter a date of birth in the past"];
                 yield return new ValidationResult(localised, [nameof(ChildBirthDate)]);
             }
         }

@@ -6,11 +6,6 @@
       <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\ChildBirthDateViewModel.en-GB.resx">
-      <SubType>Designer</SubType>
-      <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Models\ChildIsBornViewModel.en-GB.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>

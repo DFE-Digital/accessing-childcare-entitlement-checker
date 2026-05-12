@@ -15,8 +15,8 @@ namespace AccessingChildcareEntitlementChecker.Web.Models
             ChildIsBorn = journeyState.ChildIsBorn;
         }
 
-        [Display(Name = "Label_ChildIsBorn")]
-        [Required(ErrorMessage = "Error_ChildIsBorn")]
+        [Display(Name = "Has this child been born yet?")]
+        [Required(ErrorMessage = "Select if this child has been born")]
         public BirthStatus? ChildIsBorn { get; set; }
     }
 }

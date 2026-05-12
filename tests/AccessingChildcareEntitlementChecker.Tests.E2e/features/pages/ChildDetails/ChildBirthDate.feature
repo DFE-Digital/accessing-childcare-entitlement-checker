@@ -20,22 +20,22 @@ Scenario: Enter an invalid date
     When I click on Continue
     Then an error summary box should appear at the top of the page
     # These error messages come from the GDS component; so could be awkward to change.
-    And the error summary title should be "There is a problem" with an error message "What is the child's date of birth? must be a real date"
-    And inline validation should display with the error message "What is the child's date of birth? must be a real date"
+    And the error summary title should be "There is a problem" with an error message "The date of birth must be a real date"
+    And inline validation should display with the error message "The date of birth must be a real date"
 
 Scenario: Enter a a future date
     Given I enter tomorrow's date
     When I click on Continue
     Then an error summary box should appear at the top of the page
-    And the error summary title should be "There is a problem" with an error message "Child's birth date must be in the past"
-    And inline validation should display with the error message "Child's birth date must be in the past"
+    And the error summary title should be "There is a problem" with an error message "Enter a date of birth in the past"
+    And inline validation should display with the error message "Enter a date of birth in the past"
 
 Scenario: Continue without entering a date
     Given I have not entered a date
     When I click on Continue
     Then an error summary box should appear at the top of the page
-    And the error summary title should be "There is a problem" with an error message "Enter your child's birth date"
-    And inline validation should display with the error message "Enter your child's birth date"
+    And the error summary title should be "There is a problem" with an error message "Enter the child's date of birth"
+    And inline validation should display with the error message "Enter the child's date of birth"
 
 Scenario: Continue with a past date
     Given I have entered yesterdays date
