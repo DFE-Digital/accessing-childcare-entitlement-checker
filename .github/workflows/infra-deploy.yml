@@ -134,14 +134,21 @@ jobs:
         echo "========================================================="
         echo "Forensics complete. Handing over to download-artifact..."
         echo "========================================================="
-    - name: Download web app artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: webapp-package 
-        path: artifacts
-        merge-multiple: true
-        run-id: ${{ inputs.run_id || github.run_id }}
-        github-token: ${{ github.token }}
+    # - name: Download web app artifact
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     name: webapp-package 
+    #     path: artifacts
+    #     merge-multiple: true
+    #     run-id: ${{ inputs.run_id || github.run_id }}
+    #     github-token: ${{ github.token }}
+
+    - name: Download webapp-package
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        echo "Retrieving artifact from Run ID: ${{ inputs.run-id }}"
+        gh run download ${{ inputs.run-id }} --name webapp-package --dir ./artifacts/webapp-package
 
     - name: Azure Login (OIDC)
       uses: azure/login@v2
