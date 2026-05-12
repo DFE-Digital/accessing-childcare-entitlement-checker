@@ -144,6 +144,7 @@ jobs:
     #     github-token: ${{ github.token }}
 
     - name: Download webapp-package
+      working-directory: ${{ github.workspace }}
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
