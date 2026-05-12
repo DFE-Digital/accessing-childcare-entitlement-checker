@@ -93,48 +93,48 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # - name: 🔍 Artifact Forensic Audit
-    #   env:
-    #     GH_TOKEN: ${{ github.token }}
-    #     RUN_ID: ${{ inputs.run-id }}
-    #   run: |
-    #     echo "========================================================="
-    #     echo "📊 ARTIFACT DIAGNOSTIC: RUN ID $RUN_ID"
-    #     echo "========================================================="
+    - name: 🔍 Artifact Forensic Audit
+      env:
+        GH_TOKEN: ${{ github.token }}
+        RUN_ID: ${{ inputs.run-id }}
+      run: |
+        echo "========================================================="
+        echo "📊 ARTIFACT DIAGNOSTIC: RUN ID $RUN_ID"
+        echo "========================================================="
         
-    #     # 1. Verify the Run exists and get its name
-    #     echo "--- 📋 Run Metadata ---"
-    #     RUN_INFO=$(gh api repos/${{ github.repository }}/actions/runs/$RUN_ID \
-    #       --jq '{id: .id, name: .name, head_sha: .head_sha, status: .status, conclusion: .conclusion}')
-    #     echo "$RUN_INFO" | jq .
+        # 1. Verify the Run exists and get its name
+        echo "--- 📋 Run Metadata ---"
+        RUN_INFO=$(gh api repos/${{ github.repository }}/actions/runs/$RUN_ID \
+          --jq '{id: .id, name: .name, head_sha: .head_sha, status: .status, conclusion: .conclusion}')
+        echo "$RUN_INFO" | jq .
 
-    #     # 2. List every artifact associated with this Run
-    #     echo "--- 📦 Available Artifacts in this Run ---"
-    #     ARTIFACTS_JSON=$(gh api repos/${{ github.repository }}/actions/runs/$RUN_ID/artifacts)
-    #     COUNT=$(echo "$ARTIFACTS_JSON" | jq '.total_count')
+        # 2. List every artifact associated with this Run
+        echo "--- 📦 Available Artifacts in this Run ---"
+        ARTIFACTS_JSON=$(gh api repos/${{ github.repository }}/actions/runs/$RUN_ID/artifacts)
+        COUNT=$(echo "$ARTIFACTS_JSON" | jq '.total_count')
         
-    #     echo "Total Artifacts Found: $COUNT"
+        echo "Total Artifacts Found: $COUNT"
         
-    #     if [ "$COUNT" -eq "0" ]; then
-    #       echo "❌ ERROR: No artifacts were found for this Run ID."
-    #       echo "Check if the build job actually executed the 'upload-artifact' step."
-    #       exit 1
-    #     fi
+        if [ "$COUNT" -eq "0" ]; then
+          echo "❌ ERROR: No artifacts were found for this Run ID."
+          echo "Check if the build job actually executed the 'upload-artifact' step."
+          exit 1
+        fi
 
-    #     echo "Detailed List:"
-    #     echo "$ARTIFACTS_JSON" | jq -r '.artifacts[] | "- Name: [\(.name)] | Size: \(.size_in_bytes) bytes | Expired: \(.expired)"'
+        echo "Detailed List:"
+        echo "$ARTIFACTS_JSON" | jq -r '.artifacts[] | "- Name: [\(.name)] | Size: \(.size_in_bytes) bytes | Expired: \(.expired)"'
 
-    #     # 3. Check for the specific name 'webapp-package'
-    #     MATCH=$(echo "$ARTIFACTS_JSON" | jq -r ".artifacts[] | select(.name == \"webapp-package\") | .name")
+        # 3. Check for the specific name 'webapp-package'
+        MATCH=$(echo "$ARTIFACTS_JSON" | jq -r ".artifacts[] | select(.name == \"webapp-package\") | .name")
         
-    #     if [ -z "$MATCH" ]; then
-    #       echo "❌ ERROR: 'webapp-package' was not found in the list above."
-    #       echo "Ensure the name is exactly 'webapp-package' (case-sensitive) in the build script."
-    #       exit 1
-    #     else
-    #       echo "✅ SUCCESS: 'webapp-package' is available for download."
-    #     fi
-    #     echo "========================================================="
+        if [ -z "$MATCH" ]; then
+          echo "❌ ERROR: 'webapp-package' was not found in the list above."
+          echo "Ensure the name is exactly 'webapp-package' (case-sensitive) in the build script."
+          exit 1
+        else
+          echo "✅ SUCCESS: 'webapp-package' is available for download."
+        fi
+        echo "========================================================="
     - name: Download web app artifact
       uses: actions/download-artifact@v4
       with:
