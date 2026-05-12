@@ -48,7 +48,7 @@ jobs:
     name: Promote to Higher Env
     needs: build-and-test
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_to_test == 'true'
-    uses: ./.github/workflows/promote-to-higher-environment.yml
+    uses: ./.github/workflows/promote-to-test.yml
     with:
       environment: test
       run-id: ${{ github.run_id }}
