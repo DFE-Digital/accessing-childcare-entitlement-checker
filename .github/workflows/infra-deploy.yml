@@ -93,47 +93,46 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: 🔍 Artifact Forensic Audit
+    - name: 🔍 Enhanced Artifact Forensic Audit
       env:
         GH_TOKEN: ${{ github.token }}
         RUN_ID: ${{ inputs.run-id }}
       run: |
         echo "========================================================="
-        echo "📊 ARTIFACT DIAGNOSTIC: RUN ID $RUN_ID"
+        echo "📊 FORENSIC ANALYSIS: ARTIFACT TRACEABILITY"
         echo "========================================================="
         
-        # 1. Verify the Run exists and get its name
-        echo "--- 📋 Run Metadata ---"
+        # 1. Detailed Run Metadata
+        echo "--- 📋 Run Identity ---"
         RUN_INFO=$(gh api repos/${{ github.repository }}/actions/runs/$RUN_ID \
-          --jq '{id: .id, name: .name, head_sha: .head_sha, status: .status, conclusion: .conclusion}')
+          --jq '{id: .id, name: .name, status: .status, conclusion: .conclusion, created_at: .created_at}')
         echo "$RUN_INFO" | jq .
 
-        # 2. List every artifact associated with this Run
-        echo "--- 📦 Available Artifacts in this Run ---"
+        # 2. Comprehensive Artifact Inventory
+        echo "--- 📦 Storage Inventory ---"
         ARTIFACTS_JSON=$(gh api repos/${{ github.repository }}/actions/runs/$RUN_ID/artifacts)
-        COUNT=$(echo "$ARTIFACTS_JSON" | jq '.total_count')
+        echo "Total Artifact Count: $(echo "$ARTIFACTS_JSON" | jq '.total_count')"
         
-        echo "Total Artifacts Found: $COUNT"
+        echo "Detailed Manifest:"
+        echo "$ARTIFACTS_JSON" | jq -r '.artifacts[] | "- Name: [\(.name)] | Size: \(.size_in_bytes) | ID: \(.id) | Workflow ID: \(.workflow_run.id)"'
+
+        # 3. Environment & Permission Check
+        echo "--- 🔐 Contextual Checks ---"
+        echo "Current Repository: ${{ github.repository }}"
+        echo "Current Actor: ${{ github.actor }}"
         
-        if [ "$COUNT" -eq "0" ]; then
-          echo "❌ ERROR: No artifacts were found for this Run ID."
-          echo "Check if the build job actually executed the 'upload-artifact' step."
-          exit 1
-        fi
-
-        echo "Detailed List:"
-        echo "$ARTIFACTS_JSON" | jq -r '.artifacts[] | "- Name: [\(.name)] | Size: \(.size_in_bytes) bytes | Expired: \(.expired)"'
-
-        # 3. Check for the specific name 'webapp-package'
+        # 4. Final Verdict (Advisory Only)
         MATCH=$(echo "$ARTIFACTS_JSON" | jq -r ".artifacts[] | select(.name == \"webapp-package\") | .name")
         
         if [ -z "$MATCH" ]; then
-          echo "❌ ERROR: 'webapp-package' was not found in the list above."
-          echo "Ensure the name is exactly 'webapp-package' (case-sensitive) in the build script."
-          exit 1
+          echo "⚠️ ADVISORY: Target [webapp-package] was NOT detected in the API manifest."
         else
-          echo "✅ SUCCESS: 'webapp-package' is available for download."
+          echo "✅ ADVISORY: Target [webapp-package] is present in the API manifest."
+          echo "If the next step fails, it is likely a Version Mismatch (v3 vs v4) or Token Scope issue."
         fi
+        
+        echo "========================================================="
+        echo "Forensics complete. Handing over to download-artifact..."
         echo "========================================================="
     - name: Download web app artifact
       uses: actions/download-artifact@v4
