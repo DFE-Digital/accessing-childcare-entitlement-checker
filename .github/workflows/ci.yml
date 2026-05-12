@@ -7,12 +7,7 @@ on:
         description: 'Auto-deploy to Test environment?'
         type: boolean
         default: false
-  # push: potentially clean this as we have manual trigger above
-  #   branches:
-  #     - main
-  #     - 'feature/ac-501*'
-  #   paths-ignore:
-  #     - 'docs/**'
+
   pull_request:
     paths-ignore:
       - 'docs/**'
