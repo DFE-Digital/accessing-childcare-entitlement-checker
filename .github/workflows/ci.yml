@@ -37,6 +37,10 @@ jobs:
     name: Deploy
     needs: build-and-test
     # todo: check the 2nd condition logic to push to dev environment
+    permissions:
+      id-token: write  # For Azure Login
+      contents: read   # To read the repo
+      actions: read    # <--- MANDATORY for PRs to download artifacts
     if: |
       (github.event_name == 'push' && github.ref_name == 'main') ||
       (github.event_name == 'pull_request' && github.head_ref == 'feature/ac-501_deploy-to-test' && github.event.inputs.deploy_to_test != 'true')
