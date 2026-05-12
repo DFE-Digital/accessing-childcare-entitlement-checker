@@ -14,8 +14,8 @@ Scenario: Page load
 Scenario: Continue with no name
     When I click on Continue
     Then an error summary box should appear at the top of the page
-    And the error summary title should be "There is a problem" with an error message "Enter a name for the child"
-    And inline validation should display with the error message "Enter a name for the child"
+    And the error summary title should be "There is a problem" with an error message "Enter a name for your child"
+    And inline validation should display with the error message "Enter a name for your child"
 
 Scenario: Continue with name
     Given I have entered the text "Child A" into "What name should we use for this child?"
