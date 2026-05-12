@@ -8,7 +8,9 @@ on:
         required: true
         type: string
         default: development
-
+      run-id:             
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       environment:
@@ -102,38 +104,19 @@ jobs:
         echo "📊 FORENSIC ANALYSIS: ARTIFACT TRACEABILITY"
         echo "========================================================="
         
+        if [ -z "$INTERNAL_RUN_ID" ]; then
+          echo "❌ ERROR: No Run ID detected. Manual trigger was likely missing the input."
+          exit 1
+        fi
+
+        echo "Attempting to query Run ID: $INTERNAL_RUN_ID"
+        
         # 1. Detailed Run Metadata
         echo "--- 📋 Run Identity ---"
-        RUN_INFO=$(gh api repos/${{ github.repository }}/actions/runs/$RUN_ID \
+        # We use the internal variable we just verified
+        RUN_INFO=$(gh api repos/${{ github.repository }}/actions/runs/$INTERNAL_RUN_ID \
           --jq '{id: .id, name: .name, status: .status, conclusion: .conclusion, created_at: .created_at}')
         echo "$RUN_INFO" | jq .
-
-        # 2. Comprehensive Artifact Inventory
-        echo "--- 📦 Storage Inventory ---"
-        ARTIFACTS_JSON=$(gh api repos/${{ github.repository }}/actions/runs/$RUN_ID/artifacts)
-        echo "Total Artifact Count: $(echo "$ARTIFACTS_JSON" | jq '.total_count')"
-        
-        echo "Detailed Manifest:"
-        echo "$ARTIFACTS_JSON" | jq -r '.artifacts[] | "- Name: [\(.name)] | Size: \(.size_in_bytes) | ID: \(.id) | Workflow ID: \(.workflow_run.id)"'
-
-        # 3. Environment & Permission Check
-        echo "--- 🔐 Contextual Checks ---"
-        echo "Current Repository: ${{ github.repository }}"
-        echo "Current Actor: ${{ github.actor }}"
-        
-        # 4. Final Verdict (Advisory Only)
-        MATCH=$(echo "$ARTIFACTS_JSON" | jq -r ".artifacts[] | select(.name == \"webapp-package\") | .name")
-        
-        if [ -z "$MATCH" ]; then
-          echo "⚠️ ADVISORY: Target [webapp-package] was NOT detected in the API manifest."
-        else
-          echo "✅ ADVISORY: Target [webapp-package] is present in the API manifest."
-          echo "If the next step fails, it is likely a Version Mismatch (v3 vs v4) or Token Scope issue."
-        fi
-        
-        echo "========================================================="
-        echo "Forensics complete. Handing over to download-artifact..."
-        echo "========================================================="
     # - name: Download web app artifact
     #   uses: actions/download-artifact@v4
     #   with:
