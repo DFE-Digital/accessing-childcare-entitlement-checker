@@ -71,7 +71,7 @@ jobs:
       BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
       
       # Pathing for Artifacts - Matches the re-upload path
-      DEPLOY_ZIP_PATH: "../../../artifacts/webapp-package/webapp.zip"
+      DEPLOY_ZIP_PATH: ${{ github.workspace }}/artifacts/webapp.zip"
 
       # Terraform Variables
       TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
