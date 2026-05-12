@@ -34,14 +34,11 @@ public class JourneyState
         ChildIsBorn = model.ChildIsBorn;
     }
 
-<<<<<<< HEAD
     public void Apply(ChildBirthDateViewModel model)
     {
         ChildBirthDate = model.ChildBirthDate;
     }
 
-=======
->>>>>>> main
     public void Apply(HasPartnerViewModel model)
     {
         HasPartner = model.HasPartner;

@@ -20,8 +20,8 @@ public class ChildBirthDateViewModelTests
         _localizerFactory = Substitute.For<IStringLocalizerFactory>();
 
         var localizer = Substitute.For<IStringLocalizer<ChildBirthDateViewModel>>();
-        var localizedString = new LocalizedString("Error_ChildBirthDateInFuture", "TEST Child birth date cannot be in the future.");
-        localizer["Error_ChildBirthDateInFuture"].Returns(localizedString);
+        var localizedString = new LocalizedString("Enter a date of birth in the past", "TEST");
+        localizer["Enter a date of birth in the past"].Returns(localizedString);
         _localizerFactory.Create(typeof(ChildBirthDateViewModel)).Returns(localizer);
 
         _serviceProviderFunc = serviceType =>
@@ -62,6 +62,6 @@ public class ChildBirthDateViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("TEST Child birth date cannot be in the future.", validationResults[0].ErrorMessage);
+        Assert.Equal("TEST", validationResults[0].ErrorMessage);
     }
 }

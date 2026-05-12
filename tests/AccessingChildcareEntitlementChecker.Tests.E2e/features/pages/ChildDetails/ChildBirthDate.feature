@@ -34,8 +34,8 @@ Scenario: Continue without entering a date
     Given I have not entered a date
     When I click on Continue
     Then an error summary box should appear at the top of the page
-    And the error summary title should be "There is a problem" with an error message "Enter the child's date of birth"
-    And inline validation should display with the error message "Enter the child's date of birth"
+    And the error summary title should be "There is a problem" with an error message "Enter this child's date of birth"
+    And inline validation should display with the error message "Enter this child's date of birth"
 
 Scenario: Continue with a past date
     Given I have entered yesterdays date
