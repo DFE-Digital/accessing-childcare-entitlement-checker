@@ -122,6 +122,7 @@ jobs:
       with:
         name: webapp-package 
         path: artifacts
+        merge-multiple: true
         run-id: ${{ inputs.run_id || github.run_id }}
         github-token: ${{ github.token }}
       # testing if this works
