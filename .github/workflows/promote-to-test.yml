@@ -111,4 +111,5 @@ jobs:
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: ${{ inputs.environment }}
+      run-id: ${{ inputs.run-id }}
     secrets: inherit
