@@ -1,0 +1,83 @@
+name: 'Release Orchestration (Dev -> Prod)'
+
+on:
+  push:
+    branches:
+      - main
+      - feature/ac-501_deploy-to-test
+  workflow_dispatch:
+    # Allows manual trigger if needed
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  # STAGE 1: BUILD
+  # This stage creates the 'Sovereign' artifact that will be used in all environments.
+  build:
+    name: 'Build Artifact'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Publish Web App
+        run: dotnet publish src/webapp -c Release -o ./publish
+
+      - name: Zip Artifact
+        run: zip -r webapp.zip ./publish
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp-package
+          path: webapp.zip
+          retention-days: 7
+
+  # Triggered automatically after a successful build.
+  deploy-dev:
+    name: 'Deploy to Dev'
+    needs: build
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: development
+      run-id: ${{ github.run_id }}
+    secrets: inherit
+  # STAGE 2: DEPLOY TO TEST
+  # No approval usually required for Test in the DfE flow.
+  deploy-test:
+    name: 'Deploy to Test'
+    needs: build
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: test
+      run-id: ${{ github.run_id }}
+    secrets: inherit
+
+  # STAGE 3: DEPLOY TO STAGING
+  # This environment should have 'Required Reviewers' set in GitHub.
+  deploy-staging:
+    name: 'Deploy to Staging'
+    needs: deploy-test
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: staging
+      run-id: ${{ github.run_id }}
+    secrets: inherit
+
+  # STAGE 4: DEPLOY TO PRODUCTION
+  # Final gated stage requiring Senior Sign-off.
+  deploy-production:
+    name: 'Deploy to Production'
+    needs: deploy-staging
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: production
+      run-id: ${{ github.run_id }}
+    secrets: inherit
