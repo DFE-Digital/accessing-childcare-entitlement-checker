@@ -31,7 +31,6 @@ jobs:
   deploy:
     name: Deploy
     needs: build-and-test
-    # todo: check the 2nd condition logic to push to dev environment
     permissions:
       id-token: write  # For Azure Login
       contents: read   # To read the repo

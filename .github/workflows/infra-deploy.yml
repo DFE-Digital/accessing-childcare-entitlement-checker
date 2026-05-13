@@ -95,43 +95,6 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Artifact Forensic Audit
-      env:
-        GH_TOKEN: ${{ github.token }}
-        # We map your declared variable here
-        FINAL_RUN_ID: ${{ env.FINAL_RUN_ID }}
-      run: |
-        echo "========================================================="
-        echo "📊 FORENSIC ANALYSIS: ARTIFACT TRACEABILITY"
-        echo "========================================================="
-        
-        if [ -z "$FINAL_RUN_ID" ]; then
-          echo "❌ ERROR: No Run ID found in FINAL_RUN_ID environment variable."
-          exit 1
-        fi
-
-        echo "Querying Run ID: $FINAL_RUN_ID"
-        
-        # 1. Run Metadata
-        echo "--- 📋 Run Identity ---"
-        gh api repos/${{ github.repository }}/actions/runs/$FINAL_RUN_ID \
-          --jq '{id: .id, name: .name, status: .status, conclusion: .conclusion}'
-
-        # 2. Artifact Inventory
-        echo "--- 📦 Storage Inventory ---"
-        gh api repos/${{ github.repository }}/actions/runs/$FINAL_RUN_ID/artifacts \
-          --jq '.artifacts[] | "- [\(.name)] (\(.size_in_bytes) bytes)"'
-        
-        echo "========================================================="
-    # - name: Download web app artifact
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     name: webapp-package 
-    #     path: artifacts
-    #     merge-multiple: true
-    #     run-id: ${{ inputs.run_id || github.run_id }}
-    #     github-token: ${{ github.token }}
-
     - name: Download webapp-package
       working-directory: ${{ github.workspace }}
       env:
