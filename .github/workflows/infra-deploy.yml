@@ -72,7 +72,7 @@ jobs:
       BACKEND_CONTAINER: "tfstate"
       BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
       
-      FINAL_RUN_ID: ${{ inputs.run-id || github.run_id }}
+      FINAL_RUN_ID: ${{ inputs.run-id != '' && inputs.run-id || github.run_id }}
       DEPLOY_ZIP_PATH: "${{ github.workspace }}/artifacts/webapp.zip" 
 
       # Terraform Variables
