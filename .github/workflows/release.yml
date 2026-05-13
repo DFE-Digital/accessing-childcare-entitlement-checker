@@ -80,13 +80,13 @@ jobs:
       run-id: ${{ github.run_id }}
     secrets: inherit
 
-  # STAGE 4: DEPLOY TO PRODUCTION
+  # STAGE 4: DEPLOY TO PRODUCTION (bring it back)
 
-  deploy-production:
-    name: 'Deploy to Production'
-    needs: deploy-staging
-    uses: ./.github/workflows/infra-deploy.yml
-    with:
-      environment: production
-      run-id: ${{ github.run_id }}
-    secrets: inherit
+#   deploy-production:
+#     name: 'Deploy to Production'
+#     needs: deploy-staging
+#     uses: ./.github/workflows/infra-deploy.yml
+#     with:
+#       environment: production
+#       run-id: ${{ github.run_id }}
+#     secrets: inherit
