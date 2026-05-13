@@ -7,7 +7,11 @@ on:
       - feature/ac-501_deploy-to-test
   workflow_dispatch:
     # Allows manual trigger if needed
-
+    # inputs:
+    #   skipBuild:
+    #     description: 'Skip build? (Uses latest successful build from main)'
+    #     type: boolean
+    #     default: false
 permissions:
   id-token: write
   contents: read
@@ -18,6 +22,7 @@ jobs:
   # This stage creates the 'Sovereign' artifact that will be used in all environments.
   build:
     name: 'Build Artifact'
+    # if: ${{ github.event_name == 'push' || inputs.skipBuild == false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -64,7 +69,7 @@ jobs:
   # No approval usually required for Test in the DfE flow.
   deploy-test:
     name: 'Deploy to Test'
-    needs: build
+    needs: deploy-dev
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: test
