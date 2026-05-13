@@ -39,7 +39,29 @@ jobs:
           TARGET_ENV: ${{ inputs.environment }}
           RUN_ID: ${{ inputs.run-id }}
         run: |
-         # 1. Retrieve the Deployment record
+          # Set prerequisite mapping
+          if [ "$TARGET_ENV" == "test" ]; then
+            echo "Initial environment deployment: skipping prerequisite check."
+            exit 0
+          fi
+
+          PRE_REQ="test"
+          if [ "$TARGET_ENV" == "production" ]; then PRE_REQ="staging"; fi
+
+          echo "Promoting Run ID: $RUN_ID to $TARGET_ENV"
+          echo "Prerequisite check: verifying successful deployment in $PRE_REQ"
+
+          # 1. Resolve the Commit SHA for the provided Run ID
+          # This ensures we are validating the exact code bits from that specific run.
+          RUN_SHA=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID" --jq ".head_sha")
+
+          if [ -z "$RUN_SHA" ] || [ "$RUN_SHA" == "null" ]; then
+            echo "Error: Could not resolve SHA for Run ID $RUN_ID."
+            exit 1
+          fi
+
+          # 2. Retrieve the Deployment record for the resolved SHA and environment
+          # We filter by environment and SHA to ensure mathematical certainty.
           DEPLOYMENT_ID=$(gh api -X GET "repos/${{ github.repository }}/deployments" \
             -f environment="$PRE_REQ" \
             -f sha="$RUN_SHA" \
@@ -50,19 +72,17 @@ jobs:
             exit 1
           fi
 
-          # 2. Check for SUCCESS in the status history
-          # Instead of picking the first one, we check if 'success' exists in the array of states
-          ALL_STATUSES=$(gh api -X GET "repos/${{ github.repository }}/deployments/$DEPLOYMENT_ID/statuses" \
-            --jq ".[].state")
+          # 3. Verify the Deployment Status
+          # We check that the latest status is 'success' before allowing the gate to open.
+          STATUS=$(gh api -X GET "repos/${{ github.repository }}/deployments/$DEPLOYMENT_ID/statuses" \
+            --jq ".[0].state")
 
-          echo "Found statuses for $PRE_REQ: $(echo $ALL_STATUSES | xargs)"
-
-          if echo "$ALL_STATUSES" | grep -q "success"; then
-            echo "✅ Validation successful: A successful deployment was found for $PRE_REQ."
-          else
-            echo "❌ Promotion Denied: No 'success' status found in history. Current states: $(echo $ALL_STATUSES | xargs)"
+          if [ "$STATUS" != "success" ]; then
+            echo "Promotion Denied: Deployment status for Run $RUN_ID in $PRE_REQ is '$STATUS'."
             exit 1
           fi
+
+          echo "Validation successful: Run $RUN_ID is verified for promotion."
   stage-artifact:
     permissions:
       actions: read
