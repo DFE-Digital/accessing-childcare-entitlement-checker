@@ -12,5 +12,5 @@ public class SchemeResultDto
 
     public DateOnly? EligibleFrom { get; set; }
 
-    public int? EligibleWhenChildTurns { get; set; }
+    public int? ChildEligibleAge { get; set; }
 }

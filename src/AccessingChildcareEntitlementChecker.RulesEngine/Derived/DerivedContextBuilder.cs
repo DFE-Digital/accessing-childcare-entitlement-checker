@@ -3,7 +3,7 @@ using AccessingChildcareEntitlementChecker.RulesEngine.Types;
 
 namespace AccessingChildcareEntitlementChecker.RulesEngine.Derived;
 
-public class DerivedContextBuilder
+public static class DerivedContextBuilder
 {
     public static DerivedContext Build(EntitlementRequest request, DateOnly today)
     {
