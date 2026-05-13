@@ -37,18 +37,19 @@ jobs:
       - name: Build (Release)
         run: dotnet build AccessingChildcareEntitlementChecker.slnx --configuration Release --no-restore      
       
-      - name: Publish Web App
-        run: dotnet publish src/webapp -c Release -o ./publish
+      - name: Publish web app
+        run: dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj --no-build --configuration Release --output publish
 
-      - name: Zip Artifact
-        run: zip -r webapp.zip ./publish
+      - name: Zip publish output
+        run: |
+          cd publish
+          zip -r ../webapp.zip .
 
-      - name: Upload Artifact
+      - name: Upload web app artifact
         uses: actions/upload-artifact@v4
         with:
           name: webapp-package
           path: webapp.zip
-          retention-days: 7
 
   # Triggered automatically after a successful build.
   deploy-dev:
