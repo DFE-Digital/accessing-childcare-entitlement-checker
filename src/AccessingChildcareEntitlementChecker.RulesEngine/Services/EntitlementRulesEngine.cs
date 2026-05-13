@@ -20,18 +20,28 @@ public class EntitlementRulesEngine
     {
         var context = DerivedContextBuilder.Build(request, today);
 
-        var childResults = context.Children
-            .Select(child => new ChildResultDto
+        var childResults = new List<ChildResultDto>();
+
+        foreach (var child in context.Children)
+        {
+            var schemes = new List<SchemeResultDto>();
+
+            foreach (var evaluator in schemeEvaluators)
+            {
+                var result = evaluator.Evaluate(context, child);
+
+                if (result is not null)
+                {
+                    schemes.Add(result);
+                }
+            }
+
+            childResults.Add(new ChildResultDto
             {
                 ChildName = child.Name,
-
-                Schemes = schemeEvaluators
-                    .Select(evaluator => evaluator.Evaluate(context, child))
-                    .Where(result => result is not null)
-                    .Cast<SchemeResultDto>()
-                    .ToList()
-            })
-            .ToList();
+                Schemes = schemes
+            });
+        }
 
         return new EntitlementResponse
         {
