@@ -56,7 +56,6 @@ jobs:
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: development
-      run-id: ${{ github.run_id }}
     secrets: inherit
   # STAGE 2: DEPLOY TO TEST
 
@@ -66,7 +65,6 @@ jobs:
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: test
-      run-id: ${{ github.run_id }}
     secrets: inherit
 
   # STAGE 3: DEPLOY TO STAGING
@@ -77,7 +75,6 @@ jobs:
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: staging
-      run-id: ${{ github.run_id }}
     secrets: inherit
 
   # STAGE 4: DEPLOY TO PRODUCTION (bring it back)
