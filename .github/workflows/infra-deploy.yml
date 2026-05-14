@@ -59,8 +59,14 @@ jobs:
       # Terraform Variables
       TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
       TF_VAR_elz_environment: ${{ vars.TF_VAR_ELZ_ENV }}
-      TF_VAR_aspnetcore_environment: ${{ inputs.environment == 'development' && 'Development' || inputs.environment == 'test' && 'Staging' || inputs.environment == 'staging' && 'Staging' || 'Production' }}
+      TF_VAR_aspnetcore_environment: >-
+        ${{ 
+          (inputs.environment == 'production') && 'Production' || 
+          (inputs.environment == 'test' || inputs.environment == 'staging') && 'Staging' || 
+          'Development' 
+        }}
       TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+      TF_VAR_webapp_sku: ${{ vars.TF_VAR_WEBAPP_SKU || 'B1' }}
 
     steps:
     - name: Checkout Code

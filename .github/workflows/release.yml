@@ -1,0 +1,92 @@
+name: 'Release Orchestration (Dev -> Prod)'
+
+on:
+  push:
+    branches:
+      - main
+      - feature/hk-ac-501-release
+  workflow_dispatch:
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  # STAGE 1: BUILD
+  build:
+    name: 'Build Artifact'
+    # if: ${{ github.event_name == 'push' || inputs.skipBuild == false }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+      - name: Restore
+        run: dotnet restore AccessingChildcareEntitlementChecker.slnx --locked-mode
+
+      - name: Build (Release)
+        run: dotnet build AccessingChildcareEntitlementChecker.slnx --configuration Release --no-restore      
+      
+      - name: Publish web app
+        run: dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj --no-build --configuration Release --output publish
+
+      - name: Zip publish output
+        run: |
+          cd publish
+          zip -r ../webapp.zip .
+
+      - name: Upload web app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp-package
+          path: webapp.zip
+
+  # Triggered automatically after a successful build.
+  deploy-dev:
+    name: 'Deploy to Dev'
+    needs: build
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: development
+      run-id: ${{ github.run_id }}
+    secrets: inherit
+  # STAGE 2: DEPLOY TO TEST
+
+  deploy-test:
+    name: 'Deploy to Test'
+    needs: deploy-dev
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: test
+      run-id: ${{ github.run_id }}
+    secrets: inherit
+
+  # STAGE 3: DEPLOY TO STAGING
+
+  deploy-staging:
+    name: 'Deploy to Staging'
+    needs: deploy-test
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: staging
+      run-id: ${{ github.run_id }}
+    secrets: inherit
+
+  # STAGE 4: DEPLOY TO PRODUCTION (bring it back)
+
+#   deploy-production:
+#     name: 'Deploy to Production'
+#     needs: deploy-staging
+#     uses: ./.github/workflows/infra-deploy.yml
+#     with:
+#       environment: production
+#       run-id: ${{ github.run_id }}
+#     secrets: inherit
