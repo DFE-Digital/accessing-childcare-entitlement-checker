@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - main
-      - feature/hk-ac-501-release
   workflow_dispatch:
+  workflow_call:
+
 permissions:
   id-token: write
   contents: read
@@ -13,46 +14,45 @@ permissions:
 
 jobs:
   # STAGE 1: BUILD
-  build:
-    name: 'Build Artifact'
-    # if: ${{ github.event_name == 'push' || inputs.skipBuild == false }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+#   build:
+#     name: 'Build Artifact'
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '10.0.x'
-          cache: true
-          cache-dependency-path: |
-            **/packages.lock.json
-      - name: Restore
-        run: dotnet restore AccessingChildcareEntitlementChecker.slnx --locked-mode
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v6
+#         with:
+#           fetch-depth: 0
 
-      - name: Build (Release)
-        run: dotnet build AccessingChildcareEntitlementChecker.slnx --configuration Release --no-restore      
+#       - name: Setup .NET
+#         uses: actions/setup-dotnet@v5
+#         with:
+#           dotnet-version: '10.0.x'
+#           cache: true
+#           cache-dependency-path: |
+#             **/packages.lock.json
+#       - name: Restore
+#         run: dotnet restore AccessingChildcareEntitlementChecker.slnx --locked-mode
+
+#       - name: Build (Release)
+#         run: dotnet build AccessingChildcareEntitlementChecker.slnx --configuration Release --no-restore      
       
-      - name: Publish web app
-        run: dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj --no-build --configuration Release --output publish
+#       - name: Publish web app
+#         run: dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj --no-build --configuration Release --output publish
 
-      - name: Zip publish output
-        run: |
-          cd publish
-          zip -r ../webapp.zip .
+#       - name: Zip publish output
+#         run: |
+#           cd publish
+#           zip -r ../webapp.zip .
 
-      - name: Upload web app artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: webapp-package
-          path: webapp.zip
+#       - name: Upload web app artifact
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: webapp-package
+#           path: webapp.zip
 
   # Triggered automatically after a successful build.
   deploy-dev:
     name: 'Deploy to Dev'
-    needs: build
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: development
