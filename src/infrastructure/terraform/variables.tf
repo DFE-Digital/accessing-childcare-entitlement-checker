@@ -31,3 +31,9 @@ variable "custom_domain" {
   type        = string
   default     = ""
 }
+
+variable "webapp_sku" {
+  description = "Web App SKU (e.g. B1)"
+  type        = string
+  default     = "B1"
+}

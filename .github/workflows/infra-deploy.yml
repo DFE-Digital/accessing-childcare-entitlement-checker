@@ -78,6 +78,7 @@ jobs:
       # Terraform Variables
       TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
       TF_VAR_elz_environment: ${{ vars.TF_VAR_ELZ_ENV }}
+      TF_VAR_webapp_sku: ${{ vars.WEBAPP_SKU }}
       
       # ASP.NET Core Environment Mapping
       # We map 'test' and 'staging' to 'Staging' because usually 
