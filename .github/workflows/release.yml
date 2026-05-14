@@ -38,7 +38,7 @@ jobs:
       environment: staging
     secrets: inherit
 
-  # STAGE 4: DEPLOY TO PRODUCTION (todo: bring it back later when production subscription ticket is done,this is commented just to be very safe with prod)
+  # STAGE 4: DEPLOY TO PRODUCTION (todo: bring it back later when production subscription is ready,this is commented just to be very safe with prod)
 
 #   deploy-production:
 #     name: 'Deploy to Production'
