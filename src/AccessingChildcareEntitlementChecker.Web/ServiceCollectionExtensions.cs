@@ -6,6 +6,7 @@ namespace AccessingChildcareEntitlementChecker.Web
     {
         public static IServiceCollection AddJourneyServices(this IServiceCollection services)
         {
+            services.AddScoped<IDateTimeFactory, DateTimeFactory>();
             services.AddScoped<IJourneySession, JourneySession>();
             services.AddScoped(sp =>
             {

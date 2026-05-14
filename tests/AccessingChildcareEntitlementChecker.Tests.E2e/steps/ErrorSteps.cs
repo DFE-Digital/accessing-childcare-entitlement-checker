@@ -31,6 +31,9 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Then("I am not redirected to another page")]
         public void ThenIAmNotRedirectedToAnotherPage()
         {
+            // Note: this step may fail when running the tests against HTTP; because
+            // you may be redirected to HTTPs. We could consider improving this check,
+            // maybe by just validating the url.
             Assert.NotNull(_lastResponse);
             Assert.Null(_lastResponse.Request.RedirectedFrom);
         }

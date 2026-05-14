@@ -1,4 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 
 namespace AccessingChildcareEntitlementChecker.Web.Services;
 
@@ -9,6 +10,8 @@ public class JourneyState
     public string? ChildName { get; set; }
 
     public BirthStatus? ChildIsBorn { get; set; }
+
+    public DateTime? ChildBirthDate { get; set; }
 
     public bool? HasPartner { get; set; }
 
@@ -29,6 +32,11 @@ public class JourneyState
     public void Apply(ChildIsBornViewModel model)
     {
         ChildIsBorn = model.ChildIsBorn;
+    }
+
+    public void Apply(ChildBirthDateViewModel model)
+    {
+        ChildBirthDate = model.ChildBirthDate;
     }
 
     public void Apply(HasPartnerViewModel model)
