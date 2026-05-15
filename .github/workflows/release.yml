@@ -2,6 +2,11 @@ name: 'Release Orchestration (Test -> Prod)'
 
 on:
   workflow_dispatch:
+     inputs:
+      run_id:
+        description: 'CI Run ID (required for manual test runs)'
+        required: false
+        type: string
   workflow_call:
   workflow_run:
     workflows: ["CI"]
@@ -23,6 +28,7 @@ jobs:
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: development
+      run-id: ${{ github.event.workflow_run.id }}
     secrets: inherit
 
   deploy-test:
@@ -33,6 +39,7 @@ jobs:
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: test
+      run-id: ${{ github.event.workflow_run.id }}
     secrets: inherit
 
  
@@ -42,6 +49,7 @@ jobs:
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: staging
+      run-id: ${{ github.event.workflow_run.id }}
     secrets: inherit
 
   # STAGE 4: DEPLOY TO PRODUCTION (todo: bring it back later when production subscription is ready,this is commented just to be very safe with prod)
