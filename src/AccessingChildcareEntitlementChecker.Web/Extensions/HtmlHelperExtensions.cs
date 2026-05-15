@@ -1,7 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq.Expressions;
 
 namespace AccessingChildcareEntitlementChecker.Web.Extensions;
 
@@ -24,5 +26,19 @@ public static class HtmlHelperExtensions
             .Name;
 
         return displayName ?? value.ToString();
+    }
+
+    public static string? GetDescriptionFor<TModel, TValue>(
+        this IHtmlHelper<TModel> html,
+        Expression<Func<TModel, TValue>> expression)
+    {
+        var provider = html.ViewContext.HttpContext.RequestServices
+            .GetRequiredService<IModelExpressionProvider>();
+
+        var modelExpression = provider.CreateModelExpression(
+            html.ViewData,
+            expression);
+
+        return modelExpression.Metadata.Description;
     }
 }

@@ -1,14 +1,17 @@
 ﻿
-using System.Diagnostics;
 using Microsoft.Playwright;
 using Reqnroll;
+using Reqnroll.BoDi;
+using System.Diagnostics;
 
 namespace AccessingChildcareEntitlementChecker.Tests.E2e
 {
     [Binding]
-    public class PlaywrightHooks(Context context)
+    public class PlaywrightHooks(IObjectContainer objectContainer)
     {
-        private readonly Context _context = context;
+        private readonly IObjectContainer _objectContainer = objectContainer;
+        private Context? _context;
+
         private static IPlaywright? _playwright;
         private static IBrowser? _browser;
 
@@ -28,18 +31,16 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e
         {
             Assert.NotNull(_browser);
 
-            var browserContext = await _browser.NewContextAsync();
-            var page = await browserContext.NewPageAsync();
-            _context.SetPage(page);
+            _context = await Context.CreateAsync(_browser);
+            _objectContainer.RegisterInstanceAs(_context);
         }
 
         [AfterScenario]
         public async Task AfterScenario()
         {
-            Assert.NotNull(_context.Page);
+            Assert.NotNull(_context);
 
-            var page = _context.Page;
-            await page.Context.CloseAsync();
+            await _context.DisposeAsync();
         }
 
         [AfterTestRun]

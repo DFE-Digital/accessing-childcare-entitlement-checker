@@ -145,4 +145,67 @@ public class BornChildDetailsControllerTests
         _controller.ModelState.AddModelError(nameof(model.Relationship), "Faked Model Binding Error");
         Assert.Throws<InvalidOperationException>(() => _controller.ChildRelationship(model));
     }
+
+    [Fact]
+    public void ChildSupport_ReturnsView()
+    {
+        _journeyState.ChildName = "Child A";
+        var result = _controller.ChildSupport();
+        Assert.Equal([], result.Model<ChildSupportViewModel>().ChildSupportOptions);
+        Assert.Equal("Child A", result.Model<ChildSupportViewModel>().ChildName);
+    }
+
+    [Fact]
+    public void ChildSupport_Get_PopulatesModel_FromState()
+    {
+        _journeyState.ChildSupportOptions = [ChildSupport.PersonalIndependencePayment];
+        _journeyState.ChildName = "Child A";
+        var result = _controller.ChildSupport();
+        Assert.Equal(new[] { ChildSupport.PersonalIndependencePayment }, result.Model<ChildSupportViewModel>().ChildSupportOptions);
+        Assert.Equal("Child A", result.Model<ChildSupportViewModel>().ChildName);
+    }
+
+    [Fact]
+    public void ChildSupport_Post_ValidSelection_SavesState_AndRedirects()
+    {
+        var model = new ChildSupportViewModel
+        {
+            ChildSupportOptions = [ChildSupport.PersonalIndependencePayment],
+        };
+
+        var result = _controller.ChildSupport(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(new[] { ChildSupport.PersonalIndependencePayment }, _journeyState.ChildSupportOptions);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(BornChildDetailsController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal("BornChildDetails", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void ChildSupport_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        _journeyState.ChildName = "Child A";
+        var model = new ChildSupportViewModel();
+
+        _controller.ModelState.AddModelError(nameof(model.ChildSupportOptions), "Faked Model Binding Error");
+
+        var result = _controller.ChildSupport(model);
+
+        var view = Assert.IsType<ViewResult>(result);
+        var viewModel = Assert.IsType<ChildSupportViewModel>(view.Model);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildSupportOptions)));
+        Assert.Equal("Child A", viewModel.ChildName);
+    }
+
+    [Fact]
+    public void ChildSupport_Post_NoChildName_ReturnsViewWithError()
+    {
+        _journeyState.ChildName = null;
+        var model = new ChildSupportViewModel();
+        _controller.ModelState.AddModelError(nameof(model.ChildSupportOptions), "Faked Model Binding Error");
+        Assert.Throws<InvalidOperationException>(() => _controller.ChildSupport(model));
+    }
 }

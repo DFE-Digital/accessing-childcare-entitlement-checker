@@ -74,5 +74,27 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         {
             return View(new ChildSupportViewModel(_journeyState));
         }
+
+        [HttpPost]
+        public IActionResult ChildSupport(ChildSupportViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.ChildName = _journeyState.ChildName
+                    ?? throw new InvalidOperationException($"{nameof(JourneyState.ChildName)} must be available before rendering {nameof(ChildRelationship)}.");
+                return View(model);
+            }
+
+            _journeyState.Apply(model);
+            _journeySession.Set(_journeyState);
+            return RedirectToAction(nameof(CheckChildDetails), "BornChildDetails");
+        }
+
+        [HttpGet]
+        [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
+        public ViewResult CheckChildDetails()
+        {
+            return View(new CheckChildDetailsViewModel(_journeyState));
+        }
     }
 }

@@ -12,8 +12,37 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Localizer["Does {0} get any of the following support?", Model.ChildName]
-        </h1>
+        <form method="post" novalidate>
+            <govuk-checkboxes for="ChildSupportOptions">
+                <govuk-checkboxes-fieldset>
+                    <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Localizer["Does {0} get any of the following support?", Model.ChildName]
+                    </govuk-checkboxes-fieldset-legend>
+                    <govuk-checkboxes-hint>
+                        @Html.GetDescriptionFor(m => m.ChildSupportOptions)
+                    </govuk-checkboxes-hint>
+
+                    <govuk-checkboxes-error-message />
+
+                    @foreach (var value in Enum.GetValues<ChildSupport>())
+                    {
+                        if (value == ChildSupport.NoneOfTheseApply)
+                        {
+                            <govuk-checkboxes-divider>
+                                @Localizer["or"]
+                            </govuk-checkboxes-divider>
+                        }
+
+                        <govuk-checkboxes-item value="@value">
+                            @Html.EnumDisplayName(value)
+                        </govuk-checkboxes-item>
+                    }
+                </govuk-checkboxes-fieldset>
+            </govuk-checkboxes>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
     </div>
 </div>
