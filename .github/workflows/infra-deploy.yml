@@ -77,7 +77,7 @@ jobs:
       with:
         name: webapp-package
         path: ./artifacts/webapp-package
-        run-id: ${{ inputs.run-id }}
+        run-id: ${{ inputs.run-id || github.run_id }}
         github-token: ${{ github.token }}
 
     - name: Azure Login (OIDC)
