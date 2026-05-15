@@ -19,6 +19,8 @@ jobs:
 
   deploy-test:
     name: 'Deploy to Test'
+    # Ensure it only runs if the CI workflow was successful (or if triggered manually)
+    if: github.event.workflow_run.conclusion == 'success' || github.event_name != 'workflow_run'
     # needs: deploy-dev
     uses: ./.github/workflows/infra-deploy.yml
     with:
