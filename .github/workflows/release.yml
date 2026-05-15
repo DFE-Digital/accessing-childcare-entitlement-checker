@@ -3,6 +3,12 @@ name: 'Release Orchestration (Dev -> Prod)'
 on:
   workflow_dispatch:
   workflow_call:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    branches:
+      - main
 
 permissions:
   id-token: write
@@ -10,13 +16,6 @@ permissions:
   actions: read
 
 jobs:
-#   deploy-dev:
-#     name: 'Deploy to Dev'
-#     uses: ./.github/workflows/infra-deploy.yml
-#     with:
-#       environment: development
-#     secrets: inherit
-
 
   deploy-test:
     name: 'Deploy to Test'
