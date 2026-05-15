@@ -31,7 +31,7 @@ public class ChildRelationshipViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsOnEmptyChildNName()
+    public void Ctr_ThrowsOnEmptyChildName()
     {
         _journeyState.ChildName = null;
         Assert.Throws<ArgumentNullException>(() => new ChildRelationshipViewModel(_journeyState));

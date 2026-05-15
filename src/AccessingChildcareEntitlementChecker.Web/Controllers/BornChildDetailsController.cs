@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
-using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,10 +40,46 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         }
 
         [HttpGet]
-        [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
-        public ViewResult ChildDueDate()
+        public ViewResult ChildRelationship()
         {
-            return View();
+            return View(new ChildRelationshipViewModel(_journeyState));
+        }
+
+        [HttpPost]
+        public IActionResult ChildRelationship(ChildRelationshipViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.ChildName = _journeyState.ChildName
+                    ?? throw new InvalidOperationException($"{nameof(JourneyState.ChildName)} must be available before rendering {nameof(ChildRelationship)}.");
+                return View(model);
+            }
+
+            _journeyState.Apply(model);
+            _journeySession.Set(_journeyState);
+            return RedirectToAction(nameof(ChildSupport), "BornChildDetails");
+        }
+
+        [HttpGet]
+        [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
+        public ViewResult ChildSupport()
+        {
+            return View(new ChildSupportViewModel(_journeyState));
+        }
+
+        [HttpPost]
+        public IActionResult ChildSupport(ChildSupportViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.ChildName = _journeyState.ChildName
+                    ?? throw new InvalidOperationException($"{nameof(JourneyState.ChildName)} must be available before rendering {nameof(ChildRelationship)}.");
+                return View(model);
+            }
+
+            _journeyState.Apply(model);
+            _journeySession.Set(_journeyState);
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails");
         }
 
         [HttpGet]

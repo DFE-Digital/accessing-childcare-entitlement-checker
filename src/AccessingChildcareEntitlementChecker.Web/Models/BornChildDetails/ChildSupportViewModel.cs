@@ -13,8 +13,6 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
 
         }
 
-    public class ChildSupportViewModel
-    {
         public ChildSupportViewModel(JourneyState journeyState)
         {
             if (journeyState.ChildName == null)

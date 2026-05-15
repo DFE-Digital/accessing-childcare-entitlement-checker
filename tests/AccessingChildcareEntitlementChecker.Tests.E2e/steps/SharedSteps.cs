@@ -77,5 +77,12 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
                 _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 })
             ).ToHaveTextAsync(expectedHeader);
         }
+
+        [Then("I should see the hint text {string}")]
+        public async Task ThenIShouldSeeTheHintText(string hintText)
+        {
+            await Expect(_context.Page.Locator(".govuk-hint"))
+                .ToHaveTextAsync(hintText);
+        }
     }
 }

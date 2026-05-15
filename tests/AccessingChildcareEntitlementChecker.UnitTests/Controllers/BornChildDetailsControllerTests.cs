@@ -31,17 +31,17 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildBirthDate_Get_PopulatesModel_FromState()
     {
-        _journeyState.ChildBirthDate = new DateTime(2020, 1, 15);
+        _journeyState.ChildBirthDate = new DateOnly(2020, 1, 15);
         _journeyState.ChildName = "Child A";
         var result = _controller.ChildBirthDate();
-        Assert.Equal(new DateTime(2020, 1, 15), result.Model<ChildBirthDateViewModel>().ChildBirthDate);
+        Assert.Equal(new DateOnly(2020, 1, 15), result.Model<ChildBirthDateViewModel>().ChildBirthDate);
         Assert.Equal("Child A", result.Model<ChildBirthDateViewModel>().ChildName);
     }
 
     [Fact]
     public void ChildBirthDate_Post_ValidSelection_SavesState_AndRedirects()
     {
-        var birthDate = new DateTime(2020, 1, 15);
+        var birthDate = new DateOnly(2020, 1, 15);
         var model = new ChildBirthDateViewModel()
         {
             ChildBirthDate = birthDate,
@@ -179,8 +179,8 @@ public class BornChildDetailsControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(new[] { ChildSupport.PersonalIndependencePayment }, _journeyState.ChildSupportOptions);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(BornChildDetailsController.CheckChildDetails), redirect.ActionName);
-        Assert.Equal("BornChildDetails", redirect.ControllerName);
+        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal("CheckChildDetails", redirect.ControllerName);
     }
 
     [Fact]

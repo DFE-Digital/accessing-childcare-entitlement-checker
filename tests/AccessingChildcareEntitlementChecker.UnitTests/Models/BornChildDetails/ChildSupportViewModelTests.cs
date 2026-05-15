@@ -19,19 +19,8 @@ public class ChildSupportViewModelTests
             ChildName = "Jack",
         };
 
-        _localizerFactory = Substitute.For<IStringLocalizerFactory>();
-        var localizer = Substitute.For<IStringLocalizer<ChildSupportViewModel>>();
-        localizer[Arg.Any<string>()].Returns(callInfo =>
-        {
-            var key = callInfo.Arg<string>();
-            return new LocalizedString(key, key);
-        });
-        localizer["Select any support {0} gets, or select 'No, none of these apply'", "Jack"]
-            .Returns(new LocalizedString(
-                "Select any support {0} gets, or select 'No, none of these apply'",
-                "Select any support Jack gets, or select 'No, none of these apply'"));
-
-        _localizerFactory.Create(typeof(ChildSupportViewModel)).Returns(localizer);
+        _localizerFactory = AcecSubstitute.ForLocalizerFactory<ChildSupportViewModel>();
+        _serviceProviderFunc = serviceType => _localizerFactory;
         _serviceProviderFunc = serviceType =>
         {
             if (serviceType == typeof(JourneyState)) return _journeyState;

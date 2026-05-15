@@ -32,15 +32,15 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
         [Display(Name = "What is the child's date of birth?", Description = "For example, 31 3 2026")]
         [Required(ErrorMessage = "Enter this child's date of birth")]
         [DateInput(ErrorMessagePrefix = "The date of birth")]
-        public DateTime? ChildBirthDate { get; set; }
+        public DateOnly? ChildBirthDate { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            var dateTimeFactory = validationContext.GetService(typeof(IDateTimeFactory)) as IDateTimeFactory;
+            var todayFactory = validationContext.GetService(typeof(ITodayFactory)) as ITodayFactory;
             var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
 
-            var utcNow = dateTimeFactory!.UtcNow;
-            if (ChildBirthDate.HasValue && ChildBirthDate.Value.ToUniversalTime() > utcNow)
+            var today = todayFactory!.Today;
+            if (ChildBirthDate.HasValue && ChildBirthDate.Value > today)
             {
                 var localizer = localizerFactory!.Create(typeof(ChildBirthDateViewModel));
                 var localised = localizer["Enter a date of birth in the past"];
