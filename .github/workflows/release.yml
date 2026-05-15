@@ -1,9 +1,6 @@
 name: 'Release Orchestration (Dev -> Prod)'
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
   workflow_call:
 
@@ -13,17 +10,17 @@ permissions:
   actions: read
 
 jobs:
-  deploy-dev:
-    name: 'Deploy to Dev'
-    uses: ./.github/workflows/infra-deploy.yml
-    with:
-      environment: development
-    secrets: inherit
+#   deploy-dev:
+#     name: 'Deploy to Dev'
+#     uses: ./.github/workflows/infra-deploy.yml
+#     with:
+#       environment: development
+#     secrets: inherit
 
 
   deploy-test:
     name: 'Deploy to Test'
-    needs: deploy-dev
+    # needs: deploy-dev
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: test
