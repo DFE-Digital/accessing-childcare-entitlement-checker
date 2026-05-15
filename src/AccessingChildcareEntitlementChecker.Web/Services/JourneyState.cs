@@ -15,6 +15,8 @@ public class JourneyState
 
     public Relationship? Relationship { get; set; }
 
+    public List<ChildSupport> ChildSupportOptions { get; set; } = [];
+
     public bool? HasPartner { get; set; }
 
     public AgeRange? UserAge { get; set; }
@@ -44,6 +46,11 @@ public class JourneyState
     public void Apply(ChildRelationshipViewModel model)
     {
         Relationship = model.Relationship;
+    }
+
+    public void Apply(ChildSupportViewModel model)
+    {
+        ChildSupportOptions = model.ChildSupportOptions;
     }
 
     public void Apply(HasPartnerViewModel model)

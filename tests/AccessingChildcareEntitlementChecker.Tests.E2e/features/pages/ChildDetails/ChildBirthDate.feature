@@ -1,4 +1,4 @@
-Feature: What is <child>'s date of birth?
+Feature: What is child's date of birth?
 
 Background:
     Given I am on the childcare entitlement checker website
