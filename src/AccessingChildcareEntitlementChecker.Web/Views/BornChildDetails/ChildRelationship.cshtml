@@ -1,3 +1,4 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
@@ -9,10 +10,25 @@
     </govuk-back-link>
 }
 
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Localizer["Title", Model.ChildName]
-        </h1>
-    </div>
-</div>
+<form method="post" novalidate>
+    <govuk-radios for="Relationship">
+        <govuk-radios-fieldset>
+            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                @Localizer["What is your relationship to {0}?", Model.ChildName]
+            </govuk-radios-fieldset-legend>
+
+            <govuk-radios-error-message />
+
+            @foreach (var value in Enum.GetValues<Relationship>())
+            {
+                <govuk-radios-item value="@value">
+                    @Html.EnumDisplayName(value)
+                </govuk-radios-item>
+            }
+        </govuk-radios-fieldset>
+    </govuk-radios>
+
+    <govuk-button type="submit">
+        @Shared["Button_Continue"]
+    </govuk-button>
+</form>

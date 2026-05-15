@@ -82,4 +82,67 @@ public class BornChildDetailsControllerTests
         _controller.ModelState.AddModelError(nameof(model.ChildBirthDate), "Faked Model Binding Error");
         Assert.Throws<InvalidOperationException>(() => _controller.ChildBirthDate(model));
     }
+
+    [Fact]
+    public void ChildRelationship_ReturnsView()
+    {
+        _journeyState.ChildName = "Child A";
+        var result = _controller.ChildRelationship();
+        Assert.Null(result.Model<ChildRelationshipViewModel>().Relationship);
+        Assert.Equal("Child A", result.Model<ChildRelationshipViewModel>().ChildName);
+    }
+
+    [Fact]
+    public void ChildRelationship_Get_PopulatesModel_FromState()
+    {
+        _journeyState.Relationship = Relationship.Parent;
+        _journeyState.ChildName = "Child A";
+        var result = _controller.ChildRelationship();
+        Assert.Equal(Relationship.Parent, result.Model<ChildRelationshipViewModel>().Relationship);
+        Assert.Equal("Child A", result.Model<ChildRelationshipViewModel>().ChildName);
+    }
+
+    [Fact]
+    public void ChildRelationship_Post_ValidSelection_SavesState_AndRedirects()
+    {
+        var model = new ChildRelationshipViewModel()
+        {
+            Relationship = Relationship.Parent,
+        };
+
+        var result = _controller.ChildRelationship(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(Relationship.Parent, _journeyState.Relationship);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(BornChildDetailsController.ChildSupport), redirect.ActionName);
+        Assert.Equal("BornChildDetails", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void ChildRelationship_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        _journeyState.ChildName = "Child A";
+        var model = new ChildRelationshipViewModel();
+
+        _controller.ModelState.AddModelError(nameof(model.Relationship), "Faked Model Binding Error");
+
+        var result = _controller.ChildRelationship(model);
+
+        var view = Assert.IsType<ViewResult>(result);
+        var viewModel = Assert.IsType<ChildRelationshipViewModel>(view.Model);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.Relationship)));
+        Assert.Equal("Child A", viewModel.ChildName);
+    }
+
+    [Fact]
+    public void ChildRelationship_Post_NoChildName_ReturnsViewWithError()
+    {
+        _journeyState.ChildName = null;
+        var model = new ChildRelationshipViewModel();
+        _controller.ModelState.AddModelError(nameof(model.Relationship), "Faked Model Binding Error");
+        Assert.Throws<InvalidOperationException>(() => _controller.ChildRelationship(model));
+    }
 }
