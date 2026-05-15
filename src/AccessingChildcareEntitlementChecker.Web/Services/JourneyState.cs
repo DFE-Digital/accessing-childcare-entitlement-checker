@@ -12,7 +12,7 @@ public class JourneyState
 
     public BirthStatus? ChildIsBorn { get; set; }
 
-    public DateOnly? ChildBirthDate { get; set; }upport
+    public DateOnly? ChildBirthDate { get; set; }
 
     public Relationship? Relationship { get; set; }
 
