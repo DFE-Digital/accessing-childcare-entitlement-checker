@@ -22,6 +22,27 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
                .GetByRole(AriaRole.Link, new() { Name = "Start now" })
                .ClickAsync();
 
+            await AnswerQuestions(dataTable);
+        }
+
+        [Given("I click the Add another child button and answer the questions as follows:")]
+        public async Task GivenIClickTheAddAnotherChildButtonAndAnswerTheQuestionsAsFollows(DataTable dataTable)
+        {
+            await _context.Page
+                .GetByRole(AriaRole.Button, new() { Name = "Add another child" })
+                .ClickAsync();
+
+            await AnswerQuestions(dataTable);
+        }
+
+        [When("I answer the questions as follows:")]
+        public async Task WhenIAnswerTheQuestionsAsFollows(DataTable dataTable)
+        {
+            await AnswerQuestions(dataTable);
+        }
+
+        private async Task AnswerQuestions(DataTable dataTable)
+        {
             foreach (var questionAnswerRow in dataTable.Rows)
             {
                 var question = questionAnswerRow[0];
@@ -63,7 +84,17 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
                 return;
             }
 
-            await _context.Page.GetByRole(AriaRole.Radio, new() { Name = answer, Exact = true }).CheckAsync();
+            var radioButtons = _context.Page.GetByRole(AriaRole.Radio);
+            if (await radioButtons.CountAsync() > 0)
+            {
+                await _context.Page.GetByRole(AriaRole.Radio, new() { Name = answer, Exact = true }).CheckAsync();
+                return;
+            }
+
+            foreach (var checkboxAnswer in answer.Split(';').Select(a => a.Trim()))
+            {
+                await _context.Page.GetByRole(AriaRole.Checkbox, new() { Name = checkboxAnswer, Exact = true }).CheckAsync();
+            }
         }
 
         /// <remarks>

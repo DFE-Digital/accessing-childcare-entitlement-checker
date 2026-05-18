@@ -24,14 +24,14 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(string? childId)
+        public IActionResult Remove(string? childId)
         {
             if (childId is null || !_journeyState.Children.TryGetValue(childId, out var child))
             {
                 return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails));
             }
 
-            return View(new DeleteChildViewModel
+            return View(new RemoveChildViewModel
             {
                 ChildId = childId,
                 Name = child.Name
@@ -39,21 +39,21 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(DeleteChildViewModel model)
+        public IActionResult Remove(RemoveChildViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            if (model.DeleteConfirmed != true)
+            if (model.RemoveConfirmed != true)
             {
                 return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails));
             }
 
             if (_journeyState.Children.Remove(model.ChildId, out var child))
             {
-                TempData["DeletedChildName"] = child.Name;
+                TempData["RemovedChildName"] = child.Name;
                 _journeySession.Set(_journeyState);
             }
 

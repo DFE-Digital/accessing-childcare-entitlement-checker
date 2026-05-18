@@ -28,14 +28,14 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        @if (TempData["DeletedChildName"] is string deletedChildName)
+        @if (TempData["RemovedChildName"] is string removedChildName)
         {
             <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
                     <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">@Localizer["Success"]</h2>
                 </div>
                 <div class="govuk-notification-banner__content">
-                    <h3 class="govuk-notification-banner__heading">@Localizer["{0} was deleted", deletedChildName]</h3>
+                    <h3 class="govuk-notification-banner__heading">@Localizer["{0} has been removed", removedChildName]</h3>
                 </div>
             </div>
         }
@@ -46,6 +46,7 @@
 
         @if (!Model.HasChildren)
         {
+            <p class="govuk-body">@Localizer["No children added."]</p>
             <p class="govuk-body">@Localizer["You must add a child to continue."]</p>
         }
         else
@@ -55,7 +56,7 @@
                 <govuk-summary-card>
                     <govuk-summary-card-title>@item.Title</govuk-summary-card-title>
                     <govuk-summary-card-actions>
-                        <govuk-summary-card-action asp-controller="CheckChildDetails" asp-action="Delete" asp-route-childId="@item.ChildId">@Localizer["Delete"]</govuk-summary-card-action>
+                        <govuk-summary-card-action asp-controller="CheckChildDetails" asp-action="Remove" asp-route-childId="@item.ChildId">@Localizer["Remove"]</govuk-summary-card-action>
                     </govuk-summary-card-actions>
                     <govuk-summary-list>
                         @foreach (var row in item.Rows)

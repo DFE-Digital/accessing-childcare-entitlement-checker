@@ -2,7 +2,7 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
-@model DeleteChildViewModel
+@model RemoveChildViewModel
 
 @section BeforeContent {
     <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
@@ -16,10 +16,10 @@
             <input type="hidden" asp-for="ChildId" />
             <input type="hidden" asp-for="Name" />
 
-            <govuk-radios for="DeleteConfirmed">
+            <govuk-radios for="RemoveConfirmed">
                 <govuk-radios-fieldset>
                     <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                        @Localizer["Are you sure you want to delete {0}?", Model.Name]
+                        @Localizer["Are you sure you want to remove {0}?", Model.Name]
                     </govuk-radios-fieldset-legend>
                     <govuk-radios-error-message />
 
