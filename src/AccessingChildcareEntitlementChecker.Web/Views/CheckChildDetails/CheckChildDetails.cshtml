@@ -1,19 +1,88 @@
 @using Microsoft.AspNetCore.Mvc.Localization
+@using AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails
+@using AccessingChildcareEntitlementChecker.Web.Models
 @using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model CheckChildDetailsViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="BornChildDetails" asp-action="ChildSupport">
-        @Shared["Button_Back"]
-    </govuk-back-link>
+    @if (Model.LastEditedChild != null)
+    {
+        @if (Model.LastEditedChild.BirthStatus == BirthStatus.Born)
+        {
+            <govuk-back-link asp-controller="BornChildDetails" asp-action="ChildSupport" asp-route-childId="@Model.LastEditedChild.ChildId">
+                @Shared["Button_Back"]
+            </govuk-back-link>
+        }
+
+        else if (Model.LastEditedChild.BirthStatus == BirthStatus.Due)
+        {
+            <govuk-back-link asp-controller="ExpectedChildDetails" asp-action="ExpectedChildRelationship" asp-route-childId="@Model.LastEditedChild.ChildId">
+                @Shared["Button_Back"]
+            </govuk-back-link>
+        }
+
+    }
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Localizer["Check your children's details"]
-        </h1>
+        @if (TempData["DeletedChildName"] is string deletedChildName)
+        {
+            <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">@Localizer["Success"]</h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">@Localizer["{0} was deleted", deletedChildName]</h3>
+                </div>
+            </div>
+        }
+
+        <h1 class="govuk-heading-l">@Localizer["Check your children's details"]</h1>
+
+        <h2 class="govuk-heading-m">@Localizer["Your children"]</h2>
+
+        @if (!Model.HasChildren)
+        {
+            <p class="govuk-body">@Localizer["You must add a child to continue."]</p>
+        }
+        else
+        {
+            @foreach (var item in Model.YourChildren)
+            {
+                <govuk-summary-card>
+                    <govuk-summary-card-title>@item.Title</govuk-summary-card-title>
+                    <govuk-summary-card-actions>
+                        <govuk-summary-card-action asp-controller="CheckChildDetails" asp-action="Delete" asp-route-childId="@item.ChildId">@Localizer["Delete"]</govuk-summary-card-action>
+                    </govuk-summary-card-actions>
+                    <govuk-summary-list>
+                        @foreach (var row in item.Rows)
+                        {
+                            <govuk-summary-list-row>
+                                <govuk-summary-list-row-key>@Localizer[row.Key, row.Param]</govuk-summary-list-row-key>
+                                <govuk-summary-list-row-value>@row.Value</govuk-summary-list-row-value>
+                                <govuk-summary-list-row-actions>
+                                    <govuk-summary-list-row-action asp-controller="@row.ChangeController" asp-action="@row.ChangeAction" asp-route-returnTo="check-your-childrens-details" asp-route-childId="@row.ChildId">@Localizer["Change"]</govuk-summary-list-row-action>
+                                </govuk-summary-list-row-actions>
+                            </govuk-summary-list-row>
+                        }
+                    </govuk-summary-list>
+                </govuk-summary-card>
+            }
+        }
+
+        <div class="govuk-!-margin-bottom-4">
+            <govuk-button-link class="govuk-button--secondary" asp-controller="Introduction" asp-action="ChildName">@Localizer["Add another child"]</govuk-button-link>
+        </div>
+
+        @if (Model.HasChildren)
+        {
+            <div class="govuk-!-margin-top-3">
+                <govuk-button-link type="submit" asp-controller="User" asp-action="UserAge">@Shared["Button_Continue"]</govuk-button-link>
+            </div>
+        }
+
     </div>
 </div>

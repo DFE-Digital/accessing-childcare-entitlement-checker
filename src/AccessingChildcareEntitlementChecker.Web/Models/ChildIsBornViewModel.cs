@@ -5,15 +5,21 @@ namespace AccessingChildcareEntitlementChecker.Web.Models
 {
     public class ChildIsBornViewModel
     {
+        public string? ReturnTo { get; set; }
+
         public ChildIsBornViewModel()
         {
-
+            ChildId = string.Empty;
         }
 
-        public ChildIsBornViewModel(JourneyState journeyState)
+        public ChildIsBornViewModel(string childId, JourneyState journeyState)
         {
-            ChildIsBorn = journeyState.ChildIsBorn;
+            var child = journeyState.GetChild(childId);
+            ChildId = childId;
+            ChildIsBorn = child.BirthStatus;
         }
+
+        public string ChildId { get; set; }
 
         [Display(Name = "Has this child been born yet?")]
         [Required(ErrorMessage = "Select if this child has been born")]

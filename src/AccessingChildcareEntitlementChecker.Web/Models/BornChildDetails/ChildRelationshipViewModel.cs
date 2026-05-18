@@ -7,40 +7,36 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 
 public class ChildRelationshipViewModel : IValidatableObject
 {
+    public string? ReturnTo { get; set; }
+
     public ChildRelationshipViewModel()
     {
-
+        ChildId = string.Empty;
     }
 
-    public ChildRelationshipViewModel(JourneyState journeyState)
+    public ChildRelationshipViewModel(string childId, JourneyState journeyState)
     {
-        if (journeyState.ChildName == null)
-        {
-            throw new ArgumentNullException(
-                    nameof(journeyState),
-                    $"{nameof(journeyState.ChildName)} must not be null.");
-        }
-
-        ChildName = journeyState.ChildName;
-        Relationship = journeyState.Relationship;
+        var child = journeyState.GetChild(childId);
+        ChildId = childId;
+        ChildName = child.Name;
+        Relationship = child.BornRelationship;
     }
+
+    public string ChildId { get; set; }
 
     [BindNever]
     public string ChildName { get; set; } = string.Empty;
 
-    [Display(Name = "What is your relationship to the child?")]
+    [Display(Name = "What is your relationship to {0}?")]
     public Relationship? Relationship { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
+        var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
+        var localizer = localizerFactory!.Create(typeof(ChildRelationshipViewModel));
         if (!Relationship.HasValue)
         {
-            var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
-            var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
-            var localizer = localizerFactory!.Create(typeof(ChildRelationshipViewModel));
-            yield return new ValidationResult(
-                localizer["Select your relationship to {0}", journeyState!.ChildName!],
-                [nameof(Relationship)]);
+            yield return new ValidationResult(localizer["Select your relationship to {0}", ChildName ?? string.Empty], [nameof(Relationship)]);
         }
     }
 }

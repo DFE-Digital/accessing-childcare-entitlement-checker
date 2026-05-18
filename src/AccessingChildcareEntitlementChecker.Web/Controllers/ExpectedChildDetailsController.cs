@@ -18,9 +18,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         }
 
         [HttpGet]
-        public ViewResult ChildDueDate()
+        public IActionResult ChildDueDate(string childId, string? returnTo = null)
         {
-            return View(new ChildDueDateViewModel(_journeyState));
+            return View(new ChildDueDateViewModel(childId, _journeyState) { ReturnTo = returnTo });
         }
 
         [HttpPost]
@@ -33,13 +33,18 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
-            return RedirectToAction(nameof(ExpectedChildRelationship), "ExpectedChildDetails");
+            if (model.ReturnTo == "check-your-childrens-details")
+            {
+                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
+            }
+
+            return RedirectToAction(nameof(ExpectedChildRelationship), "ExpectedChildDetails", new { childId = model.ChildId });
         }
 
         [HttpGet]
-        public ViewResult ExpectedChildRelationship()
+        public IActionResult ExpectedChildRelationship(string childId, string? returnTo = null)
         {
-            return View(new ExpectedChildRelationshipViewModel(_journeyState));
+            return View(new ExpectedChildRelationshipViewModel(childId, _journeyState) { ReturnTo = returnTo });
         }
 
         [HttpPost]
@@ -52,8 +57,12 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
+            if (model.ReturnTo == "check-your-childrens-details")
+            {
+                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
+            }
 
-            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails");
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
         }
     }
 }

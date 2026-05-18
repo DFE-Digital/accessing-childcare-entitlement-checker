@@ -16,9 +16,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         }
 
         [HttpGet]
-        public ViewResult ChildName()
+        public IActionResult ChildName(string? childId = null, string? returnTo = null)
         {
-            return View(new ChildNameViewModel(_journeyState));
+            return View(new ChildNameViewModel(childId, _journeyState) { ReturnTo = returnTo });
         }
 
         [HttpPost]
@@ -31,14 +31,19 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
+            if (model.ReturnTo == "check-your-childrens-details")
+            {
+                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
+                    new { fromChildId = model.ChildId });
+            }
 
-            return RedirectToAction(nameof(IntroductionController.IsChildBorn), "Introduction");
+            return RedirectToAction(nameof(IntroductionController.IsChildBorn), "Introduction", new { childId = model.ChildId });
         }
 
         [HttpGet]
-        public ViewResult IsChildBorn()
+        public IActionResult IsChildBorn(string childId, string? returnTo = null)
         {
-            return View(new ChildIsBornViewModel(_journeyState));
+            return View(new ChildIsBornViewModel(childId, _journeyState) { ReturnTo = returnTo });
         }
 
         [HttpPost]

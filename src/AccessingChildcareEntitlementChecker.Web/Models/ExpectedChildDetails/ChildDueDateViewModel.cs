@@ -7,32 +7,36 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails
 {
     public class ChildDueDateViewModel : IValidatableObject
     {
+        public string? ReturnTo { get; set; }
+
         public ChildDueDateViewModel()
         {
-
+            ChildId = string.Empty;
         }
 
-        public ChildDueDateViewModel(JourneyState journeyState)
+        public ChildDueDateViewModel(string childId, JourneyState journeyState)
         {
-            ChildDueDate = journeyState.ChildDueDate;
+            var child = journeyState.GetChild(childId);
+            ChildId = childId;
+            ChildDueDate = child.DueDate;
         }
+
+        public string ChildId { get; set; }
 
         [Display(Name = "What is this child's due date?", Description = "For example, 30 9 2026")]
-        [Required(ErrorMessage = "Enter this child's due date")]
+        [Required(ErrorMessage = "Enter the child's due date")]
         [DateInput(ErrorMessagePrefix = "The due date")]
         public DateOnly? ChildDueDate { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            var todayFactory = validationContext.GetService(typeof(ITodayFactory)) as ITodayFactory;
             var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
-
-            var today = todayFactory!.Today;
+            var localizer = localizerFactory!.Create(typeof(ChildDueDateViewModel));
+            var todayFactory = validationContext.GetService(typeof(ITodayFactory)) as ITodayFactory;
+            var today = todayFactory?.Today ?? DateOnly.FromDateTime(DateTime.Today);
             if (ChildDueDate.HasValue && ChildDueDate.Value <= today)
             {
-                var localizer = localizerFactory!.Create(typeof(ChildDueDateViewModel));
-                var localised = localizer["Enter a due date in the future"];
-                yield return new ValidationResult(localised, [nameof(ChildDueDate)]);
+                yield return new ValidationResult(localizer["Enter a due date in the future"], [nameof(ChildDueDate)]);
             }
         }
     }

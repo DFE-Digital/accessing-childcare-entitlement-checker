@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@model DeleteChildViewModel
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" asp-antiforgery="true" novalidate>
+            <input type="hidden" asp-for="ChildId" />
+            <input type="hidden" asp-for="Name" />
+
+            <govuk-radios for="DeleteConfirmed">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Localizer["Are you sure you want to delete {0}?", Model.Name]
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+
+                    <govuk-radios-item value="@true">
+                        @Localizer["Yes"]
+                    </govuk-radios-item>
+
+                    <govuk-radios-item value="@false">
+                        @Localizer["No"]
+                    </govuk-radios-item>
+                </govuk-radios-fieldset>
+            </govuk-radios>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>
