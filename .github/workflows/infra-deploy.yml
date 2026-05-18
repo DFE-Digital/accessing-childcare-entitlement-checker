@@ -8,7 +8,11 @@ on:
         required: true
         type: string
         default: development
-
+      run-id:
+        description: 'Workflow Run ID to download artifacts from'
+        required: false
+        type: string
+        default: ''  
 jobs:
   lint-terraform:
     name: Lint Terraform
@@ -35,6 +39,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      actions: read
 
     defaults:
       run:
@@ -72,6 +77,8 @@ jobs:
       with:
         name: webapp-package
         path: ./artifacts/webapp-package
+        run-id: ${{ inputs.run-id || github.run_id }}
+        github-token: ${{ github.token }}
 
     - name: Azure Login (OIDC)
       uses: azure/login@v3
