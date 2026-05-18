@@ -4,18 +4,9 @@
 @model ChildNameViewModel
 
 @section BeforeContent {
-    @if (Model.ReturnTo == "check-your-childrens-details")
-    {
-        <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else
-    {
-        <govuk-back-link asp-controller="Home" asp-action="Location">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
+    <govuk-back-link asp-controller="Home" asp-action="Location">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <div class="govuk-grid-row">
@@ -33,7 +24,6 @@
         </p>
 
         <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
-            <input type="hidden" asp-for="ReturnTo" />
             <govuk-input for="ChildName" label-class="govuk-label--m" input-class="govuk-input--width-20" />
 
             <govuk-details>

@@ -39,7 +39,7 @@ public class ChildSupportViewModelTests
         var validationContext = new ValidationContext(model);
         validationContext.InitializeServiceProvider(_serviceProviderFunc);
 
-        Assert.Throws<InvalidOperationException>(() => model.Validate(validationContext));
+        Assert.Throws<InvalidOperationException>(() => model.Validate(validationContext).ToList());
     }
 
     [Fact]

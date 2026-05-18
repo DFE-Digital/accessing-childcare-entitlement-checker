@@ -21,7 +21,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Services
         [Fact]
         public void Apply_ChildName_ThrowsIfNoChildName()
         {
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 _journeyState.Apply(new ChildNameViewModel());
             });
