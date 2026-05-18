@@ -40,17 +40,14 @@ public class ChildBirthDateViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsIfChildIdDoesNotExist()
-    {
-        Assert.Throws<KeyNotFoundException>(() => new ChildBirthDateViewModel("DOES_NOT_EXIST", _journeyState));
-    }
-
-    [Fact]
     public void Validate_ReturnsErrorForFutureDate()
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));
-        var model = new ChildBirthDateViewModel("child-a", _journeyState)
+        var child = _journeyState.GetChild("child-a")!;
+        Assert.NotNull(child);
+
+        var model = new ChildBirthDateViewModel(child)
         {
             ChildBirthDate = DateOnly.FromDateTime(now.AddDays(1)),
         };

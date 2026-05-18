@@ -14,10 +14,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails
             ChildId = string.Empty;
         }
 
-        public ChildDueDateViewModel(string childId, JourneyState journeyState)
+        public ChildDueDateViewModel(Child child)
         {
-            var child = journeyState.GetChild(childId);
-            ChildId = childId;
+            ChildId = child.ChildId;
             ChildDueDate = child.DueDate;
         }
 

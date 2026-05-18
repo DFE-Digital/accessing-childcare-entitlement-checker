@@ -38,16 +38,15 @@ Scenario: Change Mia's birth date
 Scenario: Change my relationship to Jack
     When I click the Change link in the "Jack" panel for "What is your relationship to Jack?"
     And I answer the questions as follows:
-    | Question                                           | Answer                                                              |
-    | What is your relationship to Jack?                 | Parent                                                              |
-    | Does Jack get any of the following support?        | Certificate of Visual Impairment; Disability Living Allowance (DLA) |
+    | Question                           | Answer |
+    | What is your relationship to Jack? | Parent |
     Then the page header is "Check your children's details"
     And I should see 2 summary panels
     And I should see a summary panel with the title "Jack" and the following summary:
-    | Question                                    | Answer                                                              |
-    | What is Jack's date of birth?               | Yesterday                                                           |
-    | What is your relationship to Jack?          | Parent                                                              |
-    | Does Jack get any of the following support? | Certificate of Visual Impairment, Disability Living Allowance (DLA) |
+    | Question                                    | Answer                                |
+    | What is Jack's date of birth?               | Yesterday                             |
+    | What is your relationship to Jack?          | Parent                                |
+    | Does Jack get any of the following support? | Education, health and care (EHC) plan |
    
 Scenario: Continue with selection
     When I click on Continue

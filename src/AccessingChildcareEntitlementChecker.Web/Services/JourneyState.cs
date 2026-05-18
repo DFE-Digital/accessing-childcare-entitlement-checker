@@ -16,14 +16,9 @@ public class JourneyState
 
     public AgeRange? PartnerAge { get; set; }
 
-    public Child GetChild(string? childId)
+    public Child? GetChild(string childId)
     {
-        if (childId == null)
-        {
-            throw new ArgumentException("Child ID cannot be null", nameof(childId));
-        }
-
-        return Children[childId];
+        return Children.TryGetValue(childId, out var child) ? child : null;
     }
 
     public void Apply(LocationViewModel model)
@@ -38,14 +33,19 @@ public class JourneyState
             throw new InvalidOperationException("Child name cannot be null");
         }
 
-        var id = model.ChildId ?? Guid.NewGuid().ToString();
-        model.ChildId = id;
-        if (!Children.TryGetValue(id, out var child))
+        if (model.ChildId == null)
         {
-            child = new Child(id, model.ChildName);
-            Children.Add(id, child);
+            model.ChildId = Guid.NewGuid().ToString();
         }
 
+        var child = GetChild(model.ChildId);
+        if (child == null)
+        {
+            child = new Child(model.ChildId, model.ChildName);
+            Children.Add(model.ChildId, child);
+            return;
+        }
+        
         child.Name = model.ChildName;
     }
 

@@ -14,10 +14,9 @@ public class ChildRelationshipViewModel : IValidatableObject
         ChildId = string.Empty;
     }
 
-    public ChildRelationshipViewModel(string childId, JourneyState journeyState)
+    public ChildRelationshipViewModel(Child child)
     {
-        var child = journeyState.GetChild(childId);
-        ChildId = childId;
+        ChildId = child.ChildId;
         ChildName = child.Name;
         Relationship = child.BornRelationship;
     }
@@ -33,7 +32,7 @@ public class ChildRelationshipViewModel : IValidatableObject
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
-        var child = journeyState!.GetChild(ChildId);
+        var child = (journeyState?.GetChild(ChildId)) ?? throw new InvalidOperationException($"No child found with ID {ChildId}");
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(ChildRelationshipViewModel));
         if (!Relationship.HasValue)

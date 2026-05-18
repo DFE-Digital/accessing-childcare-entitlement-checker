@@ -20,7 +20,13 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         [HttpGet]
         public IActionResult ChildBirthDate(string childId, string? returnTo = null)
         {
-            return View(new ChildBirthDateViewModel(childId, _journeyState) { ReturnTo = returnTo });
+            var child = _journeyState.GetChild(childId);
+            if (child == null)
+            {
+                return RedirectToAction(nameof(ErrorController.NotFound), "Error");
+            }
+
+            return View(new ChildBirthDateViewModel(child) { ReturnTo = returnTo });
         }
 
         [HttpPost]
@@ -46,7 +52,13 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         [HttpGet]
         public IActionResult ChildRelationship(string childId, string? returnTo = null)
         {
-            return View(new ChildRelationshipViewModel(childId, _journeyState) { ReturnTo = returnTo });
+            var child = _journeyState.GetChild(childId);
+            if (child == null)
+            {
+                return RedirectToAction(nameof(ErrorController.NotFound), "Error");
+            }
+
+            return View(new ChildRelationshipViewModel(child) { ReturnTo = returnTo });
         }
 
         [HttpPost]
@@ -61,7 +73,6 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             _journeySession.Set(_journeyState);
             if (model.ReturnTo == "check-your-childrens-details")
             {
-
                 return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
                     new { fromChildId = model.ChildId });
             }
@@ -73,7 +84,13 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         [HttpGet]
         public IActionResult ChildSupport(string childId, string? returnTo = null)
         {
-            return View(new ChildSupportViewModel(childId, _journeyState) { ReturnTo = returnTo });
+            var child = _journeyState.GetChild(childId);
+            if (child == null)
+            {
+                return RedirectToAction(nameof(ErrorController.NotFound), "Error");
+            }
+
+            return View(new ChildSupportViewModel(child) { ReturnTo = returnTo });
         }
 
         [HttpPost]

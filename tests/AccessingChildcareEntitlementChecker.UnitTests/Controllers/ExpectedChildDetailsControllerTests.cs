@@ -12,10 +12,12 @@ public class ExpectedChildDetailsControllerTests
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly ExpectedChildDetailsController _controller;
+    private const string childId = "child-a";
 
     public ExpectedChildDetailsControllerTests()
     {
         _journeyState = new JourneyState();
+        _journeyState.Children[childId] = new Child(childId, "Child A");
         _journeySession = Substitute.For<IJourneySession>();
         _controller = new ExpectedChildDetailsController(_journeyState, _journeySession);
     }
@@ -23,8 +25,6 @@ public class ExpectedChildDetailsControllerTests
     [Fact]
     public void ChildDueDate_ReturnsView()
     {
-        const string childId = "child-a";
-        _journeyState.Children[childId] = new Child(childId, "Child A");
         var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(childId));
 
         Assert.Null(result.Model<ChildDueDateViewModel>().ChildDueDate);
@@ -33,9 +33,7 @@ public class ExpectedChildDetailsControllerTests
     [Fact]
     public void ChildDueDate_Get_PopulatesModel_FromState()
     {
-        const string childId = "child-a";
-        _journeyState.Children[childId] = new Child(childId, "Child A");
-        var child = _journeyState.GetChild(childId);
+        var child = _journeyState.GetChild(childId)!;
         child.DueDate = new DateOnly(2020, 1, 15);
         var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(childId));
 
@@ -45,8 +43,6 @@ public class ExpectedChildDetailsControllerTests
     [Fact]
     public void ChildDueDate_Post_ValidSelection_SavesState_AndRedirects()
     {
-        const string childId = "child-a";
-        _journeyState.Children[childId] = new Child(childId, "Child A");
         var model = new ChildDueDateViewModel
         {
             ChildId = childId,
@@ -57,7 +53,7 @@ public class ExpectedChildDetailsControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId).DueDate);
+        Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId)!.DueDate);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(ExpectedChildDetailsController.ExpectedChildRelationship), redirect.ActionName);
         Assert.Equal("ExpectedChildDetails", redirect.ControllerName);
@@ -85,8 +81,6 @@ public class ExpectedChildDetailsControllerTests
     [Fact]
     public void ExpectedChildRelationship_ReturnsView()
     {
-        const string childId = "child-a";
-        _journeyState.Children[childId] = new Child(childId, "Child A");
         var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(childId));
 
         Assert.Null(result.Model<ExpectedChildRelationshipViewModel>().ExpectedChildRelationship);
@@ -95,9 +89,7 @@ public class ExpectedChildDetailsControllerTests
     [Fact]
     public void ExpectedChildRelationship_Get_PopulatesModel_FromState()
     {
-        const string childId = "child-a";
-        _journeyState.Children[childId] = new Child(childId, "Child A");
-        var child = _journeyState.GetChild(childId);
+        var child = _journeyState.GetChild(childId)!;
         child.ExpectedRelationship = Relationship.Parent;
         var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(childId));
 
@@ -107,8 +99,6 @@ public class ExpectedChildDetailsControllerTests
     [Fact]
     public void ExpectedChildRelationship_Post_ValidSelection_SavesState_AndRedirects()
     {
-        const string childId = "child-a";
-        _journeyState.Children[childId] = new Child(childId, "Child A");
         var model = new ExpectedChildRelationshipViewModel
         {
             ChildId = childId,
@@ -119,7 +109,7 @@ public class ExpectedChildDetailsControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(Relationship.Parent, _journeyState.GetChild(model.ChildId).ExpectedRelationship);
+        Assert.Equal(Relationship.Parent, _journeyState.GetChild(model.ChildId)!.ExpectedRelationship);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
         Assert.Equal("CheckChildDetails", redirect.ControllerName);

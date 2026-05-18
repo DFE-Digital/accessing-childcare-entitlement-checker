@@ -20,7 +20,13 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         [HttpGet]
         public IActionResult ChildDueDate(string childId, string? returnTo = null)
         {
-            return View(new ChildDueDateViewModel(childId, _journeyState) { ReturnTo = returnTo });
+            var child = _journeyState.GetChild(childId);
+            if (child == null)
+            {
+                return RedirectToAction(nameof(ErrorController.NotFound), "Error");
+            }
+
+            return View(new ChildDueDateViewModel(child) { ReturnTo = returnTo });
         }
 
         [HttpPost]
@@ -46,7 +52,13 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         [HttpGet]
         public IActionResult ExpectedChildRelationship(string childId, string? returnTo = null)
         {
-            return View(new ExpectedChildRelationshipViewModel(childId, _journeyState) { ReturnTo = returnTo });
+            var child = _journeyState.GetChild(childId);
+            if (child == null)
+            {
+                return RedirectToAction(nameof(ErrorController.NotFound), "Error");
+            }
+
+            return View(new ExpectedChildRelationshipViewModel(child) { ReturnTo = returnTo });
         }
 
         [HttpPost]

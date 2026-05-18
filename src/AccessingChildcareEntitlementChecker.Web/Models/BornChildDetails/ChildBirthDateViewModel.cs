@@ -15,10 +15,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
             ChildId = string.Empty;
         }
 
-        public ChildBirthDateViewModel(string childId, JourneyState journeyState)
+        public ChildBirthDateViewModel(Child child)
         {
-            var child = journeyState.GetChild(childId);
-            ChildId = childId;
+            ChildId = child.ChildId;
             ChildName = child.Name;
             ChildBirthDate = child.BirthDate;
         }

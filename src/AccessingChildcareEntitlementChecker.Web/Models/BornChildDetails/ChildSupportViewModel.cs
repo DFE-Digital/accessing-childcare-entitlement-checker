@@ -14,10 +14,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
             ChildId = string.Empty;
         }
 
-        public ChildSupportViewModel(string? childId, JourneyState journeyState)
+        public ChildSupportViewModel(Child child)
         {
-            var child = journeyState.GetChild(childId);
-            ChildId = childId;
+            ChildId = child.ChildId;
             ChildName = child.Name;
             ChildSupportOptions = child.ChildSupportOptions;
         }
@@ -37,7 +36,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
             var localizer = localizerFactory!.Create(typeof(ChildSupportViewModel));
             if (ChildSupportOptions.Count == 0)
             {
-                var child = journeyState!.GetChild(ChildId);
+                var child = (journeyState?.GetChild(ChildId)) ?? throw new InvalidOperationException($"No child found with ID {ChildId}");
                 yield return new ValidationResult(localizer["Select any support {0} gets, or select 'No, none of these apply'", child.Name], [nameof(ChildSupportOptions)]);
             }
 

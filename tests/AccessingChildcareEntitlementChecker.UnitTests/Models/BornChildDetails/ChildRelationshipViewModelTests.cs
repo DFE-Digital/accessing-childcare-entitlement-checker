@@ -33,15 +33,10 @@ public class ChildRelationshipViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsOnEmptyChildName()
-    {
-        Assert.Throws<KeyNotFoundException>(() => new ChildRelationshipViewModel("DOES NOT EXIST", _journeyState));
-    }
-
-    [Fact]
     public void Validate_ReturnsErrorWithChildNameWhenNoRelationshipSelected()
     {
-        var model = new ChildRelationshipViewModel("child-a", _journeyState);
+        var child = _journeyState.GetChild("child-a")!;
+        var model = new ChildRelationshipViewModel(child);
         var validationContext = new ValidationContext(model);
         validationContext.InitializeServiceProvider(_serviceProviderFunc);
 
@@ -54,7 +49,8 @@ public class ChildRelationshipViewModelTests
     [Fact]
     public void Validate_ReturnsNoErrorsWhenRelationshipSelected()
     {
-        var model = new ChildRelationshipViewModel("child-a", _journeyState)
+        var child = _journeyState.GetChild("child-a")!;
+        var model = new ChildRelationshipViewModel(child)
         {
             Relationship = Relationship.Parent
         };

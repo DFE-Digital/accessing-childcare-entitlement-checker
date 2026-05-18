@@ -21,10 +21,6 @@ public class Child
 
     public Relationship? ExpectedRelationship { get; set; }
 
-    public Child()
-    {
-    }
-
     public Child(string childId, string name)
     {
         ChildId = childId;

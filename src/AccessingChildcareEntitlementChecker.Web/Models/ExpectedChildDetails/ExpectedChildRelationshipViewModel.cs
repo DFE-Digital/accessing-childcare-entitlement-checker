@@ -12,10 +12,9 @@ public class ExpectedChildRelationshipViewModel
         ChildId = string.Empty;
     }
 
-    public ExpectedChildRelationshipViewModel(string childId, JourneyState journeyState)
+    public ExpectedChildRelationshipViewModel(Child child)
     {
-        var child = journeyState.GetChild(childId);
-        ChildId = childId;
+        ChildId = child.ChildId;
         ExpectedChildRelationship = child.ExpectedRelationship;
     }
 

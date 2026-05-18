@@ -12,10 +12,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Models
             ChildId = string.Empty;
         }
 
-        public ChildIsBornViewModel(string childId, JourneyState journeyState)
+        public ChildIsBornViewModel(Child child)
         {
-            var child = journeyState.GetChild(childId);
-            ChildId = childId;
+            ChildId = child.ChildId;
             ChildIsBorn = child.BirthStatus;
         }
 

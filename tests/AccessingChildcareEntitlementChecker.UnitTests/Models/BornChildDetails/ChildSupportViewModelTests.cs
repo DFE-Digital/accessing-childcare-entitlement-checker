@@ -28,15 +28,10 @@ public class ChildSupportViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsIfChildIdDoesNotExist()
-    {
-        Assert.Throws<KeyNotFoundException>(() => new ChildSupportViewModel("DOES_NOT_EXIST", _journeyState));
-    }
-
-    [Fact]
     public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
     {
-        var model = new ChildSupportViewModel("child-a", _journeyState)
+        var child = _journeyState.GetChild("child-a")!;
+        var model = new ChildSupportViewModel(child)
         {
             ChildSupportOptions =
             [
@@ -57,7 +52,8 @@ public class ChildSupportViewModelTests
     [Fact]
     public void Validate_ReturnsErrorWhenOptionsAreEmpty()
     {
-        var model = new ChildSupportViewModel("child-a", _journeyState)
+        var child = _journeyState.GetChild("child-a")!;
+        var model = new ChildSupportViewModel(child)
         {
             ChildSupportOptions = [],
         };

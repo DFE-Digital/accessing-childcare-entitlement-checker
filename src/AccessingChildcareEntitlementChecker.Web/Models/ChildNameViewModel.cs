@@ -12,13 +12,10 @@ public class ChildNameViewModel
 
     }
 
-    public ChildNameViewModel(string? childId, JourneyState journeyState)
+    public ChildNameViewModel(Child child)
     {
-        if (childId is not null)
-        {
-            var child = journeyState.GetChild(childId);
-            ChildName = child.Name;
-        }
+        ChildId = child.ChildId;
+        ChildName = child.Name;
     }
 
     public string? ChildId { get; set; }
