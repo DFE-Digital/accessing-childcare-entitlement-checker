@@ -9,16 +9,12 @@ public class HomeController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
-    public HomeController(JourneyState journeyState, IJourneySession journeySession)
+    public HomeController(
+        JourneyState journeyState,
+        IJourneySession journeySession)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
-    }
-
-    [HttpGet]
-    public IActionResult SessionExpired()
-    {
-        return View();
     }
 
     [HttpGet]
@@ -28,9 +24,9 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public ViewResult Location()
+    public IActionResult Location(string? returnTo = null)
     {
-        return View(new LocationViewModel(_journeyState));
+        return View(new LocationViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -43,6 +39,11 @@ public class HomeController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == "check-your-childrens-details")
+        {
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails");
+        }
+
         return RedirectToAction(nameof(IntroductionController.ChildName), "Introduction");
     }
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
@@ -6,27 +8,25 @@ namespace AccessingChildcareEntitlementChecker.Web.Services;
 
 public class JourneyState
 {
+    public Dictionary<string, Child> Children { get; set; } = [];
+
     public CountryOfResidence? CountryOfResidence { get; set; }
-
-    public string? ChildName { get; set; }
-
-    public BirthStatus? ChildIsBorn { get; set; }
-
-    public DateOnly? ChildBirthDate { get; set; }
-
-    public Relationship? Relationship { get; set; }
-
-    public List<ChildSupport> ChildSupportOptions { get; set; } = [];
-
-    public DateOnly? ChildDueDate { get; set; }
-
-    public Relationship? ExpectedChildRelationship { get; set; }
-
-    public bool? HasPartner { get; set; }
 
     public AgeRange? UserAge { get; set; }
 
+    public bool? HasPartner { get; set; }
+
     public AgeRange? PartnerAge { get; set; }
+
+    public Child GetChild(string? childId)
+    {
+        if (childId == null)
+        {
+            throw new ArgumentException("Child ID cannot be null", nameof(childId));
+        }
+
+        return Children[childId];
+    }
 
     public void Apply(LocationViewModel model)
     {
@@ -35,42 +35,44 @@ public class JourneyState
 
     public void Apply(ChildNameViewModel model)
     {
-        ChildName = model.ChildName;
+        if (model.ChildName == null)
+        {
+            throw new InvalidOperationException("Child name cannot be null");
+        }
+
+        var id = model.ChildId ?? Guid.NewGuid().ToString();
+        model.ChildId = id;
+        if (!Children.TryGetValue(id, out var child))
+        {
+            child = new Child(id, model.ChildName);
+            Children.Add(id, child);
+        }
+
+        child.Name = model.ChildName;
     }
 
     public void Apply(ChildIsBornViewModel model)
     {
-        ChildIsBorn = model.ChildIsBorn;
+        var child = Children[model.ChildId!];
+        child.BirthStatus = model.IsChildBorn;
     }
 
     public void Apply(ChildBirthDateViewModel model)
     {
-        ChildBirthDate = model.ChildBirthDate;
+        var child = Children[model.ChildId!];
+        child.BirthDate = model.ChildBirthDate;
     }
 
     public void Apply(ChildRelationshipViewModel model)
     {
-        Relationship = model.Relationship;
+        var child = Children[model.ChildId!];
+        child.BornRelationship = model.ChildRelationship;
     }
 
     public void Apply(ChildSupportViewModel model)
     {
-        ChildSupportOptions = model.ChildSupportOptions;
-    }
-
-    public void Apply(ChildDueDateViewModel model)
-    {
-        ChildDueDate = model.ChildDueDate;
-    }
-
-    public void Apply(ExpectedChildRelationshipViewModel model)
-    {
-        ExpectedChildRelationship = model.ExpectedChildRelationship;
-    }
-
-    public void Apply(HasPartnerViewModel model)
-    {
-        HasPartner = model.HasPartner;
+        var child = Children[model.ChildId!];
+        child.ChildSupportOptions = model.ChildSupportOptions;
     }
 
     public void Apply(UserAgeViewModel model)
@@ -78,8 +80,25 @@ public class JourneyState
         UserAge = model.UserAge;
     }
 
+    public void Apply(HasPartnerViewModel model)
+    {
+        HasPartner = model.HasPartner;
+    }
+
     public void Apply(PartnerAgeViewModel model)
     {
         PartnerAge = model.PartnerAge;
+    }
+
+    public void Apply(ChildDueDateViewModel model)
+    {
+        var child = Children[model.ChildId!];
+        child.DueDate = model.ChildDueDate;
+    }
+
+    public void Apply(ExpectedChildRelationshipViewModel model)
+    {
+        var child = Children[model.ChildId!];
+        child.ExpectedRelationship = model.ExpectedChildRelationship;
     }
 }

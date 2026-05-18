@@ -1,32 +1,46 @@
-@using Microsoft.AspNetCore.Mvc.Localization
 @using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model ChildSupportViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="BornChildDetails" asp-action="ChildRelationship">
-        @Shared["Button_Back"]
-    </govuk-back-link>
+    @if (Model.ReturnTo == "check-your-childrens-details")
+    {
+        <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="BornChildDetails" asp-action="ChildRelationship" asp-route-childId="@Model.ChildId">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <form method="post" novalidate>
+
+        <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+
             <govuk-checkboxes for="ChildSupportOptions">
                 <govuk-checkboxes-fieldset>
                     <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                        @Localizer["Does {0} get any of the following support?", Model.ChildName]
+                        @Localizer["Does {0} get any of the following support?", Model.ChildName!]
                     </govuk-checkboxes-fieldset-legend>
                     <govuk-checkboxes-hint>
                         @Html.GetDescriptionFor(m => m.ChildSupportOptions)
                     </govuk-checkboxes-hint>
 
                     <govuk-checkboxes-error-message />
-
-                    @foreach (var value in Enum.GetValues<ChildSupport>())
+                    
+                    @foreach (var value in Enum.GetValues<ChildSupportOption>())
                     {
-                        if (value == ChildSupport.NoneOfTheseApply)
+                        @if (value == ChildSupportOption.NoneOfTheseApply)
                         {
                             <govuk-checkboxes-divider>
                                 @Localizer["or"]

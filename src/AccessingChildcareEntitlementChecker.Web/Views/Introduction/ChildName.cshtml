@@ -1,17 +1,29 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using AccessingChildcareEntitlementChecker.Web.Models
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model ChildNameViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Home" asp-action="Location">
-        @Shared["Button_Back"]
-    </govuk-back-link>
+    @if (Model.ReturnTo == "check-your-childrens-details")
+    {
+        <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="Home" asp-action="Location">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
+       <h1 class="govuk-heading-l">
             @Localizer["Title"]
         </h1>
 
@@ -22,8 +34,9 @@
         <p class="govuk-body">
             @Localizer["AdditionalChildrenGuidance"]
         </p>
+        <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
 
-        <form method="post" novalidate>
             <govuk-input for="ChildName" label-class="govuk-label--m" input-class="govuk-input--width-20" />
 
             <govuk-details>

@@ -1,59 +1,67 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccessingChildcareEntitlementChecker.Web.Controllers
+namespace AccessingChildcareEntitlementChecker.Web.Controllers;
+
+public class ExpectedChildDetailsController : Controller
 {
-    public class ExpectedChildDetailsController : Controller
+    private readonly JourneyState _journeyState;
+    private readonly IJourneySession _journeySession;
+
+    public ExpectedChildDetailsController(
+        JourneyState journeyState,
+        IJourneySession journeySession)
     {
-        private readonly JourneyState _journeyState;
-        private readonly IJourneySession _journeySession;
+        _journeyState = journeyState;
+        _journeySession = journeySession;
+    }
 
-        public ExpectedChildDetailsController(
-            JourneyState journeyState,
-            IJourneySession journeySession)
+    [HttpGet]
+    public IActionResult ChildDueDate(string? childId = null, string? returnTo = null)
+    {
+        return View(new ChildDueDateViewModel(childId, _journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult ChildDueDate(ChildDueDateViewModel model)
+    {
+        if (!ModelState.IsValid)
         {
-            _journeyState = journeyState;
-            _journeySession = journeySession;
+            return View(model);
         }
 
-        [HttpGet]
-        public ViewResult ChildDueDate()
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        if (model.ReturnTo == "check-your-childrens-details")
         {
-            return View(new ChildDueDateViewModel(_journeyState));
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
         }
 
-        [HttpPost]
-        public IActionResult ChildDueDate(ChildDueDateViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        return RedirectToAction(nameof(ExpectedChildDetailsController.ExpectedChildRelationship), "ExpectedChildDetails", new { childId = model.ChildId });
+    }
 
-            _journeyState.Apply(model);
-            _journeySession.Set(_journeyState);
-            return RedirectToAction(nameof(ExpectedChildRelationship), "ExpectedChildDetails");
+    [HttpGet]
+    public IActionResult ExpectedChildRelationship(string? childId = null, string? returnTo = null)
+    {
+        return View(new ExpectedChildRelationshipViewModel(childId, _journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult ExpectedChildRelationship(ExpectedChildRelationshipViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
         }
 
-        [HttpGet]
-        public ViewResult ExpectedChildRelationship()
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        if (model.ReturnTo == "check-your-childrens-details")
         {
-            return View(new ExpectedChildRelationshipViewModel(_journeyState));
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
         }
 
-        [HttpPost]
-        public IActionResult ExpectedChildRelationship(ExpectedChildRelationshipViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            _journeyState.Apply(model);
-            _journeySession.Set(_journeyState);
-
-            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails");
-        }
+        return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
     }
 }

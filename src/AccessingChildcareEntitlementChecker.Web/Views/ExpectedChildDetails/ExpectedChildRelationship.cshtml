@@ -1,34 +1,51 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails
+@using AccessingChildcareEntitlementChecker.Web.Models
+@using AccessingChildcareEntitlementChecker.Web.Services
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model ExpectedChildRelationshipViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="ExpectedChildDetails" asp-action="ChildDueDate">
-        @Shared["Button_Back"]
-    </govuk-back-link>
+    @if (Model.ReturnTo == "check-your-childrens-details")
+    {
+        <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="ExpectedChildDetails" asp-action="ChildDueDate" asp-route-childId="@Model.ChildId">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
 }
 
-<form method="post" novalidate>
-    <govuk-radios for="ExpectedChildRelationship">
-        <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                @Localizer["What will your relationship be to this child?"]
-            </govuk-radios-fieldset-legend>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-            <govuk-radios-error-message />
+        <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
 
-            @foreach (var value in Enum.GetValues<Relationship>())
-            {
-                <govuk-radios-item value="@value">
-                    @Html.EnumDisplayName(value)
-                </govuk-radios-item>
-            }
-        </govuk-radios-fieldset>
-    </govuk-radios>
+            <govuk-radios for="ExpectedChildRelationship">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Html.DisplayNameFor(model => model.ExpectedChildRelationship)
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<RelationshipOption>())
+                    {
+                        <govuk-radios-item value="@value">
+                            @Html.EnumDisplayName(value)
+                        </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
 
-    <govuk-button type="submit">
-        @Shared["Button_Continue"]
-    </govuk-button>
-</form>
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

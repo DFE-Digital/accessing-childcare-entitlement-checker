@@ -43,4 +43,8 @@
 	  </ReqnrollFeatureFile>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="features\pages\CheckDetails\" />
+	</ItemGroup>
+
 </Project>

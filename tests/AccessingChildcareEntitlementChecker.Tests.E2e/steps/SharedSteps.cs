@@ -15,6 +15,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         }
 
         [Given("the page header is {string}")]
+        [When("the page header is {string}")]
         [Then("the page header is {string}")]
         public async Task ThenThePageHeaderIs(string expectedHeader)
         {

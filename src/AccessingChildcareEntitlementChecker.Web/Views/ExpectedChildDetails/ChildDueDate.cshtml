@@ -1,38 +1,56 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails
+@using AccessingChildcareEntitlementChecker.Web.Services
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model ChildDueDateViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Introduction" asp-action="IsChildBorn">
-        @Shared["Button_Back"]
-    </govuk-back-link>
+    @if (Model.ReturnTo == "check-your-childrens-details")
+    {
+        <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="Introduction" asp-action="IsChildBorn" asp-route-childId="@Model.ChildId">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <form method="post" novalidate>
+
+        <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+
             <govuk-date-input for="ChildDueDate">
                 <govuk-date-input-fieldset>
                     <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                        @Localizer["What is this child's due date?"]
+                        @Html.DisplayNameFor(model => model.ChildDueDate)
                     </govuk-date-input-fieldset-legend>
+
+                    <govuk-date-input-hint>
+                        @Localizer["For example, 30 9 2026"]
+                    </govuk-date-input-hint>
 
                     <govuk-date-input-error-message />
                 </govuk-date-input-fieldset>
             </govuk-date-input>
 
-            <govuk-details>
-                <govuk-details-summary>
-                    @Localizer["Why we ask for a due date"]
-                </govuk-details-summary>
-                <govuk-details-text>
-                    <p>
-                        @Localizer["We use this date to give you accurate results, including when you may be able to apply and when your childcare support could start and end."]
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">@Localizer["Why this date matters"]</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p class="govuk-body">
+                        @Localizer["The due date is used to give you accurate results"]
                     </p>
-                </govuk-details-text>
-            </govuk-details>
+                </div>
+            </details>
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]

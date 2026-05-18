@@ -1,85 +1,91 @@
-﻿using System.Diagnostics.CodeAnalysis;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccessingChildcareEntitlementChecker.Web.Controllers
+namespace AccessingChildcareEntitlementChecker.Web.Controllers;
+
+public class BornChildDetailsController : Controller
 {
-    public class BornChildDetailsController : Controller
+    private readonly JourneyState _journeyState;
+    private readonly IJourneySession _journeySession;
+
+    public BornChildDetailsController(
+        JourneyState journeyState,
+        IJourneySession journeySession)
     {
-        private readonly JourneyState _journeyState;
-        private readonly IJourneySession _journeySession;
+        _journeyState = journeyState;
+        _journeySession = journeySession;
+    }
 
-        public BornChildDetailsController(
-            JourneyState journeyState,
-            IJourneySession journeySession)
+    [HttpGet]
+    public IActionResult ChildBirthDate(string? childId = null, string? returnTo = null)
+    {
+        return View(new ChildBirthDateViewModel(childId, _journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult ChildBirthDate(ChildBirthDateViewModel model)
+    {
+        if (!ModelState.IsValid)
         {
-            _journeyState = journeyState;
-            _journeySession = journeySession;
+            return View(model);
         }
 
-        [HttpGet]
-        public ViewResult ChildBirthDate()
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        if (model.ReturnTo == "check-your-childrens-details")
         {
-            return View(new ChildBirthDateViewModel(_journeyState));
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
         }
 
-        [HttpPost]
-        public IActionResult ChildBirthDate(ChildBirthDateViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                model.ChildName = _journeyState.ChildName
-                    ?? throw new InvalidOperationException($"{nameof(JourneyState.ChildName)} must be available before rendering {nameof(ChildBirthDate)}.");
-                return View(model);
-            }
+        return RedirectToAction(nameof(BornChildDetailsController.ChildRelationship), "BornChildDetails", new { childId = model.ChildId });
+    }
 
-            _journeyState.Apply(model);
-            _journeySession.Set(_journeyState);
-            return RedirectToAction(nameof(ChildRelationship), "BornChildDetails");
+    [HttpGet]
+    public IActionResult ChildRelationship(string? childId = null, string? returnTo = null)
+    {
+        return View(new ChildRelationshipViewModel(childId, _journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult ChildRelationship(ChildRelationshipViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
         }
 
-        [HttpGet]
-        public ViewResult ChildRelationship()
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        if (model.ReturnTo == "check-your-childrens-details")
         {
-            return View(new ChildRelationshipViewModel(_journeyState));
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
         }
 
-        [HttpPost]
-        public IActionResult ChildRelationship(ChildRelationshipViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                model.ChildName = _journeyState.ChildName
-                    ?? throw new InvalidOperationException($"{nameof(JourneyState.ChildName)} must be available before rendering {nameof(ChildRelationship)}.");
-                return View(model);
-            }
+        return RedirectToAction(nameof(BornChildDetailsController.ChildSupport), "BornChildDetails", new { childId = model.ChildId });
+    }
 
-            _journeyState.Apply(model);
-            _journeySession.Set(_journeyState);
-            return RedirectToAction(nameof(ChildSupport), "BornChildDetails");
+    [HttpGet]
+    public IActionResult ChildSupport(string? childId = null, string? returnTo = null)
+    {
+        return View(new ChildSupportViewModel(childId, _journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult ChildSupport(ChildSupportViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
         }
 
-        [HttpGet]
-        [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
-        public ViewResult ChildSupport()
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        if (model.ReturnTo == "check-your-childrens-details")
         {
-            return View(new ChildSupportViewModel(_journeyState));
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
         }
 
-        [HttpPost]
-        public IActionResult ChildSupport(ChildSupportViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                model.ChildName = _journeyState.ChildName
-                    ?? throw new InvalidOperationException($"{nameof(JourneyState.ChildName)} must be available before rendering {nameof(ChildRelationship)}.");
-                return View(model);
-            }
-
-            _journeyState.Apply(model);
-            _journeySession.Set(_journeyState);
-            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails");
-        }
+        return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
     }
 }

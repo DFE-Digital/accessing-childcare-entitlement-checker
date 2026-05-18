@@ -5,9 +5,10 @@ namespace AccessingChildcareEntitlementChecker.Web.Models;
 
 public class UserAgeViewModel
 {
+    public string? ReturnTo { get; set; }
+
     public UserAgeViewModel()
     {
-
     }
 
     public UserAgeViewModel(JourneyState journeyState)

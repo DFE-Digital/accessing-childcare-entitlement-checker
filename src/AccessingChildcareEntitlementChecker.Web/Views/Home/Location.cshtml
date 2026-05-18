@@ -1,38 +1,56 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using AccessingChildcareEntitlementChecker.Web.Models
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model LocationViewModel
-
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Home" asp-action="Start">
-        @Shared["Button_Back"]
-    </govuk-back-link>
+    @if (Model.ReturnTo == "check-your-childrens-details")
+    {
+        <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="Home" asp-action="Start">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
 }
 
-<form method="post" novalidate>
-    <govuk-radios for="Country">
-        <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                @Localizer["Title"]
-            </govuk-radios-fieldset-legend>
-            
-            <govuk-radios-hint>
-                @Localizer["Caption"]
-            </govuk-radios-hint>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-            <govuk-radios-error-message />
+        <form method="post" asp-antiforgery="true" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
 
-            @foreach (var value in Enum.GetValues<CountryOfResidence>())
-            {
-                <govuk-radios-item value="@value">
-                    @Localizer[$"Option_{value}"]
-                </govuk-radios-item>
-            }
-        </govuk-radios-fieldset>
-    </govuk-radios>
+            <govuk-radios for="Country">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Localizer["Title"]
+                    </govuk-radios-fieldset-legend>
+                    
+                    <govuk-radios-hint>
+                        @Localizer["Caption"]
+                    </govuk-radios-hint>
 
-    <govuk-button type="submit">
-        @Shared["Button_Continue"]
-    </govuk-button>
-</form>
+                    <govuk-radios-error-message />
+
+                    @foreach (var value in Enum.GetValues<CountryOfResidence>())
+                    {
+                        <govuk-radios-item value="@value">
+                            @Localizer[$"Option_{value}"]
+                        </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

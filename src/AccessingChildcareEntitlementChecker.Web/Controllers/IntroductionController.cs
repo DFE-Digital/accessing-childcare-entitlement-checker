@@ -1,62 +1,75 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccessingChildcareEntitlementChecker.Web.Controllers
+namespace AccessingChildcareEntitlementChecker.Web.Controllers;
+
+public class IntroductionController : Controller
 {
-    public class IntroductionController : Controller
+    private readonly JourneyState _journeyState;
+    private readonly IJourneySession _journeySession;
+
+    public IntroductionController(
+        JourneyState journeyState,
+        IJourneySession journeySession)
     {
-        private readonly JourneyState _journeyState;
-        private readonly IJourneySession _journeySession;
+        _journeyState = journeyState;
+        _journeySession = journeySession;
+    }
 
-        public IntroductionController(JourneyState journeyState, IJourneySession journeySession)
+    [HttpGet]
+    public IActionResult ChildName(string? childId = null, string? returnTo = null)
+    {
+        return View(new ChildNameViewModel(childId, _journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult ChildName(ChildNameViewModel model)
+    {
+        if (!ModelState.IsValid)
         {
-            _journeyState = journeyState;
-            _journeySession = journeySession;
+            return View(model);
         }
 
-        [HttpGet]
-        public ViewResult ChildName()
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        if (model.ReturnTo == "check-your-childrens-details")
         {
-            return View(new ChildNameViewModel(_journeyState));
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
         }
 
-        [HttpPost]
-        public IActionResult ChildName(ChildNameViewModel model)
+        return RedirectToAction(nameof(IntroductionController.IsChildBorn), "Introduction", new { childId = model.ChildId });
+    }
+
+    [HttpGet]
+    public IActionResult IsChildBorn(string? childId = null, string? returnTo = null)
+    {
+        return View(new ChildIsBornViewModel(childId, _journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult IsChildBorn(ChildIsBornViewModel model)
+    {
+        if (!ModelState.IsValid)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            _journeyState.Apply(model);
-            _journeySession.Set(_journeyState);
-
-            return RedirectToAction(nameof(IntroductionController.IsChildBorn), "Introduction");
+            return View(model);
         }
 
-        [HttpGet]
-        public ViewResult IsChildBorn()
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        if (model.ReturnTo == "check-your-childrens-details")
         {
-            return View(new ChildIsBornViewModel(_journeyState));
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
         }
 
-        [HttpPost]
-        public IActionResult IsChildBorn(ChildIsBornViewModel model)
+        switch (model.IsChildBorn)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            _journeyState.Apply(model);
-            _journeySession.Set(_journeyState);
-
-            if (model.ChildIsBorn == BirthStatus.Born)
-            {
-                return RedirectToAction(nameof(BornChildDetailsController.ChildBirthDate), "BornChildDetails");
-            }
-
-            return RedirectToAction(nameof(ExpectedChildDetailsController.ChildDueDate), "ExpectedChildDetails");
+            case BirthStatusOption.Born:
+                return RedirectToAction(nameof(BornChildDetailsController.ChildBirthDate), "BornChildDetails", new { childId = model.ChildId });
+            case BirthStatusOption.Due:
+                return RedirectToAction(nameof(ExpectedChildDetailsController.ChildDueDate), "ExpectedChildDetails", new { childId = model.ChildId });
+            default:
+                return BadRequest();
         }
     }
 }

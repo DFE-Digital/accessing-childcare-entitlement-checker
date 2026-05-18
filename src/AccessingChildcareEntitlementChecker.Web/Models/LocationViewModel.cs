@@ -5,9 +5,10 @@ namespace AccessingChildcareEntitlementChecker.Web.Models;
 
 public class LocationViewModel
 {
+    public string? ReturnTo { get; set; }
+
     public LocationViewModel()
     {
-
     }
 
     public LocationViewModel(JourneyState journeyState)
