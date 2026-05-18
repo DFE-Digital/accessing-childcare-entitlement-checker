@@ -22,7 +22,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         {
             return View(new ChildBirthDateViewModel(childId, _journeyState) { ReturnTo = returnTo });
         }
-        
+
         [HttpPost]
         public IActionResult ChildBirthDate(ChildBirthDateViewModel model)
         {
@@ -61,7 +61,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             _journeySession.Set(_journeyState);
             if (model.ReturnTo == "check-your-childrens-details")
             {
-            
+
                 return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
                     new { fromChildId = model.ChildId });
             }
