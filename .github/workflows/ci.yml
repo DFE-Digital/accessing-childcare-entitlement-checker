@@ -32,7 +32,7 @@ jobs:
     needs: build-and-test
     uses: ./.github/workflows/e2e-tests.yml
 
-  deploy:
+  deploy-dev:
     name: Deploy
     needs: build-and-test
     if: (github.event_name == 'push' && github.ref_name == 'main') || github.event_name == 'workflow_dispatch'
@@ -43,7 +43,7 @@ jobs:
 
   deploy-test:
     name: 'Deploy to Test'
-    needs: deploy
+    needs: deploy-dev
     if: inputs.progressToTestDeployment == true
     uses: ./.github/workflows/infra-deploy.yml
     with:
