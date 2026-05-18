@@ -58,8 +58,7 @@ public class ChildSummaryViewModel
         where TEnum : struct, Enum
     {
         return typeof(TEnum)
-            .GetMember(value.ToString())
-            .First()
+            .GetMember(value.ToString())[0]
             .GetCustomAttributes(typeof(DisplayAttribute), inherit: false)
             .Cast<DisplayAttribute>()
             .First()

@@ -5,9 +5,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Services;
 
 public class Child
 {
-    public string ChildId { get; set; } = default!;
+    public string ChildId { get; set; }
 
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; }
 
     public BirthStatus? BirthStatus { get; set; }
 
@@ -26,5 +26,4 @@ public class Child
         ChildId = childId;
         Name = name;
     }
-
 }
