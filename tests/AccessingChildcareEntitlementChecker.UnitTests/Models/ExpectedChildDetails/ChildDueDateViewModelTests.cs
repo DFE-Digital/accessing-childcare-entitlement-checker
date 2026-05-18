@@ -17,6 +17,7 @@ public class ChildDueDateViewModelTests
     public ChildDueDateViewModelTests()
     {
         _journeyState = new JourneyState();
+        _journeyState.Children["child-a"] = new Child("child-a", "Jack");
         _dateTimeFactory = Substitute.For<ITodayFactory>();
         _localizerFactory = AcecSubstitute.ForLocalizerFactory<ChildDueDateViewModel>();
 
@@ -39,7 +40,7 @@ public class ChildDueDateViewModelTests
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));
-        var model = new ChildDueDateViewModel(_journeyState)
+        var model = new ChildDueDateViewModel("child-a", _journeyState)
         {
             ChildDueDate = DateOnly.FromDateTime(now.AddDays(-1)),
         };

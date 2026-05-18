@@ -24,7 +24,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails
         public string ChildId { get; set; }
 
         [Display(Name = "What is this child's due date?", Description = "For example, 30 9 2026")]
-        [Required(ErrorMessage = "Enter the child's due date")]
+        [Required(ErrorMessage = "Enter this child's due date")]
         [DateInput(ErrorMessagePrefix = "The due date")]
         public DateOnly? ChildDueDate { get; set; }
 

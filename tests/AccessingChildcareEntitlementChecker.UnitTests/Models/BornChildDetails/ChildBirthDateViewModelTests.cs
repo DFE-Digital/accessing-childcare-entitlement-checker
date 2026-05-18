@@ -16,6 +16,7 @@ public class ChildBirthDateViewModelTests
     public ChildBirthDateViewModelTests()
     {
         _journeyState = new JourneyState();
+        _journeyState.Children["child-a"] = new Child("child-a", "Child A");
         _dateTimeFactory = Substitute.For<ITodayFactory>();
         _localizerFactory = Substitute.For<IStringLocalizerFactory>();
 
@@ -39,10 +40,9 @@ public class ChildBirthDateViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsOnEmptyChildName()
+    public void Ctr_ThrowsIfChildIdDoesNotExist()
     {
-        _journeyState.ChildName = null;
-        Assert.Throws<ArgumentNullException>(() => new ChildBirthDateViewModel(_journeyState));
+        Assert.Throws<KeyNotFoundException>(() => new ChildBirthDateViewModel("DOES_NOT_EXIST", _journeyState));
     }
 
     [Fact]
@@ -50,8 +50,7 @@ public class ChildBirthDateViewModelTests
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));
-        _journeyState.ChildName = "Child A";
-        var model = new ChildBirthDateViewModel(_journeyState)
+        var model = new ChildBirthDateViewModel("child-a", _journeyState)
         {
             ChildBirthDate = DateOnly.FromDateTime(now.AddDays(1)),
         };

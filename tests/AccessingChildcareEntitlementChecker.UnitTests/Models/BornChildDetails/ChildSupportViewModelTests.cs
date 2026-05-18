@@ -14,10 +14,8 @@ public class ChildSupportViewModelTests
 
     public ChildSupportViewModelTests()
     {
-        _journeyState = new JourneyState
-        {
-            ChildName = "Jack",
-        };
+        _journeyState = new JourneyState();
+        _journeyState.Children["child-a"] = new Child("child-a", "Jack");
 
         _localizerFactory = AcecSubstitute.ForLocalizerFactory<ChildSupportViewModel>();
         _serviceProviderFunc = serviceType => _localizerFactory;
@@ -30,16 +28,15 @@ public class ChildSupportViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsOnEmptyChildName()
+    public void Ctr_ThrowsIfChildIdDoesNotExist()
     {
-        _journeyState.ChildName = null;
-        Assert.Throws<ArgumentNullException>(() => new ChildSupportViewModel(_journeyState));
+        Assert.Throws<KeyNotFoundException>(() => new ChildSupportViewModel("DOES_NOT_EXIST", _journeyState));
     }
 
     [Fact]
     public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
     {
-        var model = new ChildSupportViewModel(_journeyState)
+        var model = new ChildSupportViewModel("child-a", _journeyState)
         {
             ChildSupportOptions =
             [
@@ -60,7 +57,7 @@ public class ChildSupportViewModelTests
     [Fact]
     public void Validate_ReturnsErrorWhenOptionsAreEmpty()
     {
-        var model = new ChildSupportViewModel(_journeyState)
+        var model = new ChildSupportViewModel("child-a", _journeyState)
         {
             ChildSupportOptions = [],
         };

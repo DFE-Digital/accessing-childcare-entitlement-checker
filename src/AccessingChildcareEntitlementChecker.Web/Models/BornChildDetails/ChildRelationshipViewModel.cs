@@ -32,11 +32,13 @@ public class ChildRelationshipViewModel : IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
+        var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
+        var child = journeyState!.GetChild(ChildId);
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(ChildRelationshipViewModel));
         if (!Relationship.HasValue)
         {
-            yield return new ValidationResult(localizer["Select your relationship to {0}", ChildName ?? string.Empty], [nameof(Relationship)]);
+            yield return new ValidationResult(localizer["Select your relationship to {0}", child.Name], [nameof(Relationship)]);
         }
     }
 }

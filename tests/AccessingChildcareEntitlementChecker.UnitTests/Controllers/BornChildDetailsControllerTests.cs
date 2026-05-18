@@ -1,9 +1,9 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
-using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
+using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -23,8 +23,10 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildBirthDate_ReturnsView()
     {
-        _journeyState.ChildName = "Child A";
-        var result = _controller.ChildBirthDate();
+        const string childId = "child-a";
+        _journeyState.Children[childId] = new Child(childId, "Child A");
+        var result = Assert.IsType<ViewResult>(_controller.ChildBirthDate(childId));
+
         Assert.Null(result.Model<ChildBirthDateViewModel>().ChildBirthDate);
         Assert.Equal("Child A", result.Model<ChildBirthDateViewModel>().ChildName);
     }
@@ -32,9 +34,12 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildBirthDate_Get_PopulatesModel_FromState()
     {
-        _journeyState.ChildBirthDate = new DateOnly(2020, 1, 15);
-        _journeyState.ChildName = "Child A";
-        var result = _controller.ChildBirthDate();
+        const string childId = "child-a";
+        _journeyState.Children[childId] = new Child(childId, "Child A");
+        var child = _journeyState.GetChild(childId);
+        child.BirthDate = new DateOnly(2020, 1, 15);
+        var result = Assert.IsType<ViewResult>(_controller.ChildBirthDate(childId));
+
         Assert.Equal(new DateOnly(2020, 1, 15), result.Model<ChildBirthDateViewModel>().ChildBirthDate);
         Assert.Equal("Child A", result.Model<ChildBirthDateViewModel>().ChildName);
     }
@@ -42,17 +47,19 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildBirthDate_Post_ValidSelection_SavesState_AndRedirects()
     {
-        var birthDate = new DateOnly(2020, 1, 15);
-        var model = new ChildBirthDateViewModel()
+        const string childId = "child-a";
+        _journeyState.Children[childId] = new Child(childId, "Child A");
+        var model = new ChildBirthDateViewModel
         {
-            ChildBirthDate = birthDate,
+            ChildId = childId,
+            ChildBirthDate = new DateOnly(2020, 1, 15)
         };
 
         var result = _controller.ChildBirthDate(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(birthDate, _journeyState.ChildBirthDate);
+        Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId).BirthDate);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildRelationship), redirect.ActionName);
         Assert.Equal("BornChildDetails", redirect.ControllerName);
@@ -61,34 +68,29 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildBirthDate_Post_InvalidSelection_ReturnsViewWithError()
     {
-        _journeyState.ChildName = "Child A";
-        var model = new ChildBirthDateViewModel();
+        var model = new ChildBirthDateViewModel
+        {
+            ChildId = "child-a",
+            ChildBirthDate = null
+        };
 
         _controller.ModelState.AddModelError(nameof(model.ChildBirthDate), "Faked Model Binding Error");
 
         var result = _controller.ChildBirthDate(model);
 
-        var view = Assert.IsType<ViewResult>(result);
-        var viewModel = Assert.IsType<ChildBirthDateViewModel>(view.Model);
+        Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildBirthDate)));
-        Assert.Equal("Child A", viewModel.ChildName);
-    }
-
-    [Fact]
-    public void ChildBirthDate_Post_NoChildName_ReturnsViewWithError()
-    {
-        _journeyState.ChildName = null;
-        var model = new ChildBirthDateViewModel();
-        _controller.ModelState.AddModelError(nameof(model.ChildBirthDate), "Faked Model Binding Error");
-        Assert.Throws<InvalidOperationException>(() => _controller.ChildBirthDate(model));
+        _journeySession.DidNotReceive().Set(_journeyState);
     }
 
     [Fact]
     public void ChildRelationship_ReturnsView()
     {
-        _journeyState.ChildName = "Child A";
-        var result = _controller.ChildRelationship();
+        const string childId = "child-a";
+        _journeyState.Children[childId] = new Child(childId, "Child A");
+        var result = Assert.IsType<ViewResult>(_controller.ChildRelationship(childId));
+
         Assert.Null(result.Model<ChildRelationshipViewModel>().Relationship);
         Assert.Equal("Child A", result.Model<ChildRelationshipViewModel>().ChildName);
     }
@@ -96,9 +98,12 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildRelationship_Get_PopulatesModel_FromState()
     {
-        _journeyState.Relationship = Relationship.Parent;
-        _journeyState.ChildName = "Child A";
-        var result = _controller.ChildRelationship();
+        const string childId = "child-a";
+        _journeyState.Children[childId] = new Child(childId, "Child A");
+        var child = _journeyState.GetChild(childId);
+        child.BornRelationship = Relationship.Parent;
+        var result = Assert.IsType<ViewResult>(_controller.ChildRelationship(childId));
+
         Assert.Equal(Relationship.Parent, result.Model<ChildRelationshipViewModel>().Relationship);
         Assert.Equal("Child A", result.Model<ChildRelationshipViewModel>().ChildName);
     }
@@ -106,16 +111,19 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildRelationship_Post_ValidSelection_SavesState_AndRedirects()
     {
-        var model = new ChildRelationshipViewModel()
+        const string childId = "child-a";
+        _journeyState.Children[childId] = new Child(childId, "Child A");
+        var model = new ChildRelationshipViewModel
         {
-            Relationship = Relationship.Parent,
+            ChildId = childId,
+            Relationship = Relationship.Parent
         };
 
         var result = _controller.ChildRelationship(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(Relationship.Parent, _journeyState.Relationship);
+        Assert.Equal(Relationship.Parent, _journeyState.GetChild(model.ChildId).BornRelationship);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildSupport), redirect.ActionName);
         Assert.Equal("BornChildDetails", redirect.ControllerName);
@@ -124,61 +132,62 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildRelationship_Post_InvalidSelection_ReturnsViewWithError()
     {
-        _journeyState.ChildName = "Child A";
-        var model = new ChildRelationshipViewModel();
+        var model = new ChildRelationshipViewModel
+        {
+            ChildId = "child-a",
+            Relationship = null
+        };
 
         _controller.ModelState.AddModelError(nameof(model.Relationship), "Faked Model Binding Error");
 
         var result = _controller.ChildRelationship(model);
 
-        var view = Assert.IsType<ViewResult>(result);
-        var viewModel = Assert.IsType<ChildRelationshipViewModel>(view.Model);
+        Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.Relationship)));
-        Assert.Equal("Child A", viewModel.ChildName);
-    }
-
-    [Fact]
-    public void ChildRelationship_Post_NoChildName_ReturnsViewWithError()
-    {
-        _journeyState.ChildName = null;
-        var model = new ChildRelationshipViewModel();
-        _controller.ModelState.AddModelError(nameof(model.Relationship), "Faked Model Binding Error");
-        Assert.Throws<InvalidOperationException>(() => _controller.ChildRelationship(model));
+        _journeySession.DidNotReceive().Set(_journeyState);
     }
 
     [Fact]
     public void ChildSupport_ReturnsView()
     {
-        _journeyState.ChildName = "Child A";
-        var result = _controller.ChildSupport();
-        Assert.Equal([], result.Model<ChildSupportViewModel>().ChildSupportOptions);
+        const string childId = "child-a";
+        _journeyState.Children[childId] = new Child(childId, "Child A");
+        var result = Assert.IsType<ViewResult>(_controller.ChildSupport(childId));
+
+        Assert.Equal(Array.Empty<ChildSupport>(), result.Model<ChildSupportViewModel>().ChildSupportOptions);
         Assert.Equal("Child A", result.Model<ChildSupportViewModel>().ChildName);
     }
 
     [Fact]
     public void ChildSupport_Get_PopulatesModel_FromState()
     {
-        _journeyState.ChildSupportOptions = [ChildSupport.PersonalIndependencePayment];
-        _journeyState.ChildName = "Child A";
-        var result = _controller.ChildSupport();
-        Assert.Equal(new[] { ChildSupport.PersonalIndependencePayment }, result.Model<ChildSupportViewModel>().ChildSupportOptions);
+        const string childId = "child-a";
+        _journeyState.Children[childId] = new Child(childId, "Child A");
+        var child = _journeyState.GetChild(childId);
+        child.ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment];
+        var result = Assert.IsType<ViewResult>(_controller.ChildSupport(childId));
+
+        Assert.Equal(new[] { ChildSupport.ArmedForcesIndependencePayment }, result.Model<ChildSupportViewModel>().ChildSupportOptions);
         Assert.Equal("Child A", result.Model<ChildSupportViewModel>().ChildName);
     }
 
     [Fact]
     public void ChildSupport_Post_ValidSelection_SavesState_AndRedirects()
     {
+        const string childId = "child-a";
+        _journeyState.Children[childId] = new Child(childId, "Child A");
         var model = new ChildSupportViewModel
         {
-            ChildSupportOptions = [ChildSupport.PersonalIndependencePayment],
+            ChildId = childId,
+            ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment]
         };
 
         var result = _controller.ChildSupport(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(new[] { ChildSupport.PersonalIndependencePayment }, _journeyState.ChildSupportOptions);
+        Assert.Equal(new[] { ChildSupport.ArmedForcesIndependencePayment }, _journeyState.GetChild(model.ChildId).ChildSupportOptions);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
         Assert.Equal("CheckChildDetails", redirect.ControllerName);
@@ -187,26 +196,19 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildSupport_Post_InvalidSelection_ReturnsViewWithError()
     {
-        _journeyState.ChildName = "Child A";
-        var model = new ChildSupportViewModel();
+        var model = new ChildSupportViewModel
+        {
+            ChildId = "child-a",
+            ChildSupportOptions = []
+        };
 
         _controller.ModelState.AddModelError(nameof(model.ChildSupportOptions), "Faked Model Binding Error");
 
         var result = _controller.ChildSupport(model);
 
-        var view = Assert.IsType<ViewResult>(result);
-        var viewModel = Assert.IsType<ChildSupportViewModel>(view.Model);
+        Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildSupportOptions)));
-        Assert.Equal("Child A", viewModel.ChildName);
-    }
-
-    [Fact]
-    public void ChildSupport_Post_NoChildName_ReturnsViewWithError()
-    {
-        _journeyState.ChildName = null;
-        var model = new ChildSupportViewModel();
-        _controller.ModelState.AddModelError(nameof(model.ChildSupportOptions), "Faked Model Binding Error");
-        Assert.Throws<InvalidOperationException>(() => _controller.ChildSupport(model));
+        _journeySession.DidNotReceive().Set(_journeyState);
     }
 }

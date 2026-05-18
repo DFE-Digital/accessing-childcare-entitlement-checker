@@ -22,6 +22,6 @@ public class ExpectedChildRelationshipViewModel
     public string ChildId { get; set; }
 
     [Display(Name = "What will your relationship be to this child?")]
-    [Required(ErrorMessage = "Select your expected relationship to the child")]
+    [Required(ErrorMessage = "Select what your relationship will be to this child")]
     public Relationship? ExpectedChildRelationship { get; set; }
 }

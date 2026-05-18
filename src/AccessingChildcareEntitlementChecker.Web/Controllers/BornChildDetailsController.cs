@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
+﻿using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,6 +38,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
                 return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
                     new { fromChildId = model.ChildId });
             }
+
+            return RedirectToAction(nameof(BornChildDetailsController.ChildRelationship), "BornChildDetails",
+                new { childId = model.ChildId });
         }
 
         [HttpGet]
@@ -67,6 +69,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             return RedirectToAction(nameof(BornChildDetailsController.ChildSupport), "BornChildDetails",
                 new { childId = model.ChildId });
         }
+
         [HttpGet]
         public IActionResult ChildSupport(string childId, string? returnTo = null)
         {

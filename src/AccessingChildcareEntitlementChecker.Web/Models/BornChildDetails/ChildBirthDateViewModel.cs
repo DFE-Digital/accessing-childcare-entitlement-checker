@@ -28,13 +28,14 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
         [BindNever]
         public string ChildName { get; set; } = string.Empty;
 
-        [Display(Name = "What is {0}'s date of birth?", Description = "For example, 31 3 2022")]
-        [Required(ErrorMessage = "Enter {0}'s date of birth")]
+        [Display(Name = "What is {0}'s date of birth?", Description = "For example, 31 3 2026")]
+        [Required(ErrorMessage = "Enter this child's date of birth")]
         [DateInput(ErrorMessagePrefix = "The date of birth")]
         public DateOnly? ChildBirthDate { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
             var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
             var localizer = localizerFactory!.Create(typeof(ChildBirthDateViewModel));
             var todayFactory = validationContext.GetService(typeof(ITodayFactory)) as ITodayFactory;

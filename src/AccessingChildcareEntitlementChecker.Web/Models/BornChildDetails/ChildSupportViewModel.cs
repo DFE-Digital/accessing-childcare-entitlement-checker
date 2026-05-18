@@ -32,11 +32,13 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
             var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
             var localizer = localizerFactory!.Create(typeof(ChildSupportViewModel));
             if (ChildSupportOptions.Count == 0)
             {
-                yield return new ValidationResult(localizer["Select any support {0} gets, or select 'No, none of these apply'", ChildName ?? string.Empty], [nameof(ChildSupportOptions)]);
+                var child = journeyState!.GetChild(ChildId);
+                yield return new ValidationResult(localizer["Select any support {0} gets, or select 'No, none of these apply'", child.Name], [nameof(ChildSupportOptions)]);
             }
 
             if (ChildSupportOptions.Contains(ChildSupport.NoneOfTheseApply) && ChildSupportOptions.Count > 1)

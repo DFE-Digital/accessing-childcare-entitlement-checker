@@ -15,7 +15,8 @@ public class ChildRelationshipViewModelTests
 
     public ChildRelationshipViewModelTests()
     {
-        _journeyState = new JourneyState { ChildName = "Jack" };
+        _journeyState = new JourneyState();
+        _journeyState.Children["child-a"] = new Child("child-a", "Jack");
         _localizerFactory = Substitute.For<IStringLocalizerFactory>();
 
         var localizer = Substitute.For<IStringLocalizer<ChildRelationshipViewModel>>();
@@ -34,14 +35,13 @@ public class ChildRelationshipViewModelTests
     [Fact]
     public void Ctr_ThrowsOnEmptyChildName()
     {
-        _journeyState.ChildName = null;
-        Assert.Throws<ArgumentNullException>(() => new ChildRelationshipViewModel(_journeyState));
+        Assert.Throws<KeyNotFoundException>(() => new ChildRelationshipViewModel("DOES NOT EXIST", _journeyState));
     }
 
     [Fact]
     public void Validate_ReturnsErrorWithChildNameWhenNoRelationshipSelected()
     {
-        var model = new ChildRelationshipViewModel(_journeyState);
+        var model = new ChildRelationshipViewModel("child-a", _journeyState);
         var validationContext = new ValidationContext(model);
         validationContext.InitializeServiceProvider(_serviceProviderFunc);
 
@@ -54,7 +54,7 @@ public class ChildRelationshipViewModelTests
     [Fact]
     public void Validate_ReturnsNoErrorsWhenRelationshipSelected()
     {
-        var model = new ChildRelationshipViewModel(_journeyState)
+        var model = new ChildRelationshipViewModel("child-a", _journeyState)
         {
             Relationship = Relationship.Parent
         };

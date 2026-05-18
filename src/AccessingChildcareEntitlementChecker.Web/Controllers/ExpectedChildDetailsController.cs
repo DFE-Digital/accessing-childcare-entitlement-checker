@@ -35,10 +35,12 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             _journeySession.Set(_journeyState);
             if (model.ReturnTo == "check-your-childrens-details")
             {
-                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
+                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
+                    new { fromChildId = model.ChildId });
             }
 
-            return RedirectToAction(nameof(ExpectedChildRelationship), "ExpectedChildDetails", new { childId = model.ChildId });
+            return RedirectToAction(nameof(ExpectedChildRelationship), "ExpectedChildDetails",
+                new { childId = model.ChildId });
         }
 
         [HttpGet]
@@ -59,10 +61,12 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             _journeySession.Set(_journeyState);
             if (model.ReturnTo == "check-your-childrens-details")
             {
-                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
+                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
+                    new { fromChildId = model.ChildId });
             }
 
-            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails", new { fromChildId = model.ChildId });
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
+                new { fromChildId = model.ChildId });
         }
     }
 }
