@@ -13,6 +13,8 @@ public class JourneyState
 
     public DateTime? ChildBirthDate { get; set; }
 
+    public Relationship? Relationship { get; set; }
+
     public bool? HasPartner { get; set; }
 
     public AgeRange? UserAge { get; set; }
@@ -37,6 +39,11 @@ public class JourneyState
     public void Apply(ChildBirthDateViewModel model)
     {
         ChildBirthDate = model.ChildBirthDate;
+    }
+
+    public void Apply(ChildRelationshipViewModel model)
+    {
+        Relationship = model.Relationship;
     }
 
     public void Apply(HasPartnerViewModel model)

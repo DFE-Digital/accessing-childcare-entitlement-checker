@@ -50,7 +50,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
 
             foreach (var option in expectedOptions)
             {
-                await Expect(_context.Page.GetByRole(AriaRole.Radio, new() { Name = option }))
+                await Expect(_context.Page.GetByRole(AriaRole.Radio, new() { Name = option, Exact = true }))
                     .ToBeVisibleAsync();
             }
         }
@@ -60,7 +60,7 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         public async Task WhenISelectTheRadioButton(string label)
         {
             await _context.Page
-                .GetByLabel(label)
+                .GetByLabel(label, new() { Exact = true })
                 .CheckAsync();
         }
 
@@ -126,42 +126,9 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
         [Then("I should be returned to the previous page in the user journey {string}")]
         public async Task ThenIShouldBeReturnedToThePreviousPageInTheUserJourney(string expectedHeader)
         {
-            await AssertHeader(expectedHeader);
-        }
-
-        private async Task AssertHeader(string expectedHeader)
-        {
             await Expect(
                 _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 })
             ).ToHaveTextAsync(expectedHeader);
-        }
-
-        [Given("I start the journey and answer the questions as follows:")]
-        public async Task GivenIStartTheJourneyAndAnswerTheQuestionsAsFollows(DataTable dataTable)
-        {
-            await _context.Page
-               .GetByRole(AriaRole.Link, new() { Name = "Start now" })
-               .ClickAsync();
-
-            foreach (var step in dataTable.Rows)
-            {
-                var question = step[0];
-                var answer = step[1];
-                var heading = _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 });
-                await AssertHeader(question);
-                var textboxes = _context.Page.GetByRole(AriaRole.Textbox);
-                if (await textboxes.CountAsync() > 0)
-                {
-                    await textboxes.First.FillAsync(answer);
-                }
-                else
-                {
-                    await _context.Page.GetByRole(AriaRole.Radio, new() { Name = answer }).CheckAsync();
-                }
-
-                await _context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
-                await Expect(heading).Not.ToHaveTextAsync(question);
-            }
         }
     }
 }
