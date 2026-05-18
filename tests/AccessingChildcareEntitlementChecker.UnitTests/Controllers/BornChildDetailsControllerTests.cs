@@ -101,7 +101,7 @@ public class BornChildDetailsControllerTests
 
     [Fact]
     public void ChildRelationship_Post_ValidSelection_SavesState_AndRedirects()
-    {   
+    {
         var model = new ChildRelationshipViewModel
         {
             ChildId = childId,

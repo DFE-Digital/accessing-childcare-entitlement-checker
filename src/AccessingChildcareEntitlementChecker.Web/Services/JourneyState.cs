@@ -45,7 +45,7 @@ public class JourneyState
             Children.Add(model.ChildId, child);
             return;
         }
-        
+
         child.Name = model.ChildName;
     }
 
