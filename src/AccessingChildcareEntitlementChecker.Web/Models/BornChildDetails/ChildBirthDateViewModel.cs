@@ -34,11 +34,10 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
             var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
             var localizer = localizerFactory!.Create(typeof(ChildBirthDateViewModel));
             var todayFactory = validationContext.GetService(typeof(ITodayFactory)) as ITodayFactory;
-            var today = todayFactory?.Today ?? DateOnly.FromDateTime(DateTime.Today);
+            var today = todayFactory!.Today;
             if (ChildBirthDate.HasValue && ChildBirthDate.Value > today)
             {
                 yield return new ValidationResult(localizer["Enter a date of birth in the past"], [nameof(ChildBirthDate)]);

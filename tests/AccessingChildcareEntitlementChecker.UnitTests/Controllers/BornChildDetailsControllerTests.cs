@@ -31,6 +31,12 @@ public class BornChildDetailsControllerTests
     }
 
     [Fact]
+    public void ChildBirthDate_IfChildDoesNotExistReturnsNotFound()
+    {
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildBirthDate("DOES-NOT-EXIST"));
+    }
+
+    [Fact]
     public void ChildBirthDate_Get_PopulatesModel_FromState()
     {
         var child = _journeyState.GetChild(childId)!;
@@ -89,6 +95,12 @@ public class BornChildDetailsControllerTests
     }
 
     [Fact]
+    public void ChildRelationship_IfChildDoesNotExistReturnsNotFound()
+    {
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildRelationship("DOES-NOT-EXIST"));
+    }
+
+    [Fact]
     public void ChildRelationship_Get_PopulatesModel_FromState()
     {
         var child = _journeyState.GetChild(childId)!;
@@ -144,6 +156,12 @@ public class BornChildDetailsControllerTests
 
         Assert.Equal(Array.Empty<ChildSupport>(), result.Model<ChildSupportViewModel>().ChildSupportOptions);
         Assert.Equal("Child A", result.Model<ChildSupportViewModel>().ChildName);
+    }
+
+    [Fact]
+    public void ChildSupport_IfChildDoesNotExistReturnsNotFound()
+    {
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildSupport("DOES-NOT-EXIST"));
     }
 
     [Fact]

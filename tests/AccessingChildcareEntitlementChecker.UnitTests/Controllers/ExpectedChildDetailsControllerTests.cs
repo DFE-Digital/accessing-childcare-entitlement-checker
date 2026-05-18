@@ -31,6 +31,12 @@ public class ExpectedChildDetailsControllerTests
     }
 
     [Fact]
+    public void ChildDueDate_IfChildDoesNotExistReturnsNotFound()
+    {
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildDueDate("DOES-NOT-EXIST"));
+    }
+
+    [Fact]
     public void ChildDueDate_Get_PopulatesModel_FromState()
     {
         var child = _journeyState.GetChild(childId)!;
@@ -84,6 +90,12 @@ public class ExpectedChildDetailsControllerTests
         var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(childId));
 
         Assert.Null(result.Model<ExpectedChildRelationshipViewModel>().ExpectedChildRelationship);
+    }
+
+    [Fact]
+    public void ExpectedChildRelationship_IfChildDoesNotExistReturnsNotFound()
+    {
+        var result = Assert.IsType<NotFoundResult>(_controller.ExpectedChildRelationship("DOES-NOT-EXIST"));
     }
 
     [Fact]

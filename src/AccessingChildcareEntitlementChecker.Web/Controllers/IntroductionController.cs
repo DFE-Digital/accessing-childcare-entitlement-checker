@@ -27,7 +27,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             var child = _journeyState.GetChild(childId);
             if (child == null)
             {
-                return RedirectToAction(nameof(ErrorController.NotFound), "Error");
+                return NotFound();
             }
 
             return View(new ChildNameViewModel(child));
@@ -54,7 +54,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             var child = _journeyState.GetChild(childId);
             if (child == null)
             {
-                return RedirectToAction(nameof(ErrorController.NotFound), "Error");
+                return NotFound();
             }
 
             return View(new ChildIsBornViewModel(child) { ReturnTo = returnTo });

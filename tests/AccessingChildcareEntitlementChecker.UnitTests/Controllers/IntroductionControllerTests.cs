@@ -30,6 +30,12 @@ public class IntroductionControllerTests
     }
 
     [Fact]
+    public void ChildName_IfChildDoesNotExistReturnsNotFound()
+    {
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildName("DOES-NOT-EXIST"));
+    }
+
+    [Fact]
     public void ChildName_Get_PopulatesModel_FromState()
     {
         var child = _journeyState.GetChild(childId)!;
@@ -83,6 +89,12 @@ public class IntroductionControllerTests
         var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(childId));
 
         Assert.Null(result.Model<ChildIsBornViewModel>().ChildIsBorn);
+    }
+
+    [Fact]
+    public void IsChildBorn_IfChildDoesNotExistReturnsNotFound()
+    {
+        var result = Assert.IsType<NotFoundResult>(_controller.IsChildBorn("DOES-NOT-EXIST"));
     }
 
     [Fact]

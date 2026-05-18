@@ -33,6 +33,18 @@ public class ChildRelationshipViewModelTests
     }
 
     [Fact]
+    public void Validate_ThrowsWhenNoChild()
+    {
+        var child = new Child("DOES-NOT-EXIST", "Child b");
+        var model = new ChildRelationshipViewModel(child);
+
+        var validationContext = new ValidationContext(model);
+        validationContext.InitializeServiceProvider(_serviceProviderFunc);
+
+        Assert.Throws<InvalidOperationException>(() => model.Validate(validationContext));
+    }
+
+    [Fact]
     public void Validate_ReturnsErrorWithChildNameWhenNoRelationshipSelected()
     {
         var child = _journeyState.GetChild("child-a")!;

@@ -32,7 +32,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails
             var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
             var localizer = localizerFactory!.Create(typeof(ChildDueDateViewModel));
             var todayFactory = validationContext.GetService(typeof(ITodayFactory)) as ITodayFactory;
-            var today = todayFactory?.Today ?? DateOnly.FromDateTime(DateTime.Today);
+            var today = todayFactory!.Today;
             if (ChildDueDate.HasValue && ChildDueDate.Value <= today)
             {
                 yield return new ValidationResult(localizer["Enter a due date in the future"], [nameof(ChildDueDate)]);

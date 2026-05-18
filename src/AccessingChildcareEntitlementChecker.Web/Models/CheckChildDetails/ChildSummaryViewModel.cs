@@ -17,12 +17,12 @@ public class ChildSummaryViewModel
             rows.Add(new SummaryRowViewModel(
                 "What is {0}'s date of birth?",
                 child.Name,
-                child.BirthDate?.ToString("d MMMM yyyy") ?? string.Empty,
+                child.BirthDate!.Value.ToString("d MMMM yyyy"),
                 "BornChildDetails", "ChildBirthDate", child.ChildId));
             rows.Add(new SummaryRowViewModel(
                 "What is your relationship to {0}?",
                 child.Name,
-                DisplayName(child.BornRelationship),
+                DisplayName(child.BornRelationship!.Value),
                 "BornChildDetails", "ChildRelationship", child.ChildId));
             rows.Add(new SummaryRowViewModel(
                 "Does {0} get any of the following support?",
@@ -36,12 +36,12 @@ public class ChildSummaryViewModel
             rows.Add(new SummaryRowViewModel(
                 "What is this child's due date?",
                 child.Name,
-                child.DueDate?.ToString("d MMMM yyyy") ?? string.Empty,
+                child.DueDate!.Value.ToString("d MMMM yyyy"),
                 "ExpectedChildDetails", "ChildDueDate", child.ChildId));
             rows.Add(new SummaryRowViewModel(
                 "What will your relationship be to this child?",
                 child.Name,
-                DisplayName(child.ExpectedRelationship),
+                DisplayName(child.ExpectedRelationship!.Value),
                 "ExpectedChildDetails", "ExpectedChildRelationship", child.ChildId));
         }
 
@@ -54,22 +54,15 @@ public class ChildSummaryViewModel
 
     public IReadOnlyList<SummaryRowViewModel> Rows { get; }
 
-    private static string DisplayName<TEnum>(TEnum? value)
-        where TEnum : struct, Enum
-    {
-        return value.HasValue ? DisplayName(value.Value) : string.Empty;
-    }
-
     private static string DisplayName<TEnum>(TEnum value)
         where TEnum : struct, Enum
     {
         return typeof(TEnum)
             .GetMember(value.ToString())
-            .FirstOrDefault()?
+            .First()
             .GetCustomAttributes(typeof(DisplayAttribute), inherit: false)
             .Cast<DisplayAttribute>()
-            .FirstOrDefault()?
-            .Name ?? value.ToString();
+            .First()
+            .Name!;
     }
-
 }

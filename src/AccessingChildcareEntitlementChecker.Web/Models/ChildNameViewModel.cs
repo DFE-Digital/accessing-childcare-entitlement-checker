@@ -5,8 +5,6 @@ namespace AccessingChildcareEntitlementChecker.Web.Models;
 
 public class ChildNameViewModel
 {
-    public string? ReturnTo { get; set; }
-
     public ChildNameViewModel()
     {
 

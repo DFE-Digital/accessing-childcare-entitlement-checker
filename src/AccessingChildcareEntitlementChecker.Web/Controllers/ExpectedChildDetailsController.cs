@@ -23,7 +23,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             var child = _journeyState.GetChild(childId);
             if (child == null)
             {
-                return RedirectToAction(nameof(ErrorController.NotFound), "Error");
+                return NotFound();
             }
 
             return View(new ChildDueDateViewModel(child) { ReturnTo = returnTo });
@@ -55,7 +55,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             var child = _journeyState.GetChild(childId);
             if (child == null)
             {
-                return RedirectToAction(nameof(ErrorController.NotFound), "Error");
+                return NotFound();
             }
 
             return View(new ExpectedChildRelationshipViewModel(child) { ReturnTo = returnTo });
