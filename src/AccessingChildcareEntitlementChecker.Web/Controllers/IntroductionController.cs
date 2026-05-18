@@ -1,4 +1,5 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models;
+﻿using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,7 +45,8 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
 
-            return RedirectToAction(nameof(IntroductionController.IsChildBorn), "Introduction",
+            return this.RedirectTo<IntroductionController>(
+                nameof(IsChildBorn),
                 new { childId = model.ChildId });
         }
 
@@ -72,11 +74,13 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             if (model.ChildIsBorn == BirthStatus.Born)
             {
-                return RedirectToAction(nameof(BornChildDetailsController.ChildBirthDate), "BornChildDetails",
+                return this.RedirectTo<BornChildDetailsController>(
+                    nameof(BornChildDetailsController.ChildBirthDate),
                     new { childId = model.ChildId });
             }
 
-            return RedirectToAction(nameof(ExpectedChildDetailsController.ChildDueDate), "ExpectedChildDetails",
+            return this.RedirectTo<ExpectedChildDetailsController>(
+                nameof(ExpectedChildDetailsController.ChildDueDate),
                 new { childId = model.ChildId });
         }
     }

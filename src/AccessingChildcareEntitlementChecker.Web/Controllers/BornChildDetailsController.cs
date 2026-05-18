@@ -1,6 +1,7 @@
 ﻿using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using AccessingChildcareEntitlementChecker.Web.Extensions;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
@@ -41,11 +42,13 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             _journeySession.Set(_journeyState);
             if (model.ReturnTo == "check-your-childrens-details")
             {
-                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
+                return this.RedirectTo<CheckChildDetailsController>(
+                    nameof(CheckChildDetailsController.CheckChildDetails),
                     new { fromChildId = model.ChildId });
             }
 
-            return RedirectToAction(nameof(BornChildDetailsController.ChildRelationship), "BornChildDetails",
+            return this.RedirectTo<BornChildDetailsController>(
+                nameof(ChildRelationship),
                 new { childId = model.ChildId });
         }
 
@@ -73,11 +76,13 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             _journeySession.Set(_journeyState);
             if (model.ReturnTo == "check-your-childrens-details")
             {
-                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
+                return this.RedirectTo<CheckChildDetailsController>(
+                    nameof(CheckChildDetailsController.CheckChildDetails),
                     new { fromChildId = model.ChildId });
             }
 
-            return RedirectToAction(nameof(BornChildDetailsController.ChildSupport), "BornChildDetails",
+            return this.RedirectTo<BornChildDetailsController>(
+                nameof(ChildSupport),
                 new { childId = model.ChildId });
         }
 
@@ -103,13 +108,8 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
-            if (model.ReturnTo == "check-your-childrens-details")
-            {
-                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
-                    new { fromChildId = model.ChildId });
-            }
-
-            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
+            return this.RedirectTo<CheckChildDetailsController>(
+                nameof(CheckChildDetailsController.CheckChildDetails),
                 new { fromChildId = model.ChildId });
         }
     }

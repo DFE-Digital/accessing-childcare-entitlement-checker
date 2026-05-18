@@ -1,9 +1,10 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
+using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
-using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -64,6 +65,26 @@ public class BornChildDetailsControllerTests
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildRelationship), redirect.ActionName);
         Assert.Equal("BornChildDetails", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void ChildBirthDate_Post_ValidSelection_SavesState_AndReturnsTo()
+    {
+        var model = new ChildBirthDateViewModel
+        {
+            ChildId = childId,
+            ChildBirthDate = new DateOnly(2020, 1, 15),
+            ReturnTo = "check-your-childrens-details"
+        };
+
+        var result = _controller.ChildBirthDate(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId)!.BirthDate);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal("CheckChildDetails", redirect.ControllerName);
     }
 
     [Fact]
@@ -128,6 +149,25 @@ public class BornChildDetailsControllerTests
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildSupport), redirect.ActionName);
         Assert.Equal("BornChildDetails", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void ChildRelationship_Post_ValidSelection_SavesState_AndReturnsTo()
+    {
+        var model = new ChildRelationshipViewModel
+        {
+            ChildId = childId,
+            Relationship = Relationship.Parent,
+            ReturnTo = "check-your-childrens-details"
+        };
+
+        var result = _controller.ChildRelationship(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal("CheckChildDetails", redirect.ControllerName);
     }
 
     [Fact]

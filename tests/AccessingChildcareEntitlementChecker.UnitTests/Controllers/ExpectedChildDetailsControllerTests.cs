@@ -66,6 +66,26 @@ public class ExpectedChildDetailsControllerTests
     }
 
     [Fact]
+    public void ChildDueDate_Post_ValidSelection_SavesState_AndReturnsTo()
+    {
+        var model = new ChildDueDateViewModel
+        {
+            ChildId = childId,
+            ChildDueDate = new DateOnly(2020, 1, 15),
+            ReturnTo = "check-your-childrens-details"
+        };
+
+        var result = _controller.ChildDueDate(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId)!.DueDate);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal("CheckChildDetails", redirect.ControllerName);
+    }
+
+    [Fact]
     public void ChildDueDate_Post_InvalidSelection_ReturnsViewWithError()
     {
         var model = new ChildDueDateViewModel

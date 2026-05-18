@@ -1,4 +1,5 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
+﻿using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,11 +42,13 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             _journeySession.Set(_journeyState);
             if (model.ReturnTo == "check-your-childrens-details")
             {
-                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
+                return this.RedirectTo<CheckChildDetailsController>(
+                    nameof(CheckChildDetailsController.CheckChildDetails),
                     new { fromChildId = model.ChildId });
             }
 
-            return RedirectToAction(nameof(ExpectedChildRelationship), "ExpectedChildDetails",
+            return this.RedirectTo<ExpectedChildDetailsController>(
+                nameof(ExpectedChildRelationship),
                 new { childId = model.ChildId });
         }
 
@@ -71,13 +74,8 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
-            if (model.ReturnTo == "check-your-childrens-details")
-            {
-                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
-                    new { fromChildId = model.ChildId });
-            }
-
-            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails",
+            return this.RedirectTo<CheckChildDetailsController>(
+                nameof(CheckChildDetailsController.CheckChildDetails),
                 new { fromChildId = model.ChildId });
         }
     }

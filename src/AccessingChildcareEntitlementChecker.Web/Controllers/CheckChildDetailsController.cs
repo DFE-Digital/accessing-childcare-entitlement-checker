@@ -1,4 +1,5 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails;
+﻿using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +29,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         {
             if (childId is null || !_journeyState.Children.TryGetValue(childId, out var child))
             {
-                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails));
+                return this.RedirectTo<CheckChildDetailsController>(nameof(CheckChildDetails));
             }
 
             return View(new RemoveChildViewModel
@@ -48,7 +49,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             if (model.RemoveConfirmed != true)
             {
-                return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails));
+                return this.RedirectTo<CheckChildDetailsController>(nameof(CheckChildDetails));
             }
 
             if (_journeyState.Children.Remove(model.ChildId, out var child))
@@ -57,7 +58,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
                 _journeySession.Set(_journeyState);
             }
 
-            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails));
+            return this.RedirectTo<CheckChildDetailsController>(nameof(CheckChildDetails));
         }
     }
 }
