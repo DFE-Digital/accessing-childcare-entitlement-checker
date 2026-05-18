@@ -2,6 +2,12 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      progressToTestDeployment:
+        description: 'Deploy to test, staging, and production environments'
+        required: false
+        type: boolean
+        default: false
   push:
     branches:
       - main
@@ -35,4 +41,31 @@ jobs:
       environment: development
     secrets: inherit
 
-    
+  deploy-test:
+    name: 'Deploy to Test'
+    needs: deploy
+    if: inputs.progressToTestDeployment == true
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: test
+    secrets: inherit
+
+  deploy-staging:
+    name: 'Deploy to Staging'
+    needs: deploy-test
+    if: inputs.progressToTestDeployment == true
+    uses: ./.github/workflows/infra-deploy.yml
+    with:
+      environment: staging
+    secrets: inherit
+
+  # STAGE 4: DEPLOY TO PRODUCTION 
+  # (todo: bring it back later when production subscription is ready,this is commented just to be very safe with prod)
+#   deploy-production:
+#     name: 'Deploy to Production'
+#     needs: deploy-staging
+#     if: inputs.progressToTestDeployment == true
+#     uses: ./.github/workflows/infra-deploy.yml
+#     with:
+#       environment: production
+#     secrets: inherit
