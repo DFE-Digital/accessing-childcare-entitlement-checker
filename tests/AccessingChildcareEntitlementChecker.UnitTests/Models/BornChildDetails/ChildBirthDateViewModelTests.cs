@@ -39,7 +39,7 @@ public class ChildBirthDateViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsOnEmptyChildNName()
+    public void Ctr_ThrowsOnEmptyChildName()
     {
         _journeyState.ChildName = null;
         Assert.Throws<ArgumentNullException>(() => new ChildBirthDateViewModel(_journeyState));

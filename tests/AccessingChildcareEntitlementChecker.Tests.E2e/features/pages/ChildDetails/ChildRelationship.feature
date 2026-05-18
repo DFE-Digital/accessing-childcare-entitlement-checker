@@ -1,4 +1,4 @@
-﻿Feature: What is your relationship to <child>?
+Feature: What is your relationship to child?
 
 Background:
     Given I am on the childcare entitlement checker website
