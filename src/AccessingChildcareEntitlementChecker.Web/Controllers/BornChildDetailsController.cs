@@ -61,7 +61,6 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         }
 
         [HttpGet]
-        [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
         public ViewResult ChildSupport()
         {
             return View(new ChildSupportViewModel(_journeyState));

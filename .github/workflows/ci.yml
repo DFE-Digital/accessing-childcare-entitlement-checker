@@ -29,8 +29,10 @@ jobs:
   deploy:
     name: Deploy
     needs: build-and-test
-    if: github.event_name == 'push' && github.ref_name == 'main'
+    if: (github.event_name == 'push' && github.ref_name == 'main') || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/infra-deploy.yml
     with:
       environment: development
     secrets: inherit
+
+    
