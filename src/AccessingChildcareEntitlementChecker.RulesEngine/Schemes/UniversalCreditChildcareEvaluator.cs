@@ -44,7 +44,7 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
         };
     }
 
-    private bool MeetsWorkRequirements(DerivedContext context)
+    private static bool MeetsWorkRequirements(DerivedContext context)
     {
         if (!context.Household.HasPartner)
         {
