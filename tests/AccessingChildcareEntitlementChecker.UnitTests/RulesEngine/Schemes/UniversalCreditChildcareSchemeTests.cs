@@ -41,13 +41,10 @@ public class UniversalCreditChildcareSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-
         Assert.Equal(
             SchemeCode.UniversalCreditChildcare,
             result!.SchemeCode);
-
         Assert.True(result.EligibleNow);
-
         Assert.False(result.EligibleInFuture);
     }
 
@@ -204,13 +201,10 @@ public class UniversalCreditChildcareSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-
         Assert.Equal(
             SchemeCode.UniversalCreditChildcare,
             result!.SchemeCode);
-
         Assert.True(result.EligibleNow);
-
         Assert.False(result.EligibleInFuture);
     }
 
@@ -294,11 +288,8 @@ public class UniversalCreditChildcareSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-
         Assert.False(result!.EligibleNow);
-
         Assert.True(result.EligibleInFuture);
-
         Assert.Equal(
             new DateOnly(2025, 12, 1),
             result.EligibleFrom);

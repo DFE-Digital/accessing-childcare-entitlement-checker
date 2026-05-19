@@ -28,7 +28,6 @@ public class DerivedContextBuilderTests
         };
 
         var today = new DateOnly(2025, 1, 1);
-
         var result = DerivedContextBuilder.Build(request, today);
 
         Assert.True(result.Household.HasAccessToPublicFunds);
@@ -51,7 +50,6 @@ public class DerivedContextBuilderTests
         };
 
         var today = new DateOnly(2025, 1, 1);
-
         var result = DerivedContextBuilder.Build(request, today);
 
         Assert.Equal(3, result.Children[0].AgeInYears);
@@ -70,7 +68,6 @@ public class DerivedContextBuilderTests
         };
 
         var today = new DateOnly(2025, 1, 1);
-
         var result = DerivedContextBuilder.Build(request, today);
 
         Assert.True(result.Household.LivesInGreatBritain);

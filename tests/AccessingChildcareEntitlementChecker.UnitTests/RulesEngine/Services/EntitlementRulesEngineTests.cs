@@ -45,13 +45,10 @@ public class EntitlementRulesEngineTests
         };
 
         var today = new DateOnly(2025, 1, 1);
-
         var result = engine.Evaluate(request, today);
 
         Assert.Single(result.ChildResults);
-
         Assert.Single(result.ChildResults[0].Schemes);
-
         Assert.Equal(
             SchemeCode.UniversalCreditChildcare,
             result.ChildResults[0].Schemes[0].SchemeCode);
@@ -93,11 +90,9 @@ public class EntitlementRulesEngineTests
         };
 
         var today = new DateOnly(2025, 1, 1);
-
         var result = engine.Evaluate(request, today);
 
         Assert.Single(result.ChildResults);
-
         Assert.Empty(result.ChildResults[0].Schemes);
     }
 
@@ -144,17 +139,12 @@ public class EntitlementRulesEngineTests
         };
 
         var today = new DateOnly(2025, 1, 1);
-
         var result = engine.Evaluate(request, today);
 
         Assert.Equal(2, result.ChildResults.Count);
-
         Assert.Equal("Jack", result.ChildResults[0].ChildName);
-
         Assert.Equal("Sophie", result.ChildResults[1].ChildName);
-
         Assert.Single(result.ChildResults[0].Schemes);
-
         Assert.Single(result.ChildResults[1].Schemes);
     }
 
