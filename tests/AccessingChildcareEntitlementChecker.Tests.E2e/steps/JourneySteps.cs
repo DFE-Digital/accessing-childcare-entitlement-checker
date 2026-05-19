@@ -22,10 +22,10 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps
                .GetByRole(AriaRole.Link, new() { Name = "Start now" })
                .ClickAsync();
 
-            foreach (var step in dataTable.Rows)
+            foreach (var questionAnswerRow in dataTable.Rows)
             {
-                var question = step[0];
-                var answer = step[1];
+                var question = questionAnswerRow[0];
+                var answer = questionAnswerRow[1];
                 var heading = _context.Page.GetByRole(AriaRole.Heading, new() { Level = 1 });
                 await AssertHeader(question);
                 await AnswerQuestion(answer);

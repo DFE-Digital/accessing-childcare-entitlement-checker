@@ -4,21 +4,16 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps.ChildDetails;
 
 [Binding]
-public class ChildBirthDateSteps
+public class DateSteps
 {
     private readonly Context _context;
 
-    public ChildBirthDateSteps(Context context)
+    public DateSteps(Context context)
     {
         _context = context;
     }
 
-    [Then("I should see the hint text {string}")]
-    public async Task ThenIShouldSeeTheHintText(string hintText)
-    {
-        await Expect(_context.Page.Locator(".govuk-hint"))
-            .ToHaveTextAsync(hintText);
-    }
+
 
     [Then("I should see a date entry input")]
     public async Task ThenIShouldSeeADateEntryInput()

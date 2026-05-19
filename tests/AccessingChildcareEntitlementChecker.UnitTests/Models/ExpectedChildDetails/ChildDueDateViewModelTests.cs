@@ -1,28 +1,24 @@
-using System.ComponentModel.DataAnnotations;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.Extensions.Localization;
 using NSubstitute;
+using System.ComponentModel.DataAnnotations;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Models.BornChildDetails;
 
-public class ChildBirthDateViewModelTests
+public class ChildDueDateViewModelTests
 {
     private readonly JourneyState _journeyState;
     private readonly ITodayFactory _dateTimeFactory;
     private readonly IStringLocalizerFactory _localizerFactory;
     private readonly Func<Type, object> _serviceProviderFunc;
 
-    public ChildBirthDateViewModelTests()
+    public ChildDueDateViewModelTests()
     {
         _journeyState = new JourneyState();
         _dateTimeFactory = Substitute.For<ITodayFactory>();
-        _localizerFactory = Substitute.For<IStringLocalizerFactory>();
-
-        var localizer = Substitute.For<IStringLocalizer<ChildBirthDateViewModel>>();
-        var localizedString = new LocalizedString("Enter a date of birth in the past", "TEST");
-        localizer["Enter a date of birth in the past"].Returns(localizedString);
-        _localizerFactory.Create(typeof(ChildBirthDateViewModel)).Returns(localizer);
+        _localizerFactory = AcecSubstitute.ForLocalizerFactory<ChildDueDateViewModel>();
 
         _serviceProviderFunc = serviceType =>
         {
@@ -39,21 +35,13 @@ public class ChildBirthDateViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsOnEmptyChildName()
-    {
-        _journeyState.ChildName = null;
-        Assert.Throws<ArgumentNullException>(() => new ChildBirthDateViewModel(_journeyState));
-    }
-
-    [Fact]
-    public void Validate_ReturnsErrorForFutureDate()
+    public void Validate_ReturnsErrorForPastDate()
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));
-        _journeyState.ChildName = "Child A";
-        var model = new ChildBirthDateViewModel(_journeyState)
+        var model = new ChildDueDateViewModel(_journeyState)
         {
-            ChildBirthDate = DateOnly.FromDateTime(now.AddDays(1)),
+            ChildDueDate = DateOnly.FromDateTime(now.AddDays(-1)),
         };
 
         var validationContext = new ValidationContext(model);
@@ -62,6 +50,6 @@ public class ChildBirthDateViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("TEST", validationResults[0].ErrorMessage);
+        Assert.Equal("Enter a due date in the future", validationResults[0].ErrorMessage);
     }
 }

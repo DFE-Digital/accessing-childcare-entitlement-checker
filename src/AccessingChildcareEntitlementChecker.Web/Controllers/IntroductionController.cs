@@ -56,7 +56,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
                 return RedirectToAction(nameof(BornChildDetailsController.ChildBirthDate), "BornChildDetails");
             }
 
-            return RedirectToAction(nameof(BornChildDetailsController.ChildDueDate), "BornChildDetails");
+            return RedirectToAction(nameof(ExpectedChildDetailsController.ChildDueDate), "ExpectedChildDetails");
         }
     }
 }

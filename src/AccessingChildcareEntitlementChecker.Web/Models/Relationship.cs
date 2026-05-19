@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails
+namespace AccessingChildcareEntitlementChecker.Web.Models
 {
     public enum Relationship
     {

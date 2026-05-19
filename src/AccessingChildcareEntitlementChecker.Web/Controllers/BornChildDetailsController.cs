@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
-using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,13 +37,6 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
             return RedirectToAction(nameof(ChildRelationship), "BornChildDetails");
-        }
-
-        [HttpGet]
-        [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
-        public ViewResult ChildDueDate()
-        {
-            return View();
         }
 
         [HttpGet]
@@ -86,14 +78,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
-            return RedirectToAction(nameof(CheckChildDetails), "BornChildDetails");
-        }
-
-        [HttpGet]
-        [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
-        public ViewResult CheckChildDetails()
-        {
-            return View(new CheckChildDetailsViewModel(_journeyState));
+            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails");
         }
     }
 }

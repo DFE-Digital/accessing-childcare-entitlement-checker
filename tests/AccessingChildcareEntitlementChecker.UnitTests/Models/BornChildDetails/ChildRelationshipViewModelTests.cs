@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.Extensions.Localization;
@@ -31,7 +32,7 @@ public class ChildRelationshipViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsOnEmptyChildNName()
+    public void Ctr_ThrowsOnEmptyChildName()
     {
         _journeyState.ChildName = null;
         Assert.Throws<ArgumentNullException>(() => new ChildRelationshipViewModel(_journeyState));

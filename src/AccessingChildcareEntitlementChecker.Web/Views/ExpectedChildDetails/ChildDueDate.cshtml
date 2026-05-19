@@ -1,0 +1,42 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@model ChildDueDateViewModel
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="Introduction" asp-action="IsChildBorn">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" novalidate>
+            <govuk-date-input for="ChildDueDate">
+                <govuk-date-input-fieldset>
+                    <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Localizer["What is this child's due date?"]
+                    </govuk-date-input-fieldset-legend>
+
+                    <govuk-date-input-error-message />
+                </govuk-date-input-fieldset>
+            </govuk-date-input>
+
+            <govuk-details>
+                <govuk-details-summary>
+                    @Localizer["Why we ask for a due date"]
+                </govuk-details-summary>
+                <govuk-details-text>
+                    <p>
+                        @Localizer["We use this date to give you accurate results, including when you may be able to apply and when your childcare support could start and end."]
+                    </p>
+                </govuk-details-text>
+            </govuk-details>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

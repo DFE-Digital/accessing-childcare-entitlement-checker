@@ -1,0 +1,34 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@model ExpectedChildRelationshipViewModel
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="ExpectedChildDetails" asp-action="ChildDueDate">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<form method="post" novalidate>
+    <govuk-radios for="ExpectedChildRelationship">
+        <govuk-radios-fieldset>
+            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                @Localizer["What will your relationship be to this child?"]
+            </govuk-radios-fieldset-legend>
+
+            <govuk-radios-error-message />
+
+            @foreach (var value in Enum.GetValues<Relationship>())
+            {
+                <govuk-radios-item value="@value">
+                    @Html.EnumDisplayName(value)
+                </govuk-radios-item>
+            }
+        </govuk-radios-fieldset>
+    </govuk-radios>
+
+    <govuk-button type="submit">
+        @Shared["Button_Continue"]
+    </govuk-button>
+</form>
