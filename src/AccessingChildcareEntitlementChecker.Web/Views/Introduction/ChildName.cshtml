@@ -23,7 +23,7 @@
             @Localizer["AdditionalChildrenGuidance"]
         </p>
 
-        <form method="post" novalidate>
+        <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
             <govuk-input for="ChildName" label-class="govuk-label--m" input-class="govuk-input--width-20" />
 
             <govuk-details>

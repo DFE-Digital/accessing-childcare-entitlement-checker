@@ -1,4 +1,5 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models;
+﻿using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,21 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         }
 
         [HttpGet]
-        public ViewResult ChildName()
+        public IActionResult ChildName(string? childId = null)
         {
-            return View(new ChildNameViewModel(_journeyState));
+            if (childId == null)
+            {
+                var childNameViewModel = new ChildNameViewModel();
+                return View(childNameViewModel);
+            }
+
+            var child = _journeyState.GetChild(childId);
+            if (child == null)
+            {
+                return NotFound();
+            }
+
+            return View(new ChildNameViewModel(child));
         }
 
         [HttpPost]
@@ -32,13 +45,21 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
 
-            return RedirectToAction(nameof(IntroductionController.IsChildBorn), "Introduction");
+            return this.RedirectTo<IntroductionController>(
+                nameof(IsChildBorn),
+                new { childId = model.ChildId });
         }
 
         [HttpGet]
-        public ViewResult IsChildBorn()
+        public IActionResult IsChildBorn(string childId, string? returnTo = null)
         {
-            return View(new ChildIsBornViewModel(_journeyState));
+            var child = _journeyState.GetChild(childId);
+            if (child == null)
+            {
+                return NotFound();
+            }
+
+            return View(new ChildIsBornViewModel(child) { ReturnTo = returnTo });
         }
 
         [HttpPost]
@@ -53,10 +74,14 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             if (model.ChildIsBorn == BirthStatus.Born)
             {
-                return RedirectToAction(nameof(BornChildDetailsController.ChildBirthDate), "BornChildDetails");
+                return this.RedirectTo<BornChildDetailsController>(
+                    nameof(BornChildDetailsController.ChildBirthDate),
+                    new { childId = model.ChildId });
             }
 
-            return RedirectToAction(nameof(ExpectedChildDetailsController.ChildDueDate), "ExpectedChildDetails");
+            return this.RedirectTo<ExpectedChildDetailsController>(
+                nameof(ExpectedChildDetailsController.ChildDueDate),
+                new { childId = model.ChildId });
         }
     }
 }

@@ -5,12 +5,22 @@
 @model ExpectedChildRelationshipViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="ExpectedChildDetails" asp-action="ChildDueDate">
-        @Shared["Button_Back"]
-    </govuk-back-link>
+    @if (Model.ReturnTo == "check-your-childrens-details")
+    {
+        <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="ExpectedChildDetails" asp-action="ChildDueDate" asp-route-childId="@Model.ChildId">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
 }
 
-<form method="post" novalidate>
+<form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
+    <input type="hidden" asp-for="ReturnTo" />
     <govuk-radios for="ExpectedChildRelationship">
         <govuk-radios-fieldset>
             <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">

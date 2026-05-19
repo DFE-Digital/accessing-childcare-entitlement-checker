@@ -5,15 +5,20 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 
 public class ExpectedChildRelationshipViewModel
 {
+    public string? ReturnTo { get; set; }
+
     public ExpectedChildRelationshipViewModel()
     {
-
+        ChildId = string.Empty;
     }
 
-    public ExpectedChildRelationshipViewModel(JourneyState journeyState)
+    public ExpectedChildRelationshipViewModel(Child child)
     {
-        ExpectedChildRelationship = journeyState.ExpectedChildRelationship;
+        ChildId = child.ChildId;
+        ExpectedChildRelationship = child.ExpectedRelationship;
     }
+
+    public string ChildId { get; set; }
 
     [Display(Name = "What will your relationship be to this child?")]
     [Required(ErrorMessage = "Select what your relationship will be to this child")]

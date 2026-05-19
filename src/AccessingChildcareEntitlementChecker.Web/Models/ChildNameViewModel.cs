@@ -10,10 +10,13 @@ public class ChildNameViewModel
 
     }
 
-    public ChildNameViewModel(JourneyState journeyState)
+    public ChildNameViewModel(Child child)
     {
-        ChildName = journeyState.ChildName;
+        ChildId = child.ChildId;
+        ChildName = child.Name;
     }
+
+    public string? ChildId { get; set; }
 
     [Display(Name = "What name should we use for this child?", Description = "You can use any name you want. For example, 'Baby Smith'.")]
     [Required(ErrorMessage = "Enter a name for your child")]

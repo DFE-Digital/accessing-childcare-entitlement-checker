@@ -1,4 +1,5 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
+﻿using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +19,15 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         }
 
         [HttpGet]
-        public ViewResult ChildDueDate()
+        public IActionResult ChildDueDate(string childId, string? returnTo = null)
         {
-            return View(new ChildDueDateViewModel(_journeyState));
+            var child = _journeyState.GetChild(childId);
+            if (child == null)
+            {
+                return NotFound();
+            }
+
+            return View(new ChildDueDateViewModel(child) { ReturnTo = returnTo });
         }
 
         [HttpPost]
@@ -33,13 +40,28 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
-            return RedirectToAction(nameof(ExpectedChildRelationship), "ExpectedChildDetails");
+            if (model.ReturnTo == "check-your-childrens-details")
+            {
+                return this.RedirectTo<CheckChildDetailsController>(
+                    nameof(CheckChildDetailsController.CheckChildDetails),
+                    new { fromChildId = model.ChildId });
+            }
+
+            return this.RedirectTo<ExpectedChildDetailsController>(
+                nameof(ExpectedChildRelationship),
+                new { childId = model.ChildId });
         }
 
         [HttpGet]
-        public ViewResult ExpectedChildRelationship()
+        public IActionResult ExpectedChildRelationship(string childId, string? returnTo = null)
         {
-            return View(new ExpectedChildRelationshipViewModel(_journeyState));
+            var child = _journeyState.GetChild(childId);
+            if (child == null)
+            {
+                return NotFound();
+            }
+
+            return View(new ExpectedChildRelationshipViewModel(child) { ReturnTo = returnTo });
         }
 
         [HttpPost]
@@ -52,8 +74,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             _journeyState.Apply(model);
             _journeySession.Set(_journeyState);
-
-            return RedirectToAction(nameof(CheckChildDetailsController.CheckChildDetails), "CheckChildDetails");
+            return this.RedirectTo<CheckChildDetailsController>(
+                nameof(CheckChildDetailsController.CheckChildDetails),
+                new { fromChildId = model.ChildId });
         }
     }
 }

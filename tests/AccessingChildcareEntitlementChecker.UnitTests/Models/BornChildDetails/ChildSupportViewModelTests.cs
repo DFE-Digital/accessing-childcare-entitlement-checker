@@ -13,10 +13,8 @@ public class ChildSupportViewModelTests
 
     public ChildSupportViewModelTests()
     {
-        _journeyState = new JourneyState
-        {
-            ChildName = "Jack",
-        };
+        _journeyState = new JourneyState();
+        _journeyState.Children["child-a"] = new Child("child-a", "Jack");
 
         _localizerFactory = AcecSubstitute.ForLocalizerFactory<ChildSupportViewModel>();
         _serviceProviderFunc = serviceType => _localizerFactory;
@@ -29,16 +27,25 @@ public class ChildSupportViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsOnEmptyChildName()
+    public void Validate_ThrowsWhenNoChild()
     {
-        _journeyState.ChildName = null;
-        Assert.Throws<ArgumentNullException>(() => new ChildSupportViewModel(_journeyState));
+        var child = new Child("DOES-NOT-EXIST", "Child b");
+        var model = new ChildSupportViewModel(child)
+        {
+            ChildSupportOptions = []
+        };
+
+        var validationContext = new ValidationContext(model);
+        validationContext.InitializeServiceProvider(_serviceProviderFunc);
+
+        Assert.Throws<InvalidOperationException>(() => model.Validate(validationContext).ToList());
     }
 
     [Fact]
     public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
     {
-        var model = new ChildSupportViewModel(_journeyState)
+        var child = _journeyState.GetChild("child-a")!;
+        var model = new ChildSupportViewModel(child)
         {
             ChildSupportOptions =
             [
@@ -59,7 +66,8 @@ public class ChildSupportViewModelTests
     [Fact]
     public void Validate_ReturnsErrorWhenOptionsAreEmpty()
     {
-        var model = new ChildSupportViewModel(_journeyState)
+        var child = _journeyState.GetChild("child-a")!;
+        var model = new ChildSupportViewModel(child)
         {
             ChildSupportOptions = [],
         };

@@ -31,4 +31,4 @@ Scenario: Continue with selection
 
 Scenario: Back navigation
     When I click the back link
-    Then I should be returned to the previous page in the user journey "Add details of a child"
+    Then I should be returned to the previous page in the user journey "Check your children's details"

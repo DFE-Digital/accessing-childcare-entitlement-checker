@@ -8,15 +8,7 @@ public class JourneyState
 {
     public CountryOfResidence? CountryOfResidence { get; set; }
 
-    public string? ChildName { get; set; }
-
-    public BirthStatus? ChildIsBorn { get; set; }
-
-    public DateOnly? ChildBirthDate { get; set; }
-
-    public Relationship? Relationship { get; set; }
-
-    public List<ChildSupport> ChildSupportOptions { get; set; } = [];
+    public Dictionary<string, Child> Children { get; set; } = [];
 
     public DateOnly? ChildDueDate { get; set; }
 
@@ -28,6 +20,11 @@ public class JourneyState
 
     public AgeRange? PartnerAge { get; set; }
 
+    public Child? GetChild(string childId)
+    {
+        return Children.TryGetValue(childId, out var child) ? child : null;
+    }
+
     public void Apply(LocationViewModel model)
     {
         CountryOfResidence = model.Country;
@@ -35,37 +32,61 @@ public class JourneyState
 
     public void Apply(ChildNameViewModel model)
     {
-        ChildName = model.ChildName;
+        if (model.ChildName == null)
+        {
+            throw new InvalidOperationException("Child name cannot be null");
+        }
+
+        if (model.ChildId == null)
+        {
+            model.ChildId = Guid.NewGuid().ToString();
+        }
+
+        var child = GetChild(model.ChildId);
+        if (child == null)
+        {
+            child = new Child(model.ChildId, model.ChildName);
+            Children.Add(model.ChildId, child);
+            return;
+        }
+
+        child.Name = model.ChildName;
     }
 
     public void Apply(ChildIsBornViewModel model)
     {
-        ChildIsBorn = model.ChildIsBorn;
+        var child = Children[model.ChildId];
+        child.BirthStatus = model.ChildIsBorn;
     }
 
     public void Apply(ChildBirthDateViewModel model)
     {
-        ChildBirthDate = model.ChildBirthDate;
-    }
-
-    public void Apply(ChildRelationshipViewModel model)
-    {
-        Relationship = model.Relationship;
-    }
-
-    public void Apply(ChildSupportViewModel model)
-    {
-        ChildSupportOptions = model.ChildSupportOptions;
+        var child = Children[model.ChildId];
+        child.BirthDate = model.ChildBirthDate;
     }
 
     public void Apply(ChildDueDateViewModel model)
     {
-        ChildDueDate = model.ChildDueDate;
+        var child = Children[model.ChildId];
+        child.DueDate = model.ChildDueDate;
+    }
+
+    public void Apply(ChildRelationshipViewModel model)
+    {
+        var child = Children[model.ChildId];
+        child.BornRelationship = model.Relationship;
+    }
+
+    public void Apply(ChildSupportViewModel model)
+    {
+        var child = Children[model.ChildId];
+        child.ChildSupportOptions = model.ChildSupportOptions;
     }
 
     public void Apply(ExpectedChildRelationshipViewModel model)
     {
-        ExpectedChildRelationship = model.ExpectedChildRelationship;
+        var child = Children[model.ChildId];
+        child.ExpectedRelationship = model.ExpectedChildRelationship;
     }
 
     public void Apply(HasPartnerViewModel model)

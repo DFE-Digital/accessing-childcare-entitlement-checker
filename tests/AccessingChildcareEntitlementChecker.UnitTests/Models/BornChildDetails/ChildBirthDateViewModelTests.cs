@@ -16,6 +16,7 @@ public class ChildBirthDateViewModelTests
     public ChildBirthDateViewModelTests()
     {
         _journeyState = new JourneyState();
+        _journeyState.Children["child-a"] = new Child("child-a", "Child A");
         _dateTimeFactory = Substitute.For<ITodayFactory>();
         _localizerFactory = Substitute.For<IStringLocalizerFactory>();
 
@@ -39,19 +40,14 @@ public class ChildBirthDateViewModelTests
     }
 
     [Fact]
-    public void Ctr_ThrowsOnEmptyChildName()
-    {
-        _journeyState.ChildName = null;
-        Assert.Throws<ArgumentNullException>(() => new ChildBirthDateViewModel(_journeyState));
-    }
-
-    [Fact]
     public void Validate_ReturnsErrorForFutureDate()
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));
-        _journeyState.ChildName = "Child A";
-        var model = new ChildBirthDateViewModel(_journeyState)
+        var child = _journeyState.GetChild("child-a")!;
+        Assert.NotNull(child);
+
+        var model = new ChildBirthDateViewModel(child)
         {
             ChildBirthDate = DateOnly.FromDateTime(now.AddDays(1)),
         };
