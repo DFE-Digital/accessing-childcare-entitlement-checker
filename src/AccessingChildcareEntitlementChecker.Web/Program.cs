@@ -4,6 +4,8 @@ using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using AccessingChildcareEntitlementChecker.RulesEngine.Services;
+using AccessingChildcareEntitlementChecker.RulesEngine.Evaluators;
+using AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -26,6 +28,7 @@ services
 services.AddJourneyServices();
 
 services.AddScoped<EntitlementRulesEngine>();
+services.AddScoped<ISchemeEvaluator, UniversalCreditChildcareEvaluator>();
 
 var app = builder.Build();
 if (!app.Environment.IsProduction())
