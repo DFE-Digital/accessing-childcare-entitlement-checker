@@ -1,10 +1,9 @@
-﻿namespace AccessingChildcareEntitlementChecker.Web.Models
+namespace AccessingChildcareEntitlementChecker.Web.Models;
+
+public enum CountryOfResidence
 {
-    public enum CountryOfResidence
-    {
-        England,
-        Scotland,
-        Wales,
-        NorthernIreland
-    }
+    England,
+    Scotland,
+    Wales,
+    NorthernIreland
 }

@@ -1,10 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
-namespace AccessingChildcareEntitlementChecker.Web.Services
+namespace AccessingChildcareEntitlementChecker.Web.Services;
+
+[ExcludeFromCodeCoverage(Justification = "This class is not testable")]
+public class DateTimeFactory : IDateTimeFactory
 {
-    [ExcludeFromCodeCoverage(Justification = "This class is not testable")]
-    public class DateTimeFactory : IDateTimeFactory
-    {
-        public DateTime UtcNow => DateTime.UtcNow;
-    }
+    public DateTime UtcNow => DateTime.UtcNow;
 }

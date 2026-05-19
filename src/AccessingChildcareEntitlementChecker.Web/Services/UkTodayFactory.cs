@@ -1,23 +1,22 @@
-﻿namespace AccessingChildcareEntitlementChecker.Web.Services
+namespace AccessingChildcareEntitlementChecker.Web.Services;
+
+public class UkTodayFactory : ITodayFactory
 {
-    public class UkTodayFactory : ITodayFactory
+    private readonly IDateTimeFactory _dateTimeFactory;
+    private readonly TimeZoneInfo UkTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/London");
+
+    public UkTodayFactory(IDateTimeFactory dateTimeFactory)
     {
-        private readonly IDateTimeFactory _dateTimeFactory;
-        private readonly TimeZoneInfo UkTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/London");
+        _dateTimeFactory = dateTimeFactory;
+    }
 
-        public UkTodayFactory(IDateTimeFactory dateTimeFactory)
+    public DateOnly Today
+    {
+        get
         {
-            _dateTimeFactory = dateTimeFactory;
-        }
-
-        public DateOnly Today
-        {
-            get
-            {
-                var now = _dateTimeFactory.UtcNow;
-                var ukNow = TimeZoneInfo.ConvertTime(now, UkTimeZone);
-                return DateOnly.FromDateTime(ukNow);
-            }
+            var now = _dateTimeFactory.UtcNow;
+            var ukNow = TimeZoneInfo.ConvertTime(now, UkTimeZone);
+            return DateOnly.FromDateTime(ukNow);
         }
     }
 }

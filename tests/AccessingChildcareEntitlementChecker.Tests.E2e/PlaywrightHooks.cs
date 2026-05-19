@@ -1,56 +1,55 @@
-﻿
+
 using Microsoft.Playwright;
 using Reqnroll;
 using Reqnroll.BoDi;
 using System.Diagnostics;
 
-namespace AccessingChildcareEntitlementChecker.Tests.E2e
+namespace AccessingChildcareEntitlementChecker.Tests.E2e;
+
+[Binding]
+public class PlaywrightHooks(IObjectContainer objectContainer)
 {
-    [Binding]
-    public class PlaywrightHooks(IObjectContainer objectContainer)
+    private readonly IObjectContainer _objectContainer = objectContainer;
+    private Context? _context;
+
+    private static IPlaywright? _playwright;
+    private static IBrowser? _browser;
+
+    [BeforeTestRun]
+    public static async Task BeforeTestRun()
     {
-        private readonly IObjectContainer _objectContainer = objectContainer;
-        private Context? _context;
-
-        private static IPlaywright? _playwright;
-        private static IBrowser? _browser;
-
-        [BeforeTestRun]
-        public static async Task BeforeTestRun()
+        _playwright = await Playwright.CreateAsync();
+        _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
-            _playwright = await Playwright.CreateAsync();
-            _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
-            {
-                Headless = !Debugger.IsAttached,
-                SlowMo = Debugger.IsAttached ? 1000 : 0
-            });
-        }
+            Headless = !Debugger.IsAttached,
+            SlowMo = Debugger.IsAttached ? 1000 : 0
+        });
+    }
 
-        [BeforeScenario]
-        public async Task BeforeScenario()
-        {
-            Assert.NotNull(_browser);
+    [BeforeScenario]
+    public async Task BeforeScenario()
+    {
+        Assert.NotNull(_browser);
 
-            _context = await Context.CreateAsync(_browser);
-            _objectContainer.RegisterInstanceAs(_context);
-        }
+        _context = await Context.CreateAsync(_browser);
+        _objectContainer.RegisterInstanceAs(_context);
+    }
 
-        [AfterScenario]
-        public async Task AfterScenario()
-        {
-            Assert.NotNull(_context);
+    [AfterScenario]
+    public async Task AfterScenario()
+    {
+        Assert.NotNull(_context);
 
-            await _context.DisposeAsync();
-        }
+        await _context.DisposeAsync();
+    }
 
-        [AfterTestRun]
-        public static async Task AfterTestRun()
-        {
-            Assert.NotNull(_browser);
-            Assert.NotNull(_playwright);
+    [AfterTestRun]
+    public static async Task AfterTestRun()
+    {
+        Assert.NotNull(_browser);
+        Assert.NotNull(_playwright);
 
-            await _browser.CloseAsync();
-            _playwright.Dispose();
-        }
+        await _browser.CloseAsync();
+        _playwright.Dispose();
     }
 }

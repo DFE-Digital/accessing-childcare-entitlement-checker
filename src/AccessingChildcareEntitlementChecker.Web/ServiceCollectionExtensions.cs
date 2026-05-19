@@ -1,21 +1,20 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Services;
+using AccessingChildcareEntitlementChecker.Web.Services;
 
-namespace AccessingChildcareEntitlementChecker.Web
+namespace AccessingChildcareEntitlementChecker.Web;
+
+public static class IServiceCollectionExtensions
 {
-    public static class IServiceCollectionExtensions
+    public static IServiceCollection AddJourneyServices(this IServiceCollection services)
     {
-        public static IServiceCollection AddJourneyServices(this IServiceCollection services)
+        services.AddScoped<IDateTimeFactory, DateTimeFactory>();
+        services.AddScoped<ITodayFactory, UkTodayFactory>();
+        services.AddScoped<IJourneySession, JourneySession>();
+        services.AddScoped(sp =>
         {
-            services.AddScoped<IDateTimeFactory, DateTimeFactory>();
-            services.AddScoped<ITodayFactory, UkTodayFactory>();
-            services.AddScoped<IJourneySession, JourneySession>();
-            services.AddScoped(sp =>
-            {
-                var journeySession = sp.GetRequiredService<IJourneySession>();
-                return journeySession.Get();
-            });
+            var journeySession = sp.GetRequiredService<IJourneySession>();
+            return journeySession.Get();
+        });
 
-            return services;
-        }
+        return services;
     }
 }

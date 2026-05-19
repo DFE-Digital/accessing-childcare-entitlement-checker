@@ -1,7 +1,6 @@
-﻿namespace AccessingChildcareEntitlementChecker.Web.Services
+namespace AccessingChildcareEntitlementChecker.Web.Services;
+
+public interface IDateTimeFactory
 {
-    public interface IDateTimeFactory
-    {
-        DateTime UtcNow { get; }
-    }
+    DateTime UtcNow { get; }
 }

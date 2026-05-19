@@ -1,16 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
-namespace AccessingChildcareEntitlementChecker.Web.Models
+namespace AccessingChildcareEntitlementChecker.Web.Models;
+
+public enum Relationship
 {
-    public enum Relationship
-    {
-        [Display(Name = "Parent")]
-        Parent,
+    [Display(Name = "Parent")]
+    Parent,
 
-        [Display(Name = "Guardian or short-term respite carer")]
-        GuardianOrCarer,
+    [Display(Name = "Guardian or short-term respite carer")]
+    GuardianOrCarer,
 
-        [Display(Name = "Foster parent")]
-        FosterParent,
-    }
+    [Display(Name = "Foster parent")]
+    FosterParent,
 }

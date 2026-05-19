@@ -1,35 +1,34 @@
 using Microsoft.Playwright;
 
-namespace AccessingChildcareEntitlementChecker.Tests.E2e
+namespace AccessingChildcareEntitlementChecker.Tests.E2e;
+
+public class Context
 {
-    public class Context
+    private readonly IBrowser _browser;
+
+    private Context(IBrowser browser, IPage page)
     {
-        private readonly IBrowser _browser;
+        _browser = browser;
+        Page = page;
+    }
 
-        private Context(IBrowser browser, IPage page)
+    public IPage Page { get; private set; }
+
+    public static async Task<Context> CreateAsync(IBrowser browser)
+    {
+        var browserContext = await browser.NewContextAsync(new()
         {
-            _browser = browser;
-            Page = page;
-        }
+            JavaScriptEnabled = false
+        });
 
-        public IPage Page { get; private set; }
+        var page = await browserContext.NewPageAsync();
+        return new Context(browser, page);
+    }
 
-        public static async Task<Context> CreateAsync(IBrowser browser)
-        {
-            var browserContext = await browser.NewContextAsync(new()
-            {
-                JavaScriptEnabled = false
-            });
+    public Uri Uri => new(Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252/");
 
-            var page = await browserContext.NewPageAsync();
-            return new Context(browser, page);
-        }
-
-        public Uri Uri => new(Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252/");
-
-        public async Task DisposeAsync()
-        {
-            await Page.Context.CloseAsync();
-        }
+    public async Task DisposeAsync()
+    {
+        await Page.Context.CloseAsync();
     }
 }
