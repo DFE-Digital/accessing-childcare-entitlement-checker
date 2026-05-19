@@ -50,4 +50,4 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Models.CheckChildDetail
             Assert.True(viewModel.HasChildren);
         }
     }
-    }
+}
