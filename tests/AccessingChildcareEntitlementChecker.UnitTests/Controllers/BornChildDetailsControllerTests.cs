@@ -1,7 +1,6 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
-using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
@@ -43,7 +42,6 @@ public class BornChildDetailsControllerTests
         var child = _journeyState.GetChild(childId)!;
         child.BirthDate = new DateOnly(2020, 1, 15);
         var result = Assert.IsType<ViewResult>(_controller.ChildBirthDate(childId));
-
         Assert.Equal(new DateOnly(2020, 1, 15), result.Model<ChildBirthDateViewModel>().ChildBirthDate);
         Assert.Equal("Child A", result.Model<ChildBirthDateViewModel>().ChildName);
     }

@@ -10,6 +10,10 @@ public class JourneyState
 
     public Dictionary<string, Child> Children { get; set; } = [];
 
+    public DateOnly? ChildDueDate { get; set; }
+
+    public Relationship? ExpectedChildRelationship { get; set; }
+
     public bool? HasPartner { get; set; }
 
     public AgeRange? UserAge { get; set; }

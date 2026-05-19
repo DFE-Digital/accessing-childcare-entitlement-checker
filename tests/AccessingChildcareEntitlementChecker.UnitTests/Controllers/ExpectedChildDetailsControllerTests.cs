@@ -26,7 +26,6 @@ public class ExpectedChildDetailsControllerTests
     public void ChildDueDate_ReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(childId));
-
         Assert.Null(result.Model<ChildDueDateViewModel>().ChildDueDate);
     }
 
@@ -42,7 +41,6 @@ public class ExpectedChildDetailsControllerTests
         var child = _journeyState.GetChild(childId)!;
         child.DueDate = new DateOnly(2020, 1, 15);
         var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(childId));
-
         Assert.Equal(new DateOnly(2020, 1, 15), result.Model<ChildDueDateViewModel>().ChildDueDate);
     }
 
@@ -108,7 +106,6 @@ public class ExpectedChildDetailsControllerTests
     public void ExpectedChildRelationship_ReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(childId));
-
         Assert.Null(result.Model<ExpectedChildRelationshipViewModel>().ExpectedChildRelationship);
     }
 
@@ -124,7 +121,6 @@ public class ExpectedChildDetailsControllerTests
         var child = _journeyState.GetChild(childId)!;
         child.ExpectedRelationship = Relationship.Parent;
         var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(childId));
-
         Assert.Equal(Relationship.Parent, result.Model<ExpectedChildRelationshipViewModel>().ExpectedChildRelationship);
     }
 
@@ -157,9 +153,7 @@ public class ExpectedChildDetailsControllerTests
         };
 
         _controller.ModelState.AddModelError(nameof(model.ExpectedChildRelationship), "Faked Model Binding Error");
-
         var result = _controller.ExpectedChildRelationship(model);
-
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ExpectedChildRelationship)));

@@ -1,7 +1,7 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
-using AccessingChildcareEntitlementChecker.Web.Extensions;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
