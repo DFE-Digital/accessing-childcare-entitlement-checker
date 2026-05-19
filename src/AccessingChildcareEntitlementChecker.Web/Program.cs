@@ -28,7 +28,7 @@ services.AddJourneyServices();
 services.AddScoped<EntitlementRulesEngine>();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     app.UseDevelopmentAuth(builder.Configuration);
     app.MapRobotsExclusionProtocol();
