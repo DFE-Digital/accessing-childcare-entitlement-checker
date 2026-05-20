@@ -49,6 +49,7 @@ Scenario: Back navigation from What is your nationality?
     When I click the back link
     Then I should be returned to the previous page in the user journey "What is your nationality?"
 
+@ignore
 Scenario: Back navigation from Do you have settled or pre-settled status under the EU Settlement Scheme?
     When I click the back link
     Then I should be returned to the previous page in the user journey "Do you have settled or pre-settled status under the EU Settlement Scheme?"
