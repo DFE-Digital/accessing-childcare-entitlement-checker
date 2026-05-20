@@ -1,8 +1,9 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
-using AccessingChildcareEntitlementChecker.Web.Models;
-using Microsoft.AspNetCore.Mvc;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
+using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -20,86 +21,38 @@ public class UserControllerTests
     }
 
     [Fact]
-    public void HasPartner_ReturnsView()
-    {
-        var result = _controller.HasPartner();
-        Assert.Null(result.Model<HasPartnerViewModel>().HasPartner);
-    }
-
-    [Fact]
-    public void HasPartner_Get_PopulatesModel_FromState()
-    {
-        _journeyState.HasPartner = true;
-        var result = _controller.HasPartner();
-        Assert.True(result.Model<HasPartnerViewModel>().HasPartner);
-    }
-
-    [Theory]
-    [InlineData(true, nameof(PartnerController.PartnerAge))]
-    [InlineData(false, nameof(UserController.NextStepPlaceholder))]
-    public void HasPartner_Post_ValidSelection_SavesState_AndRedirects(bool hasPartner, string redirectsTo)
-    {
-        var model = new HasPartnerViewModel()
-        {
-            HasPartner = hasPartner,
-        };
-
-        var result = _controller.HasPartner(model);
-
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(hasPartner, _journeyState.HasPartner);
-        Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(redirectsTo, redirect.ActionName);
-    }
-
-    [Fact]
-    public void HasPartner_Post_InvalidSelection_ReturnsViewWithError()
-    {
-        var model = new HasPartnerViewModel
-        {
-            HasPartner = null
-        };
-
-        _controller.ModelState.AddModelError(nameof(model.HasPartner), "Faked Model Binding Error");
-
-        var result = _controller.HasPartner(model);
-
-        var view = Assert.IsType<ViewResult>(result);
-        Assert.False(_controller.ModelState.IsValid);
-        Assert.True(_controller.ModelState.ContainsKey(nameof(model.HasPartner)));
-    }
-
-    [Fact]
     public void UserAge_ReturnsView()
     {
-        var result = _controller.UserAge();
+        var result = Assert.IsType<ViewResult>(_controller.UserAge());
+
         Assert.Null(result.Model<UserAgeViewModel>().UserAge);
     }
 
     [Fact]
     public void UserAge_Get_PopulatesModel_FromState()
     {
-        _journeyState.UserAge = AgeRange.EighteenToTwenty;
-        var result = _controller.UserAge();
-        Assert.Equal(AgeRange.EighteenToTwenty, result.Model<UserAgeViewModel>().UserAge);
+        _journeyState.UserAge = AgeRange.UnderEighteen;
+        var result = Assert.IsType<ViewResult>(_controller.UserAge());
+
+        Assert.Equal(AgeRange.UnderEighteen, result.Model<UserAgeViewModel>().UserAge);
     }
 
     [Fact]
     public void UserAge_Post_ValidSelection_SavesState_AndRedirects()
     {
-        var model = new UserAgeViewModel()
+        var model = new UserAgeViewModel
         {
-            UserAge = AgeRange.EighteenToTwenty
+            UserAge = AgeRange.UnderEighteen
         };
 
         var result = _controller.UserAge(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(AgeRange.EighteenToTwenty, _journeyState.UserAge);
+        Assert.Equal(AgeRange.UnderEighteen, _journeyState.UserAge);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(PartnerController.PartnerAge), redirect.ActionName);
+        Assert.Equal(nameof(UserController.Nationality), redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
     }
 
     [Fact]
@@ -114,8 +67,133 @@ public class UserControllerTests
 
         var result = _controller.UserAge(model);
 
-        var view = Assert.IsType<ViewResult>(result);
+        Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.UserAge)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void Nationality_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.Nationality());
+
+        Assert.Null(result.Model<NationalityViewModel>().Nationality);
+    }
+
+    [Fact]
+    public void Nationality_Get_PopulatesModel_FromState()
+    {
+        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
+
+        var result = Assert.IsType<ViewResult>(_controller.Nationality());
+
+        Assert.Equal(NationalityOption.BritishOrIrishCitizen, result.Model<NationalityViewModel>().Nationality);
+    }
+
+    [Fact]
+    public void Nationality_Post_WithCitizenOfAnEUCountryEEACountryOrSwitzerland_SavesState_AndRedirects()
+    {
+        var model = new NationalityViewModel
+        {
+            Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland
+        };
+
+        var result = _controller.Nationality(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, _journeyState.Nationality);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal("SettledStatus", redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void Nationality_Post_WithFallbackSelection_SavesState_AndRedirects()
+    {
+        var model = new NationalityViewModel
+        {
+            Nationality = NationalityOption.BritishOrIrishCitizen
+        };
+
+        var result = _controller.Nationality(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(NationalityOption.BritishOrIrishCitizen, _journeyState.Nationality);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal("PaidWork", redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void Nationality_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new NationalityViewModel
+        {
+            Nationality = null
+        };
+        _controller.ModelState.AddModelError(nameof(model.Nationality), "Faked Model Binding Error");
+
+        var result = _controller.Nationality(model);
+
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.Nationality)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void HasPartner_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.HasPartner());
+
+        Assert.Null(result.Model<HasPartnerViewModel>().HasPartner);
+    }
+
+    [Fact]
+    public void HasPartner_Get_PopulatesModel_FromState()
+    {
+        _journeyState.HasPartner = true;
+        var result = Assert.IsType<ViewResult>(_controller.HasPartner());
+
+        Assert.Equal(true, result.Model<HasPartnerViewModel>().HasPartner);
+    }
+
+    [Fact]
+    public void HasPartner_Post_ValidSelection_SavesState_AndRedirects()
+    {
+        var model = new HasPartnerViewModel
+        {
+            HasPartner = true
+        };
+
+        var result = _controller.HasPartner(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(true, _journeyState.HasPartner);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(PartnerController.PartnerAge), redirect.ActionName);
+        Assert.Equal("Partner", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void HasPartner_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new HasPartnerViewModel
+        {
+            HasPartner = null
+        };
+
+        _controller.ModelState.AddModelError(nameof(model.HasPartner), "Faked Model Binding Error");
+
+        var result = _controller.HasPartner(model);
+
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.HasPartner)));
+        _journeySession.DidNotReceive().Set(_journeyState);
     }
 }

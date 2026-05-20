@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
 
 namespace AccessingChildcareEntitlementChecker.Web.Services;
 
@@ -10,13 +11,11 @@ public class JourneyState
 
     public Dictionary<string, Child> Children { get; set; } = [];
 
-    public DateOnly? ChildDueDate { get; set; }
+    public AgeRange? UserAge { get; set; }
 
-    public Relationship? ExpectedChildRelationship { get; set; }
+    public NationalityOption? Nationality { get; set; }
 
     public bool? HasPartner { get; set; }
-
-    public AgeRange? UserAge { get; set; }
 
     public AgeRange? PartnerAge { get; set; }
 
@@ -89,14 +88,19 @@ public class JourneyState
         child.ExpectedRelationship = model.ExpectedChildRelationship;
     }
 
-    public void Apply(HasPartnerViewModel model)
-    {
-        HasPartner = model.HasPartner;
-    }
-
     public void Apply(UserAgeViewModel model)
     {
         UserAge = model.UserAge;
+    }
+
+    public void Apply(NationalityViewModel model)
+    {
+        Nationality = model.Nationality;
+    }
+
+    public void Apply(HasPartnerViewModel model)
+    {
+        HasPartner = model.HasPartner;
     }
 
     public void Apply(PartnerAgeViewModel model)

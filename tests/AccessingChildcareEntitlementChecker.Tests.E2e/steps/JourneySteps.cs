@@ -63,6 +63,7 @@ public class JourneySteps
         await Respond(dataTable);
     }
 
+    [Given("I answer the questions as follows:")]
     [When("I answer the questions as follows:")]
     public async Task WhenIAnswerTheQuestionsAsFollows(DataTable dataTable)
     {
