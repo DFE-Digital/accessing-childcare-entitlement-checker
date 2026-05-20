@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 using Reqnroll;
 using static Microsoft.Playwright.Assertions;
 
-namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps;
+namespace AccessingChildcareEntitlementChecker.Tests.E2e.Steps;
 
 [Binding]
 public class CheckboxSteps
@@ -12,6 +12,24 @@ public class CheckboxSteps
     public CheckboxSteps(Context context)
     {
         _context = context;
+    }
+
+    [When("I select the {string} checkbox")]
+    public async Task WhenISelectTheCheckbox(string label)
+    {
+        await _context.Page
+            .GetByLabel(label, new() { Exact = true })
+            .CheckAsync();
+    }
+
+    [When("I do not select a checkbox")]
+    public async Task WhenIDoNotSelectACheckbox()
+    {
+        var checkedCheckboxes = _context.Page
+            .GetByRole(AriaRole.Checkbox)
+            .And(_context.Page.Locator(":checked"));
+
+        await Expect(checkedCheckboxes).ToHaveCountAsync(0);
     }
 
     [Then(@"I should see (\d+) checkboxes with the following options:")]
@@ -34,15 +52,6 @@ public class CheckboxSteps
         }
     }
 
-    [Given("I have selected the {string} checkbox")]
-    [When("I select the {string} checkbox")]
-    public async Task WhenISelectTheCheckbox(string label)
-    {
-        await _context.Page
-            .GetByLabel(label, new() { Exact = true })
-            .CheckAsync();
-    }
-
     [Then("the following checkboxes should be selected:")]
     public void ThenTheFollowingCheckboxesShouldBeSelected(DataTable dataTable)
     {
@@ -51,15 +60,5 @@ public class CheckboxSteps
             var label = row[0];
             Expect(_context.Page.GetByLabel(label)).ToBeCheckedAsync();
         }
-    }
-
-    [Given("I have not selected a checkbox")]
-    public async Task GivenIHaveNotSelectedACheckbox()
-    {
-        var checkedCheckboxes = _context.Page
-            .GetByRole(AriaRole.Checkbox)
-            .And(_context.Page.Locator(":checked"));
-
-        await Expect(checkedCheckboxes).ToHaveCountAsync(0);
     }
 }

@@ -1,16 +1,17 @@
+using AccessingChildcareEntitlementChecker.Tests.E2e.Steps.DeferredBackground;
 using Microsoft.Playwright;
 
 namespace AccessingChildcareEntitlementChecker.Tests.E2e;
 
 public class Context
 {
-    private readonly IBrowser _browser;
-
-    private Context(IBrowser browser, IPage page)
+    private Context(IPage page)
     {
-        _browser = browser;
+        Queue = new DeferredActionQueue();
         Page = page;
     }
+
+    public DeferredActionQueue Queue { get; }
 
     public IPage Page { get; private set; }
 
@@ -22,7 +23,7 @@ public class Context
         });
 
         var page = await browserContext.NewPageAsync();
-        return new Context(browser, page);
+        return new Context(page);
     }
 
     public Uri Uri => new(Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252/");
@@ -30,5 +31,10 @@ public class Context
     public async Task DisposeAsync()
     {
         await Page.Context.CloseAsync();
+    }
+
+    public async Task FlushPendingActions()
+    {
+        await Queue.FlushPendingActions(Page);
     }
 }

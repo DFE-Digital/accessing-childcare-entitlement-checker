@@ -1,7 +1,7 @@
 using Reqnroll;
 using static Microsoft.Playwright.Assertions;
 
-namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps.ChildDetails;
+namespace AccessingChildcareEntitlementChecker.Tests.E2e.Steps.ChildDetails;
 
 [Binding]
 public class DateSteps
@@ -13,6 +13,36 @@ public class DateSteps
         _context = context;
     }
 
+    [When("I enter the day {string} month {string} and year {string}")]
+    public async Task GivenIEnterTheDayMonthAndYear(string day, string month, string year)
+    {
+        await EnterDate(day, month, year);
+    }
+
+    [When("I enter tomorrow's date")]
+    public async Task GivenIEnterTomorrowsDate()
+    {
+        await EnterDate(DateTime.UtcNow.AddDays(1));
+    }
+
+    [When("I do not enter a date")]
+    public async Task GivenIHaveNotEnteredADate()
+    {
+        await EnterDate(string.Empty, string.Empty, string.Empty);
+    }
+
+    [When("I enter yesterdays date")]
+    public async Task GivenIHaveEnteredYesterdaysDate()
+    {
+        await EnterDate(DateTime.UtcNow.AddDays(-1));
+    }
+
+    [When("I enter todays date")]
+    public async Task GivenIHaveEnteredTodaysDate()
+    {
+        await EnterDate(DateTime.UtcNow);
+    }
+
     [Then("I should see a date entry input")]
     public async Task ThenIShouldSeeADateEntryInput()
     {
@@ -22,36 +52,6 @@ public class DateSteps
             .ToBeVisibleAsync();
         await Expect(_context.Page.GetByLabel("Year"))
             .ToBeVisibleAsync();
-    }
-
-    [Given("I enter the day {string} month {string} and year {string}")]
-    public async Task GivenIEnterTheDayMonthAndYear(string day, string month, string year)
-    {
-        await EnterDate(day, month, year);
-    }
-
-    [Given("I enter tomorrow's date")]
-    public async Task GivenIEnterTomorrowsDate()
-    {
-        await EnterDate(DateTime.UtcNow.AddDays(1));
-    }
-
-    [Given("I have not entered a date")]
-    public async Task GivenIHaveNotEnteredADate()
-    {
-        await EnterDate(string.Empty, string.Empty, string.Empty);
-    }
-
-    [Given("I have entered yesterdays date")]
-    public async Task GivenIHaveEnteredYesterdaysDate()
-    {
-        await EnterDate(DateTime.UtcNow.AddDays(-1));
-    }
-
-    [Given("I have entered todays date")]
-    public async Task GivenIHaveEnteredTodaysDate()
-    {
-        await EnterDate(DateTime.UtcNow);
     }
 
     private async Task EnterDate(DateTime date)

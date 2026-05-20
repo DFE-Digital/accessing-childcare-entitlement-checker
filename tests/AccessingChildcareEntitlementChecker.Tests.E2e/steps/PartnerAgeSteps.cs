@@ -1,6 +1,6 @@
 using Reqnroll;
 
-namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps;
+namespace AccessingChildcareEntitlementChecker.Tests.E2e.Steps;
 
 [Binding]
 [Scope(Feature = "Partner Age")]

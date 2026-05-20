@@ -3,7 +3,7 @@ using Reqnroll;
 using System.Globalization;
 using static Microsoft.Playwright.Assertions;
 
-namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps;
+namespace AccessingChildcareEntitlementChecker.Tests.E2e.Steps;
 
 [Binding]
 public class CheckChildDetailsSteps
@@ -15,10 +15,40 @@ public class CheckChildDetailsSteps
         _context = context;
     }
 
-    [Given("I check my children's details and click on Continue")]
-    public async Task GivenICheckMyChildrensDetailsAndClickOnContinue()
+    [When("I click the Change link in the {string} panel for {string}")]
+    public async Task WhenIClickTheChangeLinkInThePanelFor(string title, string question)
     {
+        var panel = _context.Page.Locator(".govuk-summary-card")
+                .Filter(new() { HasTextString = title });
+
+        var summaryRow = panel.Locator(".govuk-summary-list__row")
+            .Filter(new() { HasTextString = question });
+
+        await summaryRow.GetByRole(AriaRole.Link, new() { Name = "Change" }).ClickAsync();
+    }
+
+    [When("I click the Remove link in the {string} panel")]
+    public async Task WhenIClickTheRemoveLinkInThePanel(string title)
+    {
+        var panel = _context.Page.Locator(".govuk-summary-card")
+                .Filter(new() { HasTextString = title });
+
+        await panel.GetByRole(AriaRole.Link, new() { Name = "Remove" }).ClickAsync();
+    }
+
+    [When("I remove {string}")]
+    public async Task WhenIRemove(string name)
+    {
+        var panel = _context.Page.Locator(".govuk-summary-card")
+                .Filter(new() { HasTextString = name });
+
+        await panel.GetByRole(AriaRole.Link, new() { Name = "Remove" }).ClickAsync();
+        await Expect(_context.Page.GetByRole(AriaRole.Heading, new() { Name = $"Are you sure you want to remove {name}?" }))
+            .ToBeVisibleAsync();
+        await _context.Page.GetByRole(AriaRole.Radio, new() { Name = "Yes" }).CheckAsync();
         await _context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
+        await Expect(_context.Page.GetByRole(AriaRole.Heading, new() { Name = $"Check your children's details" }))
+            .ToBeVisibleAsync();
     }
 
     [Then("I should see one summary panel")]
@@ -66,42 +96,6 @@ public class CheckChildDetailsSteps
                     .ToContainTextAsync(answer);
             }
         }
-    }
-
-    [When("I click the Change link in the {string} panel for {string}")]
-    public async Task WhenIClickTheChangeLinkInThePanelFor(string title, string question)
-    {
-        var panel = _context.Page.Locator(".govuk-summary-card")
-                .Filter(new() { HasTextString = title });
-
-        var summaryRow = panel.Locator(".govuk-summary-list__row")
-            .Filter(new() { HasTextString = question });
-
-        await summaryRow.GetByRole(AriaRole.Link, new() { Name = "Change" }).ClickAsync();
-    }
-
-    [When("I click the Remove link in the {string} panel")]
-    public async Task WhenIClickTheRemoveLinkInThePanel(string title)
-    {
-        var panel = _context.Page.Locator(".govuk-summary-card")
-                .Filter(new() { HasTextString = title });
-
-        await panel.GetByRole(AriaRole.Link, new() { Name = "Remove" }).ClickAsync();
-    }
-
-    [When("I remove {string}")]
-    public async Task WhenIRemove(string name)
-    {
-        var panel = _context.Page.Locator(".govuk-summary-card")
-                .Filter(new() { HasTextString = name });
-
-        await panel.GetByRole(AriaRole.Link, new() { Name = "Remove" }).ClickAsync();
-        await Expect(_context.Page.GetByRole(AriaRole.Heading, new() { Name = $"Are you sure you want to remove {name}?" }))
-            .ToBeVisibleAsync();
-        await _context.Page.GetByRole(AriaRole.Radio, new() { Name = "Yes" }).CheckAsync();
-        await _context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
-        await Expect(_context.Page.GetByRole(AriaRole.Heading, new() { Name = $"Check your children's details" }))
-            .ToBeVisibleAsync();
     }
 
     [Then("I should see some text saying {string}")]

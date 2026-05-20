@@ -1,7 +1,8 @@
 using Microsoft.Playwright;
 using Reqnroll;
+using static Microsoft.Playwright.Assertions;
 
-namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps;
+namespace AccessingChildcareEntitlementChecker.Tests.E2e.Steps;
 
 [Binding]
 public class ErrorSteps
@@ -48,5 +49,34 @@ public class ErrorSteps
     public void ThenTheHTTPStatusCodeIs500InternalServerError()
     {
         Assert.Equal(500, _lastResponse?.Status);
+    }
+
+    [Then("the {string} error is {string}")]
+    public async Task ThenTheFieldErrorIs(string fieldName, string expectedError)
+    {
+        var error = _context.Page.Locator($"#{fieldName}-error");
+
+        await Assertions.Expect(error).ToBeVisibleAsync();
+        await Assertions.Expect(error).ToContainTextAsync(expectedError);
+    }
+
+    [Then("an error summary box should appear at the top of the page")]
+    public async Task ThenAnErrorSummaryBoxShouldAppear()
+    {
+        await Expect(_context.Page.Locator(".govuk-error-summary"))
+            .ToBeVisibleAsync();
+        var summary = _context.Page.Locator(".govuk-error-summary");
+        await Expect(summary.Locator(".govuk-error-summary__title"))
+            .ToHaveTextAsync("There is a problem");
+    }
+
+    [Then("the error summary and inline validation should be {string}")]
+    public async Task ThenTheErrorSummaryTitleShouldBeWithAnErrorMessage(string message)
+    {
+        var summary = _context.Page.Locator(".govuk-error-summary");
+        await Expect(summary.GetByRole(AriaRole.Link, new() { Name = message }))
+            .ToBeVisibleAsync();
+        var inlineError = _context.Page.Locator(".govuk-error-message");
+        await Expect(inlineError).ToHaveTextAsync($"Error: {message}");
     }
 }

@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 using Reqnroll;
 using static Microsoft.Playwright.Assertions;
 
-namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps;
+namespace AccessingChildcareEntitlementChecker.Tests.E2e.Steps;
 
 [Binding]
 public class RadioButtonSteps
@@ -12,6 +12,24 @@ public class RadioButtonSteps
     public RadioButtonSteps(Context context)
     {
         _context = context;
+    }
+
+    [When("I select the {string} radio button")]
+    public async Task WhenISelectTheRadioButton(string label)
+    {
+        await _context.Page
+            .GetByLabel(label, new() { Exact = true })
+            .CheckAsync();
+    }
+
+    [When("I do not select a radio button")]
+    public async Task WhenIDoNotSelectARadioButton()
+    {
+        var checkedRadios = _context.Page
+            .GetByRole(AriaRole.Radio)
+            .And(_context.Page.Locator(":checked"));
+
+        await Expect(checkedRadios).ToHaveCountAsync(0);
     }
 
     [When(@"I should see (\d+) radio buttons with the following options:")]
@@ -35,15 +53,6 @@ public class RadioButtonSteps
         }
     }
 
-    [Given("I have selected the {string} radio button")]
-    [When("I select the {string} radio button")]
-    public async Task WhenISelectTheRadioButton(string label)
-    {
-        await _context.Page
-            .GetByLabel(label, new() { Exact = true })
-            .CheckAsync();
-    }
-
     [Then("the {string} radio button should be selected")]
     public async Task ThenTheRadioButtonShouldBeSelected(string label)
     {
@@ -58,15 +67,5 @@ public class RadioButtonSteps
             .And(_context.Page.Locator(":checked"));
 
         await Expect(checkedRadios).ToHaveCountAsync(1);
-    }
-
-    [Given("I have not selected an option")]
-    public async Task GivenIHaveNotSelectedAnOption()
-    {
-        var checkedRadios = _context.Page
-            .GetByRole(AriaRole.Radio)
-            .And(_context.Page.Locator(":checked"));
-
-        await Expect(checkedRadios).ToHaveCountAsync(0);
     }
 }
