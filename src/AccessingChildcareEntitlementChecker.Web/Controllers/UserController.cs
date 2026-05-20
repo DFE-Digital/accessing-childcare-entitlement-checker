@@ -92,12 +92,6 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    public IActionResult PaidWork(string? returnTo = null)
-    {
-        return View(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo });
-    }
-
-    [HttpGet]
     public IActionResult SettledStatus(string? returnTo = null)
     {
         return View(new SettledStatusViewModel(_journeyState) { ReturnTo = returnTo });
@@ -114,6 +108,12 @@ public class UserController : Controller
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
         return this.RedirectTo<UserController>(nameof(PaidWork));
+    }
+
+    [HttpGet]
+    public IActionResult PaidWork(string? returnTo = null)
+    {
+        return View(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
