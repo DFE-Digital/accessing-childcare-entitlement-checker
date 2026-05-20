@@ -3,7 +3,7 @@ using AccessingChildcareEntitlementChecker.Web;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using AccessingChildcareEntitlementChecker.RulesEngine.Services;
+using AccessingChildcareEntitlementChecker.RulesEngine.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -25,7 +25,7 @@ services
 
 services.AddJourneyServices();
 
-services.AddScoped<EntitlementRulesEngine>();
+services.AddRulesEngine();
 
 var app = builder.Build();
 if (!app.Environment.IsProduction())
