@@ -11,7 +11,7 @@ public class DeferredAnswer(string title, string answer, string scope) : IDeferr
 
     public string Scope { get; } = scope;
 
-    public DeferredAnswer(string title, string answer) : this (title, answer, string.Empty)
+    public DeferredAnswer(string title, string answer) : this(title, answer, string.Empty)
     {
 
     }

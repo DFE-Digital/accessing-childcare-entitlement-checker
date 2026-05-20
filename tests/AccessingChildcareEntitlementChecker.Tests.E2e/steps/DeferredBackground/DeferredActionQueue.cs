@@ -2,7 +2,7 @@
 
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.Steps.DeferredBackground
 {
-    public  class DeferredActionQueue
+    public class DeferredActionQueue
     {
         private readonly List<IDeferredAction> _deferredActions;
 
@@ -36,7 +36,8 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Steps.DeferredBackgroun
         {
             var matches = _deferredActions
                 .Select((action, index) => new { action, index })
-                .Where(match => {
+                .Where(match =>
+                {
                     if (match.action is not DeferredAnswer deferredAnswer)
                     {
                         return false;
