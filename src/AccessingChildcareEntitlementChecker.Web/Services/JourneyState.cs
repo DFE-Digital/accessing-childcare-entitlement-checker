@@ -7,6 +7,11 @@ namespace AccessingChildcareEntitlementChecker.Web.Services;
 
 public class JourneyState
 {
+
+    public PaidWorkOption? PaidWork { get; set; }
+
+    public SettledStatusOption? SettledStatus { get; set; }
+
     public CountryOfResidence? CountryOfResidence { get; set; }
 
     public Dictionary<string, Child> Children { get; set; } = [];
@@ -106,5 +111,15 @@ public class JourneyState
     public void Apply(PartnerAgeViewModel model)
     {
         PartnerAge = model.PartnerAge;
+    }
+
+    public void Apply(SettledStatusViewModel model)
+    {
+        SettledStatus = model.SettledStatus;
+    }
+
+    public void Apply(PaidWorkViewModel model)
+    {
+        PaidWork = model.PaidWork;
     }
 }

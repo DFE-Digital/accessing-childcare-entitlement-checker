@@ -1,0 +1,53 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.User
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@model PaidWorkViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
+
+@section BeforeContent {
+    @switch (JourneyState.Nationality)
+    {
+        case NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland:
+            <govuk-back-link asp-controller="User" asp-action="SettledStatus">
+                @Shared["Button_Back"]
+            </govuk-back-link>
+            break;
+        default:
+            <govuk-back-link asp-controller="User" asp-action="Nationality">
+                @Shared["Button_Back"]
+            </govuk-back-link>
+            break;
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Html.DisplayNameFor(model => model.PaidWork)
+        </h1>
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+
+            <govuk-radios for="PaidWork">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend class="govuk-visually-hidden">
+                        @Html.DisplayNameFor(model => model.PaidWork)
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<PaidWorkOption>())
+                    {
+                        <govuk-radios-item value="@value">
+                            @Html.EnumDisplayName(value)
+                        </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

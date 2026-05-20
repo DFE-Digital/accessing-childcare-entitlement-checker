@@ -196,4 +196,146 @@ public class UserControllerTests
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.HasPartner)));
         _journeySession.DidNotReceive().Set(_journeyState);
     }
+
+    [Fact]
+    public void SettledStatus_Post_WithYes_SavesState_AndRedirects()
+    {
+        var model = new SettledStatusViewModel
+        {
+            SettledStatus = SettledStatusOption.Yes
+        };
+
+        var result = _controller.SettledStatus(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(SettledStatusOption.Yes, _journeyState.SettledStatus);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal("PaidWork", redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void SettledStatus_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new SettledStatusViewModel
+        {
+            SettledStatus = null
+        };
+        _controller.ModelState.AddModelError(nameof(model.SettledStatus), "Faked Model Binding Error");
+
+        var result = _controller.SettledStatus(model);
+
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.SettledStatus)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void SettledStatus_Get_PopulatesModel_FromState()
+    {
+        _journeyState.SettledStatus = SettledStatusOption.Yes;
+
+        var result = Assert.IsType<ViewResult>(_controller.SettledStatus());
+
+        Assert.Equal(SettledStatusOption.Yes, result.Model<SettledStatusViewModel>().SettledStatus);
+    }
+
+    [Fact]
+    public void SettledStatus_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.SettledStatus());
+
+        Assert.Null(result.Model<SettledStatusViewModel>().SettledStatus);
+    }
+
+    [Fact]
+    public void PaidWork_Post_WithNo_SavesState_AndRedirects()
+    {
+        var model = new PaidWorkViewModel
+        {
+            PaidWork = PaidWorkOption.No
+        };
+
+        var result = _controller.PaidWork(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(PaidWorkOption.No, _journeyState.PaidWork);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal("UniversalCredit", redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void PaidWork_Post_WithOnLeave_SavesState_AndRedirects()
+    {
+        var model = new PaidWorkViewModel
+        {
+            PaidWork = PaidWorkOption.OnLeave
+        };
+
+        var result = _controller.PaidWork(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(PaidWorkOption.OnLeave, _journeyState.PaidWork);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal("TypeOfLeave", redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void PaidWork_Post_WithYes_SavesState_AndRedirects()
+    {
+        var model = new PaidWorkViewModel
+        {
+            PaidWork = PaidWorkOption.Yes
+        };
+
+        var result = _controller.PaidWork(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(PaidWorkOption.Yes, _journeyState.PaidWork);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal("WorkStatus", redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void PaidWork_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new PaidWorkViewModel
+        {
+            PaidWork = null
+        };
+        _controller.ModelState.AddModelError(nameof(model.PaidWork), "Faked Model Binding Error");
+
+        var result = _controller.PaidWork(model);
+
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.PaidWork)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void PaidWork_Get_PopulatesModel_FromState()
+    {
+        _journeyState.PaidWork = PaidWorkOption.Yes;
+
+        var result = Assert.IsType<ViewResult>(_controller.PaidWork());
+
+        Assert.Equal(PaidWorkOption.Yes, result.Model<PaidWorkViewModel>().PaidWork);
+    }
+
+    [Fact]
+    public void PaidWork_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.PaidWork());
+
+        Assert.Null(result.Model<PaidWorkViewModel>().PaidWork);
+    }
 }

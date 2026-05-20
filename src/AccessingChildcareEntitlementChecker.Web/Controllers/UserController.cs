@@ -84,24 +84,74 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        switch (model.Nationality)
+        return model.Nationality switch
         {
-            case NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland:
-                return this.RedirectTo<UserController>(nameof(SettledStatus));
-            default:
-                return this.RedirectTo<UserController>(nameof(PaidWork));
+            NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => this.RedirectTo<UserController>(nameof(SettledStatus)),
+            _ => this.RedirectTo<UserController>(nameof(PaidWork)),
+        };
+    }
+
+    [HttpGet]
+    public IActionResult PaidWork(string? returnTo = null)
+    {
+        return View(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpGet]
+    public IActionResult SettledStatus(string? returnTo = null)
+    {
+        return View(new SettledStatusViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult SettledStatus(SettledStatusViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
         }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        return this.RedirectTo<UserController>(nameof(PaidWork));
+    }
+
+    [HttpPost]
+    public IActionResult PaidWork(PaidWorkViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        var redirect = model.PaidWork switch
+        {
+            PaidWorkOption.Yes => this.RedirectTo<UserController>(nameof(WorkStatus)),
+            PaidWorkOption.OnLeave => this.RedirectTo<UserController>(nameof(TypeOfLeave)),
+            _ => this.RedirectTo<UserController>(nameof(UniversalCredit)),
+        };
+
+        return redirect;
     }
 
     [HttpGet]
-    public IActionResult PaidWork()
+    public IActionResult WorkStatus(string? returnTo = null)
     {
-        return Content("Are you in paid work?");
+        return Content("How would you describe your work status?");
     }
 
     [HttpGet]
-    public IActionResult SettledStatus()
+    public IActionResult TypeOfLeave(string? returnTo = null)
     {
-        return Content("Do you have settled or pre-settled status under the EU Settlement Scheme?");
+        // This page a stub as not yet confirmed in design.
+        return Content("TypeOfLeave");
+    }
+
+    [HttpGet]
+    public IActionResult UniversalCredit(string? returnTo = null)
+    {
+        return Content("Does your household receive universal credit?");
     }
 }
