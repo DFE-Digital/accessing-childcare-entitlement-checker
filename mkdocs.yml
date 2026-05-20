@@ -1,0 +1,16 @@
+site_name: 'CEC Project Technical Documentation(Feature Test)'
+site_url: 'https://dfe-digital.github.io/accessing-childcare-entitlement-checker'
+
+theme:
+  name: 'material' # The standard, clean tech-docs theme
+  palette:
+    primary: 'teal'
+    accent: 'blue'
+  features:
+    - navigation.tabs
+    - search.suggest
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Run Guide: setup.md

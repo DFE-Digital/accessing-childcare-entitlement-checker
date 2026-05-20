@@ -1,0 +1,34 @@
+name: 'Publish Documentation Portal'
+
+on:
+  push:
+    branches:
+      - feature/hk-AC-666-documentation-portal
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - '.github/workflows/deploy-documentation.yml'
+  workflow_dispatch: # Allows manual triggering
+
+permissions:
+  contents: write # Crucial: Allows the runner to push to the gh-pages branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install MkDocs and Material Theme
+        run: |
+          pip install mkdocs-material
+
+      - name: Build and Deploy to GitHub Pages
+        run: |
+          # This compiles the markdown and pushes it to the gh-pages branch automatically
+          mkdocs gh-deploy --force
