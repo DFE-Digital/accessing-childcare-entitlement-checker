@@ -40,6 +40,12 @@
                     {
                         <govuk-radios-item value="@value">
                             @Html.EnumDisplayName(value)
+                            @if (value == PaidWorkOption.OnLeave)
+                            {
+                                <govuk-radios-item-hint>
+                                    @Localizer["This includes maternity, paternity, adoption or neonatal care leave and sick leave"]
+                                </govuk-radios-item-hint>
+                            }
                         </govuk-radios-item>
                     }
                 </govuk-radios-fieldset>
