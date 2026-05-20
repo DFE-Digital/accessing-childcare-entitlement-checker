@@ -13,8 +13,6 @@ public class DateSteps
         _context = context;
     }
 
-
-
     [Then("I should see a date entry input")]
     public async Task ThenIShouldSeeADateEntryInput()
     {

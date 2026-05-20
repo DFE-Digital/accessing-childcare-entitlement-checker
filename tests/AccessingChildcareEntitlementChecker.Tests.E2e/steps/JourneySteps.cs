@@ -1,6 +1,5 @@
 using Microsoft.Playwright;
 using Reqnroll;
-using System.Globalization;
 using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps;
@@ -109,7 +108,7 @@ public class JourneySteps
 
         if (await dateInputs.CountAsync() > 0)
         {
-            var date = ParseRelativeDate(answer);
+            var date = RelativeDate.Parse(answer);
 
             await _context.Page.GetByLabel("Day").FillAsync(date.Day.ToString());
             await _context.Page.GetByLabel("Month").FillAsync(date.Month.ToString());
@@ -135,22 +134,6 @@ public class JourneySteps
         {
             await _context.Page.GetByRole(AriaRole.Checkbox, new() { Name = checkboxAnswer, Exact = true }).CheckAsync();
         }
-    }
-
-    /// <remarks>
-    /// Consider using a lib like Humanizer if this grows any bigger.
-    /// </remarks>
-    private DateOnly ParseRelativeDate(string value)
-    {
-        var today = DateOnly.FromDateTime(DateTime.Today);
-
-        return value.Trim().ToLowerInvariant() switch
-        {
-            "today" => today,
-            "yesterday" => today.AddDays(-1),
-            "tomorrow" => today.AddDays(1),
-            _ => DateOnly.Parse(value, CultureInfo.GetCultureInfo("en-GB"))
-        };
     }
 
     private record Response(string Question, string Answer);
