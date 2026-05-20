@@ -1,48 +1,47 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
-namespace AccessingChildcareEntitlementChecker.UnitTests.Services
+namespace AccessingChildcareEntitlementChecker.UnitTests.Services;
+
+public class JourneyStateTests
 {
-    public class JourneyStateTests
+    private readonly JourneyState _journeyState;
+    public JourneyStateTests()
     {
-        private readonly JourneyState _journeyState;
-        public JourneyStateTests()
+        _journeyState = new JourneyState();
+    }
+
+    [Fact]
+    public void GetChild_ReturnsNullIfChildDoesNotExist()
+    {
+        var child = _journeyState.GetChild("non-existent-child-id");
+        Assert.Null(child);
+    }
+
+    [Fact]
+    public void Apply_ChildName_ThrowsIfNoChildName()
+    {
+        Assert.Throws<InvalidOperationException>(() =>
         {
-            _journeyState = new JourneyState();
-        }
+            _journeyState.Apply(new ChildNameViewModel());
+        });
+    }
 
-        [Fact]
-        public void GetChild_ReturnsNullIfChildDoesNotExist()
-        {
-            var child = _journeyState.GetChild("non-existent-child-id");
-            Assert.Null(child);
-        }
+    [Fact]
+    public void Apply_ChildName_SetsChildIdIfNull()
+    {
+        var model = new ChildNameViewModel { ChildName = "Child A" };
+        _journeyState.Apply(model);
 
-        [Fact]
-        public void Apply_ChildName_ThrowsIfNoChildName()
-        {
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                _journeyState.Apply(new ChildNameViewModel());
-            });
-        }
+        Assert.NotNull(model.ChildId);
+    }
 
-        [Fact]
-        public void Apply_ChildName_SetsChildIdIfNull()
-        {
-            var model = new ChildNameViewModel { ChildName = "Child A" };
-            _journeyState.Apply(model);
+    [Fact]
+    public void ApplyChildName_AddsChildIdIfNotExisting()
+    {
+        var model = new ChildNameViewModel { ChildName = "Child A" };
+        _journeyState.Apply(model);
 
-            Assert.NotNull(model.ChildId);
-        }
-
-        [Fact]
-        public void ApplyChildName_AddsChildIdIfNotExisting()
-        {
-            var model = new ChildNameViewModel { ChildName = "Child A" };
-            _journeyState.Apply(model);
-
-            Assert.Single(_journeyState.Children.Keys);
-        }
+        Assert.Single(_journeyState.Children.Keys);
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace AccessingChildcareEntitlementChecker.Web.Services
+namespace AccessingChildcareEntitlementChecker.Web.Services;
+
+public interface ITodayFactory
 {
-    public interface ITodayFactory
-    {
-        DateOnly Today { get; }
-    }
+    DateOnly Today { get; }
 }

@@ -1,82 +1,81 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccessingChildcareEntitlementChecker.Web.Controllers
+namespace AccessingChildcareEntitlementChecker.Web.Controllers;
+
+public class ExpectedChildDetailsController : Controller
 {
-    public class ExpectedChildDetailsController : Controller
+    private readonly JourneyState _journeyState;
+    private readonly IJourneySession _journeySession;
+
+    public ExpectedChildDetailsController(
+        JourneyState journeyState,
+        IJourneySession journeySession)
     {
-        private readonly JourneyState _journeyState;
-        private readonly IJourneySession _journeySession;
+        _journeyState = journeyState;
+        _journeySession = journeySession;
+    }
 
-        public ExpectedChildDetailsController(
-            JourneyState journeyState,
-            IJourneySession journeySession)
+    [HttpGet]
+    public IActionResult ChildDueDate(string childId, string? returnTo = null)
+    {
+        var child = _journeyState.GetChild(childId);
+        if (child == null)
         {
-            _journeyState = journeyState;
-            _journeySession = journeySession;
+            return NotFound();
         }
 
-        [HttpGet]
-        public IActionResult ChildDueDate(string childId, string? returnTo = null)
-        {
-            var child = _journeyState.GetChild(childId);
-            if (child == null)
-            {
-                return NotFound();
-            }
+        return View(new ChildDueDateViewModel(child) { ReturnTo = returnTo });
+    }
 
-            return View(new ChildDueDateViewModel(child) { ReturnTo = returnTo });
+    [HttpPost]
+    public IActionResult ChildDueDate(ChildDueDateViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
         }
 
-        [HttpPost]
-        public IActionResult ChildDueDate(ChildDueDateViewModel model)
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        if (model.ReturnTo == "check-your-childrens-details")
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            _journeyState.Apply(model);
-            _journeySession.Set(_journeyState);
-            if (model.ReturnTo == "check-your-childrens-details")
-            {
-                return this.RedirectTo<CheckChildDetailsController>(
-                    nameof(CheckChildDetailsController.CheckChildDetails),
-                    new { fromChildId = model.ChildId });
-            }
-
-            return this.RedirectTo<ExpectedChildDetailsController>(
-                nameof(ExpectedChildRelationship),
-                new { childId = model.ChildId });
-        }
-
-        [HttpGet]
-        public IActionResult ExpectedChildRelationship(string childId, string? returnTo = null)
-        {
-            var child = _journeyState.GetChild(childId);
-            if (child == null)
-            {
-                return NotFound();
-            }
-
-            return View(new ExpectedChildRelationshipViewModel(child) { ReturnTo = returnTo });
-        }
-
-        [HttpPost]
-        public IActionResult ExpectedChildRelationship(ExpectedChildRelationshipViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            _journeyState.Apply(model);
-            _journeySession.Set(_journeyState);
             return this.RedirectTo<CheckChildDetailsController>(
                 nameof(CheckChildDetailsController.CheckChildDetails),
                 new { fromChildId = model.ChildId });
         }
+
+        return this.RedirectTo<ExpectedChildDetailsController>(
+            nameof(ExpectedChildRelationship),
+            new { childId = model.ChildId });
+    }
+
+    [HttpGet]
+    public IActionResult ExpectedChildRelationship(string childId, string? returnTo = null)
+    {
+        var child = _journeyState.GetChild(childId);
+        if (child == null)
+        {
+            return NotFound();
+        }
+
+        return View(new ExpectedChildRelationshipViewModel(child) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult ExpectedChildRelationship(ExpectedChildRelationshipViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        return this.RedirectTo<CheckChildDetailsController>(
+            nameof(CheckChildDetailsController.CheckChildDetails),
+            new { fromChildId = model.ChildId });
     }
 }

@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
-namespace AccessingChildcareEntitlementChecker.Web.Models
+namespace AccessingChildcareEntitlementChecker.Web.Models;
+
+public enum BirthStatus
 {
-    public enum BirthStatus
-    {
-        [Display(Name = "Option_Born")]
-        Born,
+    [Display(Name = "Option_Born")]
+    Born,
 
-        [Display(Name = "Option_Due")]
-        Due,
-    }
+    [Display(Name = "Option_Due")]
+    Due,
 }
