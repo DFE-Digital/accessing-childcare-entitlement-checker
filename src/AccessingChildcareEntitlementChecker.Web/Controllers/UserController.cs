@@ -19,6 +19,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult NextStepPlaceholder()
     {
         return Content("<h1 >Next step placeholder</h1>", "text/html");
@@ -137,12 +138,14 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult WorkStatus(string? returnTo = null)
     {
         return Content("<h1>How would you describe your work status?</h1>", "text/html");
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult TypeOfLeave(string? returnTo = null)
     {
         // This page a stub as not yet confirmed in design.
@@ -150,6 +153,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult UniversalCredit(string? returnTo = null)
     {
         return Content("<h1>Does your household receive universal credit?</h1>", "text/html");
