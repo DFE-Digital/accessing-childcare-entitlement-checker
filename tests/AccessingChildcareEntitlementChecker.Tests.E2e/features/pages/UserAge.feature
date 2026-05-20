@@ -26,7 +26,6 @@ Scenario: Continue without selection
     And the error summary title should be "There is a problem" with an error message "Select your age"
     And inline validation should display with the error message "Select your age"
 
-@ignore
 Scenario: Continue with selection
     Given I have selected the "Under 18" radio button
     When I click on Continue
