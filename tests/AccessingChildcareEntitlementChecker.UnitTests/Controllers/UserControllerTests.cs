@@ -94,7 +94,7 @@ public class UserControllerTests
     [Theory]
     [InlineData(NationalityOption.BritishOrIrishCitizen, "User", nameof(UserController.PaidWork))]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "User", nameof(UserController.SettledStatus))]
-    [InlineData(NationalityOption.CitizenOfADifferentCountry, "User", nameof(UserController.PAidWork))]
+    [InlineData(NationalityOption.CitizenOfADifferentCountry, "User", nameof(UserController.PaidWork))]
     public void Nationality_Post_SavesState_AndRedirects(NationalityOption nationality, string controllerName, string actionName)
     {
         var model = new NationalityViewModel
