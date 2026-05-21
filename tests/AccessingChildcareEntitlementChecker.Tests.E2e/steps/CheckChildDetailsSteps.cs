@@ -2,7 +2,6 @@ using Microsoft.Playwright;
 using Reqnroll;
 using System.Globalization;
 using static Microsoft.Playwright.Assertions;
-using static System.Net.WebRequestMethods;
 
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.steps;
 
@@ -49,9 +48,9 @@ public class CheckChildDetailsSteps
             await Expect(summaryRow.Locator(".govuk-summary-list__key"))
                 .ToHaveTextAsync(question);
 
-            if (answer.ToLower() == "tomorrow" || answer.ToLower() == "yesterday" || answer.ToLower() == "today")
+            if (RelativeDate.IsRelative(answer))
             {
-                var expectedDate = ParseRelativeDate(answer).ToString("d MMMM yyyy", CultureInfo.GetCultureInfo("en-GB"));
+                var expectedDate = RelativeDate.Parse(answer).ToString("d MMMM yyyy", CultureInfo.GetCultureInfo("en-GB"));
                 await Expect(summaryRow.Locator(".govuk-summary-list__value"))
                     .ToContainTextAsync(expectedDate);
             }
@@ -75,30 +74,49 @@ public class CheckChildDetailsSteps
         await summaryRow.GetByRole(AriaRole.Link, new() { Name = "Change" }).ClickAsync();
     }
 
-    [When("I click the Delete link in the {string} panel")]
-    public async Task WhenIClickTheDeleteLinkInThePanel(string title)
+    [When("I click the Remove link in the {string} panel")]
+    public async Task WhenIClickTheRemoveLinkInThePanel(string title)
     {
         var panel = _context.Page.Locator(".govuk-summary-card")
                 .Filter(new() { HasTextString = title });
 
-        await panel.GetByRole(AriaRole.Link, new() { Name = "Delete" }).ClickAsync();
+        await panel.GetByRole(AriaRole.Link, new() { Name = "Remove" }).ClickAsync();
     }
 
-    // @TODO DON'T COPYPASTA
-    /// <remarks>
-    /// Consider using a lib like Humanizer if this grows any bigger.
-    /// </remarks>
-    private DateOnly ParseRelativeDate(string value)
+    [When("I remove {string}")]
+    public async Task WhenIRemove(string name)
     {
-        var today = DateOnly.FromDateTime(DateTime.Today);
+        var panel = _context.Page.Locator(".govuk-summary-card")
+                .Filter(new() { HasTextString = name });
 
-        return value.Trim().ToLowerInvariant() switch
-        {
-            "today" => today,
-            "yesterday" => today.AddDays(-1),
-            "tomorrow" => today.AddDays(1),
-            _ => DateOnly.Parse(value, CultureInfo.GetCultureInfo("en-GB"))
-        };
+        await panel.GetByRole(AriaRole.Link, new() { Name = "Remove" }).ClickAsync();
+        await Expect(_context.Page.GetByRole(AriaRole.Heading, new() { Name = $"Are you sure you want to remove {name}?" }))
+            .ToBeVisibleAsync();
+        await _context.Page.GetByRole(AriaRole.Radio, new() { Name = "Yes" }).CheckAsync();
+        await _context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
+        await Expect(_context.Page.GetByRole(AriaRole.Heading, new() { Name = $"Check your children's details" }))
+            .ToBeVisibleAsync();
     }
 
+    [Then("I should see some text saying {string}")]
+    public async Task ThenIShouldSeeSomeTextSaying(string expectedText)
+    {
+        await Expect(_context.Page.Locator("body")).ToContainTextAsync(expectedText);
+    }
+
+    [Then("I should not see a Continue button")]
+    public async Task ThenIShouldNotSeeAContinueButton()
+    {
+        await Expect(_context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }))
+            .Not.ToBeVisibleAsync();
+    }
+
+    [Then("I should see a success banner that says {string}")]
+    public async Task ThenIShouldSeeASuccessBannerThatSays(string p0)
+    {
+        var banner = _context.Page.Locator(".govuk-notification-banner--success");
+        await Expect(banner).ToBeVisibleAsync();
+        await Expect(banner.GetByRole(AriaRole.Heading, new() { Name = "Success" })).ToHaveTextAsync("Success");
+        await Expect(banner.Locator(".govuk-notification-banner__content")).ToContainTextAsync(p0);
+    }
 }

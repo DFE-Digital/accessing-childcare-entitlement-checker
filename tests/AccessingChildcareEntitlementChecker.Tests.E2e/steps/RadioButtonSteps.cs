@@ -14,6 +14,7 @@ public class RadioButtonSteps
         _context = context;
     }
 
+    [When(@"I should see (\d+) radio buttons with the following options:")]
     [Then(@"I should see (\d+) radio buttons with the following options:")]
     public async Task ThenIShouldSeeRadioButtonsWithTheFollowingOptions(int expectedCount, DataTable dataTable)
     {
