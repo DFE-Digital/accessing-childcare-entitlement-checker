@@ -44,7 +44,6 @@ Scenario: Continue with Carer's Allowance
 	And I click on Continue
 	Then the page header is "Do you already get any of this child care support?"
 
-@ignore
 Scenario: Back navigation from Is your adjusted net income more than £100,000 a year?
 	Given I answer "Are you in paid work?" as "Yes"
 	And I answer "How would you describe your work status?" as "Paid employment"
