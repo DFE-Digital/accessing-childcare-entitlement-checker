@@ -36,7 +36,7 @@ Scenario: Change my relationship to Sara
    
 Scenario: Continue with selection
     When I click on Continue
-    Then I will be directed to the next page in the user journey "How old are you?"
+    Then I will be directed to the next page in the user journey "What is your age?"
 
 Scenario: Back navigation
     When I click the back link

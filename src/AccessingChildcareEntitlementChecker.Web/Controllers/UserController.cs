@@ -65,11 +65,4 @@ public class UserController : Controller
         _journeySession.Set(_journeyState);
         return RedirectToAction(nameof(PartnerController.PartnerAge), "Partner");
     }
-
-    [HttpGet]
-    [ExcludeFromCodeCoverage(Justification = "To be covered by future pages")]
-    public IActionResult ChildDetails()
-    {
-        return View();
-    }
 }

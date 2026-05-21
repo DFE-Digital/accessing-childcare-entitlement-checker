@@ -15,6 +15,12 @@ public class CheckChildDetailsSteps
         _context = context;
     }
 
+    [Given("I check my children's details and click on Continue")]
+    public async Task GivenICheckMyChildrensDetailsAndClickOnContinue()
+    {
+        await _context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
+    }
+
     [Then("I should see one summary panel")]
     public async Task ThenIShouldSeeOneSummaryPanel()
     {
