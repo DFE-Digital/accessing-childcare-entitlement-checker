@@ -13,18 +13,18 @@ Background:
 Scenario: Page load
 	When the page header is "How would you describe your work status?"
 	Then I should see 3 checkboxes with the following options:
-		| Checkbox |
+		| Checkbox        |
 		| Paid employment |
-		| Self-employed |
-		| Apprentice |
+		| Self-employed   |
+		| Apprentice      |
 
 Scenario: Checkbox selection
 	When I select the "Paid employment" checkbox
 	And I select the "Self-employed" checkbox
 	Then the following checkboxes should be selected:
-		| Checkbox |
+		| Checkbox        |
 		| Paid employment |
-		| Self-employed |
+		| Self-employed   |
 
 Scenario: Continue without selection
 	When I do not select a checkbox

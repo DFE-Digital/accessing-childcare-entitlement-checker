@@ -91,40 +91,25 @@ public class UserControllerTests
         Assert.Equal(NationalityOption.BritishOrIrishCitizen, result.Model<NationalityViewModel>().Nationality);
     }
 
-    [Fact]
-    public void Nationality_Post_WithCitizenOfAnEUCountryEEACountryOrSwitzerland_SavesState_AndRedirects()
+    [Theory]
+    [InlineData(NationalityOption.BritishOrIrishCitizen, "User", nameof(UserController.WorkStatus))]
+    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "User", nameof(UserController.SettledStatus))]
+    [InlineData(NationalityOption.CitizenOfADifferentCountry, "User", nameof(UserController.WorkStatus))]
+    public void Nationality_Post_SavesState_AndRedirects(NationalityOption nationality, string controllerName, string actionName)
     {
         var model = new NationalityViewModel
         {
-            Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland
+            Nationality = nationality
         };
 
         var result = _controller.Nationality(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, _journeyState.Nationality);
+        Assert.Equal(nationality, _journeyState.Nationality);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal("SettledStatus", redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
-    }
-
-    [Fact]
-    public void Nationality_Post_WithFallbackSelection_SavesState_AndRedirects()
-    {
-        var model = new NationalityViewModel
-        {
-            Nationality = NationalityOption.BritishOrIrishCitizen
-        };
-
-        var result = _controller.Nationality(model);
-
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(NationalityOption.BritishOrIrishCitizen, _journeyState.Nationality);
-        Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal("PaidWork", redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -339,36 +324,23 @@ public class UserControllerTests
         Assert.Null(result.Model<PaidWorkViewModel>().PaidWork);
     }
 
-    [Fact]
-    public void WorkStatus_Post_WithFallbackSelection_SavesState_AndRedirects()
+    [Theory]
+    [InlineData(WorkStatusOption.PaidEmployment, "User", nameof(UserController.WeeklyEarnings))]
+    [InlineData(WorkStatusOption.SelfEmployed, "User", nameof(UserController.SelfEmployedDuration))]
+    [InlineData(WorkStatusOption.Apprentice, "User", nameof(UserController.WeeklyEarnings))]
+    public void WorkStatus_Post_SavesState_AndRedirects(WorkStatusOption option, string controllerName, string actionName)
     {
         var model = new WorkStatusViewModel
         {
-            WorkStatus = [WorkStatusOption.PaidEmployment]
+            WorkStatus = [option]
         };
 
         var result = _controller.WorkStatus(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.WeeklyEarnings), redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
-    }
-
-    [Fact]
-    public void WorkStatus_Post_WithSelfEmployed_SavesState_AndRedirects()
-    {
-        var model = new WorkStatusViewModel
-        {
-            WorkStatus = [WorkStatusOption.SelfEmployed]
-        };
-
-        var result = _controller.WorkStatus(model);
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.SelfEmployedDuration), redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -398,34 +370,21 @@ public class UserControllerTests
         Assert.NotNull(result.Model<WorkStatusViewModel>());
     }
 
-    [Fact]
-    public void SelfEmployedDuration_Post_WithFallbackSelection_SavesState_AndRedirects()
+    [Theory]
+    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, "User", nameof(UserController.YearlyEarnings))]
+    [InlineData(SelfEmployedDurationOption.LessThan12Months, "User", nameof(UserController.UniversalCredit))]
+    public void SelfEmployedDuration_Post_SavesState_AndRedirects(SelfEmployedDurationOption option, string controllerName, string actionName)
     {
         var model = new SelfEmployedDurationViewModel
         {
-            SelfEmployedDuration = SelfEmployedDurationOption.LessThan12Months
+            SelfEmployedDuration = option
         };
         var result = _controller.SelfEmployedDuration(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.UniversalCredit), redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
-    }
-
-    [Fact]
-    public void SelfEmployedDuration_Post_WithLessThan12Months_SavesState_AndRedirects()
-    {
-        var model = new SelfEmployedDurationViewModel
-        {
-            SelfEmployedDuration = SelfEmployedDurationOption.LessThan12Months
-        };
-        var result = _controller.SelfEmployedDuration(model);
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.UniversalCredit), redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -455,34 +414,21 @@ public class UserControllerTests
         Assert.NotNull(result.Model<SelfEmployedDurationViewModel>());
     }
 
-    [Fact]
-    public void YearlyEarnings_Post_WithFallbackSelection_SavesState_AndRedirects()
+    [Theory]
+    [InlineData(YearlyEarningsOption.AboveThreshold, "User", nameof(UserController.Benefits))]
+    [InlineData(YearlyEarningsOption.BelowThreshold, "User", nameof(UserController.UniversalCredit))]
+    public void YearlyEarnings_Post_SavesState_AndRedirects(YearlyEarningsOption option, string controllerName, string actionName)
     {
         var model = new YearlyEarningsViewModel
         {
-            YearlyEarnings = YearlyEarningsOption.AboveThreshold
+            YearlyEarnings = option
         };
         var result = _controller.YearlyEarnings(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.UniversalCredit), redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
-    }
-
-    [Fact]
-    public void YearlyEarnings_Post_WithAboveThreshold_SavesState_AndRedirects()
-    {
-        var model = new YearlyEarningsViewModel
-        {
-            YearlyEarnings = YearlyEarningsOption.AboveThreshold
-        };
-        var result = _controller.YearlyEarnings(model);
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.Benefits), redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -512,34 +458,21 @@ public class UserControllerTests
         Assert.NotNull(result.Model<YearlyEarningsViewModel>());
     }
 
-    [Fact]
-    public void WeeklyEarnings_Post_WithFallbackSelection_SavesState_AndRedirects()
+    [Theory]
+    [InlineData(WeeklyEarningsOption.AboveThreshold, "User", nameof(UserController.YearlyEarnings))]
+    [InlineData(WeeklyEarningsOption.BelowThreshold, "User", nameof(UserController.UniversalCredit))]
+    public void WeeklyEarnings_Post_SavesState_AndRedirects(WeeklyEarningsOption option, string controllerName, string actionName)
     {
         var model = new WeeklyEarningsViewModel
         {
-            WeeklyEarnings = WeeklyEarningsOption.AboveThreshold
+            WeeklyEarnings = option
         };
         var result = _controller.WeeklyEarnings(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.YearlyEarnings), redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
-    }
-
-    [Fact]
-    public void WeeklyEarnings_Post_WithAboveThreshold_SavesState_AndRedirects()
-    {
-        var model = new WeeklyEarningsViewModel
-        {
-            WeeklyEarnings = WeeklyEarningsOption.AboveThreshold
-        };
-        var result = _controller.WeeklyEarnings(model);
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(UserController.YearlyEarnings), redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]

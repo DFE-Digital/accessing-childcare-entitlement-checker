@@ -5,18 +5,18 @@ Background:
 	And I start the journey, filling in Aydin's and Sara's details
 	And I check my children's details and click on Continue
 	And I answer questions as follows:
-		| Question                  | Answer                   |
-		| What is your age?         | Under 18                 |
-		| What is your nationality? | British or Irish citizen |
-		| Are you in paid work?     | Yes                      |
-		| How would you describe your work status? | Self-employed |
+		| Question                                 | Answer                   |
+		| What is your age?                        | Under 18                 |
+		| What is your nationality?                | British or Irish citizen |
+		| Are you in paid work?                    | Yes                      |
+		| How would you describe your work status? | Self-employed            |
 
 Scenario: Page load
 	When the page header is "Have you been self-employed for less than 12 months?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
-		| Yes |
-		| No |
+		| Yes    |
+		| No     |
 
 Scenario: Radio button selection
 	When I select the "Yes" radio button
