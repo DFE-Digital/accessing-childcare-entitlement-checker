@@ -28,6 +28,12 @@ public class JourneyState
 
     public YearlyEarningsOption? YearlyEarnings { get; set; }
 
+    public UniversalCreditOption? UniversalCredit { get; set; }
+
+    public List<BenefitsOption> Benefits { get; set; } = [];
+
+    public List<ChildcareSupportOption> ChildcareSupport { get; set; } = [];
+
     public bool? HasPartner { get; set; }
 
     public AgeRange? PartnerAge { get; set; }
@@ -129,6 +135,21 @@ public class JourneyState
     public void Apply(YearlyEarningsViewModel model)
     {
         YearlyEarnings = model.YearlyEarnings;
+    }
+
+    public void Apply(UniversalCreditViewModel model)
+    {
+        UniversalCredit = model.UniversalCredit;
+    }
+
+    public void Apply(BenefitsViewModel model)
+    {
+        Benefits = model.Benefits;
+    }
+
+    public void Apply(ChildcareSupportViewModel model)
+    {
+        ChildcareSupport = model.ChildcareSupport;
     }
 
     public void Apply(HasPartnerViewModel model)
