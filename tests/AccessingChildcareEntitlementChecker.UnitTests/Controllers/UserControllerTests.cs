@@ -92,9 +92,9 @@ public class UserControllerTests
     }
 
     [Theory]
-    [InlineData(NationalityOption.BritishOrIrishCitizen, "User", nameof(UserController.WorkStatus))]
+    [InlineData(NationalityOption.BritishOrIrishCitizen, "User", nameof(UserController.PaidWork))]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "User", nameof(UserController.SettledStatus))]
-    [InlineData(NationalityOption.CitizenOfADifferentCountry, "User", nameof(UserController.WorkStatus))]
+    [InlineData(NationalityOption.CitizenOfADifferentCountry, "User", nameof(UserController.PAidWork))]
     public void Nationality_Post_SavesState_AndRedirects(NationalityOption nationality, string controllerName, string actionName)
     {
         var model = new NationalityViewModel
@@ -371,7 +371,7 @@ public class UserControllerTests
     }
 
     [Theory]
-    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, "User", nameof(UserController.YearlyEarnings))]
+    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, "User", nameof(UserController.WeeklyEarnings))]
     [InlineData(SelfEmployedDurationOption.LessThan12Months, "User", nameof(UserController.UniversalCredit))]
     public void SelfEmployedDuration_Post_SavesState_AndRedirects(SelfEmployedDurationOption option, string controllerName, string actionName)
     {
