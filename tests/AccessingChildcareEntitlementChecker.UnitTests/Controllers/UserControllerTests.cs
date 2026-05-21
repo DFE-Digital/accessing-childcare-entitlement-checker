@@ -338,4 +338,234 @@ public class UserControllerTests
 
         Assert.Null(result.Model<PaidWorkViewModel>().PaidWork);
     }
+
+    [Fact]
+    public void WorkStatus_Post_WithFallbackSelection_SavesState_AndRedirects()
+    {
+        var model = new WorkStatusViewModel
+        {
+            WorkStatus = [WorkStatusOption.PaidEmployment]
+        };
+
+        var result = _controller.WorkStatus(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(UserController.WeeklyEarnings), redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void WorkStatus_Post_WithSelfEmployed_SavesState_AndRedirects()
+    {
+        var model = new WorkStatusViewModel
+        {
+            WorkStatus = [WorkStatusOption.SelfEmployed]
+        };
+
+        var result = _controller.WorkStatus(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(UserController.SelfEmployedDuration), redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void WorkStatus_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new WorkStatusViewModel();
+        _controller.ModelState.AddModelError(nameof(model.WorkStatus), "Faked Model Binding Error");
+        var result = _controller.WorkStatus(model);
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.WorkStatus)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void WorkStatus_Get_PopulatesModel_FromState()
+    {
+        _journeyState.WorkStatus = [WorkStatusOption.PaidEmployment];
+        var result = Assert.IsType<ViewResult>(_controller.WorkStatus());
+        Assert.Equal([WorkStatusOption.PaidEmployment], result.Model<WorkStatusViewModel>().WorkStatus);
+    }
+
+    [Fact]
+    public void WorkStatus_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.WorkStatus());
+        Assert.NotNull(result.Model<WorkStatusViewModel>());
+    }
+
+    [Fact]
+    public void SelfEmployedDuration_Post_WithFallbackSelection_SavesState_AndRedirects()
+    {
+        var model = new SelfEmployedDurationViewModel
+        {
+            SelfEmployedDuration = SelfEmployedDurationOption.LessThan12Months
+        };
+        var result = _controller.SelfEmployedDuration(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(UserController.UniversalCredit), redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void SelfEmployedDuration_Post_WithLessThan12Months_SavesState_AndRedirects()
+    {
+        var model = new SelfEmployedDurationViewModel
+        {
+            SelfEmployedDuration = SelfEmployedDurationOption.LessThan12Months
+        };
+        var result = _controller.SelfEmployedDuration(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(UserController.UniversalCredit), redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void SelfEmployedDuration_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new SelfEmployedDurationViewModel();
+        _controller.ModelState.AddModelError(nameof(model.SelfEmployedDuration), "Faked Model Binding Error");
+        var result = _controller.SelfEmployedDuration(model);
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.SelfEmployedDuration)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void SelfEmployedDuration_Get_PopulatesModel_FromState()
+    {
+        _journeyState.SelfEmployedDuration = SelfEmployedDurationOption.LessThan12Months;
+        var result = Assert.IsType<ViewResult>(_controller.SelfEmployedDuration());
+        Assert.Equal(SelfEmployedDurationOption.LessThan12Months, result.Model<SelfEmployedDurationViewModel>().SelfEmployedDuration);
+    }
+
+    [Fact]
+    public void SelfEmployedDuration_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.SelfEmployedDuration());
+        Assert.NotNull(result.Model<SelfEmployedDurationViewModel>());
+    }
+
+    [Fact]
+    public void YearlyEarnings_Post_WithFallbackSelection_SavesState_AndRedirects()
+    {
+        var model = new YearlyEarningsViewModel
+        {
+            YearlyEarnings = YearlyEarningsOption.AboveThreshold
+        };
+        var result = _controller.YearlyEarnings(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(UserController.UniversalCredit), redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void YearlyEarnings_Post_WithAboveThreshold_SavesState_AndRedirects()
+    {
+        var model = new YearlyEarningsViewModel
+        {
+            YearlyEarnings = YearlyEarningsOption.AboveThreshold
+        };
+        var result = _controller.YearlyEarnings(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(UserController.Benefits), redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void YearlyEarnings_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new YearlyEarningsViewModel();
+        _controller.ModelState.AddModelError(nameof(model.YearlyEarnings), "Faked Model Binding Error");
+        var result = _controller.YearlyEarnings(model);
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.YearlyEarnings)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void YearlyEarnings_Get_PopulatesModel_FromState()
+    {
+        _journeyState.YearlyEarnings = YearlyEarningsOption.AboveThreshold;
+        var result = Assert.IsType<ViewResult>(_controller.YearlyEarnings());
+        Assert.Equal(YearlyEarningsOption.AboveThreshold, result.Model<YearlyEarningsViewModel>().YearlyEarnings);
+    }
+
+    [Fact]
+    public void YearlyEarnings_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.YearlyEarnings());
+        Assert.NotNull(result.Model<YearlyEarningsViewModel>());
+    }
+
+    [Fact]
+    public void WeeklyEarnings_Post_WithFallbackSelection_SavesState_AndRedirects()
+    {
+        var model = new WeeklyEarningsViewModel
+        {
+            WeeklyEarnings = WeeklyEarningsOption.AboveThreshold
+        };
+        var result = _controller.WeeklyEarnings(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(UserController.YearlyEarnings), redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void WeeklyEarnings_Post_WithAboveThreshold_SavesState_AndRedirects()
+    {
+        var model = new WeeklyEarningsViewModel
+        {
+            WeeklyEarnings = WeeklyEarningsOption.AboveThreshold
+        };
+        var result = _controller.WeeklyEarnings(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(UserController.YearlyEarnings), redirect.ActionName);
+        Assert.Equal("User", redirect.ControllerName);
+    }
+
+    [Fact]
+    public void WeeklyEarnings_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new WeeklyEarningsViewModel();
+        _controller.ModelState.AddModelError(nameof(model.WeeklyEarnings), "Faked Model Binding Error");
+        var result = _controller.WeeklyEarnings(model);
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.WeeklyEarnings)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void WeeklyEarnings_Get_PopulatesModel_FromState()
+    {
+        _journeyState.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
+        var result = Assert.IsType<ViewResult>(_controller.WeeklyEarnings());
+        Assert.Equal(WeeklyEarningsOption.AboveThreshold, result.Model<WeeklyEarningsViewModel>().WeeklyEarnings);
+    }
+
+    [Fact]
+    public void WeeklyEarnings_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.WeeklyEarnings());
+        Assert.NotNull(result.Model<WeeklyEarningsViewModel>());
+    }
 }

@@ -138,10 +138,28 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult WorkStatus(string? returnTo = null)
     {
-        return Content("<h1>How would you describe your work status?</h1>", "text/html");
+        return View(new WorkStatusViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult WorkStatus(WorkStatusViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        if (model.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
+        {
+            return this.RedirectTo<UserController>(nameof(UserController.SelfEmployedDuration));
+        }
+
+        return this.RedirectTo<UserController>(nameof(UserController.WeeklyEarnings));
     }
 
     [HttpGet]
@@ -157,5 +175,90 @@ public class UserController : Controller
     public IActionResult UniversalCredit(string? returnTo = null)
     {
         return Content("<h1>Does your household receive universal credit?</h1>", "text/html");
+    }
+
+    [HttpGet]
+    public IActionResult SelfEmployedDuration(string? returnTo = null)
+    {
+        return View(new SelfEmployedDurationViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult SelfEmployedDuration(SelfEmployedDurationViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        var redirect = model.SelfEmployedDuration switch
+        {
+            SelfEmployedDurationOption.LessThan12Months => this.RedirectTo<UserController>(nameof(UserController.UniversalCredit)),
+            _ => this.RedirectTo<UserController>(nameof(UserController.WeeklyEarnings)),
+        };
+
+        return redirect;
+    }
+
+    [HttpGet]
+    public IActionResult YearlyEarnings(string? returnTo = null)
+    {
+        return View(new YearlyEarningsViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult YearlyEarnings(YearlyEarningsViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        var redirect = model.YearlyEarnings switch
+        {
+            YearlyEarningsOption.AboveThreshold => this.RedirectTo<UserController>(nameof(UserController.Benefits)),
+            _ => this.RedirectTo<UserController>(nameof(UserController.UniversalCredit)),
+        };
+
+        return redirect;
+    }
+
+    [HttpGet]
+    public IActionResult WeeklyEarnings(string? returnTo = null)
+    {
+        return View(new WeeklyEarningsViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult WeeklyEarnings(WeeklyEarningsViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        var redirect = model.WeeklyEarnings switch
+        {
+            WeeklyEarningsOption.AboveThreshold => this.RedirectTo<UserController>(nameof(UserController.YearlyEarnings)),
+            _ => this.RedirectTo<UserController>(nameof(UserController.UniversalCredit)),
+        };
+
+        return redirect;
+    }
+
+    [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
+    public IActionResult Benefits(string? returnTo = null)
+    {
+        return Content("<h1>Do you get any of these benefits?</h1>", "text/html");
     }
 }
