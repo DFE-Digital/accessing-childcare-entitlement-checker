@@ -30,7 +30,7 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
             return null;
         }
 
-        var eligibleFrom =
+        var useFromDate =
             eligibleInFuture
                 ? child.DueDate
                 : null;
@@ -40,7 +40,7 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
             SchemeCode = SchemeCode.UniversalCreditChildcare,
             EligibleNow = eligibleNow,
             EligibleInFuture = eligibleInFuture,
-            EligibleFrom = eligibleFrom
+            UseFromDate = useFromDate
         };
     }
 
