@@ -45,7 +45,9 @@ public static class DerivedContextBuilder
                 request.Household.CountryOfResidence is
                     CountryOfResidence.England
                     or CountryOfResidence.Scotland
-                    or CountryOfResidence.Wales
+                    or CountryOfResidence.Wales,
+
+            CountryOfResidence = request.Household.CountryOfResidence
         };
     }
 

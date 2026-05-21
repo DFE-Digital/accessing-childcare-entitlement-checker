@@ -292,6 +292,6 @@ public class UniversalCreditChildcareSchemeTests
         Assert.True(result.EligibleInFuture);
         Assert.Equal(
             new DateOnly(2025, 12, 1),
-            result.EligibleFrom);
+            result.UseFromDate);
     }
 }

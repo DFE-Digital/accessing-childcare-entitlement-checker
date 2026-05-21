@@ -12,9 +12,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<EntitlementRulesEngine>();
 
-        services.AddScoped<
-            ISchemeEvaluator,
-            UniversalCreditChildcareEvaluator>();
+        services.AddScoped<ISchemeEvaluator, UniversalCreditChildcareEvaluator>();
+        services.AddScoped<ISchemeEvaluator, FifteenHoursUniversalEvaluator>();
 
         return services;
     }
