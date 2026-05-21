@@ -33,8 +33,8 @@ public static class DerivedContextBuilder
             HasPartner = request.Household.HasPartner,
 
             ReceivesUniversalCredit =
-                user.ReceivesUniversalCredit ||
-                partner?.ReceivesUniversalCredit == true,
+                user.Benefits.Contains(PersonBenefit.UniversalCredit)
+                || partner?.Benefits.Contains(PersonBenefit.UniversalCredit) == true,
 
             HasAccessToPublicFunds =
                 HasAccessToPublicFunds(request.User) ||
@@ -45,7 +45,9 @@ public static class DerivedContextBuilder
                 request.Household.CountryOfResidence is
                     CountryOfResidence.England
                     or CountryOfResidence.Scotland
-                    or CountryOfResidence.Wales
+                    or CountryOfResidence.Wales,
+
+            CountryOfResidence = request.Household.CountryOfResidence
         };
     }
 
@@ -54,7 +56,7 @@ public static class DerivedContextBuilder
         return new PersonFacts
         {
             IsInPaidWork = person.IsInPaidWork == true,
-            ReceivesUniversalCredit = person.Benefits.Contains(PersonBenefit.UniversalCredit)
+            Benefits = person.Benefits.ToList()
         };
     }
 
