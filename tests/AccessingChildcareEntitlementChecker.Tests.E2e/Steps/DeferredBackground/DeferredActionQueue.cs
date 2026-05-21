@@ -57,14 +57,14 @@ namespace AccessingChildcareEntitlementChecker.Tests.E2e.Steps.DeferredBackgroun
                 throw new InvalidOperationException($"Multiple matching answers found for title '{answer.Title}' and scope '{answer.Scope}'.");
             }
 
-            if (matches.Count == 0)
+            if (matches.Count == 1)
             {
-                _deferredActions.Add(answer);
-                return;
+                // Roll back `Given` to the match
+                var match = matches[0];
+                _deferredActions.RemoveRange(match.index, _deferredActions.Count - match.index);
             }
 
-            var match = matches.Single();
-            _deferredActions[match.index] = answer;
+            _deferredActions.Add(answer);
         }
 
         public void ClickButton(string title, string label)
