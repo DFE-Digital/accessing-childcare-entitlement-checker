@@ -1,16 +1,45 @@
 site_name: 'CEC Project Technical Documentation(Feature Test)'
 site_url: 'https://dfe-digital.github.io/accessing-childcare-entitlement-checker'
+repo_url: 'https://github.com/DFE-Digital/accessing-childcare-entitlement-checker'
+repo_name: 'DFE-Digital/accessing-childcare-entitlement-checker'
 
 theme:
   name: 'material' # The standard, clean tech-docs theme
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
   palette:
-    primary: 'teal'
-    accent: 'blue'
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: 'teal'
+      accent: 'blue'
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: 'teal'
+      accent: 'blue'
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   features:
     - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
     - search.suggest
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
 
 nav:
   - Home: index.md
+  - ADRs: adrs.md
   - Architecture: architecture.md
-  - Run Guide: setup.md
+  - Run Guide: development.md
