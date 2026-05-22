@@ -4,10 +4,11 @@ repo_url: 'https://github.com/DFE-Digital/accessing-childcare-entitlement-checke
 repo_name: 'DFE-Digital/accessing-childcare-entitlement-checker'
 
 theme:
-  name: 'material' # The standard, clean tech-docs theme
-  font:
-    text: 'Roboto'
-    code: 'Roboto Mono'
+  name: material
+  custom_dir: resources/tech_docs_template
+  logo: logos/govuk-icon-512.png
+  favicon: favicons/favicon.ico
+
   palette:
     # Light mode
     - media: "(prefers-color-scheme: light)"
@@ -32,12 +33,18 @@ theme:
     - search.highlight
     - search.suggest
     - content.code.copy
+  font:
+    text: Roboto
+    code: Roboto Mono
 
 markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
-
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 plugins:
   - search
 nav:
