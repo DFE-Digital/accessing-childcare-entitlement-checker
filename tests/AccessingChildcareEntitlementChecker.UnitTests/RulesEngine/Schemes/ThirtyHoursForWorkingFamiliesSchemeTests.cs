@@ -288,7 +288,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
-    
+
     [Fact]
     public void Evaluate_BothParentsWorking_ReturnsSchemeResult()
     {
@@ -328,7 +328,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
-    
+
     [Fact]
     public void Evaluate_WhenChildEligibleInFuture_SetsApplyFromDate()
     {
