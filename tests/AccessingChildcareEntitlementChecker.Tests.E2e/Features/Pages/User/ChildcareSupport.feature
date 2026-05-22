@@ -1,4 +1,4 @@
-Feature: Do you already get any of this child care support?
+Feature: Do you already get any of this childcare support?
 
 Background:
 	Given I am on the childcare entitlement checker website
@@ -13,7 +13,7 @@ Background:
 		| Do you get any of these benefits?             | Carer's Allowance        |
 
 Scenario: Page load
-	When the page header is "Do you already get any of this child care support?"
+	When the page header is "Do you already get any of this childcare support?"
 	Then I should see 3 checkboxes with the following options:
 		| Checkbox                                                    |
 		| Childcare vouchers                                          |

@@ -90,7 +90,7 @@ public class JourneySteps(Context context)
             ("Are you in paid work?", "No"),
             ("Does your household receive universal credit?", "Yes"),
             ("Do you get any of these benefits?", "Carer's Allowance"),
-            ("Do you already get any of this child care support?", "Childcare vouchers"),
+            ("Do you already get any of this childcare support?", "Childcare vouchers"),
             ("How do you receive your childcare vouchers?", "A workplace nursery scheme"),
         ]);
     }
