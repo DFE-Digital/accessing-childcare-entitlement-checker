@@ -336,6 +336,6 @@ public class UserControllerTests
     {
         var result = Assert.IsType<ViewResult>(_controller.PaidWork());
 
-        Assert.Null(result.Model<PaidWorkViewModel>().PaidWork);
+        Assert.Null(result.Model<PaidWorkViewModel>().PaidWork); main
     }
 }
