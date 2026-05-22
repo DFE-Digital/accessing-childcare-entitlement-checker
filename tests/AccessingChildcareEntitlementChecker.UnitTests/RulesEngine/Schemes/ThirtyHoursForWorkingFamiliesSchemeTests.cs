@@ -288,7 +288,47 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
+    
+    [Fact]
+    public void Evaluate_BothParentsWorking_ReturnsSchemeResult()
+    {
+        var scheme = CreateEvaluator();
 
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = true,
+                HasAccessToPublicFunds = true,
+                CountryOfResidence = CountryOfResidence.England
+            },
+
+            User = new PersonFacts
+            {
+                IsInPaidWork = true,
+                ExceedsAdjustedNetIncomeLimit = false,
+                EarnsAboveThreshold = true
+            },
+            Partner = new PersonFacts
+            {
+                IsInPaidWork = true,
+                ExceedsAdjustedNetIncomeLimit = false,
+                EarnsAboveThreshold = true
+            }
+        };
+
+        var child = CreateBornChild(new DateOnly(2023, 9, 1));
+
+        var result = scheme.Evaluate(context, child);
+
+        Assert.NotNull(result);
+        Assert.Equal(
+            SchemeCode.ThirtyHoursForWorkingFamilies,
+            result!.SchemeCode);
+        Assert.True(result.EligibleNow);
+        Assert.False(result.EligibleInFuture);
+    }
+    
     [Fact]
     public void Evaluate_WhenChildEligibleInFuture_SetsApplyFromDate()
     {

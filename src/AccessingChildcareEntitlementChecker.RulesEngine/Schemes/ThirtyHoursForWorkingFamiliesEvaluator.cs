@@ -61,7 +61,7 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
         };
     }
 
-    private bool MeetsWorkRequirements(
+    private static bool MeetsWorkRequirements(
         DerivedContext context)
     {
         if (!context.Household.HasPartner)
