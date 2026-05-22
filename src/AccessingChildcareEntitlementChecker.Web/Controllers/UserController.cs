@@ -19,38 +19,6 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
-    public IActionResult NextStepPlaceholder()
-    {
-        return Content("<h1 >Next step placeholder</h1>", "text/html");
-    }
-
-    [HttpGet]
-    public ViewResult HasPartner()
-    {
-        return View(new HasPartnerViewModel(_journeyState));
-    }
-
-    [HttpPost]
-    public IActionResult HasPartner(HasPartnerViewModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-
-        if (_journeyState.HasPartner == true)
-        {
-            return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerAge));
-        }
-
-        return this.RedirectTo<UserController>(nameof(NextStepPlaceholder));
-    }
-
-    [HttpGet]
     public ViewResult UserAge()
     {
         return View(new UserAgeViewModel(_journeyState));
@@ -315,10 +283,47 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult ChildcareVoucherReceipt(string? returnTo = null)
     {
-        // This page a stub as not yet confirmed in design.
-        return Content("<h1>How do you receive your childcare vouchers?</h1>", "text/html");
+        return View(new ChildcareVoucherReceiptViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult ChildcareVoucherReceipt(ChildcareVoucherReceiptViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        return this.RedirectTo<UserController>(nameof(UserController.HasPartner));
+    }
+
+    [HttpGet]
+    public ViewResult HasPartner()
+    {
+        return View(new HasPartnerViewModel(_journeyState));
+    }
+
+    [HttpPost]
+    public IActionResult HasPartner(HasPartnerViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        if (_journeyState.HasPartner == true)
+        {
+            return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerAge));
+        }
+
+        return this.RedirectTo<CheckAnswersController>(nameof(CheckAnswersController.CheckAnswers));
     }
 }

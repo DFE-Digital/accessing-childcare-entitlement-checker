@@ -81,6 +81,20 @@ public class JourneySteps(Context context)
         _context.Queue.ClickButton("Check your children's details", "Continue");
     }
 
+    [Given("I fill in my own details")]
+    public void GivenIFillInMyOwnDetails()
+    {
+        _context.Queue.Answers([
+            ("What is your age?", "Under 18"),
+            ("What is your nationality?", "British or Irish citizen"),
+            ("Are you in paid work?", "No"),
+            ("Does your household receive universal credit?", "Yes"),
+            ("Do you get any of these benefits?", "Carer's Allowance"),
+            ("Do you already get any of this child care support?", "Childcare vouchers"),
+            ("How do you receive your childcare vouchers?", "A workplace nursery scheme"),
+        ]);
+    }
+
     [Given("I click the Add another child button")]
     public void GivenIClickTheAddAnotherChildButton()
     {

@@ -647,4 +647,50 @@ public class UserControllerTests
         var result = Assert.IsType<ViewResult>(_controller.ChildcareSupport());
         Assert.NotNull(result.Model<ChildcareSupportViewModel>());
     }
+
+    [Theory]
+    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, "User", nameof(UserController.HasPartner))]
+    [InlineData(ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, "User", nameof(UserController.HasPartner))]
+    [InlineData(ChildcareVoucherReceiptOption.ThroughSalarySacrifice, "User", nameof(UserController.HasPartner))]
+    public void ChildcareVoucherReceipt_Post_SavesState_AndRedirects(ChildcareVoucherReceiptOption option, string controllerName, string actionName)
+    {
+        var model = new ChildcareVoucherReceiptViewModel
+        {
+            ChildcareVoucherReceipt = option
+        };
+        var result = _controller.ChildcareVoucherReceipt(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(option, _journeyState.ChildcareVoucherReceipt);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
+    }
+
+    [Fact]
+    public void ChildcareVoucherReceipt_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new ChildcareVoucherReceiptViewModel();
+        _controller.ModelState.AddModelError(nameof(model.ChildcareVoucherReceipt), "Faked Model Binding Error");
+        var result = _controller.ChildcareVoucherReceipt(model);
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildcareVoucherReceipt)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void ChildcareVoucherReceipt_Get_PopulatesModel_FromState()
+    {
+        _journeyState.ChildcareVoucherReceipt = ChildcareVoucherReceiptOption.WorkplaceNurseryScheme;
+        var result = Assert.IsType<ViewResult>(_controller.ChildcareVoucherReceipt());
+        Assert.Equal(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, result.Model<ChildcareVoucherReceiptViewModel>().ChildcareVoucherReceipt);
+    }
+
+    [Fact]
+    public void ChildcareVoucherReceipt_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.ChildcareVoucherReceipt());
+        Assert.NotNull(result.Model<ChildcareVoucherReceiptViewModel>());
+    }
 }
