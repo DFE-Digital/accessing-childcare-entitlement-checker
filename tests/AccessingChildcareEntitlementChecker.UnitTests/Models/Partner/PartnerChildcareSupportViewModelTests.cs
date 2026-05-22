@@ -23,7 +23,7 @@ public class PartnerChildcareSupportViewModelTests
         };
     }
 
-[Fact]
+    [Fact]
     public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
     {
         var model = new PartnerChildcareSupportViewModel
