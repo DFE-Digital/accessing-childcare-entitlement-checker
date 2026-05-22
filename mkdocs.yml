@@ -5,9 +5,6 @@ repo_name: 'DFE-Digital/accessing-childcare-entitlement-checker'
 
 theme:
   name: material
-  custom_dir: resources/tech_docs_template
-  logo: logos/govuk-icon-512.png
-  favicon: favicons/favicon.ico
 
   palette:
     # Light mode
