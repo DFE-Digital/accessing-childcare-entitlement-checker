@@ -14,7 +14,7 @@ public class PersonDto
 
     public bool? EarnsAboveThreshold { get; set; }
 
-    public bool? AdjustedNetIncomeOver100K { get; set; }
+    public bool? ExceedsAdjustedNetIncomeLimit { get; set; }
 
     public List<PersonBenefit> Benefits { get; set; } = [];
 

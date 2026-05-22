@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.RulesEngine.Derived;
 using AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
 using AccessingChildcareEntitlementChecker.RulesEngine.Types;
+using AccessingChildcareEntitlementChecker.RulesEngine.Helpers;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.RulesEngine.Schemes;
 
@@ -24,14 +25,21 @@ public class FifteenHoursUniversalSchemeTests
             }
         };
     }
-    private static ChildFacts CreateBornChild(int ageInYears)
+    private static ChildFacts CreateBornChild(
+        DateOnly dateOfBirth)
     {
         return new ChildFacts
         {
             Name = "Jack",
             IsBorn = true,
-            AgeInYears = ageInYears,
-            DateOfBirth = Today.AddYears(-ageInYears)
+            DateOfBirth = dateOfBirth,
+            AgeInYears = AgeCalculations.CalculateAgeInYears(
+                dateOfBirth,
+                Today),
+
+            AgeInMonths = AgeCalculations.CalculateAgeInMonths(
+                dateOfBirth,
+                Today)
         };
     }
 
@@ -40,7 +48,7 @@ public class FifteenHoursUniversalSchemeTests
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext();
-        var child = CreateBornChild(3);
+        var child = CreateBornChild(new DateOnly(2022, 1, 1));
 
         var result = evaluator.Evaluate(context, child);
 
@@ -48,7 +56,7 @@ public class FifteenHoursUniversalSchemeTests
         Assert.True(result!.EligibleNow);
         Assert.False(result.EligibleInFuture);
         Assert.Equal(
-            SchemeCode.FifteenHoursForWorkingFamilies,
+            SchemeCode.FifteenHoursUniversal,
             result.SchemeCode);
     }
 
@@ -57,14 +65,13 @@ public class FifteenHoursUniversalSchemeTests
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext();
-        var child = CreateBornChild(2);
+        var child = CreateBornChild(new DateOnly(2023, 1, 1));
 
         var result = evaluator.Evaluate(context, child);
 
         Assert.NotNull(result);
         Assert.False(result!.EligibleNow);
         Assert.True(result.EligibleInFuture);
-        Assert.Equal(3, result.EligibleWhenChildTurns);
     }
 
     [Fact]
@@ -72,7 +79,7 @@ public class FifteenHoursUniversalSchemeTests
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext();
-        var child = CreateBornChild(5);
+        var child = CreateBornChild(new DateOnly(2020, 1, 1));
 
         var result = evaluator.Evaluate(context, child);
 
@@ -84,7 +91,7 @@ public class FifteenHoursUniversalSchemeTests
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext(CountryOfResidence.Wales);
-        var child = CreateBornChild(3);
+        var child = CreateBornChild(new DateOnly(2022, 1, 1));
 
         var result = evaluator.Evaluate(context, child);
 
@@ -96,7 +103,7 @@ public class FifteenHoursUniversalSchemeTests
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext();
-        var child = CreateBornChild(2);
+        var child = CreateBornChild(new DateOnly(2023, 1, 1));
 
         var result = evaluator.Evaluate(context, child);
 
@@ -111,26 +118,12 @@ public class FifteenHoursUniversalSchemeTests
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext();
-        var child = CreateBornChild(2);
+        var child = CreateBornChild(new DateOnly(2023, 1, 1));
 
         var result = evaluator.Evaluate(context, child);
 
         Assert.Equal(
             new DateOnly(2026, 4, 1),
             result!.UseFromDate);
-    }
-
-    [Fact]
-    public void Evaluate_WhenChildIsEligibleInFuture_SetsEligibleWhenChildTurns3()
-    {
-        var evaluator = CreateEvaluator();
-        var context = CreateContext();
-        var child = CreateBornChild(2);
-
-        var result = evaluator.Evaluate(context, child);
-
-        Assert.Equal(
-            3,
-            result!.EligibleWhenChildTurns);
     }
 }

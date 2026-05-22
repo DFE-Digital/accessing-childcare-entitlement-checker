@@ -7,21 +7,22 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
 
 public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
 {
+    private const int MinimumEligibleAgeInYears = 16;
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
-        var eligibleNow =
+        var meetsHouseholdRequirements =
             context.Household.HasAccessToPublicFunds &&
             context.Household.LivesInGreatBritain &&
             context.Household.ReceivesUniversalCredit &&
-            MeetsWorkRequirements(context) &&
+            MeetsWorkRequirements(context);
+
+        var eligibleNow =
+            meetsHouseholdRequirements &&
             child.IsBorn &&
-            child.AgeInYears <= 16;
+            child.AgeInYears <= MinimumEligibleAgeInYears;
 
         var eligibleInFuture =
-            context.Household.HasAccessToPublicFunds &&
-            context.Household.LivesInGreatBritain &&
-            context.Household.ReceivesUniversalCredit &&
-            MeetsWorkRequirements(context) &&
+            meetsHouseholdRequirements &&
             !child.IsBorn &&
             child.DueDate is not null;
 
@@ -30,17 +31,11 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
             return null;
         }
 
-        var useFromDate =
-            eligibleInFuture
-                ? child.DueDate
-                : null;
-
         return new SchemeResultDto
         {
             SchemeCode = SchemeCode.UniversalCreditChildcare,
             EligibleNow = eligibleNow,
             EligibleInFuture = eligibleInFuture,
-            UseFromDate = useFromDate
         };
     }
 
