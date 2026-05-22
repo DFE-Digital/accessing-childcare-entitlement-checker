@@ -1,0 +1,59 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.User
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@model NationalityViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="User" asp-action="UserAge">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Html.DisplayNameFor(model => model.Nationality)
+        </h1>
+
+        <p class="govuk-body">
+            @Localizer["This helps us give you more accurate results."]
+        </p>
+        <p class="govuk-body">
+            @Localizer["Your answers will not be shared and will not affect your immigration status, benefits, funding or any applications."]
+        </p>
+
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+
+            <govuk-radios for="Nationality">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend class="govuk-visually-hidden">
+                        @Html.DisplayNameFor(model => model.Nationality)
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<NationalityOption>())
+                    {
+                        <govuk-radios-item value="@value">
+                            @Html.EnumDisplayName(value)
+                            @if (value == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+                            {
+                                <govuk-radios-item-hint>
+                                    <a class="govuk-link" href="https://www.gov.uk/eu-eea" target="_blank" rel="noopener noreferrer">
+                                        @Localizer["View the list of EU and EEA countries (opens in new tab)"]
+                                    </a>
+                                </govuk-radios-item-hint>
+                            }
+                        </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>
