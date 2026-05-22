@@ -153,24 +153,6 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult UniversalCredit(string? returnTo = null)
     {
-        switch (model.Nationality)
-        {
-            case NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland:
-                return this.RedirectTo<UserController>(nameof(SettledStatus));
-            default:
-                return this.RedirectTo<UserController>(nameof(PaidWork));
-        }
-    }
-
-    [HttpGet]
-    public IActionResult PaidWork()
-    {
-        return Content("Are you in paid work?");
-    }
-
-    [HttpGet]
-    public IActionResult SettledStatus()
-    {
-        return Content("Do you have settled or pre-settled status under the EU Settlement Scheme?");
+        return Content("Does your household receive universal credit?");
     }
 }
