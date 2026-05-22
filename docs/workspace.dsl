@@ -8,9 +8,6 @@ workspace "Childcare Eligibility" "Architecture for the Childcare Eligibility Se
             group "Identity & Security" {
                 # Tagged 'Internal' to allow selective hiding in high-level views
                 entra = container "Microsoft Entra ID" "Identity Provider" "Acts as the Trust Authority. Issues tokens for secretless access." "Azure Entra, Internal"
-                keyVault = container "Azure Key Vault" "Secret Management" "Securely stores sensitive configuration and keys." "Azure Key Vault" {
-                    url "https://github.com/dfe-digital/childcare-eligibility/blob/main/docs/architecture/security.md"
-                }
             }
             
             group "Application Logic" {
@@ -21,15 +18,12 @@ workspace "Childcare Eligibility" "Architecture for the Childcare Eligibility Se
 
             group "Data & State" {
                 redis = container "Azure Cache for Redis" "Distributed Cache" "Stores user sessions and a 24-hour mirror of journey rules." "Azure Redis"
-                blobStorage = container "Azure Blob Storage" "Master Rules Store" "Primary source of truth for journeys.json rulesets." "Azure Storage"
             }
         }
 
         # RELATIONSHIPS (Logical Flow)
         user -> appService "Accesses service" "HTTPS"
         appService -> redis "Manages session state" "RESP (TLS 1.2)"
-        appService -> blobStorage "Hydrates cache (24h expiry)" "HTTPS/Managed Identity"
-        appService -> keyVault "Retrieves secrets" "HTTPS/Managed Identity"
         appService -> entra "Requests identity tokens" "OAuth2 (IMDS)"
 
         # DEPLOYMENT NODES
@@ -52,8 +46,6 @@ workspace "Childcare Eligibility" "Architecture for the Childcare Eligibility Se
 
                 deploymentNode "Managed Data Services" "Shared PaaS" "Azure" {
                     containerInstance redis
-                    containerInstance blobStorage
-                    containerInstance keyVault
                     containerInstance entra
                 }
             }
