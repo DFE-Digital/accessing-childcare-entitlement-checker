@@ -42,6 +42,6 @@ plugins:
   - search
 nav:
   - Home: index.md
-  - Architecture: architecture.md
+  - Architecture: architecture/index.md
   - Run Guide: development.md
   - Architecture Decision Records: adr/index.md
