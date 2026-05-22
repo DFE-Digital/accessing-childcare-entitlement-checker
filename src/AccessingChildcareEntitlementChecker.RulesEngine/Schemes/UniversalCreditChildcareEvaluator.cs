@@ -7,6 +7,7 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
 
 public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
 {
+    private const int MinimumEligibleAgeInYears = 0;
     private const int MaximumEligibleAgeInYears = 16;
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
@@ -19,7 +20,7 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
         var eligibleNow =
             meetsHouseholdRequirements &&
             child.IsBorn &&
-            child.AgeInYears <= MaximumEligibleAgeInYears;
+            child.AgeInYears is >= MinimumEligibleAgeInYears and <= MaximumEligibleAgeInYears;
 
         var eligibleInFuture =
             meetsHouseholdRequirements &&
