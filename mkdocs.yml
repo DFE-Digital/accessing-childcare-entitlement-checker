@@ -6,23 +6,23 @@ repo_name: 'DFE-Digital/accessing-childcare-entitlement-checker'
 theme:
   name: material
 
-  palette:
-    # Light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: 'blue'
-      accent: 'blue'
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    # Dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: 'blue'
-      accent: 'blue'
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
+  # palette:
+  #   # Light mode
+  #   - media: "(prefers-color-scheme: light)"
+  #     scheme: default
+  #     primary: 'blue'
+  #     accent: 'blue'
+  #     toggle:
+  #       icon: material/brightness-7
+  #       name: Switch to dark mode
+  #   # Dark mode
+  #   - media: "(prefers-color-scheme: dark)"
+  #     scheme: slate
+  #     primary: 'blue'
+  #     accent: 'blue'
+  #     toggle:
+  #       icon: material/brightness-4
+  #       name: Switch to light mode
   features:
     - navigation.tabs
     - navigation.sections
@@ -30,6 +30,7 @@ theme:
     - search.highlight
     - search.suggest
     - content.code.copy
+    - toc.integrate
   font:
     text: Roboto
     code: Roboto Mono
@@ -42,8 +43,8 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-plugins:
-  - search
+# plugins:
+#   - search
 nav:
   - Home: index.md
   - Architecture: architecture/index.md
