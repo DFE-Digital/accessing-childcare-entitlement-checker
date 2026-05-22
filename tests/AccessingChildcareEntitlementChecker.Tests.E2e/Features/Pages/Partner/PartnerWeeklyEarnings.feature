@@ -11,7 +11,7 @@ Background:
 		| Are you in paid work?                                    | No                                                          |
 		| Does your household receive universal credit?            | Yes                                                         |
 		| Do you get any of these benefits?                        | Carer's Allowance                                           |
-		| Do you already get any of this child care support?       | A childcare bursary or grant (as part of education funding) |
+		| Do you already get any of this childcare support?        | A childcare bursary or grant (as part of education funding) |
 		| Which of these best describes your partners nationality? | British or Irish citizen                                    |
 		| Is your partner in paid work?                            | Yes                                                         |
 		| How would you describe your partner's work status?       | Paid employment                                             |

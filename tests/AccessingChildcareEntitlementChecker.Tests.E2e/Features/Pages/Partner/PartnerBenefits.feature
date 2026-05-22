@@ -43,7 +43,7 @@ Scenario: Continue without selection
 Scenario: Continue with Carer's Allowance
 	When I select the "Carer's Allowance" checkbox
 	And I click on Continue
-	Then the page header is "Does your partner already get any of this child care support?"
+	Then the page header is "Does your partner already get any of this childcare support?"
 
 Scenario: Back navigation
 	When I click the back link
