@@ -10,8 +10,6 @@ public class ChildFacts
     public DateOnly? DueDate { get; set; }
     public int? AgeInYears { get; set; }
     public int? AgeInMonths { get; set; }
-
     public List<ChildRelatedBenefit> ChildRelatedBenefits { get; set; } = [];
-
     public RelationshipToChild? RelationshipToChild { get; set; }
 }
