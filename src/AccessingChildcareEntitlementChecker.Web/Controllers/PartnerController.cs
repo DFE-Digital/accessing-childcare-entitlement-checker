@@ -221,14 +221,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-
-        var redirect = model.PartnerYearlyEarnings switch
-        {
-            YearlyEarningsOption.AboveThreshold => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerBenefits)),
-            _ => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerBenefits)),
-        };
-
-        return redirect;
+        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerBenefits));
     }
 
     [HttpGet]

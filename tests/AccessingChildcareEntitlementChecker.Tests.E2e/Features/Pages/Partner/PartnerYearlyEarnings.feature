@@ -4,18 +4,15 @@ Background:
 	Given I am on the childcare entitlement checker website
 	And I start the journey, filling in Aydin's and Sara's details
 	And I check my children's details and click on Continue
+	And I fill in my own details
 	And I answer questions as follows:
-		| Question                                                           | Answer                                                      |
-		| What is your age?                                                  | Under 18                                                    |
-		| What is your nationality?                                          | British or Irish citizen                                    |
-		| Are you in paid work?                                              | No                                                          |
-		| Does your household receive universal credit?                      | Yes                                                         |
-		| Do you get any of these benefits?                                  | Carer's Allowance                                           |
-		| Do you already get any of this childcare support?                  | A childcare bursary or grant (as part of education funding) |
-		| Which of these best describes your partners nationality?           | British or Irish citizen                                    |
-		| Is your partner in paid work?                                      | Yes                                                         |
-		| How would you describe your partner's work status?                 | Paid employment                                             |
-		| On average, does your partner earn £203 a week or more before tax? | Yes                                                         |
+		| Question                                                           | Answer                   |
+		| Do you live with a partner?                                        | Yes                      |
+		| What is your partner's age?                                        | 21 or over               |
+		| Which of these best describes your partners nationality?           | British or Irish citizen |
+		| Is your partner in paid work?                                      | Yes                      |
+		| How would you describe your partner's work status?                 | Paid employment          |
+		| On average, does your partner earn £203 a week or more before tax? | Yes                      |
 
 Scenario: Page load
 	When the page header is "Is your partner's adjusted net income more than £100,000 a year?"

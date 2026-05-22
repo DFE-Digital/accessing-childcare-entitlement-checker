@@ -39,7 +39,7 @@ Scenario: Continue with Yes
 Scenario: Continue with They are on leave from work
 	When I select the "They are on leave from work" radio button
 	And I click on Continue
-	Then the page header is "PartnerTypeOfLeave"
+	Then the page header is "What type of leave is your partner on?"
 
 Scenario: Continue with No
 	When I select the "No" radio button
