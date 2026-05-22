@@ -225,14 +225,53 @@ public class PartnerController : Controller
     }
 
     [HttpGet]
-    public IActionResult PartnerChildcareSupport()
+    public IActionResult PartnerChildcareSupport(string? returnTo = null)
     {
-        return Content("<h1>Does your partner already get any of this childcare support?</h1>", "text/html");
+        return View(new PartnerChildcareSupportViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerTypeOfLeave()
     {
         return Content("<h1>What type of leave is your partner on?</h1>", "text/html");
+    }
+
+    [HttpPost]
+    public IActionResult PartnerChildcareSupport(PartnerChildcareSupportViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        if (model.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
+        {
+            return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerChildcareVoucherReceipt));
+        }
+
+        return this.RedirectTo<CheckAnswersController>(nameof(CheckAnswersController.CheckAnswers));
+    }
+
+    [HttpPost]
+    public IActionResult PartnerChildcareVoucherReceipt(PartnerChildcareVoucherReceiptViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        return this.RedirectTo<CheckAnswersController>(nameof(CheckAnswersController.CheckAnswers));
+    }
+
+    [HttpGet]
+    public IActionResult PartnerChildcareVoucherReceipt(string? returnTo = null)
+    {
+        return View(new PartnerChildcareVoucherReceiptViewModel(_journeyState) { ReturnTo = returnTo });
     }
 }

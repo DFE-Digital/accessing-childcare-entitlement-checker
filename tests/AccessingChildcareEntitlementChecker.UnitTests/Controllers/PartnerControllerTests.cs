@@ -438,4 +438,96 @@ public class PartnerControllerTests
         var result = Assert.IsType<ViewResult>(_controller.PartnerYearlyEarnings());
         Assert.NotNull(result.Model<PartnerYearlyEarningsViewModel>());
     }
+
+    [Theory]
+    [InlineData(PartnerChildcareSupportOption.ChildcareVouchers, "Partner", nameof(PartnerController.PartnerChildcareVoucherReceipt))]
+    [InlineData(PartnerChildcareSupportOption.ChildcareBursaryOrGrant, "CheckAnswers", nameof(CheckAnswersController.CheckAnswers))]
+    [InlineData(PartnerChildcareSupportOption.None, "CheckAnswers", nameof(CheckAnswersController.CheckAnswers))]
+    public void PartnerChildcareSupport_Post_SavesState_AndRedirects(PartnerChildcareSupportOption option, string controllerName, string actionName)
+    {
+        var model = new PartnerChildcareSupportViewModel
+        {
+            PartnerChildcareSupport = [option]
+        };
+        var result = _controller.PartnerChildcareSupport(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal([option], _journeyState.PartnerChildcareSupport);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
+    }
+
+    [Fact]
+    public void PartnerChildcareSupport_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new PartnerChildcareSupportViewModel();
+        _controller.ModelState.AddModelError(nameof(model.PartnerChildcareSupport), "Faked Model Binding Error");
+        var result = _controller.PartnerChildcareSupport(model);
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerChildcareSupport)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void PartnerChildcareSupport_Get_PopulatesModel_FromState()
+    {
+        _journeyState.PartnerChildcareSupport = [PartnerChildcareSupportOption.ChildcareVouchers];
+        var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareSupport());
+        Assert.Equal([PartnerChildcareSupportOption.ChildcareVouchers], result.Model<PartnerChildcareSupportViewModel>().PartnerChildcareSupport);
+    }
+
+    [Fact]
+    public void PartnerChildcareSupport_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareSupport());
+        Assert.NotNull(result.Model<PartnerChildcareSupportViewModel>());
+    }
+
+    [Theory]
+    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, "CheckAnswers", nameof(CheckAnswersController.CheckAnswers))]
+    [InlineData(ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, "CheckAnswers", nameof(CheckAnswersController.CheckAnswers))]
+    [InlineData(ChildcareVoucherReceiptOption.ThroughSalarySacrifice, "CheckAnswers", nameof(CheckAnswersController.CheckAnswers))]
+    public void PartnerChildcareVoucherReceipt_Post_SavesState_AndRedirects(ChildcareVoucherReceiptOption option, string controllerName, string actionName)
+    {
+        var model = new PartnerChildcareVoucherReceiptViewModel
+        {
+            PartnerChildcareVoucherReceipt = option
+        };
+        var result = _controller.PartnerChildcareVoucherReceipt(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(option, _journeyState.PartnerChildcareVoucherReceipt);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
+    }
+
+    [Fact]
+    public void PartnerChildcareVoucherReceipt_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new PartnerChildcareVoucherReceiptViewModel();
+        _controller.ModelState.AddModelError(nameof(model.PartnerChildcareVoucherReceipt), "Faked Model Binding Error");
+        var result = _controller.PartnerChildcareVoucherReceipt(model);
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerChildcareVoucherReceipt)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void PartnerChildcareVoucherReceipt_Get_PopulatesModel_FromState()
+    {
+        _journeyState.PartnerChildcareVoucherReceipt = ChildcareVoucherReceiptOption.WorkplaceNurseryScheme;
+        var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareVoucherReceipt());
+        Assert.Equal(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, result.Model<PartnerChildcareVoucherReceiptViewModel>().PartnerChildcareVoucherReceipt);
+    }
+
+    [Fact]
+    public void PartnerChildcareVoucherReceipt_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareVoucherReceipt());
+        Assert.NotNull(result.Model<PartnerChildcareVoucherReceiptViewModel>());
+    }
 }

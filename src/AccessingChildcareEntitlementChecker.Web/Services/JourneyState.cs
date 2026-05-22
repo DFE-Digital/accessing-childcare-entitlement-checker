@@ -57,6 +57,10 @@ public class JourneyState
 
     public List<PartnerBenefitsOption> PartnerBenefits { get; set; } = [];
 
+    public List<PartnerChildcareSupportOption> PartnerChildcareSupport { get; set; } = [];
+
+    public ChildcareVoucherReceiptOption? PartnerChildcareVoucherReceipt { get; set; }
+
     public Child? GetChild(string childId)
     {
         return Children.TryGetValue(childId, out var child) ? child : null;
@@ -234,5 +238,15 @@ public class JourneyState
     public void Apply(PartnerBenefitsViewModel model)
     {
         PartnerBenefits = model.PartnerBenefits;
+    }
+
+    public void Apply(PartnerChildcareSupportViewModel model)
+    {
+        PartnerChildcareSupport = model.PartnerChildcareSupport;
+    }
+
+    public void Apply(PartnerChildcareVoucherReceiptViewModel model)
+    {
+        PartnerChildcareVoucherReceipt = model.PartnerChildcareVoucherReceipt;
     }
 }
