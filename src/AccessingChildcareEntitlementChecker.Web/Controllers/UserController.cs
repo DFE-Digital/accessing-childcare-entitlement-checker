@@ -84,7 +84,7 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-<<<<<<< HEAD
+
         return model.Nationality switch
         {
             NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => this.RedirectTo<UserController>(nameof(SettledStatus)),
@@ -153,8 +153,6 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult UniversalCredit(string? returnTo = null)
     {
-        return Content("Does your household receive universal credit?");
-=======
         switch (model.Nationality)
         {
             case NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland:
@@ -174,6 +172,5 @@ public class UserController : Controller
     public IActionResult SettledStatus()
     {
         return Content("Do you have settled or pre-settled status under the EU Settlement Scheme?");
->>>>>>> main
     }
 }
