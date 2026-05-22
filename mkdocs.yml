@@ -12,7 +12,7 @@ theme:
     # Light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: 'teal'
+      primary: 'blue'
       accent: 'blue'
       toggle:
         icon: material/brightness-7
@@ -20,7 +20,7 @@ theme:
     # Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: 'teal'
+      primary: 'blue'
       accent: 'blue'
       toggle:
         icon: material/brightness-4
@@ -38,8 +38,12 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
 
+plugins:
+  - search
+  - awesome-pages
+
 nav:
   - Home: index.md
-  - ADRs: adrs.md
   - Architecture: architecture.md
   - Run Guide: development.md
+  - Architecture Decision Records: adr/index.md
