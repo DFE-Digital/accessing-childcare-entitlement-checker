@@ -40,9 +40,8 @@ markdown_extensions:
 
 plugins:
   - search
-  - awesome-pages
 nav:
   - Home: index.md
-  - Architecture: architecture/index.md
+  - Architecture: architecture.md
   - Run Guide: development.md
   - Architecture Decision Records: adr/index.md
