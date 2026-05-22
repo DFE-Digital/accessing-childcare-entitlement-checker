@@ -40,7 +40,7 @@ theme:
 markdown_extensions:
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
