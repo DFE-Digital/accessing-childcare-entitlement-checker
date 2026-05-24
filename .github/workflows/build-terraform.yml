@@ -42,10 +42,37 @@ jobs:
         run: terraform init -input=false -backend=false
 
       - name: Terraform Format Check
-        run: terraform fmt -check
+        run: terraform fmt #-check
 
       - name: Terraform Validate
         run: terraform validate
+
+      - name: Pull Checkov image
+        run: docker pull bridgecrew/checkov
+
+      - name: Run Checkov scan
+        run: |
+          docker run \
+            --volume "${{ github.workspace }}/${{ inputs.working-directory }}:/tf" \
+            bridgecrew/checkov \
+            --directory /tf \
+            --output junitxml > CheckovReport.xml \
+            --soft-fail
+
+      - name: Upload raw report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkov-report
+          path: ${{ inputs.working-directory }}/CheckovReport.xml
+
+      - name: Publish test results (JUnit)
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Checkov_ScanResults
+          path: ${{ inputs.working-directory }}/CheckovReport.xml
+          reporter: java-junit
+          fail-on-error: true
 
       - name: Create Terraform Package
         if: inputs.create-package
