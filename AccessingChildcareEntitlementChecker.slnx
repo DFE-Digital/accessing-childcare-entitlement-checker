@@ -53,7 +53,9 @@
     <File Path="infra\terraform\variables.tf" />
     <File Path="infra\terraform\web.tf" />
   </Folder>
-
+  <Folder Name="/.config/">
+    <File Path=".config\dotnet-tools.json" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
     <File Path=".gitattributes" />
