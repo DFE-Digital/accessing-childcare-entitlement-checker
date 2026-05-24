@@ -1,0 +1,341 @@
+name: Build dotnet
+
+on:
+  workflow_call:
+    inputs:
+      publish:
+        required: false
+        type: boolean
+        default: false
+      coverage-threshold:
+        required: false
+        type: number
+        default: 90
+
+    secrets:
+      SONAR_TOKEN:
+        required: true
+
+env:
+  SOLUTION: AccessingChildcareEntitlementChecker.slnx
+  WEB_APP: src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj
+  UNIT_TESTS: tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
+  E2E_TESTS: tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj
+  CONFIGURATION: Release
+
+jobs:
+  dotnet:
+    name: CI checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Encode ref_name
+        run: |
+          ENCODED_REF="${{ github.ref_name }}"
+          ENCODED_REF="${ENCODED_REF//\//%2F}"
+          echo "ENCODED_REF=$ENCODED_REF" >> $GITHUB_ENV
+
+      - name: Init summary state
+        run: |
+          echo "FORMAT=unknown" >> $GITHUB_ENV
+          echo "TESTS=unknown" >> $GITHUB_ENV
+          echo "WEB_APP_PUBLISHED=skipped" >> $GITHUB_ENV
+          echo "E2E_PUBLISHED=skipped" >> $GITHUB_ENV
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+
+      - name: Generate build metadata
+        run: |          
+          cat > build-dotnet-metadata.json <<EOF
+          {
+            "commit": "${{ github.sha }}",
+            "branch": "${{ github.ref_name }}",
+            "buildDate": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "dotnetSdk": "$(dotnet --version)",
+            "configuration": "${{ env.CONFIGURATION }}",
+            "runId": "${{ github.run_id }}"
+          }
+          EOF
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Cache dotnet tools
+        uses: actions/cache@v5
+        with:
+          path: ~/.dotnet/tools
+          key: tools-${{ runner.os }}-${{ hashFiles('.config/dotnet-tools.json') }}
+          restore-keys: |
+            tools-${{ runner.os }}-
+
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION }} --locked-mode
+
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+
+      - name: Scan vulnerable packages
+        id: vulnerabilities
+        run: |
+          dotnet list ${{ env.SOLUTION }} package \
+          --vulnerable \
+          --include-transitive \
+          --format json \
+          > vulnerability-report.json
+
+      - name: Parse vulnerability report
+        if: always()
+        run: |
+          file="vulnerability-report.json"
+          
+          if [ ! -f "$file" ]; then
+          echo "VULNS=missing" >> $GITHUB_ENV
+          exit 0
+          fi
+          
+          CRITICAL=$(jq '[.projects[]?
+          | .frameworks[]?
+          | .topLevelPackages[]?
+          | .vulnerabilities[]?
+          | select(.severity=="Critical")
+          ] | length' "$file")
+          
+          HIGH=$(jq '[.projects[]?
+          | .frameworks[]?
+          | .topLevelPackages[]?
+          | .vulnerabilities[]?
+          | select(.severity=="High")
+          ] | length' "$file")
+          
+          MEDIUM=$(jq '[.projects[]?
+          | .frameworks[]?
+          | .topLevelPackages[]?
+          | .vulnerabilities[]?
+          | select(.severity=="Moderate" or .severity=="Medium")
+          ] | length' "$file")
+          
+          TOTAL=$(jq '[.projects[]?
+          | .frameworks[]?
+          | .topLevelPackages[]?
+          | .vulnerabilities[]?
+          ] | length // 0' vulnerability-report.json)
+          
+          if [ "$TOTAL" -eq 0 ]; then
+          VULNS="clean"
+          else
+          VULNS="detected"
+          fi
+          
+          echo "VULNS=$VULNS" >> $GITHUB_ENV
+          echo "VULNS_CRITICAL=$CRITICAL" >> $GITHUB_ENV
+          echo "VULNS_HIGH=$HIGH" >> $GITHUB_ENV
+          echo "VULNS_MEDIUM=$MEDIUM" >> $GITHUB_ENV
+
+      - name: Check formatting
+        id: format
+        run: dotnet format ${{ env.SOLUTION }} --verify-no-changes
+
+      - name: Record format result
+        if: always()
+        run: |
+          if [ "${{ steps.format.outcome }}" = "success" ]; then
+            echo "FORMAT=passed" >> $GITHUB_ENV
+          else
+            echo "FORMAT=failed" >> $GITHUB_ENV
+          fi
+
+      - name: Sonar Begin
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner begin \
+            /k:DFE-Digital_accessing-childcare-entitlement-checker \
+            /o:dfe-digital \
+            /d:sonar.branch.name="${{ github.ref_name }}" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.token="${SONAR_TOKEN}" \
+            /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
+            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
+            /d:sonar.qualitygate.wait=true
+
+      - name: Build
+        run: >
+          dotnet build ${{ env.SOLUTION }}
+          -c ${{ env.CONFIGURATION }}
+          --no-restore
+          /p:ContinuousIntegrationBuild=true
+
+      - name: Test
+        id: test
+        run: |
+          dotnet test ${{ env.UNIT_TESTS }} \
+            -c ${{ env.CONFIGURATION }} \
+            --no-build \
+            --results-directory ./TestResults \
+            --logger "trx;LogFileName=test-results.trx" \
+            /p:CollectCoverage=true  \
+            /p:CoverletOutputFormat=opencover \
+            /p:CoverletOutput=TestResults/coverage/  \
+            /p:Threshold=${{ inputs.coverage-threshold }} \
+            /p:ThresholdType=line \
+            /p:ThresholdStat=total
+
+      - name: Record test result
+        if: always()
+        run: |
+          if [ "${{ steps.test.outcome }}" = "success" ]; then
+            echo "TESTS=passed" >> $GITHUB_ENV
+          else
+            echo "TESTS=failed" >> $GITHUB_ENV
+          fi
+
+      - name: Sonar End
+        if: always()
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
+
+      - name: Generate coverage report
+        if: always()
+        run: |
+          dotnet tool run reportgenerator \
+            -reports:**/coverage.opencover.xml \
+            -targetdir:coverage-report \
+            -reporttypes:"TextSummary;Html"    
+
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Unit Tests
+          path: TestResults/**/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
+
+      - name: Publish Web App
+        if: inputs.publish
+        run: >
+          dotnet publish ${{ env.WEB_APP }}
+          -c ${{ env.CONFIGURATION }}
+          -o web-app
+          --no-build
+
+      - name: Record web app publish
+        if: always()
+        run: |
+          if [ -d "web-app" ]; then
+            echo "WEB_APP_PUBLISHED=created" >> $GITHUB_ENV
+          fi
+
+      - name: Publish e2e Tests
+        if: inputs.publish
+        run: >
+          dotnet publish ${{ env.E2E_TESTS }}
+          -c ${{ env.CONFIGURATION }}
+          -o e2e-tests
+          --no-build
+
+      - name: Record e2e publish
+        if: always()
+        run: |
+          if [ -d "e2e-tests" ]; then
+            echo "E2E_PUBLISHED=created" >> $GITHUB_ENV
+          fi
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
+
+      - name: Upload vulnerability report
+        uses: actions/upload-artifact@v4
+        with:
+          name: vulnerability-report
+          path: vulnerability-report.json
+
+      - name: Upload metadata
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-dotnet-metadata
+          path: build-dotnet-metadata.json
+
+      - name: Upload Published Web App
+        if: inputs.publish
+        uses: actions/upload-artifact@v7
+        with:
+          name: web-app
+          path: web-app
+
+      - name: Upload Published e2e Tests
+        if: inputs.publish
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-tests
+          path: e2e-tests
+
+      - name: Add CI summary
+        if: always()
+        run: |
+          format_icon="❔"
+          test_icon="❔"
+          vulns_icon="📄"
+          web_icon="⏭️"
+          e2e_icon="⏭️"
+          
+          # Format
+          if [ "$FORMAT" = "passed" ]; then format_icon="✅"
+          elif [ "$FORMAT" = "failed" ]; then format_icon="❌"
+          fi
+          
+          # Tests
+          if [ "$TESTS" = "passed" ]; then test_icon="✅"
+          elif [ "$TESTS" = "failed" ]; then test_icon="❌"
+          fi
+          
+          # Vulnerabilities
+          if  [ "$VULNS" = "clean" ]; then vulns_icon="🟢"; fi
+          
+          if [ "$WEB_APP_PUBLISHED" = "created" ]; then web_icon="📦"; fi
+          if [ "$E2E_PUBLISHED" = "created" ]; then e2e_icon="🧪"; fi
+          
+          echo "## 🧪 .NET CI Report Card" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Area | Status | Result |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|--------|" >> $GITHUB_STEP_SUMMARY
+        
+          echo "| Format | $format_icon | $FORMAT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests | $test_icon | $TESTS |" >> $GITHUB_STEP_SUMMARY
+          echo "| Vulnerabilities | $vulns_icon | 🔴 $VULNS_CRITICAL 🟠 $VULNS_HIGH 🟡 $VULNS_MEDIUM |" >> $GITHUB_STEP_SUMMARY
+          echo "| Web App | $web_icon | $WEB_APP_PUBLISHED |" >> $GITHUB_STEP_SUMMARY
+          echo "| E2E Tests | $e2e_icon | $E2E_PUBLISHED |" >> $GITHUB_STEP_SUMMARY
+  
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if  [ "$FORMAT" = "passed" ] && [ "$TESTS" = "passed" ] && [ "$VULNS" = "clean" ]; then
+            echo "### Overall: 🟢 Healthy" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### Overall: 🟡 Needs attention" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔎 SonarCloud" >> $GITHUB_STEP_SUMMARY
+          echo "- Dashboard: https://sonarcloud.io/dashboard?id=DFE-Digital_accessing-childcare-entitlement-checker" >> $GITHUB_STEP_SUMMARY
+          echo "- New code: https://sonarcloud.io/summary/new_code?id=DFE-Digital_accessing-childcare-entitlement-checker&branch=$ENCODED_REF" >> $GITHUB_STEP_SUMMARY
+          echo "- Overall: https://sonarcloud.io/summary/overall?id=DFE-Digital_accessing-childcare-entitlement-checker&branch=$ENCODED_REF" >> $GITHUB_STEP_SUMMARY

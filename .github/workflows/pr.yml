@@ -1,0 +1,17 @@
+name: PR Validation
+
+on:
+  pull_request:
+
+jobs:
+  validate-dotnet:
+    name: Validate Dotnet
+    uses: ./.github/workflows/build-dotnet.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  validate-tf:
+    name: Validate Terraform
+    uses: ./.github/workflows/build-terraform.yml
+    with:
+      terraform-directory: src/infrastructure/terraform
