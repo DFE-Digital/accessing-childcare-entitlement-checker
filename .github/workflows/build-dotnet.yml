@@ -21,7 +21,7 @@ env:
   SOLUTION: AccessingChildcareEntitlementChecker.slnx
   WEB_APP: src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj
   UNIT_TESTS: tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
-  E2E_TESTS: tests/AccessingChildcareEntitlementChecker.E2eTests/AccessingChildcareEntitlementChecker.E2eTests.csproj
+  E2E_TESTS: tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj
   CONFIGURATION: Release
 
 jobs:
