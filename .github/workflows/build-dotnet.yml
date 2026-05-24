@@ -1,0 +1,117 @@
+name: Build dotnet
+
+on:
+  workflow_call:
+    inputs:
+      publish:
+        required: false
+        type: boolean
+        default: false
+
+      dotnet-version:
+        required: false
+        type: string
+        default: "10.0.x"
+
+    secrets:
+      SONAR_TOKEN:
+        required: true
+
+env:
+  SOLUTION: AccessingChildcareEntitlementChecker.slnx
+  CONFIGURATION: Release
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Cache dotnet tools
+        uses: actions/cache@v5
+        with:
+          path: ~/.dotnet/tools
+          key: tools-${{ runner.os }}-${{ hashFiles('.config/dotnet-tools.json') }}
+          restore-keys: |
+            tools-${{ runner.os }}-
+
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION }} --locked-mode
+
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+
+      - name: Check formatting
+        run: dotnet format ${{ env.SOLUTION }} --verify-no-changes
+
+      - name: Sonar Begin
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner begin \
+            /d:sonar.token="${SONAR_TOKEN}"
+
+      - name: Build
+        run: >
+          dotnet build ${{ env.SOLUTION }}
+          -c ${{ env.CONFIGURATION }}
+          --no-restore
+          /p:ContinuousIntegrationBuild=true
+
+      - name: Test
+        run: >
+          dotnet test ${{ env.SOLUTION }}
+          -c ${{ env.CONFIGURATION }}
+          --no-build
+          --results-directory ./TestResults
+          --collect:"XPlat Code Coverage"
+
+      - name: Sonar End
+        if: always()
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results-${{ github.sha }}
+          path: TestResults
+
+      - name: Publish Web App
+        if: inputs.publish
+        run: >
+          dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj
+          -c ${{ env.CONFIGURATION }}
+          -o publish
+          --no-build
+
+      - name: Upload Published App
+        if: inputs.publish
+        uses: actions/upload-artifact@v7
+        with:
+          name: webapp-${{ github.sha }}
+          path: publish

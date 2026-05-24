@@ -1,0 +1,60 @@
+name: Reusable Terraform
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        required: true
+        type: string
+        default: "infra/terraform"
+
+      terraform-version:
+        required: false
+        type: string
+        default: "1.9.8"
+
+      create-package:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: ${{ inputs.terraform-version }}
+
+      - name: Terraform Init
+        run: terraform init -input=false
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Create Terraform Package
+        if: inputs.create-package
+        run: |
+          zip -r terraform-package.zip .
+
+      - name: Upload Terraform Package
+        if: inputs.create-package
+        uses: actions/upload-artifact@v7
+        with:
+          name: terraform-package-${{ github.sha }}
+          path: ${{ inputs.working-directory }}/terraform-package.zip

@@ -1,0 +1,64 @@
+name: Main Integration
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-dotnet:
+    uses: ./.github/workflows/build-dotnet.yml
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: read
+    with:
+      publish: true
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  build-terraform:
+    uses: ./.github/workflows/build-terraform.yml
+    with:
+      working-directory: infra/terraform
+      create-package: true
+
+  tests-e2e:
+    name: Run e2e tests
+    runs-on: ubuntu-latest
+    needs: [build-dotnet, build-terraform]
+    steps:
+      - name: Run e2e tests
+        run: |
+          echo "Running e2e tests"
+
+  tests-a11y:
+    name: Run a11y tests
+    runs-on: ubuntu-latest
+    needs: [build-dotnet, build-terraform]
+    steps:
+      - name: Run a11y tests
+        run: |
+          echo "Running a11y tests"
+
+  deploy-dev:
+    name: Deploy Dev
+    runs-on: ubuntu-latest
+    needs: [tests-a11y, tests-e2e]
+    environment:
+      name: dev
+    steps:
+      - name: Deploy to Dev
+        run: |
+          echo "Deploying to Dev"
+
+  deploy-test:
+    name: Deploy Test
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+    environment:
+      name: test
+    steps:
+      - name: Deploy to Test
+        run: |
+          echo "Deploying to Test"

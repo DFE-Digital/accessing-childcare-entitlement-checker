@@ -1,0 +1,22 @@
+name: PR Validation
+
+on:
+  pull_request:
+
+jobs:
+  validate-dotnet:
+    uses: ./.github/workflows/build-dotnet.yml
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: read
+    with:
+      publish: false
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  validate-tf:
+    uses: ./.github/workflows/build-terraform.yml
+    with:
+      working-directory: infra/terraform
+      create-package: false
