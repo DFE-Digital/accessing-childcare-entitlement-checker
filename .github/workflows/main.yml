@@ -3,7 +3,8 @@ name: Main Integration
 on:
   push:
     branches:
-      - main
+      - chore/refactor-workflows
+      #- main
 
 jobs:
   build-dotnet:
@@ -20,7 +21,7 @@ jobs:
   build-terraform:
     uses: ./.github/workflows/build-terraform.yml
     with:
-      working-directory: infra/terraform
+      working-directory: src/infrastructure/terraform
       create-package: true
 
   tests-e2e:
