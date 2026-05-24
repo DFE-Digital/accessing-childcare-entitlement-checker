@@ -19,7 +19,9 @@ on:
 
 env:
   SOLUTION: AccessingChildcareEntitlementChecker.slnx
-  UNIT_TEST: tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
+  WEB_APP: src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj
+  UNIT_TESTS: tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
+  E2E_TESTS: tests/AccessingChildcareEntitlementChecker.E2eTests/AccessingChildcareEntitlementChecker.E2eTests.csproj
   CONFIGURATION: Release
 
 jobs:
@@ -86,7 +88,7 @@ jobs:
 
       - name: Test
         run: >
-          dotnet test ${{ env.UNIT_TEST }}
+          dotnet test ${{ env.UNIT_TESTS }}
           -c ${{ env.CONFIGURATION }}
           --no-build
           --results-directory ./TestResults
@@ -108,7 +110,15 @@ jobs:
       - name: Publish Web App
         if: inputs.publish
         run: >
-          dotnet publish src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj
+          dotnet publish ${{ env.WEB_APP }}
+          -c ${{ env.CONFIGURATION }}
+          -o publish
+          --no-build
+
+      - name: Publish e2e Tests
+        if: inputs.publish
+        run: >
+          dotnet publish ${{ env.E2E_TESTS }}
           -c ${{ env.CONFIGURATION }}
           -o publish
           --no-build
@@ -118,4 +128,11 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: webapp-${{ github.sha }}
+          path: publish
+
+      - name: Upload Published App
+        if: inputs.publish
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-tests-${{ github.sha }}
           path: publish
