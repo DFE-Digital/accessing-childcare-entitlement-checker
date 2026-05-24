@@ -42,6 +42,17 @@
     <Project Path="tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj" />
     <Project Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
   </Folder>
+  <Folder Name="/infra/" />
+  <Folder Name="/infra/terraform/">
+    <File Path="infra\terraform\data.tf" />
+    <File Path="infra\terraform\fromtdoor.tf" />
+    <File Path="infra\terraform\locals.tf" />
+    <File Path="infra\terraform\main.tf" />
+    <File Path="infra\terraform\outputs.tf" />
+    <File Path="infra\terraform\provider.tf" />
+    <File Path="infra\terraform\variables.tf" />
+    <File Path="infra\terraform\web.tf" />
+  </Folder>
 
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />

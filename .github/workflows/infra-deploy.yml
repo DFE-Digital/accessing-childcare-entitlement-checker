@@ -43,7 +43,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./src/infrastructure/terraform
+        working-directory: ./infra/terraform
 
     env:
       # OIDC Authentication
