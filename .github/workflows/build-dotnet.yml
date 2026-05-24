@@ -112,7 +112,7 @@ jobs:
         run: >
           dotnet publish ${{ env.WEB_APP }}
           -c ${{ env.CONFIGURATION }}
-          -o publish
+          -o web-app
           --no-build
 
       - name: Publish e2e Tests
@@ -120,19 +120,19 @@ jobs:
         run: >
           dotnet publish ${{ env.E2E_TESTS }}
           -c ${{ env.CONFIGURATION }}
-          -o publish
+          -o e2e-tests
           --no-build
 
-      - name: Upload Published App
+      - name: Upload Published Web App
         if: inputs.publish
         uses: actions/upload-artifact@v7
         with:
-          name: webapp-${{ github.sha }}
-          path: publish
+          name: web-app-${{ github.sha }}
+          path: web-app
 
-      - name: Upload Published App
+      - name: Upload Published e2e Test
         if: inputs.publish
         uses: actions/upload-artifact@v7
         with:
           name: e2e-tests-${{ github.sha }}
-          path: publish
+          path: e2e-tests
