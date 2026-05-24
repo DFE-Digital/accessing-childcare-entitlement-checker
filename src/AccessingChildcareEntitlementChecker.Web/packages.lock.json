@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "dependencies": {
     "net10.0": {
       "GovUk.Frontend.AspNetCore": {
@@ -17,10 +17,7 @@
         "contentHash": "LBlxUQTtVrAH7gcUyEpqHwQ0ASx2/rbNIht/DWj+ofux4UH7PMUjyPodx1pGlb+Zdi03ItUZQFT8mRzi0Tiewg=="
       },
       "accessingchildcareentitlementchecker.rulesengine": {
-        "type": "Project",
-        "dependencies": {
-          "AccessingChildcareEntitlementChecker.Web": "[1.0.0, )"
-        }
+        "type": "Project"
       }
     }
   }

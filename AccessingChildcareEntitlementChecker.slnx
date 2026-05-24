@@ -44,6 +44,7 @@
     <File Path=".gitignore" />
     <File Path="CODEOWNERS" />
     <File Path="CONTRIBUTING.md" />
+    <File Path="Directory.Build.props" />
     <File Path="global.json" />
     <File Path="LICENCE" />
     <File Path="README.md" />
