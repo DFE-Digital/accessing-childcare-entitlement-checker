@@ -19,6 +19,7 @@ on:
 
 env:
   SOLUTION: AccessingChildcareEntitlementChecker.slnx
+  UNIT_TEST: tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
   CONFIGURATION: Release
 
 jobs:
@@ -85,7 +86,7 @@ jobs:
 
       - name: Test
         run: >
-          dotnet test ${{ env.SOLUTION }}
+          dotnet test ${{ env.UNIT_TEST }}
           -c ${{ env.CONFIGURATION }}
           --no-build
           --results-directory ./TestResults
