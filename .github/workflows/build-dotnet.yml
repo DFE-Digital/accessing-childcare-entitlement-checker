@@ -74,7 +74,6 @@ jobs:
             /k:DFE-Digital_accessing-childcare-entitlement-checker \
             /o:dfe-digital \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.token="$SONAR_TOKEN" \
             /d:sonar.token="${SONAR_TOKEN}"
 
       - name: Build
