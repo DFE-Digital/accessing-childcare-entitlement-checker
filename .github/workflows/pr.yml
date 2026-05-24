@@ -23,5 +23,5 @@ jobs:
   validate-tf:
     uses: ./.github/workflows/build-terraform.yml
     with:
-      working-directory: infra/terraform
+      working-directory: src/infrastructure/terraform
       create-package: false
