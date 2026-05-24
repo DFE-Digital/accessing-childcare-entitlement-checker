@@ -1,4 +1,4 @@
-name: Reusable Terraform
+I'm name: Reusable Terraform
 
 on:
   workflow_call:
@@ -39,7 +39,7 @@ jobs:
           terraform_version: ${{ inputs.terraform-version }}
 
       - name: Terraform Init
-        run: terraform init -input=false
+        run: terraform init -input=false -backend=false
 
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
