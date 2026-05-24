@@ -2,13 +2,31 @@ version: 2
 
 updates:
   - package-ecosystem: "nuget"
-    directory: "/"
+    directory: "/" # Target solution file
     schedule:
       interval: "weekly"
     commit-message:
       prefix: "chore(deps): "
+    labels:
+      - "dependencies"
+      - "nuget"
 
   - package-ecosystem: "github-actions"
     directory: "/" # For GHA '/' actually correlates to '.github/workflows'
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "chore(deps): "
+    labels:
+      - "dependencies"
+      - "github actions"
+
+  - package-ecosystem: "terraform"
+    directory: "/infra/terraform"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(deps): "
+    labels:
+      - "dependencies"
+      - "terraform"
