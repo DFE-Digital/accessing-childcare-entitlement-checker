@@ -54,9 +54,9 @@ jobs:
 
       - name: Run Checkov scan
         run: |
-          docker run \
+          docker run --rm \
             --volume "${{ github.workspace }}/${{ inputs.working-directory }}:/tf" \
-            bridgecrew/checkov \
+            bridgecrew/checkov:latest \
             -d /tf \
             -o cli \
             -o sarif \
@@ -64,17 +64,17 @@ jobs:
             --soft-fail
 
       - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
-          sarif_file: results.sarif
+          sarif_file: ${{ github.workspace }}/${{ inputs.working-directory }}/results.sarif
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: checkov-results
-          path: results.sarif
+          path: ${{ github.workspace }}/${{ inputs.working-directory }}/results.sarif
 
       - name: Create Terraform Package
         if: inputs.create-package
