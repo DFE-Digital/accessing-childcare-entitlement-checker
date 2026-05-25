@@ -22,4 +22,3 @@ jobs:
     uses: ./.github/workflows/build-terraform.yml
     with:
       working-directory: src/infrastructure/terraform
-      create-package: false

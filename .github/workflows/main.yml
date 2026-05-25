@@ -22,7 +22,7 @@ jobs:
     uses: ./.github/workflows/build-terraform.yml
     with:
       working-directory: src/infrastructure/terraform
-      create-package: true
+      publish: true
 
   tests-e2e:
     name: Run e2e tests
