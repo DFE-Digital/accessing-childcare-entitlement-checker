@@ -22,10 +22,6 @@ jobs:
 
   validate-tf:
     uses: ./.github/workflows/build-terraform.yml
-    permissions:
-      contents: read
-      checks: write
-      pull-requests: read
     with:
       working-directory: src/infrastructure/terraform
       create-package: false

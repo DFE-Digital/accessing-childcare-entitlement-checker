@@ -1,4 +1,4 @@
-name: Reusable Terraform
+name: Build Terraform
 
 on:
   workflow_call:
@@ -24,8 +24,8 @@ jobs:
 
     permissions:
       contents: read
-      checks: write
-      pull-requests: read
+      security-events: write
+      actions: read
 
     defaults:
       run:
@@ -57,24 +57,24 @@ jobs:
           docker run \
             --volume "${{ github.workspace }}/${{ inputs.working-directory }}:/tf" \
             bridgecrew/checkov \
-            --directory /tf \
-            --output junitxml > CheckovReport.xml \
+            -d /tf \
+            -o cli \
+            -o sarif \
+            --output-file-path console,/tf/results.sarif \
             --soft-fail
 
-      - name: Upload raw report artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: checkov-report
-          path: ${{ inputs.working-directory }}/CheckovReport.xml
-
-      - name: Publish test results (JUnit)
-        uses: dorny/test-reporter@v1
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          name: Checkov_ScanResults
-          path: ${{ inputs.working-directory }}/CheckovReport.xml
-          reporter: java-junit
-          fail-on-error: true
+          sarif_file: results.sarif
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: checkov-results
+          path: results.sarif
 
       - name: Create Terraform Package
         if: inputs.create-package
