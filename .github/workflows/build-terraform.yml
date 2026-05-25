@@ -34,7 +34,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
+        with:
+          fetch-depth: 0
+          
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
@@ -68,6 +70,7 @@ jobs:
         if: always()
         with:
           sarif_file: ${{ github.workspace }}/${{ inputs.working-directory }}/results.sarif
+          category: checkov-terraform
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

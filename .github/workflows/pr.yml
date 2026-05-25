@@ -1,9 +1,7 @@
 name: PR Validation
 
-#on:
-#  pull_request:
-
 on:
+  pull_request:
   push:
     branches:
       - chore/refactor-workflows
