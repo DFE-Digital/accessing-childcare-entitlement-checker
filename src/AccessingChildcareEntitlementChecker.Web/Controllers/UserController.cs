@@ -19,9 +19,10 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult NextStepPlaceholder()
     {
-        return Content("Next step placeholder");
+        return Content("<h1 >Next step placeholder</h1>", "text/html");
     }
 
     [HttpGet]
@@ -84,7 +85,6 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-
         return model.Nationality switch
         {
             NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => this.RedirectTo<UserController>(nameof(SettledStatus)),
@@ -138,21 +138,24 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult WorkStatus(string? returnTo = null)
     {
-        return Content("How would you describe your work status?");
+        return Content("<h1>How would you describe your work status?</h1>", "text/html");
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult TypeOfLeave(string? returnTo = null)
     {
         // This page a stub as not yet confirmed in design.
-        return Content("TypeOfLeave");
+        return Content("<h1>TypeOfLeave</h1>", "text/html");
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult UniversalCredit(string? returnTo = null)
     {
-        return Content("Does your household receive universal credit?");
+        return Content("<h1>Does your household receive universal credit?</h1>", "text/html");
     }
 }
