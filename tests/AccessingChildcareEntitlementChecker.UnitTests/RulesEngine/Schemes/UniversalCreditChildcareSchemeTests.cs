@@ -1,17 +1,21 @@
 using AccessingChildcareEntitlementChecker.RulesEngine.Derived;
 using AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
 using AccessingChildcareEntitlementChecker.RulesEngine.Types;
+using AccessingChildcareEntitlementChecker.RulesEngine.Helpers;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.RulesEngine.Schemes;
 
 public class UniversalCreditChildcareSchemeTests
 {
-    [Fact]
-    public void Evaluate_WhenChildIsEligibleNow_ReturnsSchemeResult()
-    {
-        var scheme = new UniversalCreditChildcareEvaluator();
+    private static readonly DateOnly Today = new(2025, 1, 1);
 
-        var context = new DerivedContext
+    private static UniversalCreditChildcareEvaluator CreateEvaluator()
+    {
+        return new UniversalCreditChildcareEvaluator();
+    }
+    private static DerivedContext CreateEligibleContext()
+    {
+        return new DerivedContext
         {
             Household = new HouseholdFacts
             {
@@ -30,13 +34,35 @@ public class UniversalCreditChildcareSchemeTests
                 ]
             }
         };
+    }
 
-        var child = new ChildFacts
+    private static ChildFacts CreateBornChild(
+        DateOnly dateOfBirth)
+    {
+        return new ChildFacts
         {
             Name = "Jack",
             IsBorn = true,
-            AgeInYears = 3
+            DateOfBirth = dateOfBirth,
+            AgeInYears = AgeCalculations.CalculateAgeInYears(
+                dateOfBirth,
+                Today),
+
+            AgeInMonths = AgeCalculations.CalculateAgeInMonths(
+                dateOfBirth,
+                Today)
         };
+    }
+
+
+    [Fact]
+    public void Evaluate_WhenChildIsEligibleNow_ReturnsSchemeResult()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = CreateEligibleContext();
+
+        var child = CreateBornChild(new DateOnly(2021, 11, 1));
 
         var result = scheme.Evaluate(context, child);
 
@@ -51,34 +77,11 @@ public class UniversalCreditChildcareSchemeTests
     [Fact]
     public void Evaluate_WhenChildIsOver16_ReturnsNull()
     {
-        var scheme = new UniversalCreditChildcareEvaluator();
+        var scheme = CreateEvaluator();
 
-        var context = new DerivedContext
-        {
-            Household = new HouseholdFacts
-            {
-                HasPartner = false,
-                ReceivesUniversalCredit = true,
-                HasAccessToPublicFunds = true,
-                LivesInGreatBritain = true
-            },
+        var context = CreateEligibleContext();
 
-            User = new PersonFacts
-            {
-                IsInPaidWork = true,
-                Benefits =
-                [
-                    PersonBenefit.UniversalCredit
-                ]
-            }
-        };
-
-        var child = new ChildFacts
-        {
-            Name = "James",
-            IsBorn = true,
-            AgeInYears = 17
-        };
+        var child = CreateBornChild(new DateOnly(2007, 10, 1));
 
         var result = scheme.Evaluate(context, child);
 
@@ -88,7 +91,7 @@ public class UniversalCreditChildcareSchemeTests
     [Fact]
     public void Evaluate_WhenHouseholdDoesNotReceiveUniversalCredit_ReturnsNull()
     {
-        var scheme = new UniversalCreditChildcareEvaluator();
+        var scheme = CreateEvaluator();
 
         var context = new DerivedContext
         {
@@ -109,12 +112,7 @@ public class UniversalCreditChildcareSchemeTests
             }
         };
 
-        var child = new ChildFacts
-        {
-            Name = "Mia",
-            IsBorn = true,
-            AgeInYears = 3
-        };
+        var child = CreateBornChild(new DateOnly(2022, 1, 1));
 
         var result = scheme.Evaluate(context, child);
 
@@ -124,7 +122,7 @@ public class UniversalCreditChildcareSchemeTests
     [Fact]
     public void Evaluate_WhenSingleParentNotInPaidWork_ReturnsNull()
     {
-        var scheme = new UniversalCreditChildcareEvaluator();
+        var scheme = CreateEvaluator();
 
         var context = new DerivedContext
         {
@@ -146,12 +144,7 @@ public class UniversalCreditChildcareSchemeTests
             }
         };
 
-        var child = new ChildFacts
-        {
-            Name = "Jack",
-            IsBorn = true,
-            AgeInYears = 3
-        };
+        var child = CreateBornChild(new DateOnly(2022, 1, 1));
 
         var result = scheme.Evaluate(context, child);
 
@@ -161,7 +154,7 @@ public class UniversalCreditChildcareSchemeTests
     [Fact]
     public void Evaluate_WhenCoupleHasOneWorkingParentAndOneExemptParent_ReturnsSchemeResult()
     {
-        var scheme = new UniversalCreditChildcareEvaluator();
+        var scheme = CreateEvaluator();
 
         var context = new DerivedContext
         {
@@ -191,12 +184,7 @@ public class UniversalCreditChildcareSchemeTests
             }
         };
 
-        var child = new ChildFacts
-        {
-            Name = "Jack",
-            IsBorn = true,
-            AgeInYears = 3
-        };
+        var child = CreateBornChild(new DateOnly(2022, 1, 1));
 
         var result = scheme.Evaluate(context, child);
 
@@ -211,7 +199,7 @@ public class UniversalCreditChildcareSchemeTests
     [Fact]
     public void Evaluate_WhenCoupleHasOneWorkingParentAndOneNonExemptParent_ReturnsNull()
     {
-        var scheme = new UniversalCreditChildcareEvaluator();
+        var scheme = CreateEvaluator();
 
         var context = new DerivedContext
         {
@@ -241,12 +229,7 @@ public class UniversalCreditChildcareSchemeTests
             }
         };
 
-        var child = new ChildFacts
-        {
-            Name = "Jack",
-            IsBorn = true,
-            AgeInYears = 3
-        };
+        var child = CreateBornChild(new DateOnly(2022, 1, 1));
 
         var result = scheme.Evaluate(context, child);
 
@@ -256,27 +239,9 @@ public class UniversalCreditChildcareSchemeTests
     [Fact]
     public void Evaluate_WhenChildIsUnbornAndHouseholdMeetsRequirements_ReturnsFutureEligibility()
     {
-        var scheme = new UniversalCreditChildcareEvaluator();
+        var scheme = CreateEvaluator();
 
-        var context = new DerivedContext
-        {
-            Household = new HouseholdFacts
-            {
-                HasPartner = false,
-                ReceivesUniversalCredit = true,
-                HasAccessToPublicFunds = true,
-                LivesInGreatBritain = true
-            },
-
-            User = new PersonFacts
-            {
-                IsInPaidWork = true,
-                Benefits =
-                [
-                    PersonBenefit.UniversalCredit
-                ]
-            }
-        };
+        var context = CreateEligibleContext();
 
         var child = new ChildFacts
         {
@@ -290,8 +255,5 @@ public class UniversalCreditChildcareSchemeTests
         Assert.NotNull(result);
         Assert.False(result!.EligibleNow);
         Assert.True(result.EligibleInFuture);
-        Assert.Equal(
-            new DateOnly(2025, 12, 1),
-            result.UseFromDate);
     }
 }

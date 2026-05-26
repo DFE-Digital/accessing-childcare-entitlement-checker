@@ -8,41 +8,43 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
 
 public class FifteenHoursUniversalEvaluator : ISchemeEvaluator
 {
+    private const int MinimumEligibleAgeInYears = 3;
+    private const int MaximumEligibleAgeInYears = 4;
+
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
         var eligibleNow =
             context.Household.CountryOfResidence == CountryOfResidence.England &&
             child.IsBorn &&
-            child.AgeInYears is >= 3 and <= 4;
+            child.AgeInYears is >= MinimumEligibleAgeInYears and <= MaximumEligibleAgeInYears;
 
         var eligibleInFuture =
             context.Household.CountryOfResidence == CountryOfResidence.England &&
-            ((child.IsBorn && child.AgeInYears is < 3) || !child.IsBorn);
+            ((child.IsBorn && child.AgeInYears is < MinimumEligibleAgeInYears) || !child.IsBorn);
 
         if (!eligibleNow && !eligibleInFuture)
         {
             return null;
         }
 
-        var thirdBirthday =
+        var thirdBirthdayDate =
             child.IsBorn
-                ? child.DateOfBirth?.AddYears(3)
-                : child.DueDate?.AddYears(3);
+                ? child.DateOfBirth?.AddYears(MinimumEligibleAgeInYears)
+                : child.DueDate?.AddYears(MinimumEligibleAgeInYears);
 
-        DateOnly? applyFromDate = thirdBirthday;
+        DateOnly? applyFromDate = thirdBirthdayDate;
 
         DateOnly? useFromDate =
-            thirdBirthday is not null
+            thirdBirthdayDate is not null
                 ? TermDateCalculator.GetNextTermStartDate(
-                    thirdBirthday.Value)
+                    thirdBirthdayDate.Value)
                 : null;
 
         return new SchemeResultDto
         {
-            SchemeCode = SchemeCode.FifteenHoursForWorkingFamilies,
+            SchemeCode = SchemeCode.FifteenHoursUniversal,
             EligibleNow = eligibleNow,
             EligibleInFuture = eligibleInFuture,
-            EligibleWhenChildTurns = 3,
             ApplyFromDate = applyFromDate,
             UseFromDate = useFromDate
         };

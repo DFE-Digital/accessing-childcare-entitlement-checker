@@ -1,5 +1,6 @@
 using AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Requests;
 using AccessingChildcareEntitlementChecker.RulesEngine.Types;
+using AccessingChildcareEntitlementChecker.RulesEngine.Helpers;
 
 namespace AccessingChildcareEntitlementChecker.RulesEngine.Derived;
 
@@ -56,15 +57,25 @@ public static class DerivedContextBuilder
         return new PersonFacts
         {
             IsInPaidWork = person.IsInPaidWork == true,
+            SelfEmployedLessThan12Months = person.SelfEmployedLessThan12Months == true,
+            EarnsAboveThreshold = person.EarnsAboveThreshold == true,
+            ExceedsAdjustedNetIncomeLimit = person.ExceedsAdjustedNetIncomeLimit == true,
+            WorkStatuses = person.WorkStatuses.ToList(),
             Benefits = person.Benefits.ToList()
         };
     }
 
     private static ChildFacts BuildChildFacts(ChildDto child, DateOnly today)
     {
-        int? age = child.DateOfBirth is null
+        int? ageInYears = child.DateOfBirth is null
             ? null
-            : CalculateAgeInYears(child.DateOfBirth.Value, today);
+            : AgeCalculations.CalculateAgeInYears(child.DateOfBirth.Value, today);
+
+        int? ageInMonths = child.DateOfBirth is null
+            ? null
+            : AgeCalculations.CalculateAgeInMonths(
+                child.DateOfBirth.Value,
+                today);
 
         return new ChildFacts
         {
@@ -72,7 +83,10 @@ public static class DerivedContextBuilder
             IsBorn = child.BirthStatus == BirthStatus.Born,
             DateOfBirth = child.DateOfBirth,
             DueDate = child.DueDate,
-            AgeInYears = age
+            AgeInYears = ageInYears,
+            AgeInMonths = ageInMonths,
+            ChildRelatedBenefits = child.ChildRelatedBenefits.ToList(),
+            RelationshipToChild = child.RelationshipToChild
         };
     }
 
@@ -81,17 +95,5 @@ public static class DerivedContextBuilder
         return person.Nationality == Nationality.BritishOrIrishCitizen
                || person.HasAccessToPublicFunds == true
                || person.HasSettledOrPreSettledStatus == true;
-    }
-
-    private static int CalculateAgeInYears(DateOnly dateOfBirth, DateOnly today)
-    {
-        var age = today.Year - dateOfBirth.Year;
-
-        if (today < dateOfBirth.AddYears(age))
-        {
-            age--;
-        }
-
-        return age;
     }
 }
