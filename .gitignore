@@ -57,3 +57,4 @@ terraform.rc
 !example.tfvars
 terraform.tfstate*
 *.feature.cs
+.terraform.lock.hcl
