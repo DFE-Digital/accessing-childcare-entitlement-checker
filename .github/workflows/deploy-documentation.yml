@@ -8,10 +8,10 @@ on:
       - 'docs/**'
       - 'mkdocs.yml'
       - '.github/workflows/deploy-documentation.yml'
-  workflow_dispatch: # Allows manual triggering
+  workflow_dispatch: 
 
 permissions:
-  contents: write # Crucial: Allows the runner to push to the gh-pages branch
+  contents: write 
 
 jobs:
   deploy:

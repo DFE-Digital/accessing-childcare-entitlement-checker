@@ -43,8 +43,6 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-# plugins:
-#   - search
 nav:
   - Home: index.md
   - Architecture: architecture/index.md
