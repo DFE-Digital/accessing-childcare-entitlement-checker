@@ -59,11 +59,124 @@ public class TaxFreeChildcareSchemeTests
         var result = evaluator.Evaluate(context, child);
 
         Assert.NotNull(result);
+        Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
         Assert.True(result!.EligibleNow);
         Assert.False(result.EligibleInFuture);
-        Assert.Equal(
-            SchemeCode.TaxFreeChildcare,
-            result.SchemeCode);
+    }
+
+    [Fact]
+    public void Evaluate_WhenBothParentsWorking_ReturnsSchemeResult()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = true,
+                HasAccessToPublicFunds = true
+            },
+
+            User = new PersonFacts
+            {
+                IsInPaidWork = true,
+                EarnsAboveThreshold = true,
+                ExceedsAdjustedNetIncomeLimit = false
+            },
+
+            Partner = new PersonFacts
+            {
+                IsInPaidWork = true,
+                EarnsAboveThreshold = true,
+                ExceedsAdjustedNetIncomeLimit = false
+            }
+        };
+
+        var child = CreateBornChild(new DateOnly(2022, 1, 1));
+
+        var result = scheme.Evaluate(context, child);
+
+        Assert.NotNull(result);
+        Assert.True(result!.EligibleNow);
+        Assert.False(result.EligibleInFuture);
+    }
+
+    [Fact]
+    public void Evaluate_WhenNeitherParentWorking_ReturnsNull()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = true,
+                HasAccessToPublicFunds = true
+            },
+
+            User = new PersonFacts
+            {
+                IsInPaidWork = false,
+                Benefits =
+                [
+                    PersonBenefit.JobseekersAllowance
+                ]
+            },
+
+            Partner = new PersonFacts
+            {
+                IsInPaidWork = false,
+                Benefits =
+                [
+                    PersonBenefit.IncapacityBenefit
+                ]
+            }
+        };
+
+        var child = CreateBornChild(new DateOnly(2020, 1, 1));
+
+        var result = scheme.Evaluate(context, child);
+
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void Evaluate_WhenBothParentsWorkingAndPartnerReceivesUniversalCredit_ReturnsNull()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = true,
+                HasAccessToPublicFunds = true
+            },
+
+            User = new PersonFacts
+            {
+                IsInPaidWork = true,
+                EarnsAboveThreshold = true,
+                ExceedsAdjustedNetIncomeLimit = false
+            },
+
+            Partner = new PersonFacts
+            {
+                IsInPaidWork = true,
+                EarnsAboveThreshold = true,
+                ExceedsAdjustedNetIncomeLimit = false,
+                Benefits =
+                [
+                    PersonBenefit.UniversalCredit
+                ]
+            }
+        };
+
+        var child = CreateBornChild(new DateOnly(2020, 1, 1));
+
+        var result = scheme.Evaluate(context, child);
+
+        Assert.Null(result);
     }
 
     [Fact]
@@ -81,9 +194,7 @@ public class TaxFreeChildcareSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(
-            SchemeCode.TaxFreeChildcare,
-            result!.SchemeCode);
+        Assert.Equal(SchemeCode.TaxFreeChildcare, result!.SchemeCode);
         Assert.False(result.EligibleNow);
         Assert.True(result.EligibleInFuture);
     }
@@ -106,11 +217,9 @@ public class TaxFreeChildcareSchemeTests
         var result = evaluator.Evaluate(context, child);
 
         Assert.NotNull(result);
+        Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
         Assert.True(result!.EligibleNow);
         Assert.False(result.EligibleInFuture);
-        Assert.Equal(
-            SchemeCode.TaxFreeChildcare,
-            result.SchemeCode);
     }
 
     [Fact]
@@ -207,11 +316,9 @@ public class TaxFreeChildcareSchemeTests
         var result = evaluator.Evaluate(context, child);
 
         Assert.NotNull(result);
+        Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
         Assert.True(result!.EligibleNow);
         Assert.False(result.EligibleInFuture);
-        Assert.Equal(
-            SchemeCode.TaxFreeChildcare,
-            result.SchemeCode);
     }
 
     [Fact]
@@ -251,9 +358,7 @@ public class TaxFreeChildcareSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(
-            SchemeCode.TaxFreeChildcare,
-            result!.SchemeCode);
+        Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
@@ -285,41 +390,44 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_HouseholdReceivesChildcareVouchers_ReturnsNull()
+    public void Evaluate_WhenBothParentsWorkingAndPartnerReceivesChildcareVouchers_ReturnsNull()
     {
-        var evaluator = CreateEvaluator();
+        var scheme = CreateEvaluator();
+
         var context = new DerivedContext
         {
             Household = new HouseholdFacts
             {
-                HasPartner = false,
+                HasPartner = true,
                 HasAccessToPublicFunds = true
             },
 
             User = new PersonFacts
             {
                 IsInPaidWork = true,
-                ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = true,
-                ChildcareSupport =
-                [
-                    ChildcareSupport.ChildcareVouchers
-                ]
+                ExceedsAdjustedNetIncomeLimit = false
             },
 
             Partner = new PersonFacts
             {
                 IsInPaidWork = true,
-                ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = true,
+                ExceedsAdjustedNetIncomeLimit = false,
+                ChildcareSupport =
+                [
+                    ChildcareSupport.ChildcareVouchers
+                ]
             }
         };
-        var child = CreateBornChild(new DateOnly(2022, 1, 1));
 
-        var result = evaluator.Evaluate(context, child);
+        var child = CreateBornChild(new DateOnly(2020, 1, 1));
+
+        var result = scheme.Evaluate(context, child);
 
         Assert.Null(result);
     }
+
 
     [Fact]
     public void Evaluate_HouseholdReceivesChildcareBursary_ReturnsNull()
