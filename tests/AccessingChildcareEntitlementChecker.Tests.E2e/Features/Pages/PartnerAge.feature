@@ -1,20 +1,26 @@
 Feature: Partner Age
 
 Background:
-	Given I am on the 'How old is your partner?' page
+	Given I am on the childcare entitlement checker website
+	And I start the journey, filling in Aydin's and Sara's details
+	And I check my children's details and click on Continue
+	And I fill in my own details
+	And I answer questions as follows:
+		| Question                                      | Answer                   |
+		| Do you live with a partner?					| Yes                      |
 
 Scenario: Page load
-	When the page header is "How old is your partner?"
+	When the page header is "What is your partner's age?"
 	Then I should see 3 radio buttons with the following options:
-		| Option               |
-		| Under 18 years old   |
-		| 18 to 20 years old   |
-		| 21 years old or over |
+		| Option     |
+		| Under 18   |
+		| 18 to 20   |
+		| 21 or over |
 
 Scenario: Radio button selection
-	When I select the "Under 18 years old" radio button
-	And I select the "18 to 20 years old" radio button
-	Then the "18 to 20 years old" radio button should be selected
+	When I select the "Under 18" radio button
+	And I select the "18 to 20" radio button
+	Then the "18 to 20" radio button should be selected
 	And all other options should be deselected
 
 Scenario: Continue without selection
@@ -24,9 +30,9 @@ Scenario: Continue without selection
 	And the error summary and inline validation should be "Select your partner's age"
 
 Scenario: Continue with selection
-	When I select the "Under 18 years old" radio button
+	When I select the "Under 18" radio button
 	And I click on Continue
-	Then the page header is "Next step placeholder"
+	Then the page header is "Which of these best describes your partners nationality?"
 
 Scenario: Back navigation
 	When I click the back link
