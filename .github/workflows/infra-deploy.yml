@@ -43,7 +43,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./src/infrastructure/terraform
+        working-directory: ./infra/terraform
 
     env:
       # OIDC Authentication
@@ -59,7 +59,7 @@ jobs:
       BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
       
       # Pathing for Artifacts
-      DEPLOY_ZIP_PATH: "../../../artifacts/webapp-package/webapp.zip"
+      DEPLOY_ZIP_PATH: "../../artifacts/webapp-package/webapp.zip"
 
       # Terraform Variables
       TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}

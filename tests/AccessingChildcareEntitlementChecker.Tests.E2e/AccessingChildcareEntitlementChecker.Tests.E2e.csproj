@@ -6,20 +6,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="coverlet.collector" Version="8.0.0">
+		<PackageReference Include="coverlet.collector" >
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
-		<PackageReference Include="Microsoft.Playwright" Version="1.58.0" />
-		<PackageReference Include="Reqnroll.xUnit" Version="3.3.3" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Microsoft.Playwright" />
+		<PackageReference Include="Reqnroll.xunit.v3" />
+		<PackageReference Include="xunit.runner.visualstudio" >
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		
-		<!-- Latest supported by reqnroll -->
-		<PackageReference Include="xunit" Version="2.8.1" />
+		<PackageReference Include="xunit.v3" />
 	</ItemGroup>
 
 	<ItemGroup>

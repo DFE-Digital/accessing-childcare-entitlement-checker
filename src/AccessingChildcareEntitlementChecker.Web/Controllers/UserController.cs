@@ -106,6 +106,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult WorkStatus(string? returnTo = null)
     {
         return View(new WorkStatusViewModel(_journeyState) { ReturnTo = returnTo });
@@ -137,7 +138,6 @@ public class UserController : Controller
         // This page a stub as not yet confirmed in design.
         return Content("<h1>TypeOfLeave</h1>", "text/html");
     }
-
 
     [HttpGet]
     public IActionResult SelfEmployedDuration(string? returnTo = null)

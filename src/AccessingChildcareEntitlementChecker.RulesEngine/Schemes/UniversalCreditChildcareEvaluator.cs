@@ -7,21 +7,23 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
 
 public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
 {
+    private const int MinimumEligibleAgeInYears = 0;
+    private const int MaximumEligibleAgeInYears = 16;
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
-        var eligibleNow =
+        var meetsHouseholdRequirements =
             context.Household.HasAccessToPublicFunds &&
             context.Household.LivesInGreatBritain &&
             context.Household.ReceivesUniversalCredit &&
-            MeetsWorkRequirements(context) &&
+            MeetsWorkRequirements(context);
+
+        var eligibleNow =
+            meetsHouseholdRequirements &&
             child.IsBorn &&
-            child.AgeInYears <= 16;
+            child.AgeInYears is >= MinimumEligibleAgeInYears and <= MaximumEligibleAgeInYears;
 
         var eligibleInFuture =
-            context.Household.HasAccessToPublicFunds &&
-            context.Household.LivesInGreatBritain &&
-            context.Household.ReceivesUniversalCredit &&
-            MeetsWorkRequirements(context) &&
+            meetsHouseholdRequirements &&
             !child.IsBorn &&
             child.DueDate is not null;
 
@@ -30,17 +32,11 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
             return null;
         }
 
-        var useFromDate =
-            eligibleInFuture
-                ? child.DueDate
-                : null;
-
         return new SchemeResultDto
         {
             SchemeCode = SchemeCode.UniversalCreditChildcare,
             EligibleNow = eligibleNow,
             EligibleInFuture = eligibleInFuture,
-            UseFromDate = useFromDate
         };
     }
 
@@ -68,23 +64,20 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
             (userWorking && partnerWorking) ||
             (userWorking && partnerExempt) ||
             (partnerWorking && userExempt);
-
-
     }
 
     private static bool HasQualifyingExemptionBenefit(
         PersonFacts person)
     {
-        return person.Benefits.Contains(
-                   PersonBenefit.CarersAllowanceOrCarerSupportPayment)
-
-               || person.Benefits.Contains(
-                   PersonBenefit.IncapacityBenefit)
-
-               || person.Benefits.Contains(
-                   PersonBenefit.NationalInsuranceCreditsForIncapacity)
-
-               || person.Benefits.Contains(
-                   PersonBenefit.SevereDisablementAllowance);
+        return person.Benefits.Any(
+            QualifyingExemptionBenefits.Contains);
     }
+
+    private static readonly List<PersonBenefit> QualifyingExemptionBenefits =
+    [
+        PersonBenefit.CarersAllowanceOrCarerSupportPayment,
+        PersonBenefit.IncapacityBenefit,
+        PersonBenefit.NationalInsuranceCreditsForIncapacity,
+        PersonBenefit.SevereDisablementAllowance
+    ];
 }
