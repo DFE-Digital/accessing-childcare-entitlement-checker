@@ -22,7 +22,7 @@ public class UserController : Controller
     [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult NextStepPlaceholder()
     {
-        return Content("<h1 >Next step placeholder</h1>", "text/html");
+        return Content("<h1>Next step placeholder</h1>", "text/html");
     }
 
     [HttpGet]
@@ -161,6 +161,26 @@ public class UserController : Controller
         }
 
         return this.RedirectTo<UserController>(nameof(UserController.WeeklyEarnings));
+        return View(new WorkStatusViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult WorkStatus(WorkStatusViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        if (model.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
+        {
+            return this.RedirectTo<UserController>(nameof(UserController.SelfEmployedDuration));
+        }
+
+        return this.RedirectTo<UserController>(nameof(UserController.WeeklyEarnings));
     }
 
     [HttpGet]
@@ -169,13 +189,6 @@ public class UserController : Controller
     {
         // This page a stub as not yet confirmed in design.
         return Content("<h1>TypeOfLeave</h1>", "text/html");
-    }
-
-    [HttpGet]
-    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
-    public IActionResult UniversalCredit(string? returnTo = null)
-    {
-        return Content("<h1>Does your household receive universal credit?</h1>", "text/html");
     }
 
     [HttpGet]
@@ -257,9 +270,74 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
+    public IActionResult UniversalCredit(string? returnTo = null)
+    {
+        return View(new UniversalCreditViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult UniversalCredit(UniversalCreditViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        return this.RedirectTo<UserController>(nameof(UserController.Benefits));
+    }
+
+    [HttpGet]
     public IActionResult Benefits(string? returnTo = null)
     {
-        return Content("<h1>Do you get any of these benefits?</h1>", "text/html");
+        return View(new BenefitsViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult Benefits(BenefitsViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        return this.RedirectTo<UserController>(nameof(UserController.ChildcareSupport));
+    }
+
+    [HttpGet]
+    public IActionResult ChildcareSupport(string? returnTo = null)
+    {
+        return View(new ChildcareSupportViewModel(_journeyState) { ReturnTo = returnTo });
+    }
+
+    [HttpPost]
+    public IActionResult ChildcareSupport(ChildcareSupportViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+
+        if (model.ChildcareSupport.Contains(ChildcareSupportOption.ChildcareVouchers))
+        {
+            return this.RedirectTo<UserController>(nameof(UserController.ChildcareVoucherReceipt));
+        }
+
+        return this.RedirectTo<UserController>(nameof(UserController.HasPartner));
+    }
+
+    [HttpGet]
+    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
+    public IActionResult ChildcareVoucherReceipt(string? returnTo = null)
+    {
+        return Content("<h1>How do you receive your childcare vouchers?</h1>", "text/html");
     }
 }

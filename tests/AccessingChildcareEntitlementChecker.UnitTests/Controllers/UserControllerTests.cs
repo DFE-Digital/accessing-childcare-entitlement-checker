@@ -501,4 +501,150 @@ public class UserControllerTests
         var result = Assert.IsType<ViewResult>(_controller.WeeklyEarnings());
         Assert.NotNull(result.Model<WeeklyEarningsViewModel>());
     }
+
+    [Theory]
+    [InlineData(UniversalCreditOption.Receives, "User", nameof(UserController.Benefits))]
+    [InlineData(UniversalCreditOption.DoesNotReceive, "User", nameof(UserController.Benefits))]
+    public void UniversalCredit_Post_SavesState_AndRedirects(UniversalCreditOption option, string controllerName, string actionName)
+    {
+        var model = new UniversalCreditViewModel
+        {
+            UniversalCredit = option
+        };
+
+        var result = _controller.UniversalCredit(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(option, _journeyState.UniversalCredit);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
+    }
+
+    [Fact]
+    public void UniversalCredit_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new UniversalCreditViewModel();
+        _controller.ModelState.AddModelError(nameof(model.UniversalCredit), "Faked Model Binding Error");
+        var result = _controller.UniversalCredit(model);
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.UniversalCredit)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void UniversalCredit_Get_PopulatesModel_FromState()
+    {
+        _journeyState.UniversalCredit = UniversalCreditOption.Receives;
+        var result = Assert.IsType<ViewResult>(_controller.UniversalCredit());
+        Assert.Equal(UniversalCreditOption.Receives, result.Model<UniversalCreditViewModel>().UniversalCredit);
+    }
+
+    [Fact]
+    public void UniversalCredit_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.UniversalCredit());
+        Assert.NotNull(result.Model<UniversalCreditViewModel>());
+    }
+
+    [Theory]
+    [InlineData(BenefitsOption.CarersAllowance, "User", nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.ContributionBasedEmploymentAndSupportAllowance, "User", nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.EmploymentAndSupportAllowance, "User", nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.GuaranteedElementOfPensionCredit, "User", nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.IncapacityBenefit, "User", nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.LimitedCapabilityForWork, "User", nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.LimitedCapabilityForWorkRelatedActivity, "User", nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.SevereDisablementAllowance, "User", nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.None, "User", nameof(UserController.ChildcareSupport))]
+    public void Benefits_Post_SavesState_AndRedirects(BenefitsOption option, string controllerName, string actionName)
+    {
+        var model = new BenefitsViewModel
+        {
+            Benefits = [option]
+        };
+
+        var result = _controller.Benefits(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal([option], _journeyState.Benefits);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
+    }
+
+    [Fact]
+    public void Benefits_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new BenefitsViewModel();
+        _controller.ModelState.AddModelError(nameof(model.Benefits), "Faked Model Binding Error");
+        var result = _controller.Benefits(model);
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.Benefits)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void Benefits_Get_PopulatesModel_FromState()
+    {
+        _journeyState.Benefits = [BenefitsOption.CarersAllowance];
+        var result = Assert.IsType<ViewResult>(_controller.Benefits());
+        Assert.Equal([BenefitsOption.CarersAllowance], result.Model<BenefitsViewModel>().Benefits);
+    }
+
+    [Fact]
+    public void Benefits_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.Benefits());
+        Assert.NotNull(result.Model<BenefitsViewModel>());
+    }
+
+    [Theory]
+    [InlineData(ChildcareSupportOption.ChildcareVouchers, "User", nameof(UserController.ChildcareVoucherReceipt))]
+    [InlineData(ChildcareSupportOption.ChildcareBursaryOrGrant, "User", nameof(UserController.HasPartner))]
+    [InlineData(ChildcareSupportOption.None, "User", nameof(UserController.HasPartner))]
+    public void ChildcareSupport_Post_SavesState_AndRedirects(ChildcareSupportOption option, string controllerName, string actionName)
+    {
+        var model = new ChildcareSupportViewModel
+        {
+            ChildcareSupport = [option]
+        };
+
+        var result = _controller.ChildcareSupport(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal([option], _journeyState.ChildcareSupport);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
+    }
+
+    [Fact]
+    public void ChildcareSupport_Post_InvalidSelection_ReturnsViewWithError()
+    {
+        var model = new ChildcareSupportViewModel();
+        _controller.ModelState.AddModelError(nameof(model.ChildcareSupport), "Faked Model Binding Error");
+        var result = _controller.ChildcareSupport(model);
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildcareSupport)));
+        _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void ChildcareSupport_Get_PopulatesModel_FromState()
+    {
+        _journeyState.ChildcareSupport = [ChildcareSupportOption.ChildcareVouchers];
+        var result = Assert.IsType<ViewResult>(_controller.ChildcareSupport());
+        Assert.Equal([ChildcareSupportOption.ChildcareVouchers], result.Model<ChildcareSupportViewModel>().ChildcareSupport);
+    }
+
+    [Fact]
+    public void ChildcareSupport_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.ChildcareSupport());
+        Assert.NotNull(result.Model<ChildcareSupportViewModel>());
+    }
 }

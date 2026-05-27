@@ -1,0 +1,59 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.User
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
+@model BenefitsViewModel
+
+@section BeforeContent {
+    @if (JourneyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold)
+    {
+        <govuk-back-link asp-controller="User" asp-action="YearlyEarnings">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="User" asp-action="UniversalCredit">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Html.DisplayNameFor(model => model.Benefits)
+        </h1>
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+
+            <govuk-checkboxes for="Benefits">
+                <govuk-checkboxes-fieldset>
+                    <govuk-checkboxes-fieldset-legend class="govuk-visually-hidden">
+                        @Html.DisplayNameFor(model => model.Benefits)
+                    </govuk-checkboxes-fieldset-legend>
+                    <govuk-checkboxes-error-message />
+                    @foreach (var value in Enum.GetValues<BenefitsOption>())
+                    {
+                        if (value == BenefitsOption.None)
+                        {
+                    <govuk-checkboxes-divider>
+                        @Localizer["or"]
+                    </govuk-checkboxes-divider>
+                        }
+
+                    <govuk-checkboxes-item value="@value">
+                        @Html.EnumDisplayName(value)
+                    </govuk-checkboxes-item>
+                    }
+                </govuk-checkboxes-fieldset>
+            </govuk-checkboxes>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>
