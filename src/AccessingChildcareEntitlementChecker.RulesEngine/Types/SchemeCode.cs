@@ -3,7 +3,7 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Types;
 public enum SchemeCode
 {
     FifteenHoursForDisadvantagedChildren,
-    FifteenHoursForWorkingFamilies,
+    FifteenHoursUniversal,
     ThirtyHoursForWorkingFamilies,
     TaxFreeChildcare,
     UniversalCreditChildcare

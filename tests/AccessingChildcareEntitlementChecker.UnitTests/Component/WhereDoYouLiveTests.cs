@@ -28,8 +28,8 @@ public class ComponentTests
         var factory = CreateFactory("Production");
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/");
-        var body = await response.Content.ReadAsStringAsync();
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
+        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
         // Checking the status code is sufficient to know that the DI is all hooked up properly.
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -41,7 +41,7 @@ public class ComponentTests
         var factory = CreateFactory("Development");
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         Assert.Contains("Basic", response.Headers.WwwAuthenticate.ToString());
@@ -54,7 +54,7 @@ public class ComponentTests
         var client = factory.CreateClient();
         client.DefaultRequestHeaders.Authorization = new("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes("user:dev-only")));
 
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -65,8 +65,8 @@ public class ComponentTests
         var factory = CreateFactory("Development");
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/robots.txt");
-        var body = await response.Content.ReadAsStringAsync();
+        var response = await client.GetAsync("/robots.txt", TestContext.Current.CancellationToken);
+        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal("text/plain", response.Content.Headers.ContentType?.MediaType);
@@ -79,7 +79,7 @@ public class ComponentTests
         var factory = CreateFactory("Production");
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/robots.txt");
+        var response = await client.GetAsync("/robots.txt", TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -90,7 +90,7 @@ public class ComponentTests
         var factory = CreateFactory("Development");
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/health");
+        var response = await client.GetAsync("/health", TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }

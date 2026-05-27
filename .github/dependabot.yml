@@ -2,13 +2,108 @@ version: 2
 
 updates:
   - package-ecosystem: "nuget"
-    directory: "/src"
+    directory: "/"
+    target-branch: "main"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 3
+      semver-minor-days: 5
+      semver-major-days: 7
+    open-pull-requests-limit: 10
+    rebase-strategy: "auto"
+    insecure-external-code-execution: "deny"
     commit-message:
       prefix: "chore(deps): "
-
+    labels:
+      - "dependencies"
+      - "nuget"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      nuget-patch-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+      microsoft-minor-updates:
+        patterns:
+          - "Microsoft.*"
+        update-types:
+          - "minor"
+      aspnetcore-minor-updates:
+        patterns:
+          - "AspNetCore.*"
+        update-types:
+          - "minor"
+      system-minor-updates:
+        patterns:
+          - "System.*"
+        update-types:
+          - "minor"
   - package-ecosystem: "github-actions"
-    directory: "/" # For GHA '/' actually correlates to '.github/workflows'
+    directory: "/"
+    target-branch: "main"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 2
+      semver-minor-days: 5
+    open-pull-requests-limit: 5
+    rebase-strategy: "auto"
+    commit-message:
+      prefix: "chore(actions): "
+    labels:
+      - "dependencies"
+      - "github actions"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      github-actions-patches:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+      official-actions-minors:
+        patterns:
+          - "actions/*"
+          - "github/*"
+        update-types:
+          - "minor"
+
+  - package-ecosystem: "terraform"
+    directory: "/infra/terraform"
+    target-branch: "main"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 5
+      semver-minor-days: 7
+    open-pull-requests-limit: 5
+    rebase-strategy: "auto"
+    commit-message:
+      prefix: "chore(deps): "
+    labels:
+      - "dependencies"
+      - "terraform"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      terraform-patch-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+      hashicorp-provider-minors:
+        patterns:
+          - "hashicorp/*"
+        update-types:
+          - "minor"
