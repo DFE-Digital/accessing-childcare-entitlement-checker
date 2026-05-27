@@ -161,26 +161,6 @@ public class UserController : Controller
         }
 
         return this.RedirectTo<UserController>(nameof(UserController.WeeklyEarnings));
-        return View(new WorkStatusViewModel(_journeyState) { ReturnTo = returnTo });
-    }
-
-    [HttpPost]
-    public IActionResult WorkStatus(WorkStatusViewModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-
-        if (model.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
-        {
-            return this.RedirectTo<UserController>(nameof(UserController.SelfEmployedDuration));
-        }
-
-        return this.RedirectTo<UserController>(nameof(UserController.WeeklyEarnings));
     }
 
     [HttpGet]
