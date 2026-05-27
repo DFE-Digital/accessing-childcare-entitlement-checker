@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<ISchemeEvaluator, UniversalCreditChildcareEvaluator>();
         services.AddScoped<ISchemeEvaluator, FifteenHoursUniversalEvaluator>();
+        services.AddScoped<ISchemeEvaluator, TaxFreeChildcareEvaluator>();
 
         return services;
     }
