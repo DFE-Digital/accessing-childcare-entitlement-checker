@@ -61,7 +61,8 @@ public static class DerivedContextBuilder
             EarnsAboveThreshold = person.EarnsAboveThreshold == true,
             ExceedsAdjustedNetIncomeLimit = person.ExceedsAdjustedNetIncomeLimit == true,
             WorkStatuses = person.WorkStatuses.ToList(),
-            Benefits = person.Benefits.ToList()
+            Benefits = person.Benefits.ToList(),
+            ChildcareSupport = person.ChildcareSupport.ToList()
         };
     }
 
