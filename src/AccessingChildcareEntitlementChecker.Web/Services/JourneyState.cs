@@ -20,6 +20,14 @@ public class JourneyState
 
     public NationalityOption? Nationality { get; set; }
 
+    public List<WorkStatusOption> WorkStatus { get; set; } = [];
+
+    public SelfEmployedDurationOption? SelfEmployedDuration { get; set; }
+
+    public WeeklyEarningsOption? WeeklyEarnings { get; set; }
+
+    public YearlyEarningsOption? YearlyEarnings { get; set; }
+
     public bool? HasPartner { get; set; }
 
     public AgeRange? PartnerAge { get; set; }
@@ -101,6 +109,26 @@ public class JourneyState
     public void Apply(NationalityViewModel model)
     {
         Nationality = model.Nationality;
+    }
+
+    public void Apply(WorkStatusViewModel model)
+    {
+        WorkStatus = model.WorkStatus;
+    }
+
+    public void Apply(SelfEmployedDurationViewModel model)
+    {
+        SelfEmployedDuration = model.SelfEmployedDuration;
+    }
+
+    public void Apply(WeeklyEarningsViewModel model)
+    {
+        WeeklyEarnings = model.WeeklyEarnings;
+    }
+
+    public void Apply(YearlyEarningsViewModel model)
+    {
+        YearlyEarnings = model.YearlyEarnings;
     }
 
     public void Apply(HasPartnerViewModel model)
