@@ -65,14 +65,14 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
             (userWorking && partnerExempt) ||
             (partnerWorking && userExempt);
     }
-    
+
     private static bool HasQualifyingExemptionBenefit(
         PersonFacts person)
     {
         return person.Benefits.Any(
             QualifyingExemptionBenefits.Contains);
     }
-    
+
     private static readonly List<PersonBenefit> QualifyingExemptionBenefits =
     [
         PersonBenefit.CarersAllowanceOrCarerSupportPayment,

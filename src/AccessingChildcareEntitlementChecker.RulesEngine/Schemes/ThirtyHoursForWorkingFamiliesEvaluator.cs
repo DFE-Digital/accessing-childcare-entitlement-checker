@@ -125,14 +125,14 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
             person.EarnsAboveThreshold
             || person.SelfEmployedLessThan12Months;
     }
-    
+
     private static bool HasQualifyingExemptionBenefit(
         PersonFacts person)
     {
         return person.Benefits.Any(
             QualifyingExemptionBenefits.Contains);
     }
-    
+
     private static readonly List<PersonBenefit> QualifyingExemptionBenefits =
     [
         PersonBenefit.CarersAllowanceOrCarerSupportPayment,

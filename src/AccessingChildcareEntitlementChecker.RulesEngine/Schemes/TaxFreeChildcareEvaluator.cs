@@ -10,7 +10,7 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
 {
     private const int MaximumEligibleAgeInYears = 11;
     private const int MaximumEligibleAgeInYearsWithDisability = 16;
-    
+
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
 
@@ -160,7 +160,7 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
         return person.Benefits.Any(
             QualifyingExemptionBenefits.Contains);
     }
-    
+
     private static readonly List<PersonBenefit> QualifyingExemptionBenefits =
     [
         PersonBenefit.CarersAllowanceOrCarerSupportPayment,
