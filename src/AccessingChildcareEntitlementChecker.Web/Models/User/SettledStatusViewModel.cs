@@ -13,7 +13,7 @@ public class SettledStatusViewModel
 
     public SettledStatusViewModel(JourneyState journeyState)
     {
-        SettledStatus = journeyState.SettledStatus;
+        SettledStatus = journeyState.User.SettledStatus;
     }
 
     [Display(Name = "Do you have settled or pre-settled status under the EU Settlement Scheme?")]

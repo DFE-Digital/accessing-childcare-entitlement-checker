@@ -13,7 +13,7 @@ public class PartnerYearlyEarningsViewModel
 
     public PartnerYearlyEarningsViewModel(JourneyState journeyState)
     {
-        PartnerYearlyEarnings = journeyState.PartnerYearlyEarnings;
+        PartnerYearlyEarnings = journeyState.Partner.PartnerYearlyEarnings;
     }
 
     [Display(Name = "Is your partner's adjusted net income more than £100,000 a year?", Description = "Adjusted net income is your total income before tax, minus certain tax reliefs.")]

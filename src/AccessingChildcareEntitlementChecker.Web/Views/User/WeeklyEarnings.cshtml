@@ -8,7 +8,7 @@
 
 
 @section BeforeContent {
-    @if (JourneyState.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
+    @if (JourneyState.User.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
     {
         <govuk-back-link asp-controller="User" asp-action="SelfEmployedDuration">
             @Shared["Button_Back"]

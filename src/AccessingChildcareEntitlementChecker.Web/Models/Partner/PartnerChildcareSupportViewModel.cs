@@ -14,7 +14,7 @@ public class PartnerChildcareSupportViewModel : IValidatableObject
 
     public PartnerChildcareSupportViewModel(JourneyState journeyState)
     {
-        PartnerChildcareSupport = journeyState.PartnerChildcareSupport;
+        PartnerChildcareSupport = journeyState.Partner.PartnerChildcareSupport;
     }
 
     [Display(Name = "Does your partner already get any of this childcare support?", Description = "Select all that apply.")]

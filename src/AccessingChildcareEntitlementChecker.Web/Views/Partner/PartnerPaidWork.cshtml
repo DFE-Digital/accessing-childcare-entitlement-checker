@@ -7,7 +7,7 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    @if (JourneyState.PartnerNationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+    @if (JourneyState.Partner.PartnerNationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
     {
         <govuk-back-link asp-controller="Partner" asp-action="PartnerSettledStatus">
             @Shared["Button_Back"]

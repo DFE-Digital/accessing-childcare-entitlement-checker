@@ -24,14 +24,7 @@
     <data name="Button_Back" xml:space="preserve">
         <value>Back</value>
     </data>
-    <data name="Option_Yes" xml:space="preserve">
-        <value>Yes</value>
-    </data>
-    <data name="Option_No" xml:space="preserve">
-        <value>No</value>
-    </data>
     <data name="ErrorSummary_Title" xml:space="preserve">
         <value>There is a problem</value>
     </data>
-
 </root>

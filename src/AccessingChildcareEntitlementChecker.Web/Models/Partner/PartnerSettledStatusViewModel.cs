@@ -1,7 +1,7 @@
 using AccessingChildcareEntitlementChecker.Web.Services;
 using System.ComponentModel.DataAnnotations;
 
-namespace AccessingChildcareEntitlementChecker.Web.Models;
+namespace AccessingChildcareEntitlementChecker.Web.Models.Partner;
 
 public class PartnerSettledStatusViewModel
 {
@@ -13,7 +13,7 @@ public class PartnerSettledStatusViewModel
 
     public PartnerSettledStatusViewModel(JourneyState journeyState)
     {
-        PartnerSettledStatus = journeyState.PartnerSettledStatus;
+        PartnerSettledStatus = journeyState.Partner.PartnerSettledStatus;
     }
 
     [Display(Name = "Does your partner have settled or pre-settled status under the EU Settlement Scheme?")]

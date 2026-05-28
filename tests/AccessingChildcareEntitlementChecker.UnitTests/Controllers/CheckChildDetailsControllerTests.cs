@@ -18,7 +18,7 @@ public class CheckChildDetailsControllerTests
     public CheckChildDetailsControllerTests()
     {
         _journeyState = new JourneyState();
-        _journeyState.Children[childId] = new Child(childId, "Child A");
+        _journeyState.Children[childId] = new ChildState("Child A");
         _journeySession = Substitute.For<IJourneySession>();
         _controller = new CheckChildDetailsController(_journeyState, _journeySession);
         _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());

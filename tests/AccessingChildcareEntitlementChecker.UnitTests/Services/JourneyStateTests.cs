@@ -1,4 +1,4 @@
-using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.Children;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Services;
@@ -9,39 +9,12 @@ public class JourneyStateTests
     public JourneyStateTests()
     {
         _journeyState = new JourneyState();
+        _journeyState.AddChild(new ChildState("Child A"));
     }
 
     [Fact]
-    public void GetChild_ReturnsNullIfChildDoesNotExist()
+    public void GetChild_ReturnsFalseIfChildDoesNotExist()
     {
-        var child = _journeyState.GetChild("non-existent-child-id");
-        Assert.Null(child);
-    }
-
-    [Fact]
-    public void Apply_ChildName_ThrowsIfNoChildName()
-    {
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            _journeyState.Apply(new ChildNameViewModel());
-        });
-    }
-
-    [Fact]
-    public void Apply_ChildName_SetsChildIdIfNull()
-    {
-        var model = new ChildNameViewModel { ChildName = "Child A" };
-        _journeyState.Apply(model);
-
-        Assert.NotNull(model.ChildId);
-    }
-
-    [Fact]
-    public void ApplyChildName_AddsChildIdIfNotExisting()
-    {
-        var model = new ChildNameViewModel { ChildName = "Child A" };
-        _journeyState.Apply(model);
-
-        Assert.Single(_journeyState.Children.Keys);
+        Assert.False(_journeyState.TryGetChild("non-existent-child-id", out var child));
     }
 }

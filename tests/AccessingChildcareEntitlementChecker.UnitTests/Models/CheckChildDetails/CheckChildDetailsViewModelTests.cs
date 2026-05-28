@@ -10,10 +10,10 @@ public class CheckChildDetailsViewModelTests
     public CheckChildDetailsViewModelTests()
     {
         _journeyState = new JourneyState();
-        var child1 = new Child("child-1", "Child 1");
-        var child2 = new Child("child-2", "Child 2");
-        _journeyState.Children[child1.ChildId] = child1;
-        _journeyState.Children[child2.ChildId] = child2;
+        var child1 = new ChildState("Child 1");
+        var child2 = new ChildState("Child 2");
+        _journeyState.Children["child-1"] = child1;
+        _journeyState.Children["child-2"] = child2;
     }
 
 
@@ -35,7 +35,6 @@ public class CheckChildDetailsViewModelTests
     [Fact]
     public void YourChildrenMatchesJourneyStateChildren_AndHasCount()
     {
-
         var viewModel = new CheckChildDetailsViewModel(_journeyState, null);
         Assert.Equal(2, viewModel.YourChildren.Count);
         Assert.Contains(viewModel.YourChildren, c => c.ChildId == "child-1" && c.Title == "Child 1");

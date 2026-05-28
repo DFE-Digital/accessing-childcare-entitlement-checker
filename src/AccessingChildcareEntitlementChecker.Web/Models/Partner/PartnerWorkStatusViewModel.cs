@@ -14,7 +14,7 @@ public class PartnerWorkStatusViewModel : IValidatableObject
 
     public PartnerWorkStatusViewModel(JourneyState journeyState)
     {
-        PartnerWorkStatus = journeyState.PartnerWorkStatus;
+        PartnerWorkStatus = journeyState.Partner.PartnerWorkStatus;
     }
 
     [Display(Name = "How would you describe your partner's work status?", Description = "Select all that apply.")]

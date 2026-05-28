@@ -14,7 +14,7 @@ public class PartnerBenefitsViewModel : IValidatableObject
 
     public PartnerBenefitsViewModel(JourneyState journeyState)
     {
-        PartnerBenefits = journeyState.PartnerBenefits;
+        PartnerBenefits = journeyState.Partner.PartnerBenefits;
     }
 
     [Display(Name = "Does your partner get any of these benefits?", Description = "Select all that apply.")]

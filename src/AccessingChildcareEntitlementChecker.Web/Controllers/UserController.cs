@@ -19,6 +19,25 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    public ViewResult Location()
+    {
+        return View(new LocationViewModel(_journeyState));
+    }
+
+    [HttpPost]
+    public IActionResult Location(LocationViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _journeyState.User.Apply(model);
+        _journeySession.Set(_journeyState);
+        return RedirectToAction(nameof(ChildrenController.ChildName), "Introduction");
+    }
+
+    [HttpGet]
     public ViewResult UserAge()
     {
         return View(new UserAgeViewModel(_journeyState));
@@ -32,7 +51,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
         return this.RedirectTo<UserController>(nameof(Nationality));
     }
@@ -51,7 +70,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
         return model.Nationality switch
         {
@@ -74,7 +93,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
         return this.RedirectTo<UserController>(nameof(PaidWork));
     }
@@ -93,7 +112,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
         var redirect = model.PaidWork switch
         {
@@ -120,7 +139,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
 
         if (model.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
@@ -153,7 +172,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
 
         var redirect = model.SelfEmployedDuration switch
@@ -179,7 +198,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
 
         var redirect = model.YearlyEarnings switch
@@ -205,7 +224,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
 
         var redirect = model.WeeklyEarnings switch
@@ -231,7 +250,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
 
         return this.RedirectTo<UserController>(nameof(UserController.Benefits));
@@ -251,7 +270,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
 
         return this.RedirectTo<UserController>(nameof(UserController.ChildcareSupport));
@@ -271,7 +290,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
 
         if (model.ChildcareSupport.Contains(ChildcareSupportOption.ChildcareVouchers))
@@ -296,7 +315,7 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
 
         return this.RedirectTo<UserController>(nameof(UserController.HasPartner));
@@ -316,10 +335,10 @@ public class UserController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
 
-        if (_journeyState.HasPartner == true)
+        if (_journeyState.User.HasPartner == HasPartnerOption.HasPartner)
         {
             return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerAge));
         }

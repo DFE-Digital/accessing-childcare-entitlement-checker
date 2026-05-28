@@ -7,7 +7,7 @@
 @model BenefitsViewModel
 
 @section BeforeContent {
-    @if (JourneyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold)
+    @if (JourneyState.User.YearlyEarnings == YearlyEarningsOption.AboveThreshold)
     {
         <govuk-back-link asp-controller="User" asp-action="YearlyEarnings">
             @Shared["Button_Back"]

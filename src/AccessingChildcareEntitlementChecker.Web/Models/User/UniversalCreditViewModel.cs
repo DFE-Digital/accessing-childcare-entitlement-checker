@@ -13,7 +13,7 @@ public class UniversalCreditViewModel
 
     public UniversalCreditViewModel(JourneyState journeyState)
     {
-        UniversalCredit = journeyState.UniversalCredit;
+        UniversalCredit = journeyState.User.UniversalCredit;
     }
 
     [Display(Name = "Does your household receive universal credit?")]

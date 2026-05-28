@@ -30,7 +30,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
 
         return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerNationality));
@@ -50,7 +50,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
 
         var redirect = model.PartnerNationality switch
@@ -76,7 +76,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
 
         return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerPaidWork));
@@ -96,7 +96,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
         var redirect = model.PartnerPaidWork switch
         {
@@ -122,7 +122,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
 
         if (model.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
@@ -147,7 +147,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
 
         return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerChildcareSupport));
@@ -167,7 +167,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
 
         var redirect = model.PartnerSelfEmployedDuration switch
@@ -193,7 +193,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
 
         var redirect = model.PartnerWeeklyEarnings switch
@@ -219,7 +219,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
         return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerBenefits));
     }
@@ -244,7 +244,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
 
         if (model.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
@@ -263,7 +263,7 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
+        _journeyState.Partner.Apply(model);
         _journeySession.Set(_journeyState);
 
         return this.RedirectTo<CheckAnswersController>(nameof(CheckAnswersController.CheckAnswers));

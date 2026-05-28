@@ -13,7 +13,7 @@ public class PartnerChildcareVoucherReceiptViewModel
 
     public PartnerChildcareVoucherReceiptViewModel(JourneyState journeyState)
     {
-        PartnerChildcareVoucherReceipt = journeyState.PartnerChildcareVoucherReceipt;
+        PartnerChildcareVoucherReceipt = journeyState.Partner.PartnerChildcareVoucherReceipt;
     }
 
     [Display(Name = "How does your partner receive childcare vouchers?")]

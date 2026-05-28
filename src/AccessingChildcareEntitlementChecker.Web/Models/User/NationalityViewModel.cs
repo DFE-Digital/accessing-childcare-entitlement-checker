@@ -13,7 +13,7 @@ public class NationalityViewModel
 
     public NationalityViewModel(JourneyState journeyState)
     {
-        Nationality = journeyState.Nationality;
+        Nationality = journeyState.User.Nationality;
     }
 
     [Display(Name = "What is your nationality?")]

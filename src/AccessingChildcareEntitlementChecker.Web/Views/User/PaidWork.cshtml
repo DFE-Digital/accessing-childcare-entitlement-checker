@@ -7,7 +7,7 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    @switch (JourneyState.Nationality)
+    @switch (JourneyState.User.Nationality)
     {
         case NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland:
             <govuk-back-link asp-controller="User" asp-action="SettledStatus">

@@ -13,7 +13,7 @@ public class PartnerNationalityViewModel
 
     public PartnerNationalityViewModel(JourneyState journeyState)
     {
-        PartnerNationality = journeyState.PartnerNationality;
+        PartnerNationality = journeyState.Partner.PartnerNationality;
     }
 
     [Display(Name = "Which of these best describes your partners nationality?")]

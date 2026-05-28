@@ -14,7 +14,7 @@ public class BenefitsViewModel : IValidatableObject
 
     public BenefitsViewModel(JourneyState journeyState)
     {
-        Benefits = journeyState.Benefits;
+        Benefits = journeyState.User.Benefits;
     }
 
     [Display(Name = "Do you get any of these benefits?", Description = "Select all that apply.")]

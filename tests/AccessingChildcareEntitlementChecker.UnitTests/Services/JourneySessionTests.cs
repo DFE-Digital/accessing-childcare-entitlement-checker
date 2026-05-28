@@ -1,4 +1,6 @@
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
+using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -31,9 +33,15 @@ public class JourneySessionTests
     {
         var journeyState = new JourneyState
         {
-            CountryOfResidence = CountryOfResidence.England,
-            HasPartner = true,
-            PartnerAge = AgeRange.EighteenToTwenty
+            User = new UserState
+            {
+                CountryOfResidence = CountryOfResidence.England,
+                HasPartner = HasPartnerOption.HasPartner,
+            },
+            Partner = new PartnerState
+            {
+                PartnerAge = AgeRange.EighteenToTwenty,
+            }
         };
         _journeySession.Set(journeyState);
 
@@ -52,9 +60,15 @@ public class JourneySessionTests
     {
         var journeyState = new JourneyState
         {
-            CountryOfResidence = CountryOfResidence.England,
-            HasPartner = true,
-            PartnerAge = AgeRange.EighteenToTwenty
+            User = new UserState
+            {
+                CountryOfResidence = CountryOfResidence.England,
+                HasPartner = HasPartnerOption.HasPartner,
+            },
+            Partner = new PartnerState
+            {
+                PartnerAge = AgeRange.EighteenToTwenty
+            }
         };
 
         var serializedState = JsonSerializer.SerializeToUtf8Bytes(journeyState);
@@ -67,9 +81,9 @@ public class JourneySessionTests
         var result = _journeySession.Get();
 
         Assert.NotNull(result);
-        Assert.Equal(CountryOfResidence.England, result.CountryOfResidence);
-        Assert.True(result.HasPartner);
-        Assert.Equal(AgeRange.EighteenToTwenty, result.PartnerAge);
+        Assert.Equal(CountryOfResidence.England, result.User.CountryOfResidence);
+        Assert.Equal(HasPartnerOption.HasPartner, result.User.HasPartner);
+        Assert.Equal(AgeRange.EighteenToTwenty, result.Partner.PartnerAge);
     }
 
     [Fact]
@@ -80,9 +94,9 @@ public class JourneySessionTests
         var result = _journeySession.Get();
 
         Assert.NotNull(result);
-        Assert.Null(result.CountryOfResidence);
-        Assert.Null(result.HasPartner);
-        Assert.Null(result.PartnerAge);
+        Assert.Null(result.User.CountryOfResidence);
+        Assert.Null(result.User.HasPartner);
+        Assert.Null(result.Partner.PartnerAge);
     }
 
     [Fact]
@@ -97,9 +111,9 @@ public class JourneySessionTests
         var result = _journeySession.Get();
 
         Assert.NotNull(result);
-        Assert.Null(result.CountryOfResidence);
-        Assert.Null(result.HasPartner);
-        Assert.Null(result.PartnerAge);
+        Assert.Null(result.User.CountryOfResidence);
+        Assert.Null(result.User.HasPartner);
+        Assert.Null(result.Partner.PartnerAge);
     }
 
     [Fact]
@@ -114,8 +128,8 @@ public class JourneySessionTests
         var result = _journeySession.Get();
 
         Assert.NotNull(result);
-        Assert.Null(result.CountryOfResidence);
-        Assert.Null(result.HasPartner);
-        Assert.Null(result.PartnerAge);
+        Assert.Null(result.User.CountryOfResidence);
+        Assert.Null(result.User.HasPartner);
+        Assert.Null(result.Partner.PartnerAge);
     }
 }

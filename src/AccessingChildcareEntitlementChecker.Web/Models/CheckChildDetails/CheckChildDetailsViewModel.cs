@@ -14,9 +14,9 @@ public class CheckChildDetailsViewModel
 
     public bool HasChildren => YourChildren.Count > 0;
 
-    public Child? LastEditedChild { get; }
+    public ChildState? LastEditedChild { get; }
 
-    private static Child? ResolveLastEditedChild(JourneyState journeyState, string? fromChildId)
+    private static ChildState? ResolveLastEditedChild(JourneyState journeyState, string? fromChildId)
     {
         if (fromChildId is not null && journeyState.Children.TryGetValue(fromChildId, out var fromChild))
         {

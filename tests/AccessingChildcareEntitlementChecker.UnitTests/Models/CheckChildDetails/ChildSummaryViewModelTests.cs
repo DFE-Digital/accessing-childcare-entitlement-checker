@@ -1,6 +1,5 @@
-using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Models.Children;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ public class ChildSummaryViewModelTests
     [Fact]
     public void BornChildPopulatesViewModelAsExpected()
     {
-        var bornChild = new Child("child-a", "Child A")
+        var bornChild = new ChildState("Child A")
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = new DateOnly(2020, 1, 15),
@@ -47,7 +46,7 @@ public class ChildSummaryViewModelTests
     [Fact]
     public void DueChildPopulatesViewModelAsExpected()
     {
-        var dueChild = new Child("child-a", "Child A")
+        var dueChild = new ChildState("Child A")
         {
             BirthStatus = BirthStatus.Due,
             DueDate = new DateOnly(2020, 1, 15),

@@ -13,7 +13,7 @@ public class YearlyEarningsViewModel
 
     public YearlyEarningsViewModel(JourneyState journeyState)
     {
-        YearlyEarnings = journeyState.YearlyEarnings;
+        YearlyEarnings = journeyState.User.YearlyEarnings;
     }
 
     [Display(Name = "Is your adjusted net income more than £100,000 a year?", Description = "Adjusted net income is your total income before tax, minus certain tax reliefs.")]

@@ -1,6 +1,6 @@
 @using Microsoft.AspNetCore.Mvc.Localization
+@using AccessingChildcareEntitlementChecker.Web.Models.Children
 @using AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails
-@using AccessingChildcareEntitlementChecker.Web.Models
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model CheckChildDetailsViewModel
@@ -10,14 +10,14 @@
     {
         @if (Model.LastEditedChild.BirthStatus == BirthStatus.Born)
         {
-            <govuk-back-link asp-controller="BornChildDetails" asp-action="ChildSupport" asp-route-childId="@Model.LastEditedChild.ChildId">
+            <govuk-back-link asp-controller="Children" asp-action="ChildSupport" asp-route-childId="@Model.LastEditedChild.ChildId">
                 @Shared["Button_Back"]
             </govuk-back-link>
         }
 
         else if (Model.LastEditedChild.BirthStatus == BirthStatus.Due)
         {
-            <govuk-back-link asp-controller="ExpectedChildDetails" asp-action="ExpectedChildRelationship" asp-route-childId="@Model.LastEditedChild.ChildId">
+            <govuk-back-link asp-controller="Children" asp-action="ExpectedChildRelationship" asp-route-childId="@Model.LastEditedChild.ChildId">
                 @Shared["Button_Back"]
             </govuk-back-link>
         }

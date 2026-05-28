@@ -14,7 +14,7 @@ public class WorkStatusViewModel : IValidatableObject
 
     public WorkStatusViewModel(JourneyState journeyState)
     {
-        WorkStatus = journeyState.WorkStatus;
+        WorkStatus = journeyState.User.WorkStatus;
     }
 
     [Display(Name = "How would you describe your work status?", Description = "Select all that apply.")]

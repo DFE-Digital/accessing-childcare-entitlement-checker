@@ -7,19 +7,19 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    @if (JourneyState.PaidWork == PaidWorkOption.No)
+    @if (JourneyState.User.PaidWork == PaidWorkOption.No)
     {
         <govuk-back-link asp-controller="User" asp-action="PaidWork">
             @Shared["Button_Back"]
         </govuk-back-link>
     }
-    else if (JourneyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
+    else if (JourneyState.User.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
     {
         <govuk-back-link asp-controller="User" asp-action="SelfEmployedDuration">
             @Shared["Button_Back"]
         </govuk-back-link>
     }
-    else if (JourneyState.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold)
+    else if (JourneyState.User.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold)
     {
         <govuk-back-link asp-controller="User" asp-action="YearlyEarnings">
             @Shared["Button_Back"]

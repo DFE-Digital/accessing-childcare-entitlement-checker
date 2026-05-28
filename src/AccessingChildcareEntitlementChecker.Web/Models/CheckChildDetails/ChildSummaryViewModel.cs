@@ -1,11 +1,12 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Services;
+﻿using AccessingChildcareEntitlementChecker.Web.Models.Children;
+using AccessingChildcareEntitlementChecker.Web.Services;
 using System.ComponentModel.DataAnnotations;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails;
 
 public class ChildSummaryViewModel
 {
-    public ChildSummaryViewModel(Child child)
+    public ChildSummaryViewModel(ChildState child)
     {
         Title = child.Name;
         ChildId = child.ChildId;

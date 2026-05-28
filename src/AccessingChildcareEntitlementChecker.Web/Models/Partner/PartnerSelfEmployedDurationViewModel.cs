@@ -13,7 +13,7 @@ public class PartnerSelfEmployedDurationViewModel
 
     public PartnerSelfEmployedDurationViewModel(JourneyState journeyState)
     {
-        PartnerSelfEmployedDuration = journeyState.PartnerSelfEmployedDuration;
+        PartnerSelfEmployedDuration = journeyState.Partner.PartnerSelfEmployedDuration;
     }
 
     [Display(Name = "Has your partner been self-employed for less than 12 months?", Description = "If their self-employed work has stopped and started, think about when they first began doing this type of work.")]

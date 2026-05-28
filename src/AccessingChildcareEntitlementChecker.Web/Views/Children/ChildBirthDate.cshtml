@@ -1,0 +1,52 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using AccessingChildcareEntitlementChecker.Web.Models.Children
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@model ChildBirthDateViewModel
+
+@section BeforeContent {
+    @if (Model.ReturnTo == "check-your-childrens-details")
+    {
+        <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="Introduction" asp-action="IsChildBorn" asp-route-childId="@Model.ChildId">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+            <govuk-date-input for="ChildBirthDate">
+                <govuk-date-input-fieldset>
+                    <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Localizer["Title", Model.ChildName ?? "child"]
+                    </govuk-date-input-fieldset-legend>
+
+                    <govuk-date-input-error-message />
+                </govuk-date-input-fieldset>
+            </govuk-date-input>
+
+            <govuk-details>
+                <govuk-details-summary>
+                    @Localizer["Why we ask for a date of birth"]
+                </govuk-details-summary>
+                <govuk-details-text>
+                    <p>
+                        @Localizer["We use this data to give you accurate results, such as when you may be able to apply and when your childcare support could start and end."]
+                    </p>
+                </govuk-details-text>
+            </govuk-details>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

@@ -13,7 +13,7 @@ public class PaidWorkViewModel
 
     public PaidWorkViewModel(JourneyState journeyState)
     {
-        PaidWork = journeyState.PaidWork;
+        PaidWork = journeyState.User.PaidWork;
     }
 
     [Display(Name = "Are you in paid work?", Description = "Paid work includes being self-employed or freelance")]

@@ -13,7 +13,7 @@ public class WeeklyEarningsViewModel
 
     public WeeklyEarningsViewModel(JourneyState journeyState)
     {
-        WeeklyEarnings = journeyState.WeeklyEarnings;
+        WeeklyEarnings = journeyState.User.WeeklyEarnings;
     }
 
     [Display(Name = "On average, do you earn £203 a week or more before tax?", Description = "This is the same as £879 a month or £10,556 a year. If your income varies, use what you earn in a typical week.")]

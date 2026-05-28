@@ -29,7 +29,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerAge_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerAge = AgeRange.EighteenToTwenty;
+        _journeyState.Partner.PartnerAge = AgeRange.EighteenToTwenty;
         var result = _controller.PartnerAge();
         Assert.Equal(AgeRange.EighteenToTwenty, result.Model<PartnerAgeViewModel>().PartnerAge);
     }
@@ -46,7 +46,7 @@ public class PartnerControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(AgeRange.EighteenToTwenty, _journeyState.PartnerAge);
+        Assert.Equal(AgeRange.EighteenToTwenty, _journeyState.Partner.PartnerAge);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(PartnerController.PartnerNationality), redirect.ActionName);
     }
@@ -81,7 +81,7 @@ public class PartnerControllerTests
         var result = _controller.PartnerNationality(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(option, _journeyState.PartnerNationality);
+        Assert.Equal(option, _journeyState.Partner.PartnerNationality);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal(controllerName, redirect.ControllerName);
@@ -102,7 +102,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerNationality_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerNationality = NationalityOption.BritishOrIrishCitizen;
+        _journeyState.Partner.PartnerNationality = NationalityOption.BritishOrIrishCitizen;
         var result = Assert.IsType<ViewResult>(_controller.PartnerNationality());
         Assert.Equal(NationalityOption.BritishOrIrishCitizen, result.Model<PartnerNationalityViewModel>().PartnerNationality);
     }
@@ -127,7 +127,7 @@ public class PartnerControllerTests
         var result = _controller.PartnerSettledStatus(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(option, _journeyState.PartnerSettledStatus);
+        Assert.Equal(option, _journeyState.Partner.PartnerSettledStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal(controllerName, redirect.ControllerName);
@@ -148,7 +148,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerSettledStatus_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerSettledStatus = SettledStatusOption.Yes;
+        _journeyState.Partner.PartnerSettledStatus = SettledStatusOption.Yes;
         var result = Assert.IsType<ViewResult>(_controller.PartnerSettledStatus());
         Assert.Equal(SettledStatusOption.Yes, result.Model<PartnerSettledStatusViewModel>().PartnerSettledStatus);
     }
@@ -173,7 +173,7 @@ public class PartnerControllerTests
         var result = _controller.PartnerPaidWork(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(option, _journeyState.PartnerPaidWork);
+        Assert.Equal(option, _journeyState.Partner.PartnerPaidWork);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal(controllerName, redirect.ControllerName);
@@ -194,7 +194,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerPaidWork_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
+        _journeyState.Partner.PartnerPaidWork = PartnerPaidWorkOption.Yes;
         var result = Assert.IsType<ViewResult>(_controller.PartnerPaidWork());
         Assert.Equal(PartnerPaidWorkOption.Yes, result.Model<PartnerPaidWorkViewModel>().PartnerPaidWork);
     }
@@ -219,7 +219,7 @@ public class PartnerControllerTests
         var result = _controller.PartnerWorkStatus(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal([option], _journeyState.PartnerWorkStatus);
+        Assert.Equal([option], _journeyState.Partner.PartnerWorkStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal(controllerName, redirect.ControllerName);
@@ -240,7 +240,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerWorkStatus_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
+        _journeyState.Partner.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
         var result = Assert.IsType<ViewResult>(_controller.PartnerWorkStatus());
         Assert.Equal([WorkStatusOption.PaidEmployment], result.Model<PartnerWorkStatusViewModel>().PartnerWorkStatus);
     }
@@ -271,7 +271,7 @@ public class PartnerControllerTests
         var result = _controller.PartnerBenefits(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal([option], _journeyState.PartnerBenefits);
+        Assert.Equal([option], _journeyState.Partner.PartnerBenefits);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal(controllerName, redirect.ControllerName);
@@ -292,7 +292,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerBenefits_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerBenefits = [PartnerBenefitsOption.CarersAllowance];
+        _journeyState.Partner.PartnerBenefits = [PartnerBenefitsOption.CarersAllowance];
         var result = Assert.IsType<ViewResult>(_controller.PartnerBenefits());
         Assert.Equal([PartnerBenefitsOption.CarersAllowance], result.Model<PartnerBenefitsViewModel>().PartnerBenefits);
     }
@@ -316,7 +316,7 @@ public class PartnerControllerTests
         var result = _controller.PartnerSelfEmployedDuration(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(option, _journeyState.PartnerSelfEmployedDuration);
+        Assert.Equal(option, _journeyState.Partner.PartnerSelfEmployedDuration);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal(controllerName, redirect.ControllerName);
@@ -337,7 +337,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerSelfEmployedDuration_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerSelfEmployedDuration = SelfEmployedDurationOption.LessThan12Months;
+        _journeyState.Partner.PartnerSelfEmployedDuration = SelfEmployedDurationOption.LessThan12Months;
         var result = Assert.IsType<ViewResult>(_controller.PartnerSelfEmployedDuration());
         Assert.Equal(SelfEmployedDurationOption.LessThan12Months, result.Model<PartnerSelfEmployedDurationViewModel>().PartnerSelfEmployedDuration);
     }
@@ -361,7 +361,7 @@ public class PartnerControllerTests
         var result = _controller.PartnerWeeklyEarnings(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(option, _journeyState.PartnerWeeklyEarnings);
+        Assert.Equal(option, _journeyState.Partner.PartnerWeeklyEarnings);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal(controllerName, redirect.ControllerName);
@@ -382,7 +382,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerWeeklyEarnings_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
+        _journeyState.Partner.PartnerWeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
         var result = Assert.IsType<ViewResult>(_controller.PartnerWeeklyEarnings());
         Assert.Equal(WeeklyEarningsOption.AboveThreshold, result.Model<PartnerWeeklyEarningsViewModel>().PartnerWeeklyEarnings);
     }
@@ -406,7 +406,7 @@ public class PartnerControllerTests
         var result = _controller.PartnerYearlyEarnings(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(option, _journeyState.PartnerYearlyEarnings);
+        Assert.Equal(option, _journeyState.Partner.PartnerYearlyEarnings);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal(controllerName, redirect.ControllerName);
@@ -427,7 +427,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerYearlyEarnings_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerYearlyEarnings = YearlyEarningsOption.AboveThreshold;
+        _journeyState.Partner.PartnerYearlyEarnings = YearlyEarningsOption.AboveThreshold;
         var result = Assert.IsType<ViewResult>(_controller.PartnerYearlyEarnings());
         Assert.Equal(YearlyEarningsOption.AboveThreshold, result.Model<PartnerYearlyEarningsViewModel>().PartnerYearlyEarnings);
     }
@@ -452,7 +452,7 @@ public class PartnerControllerTests
         var result = _controller.PartnerChildcareSupport(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal([option], _journeyState.PartnerChildcareSupport);
+        Assert.Equal([option], _journeyState.Partner.PartnerChildcareSupport);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal(controllerName, redirect.ControllerName);
@@ -473,7 +473,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerChildcareSupport_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerChildcareSupport = [PartnerChildcareSupportOption.ChildcareVouchers];
+        _journeyState.Partner.PartnerChildcareSupport = [PartnerChildcareSupportOption.ChildcareVouchers];
         var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareSupport());
         Assert.Equal([PartnerChildcareSupportOption.ChildcareVouchers], result.Model<PartnerChildcareSupportViewModel>().PartnerChildcareSupport);
     }
@@ -498,7 +498,7 @@ public class PartnerControllerTests
         var result = _controller.PartnerChildcareVoucherReceipt(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(option, _journeyState.PartnerChildcareVoucherReceipt);
+        Assert.Equal(option, _journeyState.Partner.PartnerChildcareVoucherReceipt);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal(controllerName, redirect.ControllerName);
@@ -519,7 +519,7 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerChildcareVoucherReceipt_Get_PopulatesModel_FromState()
     {
-        _journeyState.PartnerChildcareVoucherReceipt = ChildcareVoucherReceiptOption.WorkplaceNurseryScheme;
+        _journeyState.Partner.PartnerChildcareVoucherReceipt = ChildcareVoucherReceiptOption.WorkplaceNurseryScheme;
         var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareVoucherReceipt());
         Assert.Equal(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, result.Model<PartnerChildcareVoucherReceiptViewModel>().PartnerChildcareVoucherReceipt);
     }

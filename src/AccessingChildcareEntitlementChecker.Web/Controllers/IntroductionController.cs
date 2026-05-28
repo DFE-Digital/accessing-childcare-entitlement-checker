@@ -1,5 +1,3 @@
-using AccessingChildcareEntitlementChecker.Web.Extensions;
-using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,70 +15,14 @@ public class IntroductionController : Controller
     }
 
     [HttpGet]
-    public IActionResult ChildName(string? childId = null)
+    public IActionResult SessionExpired()
     {
-        if (childId == null)
-        {
-            var childNameViewModel = new ChildNameViewModel();
-            return View(childNameViewModel);
-        }
-
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
-        {
-            return NotFound();
-        }
-
-        return View(new ChildNameViewModel(child));
-    }
-
-    [HttpPost]
-    public IActionResult ChildName(ChildNameViewModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-
-        return this.RedirectTo<IntroductionController>(
-            nameof(IsChildBorn),
-            new { childId = model.ChildId });
+        return View();
     }
 
     [HttpGet]
-    public IActionResult IsChildBorn(string childId, string? returnTo = null)
+    public IActionResult Start()
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
-        {
-            return NotFound();
-        }
-
-        return View(new ChildIsBornViewModel(child) { ReturnTo = returnTo });
-    }
-
-    [HttpPost]
-    public IActionResult IsChildBorn(ChildIsBornViewModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-
-        if (model.ChildIsBorn == BirthStatus.Born)
-        {
-            return this.RedirectTo<BornChildDetailsController>(
-                nameof(BornChildDetailsController.ChildBirthDate),
-                new { childId = model.ChildId });
-        }
-
-        return this.RedirectTo<ExpectedChildDetailsController>(
-            nameof(ExpectedChildDetailsController.ChildDueDate),
-            new { childId = model.ChildId });
+        return View();
     }
 }

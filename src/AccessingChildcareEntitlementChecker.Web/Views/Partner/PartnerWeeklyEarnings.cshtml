@@ -7,7 +7,7 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    @if (JourneyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
+    @if (JourneyState.Partner.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
     {
         <govuk-back-link asp-controller="Partner" asp-action="PartnerSelfEmployedDuration">
             @Shared["Button_Back"]

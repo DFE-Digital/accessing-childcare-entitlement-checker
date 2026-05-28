@@ -13,7 +13,7 @@ public class PartnerWeeklyEarningsViewModel
 
     public PartnerWeeklyEarningsViewModel(JourneyState journeyState)
     {
-        PartnerWeeklyEarnings = journeyState.PartnerWeeklyEarnings;
+        PartnerWeeklyEarnings = journeyState.Partner.PartnerWeeklyEarnings;
     }
 
     [Display(Name = "On average, does your partner earn £203 a week or more before tax?", Description = "This is the same as £879 a month or £10,556 a year. If your partner's income varies, use what they earn in a typical week.")]

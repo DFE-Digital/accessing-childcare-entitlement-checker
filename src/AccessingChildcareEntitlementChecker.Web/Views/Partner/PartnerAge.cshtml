@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Mvc.Localization
+@using AccessingChildcareEntitlementChecker.Web.Models.Partner
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model PartnerAgeViewModel
@@ -18,17 +19,12 @@
 
             <govuk-radios-error-message />
 
-            <govuk-radios-item value="UnderEighteen">
-                @Localizer["Option_Under18"]
+            @foreach (var value in Enum.GetValues<AgeRange>())
+            {
+            <govuk-radios-item value="@value">
+                @Html.EnumDisplayName(value)
             </govuk-radios-item>
-
-            <govuk-radios-item value="EighteenToTwenty">
-                @Localizer["Option_18To20"]
-            </govuk-radios-item>
-
-            <govuk-radios-item value="TwentyOneOrOver">
-                @Localizer["Option_21OrOver"]
-            </govuk-radios-item>
+            }
 
         </govuk-radios-fieldset>
     </govuk-radios>
