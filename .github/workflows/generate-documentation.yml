@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
+      - uses: hashicorp/setup-terraform@v4
         with:
           ref: ${{ github.head_ref }} # Ensure it works on the feature branch
 
