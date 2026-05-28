@@ -4,36 +4,33 @@
 @inject IViewLocalizer Localizer
 @model LocationViewModel
 
-
 @section BeforeContent {
-    <govuk-back-link asp-controller="Home" asp-action="Start">
+    <govuk-back-link asp-controller="Introduction" asp-action="Start">
         @Shared["Button_Back"]
     </govuk-back-link>
 }
 
-<form method="post" novalidate>
-    <govuk-radios for="Country">
-        <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                @Localizer["Title"]
-            </govuk-radios-fieldset-legend>
-            
-            <govuk-radios-hint>
-                @Localizer["Caption"]
-            </govuk-radios-hint>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" novalidate>
+            <govuk-radios for="Country">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Html.DisplayNameFor(model => model.Country)
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<CountryOfResidence>())
+                    {
+                        <govuk-radios-item value="@value">
+                            @Html.EnumDisplayName(value)
+                        </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
 
-            <govuk-radios-error-message />
-
-            @foreach (var value in Enum.GetValues<CountryOfResidence>())
-            {
-                <govuk-radios-item value="@value">
-                    @Localizer[$"Option_{value}"]
-                </govuk-radios-item>
-            }
-        </govuk-radios-fieldset>
-    </govuk-radios>
-
-    <govuk-button type="submit">
-        @Shared["Button_Continue"]
-    </govuk-button>
-</form>
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

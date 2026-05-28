@@ -8,6 +8,7 @@ public static class IServiceCollectionExtensions
     {
         services.AddScoped<IDateTimeFactory, DateTimeFactory>();
         services.AddScoped<ITodayFactory, UkTodayFactory>();
+        services.AddScoped<IGuidFactory, GuidFactory>();
         services.AddScoped<IJourneySession, JourneySession>();
         services.AddScoped(sp =>
         {

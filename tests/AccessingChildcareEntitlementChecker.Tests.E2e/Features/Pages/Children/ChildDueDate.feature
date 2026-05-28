@@ -5,9 +5,9 @@ Background:
 	And I click the Start now link
 	And I answer "Where do you live?" as "England"
 	And I answer questions for "Aydin" as follows:
-		| Question                      | Answer |
-		| Add details of a child        | Aydin  |
-		| Has this child been born yet? | No     |
+		| Question                        | Answer |
+		| Add details about your children | Aydin  |
+		| Has this child been born yet?   | No     |
 
 Scenario: Page load
 	When the page header is "What is this child's due date?"

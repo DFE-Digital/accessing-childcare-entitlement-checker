@@ -19,17 +19,17 @@ public class ChildSummaryViewModel
                 "What is {0}'s date of birth?",
                 child.Name,
                 child.BirthDate!.Value.ToString("d MMMM yyyy"),
-                "BornChildDetails", "ChildBirthDate", child.ChildId));
+                "Children", "ChildBirthDate", child.ChildId));
             rows.Add(new SummaryRowViewModel(
                 "What is your relationship to {0}?",
                 child.Name,
                 DisplayName(child.BornRelationship!.Value),
-                "BornChildDetails", "ChildRelationship", child.ChildId));
+                "Children", "ChildRelationship", child.ChildId));
             rows.Add(new SummaryRowViewModel(
                 "Does {0} get any of the following support?",
                 child.Name,
                 string.Join(", ", child.ChildSupportOptions.Select(cso => DisplayName(cso))),
-                "BornChildDetails", "ChildSupport", child.ChildId));
+                "Children", "ChildSupport", child.ChildId));
         }
 
         if (child.BirthStatus == BirthStatus.Due)
@@ -38,12 +38,12 @@ public class ChildSummaryViewModel
                 "What is this child's due date?",
                 child.Name,
                 child.DueDate!.Value.ToString("d MMMM yyyy"),
-                "ExpectedChildDetails", "ChildDueDate", child.ChildId));
+                "Children", "ChildDueDate", child.ChildId));
             rows.Add(new SummaryRowViewModel(
                 "What will your relationship be to this child?",
                 child.Name,
                 DisplayName(child.ExpectedRelationship!.Value),
-                "ExpectedChildDetails", "ExpectedChildRelationship", child.ChildId));
+                "Children", "ExpectedChildRelationship", child.ChildId));
         }
 
         Rows = rows;
@@ -51,7 +51,7 @@ public class ChildSummaryViewModel
 
     public string Title { get; }
 
-    public string ChildId { get; }
+    public Guid ChildId { get; }
 
     public IReadOnlyList<SummaryRowViewModel> Rows { get; }
 

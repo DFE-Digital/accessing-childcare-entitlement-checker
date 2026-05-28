@@ -13,7 +13,7 @@
     }
     else
     {
-        <govuk-back-link asp-controller="Introduction" asp-action="IsChildBorn" asp-route-childId="@Model.ChildId">
+        <govuk-back-link asp-controller="Children" asp-action="ChildIsBorn" asp-route-childId="@Model.ChildId">
             @Shared["Button_Back"]
         </govuk-back-link>
     }
@@ -26,7 +26,7 @@
             <govuk-date-input for="ChildBirthDate">
                 <govuk-date-input-fieldset>
                     <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                        @Localizer["Title", Model.ChildName ?? "child"]
+                        @Localizer["What is {0}'s date of birth?", Model.ChildName ?? "this child"]
                     </govuk-date-input-fieldset-legend>
 
                     <govuk-date-input-error-message />
@@ -35,11 +35,11 @@
 
             <govuk-details>
                 <govuk-details-summary>
-                    @Localizer["Why we ask for a date of birth"]
+                    @Localizer["Why this date matters"]
                 </govuk-details-summary>
                 <govuk-details-text>
-                    <p>
-                        @Localizer["We use this data to give you accurate results, such as when you may be able to apply and when your childcare support could start and end."]
+                    <p class="govuk-body">
+                        @Localizer["The date of birth is used to give you accurate results, including when you may be able to apply and when childcare support could start and end"]
                     </p>
                 </govuk-details-text>
             </govuk-details>

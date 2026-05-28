@@ -9,7 +9,7 @@ public class ExpectedChildRelationshipViewModel
 
     public ExpectedChildRelationshipViewModel()
     {
-        ChildId = string.Empty;
+        ChildId = Guid.Empty;
     }
 
     public ExpectedChildRelationshipViewModel(ChildState child)
@@ -18,7 +18,7 @@ public class ExpectedChildRelationshipViewModel
         ExpectedChildRelationship = child.ExpectedRelationship;
     }
 
-    public string ChildId { get; set; }
+    public Guid ChildId { get; set; }
 
     [Display(Name = "What will your relationship be to this child?")]
     [Required(ErrorMessage = "Select what your relationship will be to this child")]

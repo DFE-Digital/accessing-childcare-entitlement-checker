@@ -1,17 +1,17 @@
-﻿Feature: What is your relationship to child?
+﻿Feature: What will your relationship be to this child?
 
 Background:
 	Given I am on the childcare entitlement checker website
 	And I click the Start now link
 	And I answer "Where do you live?" as "England"
-	And I answer questions for "Sara" as follows:
-		| Question                      | Answer    |
-		| Add details of a child        | Sara      |
-		| Has this child been born yet? | Yes       |
-		| What is Sara's date of birth? | Yesterday |
+	And I answer questions for "Aydin" as follows:
+		| Question                        | Answer   |
+		| Add details about your children | Aydin    |
+		| Has this child been born yet?   | No       |
+		| What is this child's due date?  | Tomorrow |
 
 Scenario: Page load
-	When the page header is "What is your relationship to Sara?"
+	When the page header is "What will your relationship be to this child?"
 	Then I should see 3 radio buttons with the following options:
 		| Option                               |
 		| Parent                               |
@@ -28,13 +28,13 @@ Scenario: Continue without selection
 	When I do not select a radio button
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
-	And the error summary and inline validation should be "Select your relationship to Sara"
+	And the error summary and inline validation should be "Select what your relationship will be to this child"
 
 Scenario: Continue with selection
 	When I select the "Parent" radio button
 	And I click on Continue
-	Then the page header is "Does Sara get any of the following support?"
+	Then the page header is "Check your children's details"
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "What is Sara's date of birth?"
+	Then the page header is "What is this child's due date?"

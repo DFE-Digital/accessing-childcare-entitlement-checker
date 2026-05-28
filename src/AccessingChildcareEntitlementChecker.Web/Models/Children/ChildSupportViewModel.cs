@@ -11,7 +11,7 @@ public class ChildSupportViewModel : IValidatableObject
 
     public ChildSupportViewModel()
     {
-        ChildId = string.Empty;
+        ChildId = Guid.Empty;
     }
 
     public ChildSupportViewModel(ChildState child)
@@ -21,12 +21,12 @@ public class ChildSupportViewModel : IValidatableObject
         ChildSupportOptions = child.ChildSupportOptions;
     }
 
-    public string ChildId { get; set; }
+    public Guid ChildId { get; set; }
 
     [BindNever]
     public string ChildName { get; set; } = string.Empty;
 
-    [Display(Name = "Does the child get any of the following support?", Description = "Select all that apply")]
+    [Display(Description = "Select all that apply")]
     public List<ChildSupport> ChildSupportOptions { get; set; } = new List<ChildSupport>();
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

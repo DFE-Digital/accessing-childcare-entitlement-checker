@@ -19,22 +19,22 @@ public class CheckChildDetailsController : Controller
     }
 
     [HttpGet]
-    public ViewResult CheckChildDetails(string? fromChildId = null)
+    public ViewResult CheckChildDetails(Guid? fromChildId = null)
     {
         return View(new CheckChildDetailsViewModel(_journeyState, fromChildId));
     }
 
     [HttpGet]
-    public IActionResult Remove(string? childId)
+    public IActionResult Remove(Guid? childId)
     {
-        if (childId is null || !_journeyState.Children.TryGetValue(childId, out var child))
+        if (childId is null || !_journeyState.Children.TryGetValue(childId.Value, out var child))
         {
             return this.RedirectTo<CheckChildDetailsController>(nameof(CheckChildDetails));
         }
 
         return View(new RemoveChildViewModel
         {
-            ChildId = childId,
+            ChildId = childId.Value,
             Name = child.Name
         });
     }

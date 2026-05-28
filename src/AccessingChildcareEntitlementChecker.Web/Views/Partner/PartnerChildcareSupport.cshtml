@@ -1,6 +1,4 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.Partner
-@using AccessingChildcareEntitlementChecker.Web.Services
-@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @model PartnerChildcareSupportViewModel
@@ -49,7 +47,6 @@
                     <p class="govuk-body">
                         @Localizer["Some childcare support schemes cannot be used together. This information helps give you the most accurate results."]
                     </p>
-
                 </govuk-details-text>
             </govuk-details>
 

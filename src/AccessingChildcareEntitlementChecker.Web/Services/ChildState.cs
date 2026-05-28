@@ -4,7 +4,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Services;
 
 public class ChildState
 {
-    public string ChildId { get; set; }
+    public Guid ChildId { get; set; }
 
     public string Name { get; set; }
 
@@ -20,9 +20,9 @@ public class ChildState
 
     public Relationship? ExpectedRelationship { get; set; }
 
-    public ChildState(string name)
+    public ChildState(Guid childId, string name)
     {
-        ChildId = Guid.NewGuid().ToString();
+        ChildId = childId;
         Name = name;
     }
 

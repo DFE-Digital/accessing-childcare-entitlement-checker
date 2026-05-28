@@ -11,26 +11,27 @@
     </govuk-back-link>
 }
 
-<form method="post" novalidate>
-    <govuk-radios for="UserAge">
-        <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                @Localizer["Title"]
-            </govuk-radios-fieldset-legend>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" novalidate>
+            <govuk-radios for="UserAge">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Html.DisplayNameFor(model => model.UserAge)
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<AgeRange>())
+                    {
+                        <govuk-radios-item value="@value">
+                            @Html.EnumDisplayName(value)
+                        </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
 
-            <govuk-radios-error-message />
-
-            @foreach (var value in Enum.GetValues<AgeRange>())
-            {
-            <govuk-radios-item value="@value">
-                @Html.EnumDisplayName(value)
-            </govuk-radios-item>
-            }
-
-        </govuk-radios-fieldset>
-    </govuk-radios>
-
-    <govuk-button type="submit">
-        @Shared["Button_Continue"]
-    </govuk-button>
-</form>
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

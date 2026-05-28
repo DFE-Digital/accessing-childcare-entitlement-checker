@@ -6,7 +6,7 @@ Background:
 	And I answer "Where do you live?" as "England"
 
 Scenario: Page load
-	When the page header is "Add details of a child"
+	When the page header is "Add details about your children"
 	Then I should see a text box with the label "What name should we use for this child?"
 
 Scenario: Continue with no name

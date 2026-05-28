@@ -15,7 +15,7 @@ public class LocationViewModel
         Country = journeyState.User.CountryOfResidence;
     }
 
-    [Display(Name = "Where do you live?", Description = "Childcare support is different between different countries in the UK")]
+    [Display(Name = "Where do you live?")]
     [Required(ErrorMessage = "Select where you live")]
     public CountryOfResidence? Country { get; set; }
 }

@@ -12,14 +12,19 @@ public class ChildrenControllerTests
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly ChildrenController _controller;
-    private const string childId = "child-a";
+    private readonly Guid childId;
 
     public ChildrenControllerTests()
     {
         _journeyState = new JourneyState();
-        _journeyState.Children[childId] = new ChildState("Child A");
+        childId = Guid.Parse("00000000-0000-0000-0000-00000000000a");
+        var childA = new ChildState(childId, "Child A");
+        _journeyState.AddChild(childA);
+
+        var guidFactory = Substitute.For<IGuidFactory>();
+        guidFactory.NewGuid().Returns(Guid.Parse("00000000-0000-0000-0000-00000000000b"));
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new ChildrenController(_journeyState, _journeySession);
+        _controller = new ChildrenController(_journeyState, _journeySession, guidFactory);
     }
 
     [Fact]
@@ -33,7 +38,8 @@ public class ChildrenControllerTests
     [Fact]
     public void ChildName_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildName("DOES-NOT-EXIST"));
+        var doesNotExist = Guid.Parse("00000000-0000-0000-0000-00000000000c");
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildName(doesNotExist));
     }
 
     [Fact]
@@ -59,7 +65,7 @@ public class ChildrenControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_journeyState.TryGetChild(model.ChildId, out var child));
+        Assert.True(_journeyState.TryGetChild(model.ChildId.Value, out var child));
         Assert.Equal("Example", child.Name);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(ChildrenController.ChildIsBorn), redirect.ActionName);
@@ -71,7 +77,7 @@ public class ChildrenControllerTests
     {
         var model = new ChildNameViewModel
         {
-            ChildId = "child-a",
+            ChildId = childId,
             ChildName = null
         };
 
@@ -96,7 +102,8 @@ public class ChildrenControllerTests
     [Fact]
     public void IsChildBorn_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildIsBorn("DOES-NOT-EXIST"));
+        var doesNotExist = Guid.Parse("00000000-0000-0000-0000-00000000000c");
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildIsBorn(doesNotExist));
     }
 
     [Fact]
@@ -154,7 +161,7 @@ public class ChildrenControllerTests
     {
         var model = new ChildIsBornViewModel
         {
-            ChildId = "child-a",
+            ChildId = childId,
             ChildIsBorn = null
         };
 
@@ -179,7 +186,8 @@ public class ChildrenControllerTests
     [Fact]
     public void ChildBirthDate_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildBirthDate("DOES-NOT-EXIST"));
+        var doesNotExist = Guid.Parse("00000000-0000-0000-0000-00000000000c");
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildBirthDate(doesNotExist));
     }
 
     [Fact]
@@ -238,7 +246,7 @@ public class ChildrenControllerTests
     {
         var model = new ChildBirthDateViewModel
         {
-            ChildId = "child-a",
+            ChildId = childId,
             ChildBirthDate = null
         };
 
@@ -264,7 +272,8 @@ public class ChildrenControllerTests
     [Fact]
     public void ChildRelationship_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildRelationship("DOES-NOT-EXIST"));
+        var doesNotExist = Guid.Parse("00000000-0000-0000-0000-00000000000c");
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildRelationship(doesNotExist));
     }
 
     [Fact]
@@ -323,7 +332,7 @@ public class ChildrenControllerTests
     {
         var model = new ChildRelationshipViewModel
         {
-            ChildId = "child-a",
+            ChildId = childId,
             Relationship = null
         };
 
@@ -349,7 +358,8 @@ public class ChildrenControllerTests
     [Fact]
     public void ChildSupport_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildSupport("DOES-NOT-EXIST"));
+        var doesNotExist = Guid.Parse("00000000-0000-0000-0000-00000000000c");
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildSupport(doesNotExist));
     }
 
     [Fact]
@@ -388,7 +398,7 @@ public class ChildrenControllerTests
     {
         var model = new ChildSupportViewModel
         {
-            ChildId = "child-a",
+            ChildId = childId,
             ChildSupportOptions = []
         };
 
@@ -412,7 +422,8 @@ public class ChildrenControllerTests
     [Fact]
     public void ChildDueDate_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildDueDate("DOES-NOT-EXIST"));
+        var doesNotExist = Guid.Parse("00000000-0000-0000-0000-00000000000c");
+        var result = Assert.IsType<NotFoundResult>(_controller.ChildDueDate(doesNotExist));
     }
 
     [Fact]
@@ -470,7 +481,7 @@ public class ChildrenControllerTests
     {
         var model = new ChildDueDateViewModel
         {
-            ChildId = "child-a",
+            ChildId = childId,
             ChildDueDate = null
         };
 
@@ -494,7 +505,8 @@ public class ChildrenControllerTests
     [Fact]
     public void ExpectedChildRelationship_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ExpectedChildRelationship("DOES-NOT-EXIST"));
+        var doesNotExist = Guid.Parse("00000000-0000-0000-0000-00000000000c");
+        var result = Assert.IsType<NotFoundResult>(_controller.ExpectedChildRelationship(doesNotExist));
     }
 
     [Fact]
@@ -531,7 +543,7 @@ public class ChildrenControllerTests
     {
         var model = new ExpectedChildRelationshipViewModel
         {
-            ChildId = "child-a",
+            ChildId = childId,
             ExpectedChildRelationship = null
         };
 

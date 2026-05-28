@@ -19,32 +19,41 @@
         </govuk-back-link>
     }
 }
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Html.DisplayNameFor(model => model.HasPartner)
+        </h1>
 
-<form method="post" novalidate>
-    <govuk-radios for="HasPartner">
-        <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                @Localizer["Title"]
-            </govuk-radios-fieldset-legend>
+        <p class="govuk-body">
+            @Localizer["This means you live together as a couple."]
+        </p>
 
-            <govuk-radios-hint>
-                @Localizer["Caption"]
-            </govuk-radios-hint>
+        <p class="govuk-body">
+            @Localizer["It also includes if they are posted overseas as a Crown servant, member of the armed forces, a mariner or working offshore."]
+        </p>
 
-            <govuk-radios-error-message />
+        <form method="post" novalidate>
 
-            <govuk-radios-item value="true">
-                @Shared["Option_Yes"]
-            </govuk-radios-item>
+            <govuk-radios for="HasPartner">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend class="govuk-visually-hidden">
+                        @Html.DisplayNameFor(model => model.HasPartner)
+                    </govuk-radios-fieldset-legend>
 
-            <govuk-radios-item value="false">
-                @Shared["Option_No"]
-            </govuk-radios-item>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<HasPartnerOption>())
+                    {
+                        <govuk-radios-item value="@value">
+                            @Html.EnumDisplayName(value)
+                        </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
 
-        </govuk-radios-fieldset>
-    </govuk-radios>
-
-    <govuk-button type="submit">
-        @Shared["Button_Continue"]
-    </govuk-button>
-</form>
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

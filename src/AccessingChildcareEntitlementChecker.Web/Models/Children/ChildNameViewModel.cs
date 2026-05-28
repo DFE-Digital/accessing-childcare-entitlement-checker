@@ -16,9 +16,9 @@ public class ChildNameViewModel
         ChildName = child.Name;
     }
 
-    public string? ChildId { get; set; }
+    public Guid? ChildId { get; set; }
 
-    [Display(Name = "What name should we use for this child?", Description = "You can use any name you want. For example, 'Baby Smith'.")]
+    [Display(Name = "What name should we use for this child?", Description = "You can use any name you want. For example, 'Baby Rossi'.")]
     [Required(ErrorMessage = "Enter a name for your child")]
     public string? ChildName { get; set; }
 }

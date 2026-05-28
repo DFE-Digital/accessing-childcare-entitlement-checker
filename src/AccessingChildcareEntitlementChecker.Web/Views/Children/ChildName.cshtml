@@ -5,23 +5,31 @@
 @model ChildNameViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Home" asp-action="Location">
+    <govuk-back-link asp-controller="User" asp-action="Location">
         @Shared["Button_Back"]
     </govuk-back-link>
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Localizer["Add details of a child"]
+        <h1 class="govuk-heading-xl">
+            @Localizer["Add details about your children"]
         </h1>
 
         <p class="govuk-body">
-            @Localizer["You can add details for children you are expecting or already have."]
+            @Localizer["You will now be asked a few questions about each child you want to check childcare support for."]
         </p>
 
         <p class="govuk-body">
-            @Localizer["Enter details for one child at a time. If you have more than one child, you can add them later."]
+            @Localizer["You can include children you already have or are expecting."]
+        </p>
+
+        <h2 class="govuk-heading-l">
+            @Localizer["Add a child"]
+        </h2>
+
+        <p class="govuk-body">
+            Add one child at a time.
         </p>
 
         <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
@@ -29,14 +37,11 @@
 
             <govuk-details>
                 <govuk-details-summary>
-                    @Localizer["Why we ask for a name"]
+                    @Localizer["Why a name is needed"]
                 </govuk-details-summary>
                 <govuk-details-text>
-                    <p>
-                        @Localizer["We use this name to make your results clearer and easier to understand."]
-                    </p>
-                    <p>
-                        @Localizer["You do not need to use their real name. Any name you enter will not be stored or shared."]
+                    <p class="govuk-body">
+                        @Localizer["The name is used to make your results clearer. It will not be used for anything else."]
                     </p>
                 </govuk-details-text>
             </govuk-details>

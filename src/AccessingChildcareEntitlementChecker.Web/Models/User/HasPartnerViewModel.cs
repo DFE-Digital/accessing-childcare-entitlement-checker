@@ -16,6 +16,6 @@ public class HasPartnerViewModel
     }
 
     [Display(Name = "Do you live with a partner?")]
-    [Required(ErrorMessage = "Select \"Yes\" if your partner normally lives with you, but they are away because of work.")]
+    [Required(ErrorMessage = "Select if you live with a partner")]
     public HasPartnerOption? HasPartner { get; set; }
 }

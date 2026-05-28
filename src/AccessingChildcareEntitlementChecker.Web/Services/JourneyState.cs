@@ -6,7 +6,7 @@ public class JourneyState
 {
     public UserState User { get; set; } = new UserState();
 
-    public Dictionary<string, ChildState> Children { get; set; } = [];
+    public Dictionary<Guid, ChildState> Children { get; set; } = [];
 
     public PartnerState Partner { get; set; } = new PartnerState();
 
@@ -20,7 +20,7 @@ public class JourneyState
         Children[childState.ChildId] = childState;
     }
 
-    public bool TryGetChild(string childId, [NotNullWhen(true)] out ChildState? child)
+    public bool TryGetChild(Guid childId, [NotNullWhen(true)] out ChildState? child)
     {
         return Children.TryGetValue(childId, out child);
     }

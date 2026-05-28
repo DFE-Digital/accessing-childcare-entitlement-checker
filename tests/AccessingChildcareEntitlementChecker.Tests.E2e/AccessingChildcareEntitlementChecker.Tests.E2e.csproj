@@ -6,14 +6,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="coverlet.collector" >
+		<PackageReference Include="coverlet.collector">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="Microsoft.Playwright" />
 		<PackageReference Include="Reqnroll.xunit.v3" />
-		<PackageReference Include="xunit.runner.visualstudio" >
+		<PackageReference Include="xunit.runner.visualstudio">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -29,6 +29,10 @@
 	  <Compile Update="features\pages\error.feature.cs">
 	    <DependentUpon>Error.feature</DependentUpon>
 	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Features\Pages\Introduction\" />
 	</ItemGroup>
 
 </Project>

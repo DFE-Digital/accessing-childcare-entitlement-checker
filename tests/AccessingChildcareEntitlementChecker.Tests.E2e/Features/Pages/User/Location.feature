@@ -28,7 +28,7 @@ Scenario: Continue without selection
 Scenario: Continue with selection
 	When I select the "England" radio button
 	And I click on Continue
-	Then the page header is "Add details of a child"
+	Then the page header is "Add details about your children"
 
 Scenario: Back navigation
 	When I click the back link

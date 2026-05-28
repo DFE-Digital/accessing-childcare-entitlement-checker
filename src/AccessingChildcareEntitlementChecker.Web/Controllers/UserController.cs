@@ -34,7 +34,7 @@ public class UserController : Controller
 
         _journeyState.User.Apply(model);
         _journeySession.Set(_journeyState);
-        return RedirectToAction(nameof(ChildrenController.ChildName), "Introduction");
+        return this.RedirectTo<ChildrenController>(nameof(ChildrenController.ChildName));
     }
 
     [HttpGet]
@@ -125,7 +125,6 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult WorkStatus(string? returnTo = null)
     {
         return View(new WorkStatusViewModel(_journeyState) { ReturnTo = returnTo });

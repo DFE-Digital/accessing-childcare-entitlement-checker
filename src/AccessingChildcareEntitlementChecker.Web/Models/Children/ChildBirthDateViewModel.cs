@@ -12,7 +12,7 @@ public class ChildBirthDateViewModel : IValidatableObject
 
     public ChildBirthDateViewModel()
     {
-        ChildId = string.Empty;
+        ChildId = Guid.Empty;
     }
 
     public ChildBirthDateViewModel(ChildState child)
@@ -22,12 +22,12 @@ public class ChildBirthDateViewModel : IValidatableObject
         ChildBirthDate = child.BirthDate;
     }
 
-    public string ChildId { get; set; }
+    public Guid ChildId { get; set; }
 
     [BindNever]
     public string ChildName { get; set; } = string.Empty;
 
-    [Display(Name = "What is {0}'s date of birth?", Description = "For example, 31 3 2026")]
+    [Display(Description = "For example, 31 3 2022")]
     [Required(ErrorMessage = "Enter this child's date of birth")]
     [DateInput(ErrorMessagePrefix = "The date of birth")]
     public DateOnly? ChildBirthDate { get; set; }

@@ -13,7 +13,7 @@
     }
     else
     {
-        <govuk-back-link asp-controller="Introduction" asp-action="IsChildBorn" asp-route-childId="@Model.ChildId">
+        <govuk-back-link asp-controller="Children" asp-action="ChildIsBorn" asp-route-childId="@Model.ChildId">
             @Shared["Button_Back"]
         </govuk-back-link>
     }
@@ -38,8 +38,8 @@
                     @Localizer["Why we ask for a due date"]
                 </govuk-details-summary>
                 <govuk-details-text>
-                    <p>
-                        @Localizer["We use this date to give you accurate results, including when you may be able to apply and when your childcare support could start and end."]
+                    <p class="govuk-body">
+                        @Localizer["The due date is used to give you accurate results."]
                     </p>
                 </govuk-details-text>
             </govuk-details>

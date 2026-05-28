@@ -9,7 +9,7 @@ public class ChildIsBornViewModel
 
     public ChildIsBornViewModel()
     {
-        ChildId = string.Empty;
+        ChildId = Guid.Empty;
     }
 
     public ChildIsBornViewModel(ChildState child)
@@ -18,7 +18,7 @@ public class ChildIsBornViewModel
         ChildIsBorn = child.BirthStatus;
     }
 
-    public string ChildId { get; set; }
+    public Guid ChildId { get; set; }
 
     [Display(Name = "Has this child been born yet?")]
     [Required(ErrorMessage = "Select if this child has been born")]

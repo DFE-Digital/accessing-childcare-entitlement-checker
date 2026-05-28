@@ -11,7 +11,7 @@ public class ChildDueDateViewModel : IValidatableObject
 
     public ChildDueDateViewModel()
     {
-        ChildId = string.Empty;
+        ChildId = Guid.Empty;
     }
 
     public ChildDueDateViewModel(ChildState child)
@@ -20,7 +20,7 @@ public class ChildDueDateViewModel : IValidatableObject
         ChildDueDate = child.DueDate;
     }
 
-    public string ChildId { get; set; }
+    public Guid ChildId { get; set; }
 
     [Display(Name = "What is this child's due date?", Description = "For example, 30 9 2026")]
     [Required(ErrorMessage = "Enter this child's due date")]

@@ -4,7 +4,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails;
 
 public class RemoveChildViewModel
 {
-    public string ChildId { get; set; } = default!;
+    public Guid ChildId { get; set; } = default!;
 
     public string Name { get; set; } = string.Empty;
 

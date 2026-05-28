@@ -4,7 +4,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails;
 
 public class CheckChildDetailsViewModel
 {
-    public CheckChildDetailsViewModel(JourneyState journeyState, string? fromChildId)
+    public CheckChildDetailsViewModel(JourneyState journeyState, Guid? fromChildId)
     {
         YourChildren = [.. journeyState.Children.Values.Select(child => new ChildSummaryViewModel(child))];
         LastEditedChild = ResolveLastEditedChild(journeyState, fromChildId);
@@ -16,9 +16,9 @@ public class CheckChildDetailsViewModel
 
     public ChildState? LastEditedChild { get; }
 
-    private static ChildState? ResolveLastEditedChild(JourneyState journeyState, string? fromChildId)
+    private static ChildState? ResolveLastEditedChild(JourneyState journeyState, Guid? fromChildId)
     {
-        if (fromChildId is not null && journeyState.Children.TryGetValue(fromChildId, out var fromChild))
+        if (fromChildId is not null && journeyState.Children.TryGetValue(fromChildId.Value, out var fromChild))
         {
             return fromChild;
         }

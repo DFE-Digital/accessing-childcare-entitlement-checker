@@ -3,69 +3,98 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            @Localizer["Check what help you could get with childcare costs"]
+        </h1>
 
-<form method="post" novalidate>
-    
-    <h1 class="govuk-heading-xl">
-        @Localizer["Title"]
-    </h1>
-    
-    <p class="govuk-body">
-        @Localizer["Intro"]
-    </p>
-    
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@Localizer["Scheme1"]</li>
-        <li>@Localizer["Scheme2"]</li>
-        <li>@Localizer["Scheme3"]</li>
-        <li>@Localizer["Scheme4"]</li>
-        <li>@Localizer["Scheme5"]</li>
-    </ul>
-    
-    <h2 class="govuk-heading-l">
-        @Localizer["WhatYouNeedHeading"]
-    </h2>
-    
-    <p class="govuk-body">
-        @Localizer["WhatYouNeedIntro"]
-    </p>
-    
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@Localizer["Parent_Need1"]</li>
-        <li>@Localizer["Parent_Need2"]</li>
-        <li>@Localizer["Parent_Need3"]</li>
-        <li>@Localizer["Parent_Need4"]</li>
-    </ul>
-    
-    <p class="govuk-body">
-        @Localizer["WhatYouNeedChildIntro"]
-    </p>
-    
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@Localizer["Child_Need1"]</li>
-        <li>@Localizer["Child_Need2"]</li>
-    </ul>
-    
-    <p class="govuk-body">
-        @Localizer["Time"]
-    </p>
-    
-    <!-- NOSONAR -->
-    <a asp-action="@nameof(UserController.Location)"
-       class="govuk-button govuk-button--start"
-       data-module="govuk-button">
-        
-        @Localizer["Button_Start"]
-        
-        <svg class="govuk-button__start-icon" 
-             xmlns="http://www.w3.org/2000/svg" 
-             width="17.5" 
-             height="19" 
-             viewBox="0 0 33 40" 
-             aria-hidden="true" 
-             focusable="false">
-            <path fill="currentColor" 
-                  d="M0 0h13l20 20-20 20H0l20-20z"/>
-        </svg>
-    </a>
-</form>
+        <p class="govuk-body">
+            @Localizer["Use this checker to find out what help you could get from the following childcare schemes:"]
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@Localizer["Childcare for Working Parents"]</li>
+            <li>@Localizer["Education and childcare for 2 year olds if you get extra support"]</li>
+            <li>@Localizer["15 hours childcare for 3 and 4-year-olds"]</li>
+            <li>@Localizer["Tax-Free Childcare"]</li>
+            <li>@Localizer["Universal Credit childcare support"]</li>
+        </ul>
+
+        <govuk-inset-text>
+            @Localizer["This is only a quick eligibility checker and gives an estimate of what you may qualify for. It is not an application, and your results will not be saved or shared"]
+        </govuk-inset-text>
+
+        <p class="govuk-body">
+            @Localizer["This usually takes around 5 minutes."]
+        </p>
+
+        <h2 class="govuk-heading-m">
+            @Localizer["What you will be asked about"]
+        </h2>
+
+        <p class="govuk-body">
+            @Localizer["You will be asked some questions about:"]
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@Localizer["your children, or children you're expecting"]</li>
+            <li>@Localizer["you and your partner (if you have one), including work and income"]</li>
+            <li>@Localizer["any benefits you get"]</li>
+        </ul>
+
+        <p class="govuk-body">
+            @Localizer["You do not need exact figures, you can use typical or estimated amounts."]
+        </p>
+
+        <h2 class="govuk-heading-m">
+            @Localizer["Who this checker is not suitable for"]
+        </h2>
+
+        <p class="govuk-body">
+            @Localizer["This checker may not cover every child or situation."]
+        </p>
+
+        <p class="govuk-body">
+            @Localizer["For example, It may not give accurate results for a child who:"]
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@Localizer["is in local authority care, foster care or kinship care"]</li>
+            <li>@Localizer["does not live with you most of the time"]</li>
+            <li>@Localizer["lives outside England"]</li>
+        </ul>
+
+        <p class="govuk-body">
+            @Localizer["You can still use this checker for other children in your household."]
+        </p>
+
+        <p class="govuk-body">
+            @Localizer["For children or situations not covered,"]
+            <a href="https://www.gov.uk/find-local-council">
+                @Localizer["your local council"]
+            </a>
+            @Localizer["can usually give advice about childcare support and next steps."]
+        </p>
+
+        <form method="post" novalidate>
+            <a asp-controller="User" asp-action="@nameof(UserController.Location)"
+               class="govuk-button govuk-button--start"
+               data-module="govuk-button">
+
+                @Localizer["Start now"]
+
+                <svg class="govuk-button__start-icon"
+                     xmlns="http://www.w3.org/2000/svg"
+                     width="17.5"
+                     height="19"
+                     viewBox="0 0 33 40"
+                     aria-hidden="true"
+                     focusable="false">
+                    <path fill="currentColor"
+                          d="M0 0h13l20 20-20 20H0l20-20z" />
+                </svg>
+            </a>
+        </form>
+    </div>
+</div>

@@ -11,7 +11,7 @@ public class ChildRelationshipViewModel : IValidatableObject
 
     public ChildRelationshipViewModel()
     {
-        ChildId = string.Empty;
+        ChildId = Guid.Empty;
     }
 
     public ChildRelationshipViewModel(ChildState child)
@@ -21,12 +21,11 @@ public class ChildRelationshipViewModel : IValidatableObject
         Relationship = child.BornRelationship;
     }
 
-    public string ChildId { get; set; }
+    public Guid ChildId { get; set; }
 
     [BindNever]
     public string ChildName { get; set; } = string.Empty;
 
-    [Display(Name = "What is your relationship to {0}?")]
     public Relationship? Relationship { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

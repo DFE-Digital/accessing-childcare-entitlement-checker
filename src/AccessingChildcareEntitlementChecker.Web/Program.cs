@@ -65,6 +65,6 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 app.MapHealthChecks("/health");
 app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Start}/{id?}");
+        pattern: "{controller=Introduction}/{action=Start}/{id?}");
 
 await app.RunAsync();

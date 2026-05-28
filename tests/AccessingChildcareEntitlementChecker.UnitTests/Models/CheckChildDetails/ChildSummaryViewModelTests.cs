@@ -9,15 +9,17 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Models.CheckChildDetail
 
 public class ChildSummaryViewModelTests
 {
+    private readonly Guid _childAId;
+
     public ChildSummaryViewModelTests()
     {
-
+        _childAId = Guid.Parse("00000000-0000-0000-0000-00000000000a");
     }
 
     [Fact]
     public void BornChildPopulatesViewModelAsExpected()
     {
-        var bornChild = new ChildState("Child A")
+        var bornChild = new ChildState(_childAId, "Child A")
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = new DateOnly(2020, 1, 15),
@@ -30,23 +32,23 @@ public class ChildSummaryViewModelTests
 
         var viewModel = new ChildSummaryViewModel(bornChild);
         Assert.NotNull(viewModel);
-        Assert.Equal("child-a", viewModel.ChildId);
+        Assert.Equal(_childAId, viewModel.ChildId);
         Assert.Equal("Child A", viewModel.Title);
         Assert.Equal(3, viewModel.Rows.Count);
 
         var birthDateRow = viewModel.Rows.First();
         Assert.Equal("Child A", birthDateRow.Param);
         Assert.Equal("15 January 2020", birthDateRow.Value);
-        Assert.Equal("BornChildDetails", birthDateRow.ChangeController);
+        Assert.Equal("Children", birthDateRow.ChangeController);
         Assert.Equal("What is {0}'s date of birth?", birthDateRow.Key);
         Assert.Equal("ChildBirthDate", birthDateRow.ChangeAction);
-        Assert.Equal("child-a", birthDateRow.ChildId);
+        Assert.Equal(_childAId, birthDateRow.ChildId);
     }
 
     [Fact]
     public void DueChildPopulatesViewModelAsExpected()
     {
-        var dueChild = new ChildState("Child A")
+        var dueChild = new ChildState(_childAId, "Child A")
         {
             BirthStatus = BirthStatus.Due,
             DueDate = new DateOnly(2020, 1, 15),
@@ -55,16 +57,16 @@ public class ChildSummaryViewModelTests
 
         var viewModel = new ChildSummaryViewModel(dueChild);
         Assert.NotNull(viewModel);
-        Assert.Equal("child-a", viewModel.ChildId);
+        Assert.Equal(_childAId, viewModel.ChildId);
         Assert.Equal("Child A", viewModel.Title);
         Assert.Equal(2, viewModel.Rows.Count);
 
         var dueDateRow = viewModel.Rows.First();
         Assert.Equal("Child A", dueDateRow.Param);
         Assert.Equal("15 January 2020", dueDateRow.Value);
-        Assert.Equal("ExpectedChildDetails", dueDateRow.ChangeController);
+        Assert.Equal("Children", dueDateRow.ChangeController);
         Assert.Equal("What is this child's due date?", dueDateRow.Key);
         Assert.Equal("ChildDueDate", dueDateRow.ChangeAction);
-        Assert.Equal("child-a", dueDateRow.ChildId);
+        Assert.Equal(_childAId, dueDateRow.ChildId);
     }
 }

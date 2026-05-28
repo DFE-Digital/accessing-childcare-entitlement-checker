@@ -12,11 +12,14 @@ public class ChildBirthDateViewModelTests
     private readonly ITodayFactory _dateTimeFactory;
     private readonly IStringLocalizerFactory _localizerFactory;
     private readonly Func<Type, object> _serviceProviderFunc;
+    private readonly Guid _childAId;
 
     public ChildBirthDateViewModelTests()
     {
         _journeyState = new JourneyState();
-        _journeyState.Children["child-a"] = new ChildState("Child A");
+        _childAId = Guid.Parse("00000000-0000-0000-0000-00000000000a");
+        var child = new ChildState(_childAId, "Child A");
+        _journeyState.AddChild(child);
         _dateTimeFactory = Substitute.For<ITodayFactory>();
         _localizerFactory = Substitute.For<IStringLocalizerFactory>();
 
@@ -44,7 +47,7 @@ public class ChildBirthDateViewModelTests
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));
-        Assert.True(_journeyState.TryGetChild("child-a", out var child));
+        Assert.True(_journeyState.TryGetChild(_childAId, out var child));
         Assert.NotNull(child);
 
         var model = new ChildBirthDateViewModel(child)

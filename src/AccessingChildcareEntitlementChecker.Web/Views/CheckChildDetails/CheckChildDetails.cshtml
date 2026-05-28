@@ -39,7 +39,7 @@
             </div>
         }
 
-        <h1 class="govuk-heading-l">@Localizer["Check your children's details"]</h1>
+        <h1 class="govuk-heading-xl">@Localizer["Check your children's details"]</h1>
 
         <h2 class="govuk-heading-m">@Localizer["Your children"]</h2>
 
@@ -74,7 +74,7 @@
         }
 
         <div class="govuk-!-margin-bottom-4">
-            <govuk-button-link class="govuk-button--secondary" asp-controller="Introduction" asp-action="ChildName">@Localizer["Add another child"]</govuk-button-link>
+            <govuk-button-link class="govuk-button--secondary" asp-controller="Children" asp-action="ChildName">@Localizer["Add another child"]</govuk-button-link>
         </div>
 
         @if (Model.HasChildren)

@@ -9,17 +9,20 @@ public class ChildrenController : Controller
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private readonly IGuidFactory _guidFactory;
 
     public ChildrenController(
         JourneyState journeyState,
-        IJourneySession journeySession)
+        IJourneySession journeySession,
+        IGuidFactory guidFactory)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
+        _guidFactory = guidFactory;
     }
 
     [HttpGet]
-    public IActionResult ChildName(string? childId = null)
+    public IActionResult ChildName(Guid? childId = null)
     {
         if (childId == null)
         {
@@ -27,7 +30,7 @@ public class ChildrenController : Controller
             return View(childNameViewModel);
         }
 
-        if (!_journeyState.TryGetChild(childId, out var child))
+        if (!_journeyState.TryGetChild(childId.Value, out var child))
         {
             return NotFound();
         }
@@ -45,12 +48,14 @@ public class ChildrenController : Controller
 
         if (model.ChildId == null)
         {
-            var childState = new ChildState(model.ChildName!);
+            var guid = _guidFactory.NewGuid();
+            var childState = new ChildState(guid, model.ChildName!);
             _journeyState.AddChild(childState);
+            model.ChildId = guid;
         }
         else
         {
-            if (!_journeyState.TryGetChild(model.ChildId, out var child))
+            if (!_journeyState.TryGetChild(model.ChildId.Value, out var child))
             {
                 return NotFound();
             }
@@ -66,7 +71,7 @@ public class ChildrenController : Controller
     }
 
     [HttpGet]
-    public IActionResult ChildIsBorn(string childId, string? returnTo = null)
+    public IActionResult ChildIsBorn(Guid childId, string? returnTo = null)
     {
         if (!_journeyState.TryGetChild(childId, out var child))
         {
@@ -104,7 +109,7 @@ public class ChildrenController : Controller
     }
 
     [HttpGet]
-    public IActionResult ChildBirthDate(string childId, string? returnTo = null)
+    public IActionResult ChildBirthDate(Guid childId, string? returnTo = null)
     {
         if (!_journeyState.TryGetChild(childId, out var child))
         {
@@ -142,7 +147,7 @@ public class ChildrenController : Controller
     }
 
     [HttpGet]
-    public IActionResult ChildRelationship(string childId, string? returnTo = null)
+    public IActionResult ChildRelationship(Guid childId, string? returnTo = null)
     {
         if (!_journeyState.TryGetChild(childId, out var child))
         {
@@ -180,7 +185,7 @@ public class ChildrenController : Controller
     }
 
     [HttpGet]
-    public IActionResult ChildSupport(string childId, string? returnTo = null)
+    public IActionResult ChildSupport(Guid childId, string? returnTo = null)
     {
         if (!_journeyState.TryGetChild(childId, out var child))
         {
@@ -211,7 +216,7 @@ public class ChildrenController : Controller
     }
 
     [HttpGet]
-    public IActionResult ChildDueDate(string childId, string? returnTo = null)
+    public IActionResult ChildDueDate(Guid childId, string? returnTo = null)
     {
         if (!_journeyState.TryGetChild(childId, out var child))
         {
@@ -249,7 +254,7 @@ public class ChildrenController : Controller
     }
 
     [HttpGet]
-    public IActionResult ExpectedChildRelationship(string childId, string? returnTo = null)
+    public IActionResult ExpectedChildRelationship(Guid childId, string? returnTo = null)
     {
         if (!_journeyState.TryGetChild(childId, out var child))
         {
