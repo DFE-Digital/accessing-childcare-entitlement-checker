@@ -1,0 +1,41 @@
+name: Generate - Documentation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "feature/hk-AC-666-documentation-portal" ]
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }} # Ensure it works on the feature branch
+
+      - name: Install Terraform Docs
+        run: |
+          wget https://github.com/terraform-docs/terraform-docs/releases/download/v0.18.0/terraform-docs-v0.18.0-linux-amd64.tar.gz
+          tar -xvf terraform-docs-v0.18.0-linux-amd64.tar.gz terraform-docs
+          sudo mv terraform-docs /usr/local/bin/
+          rm terraform-docs-v0.18.0-linux-amd64.tar.gz
+      
+      - name: Terraform fmt
+        id: fmt
+        working-directory: ./src/infrastructure/terraform
+        run: terraform fmt -recursive
+    
+      - name: Generate TF Documentation
+        # Update 'infra/terraform' to match your actual folder path
+        run: terraform-docs markdown table src/infrastructure/terraform --output-file ../../../docs/architecture/Terraform.md
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "Documentation Bot"
+          git config --global user.email "documentation-bot-bot@users.noreply.github.com"
+          git add docs/terraform.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-update terraform documentation" && git push)
+        continue-on-error: true
