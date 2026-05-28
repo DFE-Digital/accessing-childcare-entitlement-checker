@@ -2,6 +2,7 @@ using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 
 namespace AccessingChildcareEntitlementChecker.Web.Services;
+
 public class PartnerState
 {
     public AgeRange? PartnerAge { get; set; }

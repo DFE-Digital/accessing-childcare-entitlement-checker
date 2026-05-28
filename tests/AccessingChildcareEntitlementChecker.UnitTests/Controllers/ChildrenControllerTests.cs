@@ -22,7 +22,7 @@ public class ChildrenControllerTests
         _controller = new ChildrenController(_journeyState, _journeySession);
     }
 
-[Fact]
+    [Fact]
     public void ChildName_ReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.ChildName());
@@ -402,7 +402,7 @@ public class ChildrenControllerTests
         _journeySession.DidNotReceive().Set(_journeyState);
     }
 
-[Fact]
+    [Fact]
     public void ChildDueDate_ReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(childId));

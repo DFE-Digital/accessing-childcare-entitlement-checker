@@ -57,7 +57,7 @@ public class ChildrenController : Controller
 
             child.Apply(model);
         }
-        
+
         _journeySession.Set(_journeyState);
 
         return this.RedirectTo<ChildrenController>(
@@ -210,7 +210,7 @@ public class ChildrenController : Controller
             new { fromChildId = model.ChildId });
     }
 
-[HttpGet]
+    [HttpGet]
     public IActionResult ChildDueDate(string childId, string? returnTo = null)
     {
         if (!_journeyState.TryGetChild(childId, out var child))

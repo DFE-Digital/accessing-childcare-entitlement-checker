@@ -23,5 +23,5 @@ public class JourneyState
     public bool TryGetChild(string childId, [NotNullWhen(true)] out ChildState? child)
     {
         return Children.TryGetValue(childId, out child);
-    }    
+    }
 }
