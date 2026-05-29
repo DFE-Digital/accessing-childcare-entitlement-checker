@@ -1,0 +1,52 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.Partner
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@model PartnerWeeklyEarningsViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
+
+@section BeforeContent {
+    @if (JourneyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
+    {
+        <govuk-back-link asp-controller="Partner" asp-action="PartnerSelfEmployedDuration">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="Partner" asp-action="PartnerWorkStatus">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Html.DisplayNameFor(model => model.PartnerWeeklyEarnings)
+        </h1>
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+
+            <govuk-radios for="PartnerWeeklyEarnings">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend class="govuk-visually-hidden">
+                        @Html.DisplayNameFor(model => model.PartnerWeeklyEarnings)
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<WeeklyEarningsOption>())
+                    {
+                    <govuk-radios-item value="@value">
+                        @Html.EnumDisplayName(value)
+                    </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

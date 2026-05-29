@@ -1,0 +1,58 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.Partner
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@model PartnerPaidWorkViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
+
+@section BeforeContent {
+    @if (JourneyState.PartnerNationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+    {
+        <govuk-back-link asp-controller="Partner" asp-action="PartnerSettledStatus">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        <govuk-back-link asp-controller="Partner" asp-action="PartnerNationality">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Html.DisplayNameFor(model => model.PartnerPaidWork)
+        </h1>
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+
+            <govuk-radios for="PartnerPaidWork">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend class="govuk-visually-hidden">
+                        @Html.DisplayNameFor(model => model.PartnerPaidWork)
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<PartnerPaidWorkOption>())
+                    {
+                    <govuk-radios-item value="@value">
+                        @Html.EnumDisplayName(value)
+                        @if (value == PartnerPaidWorkOption.OnLeave)
+                        {
+                            <govuk-radios-item-hint>
+                                @Localizer["This includes maternity, paternity, adoption or neonatal care leave and sick leave"]
+                            </govuk-radios-item-hint>
+                        }
+                    </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>
