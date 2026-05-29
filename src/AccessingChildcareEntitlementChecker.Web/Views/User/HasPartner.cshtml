@@ -1,12 +1,23 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.User
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model HasPartnerViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Home" asp-action="Location">
-        @Shared["Button_Back"]
-    </govuk-back-link>
+    @if (JourneyState.ChildcareSupport.Contains(ChildcareSupportOption.ChildcareVouchers))
+    {
+        <govuk-back-link asp-controller="User" asp-action="ChildcareVoucherReceipt">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+         <govuk-back-link asp-controller="User" asp-action="ChildcareSupport">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
 }
 
 <form method="post" novalidate>

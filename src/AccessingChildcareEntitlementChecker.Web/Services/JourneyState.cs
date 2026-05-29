@@ -2,6 +2,7 @@ using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Models.User;
+using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 
 namespace AccessingChildcareEntitlementChecker.Web.Services;
 
@@ -34,9 +35,13 @@ public class JourneyState
 
     public List<ChildcareSupportOption> ChildcareSupport { get; set; } = [];
 
+    public ChildcareVoucherReceiptOption? ChildcareVoucherReceipt { get; set; }
+
     public bool? HasPartner { get; set; }
 
     public AgeRange? PartnerAge { get; set; }
+
+    public NationalityOption? PartnerNationality { get; set; }
 
     public Child? GetChild(string childId)
     {
@@ -117,6 +122,16 @@ public class JourneyState
         Nationality = model.Nationality;
     }
 
+    public void Apply(SettledStatusViewModel model)
+    {
+        SettledStatus = model.SettledStatus;
+    }
+
+    public void Apply(PaidWorkViewModel model)
+    {
+        PaidWork = model.PaidWork;
+    }
+
     public void Apply(WorkStatusViewModel model)
     {
         WorkStatus = model.WorkStatus;
@@ -152,6 +167,11 @@ public class JourneyState
         ChildcareSupport = model.ChildcareSupport;
     }
 
+    public void Apply(ChildcareVoucherReceiptViewModel model)
+    {
+        ChildcareVoucherReceipt = model.ChildcareVoucherReceipt;
+    }
+
     public void Apply(HasPartnerViewModel model)
     {
         HasPartner = model.HasPartner;
@@ -162,13 +182,8 @@ public class JourneyState
         PartnerAge = model.PartnerAge;
     }
 
-    public void Apply(SettledStatusViewModel model)
+    public void Apply(PartnerNationalityViewModel model)
     {
-        SettledStatus = model.SettledStatus;
-    }
-
-    public void Apply(PaidWorkViewModel model)
-    {
-        PaidWork = model.PaidWork;
+        PartnerNationality = model.PartnerNationality;
     }
 }
