@@ -17,7 +17,7 @@ public class ChildcareSupportViewModel : IValidatableObject
         ChildcareSupport = journeyState.ChildcareSupport;
     }
 
-    [Display(Name = "Do you already get any of this child care support?", Description = "Select all that apply.")]
+    [Display(Name = "Do you already get any of this childcare support?", Description = "Select all that apply.")]
     public List<ChildcareSupportOption> ChildcareSupport { get; set; } = [];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

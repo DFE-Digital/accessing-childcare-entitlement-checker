@@ -1,0 +1,61 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.User
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@model ChildcareVoucherReceiptViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="User" asp-action="ChildcareSupport">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Html.DisplayNameFor(model => model.ChildcareVoucherReceipt)
+        </h1>
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+
+            <govuk-radios for="ChildcareVoucherReceipt">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend class="govuk-visually-hidden">
+                        @Html.DisplayNameFor(model => model.ChildcareVoucherReceipt)
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<ChildcareVoucherReceiptOption>())
+                    {
+                    <govuk-radios-item value="@value">
+                        @Html.EnumDisplayName(value)
+                        @if (value == ChildcareVoucherReceiptOption.WorkplaceNurseryScheme)
+                        {
+                            <govuk-radios-item-hint>
+                                @Localizer["Your employer provides childcare places directly, for example through a nursery linked to your workplace"]
+                            </govuk-radios-item-hint>
+                        }
+                        @if (value == ChildcareVoucherReceiptOption.EmployerArrangesWithProvider)
+                        {
+                            <govuk-radios-item-hint>
+                                @Localizer["Your employer pays a childcare provider directly for you, rather than giving you vouchers"]
+                            </govuk-radios-item-hint>
+                        }
+                        @if (value == ChildcareVoucherReceiptOption.ThroughSalarySacrifice)
+                        {
+                            <govuk-radios-item-hint>
+                                @Localizer["Vouchers are taken from your pay before tax, often shown on your payslip"]
+                            </govuk-radios-item-hint>
+                        }
+                    </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>
