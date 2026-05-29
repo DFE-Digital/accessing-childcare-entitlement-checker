@@ -103,7 +103,8 @@ public class PartnerController : Controller
         {
             PartnerPaidWorkOption.Yes => this.RedirectTo<PartnerController>(nameof(PartnerWorkStatus)),
             PartnerPaidWorkOption.OnLeave => this.RedirectTo<PartnerController>(nameof(PartnerTypeOfLeave)),
-            _ => this.RedirectTo<PartnerController>(nameof(PartnerBenefits)),
+            PartnerPaidWorkOption.No => this.RedirectTo<PartnerController>(nameof(PartnerBenefits)),
+            _ => throw new InvalidOperationException($"Unexpected PartnerPaidWorkOption value: {model.PartnerPaidWork}"),
         };
 
         return redirect;
@@ -229,8 +230,8 @@ public class PartnerController : Controller
     public IActionResult PartnerChildcareSupport(string? returnTo = null)
     {
         return View(new PartnerChildcareSupportViewModel(_journeyState) { ReturnTo = returnTo });
-
     }
+
     [HttpPost]
     public IActionResult PartnerChildcareSupport(PartnerChildcareSupportViewModel model)
     {
