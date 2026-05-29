@@ -43,6 +43,20 @@ public class JourneyState
 
     public NationalityOption? PartnerNationality { get; set; }
 
+    public SettledStatusOption? PartnerSettledStatus { get; set; }
+
+    public PartnerPaidWorkOption? PartnerPaidWork { get; set; }
+
+    public List<WorkStatusOption> PartnerWorkStatus { get; set; } = [];
+
+    public SelfEmployedDurationOption? PartnerSelfEmployedDuration { get; set; }
+
+    public WeeklyEarningsOption? PartnerWeeklyEarnings { get; set; }
+
+    public YearlyEarningsOption? PartnerYearlyEarnings { get; set; }
+
+    public List<PartnerBenefitsOption> PartnerBenefits { get; set; } = [];
+
     public Child? GetChild(string childId)
     {
         return Children.TryGetValue(childId, out var child) ? child : null;
@@ -185,5 +199,40 @@ public class JourneyState
     public void Apply(PartnerNationalityViewModel model)
     {
         PartnerNationality = model.PartnerNationality;
+    }
+
+    public void Apply(PartnerSettledStatusViewModel model)
+    {
+        PartnerSettledStatus = model.PartnerSettledStatus;
+    }
+
+    public void Apply(PartnerPaidWorkViewModel model)
+    {
+        PartnerPaidWork = model.PartnerPaidWork;
+    }
+
+    public void Apply(PartnerWorkStatusViewModel model)
+    {
+        PartnerWorkStatus = model.PartnerWorkStatus;
+    }
+
+    public void Apply(PartnerSelfEmployedDurationViewModel model)
+    {
+        PartnerSelfEmployedDuration = model.PartnerSelfEmployedDuration;
+    }
+
+    public void Apply(PartnerWeeklyEarningsViewModel model)
+    {
+        PartnerWeeklyEarnings = model.PartnerWeeklyEarnings;
+    }
+
+    public void Apply(PartnerYearlyEarningsViewModel model)
+    {
+        PartnerYearlyEarnings = model.PartnerYearlyEarnings;
+    }
+
+    public void Apply(PartnerBenefitsViewModel model)
+    {
+        PartnerBenefits = model.PartnerBenefits;
     }
 }

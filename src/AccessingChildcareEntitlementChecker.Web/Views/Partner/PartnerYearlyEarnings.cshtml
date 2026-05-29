@@ -1,0 +1,65 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.Partner
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@model PartnerYearlyEarningsViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="Partner" asp-action="PartnerWeeklyEarnings">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Html.DisplayNameFor(model => model.PartnerYearlyEarnings)
+        </h1>
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+
+            <govuk-radios for="PartnerYearlyEarnings">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend class="govuk-visually-hidden">
+                        @Html.DisplayNameFor(model => model.PartnerYearlyEarnings)
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<YearlyEarningsOption>())
+                    {
+                    <govuk-radios-item value="@value">
+                        @Html.EnumDisplayName(value)
+                    </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
+
+            <govuk-details>
+                <govuk-details-summary>
+                    @Localizer["How to work out adjusted net income"]
+                </govuk-details-summary>
+                <govuk-details-text>
+                    <p class="govuk-body">
+                        @Localizer["Use your total income before tax, but take off things like:"]
+                    </p>
+
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>@Localizer["pension contributions"]</li>
+                        <li>@Localizer["donations to charity through Gift Aid"]</li>
+                        <li>@Localizer["trading losses"]</li>
+                    </ul>
+
+                    <a class="govuk-link" href="https://www.gov.uk/adjusted-net-income" target="_blank" rel="noopener noreferrer">
+                        @Localizer["Find out how to work out your adjusted net income (opens in new tab)"]
+                    </a>
+
+                </govuk-details-text>
+            </govuk-details>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>
