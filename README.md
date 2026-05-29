@@ -52,7 +52,27 @@ $proc = Start-Process dotnet -ArgumentList "run --project src/AccessingChildcare
 
 - [CONTRIBUTING.md](/CONTRIBUTING.md) - Information for external contributors
 - `docs/`
-  - [development.md](/docs/development.md) - Detailed information on development
+  - [development.md](/docs/developers/development.md) - Detailed information on development
+
+### Documentation
+
+The project documentation is built using [Eleventy](https://www.11ty.dev/) and the [GOV.UK Design System](https://x-govuk.github.io/govuk-eleventy-plugin/). It is automatically published to GitHub Pages via a GitHub Action.
+
+To preview the documentation locally with live reloading:
+
+1. Navigate to the `docs` directory:
+   ```powershell
+   cd docs
+   ```
+2. Install dependencies:
+   ```powershell
+   npm install
+   ```
+3. Start the development server:
+   ```powershell
+   npm start
+   ```
+   The documentation will be available at `http://localhost:8080`.
 
 ## Licence
 

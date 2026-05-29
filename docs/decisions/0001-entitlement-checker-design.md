@@ -1,4 +1,9 @@
-# Entitlement checker design
+---
+title: Entitlement checker design
+eleventyNavigation:
+  key: Entitlement checker design
+order: 2
+---
 
 ## Summary
 
@@ -59,7 +64,7 @@ The eligibility checking engine is an API primarily used by local authorities to
 
 ### Option 3: Build
 
-![Describes the technical architecture with a diagram](images/0001-Technical Architecture.png "Technical Architecture")
+![Describes the technical architecture with a diagram](../adr/images/0001-Technical%20Architecture.png "Technical Architecture")
 
 Given the requirements for a simple web application with no database or user auth, it would be simple to build a .net core MVC web application, hosted in azure and deployed via github actions. 
 

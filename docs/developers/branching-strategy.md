@@ -1,4 +1,9 @@
-# Branching Strategy
+---
+title: Branching Strategy
+eleventyNavigation:
+  key: Branching Strategy
+order: 3
+---
 
 This document defines the Git branching and release workflow for the project. The project uses:
 

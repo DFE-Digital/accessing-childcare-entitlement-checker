@@ -1,8 +1,9 @@
 ---
-status: "proposed"
+title: Use govuk-frontend-aspnetcore library for GDS elements
+eleventyNavigation:
+  key: Use govuk-frontend-aspnetcore
+order: 7
 ---
-
-# Use govuk-frontend-aspnetcore library for GDS elements
 
 ## Context and Problem Statement
 

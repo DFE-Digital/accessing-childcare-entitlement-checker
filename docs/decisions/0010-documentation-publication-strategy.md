@@ -1,4 +1,9 @@
-# Documentation publication strategy
+---
+title: Documentation publication strategy
+eleventyNavigation:
+  key: Documentation
+order: 11
+---
 
 ## Context and Problem Statement
 

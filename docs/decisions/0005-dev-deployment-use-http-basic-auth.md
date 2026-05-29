@@ -1,4 +1,9 @@
-# Use app-level HTTP Basic auth to limit access to dev deployment
+---
+title: Use app-level HTTP Basic auth to limit access to dev deployment
+eleventyNavigation:
+  key: Use app-level HTTP Basic auth
+order: 6
+---
 
 ## Context and Problem Statement
 

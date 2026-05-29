@@ -1,4 +1,9 @@
-# Refactoring Options
+---
+title: Refactoring Options
+eleventyNavigation:
+  key: Refactoring Options
+order: 8
+---
 
 ## Context and Problem Statement
 
@@ -6,7 +11,7 @@ The Accessing Childcare Entitlement (CEC) spans 40 pages of Government Design Sy
 
 We're currently working towards the private beta release of the MVP.
 
-In [ADR 0001 Entitlement checker design](./0001-entitlement-checker-design.md) design work resulted in the selection of the "Build" option: a .net core MVC web application, hosted in azure and deployed via github actions. This ADR considers different implementation approaches for that option and documents spike work used to validate the chosen approach.
+In [ADR 0001 Entitlement checker design](0001-entitlement-checker-design.md) design work resulted in the selection of the "Build" option: a .net core MVC web application, hosted in azure and deployed via github actions. This ADR considers different implementation approaches for that option and documents spike work used to validate the chosen approach.
 
 ## Decision Drivers
 

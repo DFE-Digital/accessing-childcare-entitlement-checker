@@ -1,4 +1,8 @@
-# Constraints and Principals
+---
+title: Constraints and Principals
+eleventyNavigation:
+  key: Constraints and Principals
+---
 
 This document defines the architectural principals and constraints for the project.
 

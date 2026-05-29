@@ -1,4 +1,9 @@
-# Use Release Branches with Trunk-Based Development for Staging and Production Releases
+---
+title: Use Release Branches with Trunk-Based Development for Staging and Production Releases
+eleventyNavigation:
+  key: Use Release Branches
+order: 10
+---
 
 **Date:** 2026-05-25  
 **Decision Makers:** Engineering & Product  
