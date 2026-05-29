@@ -26,14 +26,12 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
         var eligibleInFuture =
             context.Household.CountryOfResidence == CountryOfResidence.England &&
             (
-                !child.IsBorn
-                || child.AgeInYears is < MaximumEligibleAgeInYears
+                !child.IsBorn ||
+                child.AgeInYears is < MaximumEligibleAgeInYears
             )
             &&
-            (
-                ChildMeetsAutomaticEligibilityCriteria(child)
-                || HouseholdMeetsBenefitEligibility(context)
-            );
+                HouseholdMeetsBenefitEligibility(context)
+            ;
 
         if (!eligibleNow && !eligibleInFuture)
         {
@@ -81,19 +79,18 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
         DerivedContext context)
     {
         return
-            context.Household.CountryOfResidence == CountryOfResidence.England
-            && context.Household.HasAccessToPublicFunds
-            && HouseholdReceivesQualifyingBenefit(context);
+            context.Household.CountryOfResidence == CountryOfResidence.England &&
+            context.Household.HasAccessToPublicFunds &&
+            HouseholdReceivesQualifyingBenefit(context);
     }
 
     private static bool HouseholdReceivesQualifyingBenefit(
         DerivedContext context)
     {
         return
-            PersonReceivesQualifyingBenefit(context.User)
-
-            || context.Partner is not null
-            && PersonReceivesQualifyingBenefit(context.Partner);
+            PersonReceivesQualifyingBenefit(context.User) ||
+            context.Partner is not null &&
+            PersonReceivesQualifyingBenefit(context.Partner);
     }
 
     private static bool PersonReceivesQualifyingBenefit(
