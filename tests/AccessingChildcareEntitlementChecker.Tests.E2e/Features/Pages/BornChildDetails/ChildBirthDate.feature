@@ -5,13 +5,13 @@ Background:
 	And I click the Start now link
 	And I answer "Where do you live?" as "England"
 	And I answer questions for "Sara" as follows:
-		| Question                      | Answer |
-		| Add details of a child        | Sara   |
-		| Has this child been born yet? | Yes    |
+		| Question                        | Answer |
+		| Add details about your children | Sara   |
+		| Has this child been born yet?   | Yes    |
 
 Scenario: Page load
 	When the page header is "What is Sara's date of birth?"
-	Then I should see the hint text "For example, 31 3 2026"
+	Then I should see the hint text "For example, 31 3 2022"
 	And I should see a date entry input
 
 # The GDS component covers date validity, we do a single test to validate

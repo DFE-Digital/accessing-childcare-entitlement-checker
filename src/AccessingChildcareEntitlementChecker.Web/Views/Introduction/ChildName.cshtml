@@ -11,16 +11,24 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Localizer["Title"]
+        <h1 class="govuk-heading-xl">
+            @Localizer["Add details about your children"]
         </h1>
 
         <p class="govuk-body">
-            @Localizer["IntroText"]
+            @Localizer["You will now be asked a few questions about each child you want to check childcare support for."]
         </p>
 
         <p class="govuk-body">
-            @Localizer["AdditionalChildrenGuidance"]
+            @Localizer["You can include children you already have or are expecting."]
+        </p>
+
+        <h2 class="govuk-heading-l">
+            @Localizer["Add a child"]
+        </h2>
+
+        <p class="govuk-body">
+            Add one child at a time.
         </p>
 
         <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
@@ -28,14 +36,11 @@
 
             <govuk-details>
                 <govuk-details-summary>
-                    @Localizer["Details_Title"]
+                    @Localizer["Why a name is needed"]
                 </govuk-details-summary>
                 <govuk-details-text>
-                    <p>
-                        @Localizer["Details_Text"]
-                    </p>
-                    <p>
-                        @Localizer["Details_Text2"]
+                    <p class="govuk-body">
+                        @Localizer["The name is used to make your results clearer. It will not be used for anything else."]
                     </p>
                 </govuk-details-text>
             </govuk-details>

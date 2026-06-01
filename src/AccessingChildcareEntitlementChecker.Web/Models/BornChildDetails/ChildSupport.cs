@@ -7,7 +7,7 @@ public enum ChildSupport
     [Display(Name = "Armed Forces Independence Payment")]
     ArmedForcesIndependencePayment,
 
-    [Display(Name = "Certificate of Visual Impairment")]
+    [Display(Name = "Certificate of visual impairment")]
     CertificateOfVisualImpairment,
 
     [Display(Name = "Disability Living Allowance (DLA)")]

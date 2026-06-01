@@ -27,7 +27,7 @@ Scenario: Continue without selection
 	When I do not select a radio button
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
-	And the error summary and inline validation should be "Select your status"
+	And the error summary and inline validation should be "Select if you have settled or pre-settled status"
 
 Scenario: Continue with Yes
 	When I select the "Yes" radio button
