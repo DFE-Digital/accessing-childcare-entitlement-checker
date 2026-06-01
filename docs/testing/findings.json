@@ -17,7 +17,7 @@
   {
     "ruleId": "10015",
     "level": "none",
-    "uri": "assets/manifest.json?v=6.0.0"
+    "uri": "Introduction/IsChildBorn?childId=454e2e71-6a45-498d-9010-b67bcc39a8d4"
   },
   {
     "ruleId": "10015",
@@ -32,32 +32,32 @@
   {
     "ruleId": "10104",
     "level": "none",
-    "uri": "Home"
+    "uri": "/"
   },
   {
     "ruleId": "10104",
     "level": "none",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10109",
-    "level": "none",
-    "uri": "/"
-  },
-  {
-    "ruleId": "10109",
-    "level": "none",
-    "uri": "/"
-  },
-  {
-    "ruleId": "10109",
-    "level": "none",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10109",
-    "level": "none",
     "uri": "Introduction/ChildName"
+  },
+  {
+    "ruleId": "10109",
+    "level": "none",
+    "uri": "/"
+  },
+  {
+    "ruleId": "10109",
+    "level": "none",
+    "uri": "/"
+  },
+  {
+    "ruleId": "10109",
+    "level": "none",
+    "uri": "Home/Location"
+  },
+  {
+    "ruleId": "10109",
+    "level": "none",
+    "uri": "Introduction/IsChildBorn?childId=454e2e71-6a45-498d-9010-b67bcc39a8d4"
   },
   {
     "ruleId": "10109",
@@ -92,17 +92,17 @@
   {
     "ruleId": "10021",
     "level": "note",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10021",
-    "level": "note",
     "uri": "assets/images/favicon.ico?v=6.0.0"
   },
   {
     "ruleId": "10021",
     "level": "note",
-    "uri": "assets/images/govuk-icon-180.png?v=6.0.0"
+    "uri": "assets/images/favicon.svg?v=6.0.0"
+  },
+  {
+    "ruleId": "10021",
+    "level": "note",
+    "uri": "assets/images/govuk-icon-mask.svg?v=6.0.0"
   },
   {
     "ruleId": "10021",
@@ -117,12 +117,12 @@
   {
     "ruleId": "10035",
     "level": "note",
-    "uri": "Home/Location"
+    "uri": "assets/images/favicon.svg?v=6.0.0"
   },
   {
     "ruleId": "10035",
     "level": "note",
-    "uri": "assets/images/govuk-icon-180.png?v=6.0.0"
+    "uri": "assets/images/govuk-icon-mask.svg?v=6.0.0"
   },
   {
     "ruleId": "10035",
@@ -157,7 +157,7 @@
   {
     "ruleId": "10020",
     "level": "warning",
-    "uri": "Introduction/IsChildBorn?childId=c7f6acee-8b1a-4d4d-ac1d-0f3a92292247"
+    "uri": "Introduction/IsChildBorn?childId=454e2e71-6a45-498d-9010-b67bcc39a8d4"
   },
   {
     "ruleId": "10038",
