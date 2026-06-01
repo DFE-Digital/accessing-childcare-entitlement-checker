@@ -89,55 +89,55 @@ jobs:
             -cmd \
             -autorun /zap/wrk/zap/automation-plan.yaml
 
-      - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: reports/zap-results.sarif.json
-
-      - name: Build findings snapshot
-        if: success()
-        run: |
-          set -e
-
-          if [ ! -f reports/zap-results.sarif.json ]; then
-            echo "No SARIF file found, skipping snapshot build"
-            exit 0
-          fi
-
-          jq '
-            [
-              .runs[]?.results[]? |
-              {
-                ruleId: (.ruleId // "unknown"),
-                level: (.level // "unknown"),
-                uri: (
-                  .locations[0]?.physicalLocation?.artifactLocation?.uri
-                  // "unknown"
-                )
-              }
-            ]
-            | sort_by(.level, .ruleId, .uri)
-          ' reports/zap-results.sarif.json > docs/testing/findings.json
-
-      - name: Detect findings changes
-        id: diff
-        run: |
-          git add docs/testing/findings.json
-
-          if git diff --cached --quiet; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
+#      - name: Upload SARIF
+#        uses: github/codeql-action/upload-sarif@v4
+#        if: always()
+#        with:
+#          sarif_file: reports/zap-results.sarif.json
+#
+#      - name: Build findings snapshot
+#        if: success()
+#        run: |
+#          set -e
+#
+#          if [ ! -f reports/zap-results.sarif.json ]; then
+#            echo "No SARIF file found, skipping snapshot build"
+#            exit 0
+#          fi
+#
+#          jq '
+#            [
+#              .runs[]?.results[]? |
+#              {
+#                ruleId: (.ruleId // "unknown"),
+#                level: (.level // "unknown"),
+#                uri: (
+#                  .locations[0]?.physicalLocation?.artifactLocation?.uri
+#                  // "unknown"
+#                )
+#              }
+#            ]
+#            | sort_by(.level, .ruleId, .uri)
+#          ' reports/zap-results.sarif.json > docs/testing/findings.json
+#
+#      - name: Detect findings changes
+#        id: diff
+#        run: |
+#          git add docs/testing/findings.json
+#
+#          if git diff --cached --quiet; then
+#            echo "changed=false" >> $GITHUB_OUTPUT
+#          else
+#            echo "changed=true" >> $GITHUB_OUTPUT
+#          fi
 
       - name: Update Markdown report
-        if: steps.diff.outputs.changed == 'true'
+        #if: steps.diff.outputs.changed == 'true'
         run: |
           cp reports/zap-report.md docs/testing/zap-report.md
 
       - name: Create Pull Request
-        if: steps.diff.outputs.changed == 'true'
+        #if: steps.diff.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ github.token }}
