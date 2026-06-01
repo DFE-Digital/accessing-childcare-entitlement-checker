@@ -1,0 +1,147 @@
+name: OWASP ZAP Full Scan
+
+on:
+  schedule:
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+  security-events: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  zap-scan:
+    name: Run ZAP Scan
+    environment: development
+    runs-on: ubuntu-latest
+    
+    env:
+      RESOURCE_GROUP: s279${{ vars.TF_VAR_PREFIX }}rg-uks-cec-web
+      FD_PROFILE: s279${{ vars.TF_VAR_PREFIX }}-uks-cec-web-fd-profile
+      FD_ENDPOINT: s279${{ vars.TF_VAR_PREFIX }}-uks-cec-web-fd-endpoint
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Azure Login
+        uses: azure/login@v3
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get Azure Frontdoor URL
+        id: get-url
+        run: |
+          set -euo pipefail
+          FRONTDOOR_URL=$(az afd custom-domain list -g ${{ env.RESOURCE_GROUP }} --profile-name ${{ env.FD_PROFILE }} --query "[0].hostName" -o tsv)
+          if [ -z "$FRONTDOOR_URL" ]; then
+            FRONTDOOR_URL=$(az afd endpoint show -g ${{ env.RESOURCE_GROUP }} --profile-name ${{ env.FD_PROFILE }} --endpoint-name ${{ env.FD_ENDPOINT }} --query "hostName" -o tsv)
+          fi
+          if [ -z "$FRONTDOOR_URL" ]; then
+            echo "::error::Could not determine Frontdoor URL"
+            exit 1
+          fi
+          echo "TARGET_URL=https://$FRONTDOOR_URL/" >> ${GITHUB_ENV}
+
+      - name: Create directories
+        run: |
+          mkdir -p reports zap docs/testing
+          chmod -R 777 reports
+
+      - name: Build Basic Auth header
+        run: |
+          AUTH=$(printf 'zap:%s' "${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}" | base64 -w0)
+          echo "AUTH_HEADER=Basic ${AUTH}" >> $GITHUB_ENV
+
+      - name: Run OWASP ZAP Full Scan
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/zap/wrk:rw" \
+            -e TARGET_URL="${{ env.TARGET_URL }}" \
+            -e AUTH_HEADER="${{ env.AUTH_HEADER }}" \
+            ghcr.io/zaproxy/zaproxy:stable \
+            zap.sh -cmd -autorun /zap/wrk/zap/automation-plan.yaml
+
+      - name: Post-process SARIF for GitHub
+        if: always()
+        run: |
+          if [ -f reports/zap-results.sarif.json ]; then
+            jq --arg target "${{ env.TARGET_URL }}" '
+              walk(if type == "object" and has("uri") and (.uri | type == "string") then
+                if .uri | startswith($target) then .uri |= sub($target; "") | .uri |= (if . == "" then "/" else . end) else . end
+              else . end)
+            ' reports/zap-results.sarif.json > reports/zap-results-processed.sarif
+          fi
+
+      - name: Upload SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: reports/zap-results-processed.sarif
+
+      - name: Build findings snapshot
+        if: success()
+        run: |
+          if [ -f reports/zap-results-processed.sarif ]; then
+            jq '
+              [ .runs[]?.results[]? | { ruleId: (.ruleId // "unknown") } ]
+              | group_by(.ruleId) | map({ ruleId: .[0].ruleId, count: length }) | sort_by(.ruleId)
+            ' reports/zap-results-processed.sarif > zap/findings.json
+          fi
+
+      - name: Noise Reduction & Report Prep
+        id: noise-filter
+        run: |
+          if git diff --quiet zap/findings.json; then
+            echo "No meaningful changes in findings. Discarding workspace changes."
+            git checkout zap/findings.json
+            echo "should_create_pr=false" >> $GITHUB_OUTPUT
+          else
+            echo "Meaningful changes detected. Preparing PR."
+            cp reports/zap-report.md docs/testing/zap-report.md
+            echo "should_create_pr=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.noise-filter.outputs.should_create_pr == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.token }}
+          base: ${{ github.ref_name }}
+          branch: zap-findings-updates
+          delete-branch: true
+          title: "security: OWASP ZAP security findings updated"
+          labels: security, automated-pr
+          commit-message: "security: update ZAP findings snapshot"
+          body: |
+            Automated OWASP ZAP scan detected changes in security findings.
+            - **Target:** ${{ env.TARGET_URL }}
+            - **Run ID:** ${{ github.run_id }}
+            Please review the Security tab for details.
+          add-paths: |
+            zap/findings.json
+            docs/testing/zap-report.md
+
+      - name: Generate Step Summary
+        if: always()
+        run: |
+          echo "### ZAP Scan Results for ${{ env.TARGET_URL }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **SARIF Alerts:** [View in Security tab](https://github.com/${{ github.repository }}/security/code-scanning)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Raw Reports as Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-scan-reports
+          path: reports/*
