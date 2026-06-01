@@ -14,7 +14,6 @@ permissions:
   pull-requests: write
   security-events: write
 
-# Prevent multiple concurrent scans from interfering with each other
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -47,42 +46,21 @@ jobs:
         id: get-url
         run: |
           set -euo pipefail
-          
-          # Try to get the hostname from custom domains first
-          FRONTDOOR_URL=$(az afd custom-domain list \
-            -g ${{ env.RESOURCE_GROUP }} \
-            --profile-name ${{ env.FD_PROFILE }} \
-            --query "[0].hostName" -o tsv)
-
-          # Fallback to the default endpoint hostname if no custom domain is found
+          FRONTDOOR_URL=$(az afd custom-domain list -g ${{ env.RESOURCE_GROUP }} --profile-name ${{ env.FD_PROFILE }} --query "[0].hostName" -o tsv)
           if [ -z "$FRONTDOOR_URL" ]; then
-            FRONTDOOR_URL=$(az afd endpoint show \
-              -g ${{ env.RESOURCE_GROUP }} \
-              --profile-name ${{ env.FD_PROFILE }} \
-              --endpoint-name ${{ env.FD_ENDPOINT }} \
-              --query "hostName" -o tsv)
+            FRONTDOOR_URL=$(az afd endpoint show -g ${{ env.RESOURCE_GROUP }} --profile-name ${{ env.FD_PROFILE }} --endpoint-name ${{ env.FD_ENDPOINT }} --query "hostName" -o tsv)
           fi
-
           if [ -z "$FRONTDOOR_URL" ]; then
             echo "::error::Could not determine Frontdoor URL"
             exit 1
           fi
-
           echo "TARGET_URL=https://$FRONTDOOR_URL/" >> ${GITHUB_ENV}
-          echo "target_url=https://$FRONTDOOR_URL/" >> $GITHUB_OUTPUT
-          echo "Determined Target URL: https://$FRONTDOOR_URL/"
 
       - name: Create directories
-        run: |
-          mkdir -p reports zap docs/testing
-          chmod -R 777 reports
+        run: mkdir -p reports zap docs/testing
 
       - name: Build Basic Auth header
         run: |
-          if [ -z "${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}" ]; then
-            echo "::warning::DEVELOPMENT_BASIC_AUTH_PASSWORD secret is not set"
-          fi
-
           AUTH=$(printf 'zap:%s' "${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}" | base64 -w0)
           echo "AUTH_HEADER=Basic ${AUTH}" >> $GITHUB_ENV
 
@@ -93,28 +71,18 @@ jobs:
             -e TARGET_URL="${{ env.TARGET_URL }}" \
             -e AUTH_HEADER="${{ env.AUTH_HEADER }}" \
             ghcr.io/zaproxy/zaproxy:stable \
-            zap.sh \
-            -cmd \
-            -autorun /zap/wrk/zap/automation-plan.yaml
+            zap.sh -cmd -autorun /zap/wrk/zap/automation-plan.yaml
 
       - name: Post-process SARIF for GitHub
         if: always()
         run: |
-          if [ ! -f reports/zap-results.sarif.json ]; then
-            echo "::warning::ZAP did not produce a SARIF file. Skipping post-processing."
-            exit 0
+          if [ -f reports/zap-results.sarif.json ]; then
+            jq --arg target "${{ env.TARGET_URL }}" '
+              walk(if type == "object" and has("uri") and (.uri | type == "string") then
+                if .uri | startswith($target) then .uri |= sub($target; "") | .uri |= (if . == "" then "/" else . end) else . end
+              else . end)
+            ' reports/zap-results.sarif.json > reports/zap-results-processed.sarif
           fi
-
-          # Rewrite absolute https URLs to relative paths for GitHub Code Scanning compatibility
-          jq --arg target "${{ env.TARGET_URL }}" '
-            walk(
-              if type == "object" and has("uri") and (.uri | type == "string") then
-                if .uri | startswith($target) then
-                  .uri |= sub($target; "") | .uri |= (if . == "" then "/" else . end)
-                else . end
-              else . end
-            )
-          ' reports/zap-results.sarif.json > reports/zap-results-processed.sarif
 
       - name: Upload SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
@@ -125,70 +93,53 @@ jobs:
       - name: Build findings snapshot
         if: success()
         run: |
-          if [ ! -f reports/zap-results-processed.sarif ]; then
-            echo "No processed SARIF file found, skipping snapshot build"
-            exit 0
+          if [ -f reports/zap-results-processed.sarif ]; then
+            jq '
+              [ .runs[]?.results[]? | { ruleId: (.ruleId // "unknown") } ]
+              | group_by(.ruleId) | map({ ruleId: .[0].ruleId, count: length }) | sort_by(.ruleId)
+            ' reports/zap-results-processed.sarif > zap/findings.json
           fi
-      
-          # Create a stable summary: ruleId and count of occurrences
-          jq '
-            [
-              .runs[]?.results[]? |
-              {
-                ruleId: (.ruleId // "unknown")
-              }
-            ]
-            | group_by(.ruleId)
-            | map({
-                ruleId: .[0].ruleId,
-                count: length
-              })
-            | sort_by(.ruleId)
-          ' reports/zap-results-processed.sarif > zap/findings.json
 
-      - name: Detect findings changes
-        id: findings-check
+      - name: Noise Reduction & Report Prep
+        id: noise-filter
         run: |
-          # Use git diff to see if the snapshot has changed
           if git diff --quiet zap/findings.json; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-            echo "No changes detected in findings snapshot."
+            echo "No meaningful changes in findings. Discarding workspace changes."
+            git checkout zap/findings.json
+            echo "should_create_pr=false" >> $GITHUB_OUTPUT
           else
-            echo "changed=true" >> $GITHUB_OUTPUT
-            echo "Changes detected in findings snapshot."
-          fi
-
-      - name: Prepare reports for PR
-        if: steps.findings-check.outputs.changed == 'true'
-        run: |
-          # Copy the markdown report to the tracked location only if findings changed
-          if [ -f reports/zap-report.md ]; then
+            echo "Meaningful changes detected. Preparing PR."
             cp reports/zap-report.md docs/testing/zap-report.md
+            echo "should_create_pr=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Pull Request
-        if: steps.findings-check.outputs.changed == 'true'
+        if: steps.noise-filter.outputs.should_create_pr == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ github.token }}
           base: main
           branch: zap-findings-updates
+          delete-branch: true
+          title: "security: OWASP ZAP security findings updated"
           labels: security, automated-pr
           commit-message: "security: update ZAP findings snapshot"
-          title: "security: OWASP ZAP security findings updated"
           body: |
             Automated OWASP ZAP scan detected changes in security findings.
-
-            ## Scan Details
             - **Target:** ${{ env.TARGET_URL }}
-            - **Workflow Run:** [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            - **Run ID:** ${{ github.run_id }}
+            Please review the Security tab for details.
 
-            ## Changes included
-            - Updated `zap/findings.json` (machine-readable snapshot)
-            - Updated `docs/testing/zap-report.md` (human-readable report)
+      - name: Generate Step Summary
+        if: always()
+        run: |
+          echo "### ZAP Scan Results for ${{ env.TARGET_URL }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **SARIF Alerts:** [View in Security tab](https://github.com/${{ github.repository }}/security/code-scanning)" >> $GITHUB_STEP_SUMMARY
 
-            Please review the [Security tab](https://github.com/${{ github.repository }}/security/code-scanning) for a full breakdown of active alerts.
-          add-paths: |
-            zap/findings.json
-            docs/testing/zap-report.md
-          delete-branch: true
+      - name: Upload Raw Reports as Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-scan-reports
+          path: reports/*
