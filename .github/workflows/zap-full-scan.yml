@@ -78,18 +78,23 @@ jobs:
           if [ -f reports/zap-results.sarif.json ]; then
             # GitHub uses shortDescription.text for the title and security-severity for the risk level.
             # We enrich the SARIF metadata so it shows descriptive names instead of "ZAP Medium Issue".
+            # We also explicitly set the tool name to "OWASP ZAP".
             jq --arg target "${{ env.TARGET_URL }}" '
-              (.runs[].tool.driver.rules) |= map(
-                . + { 
-                  "shortDescription": { "text": (.name // "ZAP \(.id)") },
-                  "properties": (.properties + { 
-                    "security-severity": (
-                      if .defaultConfiguration.level == "error" then "8.0" 
-                      elif .defaultConfiguration.level == "warning" then "5.0" 
-                      else "2.0" end
-                    )
-                  })
-                }
+              .runs[].tool.driver |= (
+                .name = "OWASP ZAP" |
+                .fullName = "OWASP Zed Attack Proxy" |
+                .rules |= map(
+                  . + { 
+                    "shortDescription": { "text": (.name // "ZAP \(.id)") },
+                    "properties": (.properties + { 
+                      "security-severity": (
+                        if .defaultConfiguration.level == "error" then "8.0" 
+                        elif .defaultConfiguration.level == "warning" then "5.0" 
+                        else "2.0" end
+                      )
+                    })
+                  }
+                )
               ) |
               walk(if type == "object" and has("uri") and (.uri | type == "string") then
                 if .uri | startswith($target) then .uri |= sub($target; "") | .uri |= (if . == "" then "/" else . end) else . end
@@ -102,6 +107,7 @@ jobs:
         if: always()
         with:
           sarif_file: reports/zap-results-processed.sarif
+          category: zap-dast-scan
 
       - name: Build findings snapshot
         if: success()
