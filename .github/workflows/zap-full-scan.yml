@@ -120,7 +120,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ github.token }}
-          base: main
+          base: ${{ github.ref_name }}
           branch: zap-findings-updates
           delete-branch: true
           title: "security: OWASP ZAP security findings updated"
@@ -131,6 +131,9 @@ jobs:
             - **Target:** ${{ env.TARGET_URL }}
             - **Run ID:** ${{ github.run_id }}
             Please review the Security tab for details.
+          add-paths: |
+            zap/findings.json
+            docs/testing/zap-report.md
 
       - name: Generate Step Summary
         if: always()
