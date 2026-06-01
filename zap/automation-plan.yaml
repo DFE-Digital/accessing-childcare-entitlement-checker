@@ -1,0 +1,39 @@
+env:
+  contexts:
+    - name: Application
+      urls:
+        - ${TARGET_URL}
+      includePaths:
+        - ${TARGET_URL}.*
+jobs:
+  - type: script
+    parameters:
+      action: add
+      type: httpsender
+      name: auth-header
+      engine: ECMAScript
+      file: /zap/wrk/zap/auth-header.js
+
+  - type: spider
+    parameters:
+      context: Application
+      maxDuration: 20
+
+  - type: passiveScan-wait
+
+  - type: activeScan
+    parameters:
+      context: Application
+      maxScanDurationInMins: 60
+
+  - type: report
+    parameters:
+      template: traditional-md
+      reportDir: /zap/wrk/reports
+      reportFile: zap-report.md
+
+  - type: report
+    parameters:
+      template: sarif-json
+      reportDir: /zap/wrk/reports
+      reportFile: zap-results.sarif

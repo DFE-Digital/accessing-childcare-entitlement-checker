@@ -283,7 +283,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       selector       = "User-Agent"
       operator       = "Contains"
       transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["slack", "embedly", "figma", "skype"]
+      match_values   = ["slack", "embedly", "figma", "skype", "owasp-zap-automation"]
     }
   }
 
