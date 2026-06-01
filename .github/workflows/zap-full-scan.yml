@@ -14,10 +14,20 @@ permissions:
   pull-requests: write
   security-events: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   zap-scan:
+    name: Run ZAP Scan
     environment: development
     runs-on: ubuntu-latest
+    
+    env:
+      RESOURCE_GROUP: s279${{ vars.TF_VAR_PREFIX }}rg-uks-cec-web
+      FD_PROFILE: s279${{ vars.TF_VAR_PREFIX }}-uks-cec-web-fd-profile
+      FD_ENDPOINT: s279${{ vars.TF_VAR_PREFIX }}-uks-cec-web-fd-endpoint
 
     steps:
       - name: Checkout repository
@@ -33,47 +43,46 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Get Azure Frontdoor URL
+        id: get-url
         run: |
+          set -euo pipefail
+          
           # Try to get the hostname from custom domains first
           FRONTDOOR_URL=$(az afd custom-domain list \
-            -g s279${{ vars.TF_VAR_PREFIX }}rg-uks-cec-web \
-            --profile-name s279${{ vars.TF_VAR_PREFIX }}-uks-cec-web-fd-profile \
+            -g ${{ env.RESOURCE_GROUP }} \
+            --profile-name ${{ env.FD_PROFILE }} \
             --query "[0].hostName" -o tsv)
 
           # Fallback to the default endpoint hostname if no custom domain is found
           if [ -z "$FRONTDOOR_URL" ]; then
             FRONTDOOR_URL=$(az afd endpoint show \
-              -g s279${{ vars.TF_VAR_PREFIX }}rg-uks-cec-web \
-              --profile-name s279${{ vars.TF_VAR_PREFIX }}-uks-cec-web-fd-profile \
-              --endpoint-name s279${{ vars.TF_VAR_PREFIX }}-uks-cec-web-fd-endpoint \
+              -g ${{ env.RESOURCE_GROUP }} \
+              --profile-name ${{ env.FD_PROFILE }} \
+              --endpoint-name ${{ env.FD_ENDPOINT }} \
               --query "hostName" -o tsv)
           fi
 
           if [ -z "$FRONTDOOR_URL" ]; then
-            echo "Error: Could not determine Frontdoor URL"
+            echo "::error::Could not determine Frontdoor URL"
             exit 1
           fi
 
           echo "TARGET_URL=https://$FRONTDOOR_URL/" >> ${GITHUB_ENV}
+          echo "target_url=https://$FRONTDOOR_URL/" >> $GITHUB_OUTPUT
           echo "Determined Target URL: https://$FRONTDOOR_URL/"
 
       - name: Create directories
         run: |
-          mkdir -p reports
-          mkdir -p docs/testing
+          mkdir -p reports zap docs/testing
           chmod -R 777 reports
 
       - name: Build Basic Auth header
         run: |
           if [ -z "${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}" ]; then
-            echo "Warning: DEVELOPMENT_BASIC_AUTH_PASSWORD secret is not set"
+            echo "::warning::DEVELOPMENT_BASIC_AUTH_PASSWORD secret is not set"
           fi
 
-          AUTH=$(printf '%s:%s' \
-            "zap" \
-            "${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}" \
-            | base64 -w0)
-          
+          AUTH=$(printf 'zap:%s' "${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}" | base64 -w0)
           echo "AUTH_HEADER=Basic ${AUTH}" >> $GITHUB_ENV
 
       - name: Run OWASP ZAP Full Scan
@@ -90,26 +99,23 @@ jobs:
       - name: Post-process SARIF for GitHub
         if: always()
         run: |
-          if [ -f reports/zap-results.sarif.json ]; then
-      
-            CLEAN_URL=$(echo "${{ env.TARGET_URL }}" | sed 's/\//\\\//g')
-      
-            jq --arg target "$TARGET_URL" '
-              walk(
-                if type == "object" and has("uri") and (.uri | type == "string") then
-                  if .uri | startswith($target) then
-                    .uri |= sub($target; "") | .uri |= (if . == "" then "/" else . end)
-                  else
-                    .
-                  end
-                else
-                  .
-                end
-              )
-            ' reports/zap-results.sarif.json > reports/zap-results-processed.sarif
+          if [ ! -f reports/zap-results.sarif.json ]; then
+            echo "::warning::ZAP did not produce a SARIF file. Skipping post-processing."
+            exit 0
           fi
 
-      - name: Upload SARIF
+          # Rewrite absolute https URLs to relative paths for GitHub Code Scanning compatibility
+          jq --arg target "${{ env.TARGET_URL }}" '
+            walk(
+              if type == "object" and has("uri") and (.uri | type == "string") then
+                if .uri | startswith($target) then
+                  .uri |= sub($target; "") | .uri |= (if . == "" then "/" else . end)
+                else . end
+              else . end
+            )
+          ' reports/zap-results.sarif.json > reports/zap-results-processed.sarif
+
+      - name: Upload SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
@@ -118,10 +124,8 @@ jobs:
       - name: Build findings snapshot
         if: success()
         run: |
-          set -e
-      
           if [ ! -f reports/zap-results-processed.sarif ]; then
-            echo "No SARIF file found, skipping snapshot build"
+            echo "No processed SARIF file found, skipping snapshot build"
             exit 0
           fi
       
@@ -131,19 +135,30 @@ jobs:
               {
                 ruleId: (.ruleId // "unknown"),
                 level: (.level // "unknown"),
-                uri: (
-                  .locations[0]?.physicalLocation?.artifactLocation?.uri
-                  // "unknown"
-                )
+                uri: (.locations[0]?.physicalLocation?.artifactLocation?.uri // "unknown")
               }
             ]
             | sort_by(.level, .ruleId, .uri)
-          ' reports/zap-results-processed.sarif > docs/testing/findings.json
+          ' reports/zap-results-processed.sarif > zap/findings.json
+
+      - name: Generate Step Summary
+        if: always()
+        run: |
+          echo "### ZAP Scan Results for ${{ env.TARGET_URL }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Markdown Report:** [Available in artifacts or docs/testing/zap-report.md]" >> $GITHUB_STEP_SUMMARY
+          echo "- **SARIF Alerts:** Check the [Security tab](https://github.com/${{ github.repository }}/security/code-scanning) for detailed alerts." >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Raw Reports as Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-scan-reports
+          path: reports/*
 
       - name: Detect findings changes
         id: diff
         run: |
-          git add docs/testing/findings.json
+          git add zap/findings.json
 
           if git diff --cached --quiet; then
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -161,26 +176,24 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ github.token }}
-
+          base: main
           branch: zap-findings-${{ github.run_id }}
-
-          commit-message: |
-            security: update ZAP findings snapshot
-
-          title: |
-            OWASP ZAP findings changed
-
+          labels: security, automated-pr
+          commit-message: "security: update ZAP findings snapshot"
+          title: "security: OWASP ZAP security findings updated"
           body: |
             Automated OWASP ZAP scan detected changes in security findings.
 
-            ## Source of truth
-            - GitHub Security (SARIF alerts)
+            ## Scan Details
+            - **Target:** ${{ env.TARGET_URL }}
+            - **Workflow Run:** [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
             ## Changes included
-            - Updated `findings.json`
-            - Updated latest ZAP Markdown report
+            - Updated `zap/findings.json` (machine-readable snapshot)
+            - Updated `docs/testing/zap-report.md` (human-readable report)
 
+            Please review the [Security tab](https://github.com/${{ github.repository }}/security/code-scanning) for a full breakdown of active alerts.
           add-paths: |
-            docs/testing/*
-
+            zap/findings.json
+            docs/testing/zap-report.md
           delete-branch: true
