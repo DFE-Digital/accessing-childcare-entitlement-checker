@@ -1,0 +1,166 @@
+name: OWASP ZAP Full Scan
+
+on:
+  push:
+    branches:
+      - feature/zap-scan-workflow
+#  schedule:
+#    - cron: "0 2 * * 1"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+  security-events: write
+
+env:
+  TARGET_URL: "https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/"
+jobs:
+  zap-scan:
+    environment: development
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Azure Login
+        uses: azure/login@v3
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get Azure Frontdoor URL
+        run: |
+          # Try to get the hostname from custom domains first
+          FRONTDOOR_URL=$(az afd custom-domain list \
+            -g s279d01rg-uks-cec-web \
+            --profile-name s279d01-uks-cec-web-fd-profile \
+            --query "[0].hostName" -o tsv)
+
+          # Fallback to the default endpoint hostname if no custom domain is found
+          if [ -z "$FRONTDOOR_URL" ]; then
+            FRONTDOOR_URL=$(az afd endpoint show \
+              -g s279d01rg-uks-cec-web \
+              --profile-name s279d01-uks-cec-web-fd-profile \
+              --endpoint-name s279d01-uks-cec-web-fd-endpoint \
+              --query "hostName" -o tsv)
+          fi
+
+          if [ -z "$FRONTDOOR_URL" ]; then
+            echo "Error: Could not determine Frontdoor URL"
+            exit 1
+          fi
+
+          echo "TARGET_URL=https://$FRONTDOOR_URL/" >> ${GITHUB_ENV}
+          echo "Determined Target URL: https://$FRONTDOOR_URL/"
+
+      - name: Create directories
+        run: |
+          mkdir -p reports
+          mkdir -p docs/testing
+          chmod -R 777 reports
+
+      - name: Build Basic Auth header
+        run: |
+          if [ -z "${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}" ]; then
+            echo "Warning: DEVELOPMENT_BASIC_AUTH_PASSWORD secret is not set"
+          fi
+
+          AUTH=$(printf '%s:%s' \
+            "zap" \
+            "${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}" \
+            | base64 -w0)
+          
+          echo "AUTH_HEADER=Basic ${AUTH}" >> $GITHUB_ENV
+
+      - name: Run OWASP ZAP Full Scan
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/zap/wrk:rw" \
+            -e TARGET_URL="${{ env.TARGET_URL }}" \
+            -e AUTH_HEADER="${{ env.AUTH_HEADER }}" \
+            ghcr.io/zaproxy/zaproxy:stable \
+            zap.sh \
+            -cmd \
+            -autorun /zap/wrk/zap/automation-plan.yaml
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: reports/zap-results.sarif
+
+      - name: Build findings snapshot
+        if: success()
+        run: |
+          set -e
+
+          if [ ! -f reports/zap-results.sarif ]; then
+            echo "No SARIF file found, skipping snapshot build"
+            exit 0
+          fi
+
+          jq '
+            [
+              .runs[]?.results[]? |
+              {
+                ruleId: (.ruleId // "unknown"),
+                level: (.level // "unknown"),
+                uri: (
+                  .locations[0]?.physicalLocation?.artifactLocation?.uri
+                  // "unknown"
+                )
+              }
+            ]
+            | sort_by(.level, .ruleId, .uri)
+          ' reports/zap-results.sarif > docs/testing/findings.json
+
+      - name: Detect findings changes
+        id: diff
+        run: |
+          git add docs/testing/findings.json
+
+          if git diff --cached --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Markdown report
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          cp reports/zap-report.md docs/testing/zap-report.md
+
+      - name: Create Pull Request
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.token }}
+
+          branch: zap-findings-${{ github.run_id }}
+
+          commit-message: |
+            security: update ZAP findings snapshot
+
+          title: |
+            OWASP ZAP findings changed
+
+          body: |
+            Automated OWASP ZAP scan detected changes in security findings.
+
+            ## Source of truth
+            - GitHub Security (SARIF alerts)
+
+            ## Changes included
+            - Updated `findings.json`
+            - Updated latest ZAP Markdown report
+
+          add-paths: |
+            docs/testing/*
+
+          delete-branch: true
