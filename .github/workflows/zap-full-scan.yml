@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - feature/zap-scan-workflow
-#  schedule:
-#    - cron: "0 2 * * 1"
+  schedule:
+    - cron: "0 2 * * 1"
   workflow_dispatch:
 
 permissions:
@@ -14,8 +14,6 @@ permissions:
   pull-requests: write
   security-events: write
 
-#env:
-#  TARGET_URL: "https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/"
 jobs:
   zap-scan:
     environment: development
@@ -38,16 +36,16 @@ jobs:
         run: |
           # Try to get the hostname from custom domains first
           FRONTDOOR_URL=$(az afd custom-domain list \
-            -g s279d01rg-uks-cec-web \
-            --profile-name s279d01-uks-cec-web-fd-profile \
+            -g s279${{ vars.TF_VAR_PREFIX }}rg-uks-cec-web \
+            --profile-name s279${{ vars.TF_VAR_PREFIX }}-uks-cec-web-fd-profile \
             --query "[0].hostName" -o tsv)
 
           # Fallback to the default endpoint hostname if no custom domain is found
           if [ -z "$FRONTDOOR_URL" ]; then
             FRONTDOOR_URL=$(az afd endpoint show \
-              -g s279d01rg-uks-cec-web \
-              --profile-name s279d01-uks-cec-web-fd-profile \
-              --endpoint-name s279d01-uks-cec-web-fd-endpoint \
+              -g s279${{ vars.TF_VAR_PREFIX }}rg-uks-cec-web \
+              --profile-name s279${{ vars.TF_VAR_PREFIX }}-uks-cec-web-fd-profile \
+              --endpoint-name s279${{ vars.TF_VAR_PREFIX }}-uks-cec-web-fd-endpoint \
               --query "hostName" -o tsv)
           fi
 
@@ -93,10 +91,6 @@ jobs:
         if: always()
         run: |
           if [ -f reports/zap-results.sarif.json ]; then
-            # GitHub expects relative paths or file schemes, not https URLs
-            # We rewrite the URIs to be relative to the root or just use a placeholder
-            # as ZAP results are against a URL, not local files.
-            # We will strip the base TARGET_URL to make them relative.
       
             CLEAN_URL=$(echo "${{ env.TARGET_URL }}" | sed 's/\//\\\//g')
       
