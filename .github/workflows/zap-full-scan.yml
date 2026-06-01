@@ -146,24 +146,24 @@ jobs:
             | sort_by(.level, .ruleId, .uri)
           ' reports/zap-results-processed.sarif > docs/testing/findings.json
 
-#      - name: Detect findings changes
-#        id: diff
-#        run: |
-#          git add docs/testing/findings.json
-#
-#          if git diff --cached --quiet; then
-#            echo "changed=false" >> $GITHUB_OUTPUT
-#          else
-#            echo "changed=true" >> $GITHUB_OUTPUT
-#          fi
+      - name: Detect findings changes
+        id: diff
+        run: |
+          git add docs/testing/findings.json
+
+          if git diff --cached --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
 
       - name: Update Markdown report
-        #if: steps.diff.outputs.changed == 'true'
+        if: steps.diff.outputs.changed == 'true'
         run: |
           cp reports/zap-report.md docs/testing/zap-report.md
 
       - name: Create Pull Request
-        #if: steps.diff.outputs.changed == 'true'
+        if: steps.diff.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ github.token }}
