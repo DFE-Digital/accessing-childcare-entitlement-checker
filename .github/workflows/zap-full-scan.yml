@@ -14,8 +14,8 @@ permissions:
   pull-requests: write
   security-events: write
 
-env:
-  TARGET_URL: "https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/"
+#env:
+#  TARGET_URL: "https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/"
 jobs:
   zap-scan:
     environment: development
@@ -89,35 +89,63 @@ jobs:
             -cmd \
             -autorun /zap/wrk/zap/automation-plan.yaml
 
+      - name: Post-process SARIF for GitHub
+        if: always()
+        run: |
+          if [ -f reports/zap-results.sarif.json ]; then
+            # GitHub expects relative paths or file schemes, not https URLs
+            # We rewrite the URIs to be relative to the root or just use a placeholder
+            # as ZAP results are against a URL, not local files.
+            # We will strip the base TARGET_URL to make them relative.
+      
+            CLEAN_URL=$(echo "${{ env.TARGET_URL }}" | sed 's/\//\\\//g')
+      
+            jq --arg target "$TARGET_URL" '
+              walk(
+                if type == "object" and has("uri") and (.uri | type == "string") then
+                  if .uri | startswith($target) then
+                    .uri |= sub($target; "") | .uri |= (if . == "" then "/" else . end)
+                  else
+                    .
+                  end
+                else
+                  .
+                end
+              )
+            ' reports/zap-results.sarif.json > reports/zap-results-processed.sarif
+          fi
+
       - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
         with:
-          sarif_file: reports/zap-results.sarif.json
-#
-#      - name: Build findings snapshot
-#        run: |
-#          set -e
-#
-#          if [ ! -f reports/zap-results.sarif.json ]; then
-#            echo "No SARIF file found, skipping snapshot build"
-#            exit 0
-#          fi
-#
-#          jq '
-#            [
-#              .runs[]?.results[]? |
-#              {
-#                ruleId: (.ruleId // "unknown"),
-#                level: (.level // "unknown"),
-#                uri: (
-#                  .locations[0]?.physicalLocation?.artifactLocation?.uri
-#                  // "unknown"
-#                )
-#              }
-#            ]
-#            | sort_by(.level, .ruleId, .uri)
-#          ' reports/zap-results.sarif.json > docs/testing/findings.json
-#
+          sarif_file: reports/zap-results-processed.sarif
+
+      - name: Build findings snapshot
+        if: success()
+        run: |
+          set -e
+      
+          if [ ! -f reports/zap-results-processed.sarif ]; then
+            echo "No SARIF file found, skipping snapshot build"
+            exit 0
+          fi
+      
+          jq '
+            [
+              .runs[]?.results[]? |
+              {
+                ruleId: (.ruleId // "unknown"),
+                level: (.level // "unknown"),
+                uri: (
+                  .locations[0]?.physicalLocation?.artifactLocation?.uri
+                  // "unknown"
+                )
+              }
+            ]
+            | sort_by(.level, .ruleId, .uri)
+          ' reports/zap-results-processed.sarif > docs/testing/findings.json
+
 #      - name: Detect findings changes
 #        id: diff
 #        run: |
