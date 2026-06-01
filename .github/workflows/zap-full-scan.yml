@@ -93,14 +93,14 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: reports/zap-results.sarif
+          sarif_file: reports/zap-results.sarif.json
 
       - name: Build findings snapshot
         if: success()
         run: |
           set -e
 
-          if [ ! -f reports/zap-results.sarif ]; then
+          if [ ! -f reports/zap-results.sarif.json ]; then
             echo "No SARIF file found, skipping snapshot build"
             exit 0
           fi
@@ -118,7 +118,7 @@ jobs:
               }
             ]
             | sort_by(.level, .ruleId, .uri)
-          ' reports/zap-results.sarif > docs/testing/findings.json
+          ' reports/zap-results.sarif.json > docs/testing/findings.json
 
       - name: Detect findings changes
         id: diff
