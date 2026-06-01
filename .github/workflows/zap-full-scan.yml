@@ -89,14 +89,12 @@ jobs:
             -cmd \
             -autorun /zap/wrk/zap/automation-plan.yaml
 
-#      - name: Upload SARIF
-#        uses: github/codeql-action/upload-sarif@v4
-#        if: always()
-#        with:
-#          sarif_file: reports/zap-results.sarif.json
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: reports/zap-results.sarif.json
 #
 #      - name: Build findings snapshot
-#        if: success()
 #        run: |
 #          set -e
 #
