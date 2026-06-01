@@ -14,6 +14,7 @@ permissions:
   pull-requests: write
   security-events: write
 
+# Prevent multiple concurrent scans from interfering with each other
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -129,55 +130,49 @@ jobs:
             exit 0
           fi
       
+          # Create a stable summary: ruleId and count of occurrences
           jq '
             [
               .runs[]?.results[]? |
               {
-                ruleId: (.ruleId // "unknown"),
-                level: (.level // "unknown"),
-                uri: (.locations[0]?.physicalLocation?.artifactLocation?.uri // "unknown")
+                ruleId: (.ruleId // "unknown")
               }
             ]
-            | sort_by(.level, .ruleId, .uri)
+            | group_by(.ruleId)
+            | map({
+                ruleId: .[0].ruleId,
+                count: length
+              })
+            | sort_by(.ruleId)
           ' reports/zap-results-processed.sarif > zap/findings.json
 
-      - name: Generate Step Summary
-        if: always()
-        run: |
-          echo "### ZAP Scan Results for ${{ env.TARGET_URL }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Markdown Report:** [Available in artifacts or docs/testing/zap-report.md]" >> $GITHUB_STEP_SUMMARY
-          echo "- **SARIF Alerts:** Check the [Security tab](https://github.com/${{ github.repository }}/security/code-scanning) for detailed alerts." >> $GITHUB_STEP_SUMMARY
-
-      - name: Upload Raw Reports as Artifacts
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: zap-scan-reports
-          path: reports/*
-
       - name: Detect findings changes
-        id: diff
+        id: findings-check
         run: |
-          git add zap/findings.json
-
-          if git diff --cached --quiet; then
+          # Use git diff to see if the snapshot has changed
+          if git diff --quiet zap/findings.json; then
             echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected in findings snapshot."
           else
             echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in findings snapshot."
           fi
 
-      - name: Update Markdown report
-        if: steps.diff.outputs.changed == 'true'
+      - name: Prepare reports for PR
+        if: steps.findings-check.outputs.changed == 'true'
         run: |
-          cp reports/zap-report.md docs/testing/zap-report.md
+          # Copy the markdown report to the tracked location only if findings changed
+          if [ -f reports/zap-report.md ]; then
+            cp reports/zap-report.md docs/testing/zap-report.md
+          fi
 
       - name: Create Pull Request
-        if: steps.diff.outputs.changed == 'true'
+        if: steps.findings-check.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ github.token }}
           base: main
-          branch: zap-findings-${{ github.run_id }}
+          branch: zap-findings-updates
           labels: security, automated-pr
           commit-message: "security: update ZAP findings snapshot"
           title: "security: OWASP ZAP security findings updated"
