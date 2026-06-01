@@ -32,12 +32,12 @@
   {
     "ruleId": "10104",
     "level": "none",
-    "uri": "Home"
+    "uri": "Home/Location"
   },
   {
     "ruleId": "10104",
     "level": "none",
-    "uri": "Home/Location"
+    "uri": "Introduction/ChildName"
   },
   {
     "ruleId": "10109",
@@ -92,17 +92,17 @@
   {
     "ruleId": "10021",
     "level": "note",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10021",
-    "level": "note",
     "uri": "assets/images/favicon.ico?v=6.0.0"
   },
   {
     "ruleId": "10021",
     "level": "note",
-    "uri": "assets/images/govuk-icon-180.png?v=6.0.0"
+    "uri": "assets/images/favicon.svg?v=6.0.0"
+  },
+  {
+    "ruleId": "10021",
+    "level": "note",
+    "uri": "assets/images/govuk-icon-mask.svg?v=6.0.0"
   },
   {
     "ruleId": "10021",
@@ -117,12 +117,12 @@
   {
     "ruleId": "10035",
     "level": "note",
-    "uri": "Home/Location"
+    "uri": "assets/images/favicon.ico?v=6.0.0"
   },
   {
     "ruleId": "10035",
     "level": "note",
-    "uri": "assets/images/govuk-icon-180.png?v=6.0.0"
+    "uri": "assets/images/favicon.svg?v=6.0.0"
   },
   {
     "ruleId": "10035",
@@ -157,7 +157,7 @@
   {
     "ruleId": "10020",
     "level": "warning",
-    "uri": "Introduction/IsChildBorn?childId=c7f6acee-8b1a-4d4d-ac1d-0f3a92292247"
+    "uri": "Introduction/IsChildBorn?childId=bb93b835-2b5b-46bd-b793-30f44cb8c5ae"
   },
   {
     "ruleId": "10038",
