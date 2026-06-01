@@ -57,7 +57,9 @@ jobs:
           echo "TARGET_URL=https://$FRONTDOOR_URL/" >> ${GITHUB_ENV}
 
       - name: Create directories
-        run: mkdir -p reports zap docs/testing
+        run: |
+          mkdir -p reports zap docs/testing
+          chmod -R 777 reports
 
       - name: Build Basic Auth header
         run: |
