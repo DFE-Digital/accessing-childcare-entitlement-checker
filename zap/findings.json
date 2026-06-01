@@ -1,187 +1,46 @@
 [
   {
-    "ruleId": "10015",
-    "level": "none",
-    "uri": "/"
-  },
-  {
-    "ruleId": "10015",
-    "level": "none",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10015",
-    "level": "none",
-    "uri": "Introduction/ChildName"
-  },
-  {
-    "ruleId": "10015",
-    "level": "none",
-    "uri": "assets/manifest.json?v=6.0.0"
-  },
-  {
-    "ruleId": "10015",
-    "level": "none",
-    "uri": "robots.txt"
-  },
-  {
-    "ruleId": "10104",
-    "level": "none",
-    "uri": "/"
-  },
-  {
-    "ruleId": "10104",
-    "level": "none",
-    "uri": "Home"
-  },
-  {
-    "ruleId": "10104",
-    "level": "none",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10109",
-    "level": "none",
-    "uri": "/"
-  },
-  {
-    "ruleId": "10109",
-    "level": "none",
-    "uri": "/"
-  },
-  {
-    "ruleId": "10109",
-    "level": "none",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10109",
-    "level": "none",
-    "uri": "Introduction/ChildName"
-  },
-  {
-    "ruleId": "10109",
-    "level": "none",
-    "uri": "sitemap.xml"
-  },
-  {
-    "ruleId": "10112",
-    "level": "none",
-    "uri": "/"
-  },
-  {
-    "ruleId": "10112",
-    "level": "none",
-    "uri": "Home/Location"
-  },
-  {
     "ruleId": "10011",
-    "level": "note",
-    "uri": "/"
+    "count": 2
   },
   {
-    "ruleId": "10011",
-    "level": "note",
-    "uri": "Home/Location"
+    "ruleId": "10015",
+    "count": 5
   },
   {
-    "ruleId": "10021",
-    "level": "note",
-    "uri": "/"
+    "ruleId": "10020",
+    "count": 3
   },
   {
     "ruleId": "10021",
-    "level": "note",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10021",
-    "level": "note",
-    "uri": "assets/images/favicon.ico?v=6.0.0"
-  },
-  {
-    "ruleId": "10021",
-    "level": "note",
-    "uri": "assets/images/govuk-icon-180.png?v=6.0.0"
-  },
-  {
-    "ruleId": "10021",
-    "level": "note",
-    "uri": "robots.txt"
+    "count": 5
   },
   {
     "ruleId": "10035",
-    "level": "note",
-    "uri": "/"
+    "count": 5
   },
   {
-    "ruleId": "10035",
-    "level": "note",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10035",
-    "level": "note",
-    "uri": "assets/images/govuk-icon-180.png?v=6.0.0"
-  },
-  {
-    "ruleId": "10035",
-    "level": "note",
-    "uri": "robots.txt"
-  },
-  {
-    "ruleId": "10035",
-    "level": "note",
-    "uri": "sitemap.xml"
+    "ruleId": "10038",
+    "count": 5
   },
   {
     "ruleId": "10096",
-    "level": "note",
-    "uri": "govuk-frontend.min.css?v=6.0.0"
+    "count": 1
+  },
+  {
+    "ruleId": "10104",
+    "count": 3
+  },
+  {
+    "ruleId": "10109",
+    "count": 5
+  },
+  {
+    "ruleId": "10112",
+    "count": 2
   },
   {
     "ruleId": "2",
-    "level": "note",
-    "uri": "assets/images/favicon.svg?v=6.0.0"
-  },
-  {
-    "ruleId": "10020",
-    "level": "warning",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10020",
-    "level": "warning",
-    "uri": "Introduction/ChildName"
-  },
-  {
-    "ruleId": "10020",
-    "level": "warning",
-    "uri": "Introduction/IsChildBorn?childId=c7f6acee-8b1a-4d4d-ac1d-0f3a92292247"
-  },
-  {
-    "ruleId": "10038",
-    "level": "warning",
-    "uri": "/"
-  },
-  {
-    "ruleId": "10038",
-    "level": "warning",
-    "uri": "/"
-  },
-  {
-    "ruleId": "10038",
-    "level": "warning",
-    "uri": "Home/Location"
-  },
-  {
-    "ruleId": "10038",
-    "level": "warning",
-    "uri": "Introduction/ChildName"
-  },
-  {
-    "ruleId": "10038",
-    "level": "warning",
-    "uri": "sitemap.xml"
+    "count": 1
   }
 ]
