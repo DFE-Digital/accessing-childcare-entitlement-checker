@@ -4,7 +4,7 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Types
     {
         UniversalCredit,
         CarersAllowanceOrCarerSupportPayment,
-        GuaranteeCredit,
+        GuaranteePensionCredit,
         JobseekersAllowance,
         EmploymentAndSupportAllowance,
         IncapacityBenefit,
