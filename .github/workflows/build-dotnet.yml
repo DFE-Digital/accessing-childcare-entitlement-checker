@@ -166,7 +166,6 @@ jobs:
           dotnet sonarscanner begin \
             /k:DFE-Digital_accessing-childcare-entitlement-checker \
             /o:dfe-digital \
-            /d:sonar.branch.name="${{ github.ref_name }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.token="${SONAR_TOKEN}" \
             /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
