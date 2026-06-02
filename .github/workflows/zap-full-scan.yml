@@ -83,15 +83,13 @@ jobs:
             mv reports/zap-report-tmp.md reports/zap-report.md
 
             # Prepend frontmatter
-            cat << 'EOF' > reports/frontmatter.txt
----
-title: ZAP by Checkmarx Scanning Report
-eleventyNavigation:
-  key: Scanning Report
-order: 2
----
-
-EOF
+            echo "---" > reports/frontmatter.txt
+            echo "title: ZAP by Checkmarx Scanning Report" >> reports/frontmatter.txt
+            echo "eleventyNavigation:" >> reports/frontmatter.txt
+            echo "  key: Scanning Report" >> reports/frontmatter.txt
+            echo "order: 2" >> reports/frontmatter.txt
+            echo "---" >> reports/frontmatter.txt
+            echo "" >> reports/frontmatter.txt
             cat reports/frontmatter.txt reports/zap-report.md > reports/zap-report-processed.md
             mv reports/zap-report-processed.md reports/zap-report.md
             rm reports/frontmatter.txt
