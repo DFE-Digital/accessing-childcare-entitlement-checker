@@ -15,6 +15,11 @@
     <File Path=".github\dependabot.yml" />
   </Folder>
   <Folder Name="/.github/workflows/">
+    <File Path=".github/workflows/build-dotnet.yml" />
+    <File Path=".github/workflows/build-terraform.yml" />
+    <File Path=".github/workflows/pr.yml" />
+    <File Path=".github/workflows/run-e2e-tests.yml" />
+    <File Path=".github/workflows/zap-full-scan.yml" />
     <File Path=".github\workflows\build-and-test.yml" />
     <File Path=".github\workflows\ci.yml" />
     <File Path=".github\workflows\e2e-tests.yml" />
@@ -23,7 +28,14 @@
 
   <Folder Name="/docs/">
     <File Path="docs/adrs.md" />
+    <File Path="docs/application-architecture.md" />
+    <File Path="docs/branching-strategy.md" />
+    <File Path="docs/constraints-principals.md" />
+    <File Path="docs/dependabot-configuration.md" />
+    <File Path="docs/deployment-architecture.md" />
     <File Path="docs/development.md" />
+    <File Path="docs/ways-of-working.md" />
+    <File Path="docs/zap-scan-guide.md" />
   </Folder>
 
   <Folder Name="/docs/adr/">
@@ -41,6 +53,10 @@
   <Folder Name="/tests/">
     <Project Path="tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj" />
     <Project Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/docs/testing/">
+    <File Path="docs/testing/test-strategy.md" />
+    <File Path="docs/testing/zap-report.md" />
   </Folder>
   <Folder Name="/infra/" />
   <Folder Name="/infra/terraform/">
@@ -66,5 +82,10 @@
     <File Path="global.json" />
     <File Path="LICENCE" />
     <File Path="README.md" />
+  </Folder>
+  <Folder Name="/zap/">
+    <File Path="zap/auth-header.js" />
+    <File Path="zap/automation-plan.yaml" />
+    <File Path="zap/findings.json" />
   </Folder>
 </Solution>

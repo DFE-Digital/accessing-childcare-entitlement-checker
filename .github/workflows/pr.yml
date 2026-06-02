@@ -1,0 +1,34 @@
+name: PR Validation
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate-dotnet:
+    name: Validate Dotnet
+    uses: ./.github/workflows/build-dotnet.yml
+    with:
+      publish: true
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  e2e-tests:
+    name: E2E Tests
+    needs: validate-dotnet
+    uses: ./.github/workflows/run-e2e-tests.yml
+
+# TODO: Add a11y test suite
+#  a11y-tests:
+#    name: A11y Tests
+#    needs: validate-dotnet
+#    uses: ./.github/workflows/run-a11y-tests.yml
+
+  validate-tf:
+    name: Validate Terraform
+    uses: ./.github/workflows/build-terraform.yml
+    with:
+      terraform-directory: infra/terraform

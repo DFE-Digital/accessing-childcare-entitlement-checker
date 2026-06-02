@@ -18,7 +18,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
   resource_group_name = azurerm_resource_group.web-rg.name
   os_type             = "Linux"
   sku_name            = var.webapp_sku
-  tags = local.common_tags
+  tags                = local.common_tags
 }
 
 resource "azurerm_linux_web_app" "web-app-service" {

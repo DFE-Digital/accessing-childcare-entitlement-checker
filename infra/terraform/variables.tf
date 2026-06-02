@@ -9,8 +9,8 @@ variable "environment_prefix" {
 }
 
 variable "aspnetcore_environment" {
-   description = "ASP.NET Core environment"
-   type        = string
+  description = "ASP.NET Core environment"
+  type        = string
 }
 
 variable "development_basic_auth_password" {
