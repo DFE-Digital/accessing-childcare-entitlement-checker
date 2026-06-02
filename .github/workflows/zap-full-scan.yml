@@ -18,7 +18,9 @@ concurrency:
 jobs:
   zap-scan:
     name: Run ZAP Scan
-    environment: development
+    environment:
+      name: development
+      deployment: false
     runs-on: ubuntu-latest
     
     env:
@@ -145,7 +147,7 @@ jobs:
           branch: zap-findings-updates
           delete-branch: true
           title: "security: OWASP ZAP security findings updated"
-          labels: security, automated-pr
+          labels: security
           commit-message: "security: update ZAP findings snapshot"
           body: |
             Automated OWASP ZAP scan detected changes in security findings.
