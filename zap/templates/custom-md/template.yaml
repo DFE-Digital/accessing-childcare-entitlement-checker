@@ -1,0 +1,9 @@
+name: Custom Markdown Report
+format: Markdown
+mode: TEXT
+extension: md
+sections:
+ - alertcount
+ - insights
+ - instancecount
+ - alertdetails
