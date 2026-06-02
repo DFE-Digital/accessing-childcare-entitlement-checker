@@ -1,1 +1,46 @@
-[]
+[
+  {
+    "ruleId": "10011",
+    "count": 2
+  },
+  {
+    "ruleId": "10015",
+    "count": 5
+  },
+  {
+    "ruleId": "10020",
+    "count": 3
+  },
+  {
+    "ruleId": "10021",
+    "count": 5
+  },
+  {
+    "ruleId": "10035",
+    "count": 5
+  },
+  {
+    "ruleId": "10038",
+    "count": 5
+  },
+  {
+    "ruleId": "10096",
+    "count": 1
+  },
+  {
+    "ruleId": "10104",
+    "count": 3
+  },
+  {
+    "ruleId": "10109",
+    "count": 5
+  },
+  {
+    "ruleId": "10112",
+    "count": 2
+  },
+  {
+    "ruleId": "2",
+    "count": 1
+  }
+]
