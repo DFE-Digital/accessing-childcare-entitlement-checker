@@ -1,8 +1,9 @@
 ---
-status: "proposed"
+title: Use GitHub runners for UI tests on PR push
+eleventyNavigation:
+  key: Use GitHub runners
+order: 5
 ---
-
-# Use GitHub runners for UI tests on PR push
 
 ## Context and Problem Statement
 

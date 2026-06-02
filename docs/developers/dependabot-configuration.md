@@ -1,4 +1,9 @@
-# Dependabot Configuration
+---
+title: Dependabot
+eleventyNavigation:
+  key: Dependabot
+order: 4
+---
 
 This repository uses an enhanced Dependabot configuration designed to improve:
 

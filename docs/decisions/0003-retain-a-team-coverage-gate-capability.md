@@ -1,4 +1,9 @@
-# Retain a team coverage gate capability
+---
+title: Retain a team coverage gate capability
+eleventyNavigation:
+  key: Coverage gate
+order: 4
+---
 
 ## Context and Problem Statement
 

@@ -1,0 +1,17 @@
+{
+  "name": "accessing-childcare-entitlement-checker-docs",
+  "version": "1.0.0",
+  "description": "Documentation for the Accessing Childcare Entitlement Checker",
+  "type": "module",
+  "scripts": {
+    "build": "eleventy",
+    "start": "eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@x-govuk/govuk-eleventy-plugin": "^9.0.0"
+  },
+  "dependencies": {
+    "@11ty/eleventy-navigation": "^1.0.5"
+  }
+}

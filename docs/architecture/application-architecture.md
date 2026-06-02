@@ -1,4 +1,8 @@
-# Application Architecture
+---
+title: Application Architecture
+eleventyNavigation:
+  key: Application Architecture
+---
 
 ## Level 1: System Context
 The highest level of abstraction, showing how the system interacts with users.

@@ -1,4 +1,9 @@
-# Test Strategy
+---
+title: Test Strategy
+eleventyNavigation:
+  key: Test Strategy
+order: 1
+---
 
 This document outlines the testing strategy for the Accessing Childcare Entitlement Checker. It defines the types of testing performed, the tools used, and the lifecycle of testing within our CI/CD pipelines.
 

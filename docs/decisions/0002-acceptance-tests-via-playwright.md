@@ -1,8 +1,9 @@
 ---
-status: proposed
+title: Acceptance Tests in tickets will be implemented via Playwright
+eleventyNavigation:
+  key: Use Playwright
+order: 3
 ---
-
-# Acceptance Tests in tickets will be implemented via Playwright.
 
 ## Context and Problem Statement
 

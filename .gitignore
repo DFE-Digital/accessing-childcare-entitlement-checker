@@ -58,3 +58,7 @@ terraform.rc
 terraform.tfstate*
 *.feature.cs
 .terraform.lock.hcl
+
+# Documentation
+docs/_site/
+docs/node_modules/

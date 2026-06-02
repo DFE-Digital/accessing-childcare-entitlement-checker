@@ -1,4 +1,9 @@
-# Use Markdown Architectural Decision Records
+---
+title: Use Markdown Architectural Decision Records
+eleventyNavigation:
+  key: Use Markdown ADR
+order: 1
+---
 
 ## Context and Problem Statement
 

@@ -1,4 +1,10 @@
-# Ways of Working
+---
+title: Ways of Working
+eleventyNavigation:
+  key: Ways of Working
+  parent: Home
+order: 2
+---
 
 This document defines the development standards and operational workflows for the project.
 
@@ -55,7 +61,7 @@ All changes to `main` and `release/*` branches must be made via Pull Requests.
 
 ## Testing Strategy
 
-Quality is verified through a 9-layer pyramid as defined in the [Test Strategy](./testing/test-strategy.md).
+Quality is verified through a 9-layer pyramid as defined in the [Test Strategy](../testing/test-strategy.md).
 
 * Unit & Component Tests: Run on every PR.
 * E2E & Accessibility: Run on every PR and against the Staging environment.
@@ -80,4 +86,4 @@ Every push to a PR triggers the `ci.yml` workflow, which handles:
 Documentation is treated as first-class code:
 * Use Markdown for text and [Mermaid](https://mermaid.js.org/) for diagrams.
 * Store architectural decisions in `docs/adr/`.
-* Keep the [README](../README.md) and [Ways of Working](./ways-of-working.md) updated as the project evolves.
+* Keep the [README](../../README.md) and [Ways of Working](ways-of-working.md) updated as the project evolves.

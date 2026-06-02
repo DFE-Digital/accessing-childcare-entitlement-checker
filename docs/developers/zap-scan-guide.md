@@ -1,4 +1,10 @@
-# OWASP ZAP Security Scanning Guide
+---
+title: OWASP ZAP Security Scanning Guide
+eleventyNavigation:
+  key: ZAP Scanning
+  parent: Home
+order: 6
+---
 
 This project uses OWASP ZAP (Zaproxy) to perform automated Dynamic Application Security Testing (DAST) against the development environment. The scan is designed to run automatically in CI/CD to identify common web vulnerabilities (XSS, SQLi, missing security headers, etc.) before they reach production.
 

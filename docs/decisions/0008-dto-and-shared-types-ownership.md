@@ -1,4 +1,9 @@
-# Use separate RulesEngine models and mapping layer rather than shared contract assembly
+---
+title: Use separate RulesEngine models and mapping layer rather than shared contract assembly
+eleventyNavigation:
+  key: Use separate models & mapping
+order: 9
+---
 
 ## Context and Problem Statement
 

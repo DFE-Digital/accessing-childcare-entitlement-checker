@@ -1,8 +1,10 @@
-# Deployment Architecture
+---
+title: Deployment Architecture
+eleventyNavigation:
+  key: Deployment Architecture
+---
 
-This document describes the cloud architecture, networking, and deployment strategy for the Accessing Childcare Entitlement Checker (ACEC).
-The ACEC application is a stateless ASP.NET Core web application hosted on Azure. 
-It is designed for high availability, security, and scalability within the UK South region.
+This document describes the cloud architecture, networking, and deployment strategy for the Accessing Childcare Entitlement Checker (ACEC). The ACEC application is a stateless ASP.NET Core web application hosted on Azure. It is designed for high availability, security, and scalability within the UK South region.
 
 ## Deployment Diagram
 
