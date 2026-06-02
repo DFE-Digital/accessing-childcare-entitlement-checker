@@ -1,0 +1,8 @@
+@use "pkg:govuk-frontend/dist/govuk" with (
+  $govuk-font-family: ('Inter', sans-serif) !important 
+);
+
+// Use GOV.UK Eleventy Plugin components
+@use "pkg:@x-govuk/govuk-eleventy-plugin";
+
+@import url('https://rsms.me/inter/inter.css');
