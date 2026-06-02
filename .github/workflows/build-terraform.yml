@@ -1,0 +1,225 @@
+name: Build Terraform
+
+on:
+  workflow_call:
+    inputs:
+      terraform-directory:
+        required: true
+        type: string
+        default: "infra/terraform"
+
+      terraform-version:
+        required: false
+        type: string
+        default: "1.9.8"
+
+      publish:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  terraform:
+    name: CI checks
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      CHECKOV_RESULTS: checkov-results
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Encode ref_name
+        run: |
+          ENCODED_REF="${{ github.ref_name }}"
+          ENCODED_REF="${ENCODED_REF//\//%2F}"
+          echo "ENCODED_REF=$ENCODED_REF" >> $GITHUB_ENV
+
+      - name: Init summary state
+        run: |
+          echo "TF_FMT=unknown" >> $GITHUB_ENV
+          echo "TF_VALIDATE=unknown" >> $GITHUB_ENV
+          echo "CHECKOV=unknown" >> $GITHUB_ENV
+          echo "PACKAGE=skipped" >> $GITHUB_ENV
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: ${{ inputs.terraform-version }}
+
+      - name: Generate build metadata
+        run: |
+          TERRAFORM_VERSION=$(terraform version -json | jq -r .terraform_version)
+          
+          cat > build-terraform-metadata.json <<EOF
+          {
+            "commit": "${{ github.sha }}",
+            "branch": "${{ github.ref_name }}",
+            "buildDate": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "terraform": "$TERRAFORM_VERSION",
+            "runId": "${{ github.run_id }}"
+          }
+          EOF
+
+      - name: Terraform Init
+        run: terraform init -input=false -backend=false
+        working-directory: ${{ inputs.terraform-directory }}
+
+      - name: Terraform Format check
+        id: fmt
+        run: terraform fmt -check
+        working-directory: ${{ inputs.terraform-directory }}
+
+      - name: Record fmt result
+        if: always()
+        run: |
+          if [ "${{ steps.fmt.outcome }}" = "success" ]; then
+            echo "TF_FMT=passed" >> $GITHUB_ENV
+          else
+            echo "TF_FMT=failed" >> $GITHUB_ENV
+          fi
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+        working-directory: ${{ inputs.terraform-directory }}
+
+      - name: Record validate result
+        if: always()
+        run: |
+          if [ "${{ steps.validate.outcome }}" = "success" ]; then
+            echo "TF_VALIDATE=passed" >> $GITHUB_ENV
+          else
+            echo "TF_VALIDATE=failed" >> $GITHUB_ENV
+          fi
+
+      - name: Pull Checkov image
+        run: docker pull bridgecrew/checkov
+
+      - name: Run Checkov scan
+        id: checkov
+        run: |
+          mkdir -p "${{ github.workspace }}/${{ env.CHECKOV_RESULTS }}"
+          
+          docker run --rm \
+            -v "${{ github.workspace }}/${{ inputs.terraform-directory }}:/tf" \
+            -v "${{ github.workspace }}/${{ env.CHECKOV_RESULTS }}:/results" \
+            bridgecrew/checkov:latest \
+            -d /tf \
+            -o cli \
+            -o sarif \
+            --output-file-path console,/results/results.sarif \
+            --soft-fail
+
+      - name: Parse Checkov results
+        if: always()
+        run: |
+          file="${{ github.workspace }}/${{ env.CHECKOV_RESULTS }}/results.sarif"
+          
+          if [ ! -f "$file" ]; then
+            echo "CHECKOV_STATUS=missing" >> $GITHUB_ENV
+            exit 0
+          fi
+          
+          CRITICAL=$(jq '[.runs[].results[].level? | select(.=="error")] | length' "$file")
+          HIGH=$(jq '[.runs[].results[].level? | select(.=="warning")] | length' "$file")
+          MEDIUM=$(jq '[.runs[].results[].level? | select(.=="note")] | length' "$file")
+          
+          echo "CHECKOV_CRITICAL=$CRITICAL" >> $GITHUB_ENV
+          echo "CHECKOV_HIGH=$HIGH" >> $GITHUB_ENV
+          echo "CHECKOV_MEDIUM=$MEDIUM" >> $GITHUB_ENV
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: ${{ github.workspace }}/${{ env.CHECKOV_RESULTS }}/results.sarif
+          category: checkov-terraform
+
+      - name: Upload metadata
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-terraform-metadata
+          path: build-terraform-metadata.json
+
+      - name: Create Terraform package
+        if: inputs.publish
+        working-directory: ${{ inputs.terraform-directory }}
+        run: |
+          zip -r terraform-package.zip .
+
+      - name: Record package status
+        if: always()
+        run: |
+          if [ "${{ inputs.publish }}" = "true" ]; then
+            echo "PACKAGE=created" >> $GITHUB_ENV
+          else
+            echo "PACKAGE=skipped" >> $GITHUB_ENV
+          fi
+
+      - name: Upload Terraform package
+        if: inputs.publish
+        uses: actions/upload-artifact@v7
+        with:
+          name: terraform-package
+          path: ${{ inputs.terraform-directory }}/terraform-package.zip
+
+      - name: Add summary
+        if: always()
+        run: |
+          fmt_icon="❔"
+          validate_icon="❔"
+          checkov_icon="❔"
+          package_icon="❔"
+          
+          # Terraform fmt
+          if [ "$TF_FMT" = "passed" ]; then fmt_icon="✅"
+          elif [ "$TF_FMT" = "failed" ]; then fmt_icon="❌"
+          fi
+          
+          # Terraform validate
+          if [ "$TF_VALIDATE" = "passed" ]; then validate_icon="✅"
+          elif [ "$TF_VALIDATE" = "failed" ]; then validate_icon="❌"
+          fi
+          
+          # Checkov (severity-aware)
+          if [ "$CHECKOV_CRITICAL" -gt 0 ] || [ "$CHECKOV_HIGH" -gt 0 ]; then
+            checkov_icon="⚠️"
+          else
+            checkov_icon="✅"
+          fi
+          
+          # Package
+          if [ "$PACKAGE" = "created" ]; then package_icon="📦"
+          else package_icon="⏭️"
+          fi
+              
+          echo "## 🧱 Terraform CI Report Card" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Area | Status | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Terraform fmt | $fmt_icon | $TF_FMT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Terraform validate | $validate_icon | $TF_VALIDATE |" >> $GITHUB_STEP_SUMMARY
+          echo "| Checkov | $checkov_icon | 🔴 $CHECKOV_CRITICAL 🟠 $CHECKOV_HIGH 🟡 $CHECKOV_MEDIUM |" >> $GITHUB_STEP_SUMMARY
+          echo "| Package | $package_icon | $PACKAGE |" >> $GITHUB_STEP_SUMMARY
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "$TF_FMT" = "passed" ] && [ "$TF_VALIDATE" = "passed" ] && [ "$CHECKOV_CRITICAL" -eq 0 ]; then
+            echo "### Overall: 🟢 Healthy" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### Overall: 🟡 Needs attention" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### 🔎 Links" >> $GITHUB_STEP_SUMMARY
+          echo "- Security: https://github.com/${{ github.repository }}/security/code-scanning?query=branch:$ENCODED_REF" >> $GITHUB_STEP_SUMMARY

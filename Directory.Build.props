@@ -15,4 +15,19 @@
     <BuildInParallel>true</BuildInParallel>
     <UseSharedCompilation>true</UseSharedCompilation>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <SonarSources>src</SonarSources>
+    <SonarTests>tests</SonarTests>
+    <SonarExclusions>
+      **/bin/**;
+      **/obj/**;
+      **/*.html;
+      **/*.css;
+      **/*.scss;
+      **/wwwroot/**
+    </SonarExclusions>
+    <SonarCoverageExclusions>**/Program.cs</SonarCoverageExclusions>
+    <SonarCSOpenCoverReportsPaths>**/coverage.opencover.xml</SonarCSOpenCoverReportsPaths>
+  </PropertyGroup>
 </Project>

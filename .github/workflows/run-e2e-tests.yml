@@ -1,0 +1,126 @@
+name: Run E2E Tests
+
+on:
+  workflow_call:
+    inputs:
+      SUT:
+        description: 'System Under Test URL. If empty, starts the app on the agent.'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  run-e2e:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+    steps:
+      - name: Checkout Git metadata
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .
+          sparse-checkout-cone-mode: false
+
+      - name: Download metadata
+        uses: actions/download-artifact@v4
+        with:
+          name: build-dotnet-metadata
+
+      - name: Download web app
+        uses: actions/download-artifact@v4
+        with:
+          name: web-app
+          path: web-app
+
+      - name: Download e2e tests
+        uses: actions/download-artifact@v4
+        with:
+          name: e2e-tests
+
+      - name: Unzip e2e tests
+        run: unzip e2e-tests.zip
+
+      - name: Parse metadata
+        id: metadata
+        run: |
+          DOTNET_VERSION=$(jq -r '.dotnetSdk' build-dotnet-metadata.json)
+          echo "dotnet_version=$DOTNET_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ steps.metadata.outputs.dotnet_version }}
+
+      - name: Set execution permissions
+        run: chmod +x ./e2e-tests/AccessingChildcareEntitlementChecker.Tests.E2e
+
+      - name: Install Playwright Chromium
+        working-directory: e2e-tests
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
+        run: pwsh playwright.ps1 install --with-deps chromium
+
+      - name: Start app
+        if: inputs.SUT == ''
+        run: |
+          dotnet ./web-app/AccessingChildcareEntitlementChecker.Web.dll --urls http://127.0.0.1:5252 > app.log 2>&1 &
+          echo $! > app.pid
+          echo "APP_STARTED=true" >> $GITHUB_ENV
+          echo "TARGET_URL=http://127.0.0.1:5252/" >> $GITHUB_ENV
+
+      - name: Set SUT URL
+        if: inputs.SUT != ''
+        run: |
+          echo "TARGET_URL=${{ inputs.SUT }}" >> $GITHUB_ENV
+
+      - name: Wait for app
+        if: env.APP_STARTED == 'true'
+        run: |
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:5252/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "App failed to start in time"
+          cat app.log
+          exit 1
+
+      - name: Run E2E tests
+        id: test
+        env:
+          TEST_URL: ${{ env.TARGET_URL }}
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
+        run: |
+          dotnet test ./e2e-tests/AccessingChildcareEntitlementChecker.Tests.E2e.dll \
+            --logger "trx;LogFileName=test-results.trx" \
+            --results-directory ./TestResults
+
+      - name: Stop app
+        if: always() && env.APP_STARTED == 'true'
+        run: |
+          kill "$(cat app.pid)" || true
+
+      - name: Publish E2E test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: E2E Test Results
+          path: TestResults/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
+
+      - name: Add E2E summary
+        if: always()
+        run: |
+          test_icon="❔"
+          if [ "${{ steps.test.outcome }}" = "success" ]; then test_icon="✅"; fi
+          if [ "${{ steps.test.outcome }}" = "failure" ]; then test_icon="❌"; fi
+          
+          echo "## 🧪 E2E Test Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Area | Status | Target |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| E2E Tests | $test_icon | ${{ env.TARGET_URL }} |" >> $GITHUB_STEP_SUMMARY
