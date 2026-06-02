@@ -69,11 +69,33 @@ jobs:
         run: |
           docker run --rm \
             -v "${{ github.workspace }}:/zap/wrk:rw" \
-            -v "${{ github.workspace }}/zap/templates/custom-md:/home/zap/.ZAP_D/reports/custom-md:ro" \
             -e TARGET_URL="${{ env.TARGET_URL }}" \
             -e AUTH_HEADER="${{ env.AUTH_HEADER }}" \
             ghcr.io/zaproxy/zaproxy:stable \
             zap.sh -cmd -autorun /zap/wrk/zap/automation-plan.yaml
+
+      - name: Post-process ZAP Markdown Report
+        if: always()
+        run: |
+          if [ -f reports/zap-report.md ]; then
+            # Remove all lines before the first H2 header
+            sed -n '/^## /,$p' reports/zap-report.md > reports/zap-report-tmp.md
+            mv reports/zap-report-tmp.md reports/zap-report.md
+
+            # Prepend frontmatter
+            cat << 'EOF' > reports/frontmatter.txt
+---
+title: ZAP by Checkmarx Scanning Report
+eleventyNavigation:
+  key: Scanning Report
+order: 2
+---
+
+EOF
+            cat reports/frontmatter.txt reports/zap-report.md > reports/zap-report-processed.md
+            mv reports/zap-report-processed.md reports/zap-report.md
+            rm reports/frontmatter.txt
+          fi
 
       - name: Post-process SARIF for GitHub
         if: always()
