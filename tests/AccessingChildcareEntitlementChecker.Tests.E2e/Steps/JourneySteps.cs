@@ -27,7 +27,7 @@ public class JourneySteps(Context context)
     [Given("I am on the childcare entitlement checker website")]
     public async Task GivenIAmOnTheChildcareEntitlementCheckerWebsite()
     {
-        await _context.Page.GotoAsync(_context.Uri.ToString());
+        await _context.Page.GotoAsync(Context.Uri.ToString());
     }
 
     [Given("I click the Start now link")]

@@ -8,11 +8,19 @@ on:
         required: false
         type: string
         default: ''
+      environment:
+        description: 'Target Environment for secrets'
+        required: false
+        type: string
+        default: ''
 
 jobs:
   run-e2e:
     name: Run E2E Tests
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}
+      deployment: false
     permissions:
       contents: read
       checks: write
@@ -93,6 +101,7 @@ jobs:
         env:
           TEST_URL: ${{ env.TARGET_URL }}
           PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
+          E2E_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
         run: |
           dotnet test ./e2e-tests/AccessingChildcareEntitlementChecker.Tests.E2e.dll \
             --logger "trx;LogFileName=test-results.trx" \
