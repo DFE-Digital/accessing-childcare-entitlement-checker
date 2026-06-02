@@ -69,6 +69,7 @@ jobs:
         run: |
           docker run --rm \
             -v "${{ github.workspace }}:/zap/wrk:rw" \
+            -v "${{ github.workspace }}/zap/templates/custom-md:/home/zap/.ZAP_D/reports/custom-md:ro" \
             -e TARGET_URL="${{ env.TARGET_URL }}" \
             -e AUTH_HEADER="${{ env.AUTH_HEADER }}" \
             ghcr.io/zaproxy/zaproxy:stable \

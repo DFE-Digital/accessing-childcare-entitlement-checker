@@ -29,7 +29,6 @@ jobs:
   - type: report
     parameters:
       template: custom-md
-      templateDir: /zap/wrk/zap/templates
       reportDir: /zap/wrk/reports
       reportFile: zap-report.md
 
