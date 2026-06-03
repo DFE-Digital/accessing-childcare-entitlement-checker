@@ -62,13 +62,16 @@ export default function (eleventyConfig) {
   // Passthrough
   eleventyConfig.addPassthroughCopy({ 'department-for-education_white.png': 'assets/department-for-education_white.png' })
   eleventyConfig.addPassthroughCopy({ 'mermaid.js': 'assets/mermaid.js' })
-  eleventyConfig.addPassthroughCopy('**/*.{png,jpg,jpeg,gif,svg}')
+  eleventyConfig.addPassthroughCopy('**/!(node_modules)/**/*.{png,jpg,jpeg,gif,svg}')
 
-  eleventyConfig.addTransform('fix-search-index-path', function (content) {
+  eleventyConfig.addTransform('fix-relative-paths', function (content) {
     if (this.page.outputPath && this.page.outputPath.endsWith('.html')) {
       const depth = this.page.url.split('/').filter(Boolean).length
       const relativeRoot = '../'.repeat(depth) || './'
-      return content.replace('index="search-index.json"', `index="${relativeRoot}search-index.json"`)
+      return content
+        .replaceAll('src="/', `src="${relativeRoot}`)
+        .replaceAll('href="/', `href="${relativeRoot}`)
+        .replace('index="search-index.json"', `index="${relativeRoot}search-index.json"`)
     }
     return content
   })

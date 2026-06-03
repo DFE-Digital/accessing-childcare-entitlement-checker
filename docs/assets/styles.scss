@@ -1,5 +1,6 @@
 @use "pkg:govuk-frontend/dist/govuk" with (
-  $govuk-font-family: ('Inter', sans-serif) !important 
+  $govuk-font-family: ('Inter', sans-serif) !important,
+  $govuk-assets-path: ""
 );
 
 // Use GOV.UK Eleventy Plugin components
