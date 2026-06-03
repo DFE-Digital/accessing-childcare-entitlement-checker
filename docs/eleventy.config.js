@@ -4,6 +4,7 @@ import eleventyNavigationPlugin from '@11ty/eleventy-navigation'
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(eleventyNavigationPlugin)
   eleventyConfig.addPlugin(govukEleventyPlugin, {
+    titleSuffix: 'Accessing Childcare Entitlement Checker',
     templates: {
       sitemap: false,
       searchIndex: true
@@ -13,9 +14,10 @@ export default function (eleventyConfig) {
         html: '<img src="/assets/department-for-education_white.png" alt="Department for Education" height="30">'
       },
       search: {
-        indexPath: '/search-index.json'
+        indexPath: 'search-index.json'
       }
     },
+    stylesheets: [ '/assets/styles.css' ],
     serviceNavigation: {
       navigation: [
         {
@@ -41,6 +43,7 @@ export default function (eleventyConfig) {
       ]
     },
     footer: {
+      logo: false,
       meta: {
         items: [
           {
@@ -60,6 +63,15 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ 'department-for-education_white.png': 'assets/department-for-education_white.png' })
   eleventyConfig.addPassthroughCopy({ 'mermaid.js': 'assets/mermaid.js' })
   eleventyConfig.addPassthroughCopy('**/*.{png,jpg,jpeg,gif,svg}')
+
+  eleventyConfig.addTransform('fix-search-index-path', function (content) {
+    if (this.page.outputPath && this.page.outputPath.endsWith('.html')) {
+      const depth = this.page.url.split('/').filter(Boolean).length
+      const relativeRoot = '../'.repeat(depth) || './'
+      return content.replace('index="search-index.json"', `index="${relativeRoot}search-index.json"`)
+    }
+    return content
+  })
 
   return {
     dataTemplateEngine: 'njk',
