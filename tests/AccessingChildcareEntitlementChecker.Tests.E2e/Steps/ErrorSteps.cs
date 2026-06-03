@@ -18,14 +18,14 @@ public class ErrorSteps
     [Given("I visit a non-existent page")]
     public async Task GivenIVisitANon_ExistentPage()
     {
-        var url = new Uri(_context.Uri, "/ThisPageDoesNotExist");
+        var url = new Uri(Context.Uri, "/ThisPageDoesNotExist");
         _lastResponse = await _context.Page.GotoAsync(url.AbsoluteUri);
     }
 
     [Given("I visit the development-only error test page")]
     public async Task GivenIVisitTheDevelopment_OnlyErrorTestPage()
     {
-        var url = new Uri(_context.Uri, "/error");
+        var url = new Uri(Context.Uri, "/error");
         _lastResponse = await _context.Page.GotoAsync(url.AbsoluteUri);
     }
 

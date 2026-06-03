@@ -1,0 +1,61 @@
+name: Main Integration
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  build-dotnet:
+    name: Build Dotnet
+    uses: ./.github/workflows/build-dotnet.yml
+    with:
+      publish: true
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  build-tf:
+    name: Build Terraform
+    uses: ./.github/workflows/build-terraform.yml
+    with:
+      terraform-directory: infra/terraform
+      publish: true
+
+  deploy-dev:
+    name: Deploy Development
+    needs: [build-dotnet, build-tf]
+    uses: ./.github/workflows/deploy-environment.yml
+    with:
+      environment: development
+    secrets: inherit
+
+  deploy-test:
+    name: Deploy Test
+    needs: [build-dotnet, build-tf]
+    uses: ./.github/workflows/deploy-environment.yml
+    with:
+      environment: test
+    secrets: inherit
+
+  e2e-tests:
+    name: E2E Tests
+    needs: [deploy-test]
+    uses: ./.github/workflows/run-e2e-tests.yml
+    with:
+      SUT: ${{ needs.deploy-test.outputs.deploy_url }}
+      environment: test
+    secrets: inherit
+
+  a11y-tests:
+    name: A11y Tests
+    runs-on: ubuntu-latest
+    needs: [deploy-test]
+    steps:
+      - name: Run a11y tests
+        run: |
+          echo "Running a11y tests"

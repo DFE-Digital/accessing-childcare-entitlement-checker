@@ -17,16 +17,30 @@ public class Context
 
     public static async Task<Context> CreateAsync(IBrowser browser)
     {
-        var browserContext = await browser.NewContextAsync(new()
+        var password = Environment.GetEnvironmentVariable("E2E_BASIC_AUTH_PASSWORD");
+
+        var contextOptions = new BrowserNewContextOptions
         {
-            JavaScriptEnabled = false
-        });
+            JavaScriptEnabled = false,
+            UserAgent = "playwright-e2e"
+        };
+
+        if (!string.IsNullOrEmpty(password))
+        {
+            contextOptions.HttpCredentials = new HttpCredentials
+            {
+                Username = "e2e",
+                Password = password
+            };
+        }
+
+        var browserContext = await browser.NewContextAsync(contextOptions);
 
         var page = await browserContext.NewPageAsync();
         return new Context(page);
     }
 
-    public Uri Uri => new(Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252/");
+    public static Uri Uri => new(Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252/");
 
     public async Task DisposeAsync()
     {

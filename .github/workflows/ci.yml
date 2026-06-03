@@ -1,18 +1,19 @@
 name: CI
 
 on:
-  workflow_dispatch:
-    inputs:
-      progressToTestDeployment:
-        description: 'Deploy to test, staging, and production environments'
-        required: false
-        type: boolean
-        default: false
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - docs/**
+  workflow_call:
+#  workflow_dispatch:
+#    inputs:
+#      progressToTestDeployment:
+#        description: 'Deploy to test, staging, and production environments'
+#        required: false
+#        type: boolean
+#        default: false
+#  push:
+#    branches:
+#      - main
+#    paths-ignore:
+#      - docs/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

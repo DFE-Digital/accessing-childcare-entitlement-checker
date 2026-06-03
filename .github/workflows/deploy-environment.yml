@@ -1,0 +1,142 @@
+name: 'Deploy Environment'
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Target Environment'
+        required: true
+        type: string
+    outputs:
+      deploy_url:
+        description: "The deployment URL"
+        value: ${{ jobs.deploy.outputs.deploy_url }}
+
+jobs:
+  deploy:
+    name: 'Provision & deploy environment'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    outputs:
+      deploy_url: ${{ steps.tf-outputs.outputs.deploy_url }}
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
+
+    defaults:
+      run:
+        working-directory: ./infra/terraform
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true
+      BACKEND_RG: ${{ secrets.TF_BACKEND_RG }}
+      BACKEND_STORAGE: ${{ secrets.TF_BACKEND_STORAGE }}
+      BACKEND_CONTAINER: "tfstate"
+      BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
+      DEPLOY_ZIP_PATH: "../../artifacts/webapp.zip"
+      TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
+      TF_VAR_elz_environment: ${{ vars.TF_VAR_ELZ_ENV }}
+      TF_VAR_aspnetcore_environment: ${{ vars.TF_VAR_ASPNETCORE_ENV }}
+      TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }} 
+      TF_VAR_webapp_sku: ${{ vars.TF_VAR_WEBAPP_SKU || 'B1' }}
+
+    steps:
+    - name: Download Terraform Metadata
+      uses: actions/download-artifact@v4
+      with:
+        name: build-terraform-metadata
+        path: .
+
+    - name: Read Terraform Version
+      id: tf-version
+      working-directory: .
+      run: |
+        VERSION=$(jq -r .terraform build-terraform-metadata.json)
+        echo "TF_VERSION=$VERSION" >> "$GITHUB_ENV"
+
+    - name: Download Terraform Package
+      uses: actions/download-artifact@v4
+      with:
+        name: terraform-package
+        path: ./infra/terraform
+
+    - name: Unzip Terraform Package
+      run: unzip -o terraform-package.zip
+      working-directory: ./infra/terraform
+
+    - name: Download web app artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: web-app
+        path: ./artifacts/web-app
+
+    - name: Zip web app
+      run: |
+        cd ../../artifacts/web-app
+        zip -r ../webapp.zip .
+      working-directory: ./infra/terraform
+
+    - name: Azure Login (OIDC)
+      uses: azure/login@v3
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v4
+      with:
+        terraform_wrapper: false
+        terraform_version: ${{ env.TF_VERSION }}
+
+    - name: Terraform Init
+      run: |
+        terraform init \
+          -backend-config="resource_group_name=$BACKEND_RG" \
+          -backend-config="storage_account_name=$BACKEND_STORAGE" \
+          -backend-config="container_name=$BACKEND_CONTAINER" \
+          -backend-config="key=$BACKEND_KEY" \
+          -backend-config="use_oidc=true"
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -out=main.tfplan
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve main.tfplan
+
+    - name: Read Terraform outputs
+      id: tf-outputs
+      run: |
+        echo "resource_group_name=$(terraform output -raw resource_group_name)" >> "$GITHUB_OUTPUT"
+        echo "web_app_name=$(terraform output -raw web_app_name)" >> "$GITHUB_OUTPUT"
+        FRONTDOOR_HOSTNAME=$(terraform output -raw frontdoor_hostname)
+        echo "frontdoor_hostname=$FRONTDOOR_HOSTNAME" >> "$GITHUB_OUTPUT"
+        echo "deploy_url=https://$FRONTDOOR_HOSTNAME" >> "$GITHUB_OUTPUT"
+
+    - name: Deploy package to Web App
+      run: |
+        az webapp deploy \
+          --resource-group "${{ steps.tf-outputs.outputs.resource_group_name }}" \
+          --name "${{ steps.tf-outputs.outputs.web_app_name }}" \
+          --src-path "$DEPLOY_ZIP_PATH" \
+          --type zip
+
+    - name: Publish deployment summary
+      run: |
+        RESOURCE_GROUP="${{ steps.tf-outputs.outputs.resource_group_name }}"
+        APP_NAME="${{ steps.tf-outputs.outputs.web_app_name }}"
+        FRONTDOOR_HOSTNAME="${{ steps.tf-outputs.outputs.frontdoor_hostname }}"
+        DEPLOY_URL="https://${FRONTDOOR_HOSTNAME}"
+        
+        {
+          echo "## Deployment Details"
+          echo 
+          echo "* **URL**: [${DEPLOY_URL}](${DEPLOY_URL})"
+          echo "* **Front Door Hostname**: ${FRONTDOOR_HOSTNAME}"
+          echo "* **Resource Group**: ${RESOURCE_GROUP}"
+          echo "* **Web App Name**: ${APP_NAME}"
+        } >> "$GITHUB_STEP_SUMMARY"
