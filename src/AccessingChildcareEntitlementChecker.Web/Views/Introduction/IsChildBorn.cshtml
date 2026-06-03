@@ -18,26 +18,28 @@
     }
 }
 
-<form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
-    <input type="hidden" asp-for="ReturnTo" />
-    <govuk-radios for="ChildIsBorn">
-        <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                @Html.DisplayNameFor(model => model.ChildIsBorn)
-            </govuk-radios-fieldset-legend>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" novalidate asp-route-childId="@Model.ChildId">
+            <input type="hidden" asp-for="ReturnTo" />
+            <govuk-radios for="ChildIsBorn">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Html.DisplayNameFor(model => model.ChildIsBorn)
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-error-message />
+                    @foreach (var value in Enum.GetValues<BirthStatus>())
+                    {
+                        <govuk-radios-item value="@value">
+                            @Html.EnumDisplayName(value)
+                        </govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
 
-            <govuk-radios-error-message />
-
-            @foreach (var value in Enum.GetValues<BirthStatus>())
-            {
-                <govuk-radios-item value="@value">
-                    @Html.EnumDisplayName(value)
-                </govuk-radios-item>
-            }
-        </govuk-radios-fieldset>
-    </govuk-radios>
-
-    <govuk-button type="submit">
-        @Shared["Button_Continue"]
-    </govuk-button>
-</form>
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

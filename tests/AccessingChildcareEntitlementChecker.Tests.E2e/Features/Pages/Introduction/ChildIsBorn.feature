@@ -5,8 +5,8 @@ Background:
 	And I click the Start now link
 	And I answer "Where do you live?" as "England"
 	And I answer questions for "Sara" as follows:
-		| Question               | Answer |
-		| Add details of a child | Sara   |
+		| Question                        | Answer |
+		| Add details about your children | Sara   |
 
 Scenario: Page load
 	When the page header is "Has this child been born yet?"
@@ -39,4 +39,4 @@ Scenario: Continue with no
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "Add details of a child"
+	Then the page header is "Add details about your children"

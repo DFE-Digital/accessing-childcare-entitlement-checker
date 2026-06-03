@@ -5,10 +5,10 @@ Background:
 	And I click the Start now link
 	And I answer "Where do you live?" as "England"
 	And I answer questions for "Sara" as follows:
-		| Question                      | Answer    |
-		| Add details of a child        | Sara      |
-		| Has this child been born yet? | Yes       |
-		| What is Sara's date of birth? | Yesterday |
+		| Question                        | Answer    |
+		| Add details about your children | Sara      |
+		| Has this child been born yet?   | Yes       |
+		| What is Sara's date of birth?   | Yesterday |
 
 Scenario: Page load
 	When the page header is "What is your relationship to Sara?"

@@ -46,7 +46,7 @@ Scenario: Back navigation to expected child
 	And I click the Add another child button
 	And I answer questions for "Ringo" as follows:
 		| Question                                      | Answer        |
-		| Add details of a child                        | Ringo         |
+		| Add details about your children               | Ringo         |
 		| Has this child been born yet?                 | No            |
 		| What is this child's due date?                | Tomorrow      |
 		| What will your relationship be to this child? | Foster parent |

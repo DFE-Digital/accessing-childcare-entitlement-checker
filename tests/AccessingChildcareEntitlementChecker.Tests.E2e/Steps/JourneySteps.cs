@@ -60,14 +60,14 @@ public class JourneySteps(Context context)
         GivenIClickTheStartNowLink();
         _context.Queue.Answer("Where do you live?", "England");
         _context.Queue.ScopedAnswers("Aydin", [
-            ("Add details of a child", "Aydin"),
+            ("Add details about your children", "Aydin"),
             ("Has this child been born yet?", "No"),
             ("What is this child's due date?", "Tomorrow"),
             ("What will your relationship be to this child?", "Parent"),
         ]);
         _context.Queue.ClickButton("Check your children's details", "Add another child");
         _context.Queue.ScopedAnswers("Sara", [
-            ("Add details of a child", "Sara"),
+            ("Add details about your children", "Sara"),
             ("Has this child been born yet?", "Yes"),
             ("What is Sara's date of birth?", "Yesterday"),
             ("What is your relationship to Sara?", "Parent"),

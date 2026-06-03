@@ -17,6 +17,6 @@ public class SettledStatusViewModel
     }
 
     [Display(Name = "Do you have settled or pre-settled status under the EU Settlement Scheme?")]
-    [Required(ErrorMessage = "Select your status")]
+    [Required(ErrorMessage = "Select if you have settled or pre-settled status")]
     public SettledStatusOption? SettledStatus { get; set; }
 }

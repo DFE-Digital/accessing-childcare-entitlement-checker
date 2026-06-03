@@ -27,7 +27,7 @@ public class ChildBirthDateViewModel : IValidatableObject
     [BindNever]
     public string ChildName { get; set; } = string.Empty;
 
-    [Display(Name = "What is {0}'s date of birth?", Description = "For example, 31 3 2026")]
+    [Display(Name = "What is {0}'s date of birth?", Description = "For example, 31 3 2022")]
     [Required(ErrorMessage = "Enter this child's date of birth")]
     [DateInput(ErrorMessagePrefix = "The date of birth")]
     public DateOnly? ChildBirthDate { get; set; }

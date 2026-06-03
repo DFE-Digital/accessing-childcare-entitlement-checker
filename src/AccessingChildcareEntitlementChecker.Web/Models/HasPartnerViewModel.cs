@@ -16,6 +16,6 @@ public class HasPartnerViewModel
     }
 
 
-    [Required(ErrorMessage = "Error_SelectIfYouHavePartner")]
+    [Required(ErrorMessage = "Select if you live with a partner")]
     public bool? HasPartner { get; set; }
 }

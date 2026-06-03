@@ -6,7 +6,7 @@ Background:
 	And I answer "Where do you live?" as "England"
 	And I answer questions for "Sara" as follows:
 		| Question                           | Answer    |
-		| Add details of a child             | Sara      |
+		| Add details about your children    | Sara      |
 		| Has this child been born yet?      | Yes       |
 		| What is Sara's date of birth?      | Yesterday |
 		| What is your relationship to Sara? | Parent    |
@@ -16,7 +16,7 @@ Scenario: Page load
 	Then I should see 6 checkboxes with the following options:
 		| Checkbox                              |
 		| Armed Forces Independence Payment     |
-		| Certificate of Visual Impairment      |
+		| Certificate of visual impairment      |
 		| Disability Living Allowance (DLA)     |
 		| Education, health and care (EHC) plan |
 		| Personal Independence Payment (PIP)   |
@@ -24,15 +24,15 @@ Scenario: Page load
 
 Scenario: Checkbox selection
 	When I select the "Armed Forces Independence Payment" checkbox
-	And I select the "Certificate of Visual Impairment" checkbox
+	And I select the "Certificate of visual impairment" checkbox
 	Then the following checkboxes should be selected:
 		| Checkbox                          |
 		| Armed Forces Independence Payment |
-		| Certificate of Visual Impairment  |
+		| Certificate of visual impairment  |
 
 Scenario: Continuing with none applicable while others are selected results in an error
 	When I select the "Armed Forces Independence Payment" checkbox
-	And I select the "Certificate of Visual Impairment" checkbox
+	And I select the "Certificate of visual impairment" checkbox
 	And I select the "No, none of these apply" checkbox
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
@@ -46,7 +46,7 @@ Scenario: Continue without selection
 
 Scenario: Continue with selection
 	When I select the "Armed Forces Independence Payment" checkbox
-	And I select the "Certificate of Visual Impairment" checkbox
+	And I select the "Certificate of visual impairment" checkbox
 	And I click on Continue
 	Then the page header is "Check your children's details"
 
