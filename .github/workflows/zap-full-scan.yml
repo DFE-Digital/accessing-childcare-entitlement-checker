@@ -74,6 +74,27 @@ jobs:
             ghcr.io/zaproxy/zaproxy:stable \
             zap.sh -cmd -autorun /zap/wrk/zap/automation-plan.yaml
 
+      - name: Post-process ZAP Markdown Report
+        if: always()
+        run: |
+          if [ -f reports/zap-report.md ]; then
+            # Remove all lines before the first H2 header
+            sed -n '/^## /,$p' reports/zap-report.md > reports/zap-report-tmp.md
+            mv reports/zap-report-tmp.md reports/zap-report.md
+
+            # Prepend frontmatter
+            echo "---" > reports/frontmatter.txt
+            echo "title: ZAP by Checkmarx Scanning Report" >> reports/frontmatter.txt
+            echo "eleventyNavigation:" >> reports/frontmatter.txt
+            echo "  key: Scanning Report" >> reports/frontmatter.txt
+            echo "order: 2" >> reports/frontmatter.txt
+            echo "---" >> reports/frontmatter.txt
+            echo "" >> reports/frontmatter.txt
+            cat reports/frontmatter.txt reports/zap-report.md > reports/zap-report-processed.md
+            mv reports/zap-report-processed.md reports/zap-report.md
+            rm reports/frontmatter.txt
+          fi
+
       - name: Post-process SARIF for GitHub
         if: always()
         run: |
