@@ -23,17 +23,17 @@ Our strategy is guided by the following principles (as defined in [Constraints a
 
 The testing strategy is organised into discrete layers. Each layer builds upon the one below it, increasing in integration and complexity while decreasing in total volume and execution speed.
 
-| Layer  | Testing Type            | Visual Volume     |
-|:------:|:------------------------|:------------------|
-|   9    | E2E / BDD User Journeys | `[      #      ]` |
-|   8    | Accessibility Testing   | `[     ###     ]` |
-|   7    | Performance Testing     | `[    #####    ]` |
-|   6    | DAST Security Scans     | `[   #######   ]` |
-|   5    | Integration Testing     | `[  #########  ]` |
-|   4    | Component Testing       | `[ ########### ]` |
-|   3    | Mutation Testing        | `[#############]` |
-|   2    | Unit Testing            | `[#############]` |
-|   1    | Infrastructure & IaC    | `[#############]` |
+| Testing Type            |   Visual Volume    |
+|:------------------------|:------------------:|
+| E2E / BDD User Journeys | `[      #      ]`  |
+| Accessibility Testing   | `[     ###     ]`  |
+| Performance Testing     | `[    #####    ]`  |
+| DAST Security Scans     | `[   #######   ]`  |
+| Integration Testing     | `[  #########  ]`  |
+| Component Testing       | `[ ########### ]`  |
+| Mutation Testing        | `[#############]`  |
+| Unit Testing            | `[#############]`  |
+| Infrastructure & IaC    | `[#############]`  |
 
 ## Testing Types
 
