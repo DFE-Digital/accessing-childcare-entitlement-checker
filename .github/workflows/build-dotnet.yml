@@ -178,7 +178,7 @@ jobs:
             /d:sonar.token="${SONAR_TOKEN}" \
             /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
-            /d:sonar.exclusions="**/infra/**,**/.github/**,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
+            /d:sonar.exclusions="**/docs/**,**/infra/**,**/.github/**,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
             /d:sonar.coverage.exclusions="**/Program.cs" \
             /d:sonar.qualitygate.wait=true
 

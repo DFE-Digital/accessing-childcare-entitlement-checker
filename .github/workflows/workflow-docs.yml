@@ -36,20 +36,16 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build
-        env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
-        run: npm run build -- --pathprefix="$BASE_PATH/"
+        run: ELEVENTY_ENV=production npm run build
         working-directory: docs
 
       - name: Upload artifact
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'docs/_site'
 
   deploy:
     needs: build
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     permissions:
       pages: write
       id-token: write

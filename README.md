@@ -52,7 +52,7 @@ $proc = Start-Process dotnet -ArgumentList "run --project src/AccessingChildcare
 
 - [CONTRIBUTING.md](/CONTRIBUTING.md) - Information for external contributors
 - `docs/`
-  - [development.md](/docs/developers/development.md) - Detailed information on development
+  - [development.md](/docs/content/developers/development.md) - Detailed information on development
 
 ### Documentation
 
