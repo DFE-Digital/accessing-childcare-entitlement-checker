@@ -29,11 +29,11 @@ jobs:
   - type: report
     parameters:
       template: traditional-md
-      reportDir: /zap/wrk/reports
+      reportDir: /zap/wrk/zap
       reportFile: zap-report.md
 
   - type: report
     parameters:
       template: sarif-json
-      reportDir: /zap/wrk/reports
-      reportFile: zap-results.sarif
+      reportDir: /zap/wrk/zap
+      reportFile: zap-results.sarif.json

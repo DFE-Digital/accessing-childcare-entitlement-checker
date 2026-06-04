@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 0
 
       - name: Azure Login
-        uses: azure/login@v3
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -43,11 +43,15 @@ jobs:
 
       - name: Get Azure Frontdoor URL
         id: get-url
+        env:
+          RG: ${{ env.RESOURCE_GROUP }}
+          PROFILE: ${{ env.FD_PROFILE }}
+          ENDPOINT: ${{ env.FD_ENDPOINT }}
         run: |
           set -euo pipefail
-          FRONTDOOR_URL=$(az afd custom-domain list -g ${{ env.RESOURCE_GROUP }} --profile-name ${{ env.FD_PROFILE }} --query "[0].hostName" -o tsv)
+          FRONTDOOR_URL=$(az afd custom-domain list -g "$RG" --profile-name "$PROFILE" --query "[0].hostName" -o tsv)
           if [ -z "$FRONTDOOR_URL" ]; then
-            FRONTDOOR_URL=$(az afd endpoint show -g ${{ env.RESOURCE_GROUP }} --profile-name ${{ env.FD_PROFILE }} --endpoint-name ${{ env.FD_ENDPOINT }} --query "hostName" -o tsv)
+            FRONTDOOR_URL=$(az afd endpoint show -g "$RG" --profile-name "$PROFILE" --endpoint-name "$ENDPOINT" --query "hostName" -o tsv)
           fi
           if [ -z "$FRONTDOOR_URL" ]; then
             echo "::error::Could not determine Frontdoor URL"
@@ -55,54 +59,57 @@ jobs:
           fi
           echo "TARGET_URL=https://$FRONTDOOR_URL/" >> ${GITHUB_ENV}
 
-      - name: Create directories
-        run: |
-          mkdir -p reports zap docs/testing
-          chmod -R 777 reports
-
       - name: Build Basic Auth header
+        env:
+          DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
         run: |
-          AUTH=$(printf 'zap:%s' "${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}" | base64 -w0)
+          AUTH=$(printf 'zap:%s' "$DEVELOPMENT_BASIC_AUTH_PASSWORD" | base64 -w0)
           echo "AUTH_HEADER=Basic ${AUTH}" >> $GITHUB_ENV
 
       - name: Run OWASP ZAP Full Scan
+        env:
+          T_URL: ${{ env.TARGET_URL }}
+          A_HEADER: ${{ env.AUTH_HEADER }}
         run: |
           docker run --rm \
-            -v "${{ github.workspace }}:/zap/wrk:rw" \
-            -e TARGET_URL="${{ env.TARGET_URL }}" \
-            -e AUTH_HEADER="${{ env.AUTH_HEADER }}" \
+            -u root \
+            -v "${{ github.workspace }}/zap:/zap/wrk/zap:rw" \
+            -e TARGET_URL="$T_URL" \
+            -e AUTH_HEADER="$A_HEADER" \
             ghcr.io/zaproxy/zaproxy:stable \
             zap.sh -cmd -autorun /zap/wrk/zap/automation-plan.yaml
 
       - name: Post-process ZAP Markdown Report
         if: always()
         run: |
-          if [ -f reports/zap-report.md ]; then
+          if [ -f zap/zap-report.md ]; then
             # Remove all lines before the first H2 header
-            sed -n '/^## /,$p' reports/zap-report.md > reports/zap-report-tmp.md
-            mv reports/zap-report-tmp.md reports/zap-report.md
+            sed -n '/^## /,$p' zap/zap-report.md > zap/zap-report-tmp.md
+            mv zap/zap-report-tmp.md zap/zap-report.md
 
             # Prepend frontmatter
-            echo "---" > reports/frontmatter.txt
-            echo "title: ZAP by Checkmarx Scanning Report" >> reports/frontmatter.txt
-            echo "eleventyNavigation:" >> reports/frontmatter.txt
-            echo "  key: Scanning Report" >> reports/frontmatter.txt
-            echo "order: 2" >> reports/frontmatter.txt
-            echo "---" >> reports/frontmatter.txt
-            echo "" >> reports/frontmatter.txt
-            cat reports/frontmatter.txt reports/zap-report.md > reports/zap-report-processed.md
-            mv reports/zap-report-processed.md reports/zap-report.md
-            rm reports/frontmatter.txt
+            echo "---" > zap/frontmatter.txt
+            echo "title: ZAP by Checkmarx Scanning Report" >> zap/frontmatter.txt
+            echo "eleventyNavigation:" >> zap/frontmatter.txt
+            echo "  key: Scanning Report" >> zap/frontmatter.txt
+            echo "order: 2" >> zap/frontmatter.txt
+            echo "---" >> zap/frontmatter.txt
+            echo "" >> zap/frontmatter.txt
+            cat zap/frontmatter.txt zap/zap-report.md > zap/zap-report-processed.md
+            mv zap/zap-report-processed.md zap/zap-report.md
+            rm zap/frontmatter.txt
           fi
 
       - name: Post-process SARIF for GitHub
         if: always()
+        env:
+          T_URL: ${{ env.TARGET_URL }}
         run: |
-          if [ -f reports/zap-results.sarif.json ]; then
+          if [ -f zap/zap-results.sarif.json ]; then
             # GitHub uses shortDescription.text for the title and security-severity for the risk level.
             # We enrich the SARIF metadata so it shows descriptive names instead of "ZAP Medium Issue".
             # We also explicitly set the tool name and organization to "OWASP ZAP".
-            jq --arg target "${{ env.TARGET_URL }}" '
+            jq --arg target "$T_URL" '
               .runs[].tool.driver |= (
                 . + {
                   "name": "OWASP ZAP",
@@ -126,24 +133,24 @@ jobs:
               walk(if type == "object" and has("uri") and (.uri | type == "string") then
                 if .uri | startswith($target) then .uri |= sub($target; "") | .uri |= (if . == "" then "/" else . end) else . end
               else . end)
-            ' reports/zap-results.sarif.json > reports/zap-results-processed.sarif
+            ' zap/zap-results.sarif.json > zap/zap-results-processed.sarif.json
           fi
 
       - name: Upload SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: reports/zap-results-processed.sarif
+          sarif_file: zap/zap-results-processed.sarif.json
           category: zap-dast-scan
 
       - name: Build findings snapshot
         if: success()
         run: |
-          if [ -f reports/zap-results-processed.sarif ]; then
+          if [ -f zap/zap-results-processed.sarif.json ]; then
             jq '
               [ .runs[]?.results[]? | { ruleId: (.ruleId // "unknown") } ]
               | group_by(.ruleId) | map({ ruleId: .[0].ruleId, count: length }) | sort_by(.ruleId)
-            ' reports/zap-results-processed.sarif > zap/findings.json
+            ' zap/zap-results-processed.sarif.json > zap/findings.json
           fi
 
       - name: Noise Reduction & Report Prep
@@ -155,13 +162,13 @@ jobs:
             echo "should_create_pr=false" >> $GITHUB_OUTPUT
           else
             echo "Meaningful changes detected. Preparing PR."
-            cp reports/zap-report.md docs/testing/zap-report.md
+            cp zap/zap-report.md docs/testing/zap-report.md
             echo "should_create_pr=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Pull Request
         if: steps.noise-filter.outputs.should_create_pr == 'true'
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
           token: ${{ github.token }}
           base: ${{ github.ref_name }}
@@ -181,14 +188,10 @@ jobs:
 
       - name: Generate Step Summary
         if: always()
+        env:
+          T_URL: ${{ env.TARGET_URL }}
+          REPO: ${{ github.repository }}
         run: |
-          echo "### ZAP Scan Results for ${{ env.TARGET_URL }}" >> $GITHUB_STEP_SUMMARY
+          echo "### ZAP Scan Results for $T_URL" >> $GITHUB_STEP_SUMMARY
           echo "- **Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **SARIF Alerts:** [View in Security tab](https://github.com/${{ github.repository }}/security/code-scanning)" >> $GITHUB_STEP_SUMMARY
-
-      - name: Upload Raw Reports as Artifacts
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: zap-scan-reports
-          path: reports/*
+          echo "- **SARIF Alerts:** [View in Security tab](https://github.com/$REPO/security/code-scanning)" >> $GITHUB_STEP_SUMMARY
