@@ -83,6 +83,7 @@ jobs:
             /d:sonar.qualitygate.wait=true \
             /d:sonar.dotnet.excludeTestProjects=true \
             /d:sonar.cs.opencover.reportsPaths="TestResults/unit/**/coverage.opencover.xml" \
+            /d:sonar.exclusions="**/infra/**,**/.github/**" \
             /d:sonar.coverage.exclusions="**/Program.cs,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
             /d:sonar.cpd.exclusions="src/AccessingChildcareEntitlementChecker.Web/Views/Partner/PartnerAge.cshtml" \
             /d:sonar.scanner.scanAll=false
