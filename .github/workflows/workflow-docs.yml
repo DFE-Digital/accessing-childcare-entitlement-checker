@@ -1,4 +1,4 @@
-name: Deploy Documentation
+name: Publish Documentation
 
 on:
   push:
@@ -7,11 +7,6 @@ on:
     paths:
       - 'docs/**'
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -19,6 +14,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,7 +28,7 @@ jobs:
           cache-dependency-path: docs/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
         working-directory: docs
 
       - name: Setup Pages
@@ -39,7 +36,9 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build
-        run: npx @11ty/eleventy --pathprefix="${{ steps.pages.outputs.base_path }}/"
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run build -- --pathprefix="$BASE_PATH/"
         working-directory: docs
 
       - name: Upload artifact
@@ -51,6 +50,9 @@ jobs:
   deploy:
     needs: build
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

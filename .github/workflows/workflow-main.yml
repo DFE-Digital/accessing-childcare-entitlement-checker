@@ -34,7 +34,14 @@ jobs:
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment: development
-    secrets: inherit
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      TF_BACKEND_RG: ${{ secrets.TF_BACKEND_RG }}
+      TF_BACKEND_STORAGE: ${{ secrets.TF_BACKEND_STORAGE }}
+      TF_BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
+      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
 
   deploy-test:
     name: Deploy Test
@@ -42,7 +49,14 @@ jobs:
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment: test
-    secrets: inherit
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      TF_BACKEND_RG: ${{ secrets.TF_BACKEND_RG }}
+      TF_BACKEND_STORAGE: ${{ secrets.TF_BACKEND_STORAGE }}
+      TF_BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
+      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
 
   e2e-tests:
     name: E2E Tests
@@ -51,7 +65,8 @@ jobs:
     with:
       SUT: ${{ needs.deploy-test.outputs.deploy_url }}
       environment: test
-    secrets: inherit
+    secrets:
+      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
 
   a11y-tests:
     name: A11y Tests
