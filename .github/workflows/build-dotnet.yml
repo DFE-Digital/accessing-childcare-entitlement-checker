@@ -11,7 +11,6 @@ on:
         required: false
         type: number
         default: 90
-
     secrets:
       SONAR_TOKEN:
         required: true
@@ -160,14 +159,12 @@ jobs:
           fi
 
       - name: Sonar Begin
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet sonarscanner begin \
             /k:DFE-Digital_accessing-childcare-entitlement-checker \
             /o:dfe-digital \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.token="${SONAR_TOKEN}" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
             /d:sonar.qualitygate.wait=true
@@ -205,9 +202,7 @@ jobs:
 
       - name: Sonar End
         if: always()
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: dotnet sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
+        run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Generate coverage report
         if: always()
