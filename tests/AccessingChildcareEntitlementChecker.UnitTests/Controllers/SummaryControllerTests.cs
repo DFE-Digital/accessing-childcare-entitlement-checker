@@ -1,9 +1,12 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Summary;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using NSubstitute;
 
@@ -19,18 +22,43 @@ public class SummaryControllerTests
     public SummaryControllerTests()
     {
         _journeyState = new JourneyState();
+        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
         _journeyState.Children[childId] = new Child(childId, "Child A");
         _journeySession = Substitute.For<IJourneySession>();
         var stringLocalizerFactory = Substitute.For<IStringLocalizerFactory>();
+
+        var services = new ServiceCollection();
+        services
+            .AddMvcCore()
+            .AddDataAnnotations();
+
+        var metadataProvider = services
+            .BuildServiceProvider()
+            .GetRequiredService<IModelMetadataProvider>();
+
         _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory);
         _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
+        _controller.MetadataProvider = metadataProvider;
     }
 
     [Fact]
     public void CheckChildDetails_ReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails());
-        Assert.IsType<CheckChildDetailsViewModel>(result.Model);
+        var checkChildDetailsViewModel = Assert.IsType<CheckChildDetailsViewModel>(result.Model);
+        Assert.True(checkChildDetailsViewModel.HasChildren);
+
+        var childSummaryViewModel = Assert.Single(checkChildDetailsViewModel.Children);
+        Assert.Equal(childId, childSummaryViewModel.ChildId);
+        Assert.Equal("Child A", childSummaryViewModel.Name);
+    }
+
+    [Fact]
+    public void CheckChildDetails_ReturnsView_WithFromChild()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails(fromChildId: "child-a"));
+        var model = Assert.IsType<CheckChildDetailsViewModel>(result.Model);
+        Assert.Equal("child-a", model.LastEditedChild!.ChildId);
     }
 
     [Fact]
@@ -94,6 +122,15 @@ public class SummaryControllerTests
     public void CheckAnswers_ReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.CheckAnswers());
-        Assert.IsType<CheckAnswersViewModel>(result.Model);
+        var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
+        Assert.True(checkAnswersViewModel.HasChildren);
+        var child = Assert.Single(checkAnswersViewModel.Children);
+        Assert.Equal("child-a", child.ChildId);
+        Assert.Equal("Child A", child.Name);
+        var userDetail = Assert.Single(checkAnswersViewModel.UserDetails);
+        Assert.Equal("What is your nationality?", userDetail.Key);
+        Assert.Equal("British or Irish citizen", userDetail.Value);
+        Assert.Equal("Nationality", userDetail.ChangeAction);
+        Assert.Equal("User", userDetail.ChangeController);
     }
 }

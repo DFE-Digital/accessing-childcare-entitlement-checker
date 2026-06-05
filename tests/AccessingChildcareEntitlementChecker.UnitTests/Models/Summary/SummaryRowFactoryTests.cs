@@ -1,21 +1,9 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Models.Summary;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.DataAnnotations;
+﻿using AccessingChildcareEntitlementChecker.Web.Models.Summary;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
 using NSubstitute;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using AccessingChildcareEntitlementChecker.Web;
-using GovUk.Frontend.AspNetCore;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
-using AccessingChildcareEntitlementChecker.RulesEngine.Services;
-using AccessingChildcareEntitlementChecker.RulesEngine.Extensions;
 
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Models.Summary;
@@ -40,15 +28,46 @@ public class SummaryRowFactoryTests
     }
 
     [Fact]
-    public void ItExtractsTheDisplayNames()
+    public void ItExtractsTheDisplayNamesForEnums()
     {
         _summaryRowFactory.Add<TestViewModel, TestEnum>(m => m.TestProperty, TestEnum.One, "test-action-name");
         var rows = _summaryRowFactory.ViewModels;
 
         Assert.Single(rows);
         var row = rows.First();
-        Assert.Equal("Test Property Title", row.Key);
+        Assert.Equal("Test Enum Property Title", row.Key);
         Assert.Equal("Value One", row.Value);
+        Assert.Equal("test-action-name", row.ChangeAction);
+        Assert.Equal("Test", row.ChangeController);
+    }
+
+    [Fact]
+    public void ItExtractsTheDisplayNamesForListOfEnums()
+    {
+        _summaryRowFactory.Add<TestViewModel, List<TestEnum>, TestEnum>(
+            m => m.TestPropertyList,
+            [TestEnum.One, TestEnum.Two],
+            "test-action-name");
+        var rows = _summaryRowFactory.ViewModels;
+
+        Assert.Single(rows);
+        var row = rows.First();
+        Assert.Equal("Test List<Enum> Property Title", row.Key);
+        Assert.Equal("Value One, Value Two", row.Value);
+        Assert.Equal("test-action-name", row.ChangeAction);
+        Assert.Equal("Test", row.ChangeController);
+    }
+
+    [Fact]
+    public void ItExtractsTheDisplayNamesForDateOnlies()
+    {
+        _summaryRowFactory.Add<TestViewModel, DateOnly>(m => m.TestPropertyDateOnly, DateOnly.MinValue, "test-action-name");
+        var rows = _summaryRowFactory.ViewModels;
+
+        Assert.Single(rows);
+        var row = rows.First();
+        Assert.Equal("Test DateOnly Property Title", row.Key);
+        Assert.Equal("1 January 0001", row.Value);
         Assert.Equal("test-action-name", row.ChangeAction);
         Assert.Equal("Test", row.ChangeController);
     }
@@ -64,7 +83,13 @@ public class SummaryRowFactoryTests
 
     public class TestViewModel
     {
-        [Display(Name = "Test Property Title")]
+        [Display(Name = "Test Enum Property Title")]
         public TestEnum TestProperty { get; set; }
+
+        [Display(Name = "Test List<Enum> Property Title")]
+        public List<TestEnum> TestPropertyList { get; set; }
+
+        [Display(Name = "Test DateOnly Property Title")]
+        public DateOnly TestPropertyDateOnly { get; set; }
     }
 }
