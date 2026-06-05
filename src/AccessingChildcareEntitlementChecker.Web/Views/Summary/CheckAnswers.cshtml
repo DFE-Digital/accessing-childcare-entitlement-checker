@@ -85,7 +85,7 @@
                 }
             </govuk-summary-list>
 
-            @if(Model.PartnerDetails.Count() != 0)
+            @if(Model.PartnerDetails.Any())
             {
                 <h2 class="govuk-heading-m">@Localizer["Your partners details"]</h2>
                 <govuk-summary-list>

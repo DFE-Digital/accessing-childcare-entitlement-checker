@@ -50,8 +50,7 @@ public class SummaryRowFactoryTests
         _summaryRowFactory.Add<TestViewModel, TestEnum>(m => m.TestProperty, TestEnum.One, "test-action-name");
         var rows = _summaryRowFactory.ViewModels;
 
-        Assert.Single(rows);
-        var row = rows.First();
+        var row = Assert.Single(rows);
         Assert.Equal("Test Enum Property Title", row.Key);
         Assert.Equal("Value One", row.Value);
         Assert.Equal("test-action-name", row.ChangeAction);
@@ -68,8 +67,7 @@ public class SummaryRowFactoryTests
             "test-action-name");
         var rows = _summaryRowFactory.ViewModels;
 
-        Assert.Single(rows);
-        var row = rows.First();
+        var row = Assert.Single(rows);
         Assert.Equal("Test List<Enum> Property Title", row.Key);
         Assert.Equal("Value One, Value Two", row.Value);
         Assert.Equal("test-action-name", row.ChangeAction);
@@ -82,8 +80,7 @@ public class SummaryRowFactoryTests
         _summaryRowFactory.Add<TestViewModel, DateOnly>(m => m.TestPropertyDateOnly, DateOnly.MinValue, "test-action-name");
         var rows = _summaryRowFactory.ViewModels;
 
-        Assert.Single(rows);
-        var row = rows.First();
+        var row = Assert.Single(rows);
         Assert.Equal("Test DateOnly Property Title", row.Key);
         Assert.Equal("1 January 0001", row.Value);
         Assert.Equal("test-action-name", row.ChangeAction);
@@ -96,8 +93,7 @@ public class SummaryRowFactoryTests
         _summaryRowFactory.AddLocation(CountryOfResidence.Wales);
         var rows = _summaryRowFactory.ViewModels;
 
-        Assert.Single(rows);
-        var row = rows.First();
+        var row = Assert.Single(rows);
         Assert.Equal("Test Title", row.Key);
         Assert.Equal("Test Country", row.Value);
         Assert.Equal("Location", row.ChangeAction);
@@ -110,8 +106,7 @@ public class SummaryRowFactoryTests
         _summaryRowFactory.AddPartnerAge(AgeRange.UnderEighteen);
         var rows = _summaryRowFactory.ViewModels;
 
-        Assert.Single(rows);
-        var row = rows.First();
+        var row = Assert.Single(rows);
         Assert.Equal("Test Title", row.Key);
         Assert.Equal("Test Age", row.Value);
         Assert.Equal("PartnerAge", row.ChangeAction);

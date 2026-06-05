@@ -22,15 +22,15 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.Summary;
 /// </remarks>
 public class SummaryRowFactory
 {
-    private List<SummaryRowViewModel> _viewModels;
-    private IStringLocalizerFactory _stringLocalizerFactory;
+    private readonly List<SummaryRowViewModel> _viewModels;
+    private readonly IStringLocalizerFactory _stringLocalizerFactory;
 
     public SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, string controllerName, IStringLocalizerFactory stringLocalizerFactory)
     {
         ModelMetadataProvider = modelMetadataProvider;
         ControllerName = controllerName;
         _stringLocalizerFactory = stringLocalizerFactory;
-        _viewModels = new List<SummaryRowViewModel>();
+        _viewModels = [];
     }
 
     public IReadOnlyList<SummaryRowViewModel> ViewModels => _viewModels;
@@ -157,7 +157,7 @@ public class SummaryRowFactory
         return this;
     }
 
-    private string GetEnumDisplayName(Enum value)
+    private static string GetEnumDisplayName(Enum value)
     {
         return value.GetType()!
             .GetMember(value.ToString())![0]
