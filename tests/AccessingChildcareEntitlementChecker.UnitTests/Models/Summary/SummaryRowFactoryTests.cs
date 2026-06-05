@@ -87,7 +87,7 @@ public class SummaryRowFactoryTests
         public TestEnum TestProperty { get; set; }
 
         [Display(Name = "Test List<Enum> Property Title")]
-        public List<TestEnum> TestPropertyList { get; set; }
+        public List<TestEnum>? TestPropertyList { get; set; }
 
         [Display(Name = "Test DateOnly Property Title")]
         public DateOnly TestPropertyDateOnly { get; set; }
