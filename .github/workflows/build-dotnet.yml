@@ -272,26 +272,26 @@ jobs:
 
       - name: Upload coverage report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-report
           path: coverage-report
 
       - name: Upload vulnerability report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: vulnerability-report
           path: vulnerability-report.json
 
       - name: Upload metadata
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-dotnet-metadata
           path: build-dotnet-metadata.json
 
       - name: Upload Published Web App
         if: inputs.publish
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: web-app
           path: web-app
@@ -302,7 +302,7 @@ jobs:
 
       - name: Upload Published e2e Tests
         if: inputs.publish
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: e2e-tests
           path: e2e-tests.zip
