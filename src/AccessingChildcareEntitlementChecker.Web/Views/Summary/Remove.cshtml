@@ -1,11 +1,11 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
-@using AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails
+﻿@using AccessingChildcareEntitlementChecker.Web.Models.Summary
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model RemoveChildViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
+    <govuk-back-link asp-controller="Summary" asp-action="CheckChildDetails">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

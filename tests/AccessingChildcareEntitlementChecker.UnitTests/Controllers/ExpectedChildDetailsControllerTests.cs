@@ -79,8 +79,8 @@ public class ExpectedChildDetailsControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId)!.DueDate);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
-        Assert.Equal("CheckChildDetails", redirect.ControllerName);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal("Summary", redirect.ControllerName);
     }
 
     [Fact]
@@ -139,8 +139,8 @@ public class ExpectedChildDetailsControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(Relationship.Parent, _journeyState.GetChild(model.ChildId)!.ExpectedRelationship);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
-        Assert.Equal("CheckChildDetails", redirect.ControllerName);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal("Summary", redirect.ControllerName);
     }
 
     [Fact]

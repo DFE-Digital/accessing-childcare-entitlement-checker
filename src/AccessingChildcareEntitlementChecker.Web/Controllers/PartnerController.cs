@@ -248,7 +248,7 @@ public class PartnerController : Controller
             return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerChildcareVoucherReceipt));
         }
 
-        return this.RedirectTo<CheckAnswersController>(nameof(CheckAnswersController.CheckAnswers));
+        return this.RedirectTo<SummaryController>(nameof(SummaryController.CheckAnswers));
     }
 
     [HttpGet]
@@ -275,6 +275,6 @@ public class PartnerController : Controller
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
 
-        return this.RedirectTo<CheckAnswersController>(nameof(CheckAnswersController.CheckAnswers));
+        return this.RedirectTo<SummaryController>(nameof(SummaryController.CheckAnswers));
     }
 }

@@ -1,26 +1,28 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
-using AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Models.Summary;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Localization;
 using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
-public class CheckChildDetailsControllerTests
+public class SummaryControllerTests
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
-    private readonly CheckChildDetailsController _controller;
+    private readonly SummaryController _controller;
     private const string childId = "child-a";
 
-    public CheckChildDetailsControllerTests()
+    public SummaryControllerTests()
     {
         _journeyState = new JourneyState();
         _journeyState.Children[childId] = new Child(childId, "Child A");
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new CheckChildDetailsController(_journeyState, _journeySession);
+        var stringLocalizerFactory = Substitute.For<IStringLocalizerFactory>();
+        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory);
         _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
     }
 
@@ -43,7 +45,7 @@ public class CheckChildDetailsControllerTests
     public void Remove_Get_Redirects_WhenChildDoesNotExist()
     {
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove("DOES-NOT-EXIST"));
-        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), result.ActionName);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
     }
 
     [Fact]
@@ -66,7 +68,7 @@ public class CheckChildDetailsControllerTests
     {
         var model = new RemoveChildViewModel { ChildId = childId, Name = "Child A", RemoveConfirmed = false, };
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove(model));
-        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), result.ActionName);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
         _journeySession.Received(0).Set(_journeyState);
     }
 
@@ -75,7 +77,7 @@ public class CheckChildDetailsControllerTests
     {
         var model = new RemoveChildViewModel { ChildId = childId, Name = "Child A", RemoveConfirmed = true, };
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove(model));
-        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), result.ActionName);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
         _journeySession.Received(1).Set(_journeyState);
     }
 
@@ -84,7 +86,7 @@ public class CheckChildDetailsControllerTests
     {
         var model = new RemoveChildViewModel { ChildId = "child-b", Name = "Child B", RemoveConfirmed = true, };
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove(model));
-        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), result.ActionName);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
         _journeySession.Received(0).Set(_journeyState);
     }
 }

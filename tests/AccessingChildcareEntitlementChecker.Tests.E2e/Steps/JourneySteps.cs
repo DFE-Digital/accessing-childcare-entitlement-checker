@@ -95,6 +95,20 @@ public class JourneySteps(Context context)
         ]);
     }
 
+    [Given("I fill in my partner's details")]
+    public void GivenIFillInMyPartnersDetails()
+    {
+        _context.Queue.Answers([
+            ("Do you live with a partner?", "Yes"),
+            ("What is your partner's age?", "21 or over"),
+            ("Which of these best describes your partners nationality?", "British or Irish citizen"),
+            ("Is your partner in paid work?", "No"),
+            ("Does your partner get any of these benefits?", "Carer's Allowance"),
+            ("Does your partner already get any of this childcare support?", "Childcare vouchers"),
+            ("How does your partner receive childcare vouchers?", "A workplace nursery scheme"),
+        ]);
+    }
+
     [Given("I click the Add another child button")]
     public void GivenIClickTheAddAnotherChildButton()
     {
