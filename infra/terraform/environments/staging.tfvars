@@ -1,0 +1,5 @@
+elz_environment        = "Test"
+environment_prefix     = "t02"
+aspnetcore_environment = "Staging"
+webapp_sku             = "P0v3"
+azure_frontdoor_scale  = "Standard"

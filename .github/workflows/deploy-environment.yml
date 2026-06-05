@@ -18,12 +18,6 @@ on:
         required: true
       AZURE_TENANT_ID:
         required: true
-      TF_BACKEND_RG:
-        required: true
-      TF_BACKEND_STORAGE:
-        required: true
-      TF_BACKEND_KEY:
-        required: true
       DEVELOPMENT_BASIC_AUTH_PASSWORD:
         required: true
 
@@ -48,16 +42,8 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       ARM_USE_OIDC: true
-      BACKEND_RG: ${{ secrets.TF_BACKEND_RG }}
-      BACKEND_STORAGE: ${{ secrets.TF_BACKEND_STORAGE }}
-      BACKEND_CONTAINER: "tfstate"
-      BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
       DEPLOY_ZIP_PATH: "../../artifacts/webapp.zip"
-      TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
-      TF_VAR_elz_environment: ${{ vars.TF_VAR_ELZ_ENV }}
-      TF_VAR_aspnetcore_environment: ${{ vars.TF_VAR_ASPNETCORE_ENV }}
-      TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }} 
-      TF_VAR_webapp_sku: ${{ vars.TF_VAR_WEBAPP_SKU || 'B1' }}
+      TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
 
     steps:
     - name: Download Terraform Metadata
@@ -111,14 +97,10 @@ jobs:
     - name: Terraform Init
       run: |
         terraform init \
-          -backend-config="resource_group_name=$BACKEND_RG" \
-          -backend-config="storage_account_name=$BACKEND_STORAGE" \
-          -backend-config="container_name=$BACKEND_CONTAINER" \
-          -backend-config="key=$BACKEND_KEY" \
-          -backend-config="use_oidc=true"
+          -backend-config="environments/${{ inputs.environment }}.state.config"
 
     - name: Terraform Plan
-      run: terraform plan -no-color -out=main.tfplan
+      run: terraform plan -no-color -out=main.tfplan -var-file="environments/${{ inputs.environment }}.tfvars"
 
     - name: Terraform Apply
       run: terraform apply -auto-approve main.tfplan
