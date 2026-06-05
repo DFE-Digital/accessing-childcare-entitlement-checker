@@ -61,12 +61,7 @@ jobs:
       # Pathing for Artifacts
       DEPLOY_ZIP_PATH: "../../artifacts/webapp-package/webapp.zip"
 
-      # Terraform Variables
-      TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
-      TF_VAR_elz_environment: ${{ vars.TF_VAR_ELZ_ENV }} #  this goes to azure tags, used to identify which environment the resource belongs to in Azure portal
-      TF_VAR_aspnetcore_environment: ${{vars.TF_VAR_ASPNETCORE_ENV}} # this goes to environment variables in web app, used to switch between development and production settings in appsettings.json
       TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }} 
-      TF_VAR_webapp_sku: ${{ vars.TF_VAR_WEBAPP_SKU || 'B1' }}
 
     steps:
     - name: Checkout Code
@@ -107,7 +102,7 @@ jobs:
         terraform validate
 
     - name: Terraform Plan
-      run: terraform plan -no-color -out=main.tfplan
+      run: terraform plan -no-color -out=main.tfplan -var-file="${{ inputs.environment }}.tfvars"
 
     - name: Terraform Apply
       run: terraform apply -auto-approve main.tfplan

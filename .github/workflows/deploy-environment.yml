@@ -53,11 +53,8 @@ jobs:
       BACKEND_CONTAINER: "tfstate"
       BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
       DEPLOY_ZIP_PATH: "../../artifacts/webapp.zip"
-      TF_VAR_environment_prefix: ${{ vars.TF_VAR_PREFIX }}
-      TF_VAR_elz_environment: ${{ vars.TF_VAR_ELZ_ENV }}
-      TF_VAR_aspnetcore_environment: ${{ vars.TF_VAR_ASPNETCORE_ENV }}
-      TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }} 
-      TF_VAR_webapp_sku: ${{ vars.TF_VAR_WEBAPP_SKU || 'B1' }}
+      # Terraform Variables (Secret only - others moved to .tfvars)
+      TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
 
     steps:
     - name: Download Terraform Metadata
@@ -118,7 +115,7 @@ jobs:
           -backend-config="use_oidc=true"
 
     - name: Terraform Plan
-      run: terraform plan -no-color -out=main.tfplan
+      run: terraform plan -no-color -out=main.tfplan -var-file="${{ inputs.environment }}.tfvars"
 
     - name: Terraform Apply
       run: terraform apply -auto-approve main.tfplan
