@@ -50,7 +50,6 @@
 
         @if (!Model.HasChildren)
         {
-            <!-- We shouldn't be able to get here. -->
             <p class="govuk-body">@Localizer["No children added."]</p>
             <p class="govuk-body">@Localizer["You must add a child to continue."]</p>
         }
@@ -58,76 +57,55 @@
         {
             @foreach (var item in Model.Children)
             {
-                <govuk-summary-card>
-                    <govuk-summary-card-title>@item.Name</govuk-summary-card-title>
-                    <govuk-summary-card-actions>
-                        <govuk-summary-card-action asp-controller="Summary" asp-action="Remove" asp-route-childId="@item.ChildId">@Localizer["Remove"]</govuk-summary-card-action>
-                    </govuk-summary-card-actions>
-                    <govuk-summary-list>
-                        @foreach (var row in item.Rows)
-                        {
-                            <govuk-summary-list-row>
-                                <govuk-summary-list-row-key>@Localizer[row.Key, item.Name]</govuk-summary-list-row-key>
-                                <govuk-summary-list-row-value>@row.Value</govuk-summary-list-row-value>
-                                <govuk-summary-list-row-actions>
-                                    <govuk-summary-list-row-action
-                                        asp-controller="@row.ChangeController"
-                                        asp-action="@row.ChangeAction"
-                                        asp-route-returnTo="check-your-answers"
-                                        asp-route-childId="@item.ChildId">
-                                            @Localizer["Change"]
-                                    </govuk-summary-list-row-action>
-                                </govuk-summary-list-row-actions>
-                            </govuk-summary-list-row>
-                        }
-                    </govuk-summary-list>
-                </govuk-summary-card>
+                <partial name="_ChildSummaryCard" model="item" />
+            }
 
-                <div class="govuk-!-margin-bottom-4">
-                    <govuk-button-link class="govuk-button--secondary" asp-controller="Introduction" asp-action="ChildName">@Localizer["Add another child"]</govuk-button-link>
-                </div>
+            <div class="govuk-!-margin-bottom-4">
+                <govuk-button-link class="govuk-button--secondary" asp-controller="Introduction" asp-action="ChildName">
+                    @Localizer["Add another child"]
+                </govuk-button-link>
+            </div>
 
-                <h2 class="govuk-heading-m">@Localizer["Your details"]</h2>
-                <govuk-summary-list>
+            <h2 class="govuk-heading-m">@Localizer["Your details"]</h2>
+            <govuk-summary-list>
                 @foreach (var row in Model.UserDetails)
                 {
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>@Localizer[row.Key]</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>@row.Value</govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action
+                                asp-controller="@row.ChangeController"
+                                asp-action="@row.ChangeAction"
+                                asp-route-returnTo="check-your-answers">
+                                @Localizer["Change"]
+                            </govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                }
+            </govuk-summary-list>
+
+            @if(Model.PartnerDetails.Count() != 0)
+            {
+                <h2 class="govuk-heading-m">@Localizer["Your partners details"]</h2>
+                <govuk-summary-list>
+                    @foreach (var row in Model.PartnerDetails)
+                    {
                         <govuk-summary-list-row>
                             <govuk-summary-list-row-key>@Localizer[row.Key]</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>@row.Value</govuk-summary-list-row-value>
                             <govuk-summary-list-row-actions>
-                                <govuk-summary-list-row-action
-                                    asp-controller="@row.ChangeController"
-                                    asp-action="@row.ChangeAction"
-                                    asp-route-returnTo="check-your-answers">
+                                <govuk-summary-list-row-action asp-controller="@row.ChangeController"
+                                                                asp-action="@row.ChangeAction"
+                                                                asp-route-returnTo="check-your-answers">
                                     @Localizer["Change"]
                                 </govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
                         </govuk-summary-list-row>
-                }
+                    }
                 </govuk-summary-list>
-
-                @if(Model.PartnerDetails.Count() != 0)
-                {
-                    <h2 class="govuk-heading-m">@Localizer["Your partners details"]</h2>
-                    <govuk-summary-list>
-                        @foreach (var row in Model.PartnerDetails)
-                        {
-                            <govuk-summary-list-row>
-                                <govuk-summary-list-row-key>@Localizer[row.Key]</govuk-summary-list-row-key>
-                                <govuk-summary-list-row-value>@row.Value</govuk-summary-list-row-value>
-                                <govuk-summary-list-row-actions>
-                                    <govuk-summary-list-row-action asp-controller="@row.ChangeController"
-                                                                   asp-action="@row.ChangeAction"
-                                                                   asp-route-returnTo="check-your-answers">
-                                        @Localizer["Change"]
-                                    </govuk-summary-list-row-action>
-                                </govuk-summary-list-row-actions>
-                            </govuk-summary-list-row>
-                        }
-                    </govuk-summary-list>
-                }
             }
-
+            
             <p class="govuk-body">@Localizer["Click 'Continue' to view your results."]</p>
 
             <govuk-inset-text>
