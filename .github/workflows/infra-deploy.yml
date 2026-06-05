@@ -52,12 +52,6 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       ARM_USE_OIDC: true
       
-      # Backend Configuration
-      BACKEND_RG: ${{ secrets.TF_BACKEND_RG }}
-      BACKEND_STORAGE: ${{ secrets.TF_BACKEND_STORAGE }}
-      BACKEND_CONTAINER: "tfstate"
-      BACKEND_KEY: ${{ secrets.TF_BACKEND_KEY }}
-      
       # Pathing for Artifacts
       DEPLOY_ZIP_PATH: "../../artifacts/webapp-package/webapp.zip"
 
@@ -91,18 +85,14 @@ jobs:
     - name: Terraform Init
       run: |
         terraform init \
-          -backend-config="resource_group_name=$BACKEND_RG" \
-          -backend-config="storage_account_name=$BACKEND_STORAGE" \
-          -backend-config="container_name=$BACKEND_CONTAINER" \
-          -backend-config="key=$BACKEND_KEY" \
-          -backend-config="use_oidc=true"
+          -backend-config="environments/${{ inputs.environment }}.state.config"
 
     - name: Terraform Validate
       run: |
         terraform validate
 
     - name: Terraform Plan
-      run: terraform plan -no-color -out=main.tfplan -var-file="${{ inputs.environment }}.tfvars"
+      run: terraform plan -no-color -out=main.tfplan -var-file="environments/${{ inputs.environment }}.tfvars"
 
     - name: Terraform Apply
       run: terraform apply -auto-approve main.tfplan

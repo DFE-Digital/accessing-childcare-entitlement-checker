@@ -5,7 +5,11 @@ terraform {
       version = "~> 4.52"
     }
   }
-  backend "azurerm" {}
+  backend "azurerm" {
+    container_name       = "tfstate"
+    key                  = "accessing-childcare-entitlement-checker.tfstate"
+    use_oidc             = true
+  }
 }
 
 provider "azurerm" {
