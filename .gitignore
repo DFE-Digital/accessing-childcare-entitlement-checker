@@ -45,9 +45,7 @@ terraform.rc
 # Local environment variables
 .env
 *.env
-# Terraform local state and secrets
-*.tfvars
-!example.tfvars
+# Terraform local state
 terraform.tfstate*
 *.feature.cs
 .terraform.lock.hcl
