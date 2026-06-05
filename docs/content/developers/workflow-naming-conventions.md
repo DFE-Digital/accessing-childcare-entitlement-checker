@@ -1,6 +1,6 @@
 ---
 title: Workflow Naming Conventions
-layout: layout
+layout: sub-navigation
 sectionKey: Developers
 eleventyNavigation:
   key: Workflow Naming Conventions
