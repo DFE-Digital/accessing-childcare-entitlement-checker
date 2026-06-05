@@ -89,10 +89,13 @@ jobs:
 
             # Prepend frontmatter
             echo "---" > zap/frontmatter.txt
-            echo "title: ZAP by Checkmarx Scanning Report" >> zap/frontmatter.txt
+            echo "title: ZAP Scanning Report" >> zap/frontmatter.txt
+            echo "layout: sub-navigation" >> zap/frontmatter.txt
+            echo "sectionKey: Testing" >> zap/frontmatter.txt
             echo "eleventyNavigation:" >> zap/frontmatter.txt
+            echo "  parent: Testing" >> zap/frontmatter.txt
             echo "  key: Scanning Report" >> zap/frontmatter.txt
-            echo "order: 2" >> zap/frontmatter.txt
+            echo "order: 99" >> zap/frontmatter.txt
             echo "---" >> zap/frontmatter.txt
             echo "" >> zap/frontmatter.txt
             cat zap/frontmatter.txt zap/zap-report.md > zap/zap-report-processed.md
