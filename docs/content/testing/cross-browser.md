@@ -48,7 +48,6 @@ Browsers:
 - Native mobile applications
 - Visual regression testing (covered separately)
 
-
 ## Browser Support Matrix
 
 | Browser  | Execution Frequency            | Purpose                  |
@@ -56,7 +55,6 @@ Browsers:
 | Chromium | Every PR, Main branch, Nightly | Primary validation       |
 | Firefox  | Nightly                        | Secondary validation    |
 | WebKit   | Nightly                        | Secondary validation |
-
 
 ## Architecture
 
