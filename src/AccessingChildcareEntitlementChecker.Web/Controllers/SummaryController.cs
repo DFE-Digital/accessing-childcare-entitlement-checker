@@ -37,11 +37,11 @@ public class SummaryController : Controller
     }
 
     [HttpGet]
-    public IActionResult CheckAnswers()
+    public IActionResult CheckAnswers(string? fromChildId = null)
     {
         var summaries = _journeyState.Children.Values.Select(ChildSummaryViewModelFactory).ToList().AsReadOnly();
         var hasChildren = _journeyState.Children.Count > 0;
-        var lastEditedChild = ResolveLastEditedChild(_journeyState, null);
+        var lastEditedChild = ResolveLastEditedChild(_journeyState, fromChildId);
         var state = _journeyState;
 
         var homeBuilder = new SummaryRowFactory(MetadataProvider, "Home", _stringLocalizerFactory)

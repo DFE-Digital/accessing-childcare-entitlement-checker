@@ -100,7 +100,7 @@ public class SummaryRowFactory
 
         var displayValue = GetResourceValueFromViewForLocale("Views.Home.Location", displayKey);
         var label = GetResourceValueFromViewForLocale("Views.Home.Location", "Title");
-        return Add(label, displayValue, "UserLocation");
+        return Add(label, displayValue, "Location");
     }
 
     public SummaryRowFactory AddPartnerAge(AgeRange? partnerAge)

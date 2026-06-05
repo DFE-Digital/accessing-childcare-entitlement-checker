@@ -1,8 +1,11 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models.Summary;
+﻿using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Models.Summary;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using NSubstitute;
+using NSubstitute.Core.Arguments;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -24,6 +27,20 @@ public class SummaryRowFactoryTests
             .GetRequiredService<IModelMetadataProvider>();
 
         var stringLocalizerFactory = Substitute.For<IStringLocalizerFactory>();
+
+        var localizer = Substitute.For<IStringLocalizer>();
+        localizer["Title"].Returns(new LocalizedString("Title", "Test Title"));
+        localizer["Option_Wales"].Returns(new LocalizedString("Option_Wales", "Test Country"));
+        localizer["Option_Under18"].Returns(new LocalizedString("Option_Under18", "Test Age"));
+
+        stringLocalizerFactory
+            .Create("Views.Home.Location", Arg.Any<string>())
+            .Returns(localizer);
+
+        stringLocalizerFactory
+            .Create("Views.Partner.PartnerAge", Arg.Any<string>())
+            .Returns(localizer);
+
         _summaryRowFactory = new SummaryRowFactory(metadataProvider, "Test", stringLocalizerFactory);
     }
 
@@ -39,6 +56,7 @@ public class SummaryRowFactoryTests
         Assert.Equal("Value One", row.Value);
         Assert.Equal("test-action-name", row.ChangeAction);
         Assert.Equal("Test", row.ChangeController);
+        Assert.False(row.IsLocalised);
     }
 
     [Fact]
@@ -69,6 +87,34 @@ public class SummaryRowFactoryTests
         Assert.Equal("Test DateOnly Property Title", row.Key);
         Assert.Equal("1 January 0001", row.Value);
         Assert.Equal("test-action-name", row.ChangeAction);
+        Assert.Equal("Test", row.ChangeController);
+    }
+
+    [Fact]
+    public void ItExtractsTheViewResourcesForLocation()
+    {
+        _summaryRowFactory.AddLocation(CountryOfResidence.Wales);
+        var rows = _summaryRowFactory.ViewModels;
+
+        Assert.Single(rows);
+        var row = rows.First();
+        Assert.Equal("Test Title", row.Key);
+        Assert.Equal("Test Country", row.Value);
+        Assert.Equal("Location", row.ChangeAction);
+        Assert.Equal("Test", row.ChangeController);
+    }
+
+    [Fact]
+    public void ItExtractsTheViewResourcesForPartnerAge()
+    {
+        _summaryRowFactory.AddPartnerAge(AgeRange.UnderEighteen);
+        var rows = _summaryRowFactory.ViewModels;
+
+        Assert.Single(rows);
+        var row = rows.First();
+        Assert.Equal("Test Title", row.Key);
+        Assert.Equal("Test Age", row.Value);
+        Assert.Equal("PartnerAge", row.ChangeAction);
         Assert.Equal("Test", row.ChangeController);
     }
 

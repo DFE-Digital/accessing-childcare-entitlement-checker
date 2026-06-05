@@ -77,6 +77,13 @@ public class SummaryControllerTests
     }
 
     [Fact]
+    public void Remove_Get_Redirects_WhenChildIdNotPassed()
+    {
+        var result = Assert.IsType<RedirectToActionResult>(_controller.Remove((string?)null));
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
+    }
+
+    [Fact]
     public void Remove_Post_WhenNotValidReturns()
     {
         var model = new RemoveChildViewModel { ChildId = childId, Name = "Child A", RemoveConfirmed = null, };
@@ -132,5 +139,13 @@ public class SummaryControllerTests
         Assert.Equal("British or Irish citizen", userDetail.Value);
         Assert.Equal("Nationality", userDetail.ChangeAction);
         Assert.Equal("User", userDetail.ChangeController);
+    }
+
+    [Fact]
+    public void CheckAnswers_ReturnsView_WithFromChild()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers(fromChildId: "child-a"));
+        var model = Assert.IsType<CheckAnswersViewModel>(result.Model);
+        Assert.Equal("child-a", model.LastEditedChild!.ChildId);
     }
 }
