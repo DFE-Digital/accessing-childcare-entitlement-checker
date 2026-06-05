@@ -89,4 +89,11 @@ public class SummaryControllerTests
         Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
         _journeySession.Received(0).Set(_journeyState);
     }
+
+    [Fact]
+    public void CheckAnswers_ReturnsView()
+    {
+        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers());
+        Assert.IsType<CheckAnswersViewModel>(result.Model);
+    }
 }
