@@ -32,3 +32,10 @@ jobs:
     uses: ./.github/workflows/build-terraform.yml
     with:
       terraform-directory: infra/terraform
+
+  terraform-docs:
+    name: Generate Terraform Docs
+    uses: ./.github/workflows/generate-tf-docs.yml
+    with:
+      terraform-directory: infra/terraform
+      output-file: docs/content/architecture/deployed-infrastructure.md
