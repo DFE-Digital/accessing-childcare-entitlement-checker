@@ -391,3 +391,30 @@ resource "azurerm_monitor_diagnostic_setting" "frontdoor_logging" {
     category = "AllMetrics"
   }
 }
+
+
+/*resource "azurerm_application_insights_web_test" "web_app_test" {
+  name                    = "${var.environment-prefix}-web-app-test"
+  description             = "Web application availability test"
+  resource_group_name     = data.azurerm_application_insights.application-insights.resource_group_name
+  location                = data.azurerm_application_insights.application-insights.location
+  application_insights_id = data.azurerm_application_insights.application-insights.id
+  kind                    = "ping"
+  frequency               = 600
+  timeout                 = 60
+  enabled                 = true
+  retry_enabled           = true
+  geo_locations           = ["emea-se-sto-edge", "emea-ru-msa-edge"]
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
+
+  configuration = <<XML
+<WebTest Name="${var.environment-prefix}-web-app-test" Id="${random_uuid.idgen.result}" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="60" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
+  <Items>
+    <Request Method="GET" Guid="${random_uuid.guidgen.result}" Version="1.1" Url="https://${local.host_name}" ThinkTime="0" Timeout="60" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="60" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
+  </Items>
+</WebTest>
+XML
+}*/
