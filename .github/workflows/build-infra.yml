@@ -1,12 +1,12 @@
-name: Build Terraform
+name: Build Infrastructure
 
 on:
   workflow_call:
     inputs:
-      terraform-directory:
+      infra-directory:
         required: true
         type: string
-        default: "infra/terraform"
+        default: "infra"
 
       terraform-version:
         required: false
@@ -19,7 +19,7 @@ on:
         default: false
 
 jobs:
-  terraform:
+  infrastructure:
     name: CI checks
     runs-on: ubuntu-latest
     env:
@@ -70,16 +70,16 @@ jobs:
             --arg terraform "$TERRAFORM_VERSION" \
             --arg runId "$G_RUN_ID" \
             '{commit: $commit, branch: $branch, buildDate: $buildDate, terraform: $terraform, runId: $runId}' \
-            > build-terraform-metadata.json
+            > build-infra-metadata.json
 
       - name: Terraform Init
         run: terraform init -input=false -backend=false
-        working-directory: ${{ inputs.terraform-directory }}
+        working-directory: ${{ inputs.infra-directory }}/terraform
 
       - name: Terraform Format check
         id: fmt
         run: terraform fmt -check
-        working-directory: ${{ inputs.terraform-directory }}
+        working-directory: ${{ inputs.infra-directory }}/terraform
 
       - name: Record fmt result
         if: always()
@@ -95,7 +95,7 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate
-        working-directory: ${{ inputs.terraform-directory }}
+        working-directory: ${{ inputs.infra-directory }}/terraform
 
       - name: Record validate result
         if: always()
@@ -115,7 +115,7 @@ jobs:
         id: checkov
         env:
           WORKSPACE: ${{ github.workspace }}
-          TF_DIR: ${{ inputs.terraform-directory }}
+          TF_DIR: ${{ inputs.infra-directory }}/terraform
         run: |
           mkdir -p "$WORKSPACE/$CHECKOV_RESULTS"
           
@@ -159,14 +159,14 @@ jobs:
       - name: Upload metadata
         uses: actions/upload-artifact@v7
         with:
-          name: build-terraform-metadata
-          path: build-terraform-metadata.json
+          name: build-infra-metadata
+          path: build-infra-metadata.json
 
-      - name: Create Terraform package
+      - name: Create infrastructure package
         if: inputs.publish
-        working-directory: ${{ inputs.terraform-directory }}
+        working-directory: ${{ inputs.infra-directory }}
         run: |
-          zip -r terraform-package.zip .
+          zip -r infra-package.zip .
 
       - name: Record package status
         if: always()
@@ -179,12 +179,12 @@ jobs:
             echo "PACKAGE=skipped" >> $GITHUB_ENV
           fi
 
-      - name: Upload Terraform package
+      - name: Upload infra package
         if: inputs.publish
         uses: actions/upload-artifact@v7
         with:
-          name: terraform-package
-          path: ${{ inputs.terraform-directory }}/terraform-package.zip
+          name: infra-package
+          path: ${{ inputs.infra-directory }}/infra-package.zip
 
       - name: Add summary
         if: always()
