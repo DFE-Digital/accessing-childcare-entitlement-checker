@@ -347,8 +347,8 @@ public class JourneyStateToEntitlementRequestMapper
 
             null => null,
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(relationship))
+            _ => throw new InvalidOperationException(
+                $"Unexpected relationship value: {relationship}")
         };
     }
 

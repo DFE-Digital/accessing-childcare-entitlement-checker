@@ -13,7 +13,7 @@ public static class DerivedContextBuilder
         var children = request.Children
             .Select(child => BuildChildFacts(child, today))
             .ToList();
-        var household = BuildHouseholdFacts(request, user, partner);
+        var household = BuildHouseholdFacts(request);
 
         return new DerivedContext
         {
@@ -25,9 +25,7 @@ public static class DerivedContextBuilder
     }
 
     private static HouseholdFacts BuildHouseholdFacts(
-        EntitlementRequest request,
-        PersonFacts user,
-        PersonFacts? partner)
+        EntitlementRequest request)
     {
         return new HouseholdFacts
         {
