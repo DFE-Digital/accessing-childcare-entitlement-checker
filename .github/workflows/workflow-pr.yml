@@ -31,7 +31,7 @@ jobs:
     name: Validate Infrastructure
     uses: ./.github/workflows/build-infra.yml
     with:
-      terraform-directory: infra/terraform
+      infra-directory: infra
 
   terraform-docs:
     name: Generate Terraform Docs
@@ -39,5 +39,4 @@ jobs:
     with:
       terraform-directory: infra/terraform
       output-file: docs/content/architecture/deployed-infrastructure.md
-      infra-directory: infra
 
