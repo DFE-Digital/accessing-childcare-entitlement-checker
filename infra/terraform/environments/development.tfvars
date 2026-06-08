@@ -1,0 +1,5 @@
+elz_environment        = "Dev"
+environment_prefix     = "d01"
+aspnetcore_environment = "Development"
+webapp_sku             = "B1"
+azure_frontdoor_scale  = "Standard"

@@ -1,0 +1,93 @@
+targetScope = 'resourceGroup'
+
+param storageAccountName string
+param location string
+param tags object = {}
+param storageAccountSku string = 'Standard_ZRS'
+param workspaceName string
+
+resource law 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
+  name: workspaceName
+  location: location
+  tags: tags
+  properties: {
+    retentionInDays: 90
+    sku: {
+      name: 'PerGB2018'
+    }
+  }
+}
+
+resource sa 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  name: storageAccountName
+  location: location
+  tags: tags
+
+  sku: {
+    name: storageAccountSku
+  }
+
+  kind: 'StorageV2'
+
+  properties: {
+    minimumTlsVersion: 'TLS1_2'
+    supportsHttpsTrafficOnly: true
+    allowSharedKeyAccess: false
+    publicNetworkAccess: 'Disabled'
+  }
+}
+
+resource blob 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
+  name: 'default'
+  parent: sa
+
+  properties: {
+    isVersioningEnabled: true
+
+    deleteRetentionPolicy: {
+      enabled: true
+      days: 14
+    }
+
+    containerDeleteRetentionPolicy: {
+      enabled: true
+      days: 14
+    }
+  }
+}
+
+resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = {
+  name: 'tfstate'
+  parent: blob
+}
+
+resource blobDiagnostics 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+   name: '${storageAccountName}-blob-diag'
+   scope: blob
+
+   properties: {
+     workspaceId: law.id
+
+     logs: [
+       {
+         category: 'StorageRead'
+         enabled: true
+       }
+       {
+         category: 'StorageWrite'
+         enabled: true
+       }
+       {
+         category: 'StorageDelete'
+         enabled: true
+       }
+     ]
+
+     metrics: [
+       {
+         category: 'Transaction'
+         enabled: true
+       }
+     ]
+   }
+ }

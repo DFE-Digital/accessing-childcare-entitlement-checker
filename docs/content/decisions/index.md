@@ -61,6 +61,11 @@ decisions:
     data:
       date: 2026-05-29
       title: Documentation publication strategy
+  - url: "/decisions/0011-bootstrap-tf"
+    date: 2026-06-08
+    data:
+      date: 2026-06-08
+      title: Bootstrap Terraform State Storage in Azure
 ---
 
 We record all significant decisions made during the development of this service. These records, also known as Architectural Decision Records (ADRs), capture the context, options considered, and the final decision.

@@ -11,6 +11,7 @@ Information about the testing strategy, automated testing patterns, and quality 
 In this section, you will find:
 
 - Test Strategy: Our comprehensive approach to quality assurance, including the testing pyramid, tooling (xUnit, Playwright, Reqnroll), and CI/CD integration.
+- Accessibility Test Plan: Detailed strategy for verifying WCAG 2.2 AA compliance through automated and manual testing.
 - Security Reports: Automated security scan results from OWASP ZAP, detailing identified vulnerabilities and mitigation status.
 
 Use the navigation menu to explore our testing and quality documentation.
