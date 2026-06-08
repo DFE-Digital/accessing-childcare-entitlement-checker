@@ -5,9 +5,6 @@ on:
     branches:
       - 'releases/**'
 
-permissions:
-  contents: write
-
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: true
@@ -16,6 +13,8 @@ jobs:
   version:
     name: Determine Version
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     outputs:
       version: ${{ steps.version.outputs.version }}
@@ -78,48 +77,44 @@ jobs:
           git tag "$VERSION"
           git push origin "$VERSION"
 
-#  build-dotnet:
-#    name: Build Dotnet
-#    needs: version
-#    uses: ./.github/workflows/build-dotnet.yml
-#    with:
-#      publish: true
-#      version: ${{ needs.version.outputs.version }}
-#    secrets:
-#      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#
-#  build-tf:
-#    name: Build Terraform
-#    needs: version
-#    uses: ./.github/workflows/build-terraform.yml
-#    with:
-#      terraform-directory: infra/terraform
-#      publish: true
-#      version: ${{ needs.version.outputs.version }}
-#
-#  deploy-stage:
-#    name: Deploy Staging
-#    needs: [version, build-dotnet, build-tf]
-#    uses: ./.github/workflows/deploy-environment.yml
-#    with:
-#      environment: staging
-#      version: ${{ needs.version.outputs.version }}
-#    secrets:
-#      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-#      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-#      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-#      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
-#
-#  e2e-tests:
-#    name: E2E Tests
-#    needs: [deploy-stage]
-#    uses: ./.github/workflows/run-e2e-tests.yml
-#    with:
-#      SUT: ${{ needs.deploy-stage.outputs.deploy_url }}
-#      environment: test
-#      version: ${{ needs.version.outputs.version }}
-#    secrets:
-#      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+  build-dotnet:
+    name: Build Dotnet
+    needs: version
+    uses: ./.github/workflows/build-dotnet.yml
+    with:
+      publish: true
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  build-infra:
+    name: Build Infrastructure
+    needs: version
+    uses: ./.github/workflows/build-infra.yml
+    with:
+      infra-directory: infra
+      publish: true
+
+  deploy-stage:
+    name: Deploy Staging
+    needs: [version, build-dotnet, build-infra]
+    uses: ./.github/workflows/deploy-environment.yml
+    with:
+      environment: staging
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+
+  e2e-tests:
+    name: E2E Tests
+    needs: [deploy-stage]
+    uses: ./.github/workflows/run-e2e-tests.yml
+    with:
+      SUT: ${{ needs.deploy-stage.outputs.deploy_url }}
+      environment: staging
+    secrets:
+      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
 #
 #  a11y-tests:
 #    name: A11y Tests
@@ -150,8 +145,10 @@ jobs:
 
   github-release:
     name: Create GitHub Release
-    needs: [version ]
+    needs: [version, deploy-stage ]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Create Release
         uses: softprops/action-gh-release@v2
