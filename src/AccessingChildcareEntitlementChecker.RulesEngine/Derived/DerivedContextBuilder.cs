@@ -34,7 +34,7 @@ public static class DerivedContextBuilder
             HasPartner = request.Household.HasPartner,
 
             ReceivesUniversalCredit = request.Household.ReceivesUniversalCredit,
-            
+
             HasAccessToPublicFunds =
                 HasAccessToPublicFunds(request.User) ||
                 request.Partner is not null &&

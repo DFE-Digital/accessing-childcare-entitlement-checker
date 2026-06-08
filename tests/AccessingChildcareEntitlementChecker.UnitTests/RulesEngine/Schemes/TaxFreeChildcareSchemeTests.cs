@@ -151,7 +151,7 @@ public class TaxFreeChildcareSchemeTests
             {
                 HasPartner = true,
                 HasAccessToPublicFunds = true,
-                ReceivesUniversalCredit =  true
+                ReceivesUniversalCredit = true
             },
 
             User = new PersonFacts

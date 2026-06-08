@@ -88,8 +88,8 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
         DerivedContext context)
     {
         return
-            context.Household.ReceivesUniversalCredit || 
-            PersonReceivesQualifyingBenefit(context.User) || 
+            context.Household.ReceivesUniversalCredit ||
+            PersonReceivesQualifyingBenefit(context.User) ||
             context.Partner is not null && PersonReceivesQualifyingBenefit(context.Partner);
     }
 

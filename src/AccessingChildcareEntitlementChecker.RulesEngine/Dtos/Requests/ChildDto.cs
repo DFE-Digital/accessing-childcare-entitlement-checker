@@ -4,7 +4,7 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Requests;
 
 public class ChildDto
 {
-    public string ChildId { get; set; }
+    public string? ChildId { get; set; }
     public string Name { get; set; } = string.Empty;
     public BirthStatus? BirthStatus { get; set; }
     public DateOnly? DateOfBirth { get; set; }

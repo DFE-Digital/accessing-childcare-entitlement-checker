@@ -13,7 +13,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Mappers;
 
 public class JourneyStateToEntitlementRequestMapper
 {
-    
+
     public EntitlementRequest Map(
         JourneyState journeyState)
     {
@@ -25,7 +25,7 @@ public class JourneyStateToEntitlementRequestMapper
             Children = MapChildren(journeyState)
         };
     }
-    
+
     private static HouseholdDto MapHousehold(JourneyState journeyState)
     {
         return new HouseholdDto
@@ -59,7 +59,7 @@ public class JourneyStateToEntitlementRequestMapper
         {
             return null;
         }
-        
+
         return new PersonDto
         {
             AgeRange = MapAgeRange(journeyState.PartnerAge),
@@ -101,7 +101,7 @@ public class JourneyStateToEntitlementRequestMapper
             ChildRelatedBenefits = MapChildBenefits(child)
         };
     }
-    
+
     private static CountryOfResidence?
         MapCountryOfResidence(Web.Models.CountryOfResidence? country)
     {
@@ -157,7 +157,7 @@ public class JourneyStateToEntitlementRequestMapper
             _ => throw new ArgumentOutOfRangeException(nameof(paidWork))
         };
     }
-    
+
     private static bool? MapPaidWork(PartnerPaidWorkOption? paidWork)
     {
         return paidWork switch
@@ -168,7 +168,7 @@ public class JourneyStateToEntitlementRequestMapper
             _ => throw new ArgumentOutOfRangeException(nameof(paidWork))
         };
     }
-    
+
 
     private static WorkStatus MapWorkStatus(WorkStatusOption workStatus)
     {
@@ -194,7 +194,7 @@ public class JourneyStateToEntitlementRequestMapper
         {
             BenefitsOption.CarersAllowance =>
                 PersonBenefit.CarersAllowance,
-            
+
             BenefitsOption.ContributionBasedEmploymentAndSupportAllowance =>
                 PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
 
@@ -206,16 +206,16 @@ public class JourneyStateToEntitlementRequestMapper
 
             BenefitsOption.IncapacityBenefit =>
                 PersonBenefit.IncapacityBenefit,
-            
+
             BenefitsOption.LimitedCapabilityForWork =>
                 PersonBenefit.LimitedCapabilityForWork,
 
             BenefitsOption.LimitedCapabilityForWorkRelatedActivity =>
                 PersonBenefit.LimitedCapabilityForWorkRelatedActivity,
-            
+
             BenefitsOption.SevereDisablementAllowance =>
                 PersonBenefit.SevereDisablementAllowance,
-            
+
 
             BenefitsOption.None =>
                 null,
@@ -226,7 +226,7 @@ public class JourneyStateToEntitlementRequestMapper
                 null)
         };
     }
-    
+
     private static PersonBenefit? MapPersonBenefit(
         PartnerBenefitsOption benefit)
     {
@@ -249,10 +249,10 @@ public class JourneyStateToEntitlementRequestMapper
                 nameof(childcareSupport),
                 childcareSupport,
                 null)
-            
+
         };
     }
-    
+
     private static ChildcareSupport MapPartnerChildcareSupport(PartnerChildcareSupportOption partnerChildcareSupport)
     {
         return partnerChildcareSupport switch
@@ -282,7 +282,7 @@ public class JourneyStateToEntitlementRequestMapper
 
             NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland =>
                 Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
-            
+
             null => null,
 
             _ => throw new ArgumentOutOfRangeException(
@@ -291,23 +291,23 @@ public class JourneyStateToEntitlementRequestMapper
                 null)
         };
     }
-    
+
     private static bool? MapSettledStatus(
         SettledStatusOption? settledStatus)
     {
         return settledStatus switch
         {
             SettledStatusOption.Yes or SettledStatusOption.StillWaiting => true,
-            
-            SettledStatusOption.No  => false,
-            
+
+            SettledStatusOption.No => false,
+
             null => null,
-            
+
             _ => throw new ArgumentOutOfRangeException(
                 nameof(settledStatus))
         };
     }
-    
+
     private static BirthStatus? MapBirthStatus(
         Models.BirthStatus? birthStatus)
     {
@@ -325,7 +325,7 @@ public class JourneyStateToEntitlementRequestMapper
                 nameof(birthStatus))
         };
     }
-    
+
     private static RelationshipToChild? MapRelationship(
         Child child)
     {
@@ -351,7 +351,7 @@ public class JourneyStateToEntitlementRequestMapper
                 nameof(relationship))
         };
     }
-    
+
     private static List<ChildRelatedBenefit> MapChildBenefits(
         Child child)
     {

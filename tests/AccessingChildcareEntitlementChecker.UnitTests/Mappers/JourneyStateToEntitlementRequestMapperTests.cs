@@ -44,7 +44,7 @@ public class JourneyStateToEntitlementRequestMapperTests
             PaidWork = PaidWorkOption.Yes,
             PartnerAge = AgeRange.TwentyOneOrOver,
             PartnerPaidWork = PartnerPaidWorkOption.Yes,
-            PartnerBenefits = 
+            PartnerBenefits =
             [
                  PartnerBenefitsOption.ContributionBasedEmploymentAndSupportAllowance
             ],
@@ -55,16 +55,16 @@ public class JourneyStateToEntitlementRequestMapperTests
             }
         };
     }
-    
+
     [Fact]
     public void Map_WhenJourneyStateIsPopulated_MapsEntitlementRequest()
     {
         var mapper = new JourneyStateToEntitlementRequestMapper();
 
         var journeyState = CreateJourneyState();
-        
+
         var result = mapper.Map(journeyState);
-        
+
         Assert.NotNull(result);
 
         // Household
@@ -96,7 +96,7 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Equal(RelationshipToChild.Parent, child.RelationshipToChild);
         Assert.Contains(ChildRelatedBenefit.DisabilityLivingAllowance, child.ChildRelatedBenefits);
     }
-    
+
     [Fact]
     public void Map_WhenHasPartnerIsFalse_ReturnsNullPartner()
     {
