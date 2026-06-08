@@ -10,13 +10,6 @@ resource "azurerm_cdn_frontdoor_origin_group" "frontdoor-origin-group" {
   name                     = "${local.service_prefix}-web-fd-origin-group"
   session_affinity_enabled = false
 
-  health_probe {
-    interval_in_seconds = 60
-    protocol            = "Https"
-    request_type        = "GET"
-    path                = "/health"
-  }
-
   load_balancing {
     sample_size                 = 4
     successful_samples_required = 2
@@ -379,11 +372,6 @@ resource "azurerm_monitor_diagnostic_setting" "frontdoor_logging" {
   # Web Application Firewall (WAF) Logs
   enabled_log {
     category = "FrontDoorWebApplicationFirewallLog"
-  }
-
-  # Health Probe Logs
-  enabled_log {
-    category = "FrontDoorHealthProbeLog"
   }
 
   # All Metrics
