@@ -9,13 +9,13 @@ resource "azurerm_service_plan" "web-app-service-plan" {
   tags                   = local.common_tags
 }
 
-#checkov:skip=CKV_AZURE_13: Public website intentionally allows anonymous access
-#checkov:skip=CKV_AZURE_17: Public web application does not require mutual TLS
-#checkov:skip=CKV_AZURE_88: App Service does not require Azure Files content storage
-#checkov:skip=CKV_AZURE_63: HTTP request telemetry is collected via Application Insights and Log Analytics
-#checkov:skip=CKV_AZURE_66: Application Insights provides request tracing and diagnostics
-#checkov:skip=CKV_AZURE_65: Application Insights provides exception tracking and diagnostics
 resource "azurerm_linux_web_app" "web-app-service" {
+  #checkov:skip=CKV_AZURE_13: Public website intentionally allows anonymous access
+  #checkov:skip=CKV_AZURE_17: Public web application does not require mutual TLS
+  #checkov:skip=CKV_AZURE_88: App Service does not require Azure Files content storage
+  #checkov:skip=CKV_AZURE_63: HTTP request telemetry is collected via Application Insights and Log Analytics
+  #checkov:skip=CKV_AZURE_66: Application Insights provides request tracing and diagnostics
+  #checkov:skip=CKV_AZURE_65: Application Insights provides exception tracking and diagnostics
   service_plan_id           = azurerm_service_plan.web-app-service-plan.id
   location                  = local.location
   name                      = "${local.service_prefix}-web-app-service"
