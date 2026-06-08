@@ -70,7 +70,7 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
                 ChildRelatedBenefit.DisabilityLivingAllowance)
 
             || child.ChildRelatedBenefits.Contains(
-                ChildRelatedBenefit.EducationHealthCarePlan)
+                ChildRelatedBenefit.EducationHealthAndCarePlan)
 
             || child.RelationshipToChild == RelationshipToChild.FosterParent;
     }
@@ -88,9 +88,9 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
         DerivedContext context)
     {
         return
-            PersonReceivesQualifyingBenefit(context.User) ||
-            context.Partner is not null &&
-            PersonReceivesQualifyingBenefit(context.Partner);
+            context.Household.ReceivesUniversalCredit || 
+            PersonReceivesQualifyingBenefit(context.User) || 
+            context.Partner is not null && PersonReceivesQualifyingBenefit(context.Partner);
     }
 
     private static bool PersonReceivesQualifyingBenefit(
@@ -102,8 +102,7 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
 
     private static readonly List<PersonBenefit> QualifyingBenefits =
     [
-        PersonBenefit.UniversalCredit,
-        PersonBenefit.EmploymentAndSupportAllowance,
-        PersonBenefit.GuaranteePensionCredit
+        PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
+        PersonBenefit.GuaranteedElementOfPensionCredit
     ];
 }

@@ -75,9 +75,8 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
 
     private static readonly List<PersonBenefit> QualifyingExemptionBenefits =
     [
-        PersonBenefit.CarersAllowanceOrCarerSupportPayment,
-        PersonBenefit.IncapacityBenefit,
-        PersonBenefit.NationalInsuranceCreditsForIncapacity,
-        PersonBenefit.SevereDisablementAllowance
+        PersonBenefit.CarersAllowance,
+        PersonBenefit.LimitedCapabilityForWork,
+        PersonBenefit.LimitedCapabilityForWorkRelatedActivity
     ];
 }

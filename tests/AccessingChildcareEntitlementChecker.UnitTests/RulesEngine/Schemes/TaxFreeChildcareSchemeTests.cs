@@ -119,7 +119,7 @@ public class TaxFreeChildcareSchemeTests
                 IsInPaidWork = false,
                 Benefits =
                 [
-                    PersonBenefit.JobseekersAllowance
+                    PersonBenefit.IncapacityBenefit
                 ]
             },
 
@@ -141,7 +141,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenBothParentsWorkingAndPartnerReceivesUniversalCredit_ReturnsNull()
+    public void Evaluate_WhenBothParentsWorkingAndHouseholdReceivesUniversalCredit_ReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -150,7 +150,8 @@ public class TaxFreeChildcareSchemeTests
             Household = new HouseholdFacts
             {
                 HasPartner = true,
-                HasAccessToPublicFunds = true
+                HasAccessToPublicFunds = true,
+                ReceivesUniversalCredit =  true
             },
 
             User = new PersonFacts
@@ -165,10 +166,6 @@ public class TaxFreeChildcareSchemeTests
                 IsInPaidWork = true,
                 EarnsAboveThreshold = true,
                 ExceedsAdjustedNetIncomeLimit = false,
-                Benefits =
-                [
-                    PersonBenefit.UniversalCredit
-                ]
             }
         };
 
@@ -348,7 +345,7 @@ public class TaxFreeChildcareSchemeTests
                 EarnsAboveThreshold = false,
                 Benefits =
                 [
-                    PersonBenefit.JobseekersAllowance
+                    PersonBenefit.IncapacityBenefit
                 ]
             }
         };

@@ -33,10 +33,8 @@ public static class DerivedContextBuilder
         {
             HasPartner = request.Household.HasPartner,
 
-            ReceivesUniversalCredit =
-                user.Benefits.Contains(PersonBenefit.UniversalCredit)
-                || partner?.Benefits.Contains(PersonBenefit.UniversalCredit) == true,
-
+            ReceivesUniversalCredit = request.Household.ReceivesUniversalCredit,
+            
             HasAccessToPublicFunds =
                 HasAccessToPublicFunds(request.User) ||
                 request.Partner is not null &&
@@ -80,6 +78,7 @@ public static class DerivedContextBuilder
 
         return new ChildFacts
         {
+            ChildId = child.ChildId,
             Name = child.Name,
             IsBorn = child.BirthStatus == BirthStatus.Born,
             DateOfBirth = child.DateOfBirth,
@@ -94,7 +93,6 @@ public static class DerivedContextBuilder
     private static bool HasAccessToPublicFunds(PersonDto person)
     {
         return person.Nationality == Nationality.BritishOrIrishCitizen
-               || person.HasAccessToPublicFunds == true
                || person.HasSettledOrPreSettledStatus == true;
     }
 }

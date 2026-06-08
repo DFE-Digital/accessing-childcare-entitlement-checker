@@ -27,11 +27,7 @@ public class UniversalCreditChildcareSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
-                Benefits =
-                [
-                    PersonBenefit.UniversalCredit
-                ]
+                IsInPaidWork = true
             }
         };
     }
@@ -107,7 +103,7 @@ public class UniversalCreditChildcareSchemeTests
             {
                 IsInPaidWork = true,
                 Benefits = [
-                    PersonBenefit.EmploymentAndSupportAllowance
+                    PersonBenefit.ContributionBasedEmploymentAndSupportAllowance
                 ]
             }
         };
@@ -136,11 +132,7 @@ public class UniversalCreditChildcareSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = false,
-                Benefits =
-                [
-                    PersonBenefit.UniversalCredit
-                ]
+                IsInPaidWork = false
             }
         };
 
@@ -169,10 +161,6 @@ public class UniversalCreditChildcareSchemeTests
             User = new PersonFacts
             {
                 IsInPaidWork = true,
-                Benefits =
-                [
-                    PersonBenefit.UniversalCredit
-                ]
             },
 
             Partner = new PersonFacts
@@ -214,17 +202,13 @@ public class UniversalCreditChildcareSchemeTests
             User = new PersonFacts
             {
                 IsInPaidWork = true,
-                Benefits =
-                [
-                    PersonBenefit.UniversalCredit
-                ]
             },
 
             Partner = new PersonFacts
             {
                 IsInPaidWork = false,
                 Benefits = [
-                    PersonBenefit.JobseekersAllowance
+                    PersonBenefit.ContributionBasedEmploymentAndSupportAllowance
                 ]
             }
         };

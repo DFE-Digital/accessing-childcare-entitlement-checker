@@ -28,7 +28,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
             {
                 Benefits =
                 [
-                    PersonBenefit.UniversalCredit
+                    PersonBenefit.GuaranteedElementOfPensionCredit
                 ]
             }
         };
@@ -137,7 +137,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
             {
                 Benefits =
                 [
-                    PersonBenefit.UniversalCredit
+                    PersonBenefit.GuaranteedElementOfPensionCredit
                 ]
             }
         };
@@ -171,7 +171,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
             {
                 IsInPaidWork = false,
                 Benefits = [
-                    PersonBenefit.UniversalCredit
+                    PersonBenefit.GuaranteedElementOfPensionCredit
                 ]
             }
         };
@@ -217,7 +217,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
             DateOfBirth = new DateOnly(2023, 1, 1),
             AgeInYears = 2,
             ChildRelatedBenefits = [
-                ChildRelatedBenefit.EducationHealthCarePlan
+                ChildRelatedBenefit.EducationHealthAndCarePlan
             ]
         };
 
