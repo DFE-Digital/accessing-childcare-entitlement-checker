@@ -123,7 +123,7 @@ jobs:
             -v "$WORKSPACE/$TF_DIR:/tf" \
             -v "$WORKSPACE/$CHECKOV_RESULTS:/results" \
             bridgecrew/checkov:latest \
-            -d /tf \
+            -d /tf --var-file "/tf/environments/production.tfvars" \
             -o cli \
             -o sarif \
             --output-file-path console,/results/results.sarif \

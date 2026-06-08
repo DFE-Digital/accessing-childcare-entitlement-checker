@@ -25,4 +25,5 @@ locals {
   } : {})
 
   slot_supported_skus = ["P0V3", "P1V3"]
+  use_zone_balancing  = var.webapp_instance_count > 1
 }
