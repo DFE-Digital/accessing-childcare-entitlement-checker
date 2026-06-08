@@ -1,0 +1,14 @@
+{
+  "resourceGroupName": { "value": "s279d01rg-uks-cec-terraform" },
+  "location": { "value": "uksouth" },
+  "storageAccountName" : { "value" : "s279d01tfstatestorage"},
+  "workspaceName" : { "value" : "279d01-uks-cec-law-tf-state"},
+  "tags": {
+    "value": {
+      "Environment": "Dev",
+      "Source": "bicep",
+      "Product": "Improve user journeys in early education and childcare",
+      "Service Offering": "Improve user journeys in early education and childcare"
+    }
+  }
+}

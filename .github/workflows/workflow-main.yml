@@ -20,16 +20,16 @@ jobs:
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  build-tf:
-    name: Build Terraform
-    uses: ./.github/workflows/build-terraform.yml
+  build-infra:
+    name: Build Infrastructure
+    uses: ./.github/workflows/build-infra.yml
     with:
-      terraform-directory: infra/terraform
+      infra-directory: infra
       publish: true
 
   deploy-dev:
     name: Deploy Development
-    needs: [build-dotnet, build-tf]
+    needs: [build-dotnet, build-infra]
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment: development
@@ -41,7 +41,7 @@ jobs:
 
   deploy-test:
     name: Deploy Test
-    needs: [build-dotnet, build-tf]
+    needs: [build-dotnet, build-infra]
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment: test

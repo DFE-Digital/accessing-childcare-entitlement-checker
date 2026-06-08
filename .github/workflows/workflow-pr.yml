@@ -27,11 +27,11 @@ jobs:
 #    needs: validate-dotnet
 #    uses: ./.github/workflows/run-a11y-tests.yml
 
-  validate-tf:
-    name: Validate Terraform
-    uses: ./.github/workflows/build-terraform.yml
+  validate-infra:
+    name: Validate Infrastructure
+    uses: ./.github/workflows/build-infra.yml
     with:
-      terraform-directory: infra/terraform
+      infra-directory: infra
 
   terraform-docs:
     name: Generate Terraform Docs
@@ -39,3 +39,4 @@ jobs:
     with:
       terraform-directory: infra/terraform
       output-file: docs/content/architecture/deployed-infrastructure.md
+
