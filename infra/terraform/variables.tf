@@ -37,3 +37,14 @@ variable "webapp_sku" {
   type        = string
   default     = "B1"
 }
+
+variable "webapp_instance_count" {
+  description = "The number of instances for the web app"
+  type        = number
+  default     = 1
+}
+
+variable "enable_staging_slot" {
+  type    = bool
+  default = false
+}
