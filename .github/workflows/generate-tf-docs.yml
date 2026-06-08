@@ -48,6 +48,6 @@ jobs:
           
           git add "${{ inputs.output-file }}"
           
-          git commit -m "docs(terraform): update generated documentation [skip ci]"
+          git commit -m "docs(terraform): update generated documentation"
           
           git push
