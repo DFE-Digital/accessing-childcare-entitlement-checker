@@ -1,0 +1,161 @@
+name: Release Pipeline
+
+on:
+  push:
+    branches:
+      - 'releases/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  version:
+    name: Determine Version
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate release branch
+        id: branch
+        shell: bash
+        run: |
+          BRANCH="${GITHUB_REF_NAME}"
+
+          if [[ ! "$BRANCH" =~ ^releases/v([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Invalid release branch name: $BRANCH"
+            echo "Expected format: releases/vX.X"
+            exit 1
+          fi
+
+          echo "major=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+          echo "minor=${BASH_REMATCH[2]}" >> "$GITHUB_OUTPUT"
+
+      - name: Determine next patch version
+        id: version
+        shell: bash
+        run: |
+          PREFIX="v${{ steps.branch.outputs.major }}.${{ steps.branch.outputs.minor }}"
+
+          git fetch --tags
+
+          LATEST=$(
+            git tag \
+              -l "${PREFIX}.*" \
+              --sort=-version:refname \
+            | head -n 1
+          )
+
+          if [ -z "$LATEST" ]; then
+            VERSION="${PREFIX}.0"
+          else
+            PATCH=$(( ${LATEST##*.} + 1 ))
+            VERSION="${PREFIX}.${PATCH}"
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          echo "Calculated version: $VERSION"
+
+      - name: Create tag
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Tag already exists: $VERSION"
+            exit 1
+          fi
+
+          git tag "$VERSION"
+          git push origin "$VERSION"
+
+#  build-dotnet:
+#    name: Build Dotnet
+#    needs: version
+#    uses: ./.github/workflows/build-dotnet.yml
+#    with:
+#      publish: true
+#      version: ${{ needs.version.outputs.version }}
+#    secrets:
+#      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#
+#  build-tf:
+#    name: Build Terraform
+#    needs: version
+#    uses: ./.github/workflows/build-terraform.yml
+#    with:
+#      terraform-directory: infra/terraform
+#      publish: true
+#      version: ${{ needs.version.outputs.version }}
+#
+#  deploy-stage:
+#    name: Deploy Staging
+#    needs: [version, build-dotnet, build-tf]
+#    uses: ./.github/workflows/deploy-environment.yml
+#    with:
+#      environment: staging
+#      version: ${{ needs.version.outputs.version }}
+#    secrets:
+#      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+#      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+#      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+#      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+#
+#  e2e-tests:
+#    name: E2E Tests
+#    needs: [deploy-stage]
+#    uses: ./.github/workflows/run-e2e-tests.yml
+#    with:
+#      SUT: ${{ needs.deploy-stage.outputs.deploy_url }}
+#      environment: test
+#      version: ${{ needs.version.outputs.version }}
+#    secrets:
+#      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+#
+#  a11y-tests:
+#    name: A11y Tests
+#    runs-on: ubuntu-latest
+#    needs: [deploy-stage]
+#
+#    steps:
+#      - name: Run a11y tests
+#        run: |
+#          echo "Running a11y tests"
+#
+#  deploy-prod:
+#    name: Deploy Production
+#    needs:
+#      - version
+#      - e2e-tests
+#      - a11y-tests
+#
+#    uses: ./.github/workflows/deploy-environment.yml
+#    with:
+#      environment: production
+#      version: ${{ needs.version.outputs.version }}
+#    secrets:
+#      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+#      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+#      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+#      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+
+  github-release:
+    name: Create GitHub Release
+    needs: [version ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.version.outputs.version }}
+          name: Release ${{ needs.version.outputs.version }}
+          body: Successfully deployed to production.
