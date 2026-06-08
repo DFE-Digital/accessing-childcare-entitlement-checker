@@ -5,9 +5,17 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using AccessingChildcareEntitlementChecker.RulesEngine.Services;
 using AccessingChildcareEntitlementChecker.RulesEngine.Extensions;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
+
+var appInsightsConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
+if (!string.IsNullOrEmpty(appInsightsConnectionString))
+{
+    services.AddOpenTelemetry().UseAzureMonitor();
+}
+
 services
     .AddLocalization(options => options.ResourcesPath = "Resources")
     .AddDistributedMemoryCache()
