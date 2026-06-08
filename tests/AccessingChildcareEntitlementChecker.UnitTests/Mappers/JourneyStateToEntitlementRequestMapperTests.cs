@@ -124,9 +124,9 @@ public class JourneyStateToEntitlementRequestMapperTests
             ChildSupportOptions =
             [
                 ChildSupport.ArmedForcesIndependencePayment,
-            ChildSupport.CertificateOfVisualImpairment,
-            ChildSupport.EducationHealthAndCarePlan,
-            ChildSupport.PersonalIndependencePayment
+                ChildSupport.CertificateOfVisualImpairment,
+                ChildSupport.EducationHealthAndCarePlan,
+                ChildSupport.PersonalIndependencePayment
             ]
         };
 
@@ -147,20 +147,20 @@ public class JourneyStateToEntitlementRequestMapperTests
             Benefits =
             [
                 BenefitsOption.EmploymentAndSupportAllowance,
-            BenefitsOption.GuaranteedElementOfPensionCredit,
-            BenefitsOption.IncapacityBenefit,
-            BenefitsOption.LimitedCapabilityForWork,
-            BenefitsOption.LimitedCapabilityForWorkRelatedActivity,
-            BenefitsOption.SevereDisablementAllowance,
-            BenefitsOption.None
+                BenefitsOption.GuaranteedElementOfPensionCredit,
+                BenefitsOption.IncapacityBenefit,
+                BenefitsOption.LimitedCapabilityForWork,
+                BenefitsOption.LimitedCapabilityForWorkRelatedActivity,
+                BenefitsOption.SevereDisablementAllowance,
+                BenefitsOption.None
             ],
 
             HasPartner = false,
 
             Children =
-        {
-            [child.ChildId] = child
-        }
+            {
+                [child.ChildId] = child
+            }
         };
 
         var result = mapper.Map(journeyState);
