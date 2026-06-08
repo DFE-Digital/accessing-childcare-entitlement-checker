@@ -146,22 +146,24 @@ public class UserControllerTests
         Assert.Equal(true, result.Model<HasPartnerViewModel>().HasPartner);
     }
 
-    [Fact]
-    public void HasPartner_Post_ValidSelection_SavesState_AndRedirects()
+    [Theory]
+    [InlineData(true, nameof(PartnerController.PartnerAge), "Partner")]
+    [InlineData(false, nameof(SummaryController.CheckAnswers), "Summary")]
+    public void HasPartner_Post_ValidSelection_SavesState_AndRedirects(bool hasPartner, string actionName, string controllerName)
     {
         var model = new HasPartnerViewModel
         {
-            HasPartner = true
+            HasPartner = hasPartner
         };
 
         var result = _controller.HasPartner(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(true, _journeyState.HasPartner);
+        Assert.Equal(hasPartner, _journeyState.HasPartner);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(PartnerController.PartnerAge), redirect.ActionName);
-        Assert.Equal("Partner", redirect.ControllerName);
+        Assert.Equal(actionName, redirect.ActionName);
+        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]

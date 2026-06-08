@@ -1,0 +1,120 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.Partner
+@using AccessingChildcareEntitlementChecker.Web.Models.Summary
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@model CheckAnswersViewModel
+@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
+
+@section BeforeContent {
+    @if (!JourneyState.HasPartner!.Value)
+    {
+        <govuk-back-link asp-controller="User" asp-action="HasPartner">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+    else
+    {
+        if (JourneyState.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
+        {
+            <govuk-back-link asp-controller="Partner" asp-action="PartnerChildcareVoucherReceipt">
+                @Shared["Button_Back"]
+            </govuk-back-link>
+        }
+        else
+        {
+            <govuk-back-link asp-controller="Partner" asp-action="PartnerChildcareSupport">
+                @Shared["Button_Back"]
+            </govuk-back-link>
+        }
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        @if (TempData["RemovedChildName"] is string removedChildName)
+        {
+            <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">@Localizer["Success"]</h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">@Localizer["{0} has been removed", removedChildName]</h3>
+                </div>
+            </div>
+        }
+
+        <h1 class="govuk-heading-l">@Localizer["Check your answers"]</h1>
+
+        <h2 class="govuk-heading-m">@Localizer["Your children"]</h2>
+
+        @if (!Model.HasChildren)
+        {
+            <p class="govuk-body">@Localizer["No children added."]</p>
+            <p class="govuk-body">@Localizer["You must add a child to continue."]</p>
+        }
+        else
+        {
+            @foreach (var item in Model.Children)
+            {
+                <partial name="_ChildSummaryCard" model="item" />
+            }
+
+            <div class="govuk-!-margin-bottom-4">
+                <govuk-button-link class="govuk-button--secondary" asp-controller="Introduction" asp-action="ChildName">
+                    @Localizer["Add another child"]
+                </govuk-button-link>
+            </div>
+
+            <h2 class="govuk-heading-m">@Localizer["Your details"]</h2>
+            <govuk-summary-list>
+                @foreach (var row in Model.UserDetails)
+                {
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>@Localizer[row.Key]</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>@row.Value</govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action
+                                asp-controller="@row.ChangeController"
+                                asp-action="@row.ChangeAction"
+                                asp-route-returnTo="check-your-answers">
+                                @Localizer["Change"]
+                            </govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                }
+            </govuk-summary-list>
+
+            @if(Model.PartnerDetails.Any())
+            {
+                <h2 class="govuk-heading-m">@Localizer["Your partners details"]</h2>
+                <govuk-summary-list>
+                    @foreach (var row in Model.PartnerDetails)
+                    {
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>@Localizer[row.Key]</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>@row.Value</govuk-summary-list-row-value>
+                            <govuk-summary-list-row-actions>
+                                <govuk-summary-list-row-action asp-controller="@row.ChangeController"
+                                                                asp-action="@row.ChangeAction"
+                                                                asp-route-returnTo="check-your-answers">
+                                    @Localizer["Change"]
+                                </govuk-summary-list-row-action>
+                            </govuk-summary-list-row-actions>
+                        </govuk-summary-list-row>
+                    }
+                </govuk-summary-list>
+            }
+            
+            <p class="govuk-body">@Localizer["Click 'Continue' to view your results."]</p>
+
+            <govuk-inset-text>
+                @Localizer["This is not an application, and none of your answers will be stored or shared. It will give you an estimate based on the answers you've provided."]
+            </govuk-inset-text>
+
+            <div class="govuk-!-margin-top-3">
+                <govuk-button-link type="submit" asp-controller="Results" asp-action="Results">@Shared["Button_Continue"]</govuk-button-link>
+            </div>
+        }
+    </div>
+</div>

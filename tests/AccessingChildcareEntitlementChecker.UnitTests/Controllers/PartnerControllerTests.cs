@@ -441,8 +441,8 @@ public class PartnerControllerTests
 
     [Theory]
     [InlineData(PartnerChildcareSupportOption.ChildcareVouchers, "Partner", nameof(PartnerController.PartnerChildcareVoucherReceipt))]
-    [InlineData(PartnerChildcareSupportOption.ChildcareBursaryOrGrant, "CheckAnswers", nameof(CheckAnswersController.CheckAnswers))]
-    [InlineData(PartnerChildcareSupportOption.None, "CheckAnswers", nameof(CheckAnswersController.CheckAnswers))]
+    [InlineData(PartnerChildcareSupportOption.ChildcareBursaryOrGrant, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(PartnerChildcareSupportOption.None, "Summary", nameof(SummaryController.CheckAnswers))]
     public void PartnerChildcareSupport_Post_SavesState_AndRedirects(PartnerChildcareSupportOption option, string controllerName, string actionName)
     {
         var model = new PartnerChildcareSupportViewModel
@@ -486,9 +486,9 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, "CheckAnswers", nameof(CheckAnswersController.CheckAnswers))]
-    [InlineData(ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, "CheckAnswers", nameof(CheckAnswersController.CheckAnswers))]
-    [InlineData(ChildcareVoucherReceiptOption.ThroughSalarySacrifice, "CheckAnswers", nameof(CheckAnswersController.CheckAnswers))]
+    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(ChildcareVoucherReceiptOption.ThroughSalarySacrifice, "Summary", nameof(SummaryController.CheckAnswers))]
     public void PartnerChildcareVoucherReceipt_Post_SavesState_AndRedirects(ChildcareVoucherReceiptOption option, string controllerName, string actionName)
     {
         var model = new PartnerChildcareVoucherReceiptViewModel

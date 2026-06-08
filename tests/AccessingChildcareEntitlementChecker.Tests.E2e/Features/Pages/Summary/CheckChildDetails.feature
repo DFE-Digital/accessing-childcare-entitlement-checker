@@ -1,4 +1,4 @@
-Feature: Check your children's details (First)
+Feature: Check your children's details
 
 Background:
 	Given I am on the childcare entitlement checker website

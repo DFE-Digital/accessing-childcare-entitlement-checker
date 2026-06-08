@@ -1,0 +1,32 @@
+﻿@using AccessingChildcareEntitlementChecker.Web.Models.Summary
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@model ChildSummaryViewModel
+
+<govuk-summary-card>
+    <govuk-summary-card-title>@Model.Name</govuk-summary-card-title>
+    <govuk-summary-card-actions>
+        <govuk-summary-card-action asp-controller="Summary" asp-action="Remove" asp-route-childId="@Model.ChildId">
+            @Localizer["Remove"]
+        </govuk-summary-card-action>
+    </govuk-summary-card-actions>
+    <govuk-summary-list>
+        @foreach (var row in Model.Rows)
+        {
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>@Localizer[row.Key, Model.Name]</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@row.Value</govuk-summary-list-row-value>
+                <govuk-summary-list-row-actions>
+                    <govuk-summary-list-row-action
+                        asp-controller="@row.ChangeController"
+                        asp-action="@row.ChangeAction"
+                        asp-route-returnTo="check-your-childrens-details"
+                        asp-route-childId="@Model.ChildId">
+                        @Localizer["Change"]
+                    </govuk-summary-list-row-action>
+                </govuk-summary-list-row-actions>
+            </govuk-summary-list-row>
+        }
+    </govuk-summary-list>
+</govuk-summary-card>

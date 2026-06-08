@@ -81,8 +81,8 @@ public class BornChildDetailsControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId)!.BirthDate);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
-        Assert.Equal("CheckChildDetails", redirect.ControllerName);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal("Summary", redirect.ControllerName);
     }
 
     [Fact]
@@ -164,8 +164,8 @@ public class BornChildDetailsControllerTests
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
-        Assert.Equal("CheckChildDetails", redirect.ControllerName);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal("Summary", redirect.ControllerName);
     }
 
     [Fact]
@@ -228,8 +228,8 @@ public class BornChildDetailsControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(new[] { ChildSupport.ArmedForcesIndependencePayment }, _journeyState.GetChild(model.ChildId)!.ChildSupportOptions);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(CheckChildDetailsController.CheckChildDetails), redirect.ActionName);
-        Assert.Equal("CheckChildDetails", redirect.ControllerName);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal("Summary", redirect.ControllerName);
     }
 
     [Fact]

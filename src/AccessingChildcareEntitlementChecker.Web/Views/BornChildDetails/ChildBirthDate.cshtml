@@ -7,7 +7,7 @@
 @section BeforeContent {
     @if (Model.ReturnTo == "check-your-childrens-details")
     {
-        <govuk-back-link asp-controller="CheckChildDetails" asp-action="CheckChildDetails">
+        <govuk-back-link asp-controller="Summary" asp-action="CheckChildDetails">
             @Shared["Button_Back"]
         </govuk-back-link>
     }

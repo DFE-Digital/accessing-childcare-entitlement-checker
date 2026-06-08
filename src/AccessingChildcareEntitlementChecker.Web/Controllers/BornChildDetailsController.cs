@@ -42,8 +42,8 @@ public class BornChildDetailsController : Controller
         _journeySession.Set(_journeyState);
         if (model.ReturnTo == "check-your-childrens-details")
         {
-            return this.RedirectTo<CheckChildDetailsController>(
-                nameof(CheckChildDetailsController.CheckChildDetails),
+            return this.RedirectTo<SummaryController>(
+                nameof(SummaryController.CheckChildDetails),
                 new { fromChildId = model.ChildId });
         }
 
@@ -76,8 +76,8 @@ public class BornChildDetailsController : Controller
         _journeySession.Set(_journeyState);
         if (model.ReturnTo == "check-your-childrens-details")
         {
-            return this.RedirectTo<CheckChildDetailsController>(
-                nameof(CheckChildDetailsController.CheckChildDetails),
+            return this.RedirectTo<SummaryController>(
+                nameof(SummaryController.CheckChildDetails),
                 new { fromChildId = model.ChildId });
         }
 
@@ -108,8 +108,8 @@ public class BornChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return this.RedirectTo<CheckChildDetailsController>(
-            nameof(CheckChildDetailsController.CheckChildDetails),
+        return this.RedirectTo<SummaryController>(
+            nameof(SummaryController.CheckChildDetails),
             new { fromChildId = model.ChildId });
     }
 }

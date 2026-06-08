@@ -324,6 +324,6 @@ public class UserController : Controller
             return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerAge));
         }
 
-        return this.RedirectTo<CheckAnswersController>(nameof(CheckAnswersController.CheckAnswers));
+        return this.RedirectTo<SummaryController>(nameof(SummaryController.CheckAnswers));
     }
 }

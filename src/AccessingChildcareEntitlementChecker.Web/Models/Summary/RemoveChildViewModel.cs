@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AccessingChildcareEntitlementChecker.Web.Models.CheckChildDetails;
+namespace AccessingChildcareEntitlementChecker.Web.Models.Summary;
 
 public class RemoveChildViewModel
 {
