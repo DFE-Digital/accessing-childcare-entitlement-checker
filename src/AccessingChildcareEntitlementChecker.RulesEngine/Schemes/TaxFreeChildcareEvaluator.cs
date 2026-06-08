@@ -16,6 +16,7 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
 
         var meetsHouseholdRequirements =
             context.Household.HasAccessToPublicFunds &&
+            !context.Household.ReceivesUniversalCredit &&
             MeetsWorkRequirements(context);
 
         var eligibleNow =
@@ -47,7 +48,7 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
             child.ChildRelatedBenefits.Contains(
                 ChildRelatedBenefit.DisabilityLivingAllowance)
             || child.ChildRelatedBenefits.Contains(
-                ChildRelatedBenefit.EducationHealthCarePlan);
+                ChildRelatedBenefit.EducationHealthAndCarePlan);
 
         int maximumEligibleAgeInYears = childHasEligibleDisability
             ? MaximumEligibleAgeInYearsWithDisability
@@ -77,8 +78,7 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
             person.IsInPaidWork &&
             MeetsMinimumIncomeRequirement(person) &&
             !person.ExceedsAdjustedNetIncomeLimit &&
-            !ReceivesDisqualifyingChildcareSupport(person) &&
-            !ReceivesDisqualifyingBenefit(person);
+            !ReceivesDisqualifyingChildcareSupport(person);
     }
 
     private static bool CoupleMeetsRequirements(
@@ -131,16 +131,7 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
         PersonFacts person)
     {
         return
-            ReceivesDisqualifyingBenefit(person)
-            || ReceivesDisqualifyingChildcareSupport(person);
-    }
-
-    private static bool ReceivesDisqualifyingBenefit(
-        PersonFacts person)
-    {
-        return
-            person.Benefits.Contains(
-                PersonBenefit.UniversalCredit);
+           ReceivesDisqualifyingChildcareSupport(person);
     }
 
     private static bool ReceivesDisqualifyingChildcareSupport(
@@ -163,10 +154,8 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
 
     private static readonly List<PersonBenefit> QualifyingExemptionBenefits =
     [
-        PersonBenefit.CarersAllowanceOrCarerSupportPayment,
-        PersonBenefit.JobseekersAllowance,
-        PersonBenefit.EmploymentAndSupportAllowance,
-        PersonBenefit.NationalInsuranceCreditsForIncapacity,
+        PersonBenefit.CarersAllowance,
+        PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
         PersonBenefit.IncapacityBenefit,
         PersonBenefit.SevereDisablementAllowance
     ];

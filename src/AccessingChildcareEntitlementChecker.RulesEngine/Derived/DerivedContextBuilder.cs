@@ -13,7 +13,7 @@ public static class DerivedContextBuilder
         var children = request.Children
             .Select(child => BuildChildFacts(child, today))
             .ToList();
-        var household = BuildHouseholdFacts(request, user, partner);
+        var household = BuildHouseholdFacts(request);
 
         return new DerivedContext
         {
@@ -25,17 +25,13 @@ public static class DerivedContextBuilder
     }
 
     private static HouseholdFacts BuildHouseholdFacts(
-        EntitlementRequest request,
-        PersonFacts user,
-        PersonFacts? partner)
+        EntitlementRequest request)
     {
         return new HouseholdFacts
         {
             HasPartner = request.Household.HasPartner,
 
-            ReceivesUniversalCredit =
-                user.Benefits.Contains(PersonBenefit.UniversalCredit)
-                || partner?.Benefits.Contains(PersonBenefit.UniversalCredit) == true,
+            ReceivesUniversalCredit = request.Household.ReceivesUniversalCredit,
 
             HasAccessToPublicFunds =
                 HasAccessToPublicFunds(request.User) ||
@@ -80,6 +76,7 @@ public static class DerivedContextBuilder
 
         return new ChildFacts
         {
+            ChildId = child.ChildId,
             Name = child.Name,
             IsBorn = child.BirthStatus == BirthStatus.Born,
             DateOfBirth = child.DateOfBirth,
@@ -94,7 +91,6 @@ public static class DerivedContextBuilder
     private static bool HasAccessToPublicFunds(PersonDto person)
     {
         return person.Nationality == Nationality.BritishOrIrishCitizen
-               || person.HasAccessToPublicFunds == true
                || person.HasSettledOrPreSettledStatus == true;
     }
 }

@@ -2,9 +2,10 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Types
 {
     public enum ChildRelatedBenefit
     {
-        DisabilityLivingAllowance,
-        PersonalIndependencePayment,
+        ArmedForcesIndependencePayment,
         CertificateOfVisualImpairment,
-        EducationHealthCarePlan
+        DisabilityLivingAllowance,
+        EducationHealthAndCarePlan,
+        PersonalIndependencePayment,
     }
 }

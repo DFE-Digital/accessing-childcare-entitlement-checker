@@ -135,12 +135,11 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
 
     private static readonly List<PersonBenefit> QualifyingExemptionBenefits =
     [
-        PersonBenefit.CarersAllowanceOrCarerSupportPayment,
-        PersonBenefit.JobseekersAllowance,
-        PersonBenefit.EmploymentAndSupportAllowance,
-        PersonBenefit.NationalInsuranceCreditsForIncapacity,
         PersonBenefit.IncapacityBenefit,
-        PersonBenefit.SevereDisablementAllowance
+        PersonBenefit.SevereDisablementAllowance,
+        PersonBenefit.CarersAllowance,
+        PersonBenefit.LimitedCapabilityForWork,
+        PersonBenefit.ContributionBasedEmploymentAndSupportAllowance
     ];
 
 }

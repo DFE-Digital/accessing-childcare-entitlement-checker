@@ -15,5 +15,4 @@ public class PersonDto
     public List<ChildcareSupport> ChildcareSupport { get; set; } = [];
     public Nationality? Nationality { get; set; }
     public bool? HasSettledOrPreSettledStatus { get; set; }
-    public bool? HasAccessToPublicFunds { get; set; }
 }

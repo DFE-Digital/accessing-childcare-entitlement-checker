@@ -2,13 +2,13 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Types
 {
     public enum PersonBenefit
     {
-        UniversalCredit,
-        CarersAllowanceOrCarerSupportPayment,
-        GuaranteePensionCredit,
-        JobseekersAllowance,
+        CarersAllowance,
+        ContributionBasedEmploymentAndSupportAllowance,
         EmploymentAndSupportAllowance,
+        GuaranteedElementOfPensionCredit,
         IncapacityBenefit,
-        NationalInsuranceCreditsForIncapacity,
+        LimitedCapabilityForWork,
+        LimitedCapabilityForWorkRelatedActivity,
         SevereDisablementAllowance
     }
 }

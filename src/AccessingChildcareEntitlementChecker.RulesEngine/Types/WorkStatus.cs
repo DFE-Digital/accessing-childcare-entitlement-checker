@@ -2,9 +2,8 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Types
 {
     public enum WorkStatus
     {
-        Employed,
+        PaidEmployment,
         SelfEmployed,
-        Apprentice,
-        CompanyDirectorOrOfficeHolder
+        Apprentice
     }
 }

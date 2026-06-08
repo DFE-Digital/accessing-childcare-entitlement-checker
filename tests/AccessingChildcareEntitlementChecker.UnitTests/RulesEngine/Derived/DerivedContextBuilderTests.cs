@@ -20,7 +20,6 @@ public class DerivedContextBuilderTests
             User = new PersonDto
             {
                 Nationality = Nationality.BritishOrIrishCitizen,
-                HasAccessToPublicFunds = false,
                 HasSettledOrPreSettledStatus = false,
                 Benefits = [],
                 IsInPaidWork = false
