@@ -18,7 +18,8 @@ locals {
   }
 
   web_app_settings = merge({
-    "ASPNETCORE_ENVIRONMENT" = var.aspnetcore_environment
+    "ASPNETCORE_ENVIRONMENT"                = var.aspnetcore_environment
+    "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.application-insights.connection_string
     }, var.aspnetcore_environment != "Production" ? {
     "DevelopmentBasicAuthPassword" = var.development_basic_auth_password
   } : {})
