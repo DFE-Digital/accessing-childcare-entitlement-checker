@@ -112,6 +112,78 @@ public class JourneyStateToEntitlementRequestMapperTests
     }
 
     [Fact]
+    public void Map_WhenAlternativeValuesProvided_MapsEntitlementRequest()
+    {
+        var mapper = new JourneyStateToEntitlementRequestMapper();
+
+        var child = new Child("child-1", "Mia")
+        {
+            BirthStatus = BirthStatus.Due,
+            DueDate = new DateOnly(2026, 1, 1),
+            ExpectedRelationship = Relationship.FosterParent,
+            ChildSupportOptions =
+            [
+                ChildSupport.ArmedForcesIndependencePayment,
+            ChildSupport.CertificateOfVisualImpairment,
+            ChildSupport.EducationHealthAndCarePlan,
+            ChildSupport.PersonalIndependencePayment
+            ]
+        };
+
+        var journeyState = new JourneyState
+        {
+            CountryOfResidence = CountryOfResidence.Wales,
+
+            UserAge = AgeRange.UnderEighteen,
+            PaidWork = PaidWorkOption.No,
+            SettledStatus = SettledStatusOption.StillWaiting,
+            Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland,
+
+            WorkStatus =
+            [
+                WorkStatusOption.Apprentice
+            ],
+
+            Benefits =
+            [
+                BenefitsOption.EmploymentAndSupportAllowance,
+            BenefitsOption.GuaranteedElementOfPensionCredit,
+            BenefitsOption.IncapacityBenefit,
+            BenefitsOption.LimitedCapabilityForWork,
+            BenefitsOption.LimitedCapabilityForWorkRelatedActivity,
+            BenefitsOption.SevereDisablementAllowance,
+            BenefitsOption.None
+            ],
+
+            HasPartner = false,
+
+            Children =
+        {
+            [child.ChildId] = child
+        }
+        };
+
+        var result = mapper.Map(journeyState);
+
+        Assert.Equal(RulesCountryOfResidence.Wales, result.Household.CountryOfResidence);
+        Assert.Equal(RulesAgeRange.UnderEighteen, result.User.AgeRange);
+        Assert.False(result.User.IsInPaidWork);
+        Assert.True(result.User.HasSettledOrPreSettledStatus);
+
+        Assert.Null(result.Partner);
+
+        var mappedChild = Assert.Single(result.Children);
+
+        Assert.Equal(RulesBirthStatus.Due, mappedChild.BirthStatus);
+        Assert.Equal(RelationshipToChild.FosterParent, mappedChild.RelationshipToChild);
+
+        Assert.Contains(ChildRelatedBenefit.ArmedForcesIndependencePayment, mappedChild.ChildRelatedBenefits);
+        Assert.Contains(ChildRelatedBenefit.CertificateOfVisualImpairment, mappedChild.ChildRelatedBenefits);
+        Assert.Contains(ChildRelatedBenefit.EducationHealthAndCarePlan, mappedChild.ChildRelatedBenefits);
+        Assert.Contains(ChildRelatedBenefit.PersonalIndependencePayment, mappedChild.ChildRelatedBenefits);
+    }
+
+    [Fact]
     public void Map_WhenHasPartnerIsFalse_ReturnsNullPartner()
     {
         var mapper = new JourneyStateToEntitlementRequestMapper();
@@ -121,6 +193,22 @@ public class JourneyStateToEntitlementRequestMapperTests
 
         var result = mapper.Map(journeyState);
 
+        Assert.Null(result.Partner);
+    }
+
+    [Fact]
+    public void Map_WhenOptionalValuesAreNull_MapsNulls()
+    {
+        var mapper = new JourneyStateToEntitlementRequestMapper();
+
+        var result = mapper.Map(new JourneyState());
+
+        Assert.Null(result.Household.CountryOfResidence);
+        Assert.Null(result.User.AgeRange);
+        Assert.Null(result.User.IsInPaidWork);
+        Assert.Null(result.User.Nationality);
+        Assert.Null(result.User.HasSettledOrPreSettledStatus);
+        Assert.Empty(result.Children);
         Assert.Null(result.Partner);
     }
 }
