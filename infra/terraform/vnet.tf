@@ -13,34 +13,56 @@ resource "azurerm_network_security_group" "app_nsg" {
   tags                = local.common_tags
 }
 
-resource "azurerm_subnet" "app_subnet" {
-  name                 = "${local.service_prefix}-app-subnet"
-  resource_group_name  = azurerm_resource_group.web-rg.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.0.1.0/24"]
+resource "azapi_resource" "app_subnet" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  name      = "${local.service_prefix}-app-subnet"
+  parent_id = azurerm_virtual_network.vnet.id
 
-  delegation {
-    name = "app-service-delegation"
-    service_delegation {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+  body = {
+    properties = {
+      addressPrefixes = ["10.0.1.0/24"]
+      delegations = [{
+        name = "asp-delegation"
+        properties = {
+          serviceName = "Microsoft.Web/serverFarms"
+        }
+      }]
+      networkSecurityGroup = {
+        id = azurerm_network_security_group.app_nsg.id
+      }
     }
   }
+
+  depends_on = [
+    azurerm_network_security_group.app_nsg,
+    azurerm_virtual_network.vnet
+  ]
 }
 
-resource "azurerm_subnet_network_security_group_association" "app_nsg_association" {
-  subnet_id                 = azurerm_subnet.app_subnet.id
-  network_security_group_id = azurerm_network_security_group.app_nsg.id
+resource "azurerm_network_security_group" "pe_nsg" {
+  name                = "${local.service_prefix}-pe-nsg"
+  location            = local.location
+  resource_group_name = azurerm_resource_group.web-rg.name
+  tags                = local.common_tags
 }
 
-resource "azurerm_subnet" "pe_subnet" {
-  name                 = "${local.service_prefix}-pe-subnet"
-  resource_group_name  = azurerm_resource_group.web-rg.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.0.2.0/24"]
-}
+resource "azapi_resource" "pe_subnet" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  name      = "${local.service_prefix}-private-endpoint-subnet"
+  parent_id = azurerm_virtual_network.vnet.id
 
-resource "azurerm_subnet_network_security_group_association" "pe_nsg_association" {
-  subnet_id                 = azurerm_subnet.pe_subnet.id
-  network_security_group_id = azurerm_network_security_group.app_nsg.id
+  body = {
+    properties = {
+      addressPrefixes = ["10.0.2.0/24"]
+      networkSecurityGroup = {
+        id = azurerm_network_security_group.pe_nsg.id
+      }
+      privateEndpointNetworkPolicies = "NetworkSecurityGroupEnabled"
+    }
+  }
+
+  depends_on = [
+    azurerm_network_security_group.pe_nsg,
+    azurerm_virtual_network.vnet,
+  ]
 }
