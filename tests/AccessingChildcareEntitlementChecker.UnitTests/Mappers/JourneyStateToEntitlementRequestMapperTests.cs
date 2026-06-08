@@ -42,11 +42,21 @@ public class JourneyStateToEntitlementRequestMapperTests
             ],
             Nationality = NationalityOption.BritishOrIrishCitizen,
             PaidWork = PaidWorkOption.Yes,
-            PartnerAge = AgeRange.TwentyOneOrOver,
-            PartnerPaidWork = PartnerPaidWorkOption.Yes,
+            WorkStatus = [
+                WorkStatusOption.PaidEmployment,
+                WorkStatusOption.SelfEmployed
+            ],
+            ChildcareSupport = [
+                ChildcareSupportOption.ChildcareBursaryOrGrant
+            ],
+            PartnerAge = AgeRange.EighteenToTwenty,
+            PartnerPaidWork = PartnerPaidWorkOption.No,
             PartnerBenefits =
             [
                  PartnerBenefitsOption.ContributionBasedEmploymentAndSupportAllowance
+            ],
+            PartnerChildcareSupport = [
+                PartnerChildcareSupportOption.ChildcareVouchers
             ],
 
             Children =
@@ -77,14 +87,18 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Equal(RulesAgeRange.TwentyOneOrOver, result.User.AgeRange);
         Assert.True(result.User.HasSettledOrPreSettledStatus);
         Assert.Contains(PersonBenefit.CarersAllowance, result.User.Benefits);
+        Assert.Contains(WorkStatus.PaidEmployment, result.User.WorkStatuses);
+        Assert.Contains(WorkStatus.SelfEmployed, result.User.WorkStatuses);
         Assert.Equal(Nationality.BritishOrIrishCitizen, result.User.Nationality);
         Assert.True(result.User.IsInPaidWork);
+        Assert.Contains(ChildcareSupport.ChildcareBursaryOrGrant, result.User.ChildcareSupport);
 
         // Partner
         Assert.NotNull(result.Partner);
-        Assert.Equal(RulesAgeRange.TwentyOneOrOver, result.Partner!.AgeRange);
+        Assert.Equal(RulesAgeRange.EighteenToTwenty, result.Partner!.AgeRange);
         Assert.Contains(PersonBenefit.ContributionBasedEmploymentAndSupportAllowance, result.Partner.Benefits);
-        Assert.True(result.Partner.IsInPaidWork);
+        Assert.False(result.Partner.IsInPaidWork);
+        Assert.Contains(ChildcareSupport.ChildcareVouchers, result.Partner.ChildcareSupport);
 
         // Child
         var child = Assert.Single(result.Children);
