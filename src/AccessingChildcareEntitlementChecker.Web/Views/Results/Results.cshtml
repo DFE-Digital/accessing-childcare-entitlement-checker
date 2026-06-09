@@ -1,6 +1,14 @@
 @inject IViewLocalizer Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @using Microsoft.AspNetCore.Mvc.Localization
 @model AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses.EntitlementResponse
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="Summary" asp-action="CheckAnswers">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
 
 <h1 class="govuk-heading-xl">@Localizer["Childcare support you could get"]</h1>
 
