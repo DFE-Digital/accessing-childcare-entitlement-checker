@@ -111,11 +111,7 @@ jobs:
       shell: bash
       run: |
         chmod +x scripts/manage-storage-access.sh
-
-        ./scripts/manage-storage-access.sh \
-        "$ACC_NAME" \
-        "$RG_NAME" \
-        "true"
+        ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "true"
 
     - name: Terraform Init
       run: |
@@ -137,6 +133,8 @@ jobs:
         FRONTDOOR_HOSTNAME=$(terraform output -raw frontdoor_hostname)
         echo "frontdoor_hostname=$FRONTDOOR_HOSTNAME" >> "$GITHUB_OUTPUT"
         echo "deploy_url=https://$FRONTDOOR_HOSTNAME" >> "$GITHUB_OUTPUT"
+        echo "deploy_sa_name=$(terraform output -raw deployment_storage_account_name)" >> "$GITHUB_OUTPUT"
+        echo "deploy_sa_container=$(terraform output -raw deployment_storage_container_name)" >> "$GITHUB_OUTPUT"
 
     - name: Lock Terraform State
       if: ${{ always() }}
@@ -147,11 +145,43 @@ jobs:
       shell: bash
       run: |
         chmod +x scripts/manage-storage-access.sh
+        ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"
 
-        ./scripts/manage-storage-access.sh \
-        "$ACC_NAME" \
-        "$RG_NAME" \
-        "false"
+    - name: Unlock Deployment Storage
+      working-directory: ./infra
+      env:
+        SA_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
+        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
+      shell: bash
+      run: |
+        chmod +x scripts/manage-storage-access.sh
+        ./scripts/manage-storage-access.sh "$SA_NAME" "$RG_NAME" "true"
+
+    - name: Upload Deployment Package
+      env:
+        SA_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
+        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
+        CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
+      run: |
+        SA_KEY=$(az storage account keys list --resource-group "$RG_NAME" --account-name "$SA_NAME" --query "[0].value" -o tsv)
+        az storage blob upload \
+          --account-name "$SA_NAME" \
+          --account-key "$SA_KEY" \
+          --container-name "$CONTAINER" \
+          --name "package-${{ github.sha }}.zip" \
+          --file "$DEPLOY_ZIP_PATH" \
+          --overwrite
+
+    - name: Lock Deployment Storage
+      if: ${{ always() }}
+      working-directory: ./infra
+      env:
+        SA_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
+        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
+      shell: bash
+      run: |
+        chmod +x scripts/manage-storage-access.sh
+        ./scripts/manage-storage-access.sh  "$ACC_NAME" "$RG_NAME" "false"
 
     - name: Deploy package to Web App
       env:

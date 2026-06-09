@@ -9,3 +9,23 @@ output "web_app_name" {
 output "frontdoor_hostname" {
   value = var.custom_domain != "" ? var.custom_domain : azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.host_name
 }
+
+output "deployment_storage_account_name" {
+  value       = azurerm_storage_account.deployment_storage.name
+  description = "The name of the deployment storage account."
+}
+
+output "deployment_storage_container_name" {
+  value       = azurerm_storage_container.deployments.name
+  description = "The name of the deployment blob container."
+}
+
+output "deployment_storage_blob_endpoint" {
+  value       = azurerm_storage_account.deployment_storage.primary_blob_endpoint
+  description = "The primary blob endpoint URL of the deployment storage account."
+}
+
+output "deployment_private_endpoint_ip" {
+  value       = azurerm_private_endpoint.deployment_pe.private_service_connection[0].private_ip_address
+  description = "The private IP address of the deployment storage account private endpoint."
+}

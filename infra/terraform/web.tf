@@ -47,6 +47,12 @@ resource "azurerm_linux_web_app" "web-app-service" {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.app_identity.id]
   }
+
+  lifecycle {
+    ignore_changes = [
+      app_settings["WEBSITE_RUN_FROM_PACKAGE"]
+    ]
+  }
 }
 
 resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
@@ -83,6 +89,9 @@ resource "azurerm_linux_web_app_slot" "staging" {
       condition     = contains(local.slot_supported_skus, upper(var.webapp_sku))
       error_message = "Deployment slots require Standard or higher App Service plans."
     }
+    ignore_changes = [
+      app_settings["WEBSITE_RUN_FROM_PACKAGE"]
+    ]
   }
 
   name                      = "staging"
