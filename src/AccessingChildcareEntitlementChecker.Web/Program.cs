@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using AccessingChildcareEntitlementChecker.RulesEngine.Services;
 using AccessingChildcareEntitlementChecker.RulesEngine.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Mappers;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,9 +35,9 @@ services
 
 services.AddJourneyServices();
 
-services.AddRulesEngine();
+services.AddScoped<JourneyStateToEntitlementRequestMapper>();
 
-services.AddScoped<EntitlementRulesEngine>();
+services.AddRulesEngine();
 
 var app = builder.Build();
 if (!app.Environment.IsProduction())

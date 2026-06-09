@@ -47,7 +47,7 @@ public class JourneyStateToEntitlementRequestMapper
             EarnsAboveThreshold = journeyState.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold,
             ExceedsAdjustedNetIncomeLimit = journeyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold,
             Benefits = journeyState.Benefits.Select(MapPersonBenefit).OfType<PersonBenefit>().ToList(),
-            ChildcareSupport = journeyState.ChildcareSupport.Select(MapChildcareSupport).ToList(),
+            ChildcareSupport = journeyState.ChildcareSupport.Select(MapChildcareSupport).OfType<ChildcareSupport>().ToList(),
             Nationality = MapNationality(journeyState.Nationality),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.SettledStatus),
         };
@@ -69,7 +69,7 @@ public class JourneyStateToEntitlementRequestMapper
             EarnsAboveThreshold = journeyState.PartnerWeeklyEarnings == WeeklyEarningsOption.AboveThreshold,
             ExceedsAdjustedNetIncomeLimit = journeyState.PartnerYearlyEarnings == YearlyEarningsOption.AboveThreshold,
             Benefits = journeyState.PartnerBenefits.Select(MapPersonBenefit).OfType<PersonBenefit>().ToList(),
-            ChildcareSupport = journeyState.PartnerChildcareSupport.Select(MapPartnerChildcareSupport).ToList(),
+            ChildcareSupport = journeyState.PartnerChildcareSupport.Select(MapPartnerChildcareSupport).OfType<ChildcareSupport>().ToList(),
             Nationality = MapNationality(journeyState.PartnerNationality),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.PartnerSettledStatus),
         };
@@ -235,7 +235,7 @@ public class JourneyStateToEntitlementRequestMapper
                 benefit.ToString()));
     }
 
-    private static ChildcareSupport MapChildcareSupport(ChildcareSupportOption childcareSupport)
+    private static ChildcareSupport? MapChildcareSupport(ChildcareSupportOption childcareSupport)
     {
         return childcareSupport switch
         {
@@ -244,6 +244,9 @@ public class JourneyStateToEntitlementRequestMapper
 
             ChildcareSupportOption.ChildcareVouchers =>
                 ChildcareSupport.ChildcareVouchers,
+            
+            ChildcareSupportOption.None =>
+                null,
 
             _ => throw new ArgumentOutOfRangeException(
                 nameof(childcareSupport),
@@ -253,7 +256,7 @@ public class JourneyStateToEntitlementRequestMapper
         };
     }
 
-    private static ChildcareSupport MapPartnerChildcareSupport(PartnerChildcareSupportOption partnerChildcareSupport)
+    private static ChildcareSupport? MapPartnerChildcareSupport(PartnerChildcareSupportOption partnerChildcareSupport)
     {
         return partnerChildcareSupport switch
         {
@@ -262,6 +265,9 @@ public class JourneyStateToEntitlementRequestMapper
 
             PartnerChildcareSupportOption.ChildcareVouchers =>
                 ChildcareSupport.ChildcareVouchers,
+            
+            PartnerChildcareSupportOption.None =>
+                null,
 
             _ => throw new ArgumentOutOfRangeException(
                 nameof(partnerChildcareSupport),

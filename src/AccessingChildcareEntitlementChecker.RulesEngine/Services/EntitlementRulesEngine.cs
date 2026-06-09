@@ -39,6 +39,7 @@ public class EntitlementRulesEngine
             childResults.Add(new ChildResultDto
             {
                 ChildName = child.Name,
+                AgeInYears =  child.AgeInYears,
                 Schemes = schemes
             });
         }
