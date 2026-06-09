@@ -6,6 +6,7 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
+    [ExcludeFromCodeCoverage]
     public class ResultsController : Controller
     {
 
