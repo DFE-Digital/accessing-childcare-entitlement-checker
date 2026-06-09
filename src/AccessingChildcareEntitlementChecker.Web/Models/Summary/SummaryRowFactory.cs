@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Controllers;
+using AccessingChildcareEntitlementChecker.Web.Controllers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
@@ -22,6 +22,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.Summary;
 /// </remarks>
 public class SummaryRowFactory
 {
+    private const string TitleResourceKey = "Title";
     private readonly List<SummaryRowViewModel> _viewModels;
     private readonly IStringLocalizerFactory _stringLocalizerFactory;
 
@@ -99,8 +100,47 @@ public class SummaryRowFactory
         };
 
         var displayValue = GetResourceValueFromViewForLocale("Views.Home.Location", displayKey);
-        var label = GetResourceValueFromViewForLocale("Views.Home.Location", "Title");
+        var label = GetResourceValueFromViewForLocale("Views.Home.Location", TitleResourceKey);
         return Add(label, displayValue, "Location");
+    }
+
+    public SummaryRowFactory AddUserAge(AgeRange? userAge)
+    {
+        if (userAge == null)
+        {
+            return this;
+        }
+
+        var displayKey = userAge switch
+        {
+            AgeRange.UnderEighteen => "Option_Under18",
+            AgeRange.EighteenToTwenty => "Option_18To20",
+            AgeRange.TwentyOneOrOver => "Option_21OrOver",
+            _ => throw new InvalidOperationException($"Unexpected AgeRange value: {userAge}")
+        };
+
+        var displayValue = GetResourceValueFromViewForLocale("Views.User.UserAge", displayKey);
+        var label = GetResourceValueFromViewForLocale("Views.User.UserAge", TitleResourceKey);
+        return Add(label, displayValue, "UserAge");
+    }
+
+    public SummaryRowFactory AddHasPartner(bool? hasPartner)
+    {
+        if (hasPartner == null)
+        {
+            return this;
+        }
+
+        // Comes from shared resources; rather than make an exception, we'll just hard code this for now.
+        var displayValue = hasPartner switch
+        {
+            true => "Yes",
+            false => "No",
+            _ => throw new InvalidOperationException($"Unexpected HasPartner value: {hasPartner}")
+        };
+
+        var label = GetResourceValueFromViewForLocale("Views.User.HasPartner", TitleResourceKey);
+        return Add(label, displayValue, "HasPartner");
     }
 
     public SummaryRowFactory AddPartnerAge(AgeRange? partnerAge)
@@ -119,7 +159,7 @@ public class SummaryRowFactory
         };
 
         var displayValue = GetResourceValueFromViewForLocale("Views.Partner.PartnerAge", displayKey);
-        var label = GetResourceValueFromViewForLocale("Views.Partner.PartnerAge", "Title");
+        var label = GetResourceValueFromViewForLocale("Views.Partner.PartnerAge", TitleResourceKey);
         return Add(label, displayValue, "PartnerAge");
     }
 

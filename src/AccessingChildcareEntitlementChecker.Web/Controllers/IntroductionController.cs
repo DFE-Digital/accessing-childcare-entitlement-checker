@@ -76,11 +76,11 @@ public class IntroductionController : Controller
         {
             return this.RedirectTo<BornChildDetailsController>(
                 nameof(BornChildDetailsController.ChildBirthDate),
-                new { childId = model.ChildId });
+                new { childId = model.ChildId, returnTo = model.ReturnTo });
         }
 
         return this.RedirectTo<ExpectedChildDetailsController>(
             nameof(ExpectedChildDetailsController.ChildDueDate),
-            new { childId = model.ChildId });
+            new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 }

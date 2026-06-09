@@ -53,6 +53,11 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
+
         return model.Nationality switch
         {
             NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => this.RedirectTo<UserController>(nameof(SettledStatus)),
@@ -76,6 +81,11 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
+
         return this.RedirectTo<UserController>(nameof(PaidWork));
     }
 
@@ -95,6 +105,11 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
+
         var redirect = model.PaidWork switch
         {
             PaidWorkOption.Yes => this.RedirectTo<UserController>(nameof(WorkStatus)),
@@ -122,6 +137,10 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
 
         if (model.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
         {
@@ -155,6 +174,10 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
 
         var redirect = model.SelfEmployedDuration switch
         {
@@ -181,6 +204,10 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
 
         var redirect = model.YearlyEarnings switch
         {
@@ -207,6 +234,10 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
 
         var redirect = model.WeeklyEarnings switch
         {
@@ -233,6 +264,10 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
 
         return this.RedirectTo<UserController>(nameof(UserController.Benefits));
     }
@@ -253,6 +288,10 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
 
         return this.RedirectTo<UserController>(nameof(UserController.ChildcareSupport));
     }
@@ -273,6 +312,10 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
 
         if (model.ChildcareSupport.Contains(ChildcareSupportOption.ChildcareVouchers))
         {
@@ -298,6 +341,10 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
 
         return this.RedirectTo<UserController>(nameof(UserController.HasPartner));
     }

@@ -1,4 +1,4 @@
-﻿@using AccessingChildcareEntitlementChecker.Web.Models.Summary
+@using AccessingChildcareEntitlementChecker.Web.Models.Summary
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
@@ -7,7 +7,7 @@
 <govuk-summary-card>
     <govuk-summary-card-title>@Model.Name</govuk-summary-card-title>
     <govuk-summary-card-actions>
-        <govuk-summary-card-action asp-controller="Summary" asp-action="Remove" asp-route-childId="@Model.ChildId">
+        <govuk-summary-card-action asp-controller="Summary" asp-action="Remove" asp-route-childId="@Model.ChildId" asp-route-returnTo="@Model.ReturnTo">
             @Localizer["Remove"]
         </govuk-summary-card-action>
     </govuk-summary-card-actions>
@@ -21,7 +21,7 @@
                     <govuk-summary-list-row-action
                         asp-controller="@row.ChangeController"
                         asp-action="@row.ChangeAction"
-                        asp-route-returnTo="check-your-childrens-details"
+                        asp-route-returnTo="@Model.ReturnTo"
                         asp-route-childId="@Model.ChildId">
                         @Localizer["Change"]
                     </govuk-summary-list-row-action>

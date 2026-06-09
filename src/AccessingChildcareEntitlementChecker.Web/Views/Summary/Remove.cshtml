@@ -1,11 +1,11 @@
-﻿@using AccessingChildcareEntitlementChecker.Web.Models.Summary
+@using AccessingChildcareEntitlementChecker.Web.Models.Summary
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model RemoveChildViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Summary" asp-action="CheckChildDetails">
+    <govuk-back-link asp-controller="Summary" asp-action="@(Model.ReturnTo == ReturnTo.CheckAnswers ? "CheckAnswers" : "CheckChildDetails")">
         @Shared["Button_Back"]
     </govuk-back-link>
 }
@@ -15,6 +15,7 @@
         <form method="post" asp-antiforgery="true" novalidate>
             <input type="hidden" asp-for="ChildId" />
             <input type="hidden" asp-for="Name" />
+            <input type="hidden" asp-for="ReturnTo" />
 
             <govuk-radios for="RemoveConfirmed">
                 <govuk-radios-fieldset>

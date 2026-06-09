@@ -77,7 +77,7 @@
                             <govuk-summary-list-row-action
                                 asp-controller="@row.ChangeController"
                                 asp-action="@row.ChangeAction"
-                                asp-route-returnTo="check-your-answers">
+                                asp-route-returnTo="@ReturnTo.CheckAnswers">
                                 @Localizer["Change"]
                             </govuk-summary-list-row-action>
                         </govuk-summary-list-row-actions>
@@ -97,7 +97,7 @@
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action asp-controller="@row.ChangeController"
                                                                 asp-action="@row.ChangeAction"
-                                                                asp-route-returnTo="check-your-answers">
+                                                                asp-route-returnTo="@ReturnTo.CheckAnswers">
                                     @Localizer["Change"]
                                 </govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>

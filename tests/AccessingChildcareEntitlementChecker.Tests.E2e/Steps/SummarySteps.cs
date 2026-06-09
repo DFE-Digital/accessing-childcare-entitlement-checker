@@ -6,17 +6,30 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.Tests.E2e.Steps;
 
 [Binding]
-public class CheckChildDetailsSteps
+public class SummarySteps
 {
     private Context _context;
 
-    public CheckChildDetailsSteps(Context context)
+    public SummarySteps(Context context)
     {
         _context = context;
     }
 
-    [When("I click the Change link in the {string} panel for {string}")]
-    public async Task WhenIClickTheChangeLinkInThePanelFor(string title, string question)
+    [Given("I do not see a summary list for {string}")]
+    [Then("I do not see a summary list for {string}")]
+    public void ThenIDoNotSeeASummaryListFor(string title)
+    {
+        var heading = _context.Page.GetByRole(AriaRole.Heading, new()
+        {
+            Name = title,
+            Level = 2
+        });
+
+        Expect(heading).Not.ToBeVisibleAsync();
+    }
+
+    [When("I click the Change link in the {string} card for {string}")]
+    public async Task WhenIClickTheChangeLinkInTheCardFor(string title, string question)
     {
         var panel = _context.Page.Locator(".govuk-summary-card")
                 .Filter(new() { HasTextString = title });
@@ -27,8 +40,8 @@ public class CheckChildDetailsSteps
         await summaryRow.GetByRole(AriaRole.Link, new() { Name = "Change" }).ClickAsync();
     }
 
-    [When("I click the Remove link in the {string} panel")]
-    public async Task WhenIClickTheRemoveLinkInThePanel(string title)
+    [When("I click the Remove link in the {string} card")]
+    public async Task WhenIClickTheRemoveLinkInTheCard(string title)
     {
         var panel = _context.Page.Locator(".govuk-summary-card")
                 .Filter(new() { HasTextString = title });
@@ -47,24 +60,41 @@ public class CheckChildDetailsSteps
             .ToBeVisibleAsync();
         await _context.Page.GetByRole(AriaRole.Radio, new() { Name = "Yes" }).CheckAsync();
         await _context.Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
-        await Expect(_context.Page.GetByRole(AriaRole.Heading, new() { Name = $"Check your children's details" }))
-            .ToBeVisibleAsync();
     }
 
-    [Then("I should see one summary panel")]
-    public async Task ThenIShouldSeeOneSummaryPanel()
+    [When("I click the Change link in the {string} summary list for {string}")]
+    public async Task WhenIClickTheChangeLinkInTheSummaryListFor(string title, string question)
+    {
+        var heading = _context.Page.GetByRole(AriaRole.Heading, new()
+        {
+            Name = title,
+            Level = 2
+        });
+
+        var summaryList = heading.Locator(
+            "xpath=following-sibling::*[contains(@class,'govuk-summary-list')][1]"
+        );
+
+        var summaryRow = summaryList.Locator(".govuk-summary-list__row")
+            .Filter(new() { HasTextString = question });
+
+        await summaryRow.GetByRole(AriaRole.Link, new() { Name = "Change" }).ClickAsync();
+    }
+
+    [Then("I should see one summary card")]
+    public async Task ThenIShouldSeeOneSummaryCard()
     {
         await Expect(_context.Page.Locator(".govuk-summary-card")).ToHaveCountAsync(1);
     }
 
-    [Then("I should see {int} summary panels")]
-    public async Task ThenIShouldSeeSummaryPanels(int expectedSummaryPanelCount)
+    [Then("I should see {int} summary cards")]
+    public async Task ThenIShouldSeeSummaryCards(int expectedSummaryCardCount)
     {
-        await Expect(_context.Page.Locator(".govuk-summary-card")).ToHaveCountAsync(expectedSummaryPanelCount);
+        await Expect(_context.Page.Locator(".govuk-summary-card")).ToHaveCountAsync(expectedSummaryCardCount);
     }
 
-    [Then("I should see a summary panel with the title {string} and the following summary:")]
-    public async Task ThenIShouldSeeASummaryPanelWithTheTitleAndTheFollowingSummary(string title, DataTable dataTable)
+    [Then("I should see a summary card with the title {string} and the following summary:")]
+    public async Task ThenIShouldSeeASummaryCardWithTheTitleAndTheFollowingSummary(string title, DataTable dataTable)
     {
         var panel = _context.Page.Locator(".govuk-summary-card")
                 .Filter(new() { HasTextString = title });
@@ -118,5 +148,45 @@ public class CheckChildDetailsSteps
         await Expect(banner).ToBeVisibleAsync();
         await Expect(banner.GetByRole(AriaRole.Heading, new() { Name = "Success" })).ToHaveTextAsync("Success");
         await Expect(banner.Locator(".govuk-notification-banner__content")).ToContainTextAsync(p0);
+    }
+
+    [Then("I should see a summary list for {string} with the following summary:")]
+    public async Task ThenIShouldSeeASummaryListForWithTheFollowingSummary(string title, DataTable dataTable)
+    {
+        var heading = _context.Page.GetByRole(AriaRole.Heading, new()
+        {
+            Name = title,
+            Level = 2
+        });
+
+        var summaryList = heading.Locator(
+            "xpath=following-sibling::*[contains(@class,'govuk-summary-list')][1]"
+        );
+
+        foreach (var row in dataTable.Rows)
+        {
+            var question = row["Question"];
+            var answer = row["Answer"];
+
+            var summaryRow = summaryList.Locator(".govuk-summary-list__row")
+                .Filter(new() { HasTextString = question });
+
+            await Expect(summaryRow).ToBeVisibleAsync();
+
+            await Expect(summaryRow.Locator(".govuk-summary-list__key"))
+                .ToHaveTextAsync(question);
+
+            await Expect(summaryRow.Locator(".govuk-summary-list__value"))
+                .ToHaveTextAsync(answer);
+        }
+    }
+
+    [Then("I do not see a summary row {string}")]
+    public async Task ThenIDoNotSeeASummaryRow(string question)
+    {
+        var summaryRow = _context.Page.Locator(".govuk-summary-list__row")
+                .Filter(new() { HasTextString = question });
+
+        await Expect(summaryRow).Not.ToBeVisibleAsync();
     }
 }

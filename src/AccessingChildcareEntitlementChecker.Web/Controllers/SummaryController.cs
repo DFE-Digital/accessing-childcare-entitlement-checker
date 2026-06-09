@@ -30,7 +30,7 @@ public class SummaryController : Controller
     [HttpGet]
     public ViewResult CheckChildDetails(string? fromChildId = null)
     {
-        var summaries = _journeyState.Children.Values.Select(ChildSummaryViewModelFactory).ToList().AsReadOnly();
+        var summaries = _journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckChildDetails)).ToList().AsReadOnly();
         var hasChildren = _journeyState.Children.Count > 0;
         var lastEditedChild = ResolveLastEditedChild(_journeyState, fromChildId);
         return View(new CheckChildDetailsViewModel(summaries, hasChildren, lastEditedChild));
@@ -39,7 +39,7 @@ public class SummaryController : Controller
     [HttpGet]
     public IActionResult CheckAnswers(string? fromChildId = null)
     {
-        var summaries = _journeyState.Children.Values.Select(ChildSummaryViewModelFactory).ToList().AsReadOnly();
+        var summaries = _journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckAnswers)).ToList().AsReadOnly();
         var hasChildren = _journeyState.Children.Count > 0;
         var lastEditedChild = ResolveLastEditedChild(_journeyState, fromChildId);
         var state = _journeyState;
@@ -48,6 +48,7 @@ public class SummaryController : Controller
             .AddLocation(_journeyState.CountryOfResidence);
 
         var userBuilder = new SummaryRowFactory(MetadataProvider, "User", _stringLocalizerFactory)
+            .AddUserAge(state.UserAge)
             .Add((NationalityViewModel m) => m.Nationality, state.Nationality, nameof(UserController.Nationality))
             .Add((SettledStatusViewModel m) => m.SettledStatus, state.SettledStatus, nameof(UserController.SettledStatus))
             .Add((PaidWorkViewModel m) => m.PaidWork, state.PaidWork, nameof(UserController.PaidWork))
@@ -58,7 +59,8 @@ public class SummaryController : Controller
             .Add((UniversalCreditViewModel m) => m.UniversalCredit, state.UniversalCredit, nameof(UserController.UniversalCredit))
             .Add((BenefitsViewModel m) => m.Benefits, state.Benefits, nameof(UserController.Benefits))
             .Add((ChildcareSupportViewModel m) => m.ChildcareSupport, state.ChildcareSupport, nameof(UserController.ChildcareSupport))
-            .Add((ChildcareVoucherReceiptViewModel m) => m.ChildcareVoucherReceipt, state.ChildcareVoucherReceipt, nameof(UserController.ChildcareVoucherReceipt));
+            .Add((ChildcareVoucherReceiptViewModel m) => m.ChildcareVoucherReceipt, state.ChildcareVoucherReceipt, nameof(UserController.ChildcareVoucherReceipt))
+            .AddHasPartner(state.HasPartner);
 
         var partnerBuilder = new SummaryRowFactory(MetadataProvider, "Partner", _stringLocalizerFactory)
             .AddPartnerAge(state.PartnerAge)
@@ -80,17 +82,18 @@ public class SummaryController : Controller
     }
 
     [HttpGet]
-    public IActionResult Remove(string? childId)
+    public IActionResult Remove(string? childId, string returnTo = ReturnTo.CheckChildDetails)
     {
         if (childId is null || !_journeyState.Children.TryGetValue(childId, out var child))
         {
-            return this.RedirectTo<SummaryController>(nameof(CheckChildDetails));
+            return this.RedirectToReturnTo(returnTo);
         }
 
         return View(new RemoveChildViewModel
         {
             ChildId = childId,
-            Name = child.Name
+            Name = child.Name,
+            ReturnTo = returnTo
         });
     }
 
@@ -104,7 +107,7 @@ public class SummaryController : Controller
 
         if (model.RemoveConfirmed != true)
         {
-            return this.RedirectTo<SummaryController>(nameof(CheckChildDetails));
+            return this.RedirectToReturnTo(model.ReturnTo);
         }
 
         if (_journeyState.Children.Remove(model.ChildId, out var child))
@@ -113,10 +116,10 @@ public class SummaryController : Controller
             _journeySession.Set(_journeyState);
         }
 
-        return this.RedirectTo<SummaryController>(nameof(CheckChildDetails));
+        return this.RedirectToReturnTo(model.ReturnTo);
     }
 
-    private ChildSummaryViewModel ChildSummaryViewModelFactory(Child child)
+    private ChildSummaryViewModel ChildSummaryViewModelFactory(Child child, string returnTo)
     {
         var born = new SummaryRowFactory(MetadataProvider, "BornChildDetails", _stringLocalizerFactory)
             .Add((ChildBirthDateViewModel m) => m.ChildBirthDate, child.BirthDate, nameof(BornChildDetailsController.ChildBirthDate))
@@ -128,7 +131,7 @@ public class SummaryController : Controller
             .Add((ExpectedChildRelationshipViewModel m) => m.ExpectedChildRelationship, child.ExpectedRelationship, nameof(ExpectedChildDetailsController.ExpectedChildRelationship));
 
         var summaryRows = born.ViewModels.Concat(expected.ViewModels).ToList().AsReadOnly();
-        return new ChildSummaryViewModel(child.ChildId, child.Name, summaryRows);
+        return new ChildSummaryViewModel(child.ChildId, child.Name, returnTo, summaryRows);
     }
 
     private static Child? ResolveLastEditedChild(JourneyState journeyState, string? fromChildId)

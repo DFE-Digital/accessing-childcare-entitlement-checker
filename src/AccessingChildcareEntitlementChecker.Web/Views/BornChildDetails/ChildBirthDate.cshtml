@@ -5,9 +5,9 @@
 @model ChildBirthDateViewModel
 
 @section BeforeContent {
-    @if (Model.ReturnTo == "check-your-childrens-details")
+    @if (Model.ReturnTo is not null)
     {
-        <govuk-back-link asp-controller="Summary" asp-action="CheckChildDetails">
+        <govuk-back-link asp-controller="Summary" asp-action="@(Model.ReturnTo == ReturnTo.CheckAnswers ? "CheckAnswers" : "CheckChildDetails")">
             @Shared["Button_Back"]
         </govuk-back-link>
     }

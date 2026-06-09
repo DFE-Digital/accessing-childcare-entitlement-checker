@@ -5,6 +5,8 @@ namespace AccessingChildcareEntitlementChecker.Web.Models;
 
 public class PartnerAgeViewModel
 {
+    public string? ReturnTo { get; set; }
+
     public PartnerAgeViewModel()
     {
 

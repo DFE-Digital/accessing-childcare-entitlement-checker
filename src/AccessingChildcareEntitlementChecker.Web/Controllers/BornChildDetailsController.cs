@@ -1,4 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -40,16 +41,14 @@ public class BornChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == "check-your-childrens-details")
+        if (model.ReturnTo is not null)
         {
-            return this.RedirectTo<SummaryController>(
-                nameof(SummaryController.CheckChildDetails),
-                new { fromChildId = model.ChildId });
+            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
         }
 
         return this.RedirectTo<BornChildDetailsController>(
             nameof(ChildRelationship),
-            new { childId = model.ChildId });
+            new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -74,16 +73,14 @@ public class BornChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == "check-your-childrens-details")
+        if (model.ReturnTo is not null)
         {
-            return this.RedirectTo<SummaryController>(
-                nameof(SummaryController.CheckChildDetails),
-                new { fromChildId = model.ChildId });
+            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
         }
 
         return this.RedirectTo<BornChildDetailsController>(
             nameof(ChildSupport),
-            new { childId = model.ChildId });
+            new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -108,8 +105,6 @@ public class BornChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return this.RedirectTo<SummaryController>(
-            nameof(SummaryController.CheckChildDetails),
-            new { fromChildId = model.ChildId });
+        return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
     }
 }
