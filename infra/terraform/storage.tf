@@ -97,4 +97,5 @@ resource "azurerm_role_assignment" "web_app_storage_reader" {
   scope                = azurerm_storage_account.deployment_storage.id
   role_definition_name = "Storage Blob Data Reader"
   principal_id         = azurerm_user_assigned_identity.app_identity.principal_id
+  principal_type       = "ServicePrincipal"
 }

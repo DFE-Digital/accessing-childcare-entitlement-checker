@@ -1,4 +1,6 @@
 using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 using AccessingChildcareEntitlementChecker.Web;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Localization;
@@ -22,7 +24,10 @@ services
     .AddDistributedMemoryCache()
     .AddSession()
     .AddHttpContextAccessor()
-    .AddGovUkFrontend()
+    .AddGovUkFrontend(options =>
+    {
+        options.GetCspNonceForRequest = context => context.Items["csp-nonce"]?.ToString();
+    })
     .AddHealthChecks();
 
 services
@@ -55,25 +60,6 @@ else
     app.UseHsts();
 }
 
-app.Use(async (context, next) =>
-{
-    context.Response.Headers.XFrameOptions = "DENY";
-    context.Response.Headers.XContentTypeOptions = "nosniff";
-    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
-
-    context.Response.Headers.ContentSecurityPolicy =
-        "default-src 'self'; " +
-        "script-src 'self'; " +
-        "style-src 'self'; " +
-        "img-src 'self' data:; " +
-        "font-src 'self'; " +
-        "object-src 'none'; " +
-        "base-uri 'self'; " +
-        "frame-ancestors 'none';";
-
-    await next();
-});
-
 var supportedCultures = new[] { new CultureInfo("en-GB") };
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
@@ -89,6 +75,30 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     .UseAuthorization()
     .UseExceptionHandler("/Error")
     .UseStatusCodePagesWithReExecute("/error/{0}");
+
+app.Use(async (context, next) =>
+{
+    var bytes = RandomNumberGenerator.GetBytes(12);
+    context.Items["csp-nonce"] = Convert.ToBase64String(bytes);
+
+    context.Response.Headers.XFrameOptions = "DENY";
+    context.Response.Headers.XContentTypeOptions = "nosniff";
+    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+
+    var csp = new StringBuilder();
+    csp.Append("default-src 'self'; ");
+    csp.Append($"script-src 'self' 'nonce-{context.Items["csp-nonce"]}'; ");
+    csp.Append("style-src 'self'; ");
+    csp.Append("img-src 'self' data:; ");
+    csp.Append("font-src 'self'; ");
+    csp.Append("object-src 'none'; ");
+    csp.Append("base-uri 'self'; ");
+    csp.Append("frame-ancestors 'none';");
+
+    context.Response.Headers.ContentSecurityPolicy = csp.ToString();
+
+    await next(context);
+});
 
 app.MapHealthChecks("/health");
 app.MapControllerRoute(
