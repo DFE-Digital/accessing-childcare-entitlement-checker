@@ -1,15 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
+using AccessingChildcareEntitlementChecker.RulesEngine.Services;
+using AccessingChildcareEntitlementChecker.Web.Mappers;
+using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
+    [ExcludeFromCodeCoverage]
     public class ResultsController : Controller
     {
+
+        private readonly JourneyState _journeyState;
+        private readonly JourneyStateToEntitlementRequestMapper _mapper;
+        private readonly EntitlementRulesEngine _rulesEngine;
+
+        public ResultsController(
+            JourneyState journeyState,
+            JourneyStateToEntitlementRequestMapper mapper,
+            EntitlementRulesEngine rulesEngine)
+        {
+            _journeyState = journeyState;
+            _mapper = mapper;
+            _rulesEngine = rulesEngine;
+        }
+
+
         [HttpGet]
-        [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
         public IActionResult Results()
         {
-            return Content("<h1>Childcare support you could get</h1>", "text/html");
+            var request = _mapper.Map(_journeyState);
+
+            var response = _rulesEngine.Evaluate(request, DateOnly.FromDateTime(DateTime.Today));
+
+            return View(response);
         }
     }
 }

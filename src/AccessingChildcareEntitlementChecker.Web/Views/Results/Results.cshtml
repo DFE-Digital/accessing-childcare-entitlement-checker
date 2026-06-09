@@ -1,0 +1,53 @@
+@inject IViewLocalizer Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@using Microsoft.AspNetCore.Mvc.Localization
+@model AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses.EntitlementResponse
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="Summary" asp-action="CheckAnswers">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+
+<h1 class="govuk-heading-xl">@Localizer["Childcare support you could get"]</h1>
+
+<button class="govuk-button" type="button" onclick="window.print()">
+    @Localizer["Print this page"]
+</button>
+
+@foreach (var child in Model.ChildResults)
+{
+    <h2 class="govuk-heading-l">
+        @child.ChildName
+
+        @if (child.AgeInYears != null)
+        {
+            <text>(age: @child.AgeInYears)</text>
+        }
+        else
+        {
+            <text>(due)</text>
+        }
+    </h2>
+
+    @foreach (var scheme in child.Schemes)
+    {
+        <div class="govuk-body">
+            <h3 class="govuk-heading-m">@scheme.SchemeCode</h3>
+
+            <p>Eligible now: @scheme.EligibleNow</p>
+            <p>Eligible in future: @scheme.EligibleInFuture</p>
+
+            @if (scheme.ApplyFromDate is not null)
+            {
+                <p>Apply from: @scheme.ApplyFromDate.Value.ToString("d MMMM yyyy")</p>
+            }
+
+            @if (scheme.UseFromDate is not null)
+            {
+                <p>Use from: @scheme.UseFromDate.Value.ToString("d MMMM yyyy")</p>
+            }
+        </div>
+    }
+}
