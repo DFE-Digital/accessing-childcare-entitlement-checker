@@ -30,6 +30,9 @@ resource "azapi_resource" "app_subnet" {
       networkSecurityGroup = {
         id = azurerm_network_security_group.app_nsg.id
       }
+      serviceEndpoints = [{
+        service = "Microsoft.Storage"
+      }]
     }
   }
 

@@ -24,8 +24,3 @@ output "deployment_storage_blob_endpoint" {
   value       = azurerm_storage_account.deployment_storage.primary_blob_endpoint
   description = "The primary blob endpoint URL of the deployment storage account."
 }
-
-output "deployment_private_endpoint_ip" {
-  value       = azurerm_private_endpoint.deployment_pe.private_service_connection[0].private_ip_address
-  description = "The private IP address of the deployment storage account private endpoint."
-}

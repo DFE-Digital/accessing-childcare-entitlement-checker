@@ -20,6 +20,12 @@ resource "azurerm_storage_account" "deployment_storage" {
       days = 30
     }
   }
+
+  network_rules {
+    default_action             = "Deny"
+    virtual_network_subnet_ids = [azapi_resource.app_subnet.id]
+    bypass                     = ["AzureServices"]
+  }
 }
 
 resource "azurerm_storage_container" "deployments" {
@@ -91,11 +97,4 @@ resource "azurerm_private_endpoint" "deployment_pe" {
   depends_on = [
     azurerm_private_dns_zone_virtual_network_link.blob_dns_link
   ]
-}
-
-resource "azurerm_role_assignment" "web_app_storage_reader" {
-  scope                = azurerm_storage_account.deployment_storage.id
-  role_definition_name = "Storage Blob Data Reader"
-  principal_id         = azurerm_user_assigned_identity.app_identity.principal_id
-  principal_type       = "ServicePrincipal"
 }

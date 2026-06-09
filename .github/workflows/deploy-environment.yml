@@ -150,22 +150,22 @@ jobs:
     - name: Unlock Deployment Storage
       working-directory: ./infra
       env:
-        SA_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
+        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
         RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
       shell: bash
       run: |
         chmod +x scripts/manage-storage-access.sh
-        ./scripts/manage-storage-access.sh "$SA_NAME" "$RG_NAME" "true"
+        ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "true"
 
     - name: Upload Deployment Package
       env:
-        SA_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
+        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
         RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
         CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
       run: |
-        SA_KEY=$(az storage account keys list --resource-group "$RG_NAME" --account-name "$SA_NAME" --query "[0].value" -o tsv)
+        SA_KEY=$(az storage account keys list --resource-group "$RG_NAME" --account-name "$ACC_NAME" --query "[0].value" -o tsv)
         az storage blob upload \
-          --account-name "$SA_NAME" \
+          --account-name "$ACC_NAME" \
           --account-key "$SA_KEY" \
           --container-name "$CONTAINER" \
           --name "package-${{ github.sha }}.zip" \
@@ -176,7 +176,7 @@ jobs:
       if: ${{ always() }}
       working-directory: ./infra
       env:
-        SA_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
+        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
         RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
       shell: bash
       run: |

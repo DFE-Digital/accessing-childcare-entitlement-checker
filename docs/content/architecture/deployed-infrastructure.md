@@ -62,7 +62,6 @@ No modules.
 | [azurerm_private_dns_zone_virtual_network_link.blob_dns_link](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_endpoint.deployment_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.web-rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_role_assignment.web_app_storage_reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_service_plan.web-app-service-plan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan) | resource |
 | [azurerm_storage_account.deployment_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
 | [azurerm_storage_container.deployments](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
@@ -88,7 +87,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_deployment_private_endpoint_ip"></a> [deployment\_private\_endpoint\_ip](#output\_deployment\_private\_endpoint\_ip) | The private IP address of the deployment storage account private endpoint. |
 | <a name="output_deployment_storage_account_name"></a> [deployment\_storage\_account\_name](#output\_deployment\_storage\_account\_name) | The name of the deployment storage account. |
 | <a name="output_deployment_storage_blob_endpoint"></a> [deployment\_storage\_blob\_endpoint](#output\_deployment\_storage\_blob\_endpoint) | The primary blob endpoint URL of the deployment storage account. |
 | <a name="output_deployment_storage_container_name"></a> [deployment\_storage\_container\_name](#output\_deployment\_storage\_container\_name) | The name of the deployment blob container. |
