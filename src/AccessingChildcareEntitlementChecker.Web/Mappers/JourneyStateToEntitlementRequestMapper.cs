@@ -244,7 +244,7 @@ public class JourneyStateToEntitlementRequestMapper
 
             ChildcareSupportOption.ChildcareVouchers =>
                 ChildcareSupport.ChildcareVouchers,
-            
+
             ChildcareSupportOption.None =>
                 null,
 
@@ -265,7 +265,7 @@ public class JourneyStateToEntitlementRequestMapper
 
             PartnerChildcareSupportOption.ChildcareVouchers =>
                 ChildcareSupport.ChildcareVouchers,
-            
+
             PartnerChildcareSupportOption.None =>
                 null,
 
