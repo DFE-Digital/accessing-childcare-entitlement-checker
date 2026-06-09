@@ -54,6 +54,25 @@ else
     app.UseHsts();
 }
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.XFrameOptions = "DENY";
+    context.Response.Headers.XContentTypeOptions = "nosniff";
+    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+
+    context.Response.Headers.ContentSecurityPolicy =
+        "default-src 'self'; " +
+        "script-src 'self'; " +
+        "style-src 'self' 'unsafe-inline'; " +
+        "img-src 'self' data:; " +
+        "font-src 'self'; " +
+        "object-src 'none'; " +
+        "base-uri 'self'; " +
+        "frame-ancestors 'none';";
+
+    await next();
+});
+
 var supportedCultures = new[] { new CultureInfo("en-GB") };
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
