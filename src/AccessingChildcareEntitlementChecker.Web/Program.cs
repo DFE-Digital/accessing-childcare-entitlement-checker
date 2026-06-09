@@ -63,7 +63,7 @@ app.Use(async (context, next) =>
     context.Response.Headers.ContentSecurityPolicy =
         "default-src 'self'; " +
         "script-src 'self'; " +
-        "style-src 'self' 'unsafe-inline'; " +
+        "style-src 'self'; " +
         "img-src 'self' data:; " +
         "font-src 'self'; " +
         "object-src 'none'; " +
