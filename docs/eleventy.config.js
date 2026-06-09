@@ -13,7 +13,6 @@ export default function(eleventyConfig) {
       }
     },
     serviceNavigation: {
-      serviceName: 'Accessing Childcare Entitlement Checker',
       navigation: [
         {
           text: 'Developers',
@@ -30,6 +29,14 @@ export default function(eleventyConfig) {
         {
           text: 'Decisions',
           href: '/decisions/'
+        },
+        {
+          text: 'Operational',
+          href: '/operational/'
+        },
+        {
+          text: 'Runbooks',
+          href: '/runbooks/'
         },
       ]
     },

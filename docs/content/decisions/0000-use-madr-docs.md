@@ -6,7 +6,6 @@ order: 0
 sectionKey: Decisions
 eleventyNavigation:
   parent: Decisions
-
 ---
 
 ## Context and Problem Statement
