@@ -135,6 +135,7 @@ jobs:
         echo "deploy_url=https://$FRONTDOOR_HOSTNAME" >> "$GITHUB_OUTPUT"
         echo "deploy_sa_name=$(terraform output -raw deployment_storage_account_name)" >> "$GITHUB_OUTPUT"
         echo "deploy_sa_container=$(terraform output -raw deployment_storage_container_name)" >> "$GITHUB_OUTPUT"
+        echo "staging_slot_in_use=$(terraform output -raw staging_slot_in_use)" >> "$GITHUB_OUTPUT"
 
     - name: Lock Terraform State
       if: ${{ always() }}
@@ -188,11 +189,30 @@ jobs:
         RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
         APP_NAME: ${{ steps.tf-outputs.outputs.web_app_name }}
       run: |
-        az webapp deploy \
+        DEPLOY_ARGS=(
+          --resource-group "$RG_NAME"
+          --name "$APP_NAME"
+          --src-path "$DEPLOY_ZIP_PATH"
+          --type zip
+        )
+
+        if [ "${{ steps.tf-outputs.outputs.staging_slot_in_use }}" == "true" ]; then
+          DEPLOY_ARGS+=(--slot staging)
+        fi
+
+        az webapp deploy "${DEPLOY_ARGS[@]}"
+
+    - name: Swap Staging to Production
+      if: ${{ steps.tf-outputs.outputs.staging_slot_in_use == 'true' }}
+      env:
+        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
+        APP_NAME: ${{ steps.tf-outputs.outputs.web_app_name }}
+      run: |
+        az webapp deployment slot swap \
           --resource-group "$RG_NAME" \
           --name "$APP_NAME" \
-          --src-path "$DEPLOY_ZIP_PATH" \
-          --type zip
+          --slot staging \
+          --target-slot production
 
     - name: Publish deployment summary
       env:
