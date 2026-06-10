@@ -10,6 +10,9 @@ locals {
   prefix         = "${local.project_id}${var.environment_prefix}"
   service_prefix = "${local.prefix}-${local.location_short_code}-${local.project_short_code}"
 
+  has_custom_domain = var.custom_domain != ""
+  is_premium_fd     = var.azure_frontdoor_scale == "Premium"
+
   common_tags = {
     "Environment"      = var.elz_environment
     "Service Offering" = local.service_offering
