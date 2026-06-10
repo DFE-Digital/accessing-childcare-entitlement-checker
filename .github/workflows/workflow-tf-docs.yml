@@ -1,0 +1,52 @@
+name: Terraform Docs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'infra/terraform/**'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate:
+    name: CI generate docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate Terraform documentation
+        uses: terraform-docs/gh-actions@v1.4.1
+        with:
+          working-dir: infra/terraform
+          config-file: ${{ github.workspace }}/.terraform-docs.yml
+          output-file: ${{ github.workspace }}/docs/content/architecture/deployed-infrastructure.md
+          output-method: inject
+          git-push: "false"
+
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if git diff --quiet -- "docs/content/architecture/deployed-infrastructure.md"; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No documentation changes detected"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Documentation changes detected"
+          fi
+
+      - name: Create Pull Request
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "docs(terraform): update generated documentation"
+          title: "docs(terraform): update generated documentation"
+          body: "Auto-generated Terraform documentation updates based on recent changes to main."
+          branch: "chore/update-tf-docs"
+          base: "main"
