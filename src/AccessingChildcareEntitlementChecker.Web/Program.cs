@@ -68,7 +68,15 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     SupportedUICultures = supportedCultures
 })
     .UseHttpsRedirection()
-    .UseStaticFiles()
+    .UseStaticFiles(new StaticFileOptions
+    {
+        OnPrepareResponse = ctx =>
+        {
+            ctx.Context.Response.Headers.XContentTypeOptions = "nosniff";
+            ctx.Context.Response.Headers.XFrameOptions = "DENY";
+            ctx.Context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+        }
+    })
     .UseGovUkFrontend()
     .UseRouting()
     .UseSession()
