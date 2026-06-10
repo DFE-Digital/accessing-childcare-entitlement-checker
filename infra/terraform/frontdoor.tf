@@ -47,13 +47,11 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   patterns_to_match      = ["/*"]
   supported_protocols    = ["Http", "Https"]
 
-  # FIX: Link to custom domain ONLY if it exists
-  cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : []
+  cdn_frontdoor_custom_domain_ids = local.has_custom_domain ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : []
 
-  # FIX: Enable the default domain (.azurefd.net) ONLY if no custom domain is provided
-  # For GDS services, we usually disable this in Prod, but it MUST be true if custom_domain is empty.
-  link_to_default_domain = var.custom_domain == "" ? true : false
+  link_to_default_domain = !local.has_custom_domain
 }
+
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy" {
   name                     = "${local.service_prefix}-web-fd-security-policy"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
@@ -68,7 +66,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
         }
 
         dynamic "domain" {
-          for_each = var.custom_domain != "" ? ["apply"] : []
+          for_each = local.has_custom_domain ? ["apply"] : []
           content {
             cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
           }
@@ -80,93 +78,8 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule_set" "security_headers" {
-  name                     = "${var.environment_prefix}SecurityHeaders"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
-}
-
-resource "azurerm_cdn_frontdoor_rule" "security_headers_rule" {
-  depends_on = [azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group, azurerm_cdn_frontdoor_origin.frontdoor-web-origin]
-
-  name                      = "securityHeaders"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security_headers.id
-  order                     = 0
-  behavior_on_match         = "Continue"
-
-  actions {
-    response_header_action {
-      header_action = "Overwrite"
-      header_name   = "Strict-Transport-Security"
-      value         = "max-age=31536000; includeSubDomains; preload"
-    }
-    response_header_action {
-      header_action = "Overwrite"
-      header_name   = "X-Content-Type-Options"
-      value         = "nosniff"
-    }
-  }
-}
-
-
-resource "azurerm_cdn_frontdoor_rule_set" "security_redirects" {
-  name                     = "${var.environment_prefix}SecurityRedirects"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
-}
-
-resource "azurerm_cdn_frontdoor_rule" "security_txt_rule" {
-  depends_on = [azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group, azurerm_cdn_frontdoor_origin.frontdoor-web-origin]
-
-  name                      = "securityTxtRedirect"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security_redirects.id
-  order                     = 0
-  behavior_on_match         = "Continue"
-
-  conditions {
-    url_path_condition {
-      operator     = "BeginsWith"
-      match_values = [".well-known/security.txt", "security.txt"]
-      transforms   = ["Lowercase"]
-    }
-  }
-
-  actions {
-    url_redirect_action {
-      redirect_type        = "PermanentRedirect"
-      redirect_protocol    = "Https"
-      destination_hostname = "vdp.security.education.gov.uk"
-      destination_path     = "/security.txt"
-    }
-  }
-}
-
-resource "azurerm_cdn_frontdoor_rule" "thanks_txt_rule" {
-  depends_on = [azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group, azurerm_cdn_frontdoor_origin.frontdoor-web-origin]
-
-  name                      = "thanksTxtRedirect"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security_redirects.id
-  order                     = 1
-  behavior_on_match         = "Continue"
-
-  conditions {
-    url_path_condition {
-      operator     = "BeginsWith"
-      match_values = [".well-known/thanks.txt", "thanks.txt"]
-      transforms   = ["Lowercase"]
-    }
-  }
-
-  actions {
-    url_redirect_action {
-      redirect_type        = "PermanentRedirect"
-      redirect_protocol    = "Https"
-      destination_hostname = "vdp.security.education.gov.uk"
-      destination_path     = "/thanks.txt"
-    }
-  }
-}
-
 resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
-  count                    = var.custom_domain != "" ? 1 : 0
+  count                    = local.has_custom_domain ? 1 : 0
   name                     = "${local.service_prefix}-fd-custom-domain"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
   host_name                = var.custom_domain
@@ -177,186 +90,9 @@ resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain_association" "web-app-custom-domain" {
-  count                          = var.custom_domain != "" ? 1 : 0
+  count                          = local.has_custom_domain ? 1 : 0
   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.frontdoor-web-route.id]
-}
-
-resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
-  name                = "webFirewallPolicy"
-  resource_group_name = azurerm_resource_group.web-rg.name
-  tags                = local.common_tags
-  mode                = "Prevention"
-  sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
-  redirect_url        = var.custom_domain != "" ? "https://${var.custom_domain}/en/service-unavailable" : "https://${azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.host_name}/en/service-unavailable"
-
-
-  dynamic "managed_rule" {
-    for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
-    content {
-      type    = "Microsoft_DefaultRuleSet"
-      version = "2.1"
-      action  = "Block"
-
-      /* Get into Teaching may set this snapchat cookie at the .education.gov.uk level, which contains a suspicious but safe body */
-      exclusion {
-        match_variable = "RequestCookieNames"
-        operator       = "Equals"
-        selector       = "_ScCbts"
-      }
-
-    }
-  }
-
-  dynamic "managed_rule" {
-    for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
-    content {
-      type    = "Microsoft_BotManagerRuleSet"
-      version = "1.1"
-      action  = "Block"
-    }
-  }
-
-  custom_rule {
-    name     = "blockarchiving"
-    enabled  = true
-    action   = "Block"
-    type     = "MatchRule"
-    priority = 150
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "Contains"
-      transforms     = ["Lowercase"]
-      match_values   = ["mirrorweb"]
-    }
-
-    match_condition {
-      match_variable = "RequestUri"
-      operator       = "Contains"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["/pdf/", "/translate-this-website/"]
-    }
-  }
-
-  custom_rule {
-    name     = "allowsearchengines"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 200
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "RegEx"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|-google|googlebot|google-|googleother|read-aloud|teoma|slurp|yandex|yahoo"]
-    }
-
-    match_condition {
-      match_variable     = "RequestUri"
-      operator           = "Contains"
-      negation_condition = true
-      transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["/pdf/", "/translate-this-website/"]
-    }
-  }
-
-  custom_rule {
-    name     = "allowtools"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 210
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "Contains"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["slack", "embedly", "figma", "skype", "owasp-zap-automation", "playwright-e2e"]
-    }
-  }
-
-  custom_rule {
-    name     = "allowsocialmedia"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 220
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "RegEx"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
-    }
-  }
-
-  custom_rule {
-    name     = "allowai"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 230
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "RegEx"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassistbot"]
-    }
-
-    match_condition {
-      match_variable     = "RequestUri"
-      operator           = "Contains"
-      negation_condition = true
-      transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["/pdf/", "/translate-this-website/"]
-    }
-  }
-
-  custom_rule {
-    name     = "allowteamsredirect"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 250
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "Referer"
-      operator       = "Contains"
-      match_values   = ["statics.teams.cdn.office.net"]
-    }
-  }
-
-  custom_rule {
-    name     = "blocknonuk"
-    enabled  = true
-    action   = "Redirect"
-    type     = "MatchRule"
-    priority = 400
-
-    match_condition {
-      match_variable     = "SocketAddr"
-      operator           = "GeoMatch"
-      negation_condition = true
-      match_values       = ["GB", "ZZ"]
-    }
-
-    match_condition {
-      match_variable     = "RequestUri"
-      operator           = "RegEx"
-      negation_condition = true
-      transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["\\/(robots\\.txt|error|service-unavailable|accessibility-statement|page-not-found|cookie-policy|privacy-policies|assets\\/|css\\/|js\\/|sitemap)"]
-    }
-  }
 }
 
 resource "azurerm_monitor_diagnostic_setting" "frontdoor_logging" {
@@ -364,45 +100,15 @@ resource "azurerm_monitor_diagnostic_setting" "frontdoor_logging" {
   target_resource_id         = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
 
-  # Front Door Access Logs
   enabled_log {
     category = "FrontDoorAccessLog"
   }
 
-  # Web Application Firewall (WAF) Logs
   enabled_log {
     category = "FrontDoorWebApplicationFirewallLog"
   }
 
-  # All Metrics
   enabled_metric {
     category = "AllMetrics"
   }
 }
-
-
-/*resource "azurerm_application_insights_web_test" "web_app_test" {
-  name                    = "${var.environment-prefix}-web-app-test"
-  description             = "Web application availability test"
-  resource_group_name     = data.azurerm_application_insights.application-insights.resource_group_name
-  location                = data.azurerm_application_insights.application-insights.location
-  application_insights_id = data.azurerm_application_insights.application-insights.id
-  kind                    = "ping"
-  frequency               = 600
-  timeout                 = 60
-  enabled                 = true
-  retry_enabled           = true
-  geo_locations           = ["emea-se-sto-edge", "emea-ru-msa-edge"]
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
-
-  configuration = <<XML
-<WebTest Name="${var.environment-prefix}-web-app-test" Id="${random_uuid.idgen.result}" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="60" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
-  <Items>
-    <Request Method="GET" Guid="${random_uuid.guidgen.result}" Version="1.1" Url="https://${local.host_name}" ThinkTime="0" Timeout="60" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="60" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
-  </Items>
-</WebTest>
-XML
-}*/
