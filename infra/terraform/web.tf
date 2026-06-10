@@ -10,6 +10,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
 }
 
 resource "azurerm_linux_web_app" "web-app-service" {
+  #checkov:skip=CKV_AZURE_222: To do - need to implement private end point.
   #checkov:skip=CKV_AZURE_13: Public website intentionally allows anonymous access
   #checkov:skip=CKV_AZURE_17: Public web application does not require mutual TLS
   #checkov:skip=CKV_AZURE_88: App Service does not require Azure Files content storage

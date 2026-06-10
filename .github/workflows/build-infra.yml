@@ -27,7 +27,7 @@ jobs:
       CHECKOV_RESULTS: checkov-results
     permissions:
       contents: read
-      security-events: write
+      checks: write
       actions: read
     steps:
       - name: Checkout
@@ -125,36 +125,28 @@ jobs:
             bridgecrew/checkov:latest \
             -d /tf --var-file "/tf/environments/production.tfvars" \
             -o cli \
-            -o sarif \
-            --output-file-path console,/results/results.sarif \
-            --soft-fail
+            -o junitxml \
+            --output-file-path console,/results/results.xml
 
-      - name: Parse Checkov results
+      - name: Record Checkov result
         if: always()
         env:
-          WORKSPACE: ${{ github.workspace }}
+          CHECKOV_OUTCOME: ${{ steps.checkov.outcome }}
         run: |
-          file="$WORKSPACE/$CHECKOV_RESULTS/results.sarif"
-          
-          if [ ! -f "$file" ]; then
-            echo "CHECKOV_STATUS=missing" >> $GITHUB_ENV
-            exit 0
+          if [ "$CHECKOV_OUTCOME" = "success" ]; then
+            echo "CHECKOV=passed" >> $GITHUB_ENV
+          else
+            echo "CHECKOV=failed" >> $GITHUB_ENV
           fi
-          
-          CRITICAL=$(jq '[.runs[].results[].level? | select(.=="error")] | length' "$file")
-          HIGH=$(jq '[.runs[].results[].level? | select(.=="warning")] | length' "$file")
-          MEDIUM=$(jq '[.runs[].results[].level? | select(.=="note")] | length' "$file")
-          
-          echo "CHECKOV_CRITICAL=$CRITICAL" >> $GITHUB_ENV
-          echo "CHECKOV_HIGH=$HIGH" >> $GITHUB_ENV
-          echo "CHECKOV_MEDIUM=$MEDIUM" >> $GITHUB_ENV
 
-      - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@v4
+      - name: Publish Checkov results
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
         if: always()
         with:
-          sarif_file: ${{ github.workspace }}/${{ env.CHECKOV_RESULTS }}/results.sarif
-          category: checkov-terraform
+          name: Checkov Scan Results
+          path: ${{ github.workspace }}/${{ env.CHECKOV_RESULTS }}/results.xml
+          reporter: java-junit
+          fail-on-error: true
 
       - name: Upload metadata
         uses: actions/upload-artifact@v7
@@ -206,11 +198,9 @@ jobs:
           elif [ "$TF_VALIDATE" = "failed" ]; then validate_icon="❌"
           fi
           
-          # Checkov (severity-aware)
-          if [ "$CHECKOV_CRITICAL" -gt 0 ] || [ "$CHECKOV_HIGH" -gt 0 ]; then
-            checkov_icon="⚠️"
-          else
-            checkov_icon="✅"
+          # Checkov
+          if [ "$CHECKOV" = "passed" ]; then checkov_icon="✅"
+          elif [ "$CHECKOV" = "failed" ]; then checkov_icon="❌"
           fi
           
           # Package
@@ -226,12 +216,12 @@ jobs:
           
           echo "| Terraform fmt | $fmt_icon | $TF_FMT |" >> $GITHUB_STEP_SUMMARY
           echo "| Terraform validate | $validate_icon | $TF_VALIDATE |" >> $GITHUB_STEP_SUMMARY
-          echo "| Checkov | $checkov_icon | 🔴 $CHECKOV_CRITICAL 🟠 $CHECKOV_HIGH 🟡 $CHECKOV_MEDIUM |" >> $GITHUB_STEP_SUMMARY
+          echo "| Checkov | $checkov_icon | $CHECKOV |" >> $GITHUB_STEP_SUMMARY
           echo "| Package | $package_icon | $PACKAGE |" >> $GITHUB_STEP_SUMMARY
           
           echo "" >> $GITHUB_STEP_SUMMARY
           
-          if [ "$TF_FMT" = "passed" ] && [ "$TF_VALIDATE" = "passed" ] && [ "$CHECKOV_CRITICAL" -eq 0 ]; then
+          if [ "$TF_FMT" = "passed" ] && [ "$TF_VALIDATE" = "passed" ] && [ "$CHECKOV" = "passed" ]; then
             echo "### Overall: 🟢 Healthy" >> $GITHUB_STEP_SUMMARY
           else
             echo "### Overall: 🟡 Needs attention" >> $GITHUB_STEP_SUMMARY
