@@ -5,6 +5,8 @@ param location string
 param tags object = {}
 param storageAccountSku string = 'Standard_ZRS'
 param workspaceName string
+param subnetId string
+param privateDnsZoneId string
 
 resource law 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: workspaceName
@@ -34,6 +36,11 @@ resource sa 'Microsoft.Storage/storageAccounts@2023-01-01' = {
     supportsHttpsTrafficOnly: true
     allowSharedKeyAccess: false
     publicNetworkAccess: 'Disabled'
+    allowBlobPublicAccess: false
+    networkAcls: {
+      defaultAction: 'Deny'
+      bypass: 'AzureServices'
+    }
   }
 }
 
@@ -91,3 +98,40 @@ resource blobDiagnostics 'Microsoft.Insights/diagnosticSettings@2021-05-01-previ
      ]
    }
  }
+
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2023-09-01' = {
+  name: '${storageAccountName}-pe'
+  location: location
+  tags: tags
+  properties: {
+    subnet: {
+      id: subnetId
+    }
+    privateLinkServiceConnections: [
+      {
+        name: '${storageAccountName}-pe-conn'
+        properties: {
+          privateLinkServiceId: sa.id
+          groupIds: [
+            'blob'
+          ]
+        }
+      }
+    ]
+  }
+}
+
+resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-09-01' = {
+  parent: privateEndpoint
+  name: 'default'
+  properties: {
+    privateDnsZoneConfigs: [
+      {
+        name: 'privatelink-blob-core-windows-net'
+        properties: {
+          privateDnsZoneId: privateDnsZoneId
+        }
+      }
+    ]
+  }
+}
