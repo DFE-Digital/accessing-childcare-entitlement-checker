@@ -91,9 +91,11 @@ app.Use(async (context, next) =>
     csp.Append("style-src 'self'; ");
     csp.Append("img-src 'self' data:; ");
     csp.Append("font-src 'self'; ");
+    csp.Append("connect-src 'self'; ");
+    csp.Append("form-action 'self'; ");
     csp.Append("object-src 'none'; ");
     csp.Append("base-uri 'self'; ");
-    csp.Append("frame-ancestors 'none';");
+    csp.Append("frame-ancestors 'none'; ");
 
     context.Response.Headers.ContentSecurityPolicy = csp.ToString();
 
