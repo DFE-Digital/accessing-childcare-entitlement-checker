@@ -3,18 +3,26 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @model AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses.EntitlementResponse
 
+<link rel="stylesheet" href="~/css/results.css" />
+
 @section BeforeContent {
     <govuk-back-link asp-controller="Summary" asp-action="CheckAnswers">
         @Shared["Button_Back"]
     </govuk-back-link>
 }
 
-
 <h1 class="govuk-heading-xl">@Localizer["Childcare support you could get"]</h1>
 
-<button class="govuk-button" type="button" onclick="window.print()">
+
+<button id="print-button" class="app-print-link" type="button">
     @Localizer["Print this page"]
 </button>
+
+<script add-nonce="true">
+    document
+        .getElementById('print-button')
+        ?.addEventListener('click', () => window.print());
+</script>
 
 @foreach (var child in Model.ChildResults)
 {
