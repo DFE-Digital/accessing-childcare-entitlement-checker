@@ -15,14 +15,14 @@ This page is generated automatically from the Terraform configuration.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.9.0 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.10.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.52 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.9.0 |
+| <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.10.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.52 |
 
 ## Modules
@@ -33,8 +33,8 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azapi_resource.app_subnet](https://registry.terraform.io/providers/Azure/azapi/2.9.0/docs/resources/resource) | resource |
-| [azapi_resource.pe_subnet](https://registry.terraform.io/providers/Azure/azapi/2.9.0/docs/resources/resource) | resource |
+| [azapi_resource.app_subnet](https://registry.terraform.io/providers/Azure/azapi/2.10.0/docs/resources/resource) | resource |
+| [azapi_resource.pe_subnet](https://registry.terraform.io/providers/Azure/azapi/2.10.0/docs/resources/resource) | resource |
 | [azurerm_application_insights.application-insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
 | [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_custom_domain) | resource |
 | [azurerm_cdn_frontdoor_custom_domain_association.web-app-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_custom_domain_association) | resource |
