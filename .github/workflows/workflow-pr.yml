@@ -5,7 +5,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   validate-dotnet:
@@ -32,11 +32,4 @@ jobs:
     uses: ./.github/workflows/build-infra.yml
     with:
       infra-directory: infra
-
-  terraform-docs:
-    name: Generate Terraform Docs
-    uses: ./.github/workflows/generate-tf-docs.yml
-    with:
-      terraform-directory: infra/terraform
-      output-file: docs/content/architecture/deployed-infrastructure.md
 
