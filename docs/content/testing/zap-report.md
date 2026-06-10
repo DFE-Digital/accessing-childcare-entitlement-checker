@@ -13,7 +13,7 @@ order: 99
 | Risk Level | Number of Alerts |
 | --- | --- |
 | High | 0 |
-| Medium | 1 |
+| Medium | 0 |
 | Low | 5 |
 | Informational | 4 |
 
@@ -29,18 +29,18 @@ order: 99
 | Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of responses with status code 2xx | 58 % |
 | Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of responses with status code 3xx | 1 % |
 | Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of responses with status code 4xx | 40 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type application/json | 6 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/png | 6 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/svg+xml | 12 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/x-icon | 6 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/css | 6 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/html | 37 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/javascript | 6 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/plain | 6 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with method GET | 81 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with method POST | 18 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Count of total endpoints | 16    |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of slow responses | 44 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type application/json | 5 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/png | 5 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/svg+xml | 11 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/x-icon | 5 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/css | 5 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/html | 41 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/javascript | 5 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/plain | 5 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with method GET | 82 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with method POST | 17 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Count of total endpoints | 17    |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of slow responses | 32 % |
 
 
 
@@ -49,12 +49,11 @@ order: 99
 
 | Name | Risk Level | Number of Instances |
 | --- | --- | --- |
-| CSP: Failure to Define Directive with No Fallback | Medium | Systemic |
 | Cookie Without Secure Flag | Low | 2 |
 | Private IP Disclosure | Low | 1 |
 | Strict-Transport-Security Header Not Set | Low | Systemic |
 | Timestamp Disclosure - Unix | Low | 1 |
-| X-Content-Type-Options Header Missing | Low | Systemic |
+| X-Content-Type-Options Header Missing | Low | 2 |
 | Modern Web Application | Informational | Systemic |
 | Re-examine Cache-control Directives | Informational | Systemic |
 | Session Management Response Identified | Informational | 2 |
@@ -66,76 +65,6 @@ order: 99
 ## Alert Detail
 
 
-
-### [ CSP: Failure to Define Directive with No Fallback ](https://www.zaproxy.org/docs/alerts/10055/)
-
-
-
-##### Medium (High)
-
-### Description
-
-The Content Security Policy fails to define one of the directives that has no fallback. Missing/excluding them is the same as allowing anything.
-
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/`
-  * Method: `GET`
-  * Parameter: `Content-Security-Policy`
-  * Attack: ``
-  * Evidence: `default-src 'self'; script-src 'self' 'nonce-VdgHyL5cdWXP9fFY'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';`
-  * Other Info: `The directive(s): form-action is/are among the directives that do not fallback to default-src.`
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/`
-  * Method: `GET`
-  * Parameter: `Content-Security-Policy`
-  * Attack: ``
-  * Evidence: `default-src 'self'; script-src 'self' 'nonce-pY3D89kDnIikV8ja'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';`
-  * Other Info: `The directive(s): form-action is/are among the directives that do not fallback to default-src.`
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home/Location
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home/Location`
-  * Method: `GET`
-  * Parameter: `Content-Security-Policy`
-  * Attack: ``
-  * Evidence: `default-src 'self'; script-src 'self' 'nonce-98fIpyw4WgYtFCYj'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';`
-  * Other Info: `The directive(s): form-action is/are among the directives that do not fallback to default-src.`
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/sitemap.xml
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/sitemap.xml`
-  * Method: `GET`
-  * Parameter: `Content-Security-Policy`
-  * Attack: ``
-  * Evidence: `default-src 'self'; script-src 'self' 'nonce-gJwgHpiNvQkSjcqU'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';`
-  * Other Info: `The directive(s): form-action is/are among the directives that do not fallback to default-src.`
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/ ()(__RequestVerificationToken)`
-  * Method: `POST`
-  * Parameter: `Content-Security-Policy`
-  * Attack: ``
-  * Evidence: `default-src 'self'; script-src 'self' 'nonce-25ow4cClasFruiz+'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';`
-  * Other Info: `The directive(s): form-action is/are among the directives that do not fallback to default-src.`
-
-Instances: Systemic
-
-
-### Solution
-
-Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.
-
-### Reference
-
-
-* [ https://www.w3.org/TR/CSP/ ](https://www.w3.org/TR/CSP/)
-* [ https://caniuse.com/#search=content+security+policy ](https://caniuse.com/#search=content+security+policy)
-* [ https://content-security-policy.com/ ](https://content-security-policy.com/)
-* [ https://github.com/HtmlUnit/htmlunit-csp ](https://github.com/HtmlUnit/htmlunit-csp)
-* [ https://web.dev/articles/csp#resource-options ](https://web.dev/articles/csp#resource-options)
-
-
-#### CWE Id: [ 693 ](https://cwe.mitre.org/data/definitions/693.html)
-
-
-#### WASC Id: 15
-
-#### Source ID: 3
 
 ### [ Cookie Without Secure Flag ](https://www.zaproxy.org/docs/alerts/10011/)
 
@@ -238,15 +167,15 @@ HTTP Strict Transport Security (HSTS) is a web security policy mechanism whereby
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home/Location
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home/Location`
+* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/favicon.ico%3Fv=6.0.0
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/favicon.ico (v)`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/favicon.ico%3Fv=6.0.0
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/favicon.ico (v)`
+* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/govuk-icon-180.png%3Fv=6.0.0
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/govuk-icon-180.png (v)`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -339,40 +268,16 @@ Manually confirm that the timestamp data is not sensitive, and that the data can
 
 The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.
 
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/favicon.ico%3Fv=6.0.0
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/favicon.ico (v)`
+* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/govuk-frontend.min.css%3Fv=6.0.0
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/govuk-frontend.min.css (v)`
   * Method: `GET`
   * Parameter: `x-content-type-options`
   * Attack: ``
   * Evidence: ``
   * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
 At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/favicon.svg%3Fv=6.0.0
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/favicon.svg (v)`
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/govuk-icon-180.png%3Fv=6.0.0
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/govuk-icon-180.png (v)`
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/govuk-icon-mask.svg%3Fv=6.0.0
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/govuk-icon-mask.svg (v)`
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/manifest.json%3Fv=6.0.0
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/manifest.json (v)`
+* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/govuk-frontend.min.js%3Fv=6.0.0
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/govuk-frontend.min.js (v)`
   * Method: `GET`
   * Parameter: `x-content-type-options`
   * Attack: ``
@@ -380,8 +285,8 @@ At "High" threshold this scan rule will not alert on client or server error resp
   * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
 At "High" threshold this scan rule will not alert on client or server error responses.`
 
-Instances: Systemic
 
+Instances: 2
 
 ### Solution
 
@@ -426,8 +331,8 @@ The application appears to be a modern web application. If you need to explore i
   * Attack: ``
   * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Introduction/ChildName
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Introduction/ChildName`
+* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Introduction/IsChildBorn%3FchildId=318c6fc9-1ba2-4be2-b305-23e6d37a5920
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Introduction/IsChildBorn (childId)`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -585,19 +490,19 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/`
   * Method: `GET`
   * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
   * Evidence: ``
   * Other Info: ``
 * URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/ ()(__RequestVerificationToken)`
-  * Method: `POST`
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/`
+  * Method: `GET`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home/Location
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home/Location ()(Country,__RequestVerificationToken)`
-  * Method: `POST`
+* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home`
+  * Method: `GET`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
