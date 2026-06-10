@@ -6,11 +6,14 @@ public static class DevelopmentExtensions
 {
     private const string DevelopmentBasicAuthPasswordSettingName = "DevelopmentBasicAuthPassword";
 
-    public static IApplicationBuilder UseDevelopmentAuth(this IApplicationBuilder app, IConfiguration configuration)
+    public static IApplicationBuilder UseDevelopmentAuth(this IApplicationBuilder app)
     {
-        var developmentBasicAuthPassword = configuration[DevelopmentBasicAuthPasswordSettingName];
+        var config = app.ApplicationServices.GetRequiredService<IConfiguration>();
+        var env = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
 
-        if (string.IsNullOrEmpty(developmentBasicAuthPassword))
+        var developmentBasicAuthPassword = config[DevelopmentBasicAuthPasswordSettingName];
+
+        if (string.IsNullOrEmpty(developmentBasicAuthPassword) || env.IsProduction())
         {
             return app;
         }
@@ -61,10 +64,30 @@ public static class DevelopmentExtensions
         return app;
     }
 
-    public static IEndpointRouteBuilder MapRobotsExclusionProtocol(this IEndpointRouteBuilder endpoints)
+    public static IEndpointRouteBuilder MapRobotsExclusionProtocol(this IEndpointRouteBuilder builder)
     {
-        endpoints.MapGet("/robots.txt", () => Results.Text("User-agent: *\nDisallow: /", "text/plain"));
+        var env = builder.ServiceProvider.GetRequiredService<IHostEnvironment>();
 
-        return endpoints;
+        if (!env.IsProduction())
+        {
+            builder.MapGet("/robots.txt", () => Results.Text("User-agent: *\nDisallow: /", "text/plain"));
+        }
+
+        return builder;
+    }
+
+    public static IEndpointRouteBuilder MapTestException(this IEndpointRouteBuilder builder)
+    {
+        var env = builder.ServiceProvider.GetRequiredService<IHostEnvironment>();
+
+        if (!env.IsProduction())
+        {
+            builder.MapGet("/throw", () =>
+            {
+                throw new InvalidOperationException("Test exception for error page");
+            });
+        }
+
+        return builder;
     }
 }

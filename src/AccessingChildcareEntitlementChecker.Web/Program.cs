@@ -45,22 +45,16 @@ services.AddScoped<JourneyStateToEntitlementRequestMapper>();
 services.AddRulesEngine();
 
 var app = builder.Build();
-if (!app.Environment.IsProduction())
+if (app.Environment.IsDevelopment())
 {
-    app.UseDevelopmentAuth(builder.Configuration);
-    app.MapRobotsExclusionProtocol();
-
-    app.MapGet("/throw", () =>
-    {
-        throw new InvalidOperationException("Test exception for error page");
-    });
+    //
 }
 else
 {
     app.UseHsts();
 }
 
-
+app.UseDevelopmentAuth();
 app.Use(async (context, next) =>
 {
     var bytes = RandomNumberGenerator.GetBytes(12);
@@ -103,6 +97,8 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     .UseExceptionHandler("/Error")
     .UseStatusCodePagesWithReExecute("/error/{0}");
 
+app.MapTestException();
+app.MapRobotsExclusionProtocol();
 app.MapHealthChecks("/health");
 app.MapControllerRoute(
         name: "default",
