@@ -38,6 +38,12 @@ variable "webapp_sku" {
   default     = "B1"
 }
 
+variable "webapp_zone_balancing" {
+  description = "Enable zone balancing on web app"
+  type        = bool
+  default     = false
+}
+
 variable "webapp_instance_count" {
   description = "The number of instances for the web app"
   type        = number
@@ -45,6 +51,7 @@ variable "webapp_instance_count" {
 }
 
 variable "enable_staging_slot" {
-  type    = bool
-  default = false
+  description = "Enable staging slot for web app"
+  type        = bool
+  default     = false
 }

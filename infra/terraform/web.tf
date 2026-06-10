@@ -5,12 +5,11 @@ resource "azurerm_service_plan" "web-app-service-plan" {
   os_type                = "Linux"
   sku_name               = var.webapp_sku
   worker_count           = var.webapp_instance_count
-  zone_balancing_enabled = local.use_zone_balancing
+  zone_balancing_enabled = var.webapp_zone_balancing
   tags                   = local.common_tags
 }
 
 resource "azurerm_linux_web_app" "web-app-service" {
-  #checkov:skip=CKV_AZURE_222: Public network access is kept enabled intentionally to allow Front Door Standard traffic routing while having a Private Endpoint.
   #checkov:skip=CKV_AZURE_13: Public website intentionally allows anonymous access
   #checkov:skip=CKV_AZURE_17: Public web application does not require mutual TLS
   #checkov:skip=CKV_AZURE_88: App Service does not require Azure Files content storage
@@ -24,7 +23,7 @@ resource "azurerm_linux_web_app" "web-app-service" {
   https_only                    = true
   virtual_network_subnet_id     = azapi_resource.app_subnet.id
   app_settings                  = local.web_app_settings
-  public_network_access_enabled = true
+  public_network_access_enabled = var.azure_frontdoor_scale != "Premium"
   tags                          = local.common_tags
 
   site_config {
@@ -101,7 +100,7 @@ resource "azurerm_linux_web_app_slot" "staging" {
   https_only                    = true
   virtual_network_subnet_id     = azapi_resource.app_subnet.id
   app_settings                  = local.web_app_settings
-  public_network_access_enabled = true
+  public_network_access_enabled = var.azure_frontdoor_scale != "Premium"
   tags                          = local.common_tags
 
   site_config {
