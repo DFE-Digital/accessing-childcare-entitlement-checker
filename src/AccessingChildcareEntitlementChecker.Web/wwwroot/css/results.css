@@ -5,10 +5,11 @@
     background-color: transparent;
     color: #1d70b8;
     cursor: pointer;
-    font-family: inherit;
+    font-family: GDS Transport, arial, sans-serif;
     font-size: 1rem;
     line-height: 1.25;
     margin-bottom: 20px;
+    text-decoration: none;
 }
 
 .app-print-link:hover {
@@ -16,8 +17,8 @@
 }
 
 .app-print-link:focus {
-    outline: 3px solid #ffdd00;
-    outline-offset: 0;
-    background-color: #ffdd00;
-    color: #0b0c0c;
+    outline: 3px solid transparent;
+    background-color: #fd0;
+    box-shadow: 0 -2px #fd0,0 4px #0b0c0c;
+    text-decoration: none
 }
