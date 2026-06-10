@@ -60,29 +60,6 @@ else
     app.UseHsts();
 }
 
-var supportedCultures = new[] { new CultureInfo("en-GB") };
-app.UseRequestLocalization(new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture("en-GB"),
-    SupportedCultures = supportedCultures,
-    SupportedUICultures = supportedCultures
-})
-    .UseHttpsRedirection()
-    .UseStaticFiles(new StaticFileOptions
-    {
-        OnPrepareResponse = ctx =>
-        {
-            ctx.Context.Response.Headers.XContentTypeOptions = "nosniff";
-            ctx.Context.Response.Headers.XFrameOptions = "DENY";
-            ctx.Context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
-        }
-    })
-    .UseGovUkFrontend()
-    .UseRouting()
-    .UseSession()
-    .UseAuthorization()
-    .UseExceptionHandler("/Error")
-    .UseStatusCodePagesWithReExecute("/error/{0}");
 
 app.Use(async (context, next) =>
 {
@@ -109,6 +86,22 @@ app.Use(async (context, next) =>
 
     await next(context);
 });
+
+var supportedCultures = new[] { new CultureInfo("en-GB") };
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-GB"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+})
+    .UseHttpsRedirection()
+    .UseStaticFiles()
+    .UseGovUkFrontend()
+    .UseRouting()
+    .UseSession()
+    .UseAuthorization()
+    .UseExceptionHandler("/Error")
+    .UseStatusCodePagesWithReExecute("/error/{0}");
 
 app.MapHealthChecks("/health");
 app.MapControllerRoute(
