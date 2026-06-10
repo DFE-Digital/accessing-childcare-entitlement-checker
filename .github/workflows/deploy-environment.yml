@@ -47,7 +47,7 @@ jobs:
 
     steps:
     - name: Download Infra Metadata
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: build-infra-metadata
         path: .
@@ -60,7 +60,7 @@ jobs:
         echo "TF_VERSION=$VERSION" >> "$GITHUB_ENV"
 
     - name: Download Infra Package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: infra-package
         path: ./infra
@@ -70,7 +70,7 @@ jobs:
       working-directory: ./infra
 
     - name: Download web app artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: web-app
         path: ./artifacts/web-app
