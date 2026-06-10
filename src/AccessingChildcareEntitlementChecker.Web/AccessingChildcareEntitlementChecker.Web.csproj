@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <EnableGovUkFrontendSupport>true</EnableGovUkFrontendSupport>
+  </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Models\ChildNameViewModel.en-GB.resx">
       <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>
