@@ -1,0 +1,23 @@
+.app-print-link {
+    background: url('/images/icon-print.png') 10px 50% / 16px 18px no-repeat;
+    padding: 10px 10px 10px 36px;
+    border: 1px solid rgb(80, 90, 95);
+    background-color: transparent;
+    color: #1d70b8;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.25;
+    margin-bottom: 20px;
+}
+
+.app-print-link:hover {
+    background-color: rgb(243, 242, 241);
+}
+
+.app-print-link:focus {
+    outline: 3px solid #ffdd00;
+    outline-offset: 0;
+    background-color: #ffdd00;
+    color: #0b0c0c;
+}
