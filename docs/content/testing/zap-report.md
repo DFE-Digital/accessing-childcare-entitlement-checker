@@ -29,18 +29,18 @@ order: 99
 | Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of responses with status code 2xx | 58 % |
 | Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of responses with status code 3xx | 1 % |
 | Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of responses with status code 4xx | 40 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type application/json | 5 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/png | 5 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/svg+xml | 11 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/x-icon | 5 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/css | 5 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/html | 41 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/javascript | 5 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/plain | 5 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with method GET | 82 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with method POST | 17 % |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Count of total endpoints | 17    |
-| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of slow responses | 32 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type application/json | 6 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/png | 6 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/svg+xml | 12 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type image/x-icon | 6 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/css | 6 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/html | 37 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/javascript | 6 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with content type text/plain | 6 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with method GET | 81 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of endpoints with method POST | 18 % |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Count of total endpoints | 16    |
+| Info | Informational | https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net | Percentage of slow responses | 100 % |
 
 
 
@@ -56,7 +56,7 @@ order: 99
 | X-Content-Type-Options Header Missing | Low | 2 |
 | Modern Web Application | Informational | Systemic |
 | Re-examine Cache-control Directives | Informational | Systemic |
-| Session Management Response Identified | Informational | 2 |
+| Session Management Response Identified | Informational | 3 |
 | User Agent Fuzzer | Informational | Systemic |
 
 
@@ -167,8 +167,8 @@ HTTP Strict Transport Security (HSTS) is a web security policy mechanism whereby
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/favicon.ico%3Fv=6.0.0
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/assets/images/favicon.ico (v)`
+* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home/Location
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home/Location`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -331,8 +331,8 @@ The application appears to be a modern web application. If you need to explore i
   * Attack: ``
   * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Introduction/IsChildBorn%3FchildId=318c6fc9-1ba2-4be2-b305-23e6d37a5920
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Introduction/IsChildBorn (childId)`
+* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Introduction/ChildName
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Introduction/ChildName`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -459,9 +459,16 @@ The given response has been identified as containing a session management token.
   * Attack: ``
   * Evidence: `.AspNetCore.Session`
   * Other Info: `cookie:.AspNetCore.Session`
+* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home/Location
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home/Location ()(Country,__RequestVerificationToken)`
+  * Method: `POST`
+  * Parameter: `.AspNetCore.Session`
+  * Attack: ``
+  * Evidence: `.AspNetCore.Session`
+  * Other Info: `cookie:.AspNetCore.Session`
 
 
-Instances: 2
+Instances: 3
 
 ### Solution
 
@@ -500,9 +507,9 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home
-  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Home`
-  * Method: `GET`
+* URL: https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Introduction/ChildName
+  * Node Name: `https://s279d01-uks-cec-web-fd-endpoint-c9g7dsevedbdascx.a02.azurefd.net/Introduction/ChildName ()(ChildName,__RequestVerificationToken)`
+  * Method: `POST`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
