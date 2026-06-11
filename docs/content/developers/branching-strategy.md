@@ -146,6 +146,8 @@ gitGraph
     * UAT/signoff
 5. Deploy release branch to production
 
+For the detailed steps, approvals matrix, and stakeholder communication templates associated with this workflow, see the dedicated [Release Process](release-process.md) guide.
+
 ### Hotfix Flow
 
 ```mermaid

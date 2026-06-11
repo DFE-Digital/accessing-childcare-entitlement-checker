@@ -5,7 +5,7 @@ sectionKey: Architecture
 eleventyNavigation:
   parent: Architecture
   key: Non-Functional Requirements
-order: 3
+order: 4
 ---
 
 This document defines the operational characteristics and quality standards for the Accessing Childcare Entitlement Checker.

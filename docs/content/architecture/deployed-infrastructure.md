@@ -5,7 +5,7 @@ sectionKey: Architecture
 eleventyNavigation:
   parent: Architecture
   key: Deployed Infrastructure
-order: 4
+order: 5
 ---
 
 This page is generated automatically from the Terraform configuration.

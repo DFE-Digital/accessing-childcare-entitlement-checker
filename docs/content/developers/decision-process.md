@@ -5,7 +5,7 @@ sectionKey: Developers
 eleventyNavigation:
   parent: Developers
   key: Decision Process
-order: 6
+order: 7
 ---
 
 The decision-making process follows the flow shown below:

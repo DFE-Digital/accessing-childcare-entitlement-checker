@@ -5,7 +5,7 @@ sectionKey: Developers
 eleventyNavigation:
   key: Workflow Naming Conventions
   parent: Developers
-  order: 7
+  order: 8
 ---
 
 This project follows a strict naming convention for GitHub Actions workflows to ensure clarity, consistency, and efficient reuse of logic.

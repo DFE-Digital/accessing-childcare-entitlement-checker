@@ -5,7 +5,7 @@ sectionKey: Developers
 eleventyNavigation:
   parent: Developers
   key: Terraform Bootstrapping
-order: 8
+order: 9
 ---
 
 To manage infrastructure declaratively with Terraform, a remote backend is required to securely store state files (`.tfstate`) and coordinate state locking. However, this introduces a classic Day 0 "chicken-and-egg" problem:

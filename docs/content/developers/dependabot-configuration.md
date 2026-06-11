@@ -5,7 +5,7 @@ sectionKey: Developers
 eleventyNavigation:
   parent: Developers
   key: Dependabot
-order: 3
+order: 4
 ---
 
 This repository uses an enhanced Dependabot configuration designed to improve:
