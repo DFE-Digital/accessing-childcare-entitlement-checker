@@ -45,45 +45,16 @@ services.AddScoped<JourneyStateToEntitlementRequestMapper>();
 services.AddRulesEngine();
 
 var app = builder.Build();
-if (!app.Environment.IsProduction())
+if (app.Environment.IsDevelopment())
 {
-    app.UseDevelopmentAuth(builder.Configuration);
-    app.MapRobotsExclusionProtocol();
-
-    app.MapGet("/throw", () =>
-    {
-        throw new InvalidOperationException("Test exception for error page");
-    });
+    //
 }
 else
 {
     app.UseHsts();
 }
 
-var supportedCultures = new[] { new CultureInfo("en-GB") };
-app.UseRequestLocalization(new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture("en-GB"),
-    SupportedCultures = supportedCultures,
-    SupportedUICultures = supportedCultures
-})
-    .UseHttpsRedirection()
-    .UseStaticFiles(new StaticFileOptions
-    {
-        OnPrepareResponse = ctx =>
-        {
-            ctx.Context.Response.Headers.XContentTypeOptions = "nosniff";
-            ctx.Context.Response.Headers.XFrameOptions = "DENY";
-            ctx.Context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
-        }
-    })
-    .UseGovUkFrontend()
-    .UseRouting()
-    .UseSession()
-    .UseAuthorization()
-    .UseExceptionHandler("/Error")
-    .UseStatusCodePagesWithReExecute("/error/{0}");
-
+app.UseDevelopmentAuth();
 app.Use(async (context, next) =>
 {
     var bytes = RandomNumberGenerator.GetBytes(12);
@@ -110,6 +81,24 @@ app.Use(async (context, next) =>
     await next(context);
 });
 
+var supportedCultures = new[] { new CultureInfo("en-GB") };
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-GB"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+})
+    .UseHttpsRedirection()
+    .UseStaticFiles()
+    .UseGovUkFrontend()
+    .UseRouting()
+    .UseSession()
+    .UseAuthorization()
+    .UseExceptionHandler("/Error")
+    .UseStatusCodePagesWithReExecute("/error/{0}");
+
+app.MapTestException();
+app.MapRobotsExclusionProtocol();
 app.MapHealthChecks("/health");
 app.MapControllerRoute(
         name: "default",
