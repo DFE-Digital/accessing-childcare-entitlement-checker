@@ -3,6 +3,7 @@ using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using static AccessingChildcareEntitlementChecker.Web.IServiceCollectionExtensions;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -10,13 +11,16 @@ public class ExpectedChildDetailsController : Controller
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private readonly Journey _journey;
 
     public ExpectedChildDetailsController(
         JourneyState journeyState,
-        IJourneySession journeySession)
+        IJourneySession journeySession,
+        Journey journey)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
+        _journey = journey;
     }
 
     [HttpGet]
@@ -41,14 +45,7 @@ public class ExpectedChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo is not null)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
-        }
-
-        return this.RedirectTo<ExpectedChildDetailsController>(
-            nameof(ExpectedChildRelationship),
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -73,6 +70,6 @@ public class ExpectedChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
+        return _journey.Forwards(this, _journeyState);
     }
 }

@@ -1,8 +1,7 @@
-using AccessingChildcareEntitlementChecker.Web.Extensions;
-using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using static AccessingChildcareEntitlementChecker.Web.IServiceCollectionExtensions;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -10,13 +9,16 @@ public class BornChildDetailsController : Controller
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private readonly Journey _journey;
 
     public BornChildDetailsController(
         JourneyState journeyState,
-        IJourneySession journeySession)
+        IJourneySession journeySession,
+        Journey journey)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
+        _journey = journey;
     }
 
     [HttpGet]
@@ -41,14 +43,7 @@ public class BornChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo is not null)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
-        }
-
-        return this.RedirectTo<BornChildDetailsController>(
-            nameof(ChildRelationship),
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -73,14 +68,7 @@ public class BornChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo is not null)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
-        }
-
-        return this.RedirectTo<BornChildDetailsController>(
-            nameof(ChildSupport),
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -105,6 +93,6 @@ public class BornChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
+        return _journey.Forwards(this, _journeyState);
     }
 }

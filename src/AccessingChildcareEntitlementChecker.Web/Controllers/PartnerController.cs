@@ -4,17 +4,23 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using AccessingChildcareEntitlementChecker.Web.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using System.Diagnostics.CodeAnalysis;
+using static AccessingChildcareEntitlementChecker.Web.IServiceCollectionExtensions;
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
 public class PartnerController : Controller
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private readonly Journey _journey;
 
-    public PartnerController(JourneyState journeyState, IJourneySession journeySession)
+    public PartnerController(
+        JourneyState journeyState,
+        IJourneySession journeySession,
+        Journey journey)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
+        _journey = journey;
     }
 
     [HttpGet]
@@ -33,12 +39,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerNationality));
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -57,18 +58,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        var redirect = model.PartnerNationality switch
-        {
-            NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerSettledStatus)),
-            _ => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerPaidWork)),
-        };
-
-        return redirect;
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -87,12 +77,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerPaidWork));
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -111,20 +96,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        var redirect = model.PartnerPaidWork switch
-        {
-            PartnerPaidWorkOption.Yes => this.RedirectTo<PartnerController>(nameof(PartnerWorkStatus)),
-            PartnerPaidWorkOption.OnLeave => this.RedirectTo<PartnerController>(nameof(PartnerTypeOfLeave)),
-            PartnerPaidWorkOption.No => this.RedirectTo<PartnerController>(nameof(PartnerBenefits)),
-            _ => throw new InvalidOperationException($"Unexpected PartnerPaidWorkOption value: {model.PartnerPaidWork}"),
-        };
-
-        return redirect;
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -143,17 +115,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        if (model.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
-        {
-            return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerSelfEmployedDuration));
-        }
-
-        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerWeeklyEarnings));
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -172,12 +134,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerChildcareSupport));
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -196,18 +153,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        var redirect = model.PartnerSelfEmployedDuration switch
-        {
-            SelfEmployedDurationOption.LessThan12Months => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerBenefits)),
-            _ => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerWeeklyEarnings)),
-        };
-
-        return redirect;
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -226,18 +172,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        var redirect = model.PartnerWeeklyEarnings switch
-        {
-            WeeklyEarningsOption.AboveThreshold => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerYearlyEarnings)),
-            _ => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerBenefits)),
-        };
-
-        return redirect;
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -256,12 +191,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerBenefits));
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -280,17 +210,7 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        if (model.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
-        {
-            return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerChildcareVoucherReceipt));
-        }
-
-        return this.RedirectTo<SummaryController>(nameof(SummaryController.CheckAnswers));
+        return _journey.Forwards(this, _journeyState);
     }
 
     [HttpGet]
@@ -316,11 +236,6 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectTo<SummaryController>(nameof(SummaryController.CheckAnswers));
+        return _journey.Forwards(this, _journeyState);
     }
 }

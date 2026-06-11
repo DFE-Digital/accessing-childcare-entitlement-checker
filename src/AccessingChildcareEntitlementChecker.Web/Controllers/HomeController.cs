@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using static AccessingChildcareEntitlementChecker.Web.IServiceCollectionExtensions;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -8,11 +9,16 @@ public class HomeController : Controller
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private readonly Journey _journey;
 
-    public HomeController(JourneyState journeyState, IJourneySession journeySession)
+    public HomeController(
+        JourneyState journeyState,
+        IJourneySession journeySession,
+        Journey journey)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
+        _journey = journey;
     }
 
     [HttpGet]
@@ -43,6 +49,7 @@ public class HomeController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return RedirectToAction(nameof(IntroductionController.ChildName), "Introduction");
+
+        return _journey.Forwards(this, _journeyState);
     }
 }
