@@ -19,7 +19,7 @@ jobs:
   zap-scan:
     name: Run ZAP Scan
     environment:
-      name: development
+      name: test
       deployment: false
     runs-on: ubuntu-latest
     
