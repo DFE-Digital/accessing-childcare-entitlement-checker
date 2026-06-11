@@ -20,36 +20,22 @@
   </Folder>
   <Folder Name="/.github/workflows/">
     <File Path=".github/workflows/build-dotnet.yml" />
-    <File Path=".github/workflows/build-terraform.yml" />
+    <File Path=".github/workflows/build-infra.yml" />
     <File Path=".github/workflows/deploy-environment.yml" />
     <File Path=".github/workflows/run-e2e-tests.yml" />
     <File Path=".github/workflows/workflow-docs.yml" />
     <File Path=".github/workflows/workflow-main.yml" />
     <File Path=".github/workflows/workflow-pr.yml" />
+    <File Path=".github/workflows/workflow-prune-runs.yml" />
+    <File Path=".github/workflows/workflow-release.yml" />
+    <File Path=".github/workflows/workflow-tf-docs.yml" />
     <File Path=".github/workflows/workflow-zap-scan.yml" />
-    <File Path=".github\workflows\build-and-test.yml" />
-    <File Path=".github\workflows\ci.yml" />
-    <File Path=".github\workflows\e2e-tests.yml" />
-    <File Path=".github\workflows\infra-deploy.yml" />
   </Folder>
 
   <Folder Name="/docs/">
-    <File Path="docs/adrs.md" />
-    <File Path="docs/application-architecture.md" />
-    <File Path="docs/branching-strategy.md" />
-    <File Path="docs/constraints-principals.md" />
-    <File Path="docs/dependabot-configuration.md" />
-    <File Path="docs/deployment-architecture.md" />
-    <File Path="docs/development.md" />
-    <File Path="docs/ways-of-working.md" />
-    <File Path="docs/zap-scan-guide.md" />
-  </Folder>
-
-  <Folder Name="/docs/adr/">
-    <File Path="docs/adr/0000-use-madr-docs.md" />
-    <File Path="docs/adr/0001-acceptance-tests-via-playwright.md" />
-    <File Path="docs/adr/0002-retain-a-team-coverage-gate-capability.md" />
-    <File Path="docs/adr/0008-dto-and-shared-types-ownership.md" />
+    <File Path="docs/eleventy.config.js" />
+    <File Path="docs/package-lock.json" />
+    <File Path="docs/package.json" />
   </Folder>
 
   <Folder Name="/src/">
@@ -61,14 +47,100 @@
     <Project Path="tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj" />
     <Project Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
   </Folder>
-  <Folder Name="/docs/testing/">
-    <File Path="docs/testing/test-strategy.md" />
-    <File Path="docs/testing/zap-report.md" />
+  <Folder Name="/docs/assets/">
+    <File Path="docs/assets/department-for-education_white.png" />
+    <File Path="docs/assets/mermaid.js" />
+  </Folder>
+  <Folder Name="/docs/content/">
+    <File Path="docs/content/index.md" />
+  </Folder>
+  <Folder Name="/docs/content/architecture/">
+    <File Path="docs/content/architecture/application-architecture.md" />
+    <File Path="docs/content/architecture/constraints-principles.md" />
+    <File Path="docs/content/architecture/deployed-infrastructure.md" />
+    <File Path="docs/content/architecture/deployment-architecture.md" />
+    <File Path="docs/content/architecture/index.md" />
+    <File Path="docs/content/architecture/non-functional-requirements.md" />
+  </Folder>
+  <Folder Name="/docs/content/decisions/">
+    <File Path="docs/content/decisions/0000-use-madr-docs.md" />
+    <File Path="docs/content/decisions/0001-entitlement-checker-design.md" />
+    <File Path="docs/content/decisions/0002-acceptance-tests-via-playwright.md" />
+    <File Path="docs/content/decisions/0003-retain-a-team-coverage-gate-capability.md" />
+    <File Path="docs/content/decisions/0004-use-github-runners-for-ui-tests.md" />
+    <File Path="docs/content/decisions/0005-dev-deployment-use-http-basic-auth.md" />
+    <File Path="docs/content/decisions/0006-use-govuk-frontend-aspnetcore.md" />
+    <File Path="docs/content/decisions/0007-refactoring-options.md" />
+    <File Path="docs/content/decisions/0008-dto-and-shared-types-ownership.md" />
+    <File Path="docs/content/decisions/0009-release-strategy.md" />
+    <File Path="docs/content/decisions/0010-documentation-publication-strategy.md" />
+    <File Path="docs/content/decisions/0011-bootstrap-tf.md" />
+    <File Path="docs/content/decisions/index.md" />
+  </Folder>
+  <Folder Name="/docs/content/developers/">
+    <File Path="docs/content/developers/branching-strategy.md" />
+    <File Path="docs/content/developers/decision-process.md" />
+    <File Path="docs/content/developers/dependabot-configuration.md" />
+    <File Path="docs/content/developers/documentation-guide.md" />
+    <File Path="docs/content/developers/getting-started.md" />
+    <File Path="docs/content/developers/index.md" />
+    <File Path="docs/content/developers/terraform-bootstrap.md" />
+    <File Path="docs/content/developers/ways-of-working.md" />
+    <File Path="docs/content/developers/workflow-naming-conventions.md" />
+    <File Path="docs/content/developers/zap-scan-guide.md" />
+  </Folder>
+  <Folder Name="/docs/content/operational/">
+    <File Path="docs/content/operational/001-application-bugs.md" />
+    <File Path="docs/content/operational/002-application-crashes.md" />
+    <File Path="docs/content/operational/003-availability-zone-failure.md" />
+    <File Path="docs/content/operational/004-regional-failure.md" />
+    <File Path="docs/content/operational/005-denial-of-service.md" />
+    <File Path="docs/content/operational/006-ssl-certificate-expiry.md" />
+    <File Path="docs/content/operational/007-unauthorised-access.md" />
+    <File Path="docs/content/operational/008-disclosure-of-secrets.md" />
+    <File Path="docs/content/operational/009-third-party-dependencies.md" />
+    <File Path="docs/content/operational/index.md" />
+  </Folder>
+  <Folder Name="/docs/content/runbooks/">
+    <File Path="docs/content/runbooks/001-rollback-deployment.md" />
+    <File Path="docs/content/runbooks/002-deploy-emergency-fix.md" />
+    <File Path="docs/content/runbooks/003-remove-secrets-git-history.md" />
+    <File Path="docs/content/runbooks/004-rotate-secrets.md" />
+    <File Path="docs/content/runbooks/005-ddos-attack.md" />
+    <File Path="docs/content/runbooks/006-regional-failover.md" />
+    <File Path="docs/content/runbooks/007-investigate-service-degradation.md" />
+    <File Path="docs/content/runbooks/index.md" />
+  </Folder>
+  <Folder Name="/docs/content/testing/">
+    <File Path="docs/content/testing/accessibility-test-plan.md" />
+    <File Path="docs/content/testing/cross-browser.md" />
+    <File Path="docs/content/testing/index.md" />
+    <File Path="docs/content/testing/test-strategy.md" />
+    <File Path="docs/content/testing/zap-report.md" />
   </Folder>
   <Folder Name="/infra/" />
+  <Folder Name="/infra/bicep/">
+    <File Path="infra/bicep/main.bicep" />
+    <File Path="infra/bicep/network.bicep" />
+    <File Path="infra/bicep/storage.bicep" />
+  </Folder>
+  <Folder Name="/infra/bicep/environments/">
+    <File Path="infra/bicep/environments/development.params.json" />
+    <File Path="infra/bicep/environments/staging.params.json" />
+    <File Path="infra/bicep/environments/test.params.json" />
+  </Folder>
+  <Folder Name="/infra/scripts/">
+    <File Path="infra/scripts/manage-storage-access.sh" />
+  </Folder>
   <Folder Name="/infra/terraform/">
+    <File Path="infra/terraform/frontdoor.tf" />
+    <File Path="infra/terraform/frontdoor_rules.tf" />
+    <File Path="infra/terraform/frontdoor_waf.tf" />
+    <File Path="infra/terraform/identities.tf" />
+    <File Path="infra/terraform/law.tf" />
+    <File Path="infra/terraform/storage.tf" />
+    <File Path="infra/terraform/vnet.tf" />
     <File Path="infra\terraform\data.tf" />
-    <File Path="infra\terraform\fromtdoor.tf" />
     <File Path="infra\terraform\locals.tf" />
     <File Path="infra\terraform\main.tf" />
     <File Path="infra\terraform\outputs.tf" />
@@ -79,9 +151,16 @@
   <Folder Name="/.config/">
     <File Path=".config\dotnet-tools.json" />
   </Folder>
+  <Folder Name="/infra/terraform/environments/">
+    <File Path="infra/terraform/environments/development.tfvars" />
+    <File Path="infra/terraform/environments/production.tfvars" />
+    <File Path="infra/terraform/environments/staging.tfvars" />
+    <File Path="infra/terraform/environments/test.tfvars" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
     <File Path=".gitattributes" />
+    <File Path=".terraform-docs.yml" />
     <File Path="CODEOWNERS" />
     <File Path="CONTRIBUTING.md" />
     <File Path="Directory.Build.props" />
