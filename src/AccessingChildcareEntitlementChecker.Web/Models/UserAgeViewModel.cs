@@ -17,4 +17,6 @@ public class UserAgeViewModel
 
     [Required(ErrorMessage = "Error_SelectYourAge")]
     public AgeRange? UserAge { get; set; }
+
+    public string? ReturnTo { get; set; }
 }

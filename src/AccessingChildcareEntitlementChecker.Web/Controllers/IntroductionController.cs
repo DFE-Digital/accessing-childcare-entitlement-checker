@@ -66,7 +66,7 @@ public class IntroductionController : Controller
             return NotFound();
         }
 
-        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new ChildIsBornViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -75,12 +75,12 @@ public class IntroductionController : Controller
     {
         if (!ModelState.IsValid)
         {
-            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
             return View(model);
         }
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
 
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 }

@@ -35,10 +35,10 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public ViewResult Location()
+    public ViewResult Location(string? returnTo = null)
     {
-        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
-        return View(new LocationViewModel(_journeyState));
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
+        return View(new LocationViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -46,13 +46,13 @@ public class HomeController : Controller
     {
         if (!ModelState.IsValid)
         {
-            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
 
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 }

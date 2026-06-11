@@ -6,7 +6,7 @@
 @model WorkStatusViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="User" asp-action="PaidWork">
+    <govuk-back-link href="@ViewData["BackLinkHref"]">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

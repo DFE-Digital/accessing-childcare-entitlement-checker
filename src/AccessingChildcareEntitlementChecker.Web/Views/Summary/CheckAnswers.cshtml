@@ -7,27 +7,9 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    @if (!JourneyState.HasPartner!.Value)
-    {
-        <govuk-back-link asp-controller="User" asp-action="HasPartner">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else
-    {
-        if (JourneyState.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
-        {
-            <govuk-back-link asp-controller="Partner" asp-action="PartnerChildcareVoucherReceipt">
-                @Shared["Button_Back"]
-            </govuk-back-link>
-        }
-        else
-        {
-            <govuk-back-link asp-controller="Partner" asp-action="PartnerChildcareSupport">
-                @Shared["Button_Back"]
-            </govuk-back-link>
-        }
-    }
+    <govuk-back-link href="@ViewData["BackLinkHref"]">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <div class="govuk-grid-row">

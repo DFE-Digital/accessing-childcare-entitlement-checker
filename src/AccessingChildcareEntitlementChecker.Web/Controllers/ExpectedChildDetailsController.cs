@@ -32,7 +32,7 @@ public class ExpectedChildDetailsController : Controller
             return NotFound();
         }
 
-        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new ChildDueDateViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -41,13 +41,13 @@ public class ExpectedChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
-            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -59,7 +59,7 @@ public class ExpectedChildDetailsController : Controller
             return NotFound();
         }
 
-        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new ExpectedChildRelationshipViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -68,12 +68,12 @@ public class ExpectedChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
-            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 }

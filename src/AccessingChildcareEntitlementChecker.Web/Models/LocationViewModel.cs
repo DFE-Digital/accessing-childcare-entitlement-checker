@@ -18,4 +18,6 @@ public class LocationViewModel
 
     [Required(ErrorMessage = "Error_SelectLocation")]
     public CountryOfResidence? Country { get; set; }
+
+    public string? ReturnTo { get; set; }
 }

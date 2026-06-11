@@ -6,21 +6,14 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    @if (JourneyState.ChildcareSupport.Contains(ChildcareSupportOption.ChildcareVouchers))
-    {
-        <govuk-back-link asp-controller="User" asp-action="ChildcareVoucherReceipt">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else
-    {
-         <govuk-back-link asp-controller="User" asp-action="ChildcareSupport">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
+    <govuk-back-link href="@ViewData["BackLinkHref"]">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <form method="post" novalidate>
+    <input type="hidden" asp-for="ReturnTo" />
+
     <govuk-radios for="HasPartner">
         <govuk-radios-fieldset>
             <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">

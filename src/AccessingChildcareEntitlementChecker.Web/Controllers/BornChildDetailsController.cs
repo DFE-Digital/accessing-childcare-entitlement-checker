@@ -30,7 +30,7 @@ public class BornChildDetailsController : Controller
             return NotFound();
         }
 
-        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new ChildBirthDateViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -39,13 +39,13 @@ public class BornChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
-            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -57,7 +57,7 @@ public class BornChildDetailsController : Controller
             return NotFound();
         }
 
-        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new ChildRelationshipViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -66,13 +66,13 @@ public class BornChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
-            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -84,7 +84,7 @@ public class BornChildDetailsController : Controller
             return NotFound();
         }
 
-        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new ChildSupportViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -93,12 +93,12 @@ public class BornChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
-            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 }

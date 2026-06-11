@@ -26,6 +26,7 @@ public class PartnerController : Controller
     [HttpGet]
     public ViewResult PartnerAge(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerAgeViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -34,17 +35,19 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerNationality(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerNationalityViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -53,17 +56,19 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerSettledStatus(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerSettledStatusViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -72,17 +77,19 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerPaidWork(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerPaidWorkViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -91,17 +98,19 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerWorkStatus(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerWorkStatusViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -110,17 +119,19 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerBenefits(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerBenefitsViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -129,17 +140,19 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerSelfEmployedDuration(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerSelfEmployedDurationViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -148,17 +161,19 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerWeeklyEarnings(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerWeeklyEarningsViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -167,17 +182,19 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerYearlyEarnings(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerYearlyEarningsViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -186,17 +203,19 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerChildcareSupport(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerChildcareSupportViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -205,12 +224,13 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -223,6 +243,7 @@ public class PartnerController : Controller
     [HttpGet]
     public IActionResult PartnerChildcareVoucherReceipt(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new PartnerChildcareVoucherReceiptViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -231,11 +252,12 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo = model.ReturnTo });
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return _journey.Forwards(this, _journeyState);
+        return _journey.Forwards(this, _journeyState, new { returnTo = model.ReturnTo });
     }
 }

@@ -18,4 +18,6 @@ public class HasPartnerViewModel
 
     [Required(ErrorMessage = "Select if you live with a partner")]
     public bool? HasPartner { get; set; }
+
+    public string? ReturnTo { get; set; }
 }
