@@ -72,7 +72,7 @@ public class BornChildDetailsControllerTests
         {
             ChildId = childId,
             ChildBirthDate = new DateOnly(2020, 1, 15),
-            ReturnTo = "check-your-childrens-details"
+            ReturnTo = ReturnTo.CheckChildDetails
         };
 
         var result = _controller.ChildBirthDate(model);
@@ -156,7 +156,7 @@ public class BornChildDetailsControllerTests
         {
             ChildId = childId,
             Relationship = Relationship.Parent,
-            ReturnTo = "check-your-childrens-details"
+            ReturnTo = ReturnTo.CheckChildDetails
         };
 
         var result = _controller.ChildRelationship(model);
@@ -213,13 +213,16 @@ public class BornChildDetailsControllerTests
         Assert.Equal("Child A", result.Model<ChildSupportViewModel>().ChildName);
     }
 
-    [Fact]
-    public void ChildSupport_Post_ValidSelection_SavesState_AndRedirects()
+    [Theory]
+    [InlineData(ReturnTo.CheckChildDetails, nameof(SummaryController.CheckChildDetails))]
+    [InlineData(ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void ChildSupport_Post_ValidSelection_SavesState_AndRedirects(string returnTo, string actionName)
     {
         var model = new ChildSupportViewModel
         {
             ChildId = childId,
-            ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment]
+            ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment],
+            ReturnTo = returnTo,
         };
 
         var result = _controller.ChildSupport(model);
@@ -228,7 +231,7 @@ public class BornChildDetailsControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(new[] { ChildSupport.ArmedForcesIndependencePayment }, _journeyState.GetChild(model.ChildId)!.ChildSupportOptions);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal("Summary", redirect.ControllerName);
     }
 

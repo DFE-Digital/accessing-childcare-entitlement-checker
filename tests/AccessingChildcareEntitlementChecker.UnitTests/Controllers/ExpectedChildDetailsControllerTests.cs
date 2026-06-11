@@ -70,7 +70,7 @@ public class ExpectedChildDetailsControllerTests
         {
             ChildId = childId,
             ChildDueDate = new DateOnly(2020, 1, 15),
-            ReturnTo = "check-your-childrens-details"
+            ReturnTo = ReturnTo.CheckChildDetails
         };
 
         var result = _controller.ChildDueDate(model);
@@ -124,13 +124,16 @@ public class ExpectedChildDetailsControllerTests
         Assert.Equal(Relationship.Parent, result.Model<ExpectedChildRelationshipViewModel>().ExpectedChildRelationship);
     }
 
-    [Fact]
-    public void ExpectedChildRelationship_Post_ValidSelection_SavesState_AndRedirects()
+    [Theory]
+    [InlineData(ReturnTo.CheckChildDetails, nameof(SummaryController.CheckChildDetails))]
+    [InlineData(ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void ExpectedChildRelationship_Post_ValidSelection_SavesState_AndRedirects(string? returnTo, string actionName)
     {
         var model = new ExpectedChildRelationshipViewModel
         {
             ChildId = childId,
-            ExpectedChildRelationship = Relationship.Parent
+            ExpectedChildRelationship = Relationship.Parent,
+            ReturnTo = returnTo,
         };
 
         var result = _controller.ExpectedChildRelationship(model);
@@ -139,7 +142,7 @@ public class ExpectedChildDetailsControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(Relationship.Parent, _journeyState.GetChild(model.ChildId)!.ExpectedRelationship);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal("Summary", redirect.ControllerName);
     }
 

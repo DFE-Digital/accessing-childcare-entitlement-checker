@@ -1,11 +1,9 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Summary;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using NSubstitute;
-using NSubstitute.Core.Arguments;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -26,15 +24,26 @@ public class SummaryRowFactoryTests
             .BuildServiceProvider()
             .GetRequiredService<IModelMetadataProvider>();
 
+        // Setup for non-attribute based localisation
         var stringLocalizerFactory = Substitute.For<IStringLocalizerFactory>();
-
         var localizer = Substitute.For<IStringLocalizer>();
-        localizer["Title"].Returns(new LocalizedString("Title", "Test Title"));
-        localizer["Option_Wales"].Returns(new LocalizedString("Option_Wales", "Test Country"));
-        localizer["Option_Under18"].Returns(new LocalizedString("Option_Under18", "Test Age"));
+        localizer[Arg.Any<string>()]
+            .Returns(callInfo =>
+            {
+                var key = callInfo.Arg<string>();
+                return new LocalizedString(key, key);
+            });
 
         stringLocalizerFactory
             .Create("Views.Home.Location", Arg.Any<string>())
+            .Returns(localizer);
+
+        stringLocalizerFactory
+            .Create("Views.User.UserAge", Arg.Any<string>())
+            .Returns(localizer);
+
+        stringLocalizerFactory
+            .Create("Views.User.HasPartner", Arg.Any<string>())
             .Returns(localizer);
 
         stringLocalizerFactory
@@ -58,18 +67,20 @@ public class SummaryRowFactoryTests
         Assert.False(row.IsLocalised);
     }
 
-    [Fact]
-    public void ItExtractsTheDisplayNamesForListOfEnums()
+    [Theory]
+    [InlineData(new TestEnum[] { TestEnum.One }, "Value One")]
+    [InlineData(new TestEnum[] { TestEnum.One, TestEnum.Two }, "Value One, Value Two")]
+    public void ItExtractsTheDisplayNamesForListOfEnums(IEnumerable<TestEnum> enumList, string expectedValue)
     {
         _summaryRowFactory.Add<TestViewModel, List<TestEnum>, TestEnum>(
             m => m.TestPropertyList,
-            [TestEnum.One, TestEnum.Two],
+            enumList.ToList(),
             "test-action-name");
         var rows = _summaryRowFactory.ViewModels;
 
         var row = Assert.Single(rows);
         Assert.Equal("Test List<Enum> Property Title", row.Key);
-        Assert.Equal("Value One, Value Two", row.Value);
+        Assert.Equal(expectedValue, row.Value);
         Assert.Equal("test-action-name", row.ChangeAction);
         Assert.Equal("Test", row.ChangeController);
     }
@@ -87,28 +98,66 @@ public class SummaryRowFactoryTests
         Assert.Equal("Test", row.ChangeController);
     }
 
-    [Fact]
-    public void ItExtractsTheViewResourcesForLocation()
+    [Theory]
+    [InlineData(CountryOfResidence.Wales, "Option_Wales")]
+    [InlineData(CountryOfResidence.England, "Option_England")]
+    [InlineData(CountryOfResidence.Scotland, "Option_Scotland")]
+    [InlineData(CountryOfResidence.NorthernIreland, "Option_NorthernIreland")]
+    public void ItExtractsTheViewResourcesForLocation(CountryOfResidence countryOfResidence, string rowValue)
     {
-        _summaryRowFactory.AddLocation(CountryOfResidence.Wales);
+        _summaryRowFactory.AddLocation(countryOfResidence);
         var rows = _summaryRowFactory.ViewModels;
 
         var row = Assert.Single(rows);
-        Assert.Equal("Test Title", row.Key);
-        Assert.Equal("Test Country", row.Value);
+        Assert.Equal("Title", row.Key);
+        Assert.Equal(rowValue, row.Value);
         Assert.Equal("Location", row.ChangeAction);
         Assert.Equal("Test", row.ChangeController);
     }
 
-    [Fact]
-    public void ItExtractsTheViewResourcesForPartnerAge()
+    [Theory]
+    [InlineData(AgeRange.UnderEighteen, "Option_Under18")]
+    [InlineData(AgeRange.EighteenToTwenty, "Option_18To20")]
+    [InlineData(AgeRange.TwentyOneOrOver, "Option_21OrOver")]
+    public void ItExtractsTheViewResourcesForUserAge(AgeRange ageRange, string rowValue)
     {
-        _summaryRowFactory.AddPartnerAge(AgeRange.UnderEighteen);
+        _summaryRowFactory.AddUserAge(ageRange);
         var rows = _summaryRowFactory.ViewModels;
 
         var row = Assert.Single(rows);
-        Assert.Equal("Test Title", row.Key);
-        Assert.Equal("Test Age", row.Value);
+        Assert.Equal("Title", row.Key);
+        Assert.Equal(rowValue, row.Value);
+        Assert.Equal("UserAge", row.ChangeAction);
+        Assert.Equal("Test", row.ChangeController);
+    }
+
+    [Theory]
+    [InlineData(true, "Yes")]
+    [InlineData(false, "No")]
+    public void ItExtractsTheViewResourcesForHasPartner(bool hasPartner, string rowValue)
+    {
+        _summaryRowFactory.AddHasPartner(hasPartner);
+        var rows = _summaryRowFactory.ViewModels;
+
+        var row = Assert.Single(rows);
+        Assert.Equal("Title", row.Key);
+        Assert.Equal(rowValue, row.Value);
+        Assert.Equal("HasPartner", row.ChangeAction);
+        Assert.Equal("Test", row.ChangeController);
+    }
+
+    [Theory]
+    [InlineData(AgeRange.UnderEighteen, "Option_Under18")]
+    [InlineData(AgeRange.EighteenToTwenty, "Option_18To20")]
+    [InlineData(AgeRange.TwentyOneOrOver, "Option_21OrOver")]
+    public void ItExtractsTheViewResourcesForPartnerAge(AgeRange ageRange, string rowValue)
+    {
+        _summaryRowFactory.AddPartnerAge(ageRange);
+        var rows = _summaryRowFactory.ViewModels;
+
+        var row = Assert.Single(rows);
+        Assert.Equal("Title", row.Key);
+        Assert.Equal(rowValue, row.Value);
         Assert.Equal("PartnerAge", row.ChangeAction);
         Assert.Equal("Test", row.ChangeController);
     }

@@ -1,4 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -40,16 +41,14 @@ public class ExpectedChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == "check-your-childrens-details")
+        if (model.ReturnTo is not null)
         {
-            return this.RedirectTo<SummaryController>(
-                nameof(SummaryController.CheckChildDetails),
-                new { fromChildId = model.ChildId });
+            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
         }
 
         return this.RedirectTo<ExpectedChildDetailsController>(
             nameof(ExpectedChildRelationship),
-            new { childId = model.ChildId });
+            new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -74,8 +73,6 @@ public class ExpectedChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return this.RedirectTo<SummaryController>(
-            nameof(SummaryController.CheckChildDetails),
-            new { fromChildId = model.ChildId });
+        return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
     }
 }

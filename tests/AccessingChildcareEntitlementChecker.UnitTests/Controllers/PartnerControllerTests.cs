@@ -34,12 +34,15 @@ public class PartnerControllerTests
         Assert.Equal(AgeRange.EighteenToTwenty, result.Model<PartnerAgeViewModel>().PartnerAge);
     }
 
-    [Fact]
-    public void PartnerAge_Post_ValidSelection_SavesState_AndRedirects()
+    [Theory]
+    [InlineData(null, nameof(PartnerController.PartnerNationality))]
+    [InlineData(ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void PartnerAge_Post_ValidSelection_SavesState_AndRedirects(string? returnTo, string actionName)
     {
         var model = new PartnerAgeViewModel()
         {
-            PartnerAge = AgeRange.EighteenToTwenty
+            PartnerAge = AgeRange.EighteenToTwenty,
+            ReturnTo = returnTo,
         };
 
         var result = _controller.PartnerAge(model);
@@ -48,7 +51,7 @@ public class PartnerControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(AgeRange.EighteenToTwenty, _journeyState.PartnerAge);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(PartnerController.PartnerNationality), redirect.ActionName);
+        Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
@@ -69,15 +72,20 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(NationalityOption.BritishOrIrishCitizen, "Partner", nameof(PartnerController.PartnerPaidWork))]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "Partner", nameof(PartnerController.PartnerSettledStatus))]
-    [InlineData(NationalityOption.CitizenOfADifferentCountry, "Partner", nameof(PartnerController.PartnerPaidWork))]
-    public void PartnerNationality_Post_SavesState_AndRedirects(NationalityOption option, string controllerName, string actionName)
+    [InlineData(NationalityOption.BritishOrIrishCitizen, null, "Partner", nameof(PartnerController.PartnerPaidWork))]
+    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, "Partner", nameof(PartnerController.PartnerSettledStatus))]
+    [InlineData(NationalityOption.CitizenOfADifferentCountry, null, "Partner", nameof(PartnerController.PartnerPaidWork))]
+    [InlineData(NationalityOption.BritishOrIrishCitizen, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(NationalityOption.CitizenOfADifferentCountry, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    public void PartnerNationality_Post_SavesState_AndRedirects(NationalityOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerNationalityViewModel
         {
-            PartnerNationality = option
+            PartnerNationality = option,
+            ReturnTo = returnTo
         };
+
         var result = _controller.PartnerNationality(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
@@ -115,14 +123,16 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(SettledStatusOption.Yes, "Partner", nameof(PartnerController.PartnerPaidWork))]
-    [InlineData(SettledStatusOption.No, "Partner", nameof(PartnerController.PartnerPaidWork))]
-    [InlineData(SettledStatusOption.StillWaiting, "Partner", nameof(PartnerController.PartnerPaidWork))]
-    public void PartnerSettledStatus_Post_SavesState_AndRedirects(SettledStatusOption option, string controllerName, string actionName)
+    [InlineData(SettledStatusOption.Yes, null, "Partner", nameof(PartnerController.PartnerPaidWork))]
+    [InlineData(SettledStatusOption.No, null, "Partner", nameof(PartnerController.PartnerPaidWork))]
+    [InlineData(SettledStatusOption.StillWaiting, null, "Partner", nameof(PartnerController.PartnerPaidWork))]
+    [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    public void PartnerSettledStatus_Post_SavesState_AndRedirects(SettledStatusOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerSettledStatusViewModel
         {
-            PartnerSettledStatus = option
+            PartnerSettledStatus = option,
+            ReturnTo = returnTo
         };
         var result = _controller.PartnerSettledStatus(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
@@ -161,14 +171,16 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(PartnerPaidWorkOption.Yes, "Partner", nameof(PartnerController.PartnerWorkStatus))]
-    [InlineData(PartnerPaidWorkOption.No, "Partner", nameof(PartnerController.PartnerBenefits))]
-    [InlineData(PartnerPaidWorkOption.OnLeave, "Partner", nameof(PartnerController.PartnerTypeOfLeave))]
-    public void PartnerPaidWork_Post_SavesState_AndRedirects(PartnerPaidWorkOption option, string controllerName, string actionName)
+    [InlineData(PartnerPaidWorkOption.Yes, null, "Partner", nameof(PartnerController.PartnerWorkStatus))]
+    [InlineData(PartnerPaidWorkOption.No, null, "Partner", nameof(PartnerController.PartnerBenefits))]
+    [InlineData(PartnerPaidWorkOption.OnLeave, null, "Partner", nameof(PartnerController.PartnerTypeOfLeave))]
+    [InlineData(PartnerPaidWorkOption.Yes, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    public void PartnerPaidWork_Post_SavesState_AndRedirects(PartnerPaidWorkOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerPaidWorkViewModel
         {
-            PartnerPaidWork = option
+            PartnerPaidWork = option,
+            ReturnTo = returnTo
         };
         var result = _controller.PartnerPaidWork(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
@@ -207,14 +219,16 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(WorkStatusOption.PaidEmployment, "Partner", nameof(PartnerController.PartnerWeeklyEarnings))]
-    [InlineData(WorkStatusOption.SelfEmployed, "Partner", nameof(PartnerController.PartnerSelfEmployedDuration))]
-    [InlineData(WorkStatusOption.Apprentice, "Partner", nameof(PartnerController.PartnerWeeklyEarnings))]
-    public void PartnerWorkStatus_Post_SavesState_AndRedirects(WorkStatusOption option, string controllerName, string actionName)
+    [InlineData(WorkStatusOption.PaidEmployment, null, "Partner", nameof(PartnerController.PartnerWeeklyEarnings))]
+    [InlineData(WorkStatusOption.SelfEmployed, null, "Partner", nameof(PartnerController.PartnerSelfEmployedDuration))]
+    [InlineData(WorkStatusOption.Apprentice, null, "Partner", nameof(PartnerController.PartnerWeeklyEarnings))]
+    [InlineData(WorkStatusOption.Apprentice, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    public void PartnerWorkStatus_Post_SavesState_AndRedirects(WorkStatusOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerWorkStatusViewModel
         {
-            PartnerWorkStatus = [option]
+            PartnerWorkStatus = [option],
+            ReturnTo = returnTo
         };
         var result = _controller.PartnerWorkStatus(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
@@ -253,21 +267,24 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(PartnerBenefitsOption.CarersAllowance, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
-    [InlineData(PartnerBenefitsOption.ContributionBasedEmploymentAndSupportAllowance, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
-    [InlineData(PartnerBenefitsOption.EmploymentAndSupportAllowance, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
-    [InlineData(PartnerBenefitsOption.GuaranteedElementOfPensionCredit, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
-    [InlineData(PartnerBenefitsOption.IncapacityBenefit, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
-    [InlineData(PartnerBenefitsOption.LimitedCapabilityForWork, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
-    [InlineData(PartnerBenefitsOption.LimitedCapabilityForWorkRelatedActivity, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
-    [InlineData(PartnerBenefitsOption.SevereDisablementAllowance, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
-    [InlineData(PartnerBenefitsOption.None, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
-    public void PartnerBenefits_Post_SavesState_AndRedirects(PartnerBenefitsOption option, string controllerName, string actionName)
+    [InlineData(PartnerBenefitsOption.CarersAllowance, null, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
+    [InlineData(PartnerBenefitsOption.ContributionBasedEmploymentAndSupportAllowance, null, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
+    [InlineData(PartnerBenefitsOption.EmploymentAndSupportAllowance, null, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
+    [InlineData(PartnerBenefitsOption.GuaranteedElementOfPensionCredit, null, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
+    [InlineData(PartnerBenefitsOption.IncapacityBenefit, null, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
+    [InlineData(PartnerBenefitsOption.LimitedCapabilityForWork, null, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
+    [InlineData(PartnerBenefitsOption.LimitedCapabilityForWorkRelatedActivity, null, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
+    [InlineData(PartnerBenefitsOption.SevereDisablementAllowance, null, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
+    [InlineData(PartnerBenefitsOption.None, null, "Partner", nameof(PartnerController.PartnerChildcareSupport))]
+    [InlineData(PartnerBenefitsOption.None, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    public void PartnerBenefits_Post_SavesState_AndRedirects(PartnerBenefitsOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerBenefitsViewModel
         {
-            PartnerBenefits = [option]
+            PartnerBenefits = [option],
+            ReturnTo = returnTo,
         };
+
         var result = _controller.PartnerBenefits(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
@@ -305,14 +322,17 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(SelfEmployedDurationOption.LessThan12Months, "Partner", nameof(PartnerController.PartnerBenefits))]
-    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, "Partner", nameof(PartnerController.PartnerWeeklyEarnings))]
-    public void PartnerSelfEmployedDuration_Post_SavesState_AndRedirects(SelfEmployedDurationOption option, string controllerName, string actionName)
+    [InlineData(SelfEmployedDurationOption.LessThan12Months, null, "Partner", nameof(PartnerController.PartnerBenefits))]
+    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, null, "Partner", nameof(PartnerController.PartnerWeeklyEarnings))]
+    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    public void PartnerSelfEmployedDuration_Post_SavesState_AndRedirects(SelfEmployedDurationOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerSelfEmployedDurationViewModel
         {
-            PartnerSelfEmployedDuration = option
+            PartnerSelfEmployedDuration = option,
+            ReturnTo = returnTo,
         };
+
         var result = _controller.PartnerSelfEmployedDuration(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
@@ -350,13 +370,15 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(WeeklyEarningsOption.AboveThreshold, "Partner", nameof(PartnerController.PartnerYearlyEarnings))]
-    [InlineData(WeeklyEarningsOption.BelowThreshold, "Partner", nameof(PartnerController.PartnerBenefits))]
-    public void PartnerWeeklyEarnings_Post_SavesState_AndRedirects(WeeklyEarningsOption option, string controllerName, string actionName)
+    [InlineData(WeeklyEarningsOption.AboveThreshold, null, "Partner", nameof(PartnerController.PartnerYearlyEarnings))]
+    [InlineData(WeeklyEarningsOption.BelowThreshold, null, "Partner", nameof(PartnerController.PartnerBenefits))]
+    [InlineData(WeeklyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    public void PartnerWeeklyEarnings_Post_SavesState_AndRedirects(WeeklyEarningsOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerWeeklyEarningsViewModel
         {
-            PartnerWeeklyEarnings = option
+            PartnerWeeklyEarnings = option,
+            ReturnTo = returnTo
         };
         var result = _controller.PartnerWeeklyEarnings(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
@@ -395,13 +417,15 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(YearlyEarningsOption.AboveThreshold, "Partner", nameof(PartnerController.PartnerBenefits))]
-    [InlineData(YearlyEarningsOption.BelowThreshold, "Partner", nameof(PartnerController.PartnerBenefits))]
-    public void PartnerYearlyEarnings_Post_SavesState_AndRedirects(YearlyEarningsOption option, string controllerName, string actionName)
+    [InlineData(YearlyEarningsOption.AboveThreshold, null, "Partner", nameof(PartnerController.PartnerBenefits))]
+    [InlineData(YearlyEarningsOption.BelowThreshold, null, "Partner", nameof(PartnerController.PartnerBenefits))]
+    [InlineData(YearlyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    public void PartnerYearlyEarnings_Post_SavesState_AndRedirects(YearlyEarningsOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerYearlyEarningsViewModel
         {
-            PartnerYearlyEarnings = option
+            PartnerYearlyEarnings = option,
+            ReturnTo = returnTo
         };
         var result = _controller.PartnerYearlyEarnings(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
@@ -440,14 +464,16 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(PartnerChildcareSupportOption.ChildcareVouchers, "Partner", nameof(PartnerController.PartnerChildcareVoucherReceipt))]
-    [InlineData(PartnerChildcareSupportOption.ChildcareBursaryOrGrant, "Summary", nameof(SummaryController.CheckAnswers))]
-    [InlineData(PartnerChildcareSupportOption.None, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void PartnerChildcareSupport_Post_SavesState_AndRedirects(PartnerChildcareSupportOption option, string controllerName, string actionName)
+    [InlineData(PartnerChildcareSupportOption.ChildcareVouchers, null, "Partner", nameof(PartnerController.PartnerChildcareVoucherReceipt))]
+    [InlineData(PartnerChildcareSupportOption.ChildcareBursaryOrGrant, null, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(PartnerChildcareSupportOption.None, null, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(PartnerChildcareSupportOption.ChildcareVouchers, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    public void PartnerChildcareSupport_Post_SavesState_AndRedirects(PartnerChildcareSupportOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerChildcareSupportViewModel
         {
-            PartnerChildcareSupport = [option]
+            PartnerChildcareSupport = [option],
+            ReturnTo = returnTo
         };
         var result = _controller.PartnerChildcareSupport(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
@@ -486,14 +512,16 @@ public class PartnerControllerTests
     }
 
     [Theory]
-    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, "Summary", nameof(SummaryController.CheckAnswers))]
-    [InlineData(ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, "Summary", nameof(SummaryController.CheckAnswers))]
-    [InlineData(ChildcareVoucherReceiptOption.ThroughSalarySacrifice, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void PartnerChildcareVoucherReceipt_Post_SavesState_AndRedirects(ChildcareVoucherReceiptOption option, string controllerName, string actionName)
+    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, null, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, null, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(ChildcareVoucherReceiptOption.ThroughSalarySacrifice, null, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    public void PartnerChildcareVoucherReceipt_Post_SavesState_AndRedirects(ChildcareVoucherReceiptOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerChildcareVoucherReceiptViewModel
         {
-            PartnerChildcareVoucherReceipt = option
+            PartnerChildcareVoucherReceipt = option,
+            ReturnTo = returnTo
         };
         var result = _controller.PartnerChildcareVoucherReceipt(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);

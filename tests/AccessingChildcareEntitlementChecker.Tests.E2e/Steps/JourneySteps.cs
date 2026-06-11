@@ -87,7 +87,11 @@ public class JourneySteps(Context context)
         _context.Queue.Answers([
             ("What is your age?", "Under 18"),
             ("What is your nationality?", "British or Irish citizen"),
-            ("Are you in paid work?", "No"),
+            ("Are you in paid work?", "Yes"),
+            ("How would you describe your work status?", "Self-employed"),
+            ("Have you been self-employed for less than 12 months?", "No"),
+            ("On average, do you earn £203 a week or more before tax?", "Yes"),
+            ("Is your adjusted net income more than £100,000 a year?", "No"),
             ("Does your household receive universal credit?", "Yes"),
             ("Do you get any of these benefits?", "Carer's Allowance"),
             ("Do you already get any of this childcare support?", "Childcare vouchers"),
@@ -109,10 +113,16 @@ public class JourneySteps(Context context)
         ]);
     }
 
-    [Given("I click the Add another child button")]
-    public void GivenIClickTheAddAnotherChildButton()
+    [Given("I click the Add another child button on the 'Check your children's details' page")]
+    public void GivenIClickTheAddAnotherChildButtonOnTheCheckYourChildrensDetailsPage()
     {
         _context.Queue.ClickButton("Check your children's details", "Add another child");
+    }
+
+    [Given("I click the Add another child button on the 'Check your answers' page")]
+    public void GivenIClickTheAddAnotherChildButtonOnTheCheckYourAnswersPage()
+    {
+        _context.Queue.ClickButton("Check your answers", "Add another child");
     }
 
     /// <summary>
