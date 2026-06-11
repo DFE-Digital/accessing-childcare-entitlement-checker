@@ -4,11 +4,11 @@ layout: page
 showPagination: true
 order: 9
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 
 ---
-
 **Date:** 2026-05-25  
 **Decision Makers:** Engineering & Product  
 **Technical Story:** Support reliable production releases and simplified hotfix workflows while retaining trunk-based development practices.

@@ -2,12 +2,12 @@
 title: Application Architecture
 layout: sub-navigation
 sectionKey: Architecture
+order: 1
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Architecture
   key: Application Architecture
-order: 0
 ---
-
 ## Level 1: System Context
 The highest level of abstraction, showing how the system interacts with users.
 
@@ -65,6 +65,6 @@ C4Component
 
 The solution is divided into two primary functional projects:
 
-1.  **Web**: Follows standard ASP.NET Core MVC patterns. Manages the stateful user journey across multiple pages using encrypted session cookies to ensure the application remains stateless on the server side.
+1.  **Web**: Follows standard ASP.NET Core MVC patterns. Manages the stateful user journey across multiple pages.
 2.  **RulesEngine**: A pure logic library containing no web-specific dependencies. It uses a "Fact-based" approach where raw user input is mapped to a `DerivedContext` before being evaluated by a suite of independent `ISchemeEvaluator` implementations.
 

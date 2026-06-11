@@ -2,10 +2,10 @@
 title: Testing
 layout: sub-navigation
 sectionKey: Testing
+includeInBreadcrumbs: true
 eleventyNavigation:
   key: Testing
 ---
-
 Information about the testing strategy, automated testing patterns, and quality assurance processes for the Accessing Childcare Entitlement Checker.
 
 In this section, you will find:

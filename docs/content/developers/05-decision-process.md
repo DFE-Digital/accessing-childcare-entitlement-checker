@@ -2,12 +2,12 @@
 title: Decision Process
 layout: sub-navigation
 sectionKey: Developers
+order: 5
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
   key: Decision Process
-order: 6
 ---
-
 The decision-making process follows the flow shown below:
 
 ```mermaid
@@ -57,11 +57,11 @@ The "standards" hard constraint includes typical implementations with the wider 
 
 ## Recording Decisions
 
-Significant decisions that impact the architecture, technology stack, or development patterns of the service are recorded as **Architectural Decision Records (ADRs)**. We use the [Markdown Architectural Decision Records (MADR)](https://adr.github.io/madr/) format to ensure these records are consistent, readable, and version-controlled alongside our code.
+Significant decisions that impact the architecture, technology stack, or development patterns of the service are recorded as Architectural Decision Records (ADRs). We use the [Markdown Architectural Decision Records (MADR)](https://adr.github.io/madr/) format to ensure these records are consistent, readable, and version-controlled alongside our code.
 
-### When to Create an ADR
+### When to Create an decision record
 
-You should consider creating an ADR when a decision:
+You should consider creating a decision record when a decision:
 
 - Has multiple viable options with significant trade-offs.
 - Is not immediately obvious from the code or infrastructure configuration.
@@ -69,9 +69,9 @@ You should consider creating an ADR when a decision:
 
 ### Process for New Decisions
 
-1. **Identify the Need**: Recognize when a decision fits the criteria above.
-2. **Draft the ADR**: Use the sequential naming convention (e.g., `NNNN-short-title.md`) and follow the MADR template.
-3. **Review**: Discuss the proposal with the team, typically via a Pull Request.
-4. **Finalize**: Once agreed upon, the ADR is merged and becomes an immutable record of that decision. If a decision is later superseded, a new ADR is created to document the change.
+1. Identify the Need: Recognise when a decision fits the criteria above.
+2. Draft the record: Use the sequential naming convention (e.g., `NNNN-short-title.md`) and follow the MADR template.
+3. Review: Discuss the proposal with the team, typically via a Pull Request.
+4. Finalise: Once agreed upon, the record is merged and becomes an immutable record of that decision. If a decision is later superseded, a new record is created to document the change.
 
 You can explore all significant decisions made during the development of this service on our [decisions page](/decisions/).

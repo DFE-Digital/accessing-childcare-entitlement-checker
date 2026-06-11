@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 4
 sectionKey: Operational
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Operational
 ---
-
 A catastrophic, full-region outage affects the entire Azure `UK South` infrastructure.
 
 ## Impact

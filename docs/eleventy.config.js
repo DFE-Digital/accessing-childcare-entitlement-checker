@@ -1,18 +1,28 @@
 import { govukEleventyPlugin } from '@x-govuk/govuk-eleventy-plugin'
+import { pathPrefix } from "./path-prefix.js";
 
 export default function(eleventyConfig) {
+  eleventyConfig.addPassthroughCopy("content/assets/images");
+  eleventyConfig.addPassthroughCopy("content/assets/js")
+
   eleventyConfig.addPlugin(govukEleventyPlugin, {
-    titleSuffix: 'Accessing Childcare Entitlement Checker',
+    stylesheets: ['/assets/styles.css'],
+    titleSuffix: 'Accessing Childcare',
     templates: {
-      sitemap: false,
-      searchIndex: false
+      sitemap: true,
+      searchIndex: true
     },
     header: {
       logotype: {
-        html: '<img src="/assets/images/department-for-education_white.png" alt="Department for Education" height="30">'
+        html: '<img src="/assets/images/department-for-education_white.png" alt="Department for Education">'
+      },
+      search: {
+        indexPath: `${pathPrefix}search-index.json`,
+        sitemapPath: '/sitemap'
       }
     },
     serviceNavigation: {
+      serviceName: 'Accessing Childcare',
       navigation: [
         {
           text: 'Developers',
@@ -49,18 +59,13 @@ export default function(eleventyConfig) {
             text: 'GitHub repository'
           }
         ],
-        html: '<script src="/assets/mermaid.js" type="module"></script>'
+        html: '<script src="/assets/js/mermaid.js" type="module"></script>'
       }
     }
   })
 
-  eleventyConfig.addPassthroughCopy({ 'assets/department-for-education_white.png': 'assets/images/department-for-education_white.png' })
-  eleventyConfig.addPassthroughCopy({ 'assets/mermaid.js': 'assets/mermaid.js' })
-
-  const isProduction = process.env.ELEVENTY_ENV === "production";
-
   return {
-    pathPrefix: isProduction ? "/accessing-childcare-entitlement-checker/" : "/",
+    pathPrefix: pathPrefix,
     dataTemplateEngine: 'njk',
     htmlTemplateEngine: 'njk',
     markdownTemplateEngine: 'njk',

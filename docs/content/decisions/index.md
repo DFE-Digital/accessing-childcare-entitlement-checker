@@ -66,8 +66,8 @@ decisions:
     data:
       date: 2026-06-08
       title: Bootstrap Terraform State Storage in Azure
+includeInBreadcrumbs: true
 ---
-
 We record all significant decisions made during the development of this service. These records, also known as Architectural Decision Records (ADRs), capture the context, options considered, and the final decision.
 
-For more information on how we make these decisions, see our [decision process](/developers/decision-process/).
+For more information on how we make these decisions, see our [decision process](/developers/05-decision-process/).

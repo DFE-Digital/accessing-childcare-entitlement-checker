@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 1
 sectionKey: Runbooks
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Runbooks
 ---
-
 This runbook describes the procedure to roll back a deployment when a broken package or bad configuration is introduced to production.
 
 ## Standard Rollback: Instant Slot Swap (Zero Downtime)

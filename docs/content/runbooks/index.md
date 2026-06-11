@@ -27,8 +27,8 @@ data:
   - url: "/runbooks/007-investigate-service-degradation"
     data:
       title: Investigate service degradation    
+includeInBreadcrumbs: true
 ---
-
 Runbooks provide step-by-step guidance for responding to, mitigating, and recovering from specific operational events and security incidents.
 
 These runbooks are built to:

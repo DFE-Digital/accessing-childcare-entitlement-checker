@@ -2,12 +2,12 @@
 title: ZAP Scanning Report
 layout: sub-navigation
 sectionKey: Testing
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Testing
   key: Scanning Report
 order: 99
 ---
-
 ## Summary of Alerts
 
 | Risk Level | Number of Alerts |

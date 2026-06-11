@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 7
 sectionKey: Operational
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Operational
 ---
-
 An attacker or compromised identity gains privileged administrative access to our hosting environments or source code repository.
 
 ## Impact

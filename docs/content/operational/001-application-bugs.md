@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 1
 sectionKey: Operational
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Operational
 ---
-
 A defect, logic error, or configuration issue is deployed to production and impacts parents/carers trying to evaluate their childcare entitlements.
 
 ## Impact

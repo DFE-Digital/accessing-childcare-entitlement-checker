@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 6
 sectionKey: Runbooks
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Runbooks
 ---
-
 This runbook outlines the process for migrating the service from our primary Azure region (`UK South`) to a secondary region (e.g., `UK West`) in the event of a catastrophic regional Azure outage.
 
 ## Important Architectural Notes

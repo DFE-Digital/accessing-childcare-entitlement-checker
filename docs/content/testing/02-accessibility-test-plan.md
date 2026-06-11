@@ -2,12 +2,12 @@
 title: Accessibility Test Plan
 layout: sub-navigation
 sectionKey: Testing
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Testing
   key: Accessibility Test Plan
-order: 1
+order: 2
 ---
-
 The objective of this test plan is to verify that the application meets the requirements of WCAG 2.2 Level AA and provides an accessible experience for users who rely on assistive technologies, keyboard navigation, screen readers, zoom, and other accessibility accommodations.
 
 Testing will focus on:

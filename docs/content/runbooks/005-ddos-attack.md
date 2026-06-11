@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 5
 sectionKey: Runbooks
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Runbooks
 ---
-
 This runbook outlines the steps to take when the service is experiencing a suspected Layer 7 or volumetric Distributed Denial of Service (DDoS) attack.
 
 ## Step 1: Confirm the Attack via Telemetry

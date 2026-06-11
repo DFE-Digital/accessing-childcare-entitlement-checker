@@ -4,11 +4,11 @@ layout: page
 showPagination: true
 order: 4
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 
 ---
-
 ## Context and Problem Statement
 
 We'd like to run UI tests on PR pushes. But we don't need the expense or complexity of full ephemeral environments in Azure.

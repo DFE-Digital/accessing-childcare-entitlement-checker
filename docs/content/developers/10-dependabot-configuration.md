@@ -2,12 +2,13 @@
 title: Dependabot
 layout: sub-navigation
 sectionKey: Developers
+order: 10
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
   key: Dependabot
-order: 3
----
 
+---
 This repository uses an enhanced Dependabot configuration designed to improve:
 
 - Dependency security

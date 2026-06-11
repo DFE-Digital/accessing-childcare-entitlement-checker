@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 5
 sectionKey: Operational
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Operational
 ---
-
 Attackers generate malicious layer-7 HTTP flooding or volumetric layer-3 or layer-4 traffic to overwhelm the application.
 
 ## Impact

@@ -2,12 +2,12 @@
 title: Cross-Browser Testing Strategy and Test Plan
 layout: sub-navigation
 sectionKey: Testing
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Testing
-  key: Cross-Browser Testing
-order: 2
+  key: Cross-Browser Test Plan
+order: 3
 ---
-
 This document defines the strategy for introducing cross-browser testing into the existing Playwright E2E automation framework.
 
 The goal is to increase confidence that critical user journeys function correctly across all major browser engines while maintaining fast feedback cycles for developers.
@@ -50,10 +50,10 @@ Browsers:
 
 ## Browser Support Matrix
 
-| Browser  | Execution Frequency            | Purpose                  |
-|----------|--------------------------------|--------------------------|
-| Chromium | Every PR, Main branch, Nightly | Primary validation       |
-| Firefox  | Nightly                        | Secondary validation    |
+| Browser  | Execution Frequency            | Purpose              |
+|----------|--------------------------------|----------------------|
+| Chromium | Every PR, Main branch, Nightly | Primary validation   |
+| Firefox  | Nightly                        | Secondary validation |
 | WebKit   | Nightly                        | Secondary validation |
 
 ## Architecture

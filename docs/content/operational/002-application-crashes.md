@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 2
 sectionKey: Operational
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Operational
 ---
-
 Application may crash because of .NET unhandled exceptions, memory leaks, or resource exhaustion on the App Service Plan.
 
 ## Impact

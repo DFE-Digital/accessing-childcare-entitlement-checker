@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 6
 sectionKey: Operational
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Operational
 ---
-
 The SSL/TLS certificates expire, preventing users' browsers from securely loading the web tool.
 
 ## Impact

@@ -2,12 +2,12 @@
 title: Workflow Naming Conventions
 layout: sub-navigation
 sectionKey: Developers
+order: 9
+includeInBreadcrumbs: true
 eleventyNavigation:
-  key: Workflow Naming Conventions
+  key: Workflow Naming
   parent: Developers
-  order: 7
 ---
-
 This project follows a strict naming convention for GitHub Actions workflows to ensure clarity, consistency, and efficient reuse of logic.
 
 ## Summary

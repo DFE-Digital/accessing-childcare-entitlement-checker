@@ -33,8 +33,8 @@ data:
   - url: "/operational/009-third-party-dependencies"
     data:
       title: Third-party dependency failures
+includeInBreadcrumbs: true
 ---
-
 Operational resilience is the ability of a service to prevent, withstand, respond to and recover from operational disruptions.
 
 This guidance identifies common technical risks the services and the controls used to reduce their impact.

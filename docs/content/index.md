@@ -21,12 +21,14 @@ This project follows a Documentation as Code approach. Our documentation is:
 
 ## Getting Started
 
-If you are new to the project, please start with the [Getting Started](/developers/getting-started/) guide for instructions on setting up your local development environment.
+If you are new to the project, please start with the [Getting Started](/developers/01-getting-started/) guide for instructions on setting up your local development environment.
 
 ## Documentation Sections
 
-- [Developers](/developers/) - Local development guides, branching strategies, and ways of working.
-- [Architecture](/architecture/) - High-level design, principles, and deployment diagrams.
-- [Decisions](/decisions/) - Architecture Decision Records (ADRs) capturing key technical choices.
-- [Testing](/testing/) - Test strategy, automated testing patterns, and security scan reports.
+- [Developers](/developers/) - Best-practice local onboarding, branching strategies, and our fully automated release pipeline .
+- [Architecture](/architecture/) - High-level system architecture, networking topologies, and STRIDE / Anti-Persona threat modelling .
+- [Decisions](/decisions/) - Decision Records capturing critical design choices, framework selections, and refactoring pathways.
+- [Testing](/testing/) - Comprehensive test strategies, automated Playwright validation patterns, and technical checklist.
+- [Operational Guides](/operational/) - Incident response matrices, application recovery guides, and mitigation strategies.
+- [Runbooks](/runbooks/) - Actionable, step-by-step technical procedures.
 

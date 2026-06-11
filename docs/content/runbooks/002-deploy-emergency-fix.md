@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 2
 sectionKey: Runbooks
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Runbooks
 ---
-
 This runbook covers the procedure for developing, testing, and deploying an emergency hotfix to resolve critical bugs or security vulnerabilities.
 
 ## Step 1: Isolate the Issue & Branch

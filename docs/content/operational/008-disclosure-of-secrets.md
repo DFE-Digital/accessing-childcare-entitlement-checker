@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 8
 sectionKey: Operational
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Operational
 ---
-
 Sensitive credentials, passwords, or deployment keys are accidentally committed to public source repositories or exposed via application logs.
 
 ## Impact

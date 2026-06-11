@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 10
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 ---
-
 ## Context and Problem Statement
 
 Technical documentation is currently stored as Markdown files in the `/docs` directory. While these are readable in GitHub, we want to provide a more accessible, branded, and searchable documentation site for stakeholders and developers, published via GitHub Pages.
