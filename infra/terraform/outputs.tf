@@ -24,3 +24,8 @@ output "deployment_storage_blob_endpoint" {
   value       = azurerm_storage_account.deployment_storage.primary_blob_endpoint
   description = "The primary blob endpoint URL of the deployment storage account."
 }
+
+output "staging_slot_in_use" {
+  value       = var.enable_staging_slot
+  description = "Indicates whether the staging slot is enabled for the web app."
+}
