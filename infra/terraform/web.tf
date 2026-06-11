@@ -24,6 +24,7 @@ resource "azurerm_linux_web_app" "web-app-service" {
   virtual_network_subnet_id     = azapi_resource.app_subnet.id
   app_settings                  = local.web_app_settings
   public_network_access_enabled = var.azure_frontdoor_scale != "Premium"
+  client_affinity_enabled       = var.webapp_instance_count > 1
   tags                          = local.common_tags
 
   site_config {
@@ -101,6 +102,7 @@ resource "azurerm_linux_web_app_slot" "staging" {
   virtual_network_subnet_id     = azapi_resource.app_subnet.id
   app_settings                  = local.web_app_settings
   public_network_access_enabled = var.azure_frontdoor_scale != "Premium"
+  client_affinity_enabled       = var.webapp_instance_count > 1
   tags                          = local.common_tags
 
   site_config {
