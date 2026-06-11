@@ -80,10 +80,11 @@ No modules.
 | <a name="input_custom_domain"></a> [custom\_domain](#input\_custom\_domain) | Custom front-door domain | `string` | `""` | no |
 | <a name="input_development_basic_auth_password"></a> [development\_basic\_auth\_password](#input\_development\_basic\_auth\_password) | Shared password for development-only basic auth | `string` | `""` | no |
 | <a name="input_elz_environment"></a> [elz\_environment](#input\_elz\_environment) | The ELZ environment to match subscription (e.g. Dev) | `string` | n/a | yes |
-| <a name="input_enable_staging_slot"></a> [enable\_staging\_slot](#input\_enable\_staging\_slot) | n/a | `bool` | `false` | no |
+| <a name="input_enable_staging_slot"></a> [enable\_staging\_slot](#input\_enable\_staging\_slot) | Enable staging slot for web app | `bool` | `false` | no |
 | <a name="input_environment_prefix"></a> [environment\_prefix](#input\_environment\_prefix) | Environment prefix (e.g. d01) | `string` | n/a | yes |
 | <a name="input_webapp_instance_count"></a> [webapp\_instance\_count](#input\_webapp\_instance\_count) | The number of instances for the web app | `number` | `1` | no |
 | <a name="input_webapp_sku"></a> [webapp\_sku](#input\_webapp\_sku) | Web App SKU (e.g. B1) | `string` | `"B1"` | no |
+| <a name="input_webapp_zone_balancing"></a> [webapp\_zone\_balancing](#input\_webapp\_zone\_balancing) | Enable zone balancing on web app | `bool` | `false` | no |
 
 ## Outputs
 
@@ -94,5 +95,6 @@ No modules.
 | <a name="output_deployment_storage_container_name"></a> [deployment\_storage\_container\_name](#output\_deployment\_storage\_container\_name) | The name of the deployment blob container. |
 | <a name="output_frontdoor_hostname"></a> [frontdoor\_hostname](#output\_frontdoor\_hostname) | n/a |
 | <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | n/a |
+| <a name="output_staging_slot_in_use"></a> [staging\_slot\_in\_use](#output\_staging\_slot\_in\_use) | Indicates whether the staging slot is enabled for the web app. |
 | <a name="output_web_app_name"></a> [web\_app\_name](#output\_web\_app\_name) | n/a |
 <!-- END_TF_DOCS -->
