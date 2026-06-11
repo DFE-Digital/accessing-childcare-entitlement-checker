@@ -19,11 +19,20 @@ public class PlaywrightHooks(IObjectContainer objectContainer)
     public static async Task BeforeTestRun()
     {
         _playwright = await Playwright.CreateAsync();
-        _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+
+        var browserName = Environment.GetEnvironmentVariable("PLAYWRIGHT_BROWSER")?.ToLowerInvariant();
+        var launchOptions = new BrowserTypeLaunchOptions
         {
             Headless = !Debugger.IsAttached,
             SlowMo = Debugger.IsAttached ? 1000 : 0
-        });
+        };
+
+        _browser = browserName switch
+        {
+            "firefox" => await _playwright.Firefox.LaunchAsync(launchOptions),
+            "webkit" => await _playwright.Webkit.LaunchAsync(launchOptions),
+            _ => await _playwright.Chromium.LaunchAsync(launchOptions)
+        };
     }
 
     [BeforeScenario]

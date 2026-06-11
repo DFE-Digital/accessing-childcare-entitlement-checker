@@ -1,0 +1,115 @@
+name: Nightly Cross-Browser Tests
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  checks: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  setup-environment:
+    name: Setup Test Environment
+    runs-on: ubuntu-latest
+    environment:
+      name: test
+      deployment: false
+    outputs:
+      SUT_URL: ${{ steps.get-url.outputs.TARGET_URL }}
+    env:
+      RESOURCE_GROUP: s279t01rg-uks-cec-web
+      FD_PROFILE: s279t01-uks-cec-web-fd-profile
+      FD_ENDPOINT: s279t01-uks-cec-web-fd-endpoint
+    steps:
+      - name: Checkout Git metadata
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: .
+          sparse-checkout-cone-mode: false
+
+      - name: Azure Login
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get Azure Frontdoor URL
+        id: get-url
+        env:
+          RG: ${{ env.RESOURCE_GROUP }}
+          PROFILE: ${{ env.FD_PROFILE }}
+          ENDPOINT: ${{ env.FD_ENDPOINT }}
+        run: |
+          set -euo pipefail
+          FRONTDOOR_URL=$(az afd custom-domain list -g "$RG" --profile-name "$PROFILE" --query "[0].hostName" -o tsv)
+          if [ -z "$FRONTDOOR_URL" ]; then
+            FRONTDOOR_URL=$(az afd endpoint show -g "$RG" --profile-name "$PROFILE" --endpoint-name "$ENDPOINT" --query "hostName" -o tsv)
+          fi
+          if [ -z "$FRONTDOOR_URL" ]; then
+            echo "::error::Could not determine Frontdoor URL"
+            exit 1
+          fi
+          echo "TARGET_URL=https://$FRONTDOOR_URL/" >> $GITHUB_OUTPUT
+
+      - name: Get latest successful main run
+        id: get-run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          RUN_ID=$(gh run list --workflow=workflow-main.yml --branch=main --status=success --limit=1 --json databaseId -q '.[0].databaseId')
+          if [ -z "$RUN_ID" ] || [ "$RUN_ID" == "null" ]; then
+            echo "::error::Could not find a successful run for main"
+            exit 1
+          fi
+          echo "RUN_ID=$RUN_ID" >> $GITHUB_OUTPUT
+
+      - name: Download artifacts from latest main run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download ${{ steps.get-run.outputs.RUN_ID }} -n build-dotnet-metadata -D metadata-dir
+          gh run download ${{ steps.get-run.outputs.RUN_ID }} -n web-app -D web-app-dir
+          gh run download ${{ steps.get-run.outputs.RUN_ID }} -n e2e-tests -D e2e-dir
+
+      - name: Re-upload metadata artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-dotnet-metadata
+          path: metadata-dir/*
+
+      - name: Re-upload web-app artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: web-app
+          path: web-app-dir/*
+
+      - name: Re-upload e2e-tests artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-tests
+          path: e2e-dir/*
+
+  e2e-tests:
+    name: E2E Tests
+    needs: setup-environment
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    uses: ./.github/workflows/run-e2e-tests.yml
+    with:
+      browser: ${{ matrix.browser }}
+      SUT: ${{ needs.setup-environment.outputs.SUT_URL }}
+      environment: test
+    secrets:
+      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
