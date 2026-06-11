@@ -26,6 +26,7 @@ public class UserController : Controller
     [HttpGet]
     public ViewResult UserAge()
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new UserAgeViewModel(_journeyState));
     }
 
@@ -34,6 +35,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 
@@ -45,6 +47,7 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult Nationality(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new NationalityViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -53,6 +56,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 
@@ -64,6 +68,7 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult SettledStatus(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new SettledStatusViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -72,6 +77,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 
@@ -83,6 +89,7 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult PaidWork(string? returnTo = null)
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo });
     }
 
@@ -91,6 +98,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 

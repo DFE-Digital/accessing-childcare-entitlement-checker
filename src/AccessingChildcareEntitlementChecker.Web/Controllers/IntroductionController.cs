@@ -28,6 +28,7 @@ public class IntroductionController : Controller
         if (childId == null)
         {
             var childNameViewModel = new ChildNameViewModel();
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(childNameViewModel);
         }
 
@@ -37,6 +38,7 @@ public class IntroductionController : Controller
             return NotFound();
         }
 
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new ChildNameViewModel(child));
     }
 
@@ -45,6 +47,7 @@ public class IntroductionController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 
@@ -63,6 +66,7 @@ public class IntroductionController : Controller
             return NotFound();
         }
 
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new ChildIsBornViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -71,6 +75,7 @@ public class IntroductionController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
         _journeyState.Apply(model);

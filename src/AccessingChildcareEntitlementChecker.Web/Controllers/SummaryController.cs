@@ -8,6 +8,7 @@ using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using static AccessingChildcareEntitlementChecker.Web.IServiceCollectionExtensions;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -16,15 +17,18 @@ public class SummaryController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly IStringLocalizerFactory _stringLocalizerFactory;
+    private readonly Journey _journey;
 
     public SummaryController(
         JourneyState journeyState,
         IJourneySession journeySession,
-        IStringLocalizerFactory stringLocalizerFactory)
+        IStringLocalizerFactory stringLocalizerFactory,
+        Journey journey)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
         _stringLocalizerFactory = stringLocalizerFactory;
+        _journey = journey;
     }
 
     [HttpGet]
@@ -33,6 +37,7 @@ public class SummaryController : Controller
         var summaries = _journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckChildDetails)).ToList().AsReadOnly();
         var hasChildren = _journeyState.Children.Count > 0;
         var lastEditedChild = ResolveLastEditedChild(_journeyState, fromChildId);
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new CheckChildDetailsViewModel(summaries, hasChildren, lastEditedChild));
     }
 
@@ -43,6 +48,7 @@ public class SummaryController : Controller
         var hasChildren = _journeyState.Children.Count > 0;
         var lastEditedChild = ResolveLastEditedChild(_journeyState, fromChildId);
         var state = _journeyState;
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
 
         var homeBuilder = new SummaryRowFactory(MetadataProvider, "Home", _stringLocalizerFactory)
             .AddLocation(_journeyState.CountryOfResidence);

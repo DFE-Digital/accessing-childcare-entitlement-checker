@@ -4,18 +4,9 @@
 @model ChildIsBornViewModel
 
 @section BeforeContent {
-    @if (Model.ReturnTo is not null)
-    {
-        <govuk-back-link asp-controller="Summary" asp-action="@(Model.ReturnTo == ReturnTo.CheckAnswers ? "CheckAnswers" : "CheckChildDetails")">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else
-    {
-        <govuk-back-link asp-controller="Introduction" asp-action="ChildName" asp-route-childId="@Model.ChildId">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
+    <govuk-back-link href="@ViewData["BackLinkHref"]">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <div class="govuk-grid-row">

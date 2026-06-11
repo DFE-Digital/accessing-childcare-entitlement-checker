@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 using static AccessingChildcareEntitlementChecker.Web.IServiceCollectionExtensions;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
@@ -36,6 +37,7 @@ public class HomeController : Controller
     [HttpGet]
     public ViewResult Location()
     {
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new LocationViewModel(_journeyState));
     }
 
@@ -44,6 +46,7 @@ public class HomeController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 

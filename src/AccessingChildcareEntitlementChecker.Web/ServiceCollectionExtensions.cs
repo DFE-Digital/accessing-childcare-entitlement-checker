@@ -220,7 +220,7 @@ public static class IServiceCollectionExtensions
             return new NotFoundResult();
         }
 
-        public PageKey Backwards(
+        public BackLinkHref Backwards(
             Controller current,
             JourneyState journeyState,
             object? routeValues = null)
@@ -244,15 +244,20 @@ public static class IServiceCollectionExtensions
 
             var edgeContext = new EdgeContext(journeyState, routeValuesDict);
 
-            var match = Pages.Values
+            var targetMatches = Pages.Values
                 .SelectMany(page => page.Edges.Select(edge => new
                 {
                     Source = page,
                     Edge = edge
                 }))
                 .Where(x => x.Edge.Target == currentPageKey)
+                .ToList();
+
+            var conditionMatches = targetMatches
                 .Where(x => x.Edge.Condition(edgeContext))
-                .FirstOrDefault();
+                .ToList();
+
+            var match = conditionMatches.FirstOrDefault();
 
             if (match is null)
             {
@@ -260,7 +265,12 @@ public static class IServiceCollectionExtensions
                     $"No backwards transition found for {controllerName}.{actionName}.");
             }
 
-            return match.Source.PageKey;
+            var pageKey = match.Source.PageKey;
+            var href = current.Url.Action(
+                pageKey.ActionName,
+                pageKey.ControllerName,
+                edgeContext.RouteValues);
+            return new BackLinkHref(href);
         }
     }
 

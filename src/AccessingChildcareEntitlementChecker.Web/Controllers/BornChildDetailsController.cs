@@ -30,6 +30,7 @@ public class BornChildDetailsController : Controller
             return NotFound();
         }
 
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new ChildBirthDateViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -38,6 +39,7 @@ public class BornChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 
@@ -55,6 +57,7 @@ public class BornChildDetailsController : Controller
             return NotFound();
         }
 
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new ChildRelationshipViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -63,6 +66,7 @@ public class BornChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 
@@ -80,6 +84,7 @@ public class BornChildDetailsController : Controller
             return NotFound();
         }
 
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new ChildSupportViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -88,6 +93,7 @@ public class BornChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 

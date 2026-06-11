@@ -5,7 +5,7 @@
 
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Home" asp-action="Start">
+    <govuk-back-link href="@ViewData["BackLinkHref"]">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

@@ -32,6 +32,7 @@ public class ExpectedChildDetailsController : Controller
             return NotFound();
         }
 
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new ChildDueDateViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -40,6 +41,7 @@ public class ExpectedChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 
@@ -57,6 +59,7 @@ public class ExpectedChildDetailsController : Controller
             return NotFound();
         }
 
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new ExpectedChildRelationshipViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -65,6 +68,7 @@ public class ExpectedChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 
