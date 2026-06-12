@@ -14,7 +14,7 @@ order: 99
 | --- | --- |
 | High | 0 |
 | Medium | 0 |
-| Low | 3 |
+| Low | 2 |
 | Informational | 4 |
 
 
@@ -25,7 +25,7 @@ order: 99
 | Level | Reason | Site | Description | Statistic |
 | --- | --- | --- | --- | --- |
 | Low | Warning |  | ZAP errors logged - see the zap.log file for details | 1    |
-| Low | Warning |  | ZAP warnings logged - see the zap.log file for details | 9    |
+| Low | Warning |  | ZAP warnings logged - see the zap.log file for details | 7    |
 | Info | Informational | https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net | Percentage of responses with status code 2xx | 58 % |
 | Info | Informational | https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net | Percentage of responses with status code 3xx | 1 % |
 | Info | Informational | https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net | Percentage of responses with status code 4xx | 40 % |
@@ -40,7 +40,7 @@ order: 99
 | Info | Informational | https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net | Percentage of endpoints with method GET | 82 % |
 | Info | Informational | https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net | Percentage of endpoints with method POST | 17 % |
 | Info | Informational | https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net | Count of total endpoints | 17    |
-| Info | Informational | https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net | Percentage of slow responses | 52 % |
+| Info | Informational | https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net | Percentage of slow responses | 73 % |
 
 
 
@@ -49,7 +49,6 @@ order: 99
 
 | Name | Risk Level | Number of Instances |
 | --- | --- | --- |
-| Cookie Without Secure Flag | Low | 2 |
 | Private IP Disclosure | Low | 1 |
 | Timestamp Disclosure - Unix | Low | 1 |
 | Modern Web Application | Informational | Systemic |
@@ -63,51 +62,6 @@ order: 99
 ## Alert Detail
 
 
-
-### [ Cookie Without Secure Flag ](https://www.zaproxy.org/docs/alerts/10011/)
-
-
-
-##### Low (Medium)
-
-### Description
-
-A cookie has been set without the secure flag, which means that the cookie can be accessed via unencrypted connections.
-
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/`
-  * Method: `GET`
-  * Parameter: `.AspNetCore.Antiforgery.RtGCWVXC8-4`
-  * Attack: ``
-  * Evidence: `Set-Cookie: .AspNetCore.Antiforgery.RtGCWVXC8-4`
-  * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/Home/Location
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/Home/Location ()(Country,__RequestVerificationToken)`
-  * Method: `POST`
-  * Parameter: `.AspNetCore.Session`
-  * Attack: ``
-  * Evidence: `Set-Cookie: .AspNetCore.Session`
-  * Other Info: ``
-
-
-Instances: 2
-
-### Solution
-
-Whenever a cookie contains sensitive information or is a session token, then it should always be passed using an encrypted channel. Ensure that the secure flag is set for cookies containing such sensitive information.
-
-### Reference
-
-
-* [ https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.html ](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.html)
-
-
-#### CWE Id: [ 614 ](https://cwe.mitre.org/data/definitions/614.html)
-
-
-#### WASC Id: 13
-
-#### Source ID: 3
 
 ### [ Private IP Disclosure ](https://www.zaproxy.org/docs/alerts/2/)
 
