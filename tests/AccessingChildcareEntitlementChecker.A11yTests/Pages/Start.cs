@@ -1,6 +1,4 @@
 using Xunit;
-using Xunit.Abstractions;
-
 namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 
 public class StartPageAccessibilityTests(ITestOutputHelper output) : PageBase(output)

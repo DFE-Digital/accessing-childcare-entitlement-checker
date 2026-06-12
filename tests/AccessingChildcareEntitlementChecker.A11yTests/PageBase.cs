@@ -3,7 +3,6 @@ using Deque.AxeCore.Commons;
 using Deque.AxeCore.Playwright;
 using Microsoft.Playwright;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace AccessingChildcareEntitlementChecker.A11yTests;
 
@@ -14,7 +13,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
     protected IPage Page { get; private set; } = null!;
 
-    protected string ServiceUrl =>
+    protected static string ServiceUrl =>
         Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252";
 
     private static readonly string[] Impacts =
@@ -25,7 +24,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
     protected abstract string PageUrl { get; }
 
-    public async Task InitializeAsync()
+    public async ValueTask InitializeAsync()
     {
         _playwright = await Playwright.CreateAsync();
 
@@ -75,7 +74,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
                 violations.Select(v => $"{v.Impact}: {v.Description}")));
     }
 
-    public async Task DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         if (_browser != null)
         {
