@@ -82,5 +82,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         }
 
         _playwright?.Dispose();
+
+        GC.SuppressFinalize(this);
     }
 }
