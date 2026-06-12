@@ -9,9 +9,13 @@ using AccessingChildcareEntitlementChecker.RulesEngine.Services;
 using AccessingChildcareEntitlementChecker.RulesEngine.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Mappers;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
+var securePolicy = builder.Environment.IsDevelopment()
+    ? CookieSecurePolicy.SameAsRequest
+    : CookieSecurePolicy.Always;
 
 var appInsightsConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
 if (!string.IsNullOrEmpty(appInsightsConnectionString))
@@ -22,7 +26,18 @@ if (!string.IsNullOrEmpty(appInsightsConnectionString))
 services
     .AddLocalization(options => options.ResourcesPath = "Resources")
     .AddDistributedMemoryCache()
-    .AddSession()
+    .AddSession(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = securePolicy;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+    })
+    .AddAntiforgery(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = securePolicy;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+    })
     .AddHttpContextAccessor()
     .AddGovUkFrontend(options =>
     {
@@ -44,12 +59,16 @@ services.AddScoped<JourneyStateToEntitlementRequestMapper>();
 
 services.AddRulesEngine();
 
-var app = builder.Build();
-if (app.Environment.IsDevelopment())
+services.Configure<ForwardedHeadersOptions>(options =>
 {
-    //
-}
-else
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto;
+    options.KnownProxies.Clear();
+    options.KnownIPNetworks.Clear();
+    options.AllowedHosts = ["*.azurefd.net"]; //custom domain to be added to the list
+});
+
+var app = builder.Build();
+if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }

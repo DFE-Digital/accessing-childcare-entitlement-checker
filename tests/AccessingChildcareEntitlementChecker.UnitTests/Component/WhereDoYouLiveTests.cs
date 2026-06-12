@@ -26,7 +26,10 @@ public class ComponentTests
     public async Task GetRootReturnsSuccess()
     {
         var factory = CreateFactory("Production");
-        var client = factory.CreateClient();
+        var client = factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            BaseAddress = new Uri("https://localhost")
+        });
 
         var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
         var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);

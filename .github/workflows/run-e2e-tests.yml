@@ -79,6 +79,8 @@ jobs:
 
       - name: Start app
         if: inputs.SUT == ''
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
         run: |
           dotnet ./web-app/AccessingChildcareEntitlementChecker.Web.dll --urls http://127.0.0.1:5252 > app.log 2>&1 &
           echo $! > app.pid
