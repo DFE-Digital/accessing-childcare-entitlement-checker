@@ -6,7 +6,7 @@
 @model ChildcareSupportViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="User" asp-action="Benefits">
+    <govuk-back-link href="@NavigationService.GetBackUrl(Page.ChildcareSupport, Model.ReturnTo)">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

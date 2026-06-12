@@ -1,26 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
-using AccessingChildcareEntitlementChecker.Web.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
+using AccessingChildcareEntitlementChecker.Web.Services.Navigation;
 using System.Diagnostics.CodeAnalysis;
+
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
-public class PartnerController : Controller
+public class PartnerController(
+    JourneyState journeyState,
+    IJourneySession journeySession,
+    INavigationService navigationService)
+    : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
-
-    public PartnerController(JourneyState journeyState, IJourneySession journeySession)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-    }
-
     [HttpGet]
     public ViewResult PartnerAge(string? returnTo = null)
     {
-        return View(new PartnerAgeViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerAgeViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -31,20 +27,15 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerNationality));
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerAge, model.ReturnTo));
     }
 
     [HttpGet]
     public IActionResult PartnerNationality(string? returnTo = null)
     {
-        return View(new PartnerNationalityViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerNationalityViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -55,26 +46,15 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        var redirect = model.PartnerNationality switch
-        {
-            NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerSettledStatus)),
-            _ => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerPaidWork)),
-        };
-
-        return redirect;
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerNationality, model.ReturnTo));
     }
 
     [HttpGet]
     public IActionResult PartnerSettledStatus(string? returnTo = null)
     {
-        return View(new PartnerSettledStatusViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerSettledStatusViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -85,20 +65,15 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerPaidWork));
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerSettledStatus, model.ReturnTo));
     }
 
     [HttpGet]
     public IActionResult PartnerPaidWork(string? returnTo = null)
     {
-        return View(new PartnerPaidWorkViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerPaidWorkViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -109,28 +84,15 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        var redirect = model.PartnerPaidWork switch
-        {
-            PartnerPaidWorkOption.Yes => this.RedirectTo<PartnerController>(nameof(PartnerWorkStatus)),
-            PartnerPaidWorkOption.OnLeave => this.RedirectTo<PartnerController>(nameof(PartnerTypeOfLeave)),
-            PartnerPaidWorkOption.No => this.RedirectTo<PartnerController>(nameof(PartnerBenefits)),
-            _ => throw new InvalidOperationException($"Unexpected PartnerPaidWorkOption value: {model.PartnerPaidWork}"),
-        };
-
-        return redirect;
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerPaidWork, model.ReturnTo));
     }
 
     [HttpGet]
     public IActionResult PartnerWorkStatus(string? returnTo = null)
     {
-        return View(new PartnerWorkStatusViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerWorkStatusViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -141,25 +103,15 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        if (model.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
-        {
-            return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerSelfEmployedDuration));
-        }
-
-        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerWeeklyEarnings));
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerWorkStatus, model.ReturnTo));
     }
 
     [HttpGet]
     public IActionResult PartnerBenefits(string? returnTo = null)
     {
-        return View(new PartnerBenefitsViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerBenefitsViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -170,20 +122,15 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerChildcareSupport));
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerBenefits, model.ReturnTo));
     }
 
     [HttpGet]
     public IActionResult PartnerSelfEmployedDuration(string? returnTo = null)
     {
-        return View(new PartnerSelfEmployedDurationViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerSelfEmployedDurationViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -194,26 +141,15 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        var redirect = model.PartnerSelfEmployedDuration switch
-        {
-            SelfEmployedDurationOption.LessThan12Months => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerBenefits)),
-            _ => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerWeeklyEarnings)),
-        };
-
-        return redirect;
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerSelfEmployedDuration, model.ReturnTo));
     }
 
     [HttpGet]
     public IActionResult PartnerWeeklyEarnings(string? returnTo = null)
     {
-        return View(new PartnerWeeklyEarningsViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerWeeklyEarningsViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -224,26 +160,15 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        var redirect = model.PartnerWeeklyEarnings switch
-        {
-            WeeklyEarningsOption.AboveThreshold => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerYearlyEarnings)),
-            _ => this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerBenefits)),
-        };
-
-        return redirect;
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerWeeklyEarnings, model.ReturnTo));
     }
 
     [HttpGet]
     public IActionResult PartnerYearlyEarnings(string? returnTo = null)
     {
-        return View(new PartnerYearlyEarningsViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerYearlyEarningsViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -254,20 +179,15 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerBenefits));
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerYearlyEarnings, model.ReturnTo));
     }
 
     [HttpGet]
     public IActionResult PartnerChildcareSupport(string? returnTo = null)
     {
-        return View(new PartnerChildcareSupportViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerChildcareSupportViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -278,19 +198,9 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        if (model.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
-        {
-            return this.RedirectTo<PartnerController>(nameof(PartnerController.PartnerChildcareVoucherReceipt));
-        }
-
-        return this.RedirectTo<SummaryController>(nameof(SummaryController.CheckAnswers));
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerChildcareSupport, model.ReturnTo));
     }
 
     [HttpGet]
@@ -303,7 +213,7 @@ public class PartnerController : Controller
     [HttpGet]
     public IActionResult PartnerChildcareVoucherReceipt(string? returnTo = null)
     {
-        return View(new PartnerChildcareVoucherReceiptViewModel(_journeyState) { ReturnTo = returnTo });
+        return View(new PartnerChildcareVoucherReceiptViewModel(journeyState) { ReturnTo = returnTo });
     }
 
     [HttpPost]
@@ -314,13 +224,8 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectTo<SummaryController>(nameof(SummaryController.CheckAnswers));
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.PartnerChildcareVoucherReceipt, model.ReturnTo));
     }
 }

@@ -1,28 +1,20 @@
-using AccessingChildcareEntitlementChecker.Web.Extensions;
-using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using AccessingChildcareEntitlementChecker.Web.Services.Navigation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
-public class BornChildDetailsController : Controller
+public class BornChildDetailsController(
+    JourneyState journeyState,
+    IJourneySession journeySession,
+    INavigationService navigationService)
+    : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
-
-    public BornChildDetailsController(
-        JourneyState journeyState,
-        IJourneySession journeySession)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-    }
-
     [HttpGet]
     public IActionResult ChildBirthDate(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
+        var child = journeyState.GetChild(childId);
         if (child == null)
         {
             return NotFound();
@@ -39,22 +31,16 @@ public class BornChildDetailsController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo is not null)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
-        }
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
 
-        return this.RedirectTo<BornChildDetailsController>(
-            nameof(ChildRelationship),
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
+        return Redirect(navigationService.GetNextUrl(Page.ChildBirthDate, model.ReturnTo, model.ChildId));
     }
 
     [HttpGet]
     public IActionResult ChildRelationship(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
+        var child = journeyState.GetChild(childId);
         if (child == null)
         {
             return NotFound();
@@ -71,22 +57,16 @@ public class BornChildDetailsController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo is not null)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
-        }
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
 
-        return this.RedirectTo<BornChildDetailsController>(
-            nameof(ChildSupport),
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
+        return Redirect(navigationService.GetNextUrl(Page.ChildRelationship, model.ReturnTo, model.ChildId));
     }
 
     [HttpGet]
     public IActionResult ChildSupport(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
+        var child = journeyState.GetChild(childId);
         if (child == null)
         {
             return NotFound();
@@ -103,8 +83,9 @@ public class BornChildDetailsController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+
+        return Redirect(navigationService.GetNextUrl(Page.ChildSupport, model.ReturnTo, model.ChildId));
     }
 }

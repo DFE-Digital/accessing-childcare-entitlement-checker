@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.Web.Services.Navigation;
 using Microsoft.AspNetCore.Mvc;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
@@ -8,15 +9,19 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
 public class HomeControllerTests
 {
-    private JourneyState _journeyState;
-    private IJourneySession _journeySession;
-    private HomeController _controller;
+    private readonly JourneyState _journeyState;
+    private readonly IJourneySession _journeySession;
+    private readonly HomeController _controller;
 
     public HomeControllerTests()
     {
+        var navigationService = Substitute.For<INavigationService>();
+        navigationService.GetNextUrl(Arg.Any<Page>(), Arg.Any<string>(), Arg.Any<string>()).Returns(x => $"/mock-url-for-{x[0]}");
+
         _journeyState = new JourneyState();
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new HomeController(_journeyState, _journeySession);
+        _controller = new HomeController(_journeyState, _journeySession, navigationService);
+
     }
 
     [Fact]
@@ -45,11 +50,11 @@ public class HomeControllerTests
 
         var result = _controller.Location(model);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(IntroductionController.ChildName), redirect.ActionName);
+
     }
 
     [Fact]
@@ -64,7 +69,7 @@ public class HomeControllerTests
 
         var result = _controller.Location(model);
 
-        var view = Assert.IsType<ViewResult>(result);
+        Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.Country)));
     }

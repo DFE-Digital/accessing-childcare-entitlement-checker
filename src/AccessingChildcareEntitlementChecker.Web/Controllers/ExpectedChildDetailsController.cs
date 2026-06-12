@@ -1,28 +1,20 @@
-using AccessingChildcareEntitlementChecker.Web.Extensions;
-using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using AccessingChildcareEntitlementChecker.Web.Services.Navigation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
-public class ExpectedChildDetailsController : Controller
+public class ExpectedChildDetailsController(
+    JourneyState journeyState,
+    IJourneySession journeySession,
+    INavigationService navigationService)
+    : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
-
-    public ExpectedChildDetailsController(
-        JourneyState journeyState,
-        IJourneySession journeySession)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-    }
-
     [HttpGet]
     public IActionResult ChildDueDate(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
+        var child = journeyState.GetChild(childId);
         if (child == null)
         {
             return NotFound();
@@ -39,22 +31,16 @@ public class ExpectedChildDetailsController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (model.ReturnTo is not null)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
-        }
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
 
-        return this.RedirectTo<ExpectedChildDetailsController>(
-            nameof(ExpectedChildRelationship),
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
+        return Redirect(navigationService.GetNextUrl(Page.ChildDueDate, model.ReturnTo, model.ChildId));
     }
 
     [HttpGet]
     public IActionResult ExpectedChildRelationship(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
+        var child = journeyState.GetChild(childId);
         if (child == null)
         {
             return NotFound();
@@ -71,8 +57,9 @@ public class ExpectedChildDetailsController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+
+        return Redirect(navigationService.GetNextUrl(Page.ExpectedChildRelationship, model.ReturnTo, model.ChildId));
     }
 }

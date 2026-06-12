@@ -6,7 +6,7 @@
 @model PartnerWorkStatusViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Partner" asp-action="PartnerPaidWork">
+    <govuk-back-link href="@NavigationService.GetBackUrl(Page.PartnerWorkStatus, Model.ReturnTo)">
         @Shared["Button_Back"]
     </govuk-back-link>
 }
