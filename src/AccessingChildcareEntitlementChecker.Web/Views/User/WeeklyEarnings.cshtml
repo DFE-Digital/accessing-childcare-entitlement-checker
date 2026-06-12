@@ -8,18 +8,9 @@
 
 
 @section BeforeContent {
-    @if (JourneyState.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
-    {
-        <govuk-back-link asp-controller="User" asp-action="SelfEmployedDuration">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else
-    {
-        <govuk-back-link asp-controller="User" asp-action="WorkStatus">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
+    <govuk-back-link href="@NavigationService.GetBackUrl(Page.WeeklyEarnings, Model.ReturnTo)">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <div class="govuk-grid-row">

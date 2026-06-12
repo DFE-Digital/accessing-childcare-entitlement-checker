@@ -24,6 +24,12 @@
           "Microsoft.Extensions.FileProviders.Embedded": "8.0.25"
         }
       },
+      "Stateless": {
+        "type": "Direct",
+        "requested": "[5.20.1, )",
+        "resolved": "5.20.1",
+        "contentHash": "jQeuXgIeXEjFAImajavoxvJNcevO+zyK+9ICGzy0LRe/e1tP4vJUnO4Yrg6rP601wYRnulQs59mQH73TbIZzNg=="
+      },
       "Azure.Core": {
         "type": "Transitive",
         "resolved": "1.54.0",

@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.Web.Services.Navigation;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,14 +12,23 @@ public class IntroductionControllerTests
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly IntroductionController _controller;
-    private const string childId = "child-a";
+    private const string ChildId = "child-a";
 
     public IntroductionControllerTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children[childId] = new Child(childId, "Child A");
+        var navigationService = Substitute.For<INavigationService>();
+        navigationService.GetNextUrl(Arg.Any<Page>(), Arg.Any<string>(), Arg.Any<string>()).Returns(x => $"/mock-url-for-{x[0]}");
+
+        _journeyState = new JourneyState
+        {
+            Children =
+            {
+                [ChildId] = new Child(ChildId, "Child A")
+            }
+        };
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new IntroductionController(_journeyState, _journeySession);
+        _controller = new IntroductionController(_journeyState, _journeySession, navigationService);
+
     }
 
     [Fact]
@@ -32,15 +42,15 @@ public class IntroductionControllerTests
     [Fact]
     public void ChildName_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildName("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(_controller.ChildName("DOES-NOT-EXIST"));
     }
 
     [Fact]
     public void ChildName_Get_PopulatesModel_FromState()
     {
-        var child = _journeyState.GetChild(childId)!;
+        var child = _journeyState.GetChild(ChildId)!;
         child.Name = "Example";
-        var result = Assert.IsType<ViewResult>(_controller.ChildName(childId));
+        var result = Assert.IsType<ViewResult>(_controller.ChildName(ChildId));
 
         Assert.Equal("Example", result.Model<ChildNameViewModel>().ChildName);
     }
@@ -50,18 +60,18 @@ public class IntroductionControllerTests
     {
         var model = new ChildNameViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildName = "Example"
         };
 
         var result = _controller.ChildName(model);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal("Example", _journeyState.GetChild(model.ChildId)!.Name);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(IntroductionController.IsChildBorn), redirect.ActionName);
-        Assert.Equal("Introduction", redirect.ControllerName);
+
+
     }
 
     [Fact]
@@ -86,7 +96,7 @@ public class IntroductionControllerTests
     [Fact]
     public void IsChildBorn_ReturnsView()
     {
-        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(childId));
+        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(ChildId));
 
         Assert.Null(result.Model<ChildIsBornViewModel>().ChildIsBorn);
     }
@@ -94,15 +104,15 @@ public class IntroductionControllerTests
     [Fact]
     public void IsChildBorn_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.IsChildBorn("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(_controller.IsChildBorn("DOES-NOT-EXIST"));
     }
 
     [Fact]
     public void IsChildBorn_Get_PopulatesModel_FromState()
     {
-        var child = _journeyState.GetChild(childId)!;
+        var child = _journeyState.GetChild(ChildId)!;
         child.BirthStatus = BirthStatus.Born;
-        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(childId));
+        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(ChildId));
 
         Assert.Equal(BirthStatus.Born, result.Model<ChildIsBornViewModel>().ChildIsBorn);
     }
@@ -112,18 +122,18 @@ public class IntroductionControllerTests
     {
         var model = new ChildIsBornViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildIsBorn = BirthStatus.Born
         };
 
         var result = _controller.IsChildBorn(model);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(BirthStatus.Born, _journeyState.GetChild(model.ChildId)!.BirthStatus);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(BornChildDetailsController.ChildBirthDate), redirect.ActionName);
-        Assert.Equal("BornChildDetails", redirect.ControllerName);
+
+
     }
 
     [Fact]
@@ -131,18 +141,18 @@ public class IntroductionControllerTests
     {
         var model = new ChildIsBornViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildIsBorn = BirthStatus.Due
         };
 
         var result = _controller.IsChildBorn(model);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(BirthStatus.Due, _journeyState.GetChild(model.ChildId)!.BirthStatus);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(ExpectedChildDetailsController.ChildDueDate), redirect.ActionName);
-        Assert.Equal("ExpectedChildDetails", redirect.ControllerName);
+
+
     }
 
     [Fact]

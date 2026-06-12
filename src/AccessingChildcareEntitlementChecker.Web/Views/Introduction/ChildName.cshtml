@@ -1,10 +1,10 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model ChildNameViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Home" asp-action="Location">
+    <govuk-back-link href="@NavigationService.GetBackUrl(Page.ChildName, childId: Model.ChildId)">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

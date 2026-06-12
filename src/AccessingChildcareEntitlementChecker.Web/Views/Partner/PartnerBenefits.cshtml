@@ -7,36 +7,9 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    @if (JourneyState.PartnerYearlyEarnings == YearlyEarningsOption.AboveThreshold)
-    {
-        <govuk-back-link asp-controller="Partner" asp-action="PartnerYearlyEarnings">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else if (JourneyState.PartnerWeeklyEarnings == WeeklyEarningsOption.AboveThreshold)
-    {
-        <govuk-back-link asp-controller="Partner" asp-action="PartnerYearlyEarnings">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else if (JourneyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
-    {
-        <govuk-back-link asp-controller="Partner" asp-action="PartnerSelfEmployedDuration">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else if (JourneyState.PartnerPaidWork == PartnerPaidWorkOption.No)
-    {
-        <govuk-back-link asp-controller="Partner" asp-action="PartnerPaidWork">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else
-    {
-        <govuk-back-link asp-controller="Partner" asp-action="PartnerWeeklyEarnings">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
+    <govuk-back-link href="@NavigationService.GetBackUrl(Page.PartnerBenefits, Model.ReturnTo)">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <div class="govuk-grid-row">

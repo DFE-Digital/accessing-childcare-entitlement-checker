@@ -4,7 +4,7 @@
 @model UserAgeViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Summary" asp-action="CheckChildDetails">
+    <govuk-back-link href="@NavigationService.GetBackUrl(Page.UserAge, null)">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

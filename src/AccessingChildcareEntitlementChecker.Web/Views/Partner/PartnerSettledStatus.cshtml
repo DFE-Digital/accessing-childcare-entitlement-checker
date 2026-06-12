@@ -7,7 +7,7 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Partner" asp-action="PartnerNationality">
+    <govuk-back-link href="@NavigationService.GetBackUrl(Page.PartnerSettledStatus, Model.ReturnTo)">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

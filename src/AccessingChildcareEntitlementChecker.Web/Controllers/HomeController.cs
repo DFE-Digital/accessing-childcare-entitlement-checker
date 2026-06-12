@@ -1,20 +1,16 @@
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using AccessingChildcareEntitlementChecker.Web.Services.Navigation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
-public class HomeController : Controller
+public class HomeController(
+    JourneyState journeyState,
+    IJourneySession journeySession,
+    INavigationService navigationService)
+    : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
-
-    public HomeController(JourneyState journeyState, IJourneySession journeySession)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-    }
-
     [HttpGet]
     public IActionResult SessionExpired()
     {
@@ -30,7 +26,7 @@ public class HomeController : Controller
     [HttpGet]
     public ViewResult Location()
     {
-        return View(new LocationViewModel(_journeyState));
+        return View(new LocationViewModel(journeyState));
     }
 
     [HttpPost]
@@ -41,8 +37,8 @@ public class HomeController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        return RedirectToAction(nameof(IntroductionController.ChildName), "Introduction");
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return Redirect(navigationService.GetNextUrl(Page.Location));
     }
 }

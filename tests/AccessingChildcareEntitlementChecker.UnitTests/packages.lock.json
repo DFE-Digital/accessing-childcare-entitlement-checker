@@ -642,7 +642,8 @@
         "dependencies": {
           "AccessingChildcareEntitlementChecker.RulesEngine": "[1.0.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.5.0, )",
-          "GovUk.Frontend.AspNetCore": "[4.0.1, )"
+          "GovUk.Frontend.AspNetCore": "[4.0.1, )",
+          "Stateless": "[5.20.1, )"
         }
       },
       "Azure.Monitor.OpenTelemetry.AspNetCore": {
@@ -672,6 +673,12 @@
         "requested": "[10.0.8, )",
         "resolved": "10.0.9",
         "contentHash": "g41l/30G3K4B/d/L8kjux0+30e27c8D0FVQ/PFCpbekgfDpj9mnDhieP67EqXWvl1EWNeZh2rpR4F5B/jcDOHA=="
+      },
+      "Stateless": {
+        "type": "CentralTransitive",
+        "requested": "[5.20.1, )",
+        "resolved": "5.20.1",
+        "contentHash": "jQeuXgIeXEjFAImajavoxvJNcevO+zyK+9ICGzy0LRe/e1tP4vJUnO4Yrg6rP601wYRnulQs59mQH73TbIZzNg=="
       }
     }
   }

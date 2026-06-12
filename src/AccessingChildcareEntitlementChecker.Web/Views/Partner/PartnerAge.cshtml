@@ -4,7 +4,7 @@
 @model PartnerAgeViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="User" asp-action="HasPartner">
+    <govuk-back-link href="@NavigationService.GetBackUrl(Page.PartnerAge, Model.ReturnTo)">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

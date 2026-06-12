@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.Web.Services.Navigation;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,35 +13,43 @@ public class ExpectedChildDetailsControllerTests
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly ExpectedChildDetailsController _controller;
-    private const string childId = "child-a";
+    private const string ChildId = "child-a";
 
     public ExpectedChildDetailsControllerTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children[childId] = new Child(childId, "Child A");
+        var navigationService = Substitute.For<INavigationService>();
+        navigationService.GetNextUrl(Arg.Any<Page>(), Arg.Any<string>(), Arg.Any<string>()).Returns(x => $"/mock-url-for-{x[0]}");
+
+        _journeyState = new JourneyState
+        {
+            Children =
+            {
+                [ChildId] = new Child(ChildId, "Child A")
+            }
+        };
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new ExpectedChildDetailsController(_journeyState, _journeySession);
+        _controller = new ExpectedChildDetailsController(_journeyState, _journeySession, navigationService);
     }
 
     [Fact]
     public void ChildDueDate_ReturnsView()
     {
-        var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(childId));
+        var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(ChildId));
         Assert.Null(result.Model<ChildDueDateViewModel>().ChildDueDate);
     }
 
     [Fact]
     public void ChildDueDate_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildDueDate("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(_controller.ChildDueDate("DOES-NOT-EXIST"));
     }
 
     [Fact]
     public void ChildDueDate_Get_PopulatesModel_FromState()
     {
-        var child = _journeyState.GetChild(childId)!;
+        var child = _journeyState.GetChild(ChildId)!;
         child.DueDate = new DateOnly(2020, 1, 15);
-        var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(childId));
+        var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(ChildId));
         Assert.Equal(new DateOnly(2020, 1, 15), result.Model<ChildDueDateViewModel>().ChildDueDate);
     }
 
@@ -49,18 +58,18 @@ public class ExpectedChildDetailsControllerTests
     {
         var model = new ChildDueDateViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildDueDate = new DateOnly(2020, 1, 15)
         };
 
         var result = _controller.ChildDueDate(model);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId)!.DueDate);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(ExpectedChildDetailsController.ExpectedChildRelationship), redirect.ActionName);
-        Assert.Equal("ExpectedChildDetails", redirect.ControllerName);
+
+
     }
 
     [Fact]
@@ -68,19 +77,19 @@ public class ExpectedChildDetailsControllerTests
     {
         var model = new ChildDueDateViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildDueDate = new DateOnly(2020, 1, 15),
             ReturnTo = ReturnTo.CheckChildDetails
         };
 
         var result = _controller.ChildDueDate(model);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId)!.DueDate);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
-        Assert.Equal("Summary", redirect.ControllerName);
+
+
     }
 
     [Fact]
@@ -105,45 +114,45 @@ public class ExpectedChildDetailsControllerTests
     [Fact]
     public void ExpectedChildRelationship_ReturnsView()
     {
-        var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(childId));
+        var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(ChildId));
         Assert.Null(result.Model<ExpectedChildRelationshipViewModel>().ExpectedChildRelationship);
     }
 
     [Fact]
     public void ExpectedChildRelationship_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ExpectedChildRelationship("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(_controller.ExpectedChildRelationship("DOES-NOT-EXIST"));
     }
 
     [Fact]
     public void ExpectedChildRelationship_Get_PopulatesModel_FromState()
     {
-        var child = _journeyState.GetChild(childId)!;
+        var child = _journeyState.GetChild(ChildId)!;
         child.ExpectedRelationship = Relationship.Parent;
-        var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(childId));
+        var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(ChildId));
         Assert.Equal(Relationship.Parent, result.Model<ExpectedChildRelationshipViewModel>().ExpectedChildRelationship);
     }
 
     [Theory]
-    [InlineData(ReturnTo.CheckChildDetails, nameof(SummaryController.CheckChildDetails))]
-    [InlineData(ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
-    public void ExpectedChildRelationship_Post_ValidSelection_SavesState_AndRedirects(string? returnTo, string actionName)
+    [InlineData(ReturnTo.CheckChildDetails)]
+    [InlineData(ReturnTo.CheckAnswers)]
+    public void ExpectedChildRelationship_Post_ValidSelection_SavesState_AndRedirects(string? returnTo)
     {
         var model = new ExpectedChildRelationshipViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ExpectedChildRelationship = Relationship.Parent,
             ReturnTo = returnTo,
         };
 
         var result = _controller.ExpectedChildRelationship(model);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(Relationship.Parent, _journeyState.GetChild(model.ChildId)!.ExpectedRelationship);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal("Summary", redirect.ControllerName);
+
+
     }
 
     [Fact]

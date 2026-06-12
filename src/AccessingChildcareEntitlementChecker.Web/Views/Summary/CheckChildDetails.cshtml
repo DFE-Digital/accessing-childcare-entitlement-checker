@@ -8,20 +8,9 @@
 @section BeforeContent {
     @if (Model.LastEditedChild != null)
     {
-        @if (Model.LastEditedChild.BirthStatus == BirthStatus.Born)
-        {
-            <govuk-back-link asp-controller="BornChildDetails" asp-action="ChildSupport" asp-route-childId="@Model.LastEditedChild.ChildId">
-                @Shared["Button_Back"]
-            </govuk-back-link>
-        }
-
-        else if (Model.LastEditedChild.BirthStatus == BirthStatus.Due)
-        {
-            <govuk-back-link asp-controller="ExpectedChildDetails" asp-action="ExpectedChildRelationship" asp-route-childId="@Model.LastEditedChild.ChildId">
-                @Shared["Button_Back"]
-            </govuk-back-link>
-        }
-
+        <govuk-back-link href="@NavigationService.GetBackUrl(Page.CheckChildDetails, childId: Model.LastEditedChild.ChildId)">
+            @Shared["Button_Back"]
+        </govuk-back-link>
     }
 }
 
