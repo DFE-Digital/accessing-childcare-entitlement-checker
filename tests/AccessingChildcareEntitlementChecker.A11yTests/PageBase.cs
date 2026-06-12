@@ -16,7 +16,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
     protected string ServiceUrl =>
         Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252";
-    
+
     private static readonly string[] Impacts =
     [
         "critical",
