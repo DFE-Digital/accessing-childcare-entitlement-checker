@@ -1,16 +1,18 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model LocationViewModel
 
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Home" asp-action="Start">
+    <govuk-back-link href="@ViewData["BackLinkHref"]">
         @Shared["Button_Back"]
     </govuk-back-link>
 }
 
 <form method="post" novalidate>
+    <input type="hidden" asp-for="ReturnTo" />
+
     <govuk-radios for="Country">
         <govuk-radios-fieldset>
             <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">

@@ -17,10 +17,10 @@ public static class ControllerExtensions
         {
             ReturnTo.CheckAnswers => controller.RedirectTo<SummaryController>(
                 nameof(SummaryController.CheckAnswers),
-                childId is null ? null : new { fromChildId = childId }),
+                childId is null ? null : new { childId }),
             ReturnTo.CheckChildDetails => controller.RedirectTo<SummaryController>(
                 nameof(SummaryController.CheckChildDetails),
-                childId is null ? null : new { fromChildId = childId }),
+                childId is null ? null : new { childId }),
             _ => throw new InvalidOperationException($"Unexpected return destination: {returnTo}")
         };
     }

@@ -5,7 +5,7 @@
 @model RemoveChildViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Summary" asp-action="@(Model.ReturnTo == ReturnTo.CheckAnswers ? "CheckAnswers" : "CheckChildDetails")">
+    <govuk-back-link href="@ViewData["BackLinkHref"]">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

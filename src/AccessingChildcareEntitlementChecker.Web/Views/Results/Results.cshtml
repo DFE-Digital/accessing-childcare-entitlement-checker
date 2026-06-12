@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="~/css/results.css" />
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Summary" asp-action="CheckAnswers">
+    <govuk-back-link href="@ViewData["BackLinkHref"]">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

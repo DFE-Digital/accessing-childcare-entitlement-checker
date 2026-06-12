@@ -4,12 +4,14 @@
 @model UserAgeViewModel
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="Summary" asp-action="CheckChildDetails">
+    <govuk-back-link href="@ViewData["BackLinkHref"]">
         @Shared["Button_Back"]
     </govuk-back-link>
 }
 
 <form method="post" novalidate>
+    <input type="hidden" asp-for="ReturnTo" />
+
     <govuk-radios for="UserAge">
         <govuk-radios-fieldset>
             <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">

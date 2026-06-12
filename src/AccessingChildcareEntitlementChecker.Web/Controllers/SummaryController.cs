@@ -8,6 +8,7 @@ using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using static AccessingChildcareEntitlementChecker.Web.IServiceCollectionExtensions;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -16,33 +17,38 @@ public class SummaryController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly IStringLocalizerFactory _stringLocalizerFactory;
+    private readonly Journey _journey;
 
     public SummaryController(
         JourneyState journeyState,
         IJourneySession journeySession,
-        IStringLocalizerFactory stringLocalizerFactory)
+        IStringLocalizerFactory stringLocalizerFactory,
+        Journey journey)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
         _stringLocalizerFactory = stringLocalizerFactory;
+        _journey = journey;
     }
 
     [HttpGet]
-    public ViewResult CheckChildDetails(string? fromChildId = null)
+    public ViewResult CheckChildDetails(string? childId = null)
     {
         var summaries = _journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckChildDetails)).ToList().AsReadOnly();
         var hasChildren = _journeyState.Children.Count > 0;
-        var lastEditedChild = ResolveLastEditedChild(_journeyState, fromChildId);
+        var lastEditedChild = ResolveLastEditedChild(_journeyState, childId);
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId = lastEditedChild?.ChildId });
         return View(new CheckChildDetailsViewModel(summaries, hasChildren, lastEditedChild));
     }
 
     [HttpGet]
-    public IActionResult CheckAnswers(string? fromChildId = null)
+    public IActionResult CheckAnswers(string? childId = null)
     {
         var summaries = _journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckAnswers)).ToList().AsReadOnly();
         var hasChildren = _journeyState.Children.Count > 0;
-        var lastEditedChild = ResolveLastEditedChild(_journeyState, fromChildId);
+        var lastEditedChild = ResolveLastEditedChild(_journeyState, childId);
         var state = _journeyState;
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId = lastEditedChild?.ChildId });
 
         var homeBuilder = new SummaryRowFactory(MetadataProvider, "Home", _stringLocalizerFactory)
             .AddLocation(_journeyState.CountryOfResidence);
@@ -89,6 +95,7 @@ public class SummaryController : Controller
             return this.RedirectToReturnTo(returnTo);
         }
 
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId, returnTo });
         return View(new RemoveChildViewModel
         {
             ChildId = childId,
@@ -102,6 +109,7 @@ public class SummaryController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
             return View(model);
         }
 

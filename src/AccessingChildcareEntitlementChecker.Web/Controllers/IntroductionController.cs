@@ -2,6 +2,7 @@ using AccessingChildcareEntitlementChecker.Web.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using static AccessingChildcareEntitlementChecker.Web.IServiceCollectionExtensions;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -9,11 +10,16 @@ public class IntroductionController : Controller
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private readonly Journey _journey;
 
-    public IntroductionController(JourneyState journeyState, IJourneySession journeySession)
+    public IntroductionController(
+        JourneyState journeyState,
+        IJourneySession journeySession,
+        Journey journey)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
+        _journey = journey;
     }
 
     [HttpGet]
@@ -22,6 +28,7 @@ public class IntroductionController : Controller
         if (childId == null)
         {
             var childNameViewModel = new ChildNameViewModel();
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(childNameViewModel);
         }
 
@@ -31,6 +38,7 @@ public class IntroductionController : Controller
             return NotFound();
         }
 
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
         return View(new ChildNameViewModel(child));
     }
 
@@ -39,15 +47,14 @@ public class IntroductionController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState);
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
 
-        return this.RedirectTo<IntroductionController>(
-            nameof(IsChildBorn),
-            new { childId = model.ChildId });
+        return _journey.Forwards(this, _journeyState, new { childId = model.ChildId });
     }
 
     [HttpGet]
@@ -59,6 +66,7 @@ public class IntroductionController : Controller
             return NotFound();
         }
 
+        ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { returnTo });
         return View(new ChildIsBornViewModel(child) { ReturnTo = returnTo });
     }
 
@@ -67,20 +75,12 @@ public class IntroductionController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["BackLinkHref"] = _journey.Backwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
             return View(model);
         }
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
 
-        if (model.ChildIsBorn == BirthStatus.Born)
-        {
-            return this.RedirectTo<BornChildDetailsController>(
-                nameof(BornChildDetailsController.ChildBirthDate),
-                new { childId = model.ChildId, returnTo = model.ReturnTo });
-        }
-
-        return this.RedirectTo<ExpectedChildDetailsController>(
-            nameof(ExpectedChildDetailsController.ChildDueDate),
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
+        return _journey.Forwards(this, _journeyState, new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 }

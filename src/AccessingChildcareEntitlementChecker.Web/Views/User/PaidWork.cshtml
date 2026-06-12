@@ -7,19 +7,9 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @section BeforeContent {
-    @switch (JourneyState.Nationality)
-    {
-        case NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland:
-            <govuk-back-link asp-controller="User" asp-action="SettledStatus">
-                @Shared["Button_Back"]
-            </govuk-back-link>
-            break;
-        default:
-            <govuk-back-link asp-controller="User" asp-action="Nationality">
-                @Shared["Button_Back"]
-            </govuk-back-link>
-            break;
-    }
+    <govuk-back-link href="@ViewData["BackLinkHref"]">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <div class="govuk-grid-row">

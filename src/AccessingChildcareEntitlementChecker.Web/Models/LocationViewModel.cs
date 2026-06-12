@@ -1,4 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models;
@@ -17,4 +18,6 @@ public class LocationViewModel
 
     [Required(ErrorMessage = "Error_SelectLocation")]
     public CountryOfResidence? Country { get; set; }
+
+    public string? ReturnTo { get; set; }
 }
