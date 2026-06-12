@@ -28,7 +28,7 @@ resource "azurerm_linux_web_app" "web-app-service" {
   tags                          = local.common_tags
 
   site_config {
-    always_on                         = true
+    always_on                         = var.aspnetcore_environment == "Production"
     ftps_state                        = "Disabled"
     ip_restriction_default_action     = "Deny"
     health_check_path                 = "/health"
@@ -106,7 +106,7 @@ resource "azurerm_linux_web_app_slot" "staging" {
   tags                          = local.common_tags
 
   site_config {
-    always_on                     = true
+    always_on                     = var.aspnetcore_environment == "Production"
     ip_restriction_default_action = "Deny"
 
     application_stack {
