@@ -3,6 +3,9 @@
 @inject IViewLocalizer Localizer
 @model LocationViewModel
 
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
 
 @section BeforeContent {
     <govuk-back-link asp-controller="Home" asp-action="Start">
