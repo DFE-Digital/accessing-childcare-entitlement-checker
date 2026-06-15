@@ -20,16 +20,28 @@ variable "development_basic_auth_password" {
   default     = ""
 }
 
-variable "azure_frontdoor_scale" {
-  description = "Azure Front Door Scale"
+variable "azure_frontdoor_sku" {
+  description = "Azure Front Door SKU"
   type        = string
   default     = "Standard"
+}
+
+variable "fd_use_private_link" {
+  description = "Should use private link to connect to app service"
+  type        = bool
+  default     = false
 }
 
 variable "custom_domain" {
   description = "Custom front-door domain"
   type        = string
   default     = ""
+}
+
+variable "waf_enable_managed_rules" {
+  description = "Enable managed rule sets in WAF"
+  type        = bool
+  default     = false
 }
 
 variable "webapp_sku" {
@@ -50,8 +62,20 @@ variable "webapp_instance_count" {
   default     = 1
 }
 
-variable "enable_staging_slot" {
+variable "webapp_enable_staging_slot" {
   description = "Enable staging slot for web app"
+  type        = bool
+  default     = false
+}
+
+variable "webapp_enable_public_access" {
+  description = "Enable public access for web app"
+  type        = bool
+  default     = true
+}
+
+variable "webapp_always_on" {
+  description = "Set always for web app"
   type        = bool
   default     = false
 }

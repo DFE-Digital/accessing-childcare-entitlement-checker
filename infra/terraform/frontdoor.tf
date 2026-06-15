@@ -1,7 +1,7 @@
 resource "azurerm_cdn_frontdoor_profile" "frontdoor-web-profile" {
   name                = "${local.service_prefix}-web-fd-profile"
   resource_group_name = azurerm_resource_group.web-rg.name
-  sku_name            = "${var.azure_frontdoor_scale}_AzureFrontDoor"
+  sku_name            = "${var.azure_frontdoor_sku}_AzureFrontDoor"
   tags                = local.common_tags
 }
 
@@ -30,7 +30,7 @@ resource "azurerm_cdn_frontdoor_origin" "frontdoor-web-origin" {
 
 
   dynamic "private_link" {
-    for_each = var.azure_frontdoor_scale == "Premium" ? ["apply"] : []
+    for_each = var.fd_use_private_link ? ["apply"] : []
     content {
       request_message        = "Request access for Front Door Private Link"
       target_type            = "sites"
@@ -58,7 +58,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   patterns_to_match      = ["/*"]
   supported_protocols    = ["Http", "Https"]
 
-  cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : []
+  cdn_frontdoor_custom_domain_ids = var.custom_domain == "" ? [] : [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id]
 
   link_to_default_domain = var.custom_domain == ""
 }
@@ -77,7 +77,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
         }
 
         dynamic "domain" {
-          for_each = var.custom_domain != "" ? ["apply"] : []
+          for_each = var.custom_domain == "" ? [] : ["apply"]
           content {
             cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
           }
@@ -90,7 +90,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
-  count                    = var.custom_domain != "" ? 1 : 0
+  count                    = var.custom_domain == "" ? 0 : 1
   name                     = "${local.service_prefix}-fd-custom-domain"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
   host_name                = var.custom_domain
@@ -101,7 +101,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain_association" "web-app-custom-domain" {
-  count                          = var.custom_domain != "" ? 1 : 0
+  count                          = var.custom_domain == "" ? 0 : 1
   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.frontdoor-web-route.id]
 }
