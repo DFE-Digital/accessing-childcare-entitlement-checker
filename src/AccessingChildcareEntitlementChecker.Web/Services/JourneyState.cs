@@ -153,6 +153,14 @@ public class JourneyState
     public void Apply(PaidWorkViewModel model)
     {
         PaidWork = model.PaidWork;
+
+        if (PaidWork != PaidWorkOption.Yes)
+        {
+            WorkStatus = [];
+            SelfEmployedDuration = null;
+            WeeklyEarnings = null;
+            YearlyEarnings = null;
+        }
     }
 
     public void Apply(WorkStatusViewModel model)
