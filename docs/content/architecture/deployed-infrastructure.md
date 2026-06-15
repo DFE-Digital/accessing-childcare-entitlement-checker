@@ -76,12 +76,16 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_aspnetcore_environment"></a> [aspnetcore\_environment](#input\_aspnetcore\_environment) | ASP.NET Core environment | `string` | n/a | yes |
-| <a name="input_azure_frontdoor_scale"></a> [azure\_frontdoor\_scale](#input\_azure\_frontdoor\_scale) | Azure Front Door Scale | `string` | `"Standard"` | no |
+| <a name="input_azure_frontdoor_sku"></a> [azure\_frontdoor\_sku](#input\_azure\_frontdoor\_sku) | Azure Front Door SKU | `string` | `"Standard"` | no |
 | <a name="input_custom_domain"></a> [custom\_domain](#input\_custom\_domain) | Custom front-door domain | `string` | `""` | no |
 | <a name="input_development_basic_auth_password"></a> [development\_basic\_auth\_password](#input\_development\_basic\_auth\_password) | Shared password for development-only basic auth | `string` | `""` | no |
 | <a name="input_elz_environment"></a> [elz\_environment](#input\_elz\_environment) | The ELZ environment to match subscription (e.g. Dev) | `string` | n/a | yes |
-| <a name="input_enable_staging_slot"></a> [enable\_staging\_slot](#input\_enable\_staging\_slot) | Enable staging slot for web app | `bool` | `false` | no |
 | <a name="input_environment_prefix"></a> [environment\_prefix](#input\_environment\_prefix) | Environment prefix (e.g. d01) | `string` | n/a | yes |
+| <a name="input_fd_use_private_link"></a> [fd\_use\_private\_link](#input\_fd\_use\_private\_link) | Should use private link to connect to app service | `bool` | `false` | no |
+| <a name="input_waf_enable_managed_rules"></a> [waf\_enable\_managed\_rules](#input\_waf\_enable\_managed\_rules) | Enable managed rule sets in WAF | `bool` | `false` | no |
+| <a name="input_webapp_always_on"></a> [webapp\_always\_on](#input\_webapp\_always\_on) | Set always for web app | `bool` | `false` | no |
+| <a name="input_webapp_enable_public_access"></a> [webapp\_enable\_public\_access](#input\_webapp\_enable\_public\_access) | Enable public access for web app | `bool` | `true` | no |
+| <a name="input_webapp_enable_staging_slot"></a> [webapp\_enable\_staging\_slot](#input\_webapp\_enable\_staging\_slot) | Enable staging slot for web app | `bool` | `false` | no |
 | <a name="input_webapp_instance_count"></a> [webapp\_instance\_count](#input\_webapp\_instance\_count) | The number of instances for the web app | `number` | `1` | no |
 | <a name="input_webapp_sku"></a> [webapp\_sku](#input\_webapp\_sku) | Web App SKU (e.g. B1) | `string` | `"B1"` | no |
 | <a name="input_webapp_zone_balancing"></a> [webapp\_zone\_balancing](#input\_webapp\_zone\_balancing) | Enable zone balancing on web app | `bool` | `false` | no |
