@@ -11,11 +11,11 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers.Navigation;
 
 public class ControllerNavigationTests
 {
-    private static TheoryData<ValidityTestCase> Validity;
+    public static TheoryData<ValidityTestCase> Validity;
 
-    private static TheoryData<BackwardTestCase> Backwards { get; }
+    public static TheoryData<BackwardTestCase> Backwards { get; }
 
-    private static TheoryData<ForwardTestCase> Forwards { get; }
+    public static TheoryData<ForwardTestCase> Forwards { get; }
 
     static ControllerNavigationTests()
     {
