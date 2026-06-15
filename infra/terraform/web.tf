@@ -106,8 +106,12 @@ resource "azurerm_linux_web_app_slot" "staging" {
   tags                          = local.common_tags
 
   site_config {
-    always_on                     = var.webapp_always_on
-    ip_restriction_default_action = "Deny"
+    always_on                         = var.webapp_always_on
+    ftps_state                        = "Disabled"
+    ip_restriction_default_action     = "Deny"
+    health_check_path                 = "/health"
+    health_check_eviction_time_in_min = 5
+    http2_enabled                     = true
 
     application_stack {
       dotnet_version = "10.0"
@@ -117,9 +121,6 @@ resource "azurerm_linux_web_app_slot" "staging" {
       name        = "Access from Front Door"
       service_tag = "AzureFrontDoor.Backend"
     }
-
-    health_check_path                 = "/health"
-    health_check_eviction_time_in_min = 5
   }
 
   identity {
