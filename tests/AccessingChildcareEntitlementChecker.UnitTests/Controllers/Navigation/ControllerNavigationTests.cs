@@ -151,7 +151,7 @@ public class ControllerNavigationTests
         var journeySession = Substitute.For<IJourneySession>();
         var controller = new UserController(journeyState, journeySession);
         var result = validityTestCase.Act.Compile()(controller);
-        
+
         var isRedirectToStart = result is RedirectToActionResult redirectResult
             && redirectResult.ActionName == nameof(HomeController.Start)
             && redirectResult.ControllerName == "Home";
