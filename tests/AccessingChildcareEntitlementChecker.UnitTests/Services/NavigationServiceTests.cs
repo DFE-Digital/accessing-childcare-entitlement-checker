@@ -16,7 +16,7 @@ public class NavigationServiceTests
     public static TheoryData<BackwardTestCase> Backwards { get; }
 
     public static TheoryData<ForwardTestCase> Forwards { get; }
-    
+
     static NavigationServiceTests()
     {
         var withoutChildren = new Dictionary<string, Child>();
