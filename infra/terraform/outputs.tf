@@ -26,6 +26,6 @@ output "deployment_storage_blob_endpoint" {
 }
 
 output "staging_slot_in_use" {
-  value       = var.enable_staging_slot
+  value       = var.webapp_enable_staging_slot
   description = "Indicates whether the staging slot is enabled for the web app."
 }

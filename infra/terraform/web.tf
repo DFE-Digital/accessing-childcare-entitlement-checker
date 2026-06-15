@@ -23,12 +23,12 @@ resource "azurerm_linux_web_app" "web-app-service" {
   https_only                    = true
   virtual_network_subnet_id     = azapi_resource.app_subnet.id
   app_settings                  = local.web_app_settings
-  public_network_access_enabled = var.azure_frontdoor_scale != "Premium"
-  client_affinity_enabled       = var.webapp_instance_count > 1
+  public_network_access_enabled = var.webapp_enable_public_access
+  client_affinity_enabled       = true
   tags                          = local.common_tags
 
   site_config {
-    always_on                         = var.aspnetcore_environment == "Production"
+    always_on                         = var.webapp_always_on
     ftps_state                        = "Disabled"
     ip_restriction_default_action     = "Deny"
     health_check_path                 = "/health"
@@ -84,7 +84,7 @@ resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
 }
 
 resource "azurerm_linux_web_app_slot" "staging" {
-  count = var.enable_staging_slot ? 1 : 0
+  count = var.webapp_enable_staging_slot ? 1 : 0
 
   lifecycle {
     precondition {
@@ -101,12 +101,12 @@ resource "azurerm_linux_web_app_slot" "staging" {
   https_only                    = true
   virtual_network_subnet_id     = azapi_resource.app_subnet.id
   app_settings                  = local.web_app_settings
-  public_network_access_enabled = var.azure_frontdoor_scale != "Premium"
-  client_affinity_enabled       = var.webapp_instance_count > 1
+  public_network_access_enabled = var.webapp_enable_public_access
+  client_affinity_enabled       = true
   tags                          = local.common_tags
 
   site_config {
-    always_on                     = var.aspnetcore_environment == "Production"
+    always_on                     = var.webapp_always_on
     ip_restriction_default_action = "Deny"
 
     application_stack {
@@ -167,7 +167,7 @@ resource "azurerm_private_endpoint" "web_pe" {
 }
 
 resource "azurerm_private_endpoint" "staging_pe" {
-  count               = var.enable_staging_slot ? 1 : 0
+  count               = var.webapp_enable_staging_slot ? 1 : 0
   name                = "${local.service_prefix}-staging-pe"
   location            = local.location
   resource_group_name = azurerm_resource_group.web-rg.name
