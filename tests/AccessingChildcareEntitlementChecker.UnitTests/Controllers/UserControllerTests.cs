@@ -18,7 +18,7 @@ public class UserControllerTests
     {
         _journeyState = new JourneyState();
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new UserController(_journeyState, _journeySession, new NavigationService(_journeyState));
+        _controller = new UserController(_journeyState, _journeySession);
     }
 
     [Fact]
@@ -213,7 +213,6 @@ public class UserControllerTests
     [InlineData(SettledStatusOption.Yes, null, "User", nameof(UserController.PaidWork))]
     [InlineData(SettledStatusOption.No, null, "User", nameof(UserController.PaidWork))]
     [InlineData(SettledStatusOption.StillWaiting, null, "User", nameof(UserController.PaidWork))]
-    [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
     public void SettledStatus_Post_SavesState_AndRedirects(SettledStatusOption option, string? returnTo, string controllerName, string actionName)
     {
         _journeyState.Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland;

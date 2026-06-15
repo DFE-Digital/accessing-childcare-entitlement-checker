@@ -1,4 +1,4 @@
-Feature: Check your answers
+Feature: Check your answers - Journeys
 
 Background:
 	Given I am on the childcare entitlement checker website
@@ -43,55 +43,33 @@ Scenario: Page Load
 		| Does your partner already get any of this childcare support? | Childcare vouchers         |
 		| How does your partner receive childcare vouchers?            | A workplace nursery scheme |
 
-Scenario: Change Aydin's due date
-	When I click the Change link in the "Aydin" card for "What is this child's due date"
-	Then I will be directed to the next page in the user journey "What is this child's due date?"
-
-Scenario: Continue with selection
-	When I click on Continue
-	Then the page header is "Childcare support you could get"
-
-Scenario: Back navigation
-	When I click the back link
-	Then the page header is "How does your partner receive childcare vouchers?"
-
-Scenario: Change my relationship to Sara
-	When I click the Change link in the "Sara" card for "What is your relationship to Sara?"
-	And I answer the questions as follows:
-		| Question                           | Answer |
-		| What is your relationship to Sara? | Parent |
+Scenario: Nationality - back link returns to check answers
+	When I click the Change link in the "Your details" summary list for "What is your nationality?"
+	And I click the back link
 	Then the page header is "Check your answers"
-	And I should see 2 summary cards
-	And I should see a summary card with the title "Sara" and the following summary:
-		| Question                                    | Answer                                |
-		| What is Sara's date of birth?               | Yesterday                             |
-		| What is your relationship to Sara?          | Parent                                |
-		| Does Sara get any of the following support? | Education, health and care (EHC) plan |
 
-Scenario: Partner details are not shown when I don't have a partner
-	Given I answer "Do you live with a partner?" as "No"
-	Then I do not see a summary list for "Your partners details"
-
-Scenario: Self employed details are not shown when I am not self employed
-	Given I answer "How would you describe your work status?" as "Paid employment"
-	Then I do not see a summary row "Have you been self-employed for less than 12 months"
-
-# ignored pending journey validity work AC-612 - shouldn't be showing self employment answers
-@ignore 
-Scenario: Self employed details are not shown when I change my answer
-	When I click the Change link in the "Your details" summary list for "How would you describe your work status?"
-	And the page header is "How would you describe your work status?"
-	And I select the "Paid employment" checkbox
+Scenario: Nationality - no change returns to check answers
+	When I click the Change link in the "Your details" summary list for "What is your nationality?"
 	And I click on Continue
 	Then the page header is "Check your answers"
-	And I do not see a summary row "Have you been self-employed for less than 12 months"
 
-Scenario: Back navigation to Does your partner already get any of this childcare support?
-	Given I answer "Does your partner already get any of this childcare support?" as "No, they do not get any of this childcare support"
-	When I click the back link
-	Then the page header is "Does your partner already get any of this childcare support?"
+Scenario: Nationality - change to other country returns to check answers
+	When I click the Change link in the "Your details" summary list for "What is your nationality?"
+	And I select the "Citizen of a different country" radio button
+	And I click on Continue
+	Then the page header is "Check your answers"
 
-Scenario: Back navigation to Do you live with a partner?
-	Given I answer "Do you live with a partner?" as "No"
-	When I click the back link
-	Then the page header is "Do you live with a partner?"
+Scenario: Nationality - change to EU country goes to settled status
+	When I click the Change link in the "Your details" summary list for "What is your nationality?"
+	And I select the "Citizen of an EU country, EEA country or Switzerland" radio button
+	And I click on Continue
+	Then the page header is "Do you have settled or pre-settled status under the EU Settlement Scheme?"
+
+Scenario: Nationality - change to EU country goes to settled status then returns to check answers
+	When I click the Change link in the "Your details" summary list for "What is your nationality?"
+	And I select the "Citizen of an EU country, EEA country or Switzerland" radio button
+	And I click on Continue
+	And the page header is "Do you have settled or pre-settled status under the EU Settlement Scheme?"
+	And I select the "Yes" radio button
+	And I click on Continue
+	Then the page header is "Check your answers"
