@@ -11,6 +11,8 @@ public class UserController : Controller
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private const string SummaryControllerName = "Summary";
+    private const string UserControllerName = "User";
 
     public UserController(
         JourneyState journeyState,
@@ -50,10 +52,10 @@ public class UserController : Controller
         _journeySession.Set(_journeyState);
         if (model.ReturnTo == null)
         {
-            return new RedirectToActionResult(nameof(UserController.Nationality), "User", null);
+            return new RedirectToActionResult(nameof(UserController.Nationality), UserControllerName, null);
         }
 
-        return new RedirectToActionResult(nameof(SummaryController.CheckAnswers), "Summary", new { returnTo = model.ReturnTo });
+        return new RedirectToActionResult(nameof(SummaryController.CheckAnswers), SummaryControllerName, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -90,10 +92,10 @@ public class UserController : Controller
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
-            return new RedirectToActionResult(nameof(SummaryController.CheckAnswers), "Summary", new { returnTo = model.ReturnTo });
+            return new RedirectToActionResult(nameof(SummaryController.CheckAnswers), SummaryControllerName, new { returnTo = model.ReturnTo });
         }
 
-        return new RedirectToActionResult(nextAction, "User", new { returnTo = model.ReturnTo });
+        return new RedirectToActionResult(nextAction, UserControllerName, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -129,10 +131,10 @@ public class UserController : Controller
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
-            return new RedirectToActionResult(nameof(SummaryController.CheckAnswers), "Summary", new { returnTo = model.ReturnTo });
+            return new RedirectToActionResult(nameof(SummaryController.CheckAnswers), SummaryControllerName, new { returnTo = model.ReturnTo });
         }
 
-        return new RedirectToActionResult(nextAction, "User", new { returnTo = model.ReturnTo });
+        return new RedirectToActionResult(nextAction, UserControllerName, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -181,10 +183,10 @@ public class UserController : Controller
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
-            return new RedirectToActionResult(nameof(SummaryController.CheckAnswers), "Summary", new { returnTo = model.ReturnTo });
+            return new RedirectToActionResult(nameof(SummaryController.CheckAnswers), SummaryControllerName, new { returnTo = model.ReturnTo });
         }
 
-        return new RedirectToActionResult(nextAction, "User", new { returnTo = model.ReturnTo });
+        return new RedirectToActionResult(nextAction, UserControllerName, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -453,7 +455,7 @@ public class UserController : Controller
 
     private bool UserAgeValid()
     {
-        return _journeyState.Children.Count() > 0;
+        return _journeyState.Children.Count > 0;
     }
 
     private bool NationalityValid()
@@ -482,7 +484,7 @@ public class UserController : Controller
         return true;
     }
 
-    private ActionLink UserAgePrevious(string? returnTo)
+    private static ActionLink UserAgePrevious(string? returnTo)
     {
         if (returnTo != null)
         {
@@ -492,7 +494,7 @@ public class UserController : Controller
         return ActionLink.User(nameof(SummaryController.CheckChildDetails));
     }
 
-    private ActionLink NationalityPrevious(string? returnTo)
+    private static ActionLink NationalityPrevious(string? returnTo)
     {
         if (returnTo != null)
         {
@@ -502,7 +504,7 @@ public class UserController : Controller
         return ActionLink.User(nameof(UserController.UserAge));
     }
 
-    private ActionLink SettledStatusPrevious(string? returnTo)
+    private static ActionLink SettledStatusPrevious(string? returnTo)
     {
         if (returnTo == null)
         {
