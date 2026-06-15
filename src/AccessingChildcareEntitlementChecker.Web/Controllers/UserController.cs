@@ -12,7 +12,9 @@ public class UserController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
-    public UserController(JourneyState journeyState, IJourneySession journeySession)
+    public UserController(
+        JourneyState journeyState,
+        IJourneySession journeySession)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
@@ -37,10 +39,34 @@ public class UserController : Controller
         return this.RedirectTo<UserController>(nameof(Nationality));
     }
 
+    public ViewResult ViewWithBackLink(
+        object model,
+        string actionName,
+        string controllerName = "User",
+        string? returnTo = null,
+        string? childId = null)
+    {
+        if (returnTo != null)
+        {
+            controllerName = "Summary";
+            actionName = returnTo switch
+            {
+                ReturnTo.CheckAnswers => nameof(SummaryController.CheckAnswers),
+                ReturnTo.CheckChildDetails => nameof(SummaryController.CheckChildDetails),
+                _ => throw new InvalidOperationException($"Unexpected return destination: {returnTo}")
+            };
+        }
+
+        ViewData["BackLinkController"] = controllerName;
+        ViewData["BackLinkAction"] = actionName;
+        ViewData["BackLinkRouteValues"] = new { childId };
+        return View(model);
+    }
+
     [HttpGet]
     public IActionResult Nationality(string? returnTo = null)
     {
-        return View(new NationalityViewModel(_journeyState) { ReturnTo = returnTo });
+        return ViewWithBackLink(new NationalityViewModel(_journeyState) { ReturnTo = returnTo }, nameof(UserController.UserAge), "User", returnTo);
     }
 
     [HttpPost]
@@ -48,27 +74,45 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return View(model);
+            return ViewWithBackLink(model, nameof(UserController.UserAge));
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
 
-        return model.Nationality switch
+        if (model.ReturnTo == null)
         {
-            NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => this.RedirectTo<UserController>(nameof(SettledStatus)),
-            _ => this.RedirectTo<UserController>(nameof(PaidWork)),
-        };
+            if (_journeyState.Nationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+            {
+                return this.RedirectTo<UserController>(nameof(UserController.SettledStatus), new { model.ReturnTo });
+            }
+            else
+            {
+                return this.RedirectTo<UserController>(nameof(UserController.PaidWork), new { model.ReturnTo });
+            }
+        }
+        else
+        {
+            if (_journeyState.Nationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland && _journeyState.SettledStatus == null)
+            {
+                return this.RedirectTo<UserController>(nameof(UserController.SettledStatus), new { model.ReturnTo });
+
+            }
+            else if (_journeyState.Nationality != NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland && _journeyState.PaidWork == null)
+            {
+                return this.RedirectTo<UserController>(nameof(UserController.PaidWork), new { model.ReturnTo });
+            }
+            else
+            {
+                return this.RedirectToReturnTo(model.ReturnTo);
+            }
+        }
     }
 
     [HttpGet]
     public IActionResult SettledStatus(string? returnTo = null)
     {
-        return View(new SettledStatusViewModel(_journeyState) { ReturnTo = returnTo });
+        return ViewWithBackLink(new SettledStatusViewModel(_journeyState) { ReturnTo = returnTo }, nameof(UserController.Nationality), "User", returnTo);
     }
 
     [HttpPost]
@@ -76,23 +120,33 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return View(model);
+            return ViewWithBackLink(model, nameof(UserController.Nationality), "User", model.ReturnTo);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
+        if (model.ReturnTo != null)
         {
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectTo<UserController>(nameof(PaidWork));
+        return this.RedirectTo<UserController>(nameof(UserController.PaidWork), new { model.ReturnTo });
+    }
+
+    private ViewResult PaidWorkViewWithBackLink(string returnTo)
+    {
+        if (_journeyState.SettledStatus == null)
+        {
+            return ViewWithBackLink(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo }, nameof(UserController.Nationality), "User", returnTo);
+        }
+
+        return ViewWithBackLink(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo }, nameof(UserController.SettledStatus), "User", returnTo);
     }
 
     [HttpGet]
     public IActionResult PaidWork(string? returnTo = null)
     {
-        return View(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo });
+        return PaidWorkViewWithBackLink(returnTo);
     }
 
     [HttpPost]
@@ -100,7 +154,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return View(model);
+            return PaidWorkViewWithBackLink(model.ReturnTo);
         }
 
         _journeyState.Apply(model);

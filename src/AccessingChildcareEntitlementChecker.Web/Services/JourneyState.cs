@@ -138,6 +138,11 @@ public class JourneyState
     public void Apply(NationalityViewModel model)
     {
         Nationality = model.Nationality;
+
+        if (Nationality != NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+        {
+            SettledStatus = null;
+        }
     }
 
     public void Apply(SettledStatusViewModel model)

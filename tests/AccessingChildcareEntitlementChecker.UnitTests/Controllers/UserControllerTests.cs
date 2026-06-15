@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.User;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -96,7 +97,7 @@ public class UserControllerTests
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, "User", nameof(UserController.SettledStatus))]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, null, "User", nameof(UserController.PaidWork))]
     [InlineData(NationalityOption.BritishOrIrishCitizen, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
+    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, ReturnTo.CheckAnswers, "User", nameof(UserController.SettledStatus))]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
     public void Nationality_Post_SavesState_AndRedirects(NationalityOption nationality, string? returnTo, string controllerName, string actionName)
     {

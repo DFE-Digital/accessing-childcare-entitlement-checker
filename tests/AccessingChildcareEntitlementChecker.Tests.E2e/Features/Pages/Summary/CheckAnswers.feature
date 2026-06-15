@@ -95,3 +95,34 @@ Scenario: Back navigation to Do you live with a partner?
 	Given I answer "Do you live with a partner?" as "No"
 	When I click the back link
 	Then the page header is "Do you live with a partner?"
+
+Scenario: Nationality - back link returns to check answers
+	When I click the Change link in the "Your details" summary list for "What is your nationality?"
+	And I click the back link
+	Then the page header is "Check your answers"
+
+Scenario: Nationality - no change returns to check answers
+	When I click the Change link in the "Your details" summary list for "What is your nationality?"
+	And I click on Continue
+	Then the page header is "Check your answers"
+
+Scenario: Nationality - change to other country returns to check answers
+	When I click the Change link in the "Your details" summary list for "What is your nationality?"
+	And I select the "Citizen of a different country" radio button
+	And I click on Continue
+	Then the page header is "Check your answers"
+
+Scenario: Nationality - change to EU country goes to settled status
+	When I click the Change link in the "Your details" summary list for "What is your nationality?"
+	And I select the "Citizen of an EU country, EEA country or Switzerland" radio button
+	And I click on Continue
+	Then the page header is "Do you have settled or pre-settled status under the EU Settlement Scheme?"
+
+Scenario: Nationality - change to EU country goes to settled status then returns to check answers
+	When I click the Change link in the "Your details" summary list for "What is your nationality?"
+	And I select the "Citizen of an EU country, EEA country or Switzerland" radio button
+	And I click on Continue
+	And the page header is "Do you have settled or pre-settled status under the EU Settlement Scheme?"
+	And I select the "Yes" radio button
+	And I click on Continue
+	Then the page header is "Check your answers"
