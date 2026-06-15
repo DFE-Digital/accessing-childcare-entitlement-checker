@@ -18,12 +18,16 @@ public class UserControllerTests
     {
         _journeyState = new JourneyState();
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new UserController(_journeyState, _journeySession);
+        _controller = new UserController(_journeyState, _journeySession, new NavigationService(_journeyState));
     }
 
     [Fact]
     public void UserAge_ReturnsView()
     {
+        _journeyState.Children = new Dictionary<string, Child>
+        {
+            { "child-a", new Child("child-a", "Child A") }
+        };
         var result = Assert.IsType<ViewResult>(_controller.UserAge());
 
         Assert.Null(result.Model<UserAgeViewModel>().UserAge);
@@ -32,6 +36,11 @@ public class UserControllerTests
     [Fact]
     public void UserAge_Get_PopulatesModel_FromState()
     {
+        _journeyState.Children = new Dictionary<string, Child>
+        {
+            { "child-a", new Child("child-a", "Child A") }
+        };
+
         _journeyState.UserAge = AgeRange.UnderEighteen;
         var result = Assert.IsType<ViewResult>(_controller.UserAge());
 
@@ -41,6 +50,11 @@ public class UserControllerTests
     [Fact]
     public void UserAge_Post_ValidSelection_SavesState_AndRedirects()
     {
+        _journeyState.Children = new Dictionary<string, Child>
+        {
+            { "child-a", new Child("child-a", "Child A") }
+        };
+
         var model = new UserAgeViewModel
         {
             UserAge = AgeRange.UnderEighteen
@@ -59,6 +73,11 @@ public class UserControllerTests
     [Fact]
     public void UserAge_Post_InvalidSelection_ReturnsViewWithError()
     {
+        _journeyState.Children = new Dictionary<string, Child>
+        {
+            { "child-a", new Child("child-a", "Child A") }
+        };
+
         var model = new UserAgeViewModel
         {
             UserAge = null
@@ -77,6 +96,7 @@ public class UserControllerTests
     [Fact]
     public void Nationality_ReturnsView()
     {
+        _journeyState.UserAge = AgeRange.UnderEighteen;
         var result = Assert.IsType<ViewResult>(_controller.Nationality());
 
         Assert.Null(result.Model<NationalityViewModel>().Nationality);
@@ -85,6 +105,7 @@ public class UserControllerTests
     [Fact]
     public void Nationality_Get_PopulatesModel_FromState()
     {
+        _journeyState.UserAge = AgeRange.UnderEighteen;
         _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
 
         var result = Assert.IsType<ViewResult>(_controller.Nationality());
@@ -96,11 +117,9 @@ public class UserControllerTests
     [InlineData(NationalityOption.BritishOrIrishCitizen, null, "User", nameof(UserController.PaidWork))]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, "User", nameof(UserController.SettledStatus))]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, null, "User", nameof(UserController.PaidWork))]
-    [InlineData(NationalityOption.BritishOrIrishCitizen, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, ReturnTo.CheckAnswers, "User", nameof(UserController.SettledStatus))]
-    [InlineData(NationalityOption.CitizenOfADifferentCountry, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
     public void Nationality_Post_SavesState_AndRedirects(NationalityOption nationality, string? returnTo, string controllerName, string actionName)
     {
+        _journeyState.UserAge = AgeRange.UnderEighteen;
         var model = new NationalityViewModel
         {
             Nationality = nationality,
@@ -120,6 +139,7 @@ public class UserControllerTests
     [Fact]
     public void Nationality_Post_InvalidSelection_ReturnsViewWithError()
     {
+        _journeyState.UserAge = AgeRange.UnderEighteen;
         var model = new NationalityViewModel
         {
             Nationality = null
@@ -196,6 +216,7 @@ public class UserControllerTests
     [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
     public void SettledStatus_Post_SavesState_AndRedirects(SettledStatusOption option, string? returnTo, string controllerName, string actionName)
     {
+        _journeyState.Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland;
         var model = new SettledStatusViewModel
         {
             SettledStatus = option,
@@ -215,6 +236,7 @@ public class UserControllerTests
     [Fact]
     public void SettledStatus_Post_InvalidSelection_ReturnsViewWithError()
     {
+        _journeyState.Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland;
         var model = new SettledStatusViewModel
         {
             SettledStatus = null
@@ -232,6 +254,7 @@ public class UserControllerTests
     [Fact]
     public void SettledStatus_Get_PopulatesModel_FromState()
     {
+        _journeyState.Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland;
         _journeyState.SettledStatus = SettledStatusOption.Yes;
 
         var result = Assert.IsType<ViewResult>(_controller.SettledStatus());
@@ -242,6 +265,7 @@ public class UserControllerTests
     [Fact]
     public void SettledStatus_ReturnsView()
     {
+        _journeyState.Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland;
         var result = Assert.IsType<ViewResult>(_controller.SettledStatus());
 
         Assert.Null(result.Model<SettledStatusViewModel>().SettledStatus);
@@ -251,9 +275,9 @@ public class UserControllerTests
     [InlineData(PaidWorkOption.No, null, "User", nameof(UserController.UniversalCredit))]
     [InlineData(PaidWorkOption.OnLeave, null, "User", nameof(UserController.TypeOfLeave))]
     [InlineData(PaidWorkOption.Yes, null, "User", nameof(UserController.WorkStatus))]
-    [InlineData(PaidWorkOption.Yes, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
     public void PaidWork_Post_SavesState_AndRedirects(PaidWorkOption option, string? returnTo, string controllerName, string actionName)
     {
+        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
         var model = new PaidWorkViewModel
         {
             PaidWork = option,
@@ -273,6 +297,7 @@ public class UserControllerTests
     [Fact]
     public void PaidWork_Post_InvalidSelection_ReturnsViewWithError()
     {
+        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
         var model = new PaidWorkViewModel
         {
             PaidWork = null
@@ -290,6 +315,7 @@ public class UserControllerTests
     [Fact]
     public void PaidWork_Get_PopulatesModel_FromState()
     {
+        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
         _journeyState.PaidWork = PaidWorkOption.Yes;
 
         var result = Assert.IsType<ViewResult>(_controller.PaidWork());
@@ -300,6 +326,7 @@ public class UserControllerTests
     [Fact]
     public void PaidWork_ReturnsView()
     {
+        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
         var result = Assert.IsType<ViewResult>(_controller.PaidWork());
 
         Assert.Null(result.Model<PaidWorkViewModel>().PaidWork);

@@ -11,24 +11,38 @@ public class UserController : Controller
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private readonly NavigationService _navigationService;
 
     public UserController(
         JourneyState journeyState,
-        IJourneySession journeySession)
+        IJourneySession journeySession,
+        NavigationService navigationService)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
+        _navigationService = navigationService;
     }
 
     [HttpGet]
-    public ViewResult UserAge()
+    public IActionResult UserAge(string? returnTo = null)
     {
-        return View(new UserAgeViewModel(_journeyState));
+        if (!_navigationService.UserAgeValid())
+        {
+            return this.RedirectTo<HomeController>(nameof(HomeController.Start));
+        }
+
+        var back = _navigationService.UserAgePrevious(returnTo);
+        return ViewWithBackLink(new UserAgeViewModel(_journeyState) { ReturnTo = returnTo }, back);
     }
 
     [HttpPost]
     public IActionResult UserAge(UserAgeViewModel model)
     {
+        if (!_navigationService.UserAgeValid())
+        {
+            return this.RedirectTo<HomeController>(nameof(HomeController.Start));
+        }
+
         if (!ModelState.IsValid)
         {
             return View(model);
@@ -36,91 +50,64 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return this.RedirectTo<UserController>(nameof(Nationality));
-    }
-
-    public ViewResult ViewWithBackLink(
-        object model,
-        string actionName,
-        string controllerName = "User",
-        string? returnTo = null,
-        string? childId = null)
-    {
-        if (returnTo != null)
-        {
-            controllerName = "Summary";
-            actionName = returnTo switch
-            {
-                ReturnTo.CheckAnswers => nameof(SummaryController.CheckAnswers),
-                ReturnTo.CheckChildDetails => nameof(SummaryController.CheckChildDetails),
-                _ => throw new InvalidOperationException($"Unexpected return destination: {returnTo}")
-            };
-        }
-
-        ViewData["BackLinkController"] = controllerName;
-        ViewData["BackLinkAction"] = actionName;
-        ViewData["BackLinkRouteValues"] = new { childId };
-        return View(model);
+        return _navigationService.UserAgeNext(model.ReturnTo);
     }
 
     [HttpGet]
     public IActionResult Nationality(string? returnTo = null)
     {
-        return ViewWithBackLink(new NationalityViewModel(_journeyState) { ReturnTo = returnTo }, nameof(UserController.UserAge), "User", returnTo);
+        if (!_navigationService.NationalityValid())
+        {
+            return this.RedirectTo<HomeController>(nameof(HomeController.Start));
+        }
+
+        var back = _navigationService.NationalityPrevious(returnTo);
+        return ViewWithBackLink(new NationalityViewModel(_journeyState) { ReturnTo = returnTo }, back);
     }
 
     [HttpPost]
     public IActionResult Nationality(NationalityViewModel model)
     {
+        if (!_navigationService.NationalityValid())
+        {
+            return this.RedirectTo<HomeController>(nameof(HomeController.Start));
+        }
+
         if (!ModelState.IsValid)
         {
-            return ViewWithBackLink(model, nameof(UserController.UserAge));
+            var back = _navigationService.NationalityPrevious(model.ReturnTo);
+            return ViewWithBackLink(model, back);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-
-        if (model.ReturnTo == null)
-        {
-            if (_journeyState.Nationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
-            {
-                return this.RedirectTo<UserController>(nameof(UserController.SettledStatus), new { model.ReturnTo });
-            }
-            else
-            {
-                return this.RedirectTo<UserController>(nameof(UserController.PaidWork), new { model.ReturnTo });
-            }
-        }
-        else
-        {
-            if (_journeyState.Nationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland && _journeyState.SettledStatus == null)
-            {
-                return this.RedirectTo<UserController>(nameof(UserController.SettledStatus), new { model.ReturnTo });
-
-            }
-            else if (_journeyState.Nationality != NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland && _journeyState.PaidWork == null)
-            {
-                return this.RedirectTo<UserController>(nameof(UserController.PaidWork), new { model.ReturnTo });
-            }
-            else
-            {
-                return this.RedirectToReturnTo(model.ReturnTo);
-            }
-        }
+        return _navigationService.NationalityNext(model.ReturnTo);
     }
 
     [HttpGet]
     public IActionResult SettledStatus(string? returnTo = null)
     {
-        return ViewWithBackLink(new SettledStatusViewModel(_journeyState) { ReturnTo = returnTo }, nameof(UserController.Nationality), "User", returnTo);
+        if (!_navigationService.SettledStatusValid())
+        {
+            return this.RedirectTo<HomeController>(nameof(HomeController.Start));
+        }
+
+        var back = _navigationService.SettledStatusPrevious(returnTo);
+        return ViewWithBackLink(new SettledStatusViewModel(_journeyState) { ReturnTo = returnTo }, back);
     }
 
     [HttpPost]
     public IActionResult SettledStatus(SettledStatusViewModel model)
     {
+        if (!_navigationService.SettledStatusValid())
+        {
+            return this.RedirectTo<HomeController>(nameof(HomeController.Start));
+        }
+
         if (!ModelState.IsValid)
         {
-            return ViewWithBackLink(model, nameof(UserController.Nationality), "User", model.ReturnTo);
+            var back = _navigationService.SettledStatusPrevious(model.ReturnTo);
+            return ViewWithBackLink(model, back);
         }
 
         _journeyState.Apply(model);
@@ -133,45 +120,35 @@ public class UserController : Controller
         return this.RedirectTo<UserController>(nameof(UserController.PaidWork), new { model.ReturnTo });
     }
 
-    private ViewResult PaidWorkViewWithBackLink(string returnTo)
-    {
-        if (_journeyState.SettledStatus == null)
-        {
-            return ViewWithBackLink(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo }, nameof(UserController.Nationality), "User", returnTo);
-        }
-
-        return ViewWithBackLink(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo }, nameof(UserController.SettledStatus), "User", returnTo);
-    }
-
     [HttpGet]
     public IActionResult PaidWork(string? returnTo = null)
     {
-        return PaidWorkViewWithBackLink(returnTo);
+        if (!_navigationService.PaidWorkValid())
+        {
+            return this.RedirectTo<HomeController>(nameof(HomeController.Start));
+        }
+
+        var back = _navigationService.PaidWorkPrevious(returnTo);
+        return ViewWithBackLink(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo }, back);
     }
 
     [HttpPost]
     public IActionResult PaidWork(PaidWorkViewModel model)
     {
+        if (!_navigationService.PaidWorkValid())
+        {
+            return this.RedirectTo<HomeController>(nameof(HomeController.Start));
+        }
+
         if (!ModelState.IsValid)
         {
-            return PaidWorkViewWithBackLink(model.ReturnTo);
+            var back = _navigationService.PaidWorkPrevious(model.ReturnTo);
+            return ViewWithBackLink(model, back);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo == ReturnTo.CheckAnswers)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        var redirect = model.PaidWork switch
-        {
-            PaidWorkOption.Yes => this.RedirectTo<UserController>(nameof(WorkStatus)),
-            PaidWorkOption.OnLeave => this.RedirectTo<UserController>(nameof(TypeOfLeave)),
-            _ => this.RedirectTo<UserController>(nameof(UniversalCredit)),
-        };
-
-        return redirect;
+        return _navigationService.PaidWorkNext(model.ReturnTo);
     }
 
     [HttpGet]
@@ -426,5 +403,15 @@ public class UserController : Controller
         }
 
         return this.RedirectTo<SummaryController>(nameof(SummaryController.CheckAnswers));
+    }
+
+    private ViewResult ViewWithBackLink(
+        object model,
+        ActionLink back)
+    {
+        ViewData["BackLinkController"] = back.Controller;
+        ViewData["BackLinkAction"] = back.Action;
+        ViewData["BackLinkRouteValues"] = new { back.returnTo };
+        return View(model);
     }
 }

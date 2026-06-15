@@ -15,6 +15,8 @@ public static class IServiceCollectionExtensions
             return journeySession.Get();
         });
 
+        services.AddScoped<NavigationService>();
+
         return services;
     }
 }
