@@ -2,12 +2,12 @@
 title: Deployed Infrastructure
 layout: sub-navigation
 sectionKey: Architecture
+order: 5
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Architecture
   key: Deployed Infrastructure
-order: 4
 ---
-
 This page is generated automatically from the Terraform configuration.
 
 <!-- BEGIN_TF_DOCS -->

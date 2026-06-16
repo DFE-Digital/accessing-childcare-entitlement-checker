@@ -2,17 +2,17 @@
 title: Test Strategy
 layout: sub-navigation
 sectionKey: Testing
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Testing
   key: Test Strategy
-order: 0
+order: 1
 ---
-
 This document outlines the testing strategy for the Accessing Childcare Entitlement Checker. It defines the types of testing performed, the tools used, and the lifecycle of testing within our CI/CD pipelines.
 
 ## Testing Principles
 
-Our strategy is guided by the following principles (as defined in [Constraints and Principles](../architecture/constraints-principles.md)):
+Our strategy is guided by the following principles (as defined in [Constraints and Principles](/architecture/02-constraints-principles)):
 
 * Meets the GDS Service Standard - Ensuring the service is accessible, secure, and reliable.
 * Infrastructure as Code & CI/CT/CD - Continuous testing is integrated into our deployment pipelines.
@@ -50,7 +50,7 @@ The testing strategy is organised into discrete layers. Each layer builds upon t
 ### End-to-End (E2E) & Accessibility (A11y) Testing
 * Purpose: Verifies individual Acceptance Criteria (AC) and full user journeys, while ensuring WCAG 2.2 AA compliance.
 * Tools: [Reqnroll](https://reqnroll.net/), [Playwright](https://playwright.dev/), [axe-core](https://github.com/dequelabs/axe-core).
-* Execution: Runs on every push to a Pull Request. Currently runs against **Chromium**; additional browsers and automated accessibility scans are being integrated into the pipeline.
+* Execution: Runs on every push to a Pull Request. Currently runs against Chromium; additional browsers and automated accessibility scans are being integrated into the pipeline.
 
 ### Security Testing (DAST & IaC)
 * Purpose: Identifies vulnerabilities in the running application and misconfigurations in infrastructure code.
@@ -65,7 +65,7 @@ The testing strategy is organised into discrete layers. Each layer builds upon t
 ### Infrastructure Testing
 * Purpose: Validates Terraform configurations for security best practices and compliance.
 * Tools: Checkov.
-* Execution: Integrated into the `infra-deploy.yml` workflow and PR checks.
+* Execution: Integrated into the workflows and PR checks.
 
 ## Summary of Tooling
 
@@ -83,11 +83,11 @@ The testing strategy is organised into discrete layers. Each layer builds upon t
 
 ## Test Environments
 
-| Environment  | Purpose                         | Testing Performed                     |
-|:------------:|:--------------------------------|:--------------------------------------|
-|    Local     | Developer inner loop            | Unit, Component, E2E, A11y, IaC       |
-| CI (GitHub)  | PR Validation & Release Process | Unit, Component, IaC, E2E (on runner) |
-|     Test     | Integration / DAST              | ZAP Scans, Manual QA, Load Testing    |
-|   Staging    | Pre-production Validation       | E2E, A11y                             |
-|  Production  | Live Service                    | Synthetic monitoring                  |
+| Environment | Purpose                         | Testing Performed                     |
+|:------------|:--------------------------------|:--------------------------------------|
+| Local       | Developer inner loop            | Unit, Component, E2E, A11y, IaC       |
+| CI (GitHub) | PR Validation & Release Process | Unit, Component, IaC, E2E (on runner) |
+| Test        | Integration / DAST              | ZAP Scans, Manual QA, Load Testing    |
+| Staging     | Pre-production Validation       | E2E, A11y                             |
+| Production  | Live Service                    | Synthetic monitoring                  |
 

@@ -2,12 +2,12 @@
 title: Deployment Architecture
 layout: sub-navigation
 sectionKey: Architecture
+order: 3
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Architecture
   key: Deployment Architecture
-order: 2
 ---
-
 This document describes the cloud architecture, networking, and deployment strategy for the Accessing Childcare Entitlement Checker (ACEC). The ACEC application is a stateless ASP.NET Core web application hosted on Azure. It is designed for high availability, security, and scalability within the UK South region.
 
 ## Deployment Diagram
@@ -87,8 +87,6 @@ Approx downtime:
 * Redundancy: 
   * The Web App is planned to run with minimum 2 instances for high availability.
   * The deployment strategy utilises Run-From-Package backed by an RA-GRS (Read-Access Geo-Redundant Storage) account to ensure the deployment artifact is resilient.
-* Statelessness: The application is entirely stateless. No server-side session affinity (Sticky Sessions) is required. Multi-step form state is maintained via encrypted session cookies (ASP.NET Core Data Protection), allowing any App Service instance to handle any request.
-
 
 ## Deployment Strategy
 

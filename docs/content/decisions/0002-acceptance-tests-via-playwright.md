@@ -4,11 +4,11 @@ layout: page
 showPagination: true
 order: 2
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 
 ---
-
 ## Context and Problem Statement
 
 This ADR assumes the project follows standard testing practices; e.g. [test pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) with unit, integration/component, ui tests, end to end (full user journey) tests and manual tests.

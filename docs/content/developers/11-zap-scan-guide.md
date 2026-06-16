@@ -2,22 +2,23 @@
 title: OWASP ZAP Security Scanning Guide
 layout: sub-navigation
 sectionKey: Developers
+order: 11
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
   key: ZAP Scanning
-order: 5
----
 
+---
 This project uses OWASP ZAP (Zaproxy) to perform automated Dynamic Application Security Testing (DAST) against the development environment. The scan is designed to run automatically in CI/CD to identify common web vulnerabilities (XSS, SQLi, missing security headers, etc.) before they reach production.
 
 ## Key Components
 
-| File                                  | Purpose                                                           |
-|:--------------------------------------|:------------------------------------------------------------------|
+| File                                      | Purpose                                                           |
+|:------------------------------------------|:------------------------------------------------------------------|
 | `.github/workflows/workflow-zap-scan.yml` | The GitHub Actions workflow orchestrating the scan.               |
-| `zap/automation-plan.yaml`            | The ZAP Automation Framework plan (defines scan jobs).            |
-| `zap/auth-header.js`                  | JavaScript hook to inject Basic Auth and bypass WAF rules.        |
-| `zap/findings.json`                   | A stable snapshot used to prevent unnecessary Pull Request noise. |
+| `zap/automation-plan.yaml`                | The ZAP Automation Framework plan (defines scan jobs).            |
+| `zap/auth-header.js`                      | JavaScript hook to inject Basic Auth and bypass WAF rules.        |
+| `zap/findings.json`                       | A stable snapshot used to prevent unnecessary Pull Request noise. |
 
 ## The Workflow
 

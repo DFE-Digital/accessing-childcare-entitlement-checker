@@ -2,17 +2,17 @@
 title: Branching Strategy
 layout: sub-navigation
 sectionKey: Developers
+order: 3
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
   key: Branching Strategy
-order: 2
 ---
-
 This document defines the Git branching and release workflow for the project. The project uses:
 
 * Trunk-based development
 * Short-lived feature branches
-* Short-lived release branches
+* Release branches
 * PR-driven delivery
 * Controlled production releases
 
@@ -60,7 +60,7 @@ Release branches provide a stable snapshot for staging and production validation
 **Naming Convention:**
 
 ```text
-release/vX.Y
+releases/vX.Y
 ```
 
 **Rules:**
@@ -123,8 +123,8 @@ gitGraph
     commit id: "Feature A"
     commit id: "Feature B"
 
-    branch release/v1.2
-    checkout release/v1.2
+    branch releases/v1.2
+    checkout releases/v1.2
     commit id: "Bug fix"
     commit id: "Config update"
 
@@ -135,7 +135,7 @@ gitGraph
 
 **Flow Summary:**
 
-1. Create a release branch from `main`
+1. Create a release branch named `releases/vX.Y` from `main`
 2. Stabilise the release
 3. Deploy release branch to staging
 4. Complete:
@@ -146,21 +146,23 @@ gitGraph
     * UAT/signoff
 5. Deploy release branch to production
 
+For the detailed steps, approvals matrix, and stakeholder communication templates associated with this workflow, see the dedicated [Release Process](../08-release-process) guide.
+
 ### Hotfix Flow
 
 ```mermaid
 gitGraph
     commit id: "main"
 
-    branch release/v1.2
-    checkout release/v1.2
+    branch releases/v1.2
+    checkout releases/v1.2
     commit id: "Production release"
 
     branch hotfix/fix-timeout
     checkout hotfix/fix-timeout
     commit id: "Fix production issue"
 
-    checkout release/v1.2
+    checkout releases/v1.2
     merge hotfix/fix-timeout tag: "PR merged"
 
     checkout main
@@ -176,7 +178,7 @@ gitGraph
 
 **Flow Summary:**
 
-1. Create a hotfix branch from the active release branch
+1. Create a hotfix branch from the active release branch (`releases/vX.Y`)
 2. Raise a PR into the release branch
 3. Validate through CI/CD
 4. Deploy the updated release branch to staging/production
@@ -185,7 +187,7 @@ gitGraph
 
 ## Branch Protection
 
-The following protections should be enabled for `main` and `release/*` branches:
+The following protections should be enabled for `main` and `releases/*` branches:
 
 * Pull requests required
 * Status checks required

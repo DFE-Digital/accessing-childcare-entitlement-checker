@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 4
 sectionKey: Runbooks
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Runbooks
 ---
-
 This runbook outlines how to rotate administrative secrets and integration passwords used by the Accessing Childcare Entitlement Checker service.
 
 ## Note on Subscription Credentials

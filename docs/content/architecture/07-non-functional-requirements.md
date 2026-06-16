@@ -2,12 +2,13 @@
 title: Non-Functional Requirements
 layout: sub-navigation
 sectionKey: Architecture
+order: 7
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Architecture
   key: Non-Functional Requirements
-order: 3
----
 
+---
 This document defines the operational characteristics and quality standards for the Accessing Childcare Entitlement Checker.
 
 | ID | Category | Requirement | Target |

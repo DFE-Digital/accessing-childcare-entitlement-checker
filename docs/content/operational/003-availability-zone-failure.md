@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 3
 sectionKey: Operational
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Operational
 ---
-
 A single Azure Availability Zone in the `UK South` region experiences an outage or severe network partition.
 
 ## Impact

@@ -2,12 +2,12 @@
 title: Ways of Working
 layout: sub-navigation
 sectionKey: Developers
+order: 2
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
   key: Ways of Working
-order: 1
 ---
-
 This document defines the development standards and operational workflows for the project.
 
 ## Development Standards
@@ -19,13 +19,13 @@ This document defines the development standards and operational workflows for th
 * Infrastructure: Terraform, Azure
 
 ### Code Quality
-* Static Analysis: .NET Analyzers are enabled and enforced on build (`EnforceCodeStyleInBuild`).
+* Static Analysis: .NET Analysers are enabled and enforced on build (`EnforceCodeStyleInBuild`).
 * Formatting: Follow standard C# coding conventions and GDS design patterns for the frontend.
-* Architecture: Adhere to the [Application Architecture](../architecture/application-architecture.md). Maintain a strict separation between the stateless `RulesEngine` and the stateful `Web` application.
+* Architecture: Adhere to the [Application Architecture](/architecture/01-application-architecture/). Maintain a strict separation between the stateless `RulesEngine` and the stateful `Web` application.
 
 ## Branching and Commits
 
-We follow a Trunk-based development model as detailed in the [Branching Strategy](branching-strategy.md).
+We follow a Trunk-based development model as detailed in the [Branching Strategy](../03-branching-strategy/).
 
 ### Branch Naming
 * Feature Branches: `feature/description`
@@ -54,16 +54,16 @@ All changes to `main` and `release/*` branches must be made via Pull Requests.
 1. Pass CI: All builds, unit tests, and component tests must pass.
 2. Review: At least one approval from a maintainer is required.
 3. Tests: New features must include unit tests and, where applicable, Reqnroll/Playwright E2E tests covering the Acceptance Criteria (AC).
-4. Documentation: Update relevant documents in `/docs` if the change impacts architecture or workflows.
+4. Documentation: Update relevant documents in `/docs/content/` if the change impacts architecture or workflows.
 
 ### Process
 1. Open a PR against `main`.
 2. Ensure the PR description links to any relevant issues or Jira tickets.
-3. Once approved and CI passes, the author is responsible for merging (**Squash and Merge** is required to maintain a linear history).
+3. Once approved and CI passes, the author is responsible for merging (Squash and Merge is required to maintain a linear history).
 
 ## Testing Strategy
 
-Quality is verified through a 9-layer pyramid as defined in the [Test Strategy](../testing/test-strategy.md).
+Quality is verified through a 9-layer pyramid as defined in the [Test Strategy](/testing/01-test-strategy/).
 
 * Unit & Component Tests: Run on every PR.
 * E2E Tests: Run on every PR (currently Chromium only).
@@ -74,7 +74,7 @@ Quality is verified through a 9-layer pyramid as defined in the [Test Strategy](
 ## Deployment Workflow
 
 ### Continuous Integration (CI)
-Every push to a PR triggers the `ci.yml` workflow, which handles:
+Every push to a PR triggers the `workflow-pr.yml` workflow, which handles:
 * Building the solution
 * Running Unit and Component tests
 * Static analysis checks
@@ -88,6 +88,4 @@ Every push to a PR triggers the `ci.yml` workflow, which handles:
 
 Documentation is treated as first-class code:
 * Use Markdown for text and [Mermaid](https://mermaid.js.org/) for diagrams.
-* Store architectural decisions in `docs/adr/`.
-* Keep the [README](../../../README.md) and [Ways of Working](ways-of-working.md) updated as the project evolves.
- updated as the project evolves.
+* Store decisions in `docs/content/decisions`.

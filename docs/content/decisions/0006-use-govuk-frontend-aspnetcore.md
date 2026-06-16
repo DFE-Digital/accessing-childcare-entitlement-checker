@@ -4,11 +4,11 @@ layout: page
 showPagination: true
 order: 6
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 
 ---
-
 ## Context and Problem Statement
 
 This project uses GDS components. It's possible to implement this in a variety of ways.

@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 3
 sectionKey: Runbooks
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Runbooks
 ---
-
 This runbook outlines the steps to permanently remove a sensitive secret (e.g., password, personal access token) from the Git history of the repository if it was accidentally committed.
 
 ## Step 1: Revoke the Compromised Secret

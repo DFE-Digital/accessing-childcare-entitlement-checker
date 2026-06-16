@@ -4,11 +4,11 @@ layout: page
 showPagination: true
 order: 3
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 
 ---
-
 ## Context and Problem Statement
 
 We've added SonarQube to the repo to check code quality.

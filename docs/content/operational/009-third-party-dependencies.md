@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 9
 sectionKey: Operational
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Operational
 ---
-
 External package registries, hosting platforms, or third-party code packages become unavailable, affecting our ability to build, validate, or serve the tool.
 
 ## Key Dependencies

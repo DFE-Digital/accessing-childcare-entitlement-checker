@@ -4,11 +4,11 @@ layout: page
 showPagination: true
 order: 5
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 
 ---
-
 ## Context and Problem Statement
 
 We need to deploy the application to Azure in the dev environment, but want to limit access so that:

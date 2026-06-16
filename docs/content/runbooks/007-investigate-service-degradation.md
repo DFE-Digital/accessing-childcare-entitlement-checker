@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 7
 sectionKey: Runbooks
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Runbooks
 ---
-
 This runbook describes the investigation steps to follow when the service is experiencing high latency, excessive 5xx errors, or general degradation.
 
 ## Step 1: Inspect High-Level Metrics

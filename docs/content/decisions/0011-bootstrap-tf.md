@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 11
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 ---
-
 ## Context
 
 Terraform requires a remote backend to store state files and coordinate locking across users and pipelines. In Azure, this is commonly implemented using an Azure Storage Account and Blob Container.

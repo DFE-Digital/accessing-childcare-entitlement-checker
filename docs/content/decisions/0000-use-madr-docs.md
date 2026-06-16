@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 0
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 ---
-
 ## Context and Problem Statement
 
 We want to track decisions which can't be represented in C# types or infrastructure-as-code. (IAC)

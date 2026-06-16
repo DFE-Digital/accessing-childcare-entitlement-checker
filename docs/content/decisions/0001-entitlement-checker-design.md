@@ -4,11 +4,11 @@ layout: page
 showPagination: true
 order: 1
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 
 ---
-
 ## Summary
 
 The recommended proposal as an outcome from Alpha is to build an Entitlements Checker web application, hosted on gov.uk. This checker will improve on current diverse checkers by covering more entitlements, and being a single source of truth going forward. The checker is not designed to confirm eligibility, and is there as a way to signpost users to onward journeys and further investigation. 

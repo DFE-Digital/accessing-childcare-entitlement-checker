@@ -4,10 +4,10 @@ layout: page
 showPagination: true
 order: 8
 sectionKey: Decisions
+includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 ---
-
 ## Context and Problem Statement
 
 The childcare entitlement checker introduces entitlement evaluation logic that could either live inside the MVC Web project or be separated into a dedicated `RulesEngine` project.
