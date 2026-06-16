@@ -46,7 +46,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         Console.WriteLine($"TEST_URL = {ServiceUrl}");
         Console.WriteLine($"PageUrl = {PageUrl}");
 
-        var fullUrl = $"{ServiceUrl}{PageUrl}";
+        var fullUrl = $"{ServiceUrl.TrimEnd('/')}/{PageUrl.TrimStart('/')}";
 
         Console.WriteLine($"Navigating to {fullUrl}");
 
