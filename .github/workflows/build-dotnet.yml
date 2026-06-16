@@ -11,7 +11,7 @@ on:
         required: false
         type: number
         default: 90
-        
+
     secrets:
       SONAR_TOKEN:
         required: true
@@ -21,6 +21,7 @@ env:
   SOLUTION: AccessingChildcareEntitlementChecker.slnx
   WEB_APP: src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj
   UNIT_TESTS: tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
+  INTEGRATION_TESTS: tests/AccessingChildcareEntitlementChecker.IntegrationTests/AccessingChildcareEntitlementChecker.IntegrationTests.csproj
   E2E_TESTS: tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj
   A11Y_TESTS: tests/AccessingChildcareEntitlementChecker.A11yTests/AccessingChildcareEntitlementChecker.A11yTests.csproj
   CONFIGURATION: Release
@@ -33,6 +34,7 @@ jobs:
       contents: read
       checks: write
       pull-requests: read
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -64,7 +66,7 @@ jobs:
           G_REF: ${{ github.ref_name }}
           G_RUN_ID: ${{ github.run_id }}
           G_CONF: ${{ env.CONFIGURATION }}
-        run: |          
+        run: |
           jq -n \
             --arg commit "$G_SHA" \
             --arg branch "$G_REF" \
@@ -101,54 +103,54 @@ jobs:
         id: vulnerabilities
         run: |
           dotnet list ${{ env.SOLUTION }} package \
-          --vulnerable \
-          --include-transitive \
-          --format json \
-          > vulnerability-report.json
+            --vulnerable \
+            --include-transitive \
+            --format json \
+            > vulnerability-report.json
 
       - name: Parse vulnerability report
         if: always()
         run: |
           file="vulnerability-report.json"
-          
+
           if [ ! -f "$file" ]; then
-          echo "VULNS=missing" >> $GITHUB_ENV
-          exit 0
+            echo "VULNS=missing" >> $GITHUB_ENV
+            exit 0
           fi
-          
+
           CRITICAL=$(jq '[.projects[]?
           | .frameworks[]?
           | .topLevelPackages[]?
           | .vulnerabilities[]?
           | select(.severity=="Critical")
           ] | length' "$file")
-          
+
           HIGH=$(jq '[.projects[]?
           | .frameworks[]?
           | .topLevelPackages[]?
           | .vulnerabilities[]?
           | select(.severity=="High")
           ] | length' "$file")
-          
+
           MEDIUM=$(jq '[.projects[]?
           | .frameworks[]?
           | .topLevelPackages[]?
           | .vulnerabilities[]?
           | select(.severity=="Moderate" or .severity=="Medium")
           ] | length' "$file")
-          
+
           TOTAL=$(jq '[.projects[]?
           | .frameworks[]?
           | .topLevelPackages[]?
           | .vulnerabilities[]?
           ] | length // 0' vulnerability-report.json)
-          
+
           if [ "$TOTAL" -eq 0 ]; then
-          VULNS="clean"
+            VULNS="clean"
           else
-          VULNS="detected"
+            VULNS="detected"
           fi
-          
+
           echo "VULNS=$VULNS" >> $GITHUB_ENV
           echo "VULNS_CRITICAL=$CRITICAL" >> $GITHUB_ENV
           echo "VULNS_HIGH=$HIGH" >> $GITHUB_ENV
@@ -178,7 +180,7 @@ jobs:
             /o:dfe-digital \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.token="${SONAR_TOKEN}" \
-            /d:sonar.cs.vstest.reportsPaths="TestResults/*.trx" \
+            /d:sonar.cs.vstest.reportsPaths="TestResults/**/*.trx" \
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
             /d:sonar.exclusions="**/docs/**,**/infra/**,**/.github/**,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
             /d:sonar.coverage.exclusions="**/Program.cs" \
@@ -199,11 +201,23 @@ jobs:
           dotnet test ${{ env.UNIT_TESTS }} \
             -c ${{ env.CONFIGURATION }} \
             --no-build \
-            --results-directory ./TestResults \
-            --logger "trx;LogFileName=test-results.trx" \
-            /p:CollectCoverage=true  \
+            --results-directory ./TestResults/UnitTests \
+            --logger "trx;LogFileName=unit-test-results.trx" \
+            /p:CollectCoverage=true \
             /p:CoverletOutputFormat=opencover \
-            /p:CoverletOutput=TestResults/coverage/  \
+            /p:CoverletOutput=TestResults/coverage/unit/ \
+            /p:Threshold=$THRESHOLD \
+            /p:ThresholdType=line \
+            /p:ThresholdStat=total
+
+          dotnet test ${{ env.INTEGRATION_TESTS }} \
+            -c ${{ env.CONFIGURATION }} \
+            --no-build \
+            --results-directory ./TestResults/IntegrationTests \
+            --logger "trx;LogFileName=integration-test-results.trx" \
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=opencover \
+            /p:CoverletOutput=TestResults/coverage/integration/ \
             /p:Threshold=$THRESHOLD \
             /p:ThresholdType=line \
             /p:ThresholdStat=total
@@ -231,13 +245,13 @@ jobs:
           dotnet tool run reportgenerator \
             -reports:**/coverage.opencover.xml \
             -targetdir:coverage-report \
-            -reporttypes:"TextSummary;Html"    
+            -reporttypes:"TextSummary;Html"
 
       - name: Publish test results
         uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
         if: always()
         with:
-          name: Unit Test Results
+          name: Test Results
           path: TestResults/**/*.trx
           reporter: dotnet-trx
           fail-on-error: true
@@ -346,43 +360,42 @@ jobs:
           a11y_icon="⏭️"
           
           # Format
+
           if [ "$FORMAT" = "passed" ]; then format_icon="✅"
           elif [ "$FORMAT" = "failed" ]; then format_icon="❌"
           fi
-          
-          # Tests
+
           if [ "$TESTS" = "passed" ]; then test_icon="✅"
           elif [ "$TESTS" = "failed" ]; then test_icon="❌"
           fi
-          
-          # Vulnerabilities
-          if  [ "$VULNS" = "clean" ]; then vulns_icon="🟢"; fi
-          
+
+          if [ "$VULNS" = "clean" ]; then vulns_icon="🟢"; fi
+
           if [ "$WEB_APP_PUBLISHED" = "created" ]; then web_icon="📦"; fi
           if [ "$E2E_PUBLISHED" = "created" ]; then e2e_icon="🧪"; fi
           if [ "$A11Y_PUBLISHED" = "created" ]; then a11y_icon="♿"; fi
           
           echo "## 🧪 .NET CI Report Card" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           echo "| Area | Status | Result |" >> $GITHUB_STEP_SUMMARY
           echo "|------|--------|--------|" >> $GITHUB_STEP_SUMMARY
-        
+
           echo "| Format | $format_icon | $FORMAT |" >> $GITHUB_STEP_SUMMARY
           echo "| Tests | $test_icon | $TESTS |" >> $GITHUB_STEP_SUMMARY
           echo "| Vulnerabilities | $vulns_icon | 🔴 $VULNS_CRITICAL 🟠 $VULNS_HIGH 🟡 $VULNS_MEDIUM |" >> $GITHUB_STEP_SUMMARY
           echo "| Web App | $web_icon | $WEB_APP_PUBLISHED |" >> $GITHUB_STEP_SUMMARY
           echo "| E2E Tests | $e2e_icon | $E2E_PUBLISHED |" >> $GITHUB_STEP_SUMMARY
           echo "| A11y Tests | $a11y_icon | $A11Y_PUBLISHED |" >> $GITHUB_STEP_SUMMARY
-  
+
           echo "" >> $GITHUB_STEP_SUMMARY
-          
-          if  [ "$FORMAT" = "passed" ] && [ "$TESTS" = "passed" ] && [ "$VULNS" = "clean" ]; then
+
+          if [ "$FORMAT" = "passed" ] && [ "$TESTS" = "passed" ] && [ "$VULNS" = "clean" ]; then
             echo "### Overall: 🟢 Healthy" >> $GITHUB_STEP_SUMMARY
           else
             echo "### Overall: 🟡 Needs attention" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🔎 SonarCloud" >> $GITHUB_STEP_SUMMARY
           echo "- Dashboard: https://sonarcloud.io/dashboard?id=DFE-Digital_accessing-childcare-entitlement-checker" >> $GITHUB_STEP_SUMMARY
