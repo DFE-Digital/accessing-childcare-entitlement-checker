@@ -32,7 +32,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         {
             Headless = true
         });
-        
+
         var password = Environment.GetEnvironmentVariable("TEST_BASIC_AUTH_PASSWORD");
 
         var contextOptions = new BrowserNewContextOptions
