@@ -115,8 +115,7 @@ jobs:
       environment: staging
     secrets:
       DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
-      
-      
+
   a11y-tests:
     name: A11y Tests
     needs: [ deploy-stage ]
