@@ -20,7 +20,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         var checkboxes = doc.QuerySelectorAll("input[type=checkbox][name=WorkStatus]");
         Assert.Equal(3, checkboxes.Length);
-        
+
         var backLink = doc.QuerySelector(".govuk-back-link") as IHtmlAnchorElement;
         Assert.NotNull(backLink);
         Assert.Contains("/User/PaidWork", backLink.GetAttribute("href") ?? string.Empty);
@@ -30,7 +30,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     public async Task Post_Invalid_Submission_Shows_Validation_Error()
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        
+
         var get = await client.GetAsync("/User/WorkStatus", TestContext.Current.CancellationToken);
         get.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(get.Content);
@@ -49,7 +49,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
         post.EnsureSuccessStatusCode();
 
         var postDoc = await HtmlHelpers.ParseHtmlAsync(post.Content);
-        
+
         var error = postDoc.QuerySelector(".govuk-error-message");
         Assert.NotNull(error);
     }
@@ -58,7 +58,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     public async Task Post_Selection_Navigates_Forward()
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        
+
         var get = await client.GetAsync("/User/WorkStatus", TestContext.Current.CancellationToken);
         get.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(get.Content);
@@ -67,7 +67,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         var request = new HttpRequestMessage(HttpMethod.Post, "/User/WorkStatus");
         if (cookie != null) request.Headers.Add("Cookie", cookie);
-        
+
         var form = new List<KeyValuePair<string, string>>
         {
             new("__RequestVerificationToken", token ?? string.Empty),
@@ -76,7 +76,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         request.Content = new FormUrlEncodedContent(form);
         var post = await client.SendAsync(request, TestContext.Current.CancellationToken);
-        
+
         Assert.Equal(HttpStatusCode.Redirect, post.StatusCode);
         var location = post.Headers.Location?.ToString();
         Assert.NotNull(location);
