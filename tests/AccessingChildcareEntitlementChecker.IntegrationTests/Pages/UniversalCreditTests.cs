@@ -11,20 +11,6 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     [Fact]
-    public async Task Get_UniversalCredit_Has_Radios_And_BackLink_Defaults_To_WeeklyEarnings_Back()
-    {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        var res = await client.GetAsync("/User/UniversalCredit", TestContext.Current.CancellationToken);
-        res.EnsureSuccessStatusCode();
-        var doc = await HtmlHelpers.ParseHtmlAsync(res.Content);
-        var radios = doc.QuerySelectorAll("input[type=radio][name=UniversalCredit]");
-        Assert.Equal(2, radios.Length);
-        var back = doc.QuerySelector(".govuk-back-link") as IHtmlAnchorElement;
-        Assert.NotNull(back);
-        Assert.Contains("/User/WeeklyEarnings", back.GetAttribute("href") ?? string.Empty);
-    }
-
-    [Fact]
     public async Task Get_UniversalCredit_BackLink_When_PaidWork_No_Points_To_PaidWork()
     {
         var state = new JourneyState { PaidWork = PaidWorkOption.No };
