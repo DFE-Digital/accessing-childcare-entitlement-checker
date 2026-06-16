@@ -46,7 +46,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         var fullUrl = $"{ServiceUrl.TrimEnd('/')}/{PageUrl.TrimStart('/')}";
 
         var response = await Page.GotoAsync(fullUrl);
-        
+
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         Assert.Equal((int)expectedStatusCode, response?.Status);
