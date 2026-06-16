@@ -115,17 +115,20 @@ jobs:
       environment: staging
     secrets:
       DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
-#
-#  a11y-tests:
-#    name: A11y Tests
-#    runs-on: ubuntu-latest
-#    needs: [deploy-stage]
-#
-#    steps:
-#      - name: Run a11y tests
-#        run: |
-#          echo "Running a11y tests"
-#
+      
+      
+  a11y-tests:
+    name: A11y Tests
+    needs: [ deploy-stage ]
+    uses: ./.github/workflows/run-a11y-tests.yml
+    with:
+      SUT: ${{ needs.deploy-stage.outputs.deploy_url }}
+      environment: staging
+    secrets:
+      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+
+
+
 #  deploy-prod:
 #    name: Deploy Production
 #    needs:

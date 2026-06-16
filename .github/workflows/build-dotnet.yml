@@ -22,6 +22,7 @@ env:
   WEB_APP: src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj
   UNIT_TESTS: tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
   E2E_TESTS: tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj
+  A11Y_TESTS: tests/AccessingChildcareEntitlementChecker.A11yTests/AccessingChildcareEntitlementChecker.A11yTests.csproj
   CONFIGURATION: Release
 
 jobs:
@@ -52,6 +53,7 @@ jobs:
           echo "TESTS=unknown" >> $GITHUB_ENV
           echo "WEB_APP_PUBLISHED=skipped" >> $GITHUB_ENV
           echo "E2E_PUBLISHED=skipped" >> $GITHUB_ENV
+          echo "A11Y_PUBLISHED=skipped" >> $GITHUB_ENV
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -269,6 +271,21 @@ jobs:
           if [ -d "e2e-tests" ]; then
             echo "E2E_PUBLISHED=created" >> $GITHUB_ENV
           fi
+          
+      - name: Publish A11y Tests
+        if: inputs.publish
+        run: >
+          dotnet publish ${{ env.A11Y_TESTS }}
+          -c ${{ env.CONFIGURATION }}
+          -o a11y-tests
+          --no-build
+          
+      - name: Record A11y publish
+        if: always()
+        run: |
+          if [ -d "a11y-tests" ]; then
+            echo "A11Y_PUBLISHED=created" >> $GITHUB_ENV
+          fi
 
       - name: Upload coverage report
         if: always()
@@ -306,6 +323,17 @@ jobs:
         with:
           name: e2e-tests
           path: e2e-tests.zip
+          
+      - name: Zip A11y Tests
+        if: inputs.publish
+        run: zip -r a11y-tests.zip a11y-tests
+
+      - name: Upload Published A11y Tests
+        if: inputs.publish
+        uses: actions/upload-artifact@v7
+        with:
+          name: a11y-tests
+          path: a11y-tests.zip
 
       - name: Add CI summary
         if: always()
@@ -315,6 +343,7 @@ jobs:
           vulns_icon="📄"
           web_icon="⏭️"
           e2e_icon="⏭️"
+          a11y_icon="⏭️"
           
           # Format
           if [ "$FORMAT" = "passed" ]; then format_icon="✅"
@@ -331,6 +360,7 @@ jobs:
           
           if [ "$WEB_APP_PUBLISHED" = "created" ]; then web_icon="📦"; fi
           if [ "$E2E_PUBLISHED" = "created" ]; then e2e_icon="🧪"; fi
+          if [ "$A11Y_PUBLISHED" = "created" ]; then a11y_icon="♿"; fi
           
           echo "## 🧪 .NET CI Report Card" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -343,6 +373,7 @@ jobs:
           echo "| Vulnerabilities | $vulns_icon | 🔴 $VULNS_CRITICAL 🟠 $VULNS_HIGH 🟡 $VULNS_MEDIUM |" >> $GITHUB_STEP_SUMMARY
           echo "| Web App | $web_icon | $WEB_APP_PUBLISHED |" >> $GITHUB_STEP_SUMMARY
           echo "| E2E Tests | $e2e_icon | $E2E_PUBLISHED |" >> $GITHUB_STEP_SUMMARY
+          echo "| A11y Tests | $a11y_icon | $A11Y_PUBLISHED |" >> $GITHUB_STEP_SUMMARY
   
           echo "" >> $GITHUB_STEP_SUMMARY
           
