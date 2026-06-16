@@ -1,3 +1,4 @@
+using System.Net;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Services;
@@ -54,7 +55,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
             new KeyValuePair<string,string>("HasPartner", "false")
         ]);
         var post = await client.SendAsync(req, TestContext.Current.CancellationToken);
-        Assert.Equal(System.Net.HttpStatusCode.Redirect, post.StatusCode);
+        Assert.Equal(HttpStatusCode.Redirect, post.StatusCode);
         Assert.Contains("/Summary/CheckAnswers", post.Headers.Location?.ToString() ?? string.Empty);
     }
 }

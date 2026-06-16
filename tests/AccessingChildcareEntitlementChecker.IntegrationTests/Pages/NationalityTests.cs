@@ -1,3 +1,4 @@
+using System.Net;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AngleSharp.Html.Dom;
@@ -38,7 +39,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
             new KeyValuePair<string,string>("Nationality", "CitizenOfAnEUCountryEEACountryOrSwitzerland")
         ]);
         var post = await client.SendAsync(req, TestContext.Current.CancellationToken);
-        Assert.Equal(System.Net.HttpStatusCode.Redirect, post.StatusCode);
+        Assert.Equal(HttpStatusCode.Redirect, post.StatusCode);
         Assert.Contains("/User/SettledStatus", post.Headers.Location?.ToString() ?? string.Empty);
     }
 }

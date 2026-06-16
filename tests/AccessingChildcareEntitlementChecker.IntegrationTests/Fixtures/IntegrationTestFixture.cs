@@ -10,7 +10,6 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
 {
     protected override IHost CreateHost(IHostBuilder builder)
     {
-        // Run tests in Development environment for predictable behaviour
         builder.UseEnvironment("Development");
         return base.CreateHost(builder);
     }
@@ -28,7 +27,6 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
         {
             builder.ConfigureServices(services =>
             {
-                // replace IJourneySession with test double and ensure JourneyState resolves to the same instance
                 services.AddScoped<IJourneySession>(_ => new TestJourneySession(state));
                 services.AddScoped(_ => state);
             });

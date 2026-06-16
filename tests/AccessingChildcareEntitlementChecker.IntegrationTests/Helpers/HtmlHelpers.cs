@@ -16,11 +16,9 @@ public static class HtmlHelpers
     {
         if (response.Headers.TryGetValues("Set-Cookie", out var cookies))
         {
-            // find the antiforgery cookie (contains "Antiforgery" or ".AspNetCore.Antiforgery")
             var cookie = cookies.FirstOrDefault(c => c.Contains("Antiforgery") || c.Contains(".AspNetCore.Antiforgery"));
             if (cookie != null)
             {
-                // return only the cookie name=value portion
                 var pair = cookie.Split(';', 2)[0];
                 return pair;
             }
@@ -31,7 +29,6 @@ public static class HtmlHelpers
 
     public static string? ExtractAntiforgeryToken(IDocument document)
     {
-        // standard antiforgery hidden input name is __RequestVerificationToken
         var input = document.QuerySelector("input[name=__RequestVerificationToken]") as AngleSharp.Html.Dom.IHtmlInputElement;
         return input?.GetAttribute("value");
     }

@@ -1,3 +1,4 @@
+using System.Net;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
@@ -66,7 +67,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
             new KeyValuePair<string,string>("UniversalCredit", "Receives")
         ]);
         var post = await client.SendAsync(req, TestContext.Current.CancellationToken);
-        Assert.Equal(System.Net.HttpStatusCode.Redirect, post.StatusCode);
+        Assert.Equal(HttpStatusCode.Redirect, post.StatusCode);
         Assert.Contains("/User/Benefits", post.Headers.Location?.ToString() ?? string.Empty);
     }
 }

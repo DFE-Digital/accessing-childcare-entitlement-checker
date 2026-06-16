@@ -1,3 +1,4 @@
+using System.Net;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
@@ -73,7 +74,7 @@ public class PaidWorkTests(IntegrationTestFixture factory) : IClassFixture<Integ
             new KeyValuePair<string,string>("PaidWork", "OnLeave")
         ]);
         var post = await client.SendAsync(req, TestContext.Current.CancellationToken);
-        Assert.Equal(System.Net.HttpStatusCode.Redirect, post.StatusCode);
+        Assert.Equal(HttpStatusCode.Redirect, post.StatusCode);
         Assert.Contains("/User/TypeOfLeave", post.Headers.Location?.ToString() ?? string.Empty);
     }
 }
