@@ -17,7 +17,7 @@ public static class HtmlHelpers
         if (response.Headers.TryGetValues("Set-Cookie", out var cookies))
         {
             // find the antiforgery cookie (contains "Antiforgery" or ".AspNetCore.Antiforgery")
-            var cookie = cookies.FirstOrDefault(c => c.Contains("Antiforgery") || c.Contains(".AspNetCore.Antiforgery") );
+            var cookie = cookies.FirstOrDefault(c => c.Contains("Antiforgery") || c.Contains(".AspNetCore.Antiforgery"));
             if (cookie != null)
             {
                 // return only the cookie name=value portion
