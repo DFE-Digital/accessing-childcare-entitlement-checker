@@ -32,11 +32,24 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         {
             Headless = true
         });
+        
+        var password = Environment.GetEnvironmentVariable("TEST_BASIC_AUTH_PASSWORD");
 
-        var context = await _browser.NewContextAsync(new()
+        var contextOptions = new BrowserNewContextOptions
         {
             IgnoreHTTPSErrors = true
-        });
+        };
+
+        if (!string.IsNullOrEmpty(password))
+        {
+            contextOptions.HttpCredentials = new HttpCredentials
+            {
+                Username = "a11y",
+                Password = password
+            };
+        }
+
+        var context = await _browser.NewContextAsync(contextOptions);
 
         Page = await context.NewPageAsync();
     }
