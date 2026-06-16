@@ -43,10 +43,26 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
     protected async Task GoToPage(HttpStatusCode expectedStatusCode = HttpStatusCode.OK)
     {
-        var response = await Page.GotoAsync($"{ServiceUrl}{PageUrl}");
+        Console.WriteLine($"TEST_URL = {ServiceUrl}");
+        Console.WriteLine($"PageUrl = {PageUrl}");
+
+        var fullUrl = $"{ServiceUrl}{PageUrl}";
+
+        Console.WriteLine($"Navigating to {fullUrl}");
+
+        var response = await Page.GotoAsync(fullUrl);
+
+        Console.WriteLine($"Status = {response?.Status}");
+        Console.WriteLine($"Response URL = {response?.Url}");
+        Console.WriteLine($"Final URL = {Page.Url}");
+
+
+        //var response = await Page.GotoAsync($"{ServiceUrl}{PageUrl}");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        Assert.Equal((int)expectedStatusCode, response?.Status);
+        Assert.True(
+            response?.Status == (int)expectedStatusCode,
+            $"URL={fullUrl}, Status={response?.Status}, ResponseUrl={response?.Url}, FinalUrl={Page.Url}");
     }
 
     protected async Task EvaluatePage()
