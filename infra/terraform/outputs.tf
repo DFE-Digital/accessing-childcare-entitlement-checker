@@ -7,7 +7,7 @@ output "web_app_name" {
 }
 
 output "frontdoor_hostname" {
-  value = var.custom_domain != "" ? var.custom_domain : azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.host_name
+  value = local.host_name
 }
 
 output "deployment_storage_account_name" {

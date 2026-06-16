@@ -10,6 +10,8 @@ locals {
   prefix         = "${local.project_id}${var.environment_prefix}"
   service_prefix = "${local.prefix}-${local.location_short_code}-${local.project_short_code}"
 
+  host_name = var.custom_domain == "" ? azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.host_name : var.custom_domain
+
   common_tags = {
     "Environment"      = var.elz_environment
     "Service Offering" = local.service_offering
