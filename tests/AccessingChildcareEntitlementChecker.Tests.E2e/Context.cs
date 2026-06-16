@@ -17,7 +17,7 @@ public class Context
 
     public static async Task<Context> CreateAsync(IBrowser browser)
     {
-        var password = Environment.GetEnvironmentVariable("E2E_BASIC_AUTH_PASSWORD");
+        var password = Environment.GetEnvironmentVariable("TEST_BASIC_AUTH_PASSWORD");
 
         var contextOptions = new BrowserNewContextOptions
         {

@@ -30,6 +30,7 @@
     <File Path=".github/workflows/workflow-release.yml" />
     <File Path=".github/workflows/workflow-tf-docs.yml" />
     <File Path=".github/workflows/workflow-zap-scan.yml" />
+    <File Path=".github/workflows/run-a11y-tests.yml" />
   </Folder>
 
   <Folder Name="/docs/">

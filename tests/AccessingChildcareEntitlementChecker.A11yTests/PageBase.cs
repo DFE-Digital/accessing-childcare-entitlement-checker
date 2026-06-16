@@ -33,17 +33,33 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
             Headless = true
         });
 
-        var context = await _browser.NewContextAsync(new()
+        var password = Environment.GetEnvironmentVariable("TEST_BASIC_AUTH_PASSWORD");
+
+        var contextOptions = new BrowserNewContextOptions
         {
             IgnoreHTTPSErrors = true
-        });
+        };
+
+        if (!string.IsNullOrEmpty(password))
+        {
+            contextOptions.HttpCredentials = new HttpCredentials
+            {
+                Username = "a11y",
+                Password = password
+            };
+        }
+
+        var context = await _browser.NewContextAsync(contextOptions);
 
         Page = await context.NewPageAsync();
     }
 
     protected async Task GoToPage(HttpStatusCode expectedStatusCode = HttpStatusCode.OK)
     {
-        var response = await Page.GotoAsync($"{ServiceUrl}{PageUrl}");
+        var fullUrl = $"{ServiceUrl.TrimEnd('/')}/{PageUrl.TrimStart('/')}";
+
+        var response = await Page.GotoAsync(fullUrl);
+
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         Assert.Equal((int)expectedStatusCode, response?.Status);

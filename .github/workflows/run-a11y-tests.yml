@@ -1,4 +1,4 @@
-name: Run E2E Tests
+name: Run A11y Tests
 
 on:
   workflow_call:
@@ -14,7 +14,7 @@ on:
         type: string
         default: ''
       browser:
-        description: 'Browser type to run E2E tests against (chromium, firefox, webkit)'
+        description: 'Browser type to run A11y tests against (chromium, firefox, webkit)'
         required: false
         type: string
         default: 'chromium'
@@ -22,8 +22,8 @@ on:
       DEVELOPMENT_BASIC_AUTH_PASSWORD:
         required: false
 jobs:
-  run-e2e:
-    name: Run E2E Tests
+  run-a11y:
+    name: Run A11y Tests
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.environment }}
@@ -49,13 +49,13 @@ jobs:
           name: web-app
           path: web-app
 
-      - name: Download e2e tests
+      - name: Download a11y tests
         uses: actions/download-artifact@v8
         with:
-          name: e2e-tests
+          name: a11y-tests
 
-      - name: Unzip e2e tests
-        run: unzip e2e-tests.zip
+      - name: Unzip a11y tests
+        run: unzip a11y-tests.zip
 
       - name: Parse metadata
         id: metadata
@@ -68,11 +68,8 @@ jobs:
         with:
           dotnet-version: ${{ steps.metadata.outputs.dotnet_version }}
 
-      - name: Set execution permissions
-        run: chmod +x ./e2e-tests/AccessingChildcareEntitlementChecker.Tests.E2e
-
       - name: Install Playwright Browsers
-        working-directory: e2e-tests
+        working-directory: a11y-tests
         env:
           PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
         run: pwsh playwright.ps1 install --with-deps ${{ inputs.browser }}
@@ -107,7 +104,7 @@ jobs:
           cat app.log
           exit 1
 
-      - name: Run E2E tests
+      - name: Run A11y tests
         id: test
         env:
           TEST_URL: ${{ env.TARGET_URL }}
@@ -115,7 +112,7 @@ jobs:
           TEST_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
           PLAYWRIGHT_BROWSER: ${{ inputs.browser }}
         run: |
-          dotnet test ./e2e-tests/AccessingChildcareEntitlementChecker.Tests.E2e.dll \
+          dotnet test ./a11y-tests/AccessingChildcareEntitlementChecker.A11yTests.dll \
             --logger "trx;LogFileName=test-results.trx" \
             --results-directory ./TestResults
 
@@ -124,16 +121,16 @@ jobs:
         run: |
           kill "$(cat app.pid)" || true
 
-      - name: Publish E2E test results
+      - name: Publish A11y test results
         if: always()
         uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
         with:
-          name: E2E Test Results (${{ inputs.browser }})
+          name: A11y Test Results (${{ inputs.browser }})
           path: TestResults/*.trx
           reporter: dotnet-trx
           fail-on-error: true
 
-      - name: Add E2E summary
+      - name: Add A11y summary
         if: always()
         env:
           TEST_OUTCOME: ${{ steps.test.outcome }}
@@ -143,8 +140,8 @@ jobs:
           if [ "$TEST_OUTCOME" = "success" ]; then test_icon="✅"; fi
           if [ "$TEST_OUTCOME" = "failure" ]; then test_icon="❌"; fi
           
-          echo "## 🧪 E2E Test Report (${{ inputs.browser }})" >> $GITHUB_STEP_SUMMARY
+          echo "## 🧪 A11y Test Report (${{ inputs.browser }})" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Area | Status | Target | Browser |" >> $GITHUB_STEP_SUMMARY
           echo "|------|--------|--------|---------|" >> $GITHUB_STEP_SUMMARY
-          echo "| E2E Tests | $test_icon | $TARGET_URL | ${{ inputs.browser }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| A11y Tests | $test_icon | $TARGET_URL | ${{ inputs.browser }} |" >> $GITHUB_STEP_SUMMARY

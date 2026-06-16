@@ -21,11 +21,10 @@ jobs:
     needs: validate-dotnet
     uses: ./.github/workflows/run-e2e-tests.yml
 
-# TODO: Add a11y test suite
-#  a11y-tests:
-#    name: A11y Tests
-#    needs: validate-dotnet
-#    uses: ./.github/workflows/run-a11y-tests.yml
+  a11y-tests:
+    name: A11y Tests
+    needs: validate-dotnet
+    uses: ./.github/workflows/run-a11y-tests.yml
 
   validate-infra:
     name: Validate Infrastructure
