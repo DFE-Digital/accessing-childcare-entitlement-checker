@@ -1,5 +1,7 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
+using AngleSharp.Html.Dom;
+using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
@@ -8,7 +10,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     [Fact]
     public async Task Get_WorkStatus_Page_Has_Checkboxes_And_BackLink()
     {
-        using var client = factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
         var response = await client.GetAsync("/User/WorkStatus", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
@@ -20,7 +22,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
         Assert.Equal(3, checkboxes.Length);
 
         // assert back link is present and points to PaidWork action
-        var backLink = doc.QuerySelector(".govuk-back-link") as AngleSharp.Html.Dom.IHtmlAnchorElement;
+        var backLink = doc.QuerySelector(".govuk-back-link") as IHtmlAnchorElement;
         Assert.NotNull(backLink);
         Assert.Contains("/User/PaidWork", backLink.GetAttribute("href") ?? string.Empty);
     }
@@ -28,7 +30,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     [Fact]
     public async Task Post_Invalid_Submission_Shows_Validation_Error()
     {
-        using var client = factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
         // GET to obtain antiforgery token and cookie
         var get = await client.GetAsync("/User/WorkStatus", TestContext.Current.CancellationToken);
@@ -59,7 +61,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     [Fact]
     public async Task Post_Selection_Navigates_Forward()
     {
-        using var client = factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
         // obtain antiforgery token and cookie
         var get = await client.GetAsync("/User/WorkStatus", TestContext.Current.CancellationToken);
