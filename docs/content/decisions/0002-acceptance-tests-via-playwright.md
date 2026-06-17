@@ -1,5 +1,5 @@
 ---
-title: Acceptance Tests in tickets will be implemented via Playwright
+title: Acceptance tests in tickets will be implemented via Playwright
 layout: page
 showPagination: true
 order: 2
@@ -9,7 +9,7 @@ eleventyNavigation:
   parent: Decisions
 
 ---
-## Context and Problem Statement
+## Context and problem statement
 
 This ADR assumes the project follows standard testing practices; e.g. [test pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) with unit, integration/component, ui tests, end to end (full user journey) tests and manual tests.
 
@@ -28,7 +28,7 @@ Therefore, we need a repeatable automated mechanism to verify that AC are satisi
 > [!IMPORTANT]
 > This decision concerns **only** how ticket-level acceptance criteria, that span multiple layers of the system (routing, controller, razor, validation, business logic) are verified. It **does not** make any statement on unit testing, integration/component testing, end to end testing, or manual testing.
 
-## Decision Drivers
+## Decision drivers
 
 * Prefer automation early - it's difficult to add retrospectively. Scale back later if the costs exceed the benefits.
 * Level of quality assurance & risk of change.
@@ -62,31 +62,31 @@ The [service manual](https://www.gov.uk/service-manual/technology/designing-for-
 > [!IMPORTANT]
 > This decision concerns **only** how ticket-level acceptance criteria are verified, and there may be additional UI or E2E tests, which may or may not run during CI.
 
-## Considered Options
+## Considered options
 
 Options would lie somewhere in the space described by the following three different dimensions:
 
-### Dimension: test types (how)
+### Dimension: Test types (How)
 
 * manual tests
 * unit tests, component tests, or integration tests
 * Playwright tests - covering only user journeys and not individual AC
 * Playwright tests - covering each individual AC.
 
-### Dimension: granularity of tests (what)
+### Dimension: Granularity of tests (What)
 
 * All tests (including all browser matrix)
 * All tests on one browser
 * Some tests
 
-### Dimension: Frequency of tests (when)
+### Dimension: Frequency of tests (When)
 
 * Every change (push)
 * Every merge to main
 * Every release to UAT/staging environment
 * Every release to production environment
 
-## Decision Outcome
+## Decision outcome
 
 Acceptance criteria will be implemented as Playwright tests via Reqnroll. (Gherkin)
 
@@ -126,9 +126,9 @@ Compliance is via code review; checking that the implementation includes a test 
 
 This is because UI tests are not easily or conventionally gated via coverage metrics.
 
-## Pros and Cons of the Options
+## Pros and cons of the options
 
-### Only Testing Manually
+### Only testing manually
 
 Manual testing would involve having the project available in some environment (probably the dev or UAT/staging environment) and running through each AC.
 
@@ -158,14 +158,14 @@ Unit testing
 * Good, because they can trivially cover the AC
 * Bad, because it's a lot of small tests
 
-### Higher Granularity
+### Higher granularity
 
 * Good, because the more granular tests we run, the better the quality assurance. We also need to cover the granularity of the AC
 * Neutral, because we may be tested some elements that have already been tested. (GDS components)
 * Bad, because the more tests we run, the slower a full test run is
 * Bad, because the more tests we have, the more they need correcting when a change occurs
 
-### Higher Frequency
+### Higher frequency
 
 * Good, because the more often we run tests, the easier it is to see which change caused a regression
 * Good, because running the suite is anticipated to take around 10 minutes.

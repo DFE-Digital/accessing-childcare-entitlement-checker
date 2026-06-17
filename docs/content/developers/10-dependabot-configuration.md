@@ -19,7 +19,7 @@ This repository uses an enhanced Dependabot configuration designed to improve:
 
 The configuration intentionally balances security responsiveness with developer experience by reducing unnecessary pull request noise while still ensuring dependencies remain current.
 
-## Weekly Dependency Updates
+## Weekly dependency updates
 
 All ecosystems are configured to run on a weekly schedule. Weekly updates provide a good balance between:
 
@@ -32,7 +32,7 @@ Daily updates can create excessive operational noise in active repositories, esp
 
 Security advisories and Dependabot security alerts still provide rapid visibility into critical vulnerabilities when required.
 
-## Ecosystems Covered
+## Ecosystems covered
 
 The configuration currently manages updates for:
 
@@ -63,7 +63,7 @@ The strategy intentionally varies by ecosystem:
 
 Security updates remain prioritised independently.
 
-## Blocking Automatic Major Version Updates
+## Blocking automatic major version updates
 
 Major version updates are ignored by default. Major upgrades frequently include:
 
@@ -74,7 +74,7 @@ Major version updates are ignored by default. Major upgrades frequently include:
 
 These upgrades should be handled manually with proper validation rather than automatically merged through routine dependency management.
 
-## Automatic Rebasing
+## Automatic rebasing
 
 Dependabot pull requests automatically rebase against the target branch. This helps:
 
@@ -83,7 +83,7 @@ Dependabot pull requests automatically rebase against the target branch. This he
 - Avoid unnecessary manual intervention
 - Minimise merge conflicts
 
-## Restricting External Code Execution
+## Restricting external code execution
 
 External code execution during dependency resolution is disabled where supported. 
 
@@ -91,7 +91,7 @@ Some package ecosystems allow arbitrary scripts during dependency evaluation.
 
 Disabling this reduces supply chain attack surface during automated dependency processing.
 
-## Grouped Patch Updates
+## Grouped patch updates
 
 Patch updates are grouped into consolidated pull requests. Patch releases are generally:
 
@@ -101,7 +101,7 @@ Patch updates are grouped into consolidated pull requests. Patch releases are ge
 
 Grouping them reduces pull request volume significantly while maintaining update coverage.
 
-## Vendor-Based Minor Grouping
+## Vendor-based minor grouping
 
 Minor updates are grouped by vendor or ecosystem domain. This improves:
 

@@ -1,5 +1,5 @@
 ---
-title: Developer Guides
+title: Developer guides
 layout: sub-navigation
 sectionKey: Developers
 includeInBreadcrumbs: true

@@ -1,5 +1,5 @@
 ---
-title: Use separate RulesEngine models and mapping layer rather than shared contract assembly
+title: Use separate rulesengine models and mapping layer rather than shared contract assembly
 layout: page
 showPagination: true
 order: 8
@@ -8,7 +8,7 @@ includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 ---
-## Context and Problem Statement
+## Context and problem statement
 
 The childcare entitlement checker introduces entitlement evaluation logic that could either live inside the MVC Web project or be separated into a dedicated `RulesEngine` project.
 
@@ -25,19 +25,19 @@ We therefore needed to decide whether to:
 
 The core question is whether sharing types across the boundary would couple the Web and RulesEngine closely enough that the separate project would no longer provide meaningful separation.
 
-## Decision Drivers
+## Decision drivers
 
 * Keep entitlement logic isolated from MVC/presentation concerns.
 * Reference Web enums/types directly from RulesEngine (rejected because it introduced unsupported circular project references between Web and RulesEngine).
 * Maintain a single dependency direction between Web and RulesEngine.
 
-## Considered Options
+## Considered options
 
 * Create a shared assembly containing shared DTOs/enums/contracts.
 * Collapse RulesEngine into the Web project.
 * Keep RulesEngine separate and duplicate/map shared concepts.
 
-## Decision Outcome
+## Decision outcome
 
 Chosen option: "Keep RulesEngine separate and duplicate/map shared concepts".
 

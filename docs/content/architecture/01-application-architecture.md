@@ -1,14 +1,14 @@
 ---
-title: Application Architecture
+title: Application architecture
 layout: sub-navigation
 sectionKey: Architecture
 order: 1
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Architecture
-  key: Application Architecture
+  key: Application architecture
 ---
-## Level 1: System Context
+## Level 1: System context
 The highest level of abstraction, showing how the system interacts with users.
 
 ```mermaid
@@ -21,7 +21,7 @@ C4Context
     Rel(parent, acec, "Checks eligibility using", "HTTPS")
 ```
 
-## Level 2: Container Diagram
+## Level 2: Container diagram
 Shows the high-level technology building blocks.
 
 ```mermaid
@@ -39,7 +39,7 @@ C4Container
     Rel(web_app, rules_engine, "Invokes", "In-process")
 ```
 
-## Level 3: Component Diagram (Rules Engine)
+## Level 3: Component diagram (Rules engine)
 Shows the internal structure of the Rules Engine and how it processes eligibility.
 
 ```mermaid
@@ -61,7 +61,7 @@ C4Component
     Rel(evaluators, schemes, "Implemented by")
 ```
 
-## Project Structure
+## Project structure
 
 The solution is divided into two primary functional projects:
 

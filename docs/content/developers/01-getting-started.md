@@ -1,12 +1,12 @@
 ---
-title: Getting Started
+title: Getting started
 layout: sub-navigation
 sectionKey: Developers
 order: 1
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
-  key: Getting Started
+  key: Getting started
 ---
 This guide provides step-by-step instructions for setting up your local environment, building the solution, running the application, and executing tests.
 
@@ -21,7 +21,7 @@ Before setting up the repository, ensure you have the following installed on you
   - VS Code.
   - JetBrains Rider.
 
-## Local Environment Setup
+## Local environment setup
 
 1. Clone the repository to your workstation.
 2. Restore local .NET tools:
@@ -38,9 +38,9 @@ Before setting up the repository, ensure you have the following installed on you
    pwsh .\tests\AccessingChildcareEntitlementChecker.Tests.E2e\bin\Debug\net10.0\playwright.ps1 install
    ```
 
-## Building and Running the Application
+## Building and running the application
 
-### Build the Solution
+### Build the solution
 
 From the repository root, build the solution using:
 
@@ -50,7 +50,7 @@ dotnet build
 
 *Note: The project uses `Directory.Build.props` configured with `<UseArtifactsOutput />`, meaning all build artifacts are placed under `/artifacts` rather than in-project `bin` directories.*
 
-### Run the Web Application
+### Run the web application
 
 To launch the web application locally:
 
@@ -60,11 +60,11 @@ dotnet run --project src/AccessingChildcareEntitlementChecker.Web
 
 Once started, the application will be accessible via the local development URL shown in your console output (e.g., `https://localhost:xxxx` or `http://localhost:xxxx`).
 
-## Verifying Setup (Running Tests)
+## Verifying setup (Running tests)
 
 Testing is split into Unit/Component tests and End-to-End (E2E) tests.
 
-### Unit & Component Tests
+### Unit & component tests
 
 These tests run in-memory and do not require the web application to be running. They check dependency injection, basic routing, and core logic.
 
@@ -74,7 +74,7 @@ To execute them:
 dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests
 ```
 
-### End-to-End (E2E) Tests
+### End-to-end (E2E) tests
 
 E2E tests use Playwright to simulate user interactions against a running application instance.
 
@@ -86,9 +86,9 @@ dotnet test tests/AccessingChildcareEntitlementChecker.Tests.E2e --no-build
 
 By default, the browser will run in headless mode when running in CI, but may open on your desktop locally.
 
-## Common Tasks
+## Common tasks
 
-### Formatting and Linting
+### Formatting and linting
 
 We enforce code formatting rules across the codebase. You can use the built-in dotnet formatter to lint and automatically fix format issues:
 
@@ -98,7 +98,7 @@ dotnet format
 
 This formatting is validated during the CI process on pull requests.
 
-## Next Steps
+## Next steps
 
 To learn more about how we work, check out the following guides:
 
