@@ -20,5 +20,6 @@ public class ChildNameViewModel
 
     [Display(Name = "What name should we use for this child?", Description = "You can use any name you want. For example, 'Baby Smith'.")]
     [Required(ErrorMessage = "Enter a name for your child")]
+    [StringLength(60, ErrorMessage = "Name must be 60 characters or fewer")]
     public string? ChildName { get; set; }
 }
