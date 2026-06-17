@@ -93,6 +93,15 @@ The Rules Engine follows strict, explicit naming conventions to align with its u
 2. Logical Fact Models: Always suffixed with `Facts` (e.g., `HouseholdFacts`, `ChildFacts`) to distinguish them from transport DTOs or entity models.
 3. Data Transport Objects: Always suffixed with `Dto` (e.g., `ChildDto`, `SchemeResultDto`) to clearly denote network or boundary model boundaries.
 
+## Evaluator Principles
+
+When writing or extending evaluators, it is critical to adhere to the following design principles:
+* Evaluators must be independent. Each evaluator must operate in isolation and must not rely on the execution or results of other evaluators.
+* Evaluators must not call other evaluators. Let the orchestration engine handle execution of individual schemes.
+* Evaluators must not mutate the context. The `DerivedContext` and `ChildFacts` objects must be treated as read-only.
+* Evaluators should be deterministic. Given the same context, they must always return the exact same result.
+* Evaluators should only consume Facts. Do not evaluate or read raw request DTOs directly within an evaluator; rely on the semantic facts prepared in the context.
+
 ## Step-by-Step Guide: Adding a New Childcare Scheme
 
 Follow these steps to introduce a new childcare entitlement scheme to the Rules Engine.
