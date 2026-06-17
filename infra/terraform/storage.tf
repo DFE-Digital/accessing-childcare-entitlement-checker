@@ -126,3 +126,17 @@ resource "azurerm_storage_management_policy" "deployment_policy" {
     }
   }
 }
+
+resource "azurerm_role_assignment" "sp_blob_data_owner" {
+  scope                = azurerm_storage_account.deployment_storage.id
+  role_definition_name = "Storage Blob Data Owner"
+  principal_id         = data.azurerm_client_config.client.object_id
+  principal_type       = "ServicePrincipal"
+}
+
+resource "azurerm_role_assignment" "web_app_blob_data_owner" {
+  scope                = azurerm_storage_account.deployment_storage.id
+  role_definition_name = "Storage Blob Data Reader"
+  principal_id         = azurerm_user_assigned_identity.app_identity.principal_id
+  principal_type       = "ServicePrincipal"
+}
