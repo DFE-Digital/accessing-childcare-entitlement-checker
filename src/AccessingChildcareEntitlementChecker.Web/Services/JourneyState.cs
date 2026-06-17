@@ -3,6 +3,7 @@ using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Services;
 
@@ -61,9 +62,9 @@ public class JourneyState
 
     public ChildcareVoucherReceiptOption? PartnerChildcareVoucherReceipt { get; set; }
 
-    public Child? GetChild(string childId)
+    public bool TryGetChild(string childId, [NotNullWhen(true)] out Child? child)
     {
-        return Children.TryGetValue(childId, out var child) ? child : null;
+        return Children.TryGetValue(childId, out child);
     }
 
     public void Apply(LocationViewModel model)
@@ -83,8 +84,7 @@ public class JourneyState
             model.ChildId = Guid.NewGuid().ToString();
         }
 
-        var child = GetChild(model.ChildId);
-        if (child == null)
+        if (!TryGetChild(model.ChildId, out var child))
         {
             child = new Child(model.ChildId, model.ChildName);
             Children.Add(model.ChildId, child);
@@ -96,7 +96,10 @@ public class JourneyState
 
     public void Apply(ChildIsBornViewModel model)
     {
-        var child = Children[model.ChildId];
+        if (!TryGetChild(model.ChildId, out var child))
+        {
+            throw new InvalidOperationException("Child not found");
+        }
         child.BirthStatus = model.ChildIsBorn;
     }
 

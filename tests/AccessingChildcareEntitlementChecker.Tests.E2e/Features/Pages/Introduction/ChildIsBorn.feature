@@ -24,7 +24,8 @@ Scenario: Radio button selection
 Scenario: Continue without selection
 	When I do not select a radio button
 	And I click on Continue
-	Then an error summary box should appear at the top of the page
+	Then the page header is "Has this child been born yet?"
+	And an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Select if this child has been born"
 
 Scenario: Continue with yes

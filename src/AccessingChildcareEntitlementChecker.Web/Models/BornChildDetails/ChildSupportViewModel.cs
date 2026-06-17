@@ -36,7 +36,11 @@ public class ChildSupportViewModel : IValidatableObject
         var localizer = localizerFactory!.Create(typeof(ChildSupportViewModel));
         if (ChildSupportOptions.Count == 0)
         {
-            var child = journeyState!.GetChild(ChildId) ?? throw new InvalidOperationException($"No child found with ID {ChildId}");
+            if (!journeyState!.TryGetChild(ChildId, out var child))
+            {
+                throw new InvalidOperationException($"No child found with ID {ChildId}");
+            }
+
             yield return new ValidationResult(localizer["Select any support {0} gets, or select 'No, none of these apply'", child.Name], [nameof(ChildSupportOptions)]);
         }
 

@@ -39,7 +39,7 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildBirthDate_Get_PopulatesModel_FromState()
     {
-        var child = _journeyState.GetChild(childId)!;
+        Assert.True(_journeyState.TryGetChild(childId, out var child));
         child.BirthDate = new DateOnly(2020, 1, 15);
         var result = Assert.IsType<ViewResult>(_controller.ChildBirthDate(childId));
         Assert.Equal(new DateOnly(2020, 1, 15), result.Model<ChildBirthDateViewModel>().ChildBirthDate);
@@ -59,7 +59,8 @@ public class BornChildDetailsControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId)!.BirthDate);
+        Assert.True(_journeyState.TryGetChild(childId, out var child));
+        Assert.Equal(new DateOnly(2020, 1, 15), child.BirthDate);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildRelationship), redirect.ActionName);
         Assert.Equal("BornChildDetails", redirect.ControllerName);
@@ -79,7 +80,8 @@ public class BornChildDetailsControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(new DateOnly(2020, 1, 15), _journeyState.GetChild(model.ChildId)!.BirthDate);
+        Assert.True(_journeyState.TryGetChild(model.ChildId, out var child));
+        Assert.Equal(new DateOnly(2020, 1, 15), child.BirthDate);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
         Assert.Equal("Summary", redirect.ControllerName);
@@ -122,7 +124,7 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildRelationship_Get_PopulatesModel_FromState()
     {
-        var child = _journeyState.GetChild(childId)!;
+        Assert.True(_journeyState.TryGetChild(childId, out var child));
         child.BornRelationship = Relationship.Parent;
         var result = Assert.IsType<ViewResult>(_controller.ChildRelationship(childId));
 
@@ -143,7 +145,8 @@ public class BornChildDetailsControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(Relationship.Parent, _journeyState.GetChild(model.ChildId)!.BornRelationship);
+        Assert.True(_journeyState.TryGetChild(childId, out var child));
+        Assert.Equal(Relationship.Parent, child.BornRelationship);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildSupport), redirect.ActionName);
         Assert.Equal("BornChildDetails", redirect.ControllerName);
@@ -164,6 +167,8 @@ public class BornChildDetailsControllerTests
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_controller.ModelState.IsValid);
+        Assert.True(_journeyState.TryGetChild(childId, out var child));
+        Assert.Equal(Relationship.Parent, child.BornRelationship);
         Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
         Assert.Equal("Summary", redirect.ControllerName);
     }
@@ -205,7 +210,7 @@ public class BornChildDetailsControllerTests
     [Fact]
     public void ChildSupport_Get_PopulatesModel_FromState()
     {
-        var child = _journeyState.GetChild(childId)!;
+        Assert.True(_journeyState.TryGetChild(childId, out var child));
         child.ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment];
         var result = Assert.IsType<ViewResult>(_controller.ChildSupport(childId));
 
@@ -229,7 +234,8 @@ public class BornChildDetailsControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.Equal(new[] { ChildSupport.ArmedForcesIndependencePayment }, _journeyState.GetChild(model.ChildId)!.ChildSupportOptions);
+        Assert.True(_journeyState.TryGetChild(childId, out var child));
+        Assert.Equal(new[] { ChildSupport.ArmedForcesIndependencePayment }, child.ChildSupportOptions);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
         Assert.Equal("Summary", redirect.ControllerName);

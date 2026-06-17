@@ -22,8 +22,7 @@ public class BornChildDetailsController : Controller
     [HttpGet]
     public IActionResult ChildBirthDate(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.TryGetChild(childId, out var child))
         {
             return NotFound();
         }
@@ -34,8 +33,14 @@ public class BornChildDetailsController : Controller
     [HttpPost]
     public IActionResult ChildBirthDate(ChildBirthDateViewModel model)
     {
+        if (!_journeyState.TryGetChild(model.ChildId, out var child))
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
+            model.ChildName = child.Name;
             return View(model);
         }
 
@@ -54,8 +59,7 @@ public class BornChildDetailsController : Controller
     [HttpGet]
     public IActionResult ChildRelationship(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.TryGetChild(childId, out var child))
         {
             return NotFound();
         }
@@ -66,8 +70,14 @@ public class BornChildDetailsController : Controller
     [HttpPost]
     public IActionResult ChildRelationship(ChildRelationshipViewModel model)
     {
+        if (!_journeyState.TryGetChild(model.ChildId, out var child))
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
+            model.ChildName = child.Name;
             return View(model);
         }
 
@@ -86,8 +96,7 @@ public class BornChildDetailsController : Controller
     [HttpGet]
     public IActionResult ChildSupport(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.TryGetChild(childId, out var child))
         {
             return NotFound();
         }
@@ -98,8 +107,14 @@ public class BornChildDetailsController : Controller
     [HttpPost]
     public IActionResult ChildSupport(ChildSupportViewModel model)
     {
+        if (!_journeyState.TryGetChild(model.ChildId, out var child))
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
+            model.ChildName = child.Name;
             return View(model);
         }
 

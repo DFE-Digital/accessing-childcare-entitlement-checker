@@ -11,7 +11,8 @@ Scenario: Page load
 
 Scenario: Continue with no name
 	When I click on Continue
-	Then an error summary box should appear at the top of the page
+	Then the page header is "Add details about your children"
+	And an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Enter a name for your child"
 
 Scenario: Continue with name

@@ -47,7 +47,7 @@ public class ChildRelationshipViewModelTests
     [Fact]
     public void Validate_ReturnsErrorWithChildNameWhenNoRelationshipSelected()
     {
-        var child = _journeyState.GetChild("child-a")!;
+        Assert.True(_journeyState.TryGetChild("child-a", out var child));
         var model = new ChildRelationshipViewModel(child);
         var validationContext = new ValidationContext(model);
         validationContext.InitializeServiceProvider(_serviceProviderFunc);
@@ -61,7 +61,7 @@ public class ChildRelationshipViewModelTests
     [Fact]
     public void Validate_ReturnsNoErrorsWhenRelationshipSelected()
     {
-        var child = _journeyState.GetChild("child-a")!;
+        Assert.True(_journeyState.TryGetChild("child-a", out var child));
         var model = new ChildRelationshipViewModel(child)
         {
             Relationship = Relationship.Parent

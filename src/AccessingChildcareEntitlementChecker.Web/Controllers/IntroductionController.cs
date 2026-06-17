@@ -25,8 +25,7 @@ public class IntroductionController : Controller
             return View(childNameViewModel);
         }
 
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.TryGetChild(childId, out var child))
         {
             return NotFound();
         }
@@ -53,8 +52,7 @@ public class IntroductionController : Controller
     [HttpGet]
     public IActionResult IsChildBorn(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.TryGetChild(childId, out var child))
         {
             return NotFound();
         }
