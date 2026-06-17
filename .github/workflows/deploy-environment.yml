@@ -177,7 +177,7 @@ jobs:
           --account-key "$SA_KEY" \
           --container-name "$CONTAINER" \
           --name "$BLOB" \
-          --file "$DEPLOY_ZIP_PATH"
+          --file "$DEPLOY_ZIP_PATH" \
           --overwrite
         
         az storage blob update \
