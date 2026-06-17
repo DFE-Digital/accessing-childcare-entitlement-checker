@@ -64,8 +64,8 @@ public static class WebApplicationExtensions
         app.MapControllerRoute(name: "benefits-childcare-support-partner", pattern: "benefits/childcare-support-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerChildcareSupport) });
         app.MapControllerRoute(name: "leave-type-of-leave-partner", pattern: "leave/type-of-leave-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerTypeOfLeave) });
         app.MapControllerRoute(name: "benefits-childcare-vouchers-partner", pattern: "benefits/childcare-vouchers-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerChildcareVoucherReceipt) });
-        
-        app.MapControllerRoute(name: "check-your-answers", pattern: "check-your-answers", defaults: new { controller = Summary, action = nameof(SummaryController.CheckAnswers) });        
+
+        app.MapControllerRoute(name: "check-your-answers", pattern: "check-your-answers", defaults: new { controller = Summary, action = nameof(SummaryController.CheckAnswers) });
 
         app.MapControllerRoute(name: "results", pattern: "results", defaults: new { controller = Results, action = nameof(ResultsController.Results) });
 
