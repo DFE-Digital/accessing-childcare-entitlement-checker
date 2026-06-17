@@ -13,7 +13,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
-        var response = await client.GetAsync("/User/WorkStatus", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/work-status/work-status", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -23,7 +23,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         var backLink = doc.QuerySelector(".govuk-back-link") as IHtmlAnchorElement;
         Assert.NotNull(backLink);
-        Assert.Contains("/User/PaidWork", backLink.GetAttribute("href") ?? string.Empty);
+        Assert.Contains("/work-status/work", backLink.GetAttribute("href") ?? string.Empty);
     }
 
     [Fact]
@@ -31,13 +31,13 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
-        var get = await client.GetAsync("/User/WorkStatus", TestContext.Current.CancellationToken);
+        var get = await client.GetAsync("/work-status/work-status", TestContext.Current.CancellationToken);
         get.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(get.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(doc);
         var cookie = HtmlHelpers.ExtractAntiforgeryCookie(get);
 
-        var request = new HttpRequestMessage(HttpMethod.Post, "/User/WorkStatus");
+        var request = new HttpRequestMessage(HttpMethod.Post, "/work-status/work-status");
         if (cookie != null) request.Headers.Add("Cookie", cookie);
         var form = new List<KeyValuePair<string, string>>
         {
@@ -59,13 +59,13 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
-        var get = await client.GetAsync("/User/WorkStatus", TestContext.Current.CancellationToken);
+        var get = await client.GetAsync("/work-status/work-status", TestContext.Current.CancellationToken);
         get.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(get.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(doc);
         var cookie = HtmlHelpers.ExtractAntiforgeryCookie(get);
 
-        var request = new HttpRequestMessage(HttpMethod.Post, "/User/WorkStatus");
+        var request = new HttpRequestMessage(HttpMethod.Post, "/work-status/work-status");
         if (cookie != null) request.Headers.Add("Cookie", cookie);
 
         var form = new List<KeyValuePair<string, string>>
@@ -80,6 +80,6 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
         Assert.Equal(HttpStatusCode.Redirect, post.StatusCode);
         var location = post.Headers.Location?.ToString();
         Assert.NotNull(location);
-        Assert.Contains("/User/SelfEmployedDuration", location);
+        Assert.Contains("/work-status/self-employed", location);
     }
 }
