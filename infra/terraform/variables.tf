@@ -79,3 +79,9 @@ variable "webapp_always_on" {
   type        = bool
   default     = false
 }
+
+variable "enable_web_test" {
+  description = "Enable application insights web test"
+  type        = bool
+  default     = false
+}

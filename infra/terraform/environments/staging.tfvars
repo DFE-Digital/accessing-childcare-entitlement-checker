@@ -11,3 +11,4 @@ webapp_instance_count       = 1
 webapp_enable_staging_slot  = true
 webapp_enable_public_access = true
 webapp_always_on            = false
+enable_web_test             = false
