@@ -3,6 +3,10 @@
 @inject IViewLocalizer Localizer
 @model ChildIsBornViewModel
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.ChildIsBorn);
+}
+
 @section BeforeContent {
     @if (Model.ReturnTo is not null)
     {

@@ -6,6 +6,10 @@
 @model UniversalCreditViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.UniversalCredit);
+}
+
 @section BeforeContent {
     @if (JourneyState.PaidWork == PaidWorkOption.No)
     {

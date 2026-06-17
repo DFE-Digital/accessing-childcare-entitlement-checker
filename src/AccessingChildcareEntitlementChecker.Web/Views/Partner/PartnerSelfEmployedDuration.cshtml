@@ -6,6 +6,10 @@
 @model PartnerSelfEmployedDurationViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.PartnerSelfEmployedDuration);
+}
+
 @section BeforeContent {
     <govuk-back-link asp-controller="Partner" asp-action="PartnerWorkStatus">
         @Shared["Button_Back"]

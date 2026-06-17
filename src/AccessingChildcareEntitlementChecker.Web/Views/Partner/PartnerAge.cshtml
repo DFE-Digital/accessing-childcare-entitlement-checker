@@ -3,6 +3,10 @@
 @inject IViewLocalizer Localizer
 @model PartnerAgeViewModel
 
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
 @section BeforeContent {
     <govuk-back-link asp-controller="User" asp-action="HasPartner">
         @Shared["Button_Back"]

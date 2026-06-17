@@ -5,6 +5,10 @@
 @model HasPartnerViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
 @section BeforeContent {
     @if (JourneyState.ChildcareSupport.Contains(ChildcareSupportOption.ChildcareVouchers))
     {

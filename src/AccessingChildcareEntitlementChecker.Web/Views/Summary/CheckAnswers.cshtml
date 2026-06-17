@@ -6,6 +6,10 @@
 @model CheckAnswersViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
+@{
+    ViewData["Title"] = Localizer["Check your answers"];
+}
+
 @section BeforeContent {
     @if (!JourneyState.HasPartner!.Value)
     {

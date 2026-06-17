@@ -4,6 +4,10 @@
 @inject IViewLocalizer Localizer
 @model ExpectedChildRelationshipViewModel
 
+@{
+    ViewData["Title"] = Localizer["What will your relationship be to this child?"];
+}
+
 @section BeforeContent {
     @if (Model.ReturnTo is not null)
     {

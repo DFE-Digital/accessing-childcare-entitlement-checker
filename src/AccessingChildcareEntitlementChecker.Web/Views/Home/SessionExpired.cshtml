@@ -1,6 +1,10 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
 <h1 class="govuk-heading-l">@Localizer["Title"]</h1>
 
 <p class="govuk-body">

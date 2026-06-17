@@ -5,6 +5,10 @@
 @inject IViewLocalizer Localizer
 @model CheckChildDetailsViewModel
 
+@{
+    ViewData["Title"] = Localizer["Check your children's details"];
+}
+
 @section BeforeContent {
     @if (Model.LastEditedChild != null)
     {

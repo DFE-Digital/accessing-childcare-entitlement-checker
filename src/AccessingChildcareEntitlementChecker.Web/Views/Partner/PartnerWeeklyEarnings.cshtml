@@ -6,6 +6,10 @@
 @model PartnerWeeklyEarningsViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.PartnerWeeklyEarnings);
+}
+
 @section BeforeContent {
     @if (JourneyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
     {

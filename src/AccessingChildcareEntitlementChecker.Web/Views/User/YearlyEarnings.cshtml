@@ -6,6 +6,10 @@
 @model YearlyEarningsViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.YearlyEarnings);
+}
+
 @section BeforeContent {
     <govuk-back-link asp-controller="User" asp-action="WeeklyEarnings">
         @Shared["Button_Back"]
