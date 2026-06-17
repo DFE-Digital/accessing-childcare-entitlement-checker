@@ -132,7 +132,7 @@ resource "azurerm_linux_web_app_slot" "staging" {
 resource "azurerm_private_dns_zone" "web_dns_zone" {
   name                = "privatelink.azurewebsites.net"
   resource_group_name = azurerm_resource_group.web-rg.name
-  tags                = local.common_tags
+  tags                = merge(local.common_tags, { "Service Offering" = null })
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "web_dns_link" {
@@ -140,7 +140,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "web_dns_link" {
   resource_group_name   = azurerm_resource_group.web-rg.name
   private_dns_zone_name = azurerm_private_dns_zone.web_dns_zone.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
-  tags                  = local.common_tags
+  tags                  = merge(local.common_tags, { "Service Offering" = null })
 }
 
 resource "azurerm_private_endpoint" "web_pe" {

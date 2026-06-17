@@ -64,7 +64,7 @@ resource "azurerm_monitor_diagnostic_setting" "blob_logs" {
 resource "azurerm_private_dns_zone" "blob_dns_zone" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = azurerm_resource_group.web-rg.name
-  tags                = local.common_tags
+  tags                = merge(local.common_tags, { "Service Offering" = null })
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "blob_dns_link" {
@@ -72,7 +72,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "blob_dns_link" {
   resource_group_name   = azurerm_resource_group.web-rg.name
   private_dns_zone_name = azurerm_private_dns_zone.blob_dns_zone.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
-  tags                  = local.common_tags
+  tags                  = merge(local.common_tags, { "Service Offering" = null })
 }
 
 resource "azurerm_private_endpoint" "deployment_pe" {
