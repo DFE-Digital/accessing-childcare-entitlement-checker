@@ -83,7 +83,7 @@ Rather than executing complex business logic directly on the transport-layer obj
 The `DerivedContextBuilder` acts as a Data Mapper / Static Factory that encapsulates the logic for translating raw DTO inputs into business-centric Facts. 
 
 * State Model: It exposes a single static mapping method: `DerivedContextBuilder.Build(request, today)`.
-* Data Enrichment: Beyond simple property copying, the builder enriches the data. For instance, it calculates the child’s decimal age in years and months relative to `today` via `AgeCalculations`, and checks access to public funds based on nationality and visa status.
+* Data Enrichment: Beyond simple property copying, the builder enriches the data. For instance, checks access to public funds based on nationality and visa status.
 
 ## Technical Naming Conventions
 
