@@ -163,31 +163,29 @@ jobs:
         chmod +x scripts/manage-storage-access.sh
         ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "true"
 
-    - name: Upload Deployment Package
+    - name: Upload Deployment package + tag
       env:
         ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
         RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
         CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
       run: |
         SA_KEY=$(az storage account keys list --resource-group "$RG_NAME" --account-name "$ACC_NAME" --query "[0].value" -o tsv)
+        BLOB="package-${{ github.sha }}.zip"
+        
         az storage blob upload \
           --account-name "$ACC_NAME" \
           --account-key "$SA_KEY" \
           --container-name "$CONTAINER" \
-          --name "package-${{ github.sha }}.zip" \
-          --file "$DEPLOY_ZIP_PATH" \
+          --name "$BLOB" \
+          --file "$DEPLOY_ZIP_PATH"
           --overwrite
-
-    - name: Lock Deployment Storage
-      if: ${{ always() }}
-      working-directory: ./infra
-      env:
-        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
-        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
-      shell: bash
-      run: |
-        chmod +x scripts/manage-storage-access.sh
-        ./scripts/manage-storage-access.sh  "$ACC_NAME" "$RG_NAME" "false"
+        
+        az storage blob update \
+          --account-name "$ACC_NAME" \
+          --account-key "$SA_KEY" \
+          --container-name "$CONTAINER" \
+          --name "$BLOB" \
+          --tags "retain=true sha=${{ github.sha }}"
 
     - name: Deploy package to Web App
       env:
@@ -218,6 +216,45 @@ jobs:
           --name "$APP_NAME" \
           --slot staging \
           --target-slot production
+
+    - name: Demote old retained blobs except current
+      env:
+        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
+        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
+        CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
+      run: |
+        SA_KEY=$(az storage account keys list --resource-group "$RG_NAME" --account-name "$ACC_NAME" --query "[0].value" -o tsv)
+        CURRENT_SHA="${{ github.sha }}"
+        
+        az storage blob list \
+          --account-name "$ACC_NAME" \
+          --account-key "$SA_KEY" \
+          --container-name "$CONTAINER" \
+          --query "[?tags.retain=='true'].[name, tags.sha]" \
+          -o tsv | while read -r blob sha; do
+        
+            if [ "$sha" != "$CURRENT_SHA" ]; then
+              echo "Demoting $blob (sha=$sha)"
+        
+              az storage blob update \
+                --account-name "$ACC_NAME" \
+                --account-key "$SA_KEY" \
+                --container-name "$CONTAINER" \
+                --name "$blob" \
+                --tags "retain=false sha=$sha"
+            fi
+        done
+
+    - name: Lock Deployment Storage
+      if: ${{ always() }}
+      working-directory: ./infra
+      env:
+        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
+        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
+      shell: bash
+      run: |
+        chmod +x scripts/manage-storage-access.sh
+        ./scripts/manage-storage-access.sh  "$ACC_NAME" "$RG_NAME" "false"
 
     - name: Publish deployment summary
       env:
