@@ -1,12 +1,12 @@
 ---
-title: Conditional Deployments Guide
+title: Conditional deployments guide
 layout: sub-navigation
 sectionKey: Developers
 order: 7
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
-  key: Conditional Deployments
+  key: Conditional deployments
 ---
 This guide details the conditional aspects of the project's Terraform configuration, outlining how various environments (Development, Staging, and Production) are customized and scaled through feature flags and configuration variables.
 
@@ -22,7 +22,7 @@ There are four primary conditional aspects in our Terraform configurations:
 4. [Non-Production Basic Authentication](#non-production-basic-authentication)
 
 
-## Azure Front Door Custom Domains
+## Azure Front Door custom domains
 
 * Variables: `custom_domain` (string, default: `""`)
 * Trigger: Active when `custom_domain` is set to any non-empty string.
@@ -37,7 +37,7 @@ When a custom domain is specified:
 
 If `custom_domain` is left blank, the Front Door custom domain resources are completely skipped, and the application is accessed only via the default Front Door endpoint (`*.azurefd.net`).
 
-## Azure Front Door Premium Features
+## Azure Front Door premium features
 
 * Variables: `azure_frontdoor_sku` (string, default: `"Standard"`), `fd_use_private_link` (boolean, default: `false`), `waf_enable_managed_rules` (boolean, default: `false`)
 * Trigger: Private Link is active when `fd_use_private_link` is set to `true`. Managed WAF rules are active when `waf_enable_managed_rules` is set to `true`. Both features require `azure_frontdoor_sku` to be set to `"Premium"`.
@@ -53,7 +53,7 @@ While the Premium SKU is specified via `azure_frontdoor_sku = "Premium"`, the in
 
 These rulesets and networking capabilities are only compatible with the Premium Front Door SKU and must be omitted in Standard deployments (where `azure_frontdoor_sku` is `"Standard"`) to avoid Azure deployment failures.
 
-## Staging Deployment Slots
+## Staging deployment slots
 
 * Variables: `webapp_enable_staging_slot` (boolean, default: `false`), `webapp_sku` (string)
 * Trigger: Active when `webapp_enable_staging_slot` is set to `true`.
@@ -75,7 +75,7 @@ To support zero-downtime releases and pre-production verification, we support de
   ```
   This guarantees that the App Service plan SKU is compatible with slot allocation (e.g., Standard or Premium levels like `P0V3`, `P1V3`). Deployments using cheaper SKUs (such as `B1` or shared tiers) will fail gracefully during the Terraform plan phase.
 
-## Non-Production Basic Authentication
+## Non-production basic authentication
 
 * Variables: `aspnetcore_environment` (string), `development_basic_auth_password` (sensitive string, default: `""`)
 * Trigger: Active when `aspnetcore_environment != "Production"`.

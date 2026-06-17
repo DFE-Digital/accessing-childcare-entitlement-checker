@@ -8,32 +8,32 @@ includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Decisions
 ---
-## Context and Problem Statement
+## Context and problem statement
 
 Technical documentation is currently stored as Markdown files in the `/docs` directory. While these are readable in GitHub, we want to provide a more accessible, branded, and searchable documentation site for stakeholders and developers, published via GitHub Pages.
 
-## Decision Drivers
+## Decision drivers
 
 * **Branding**: Must follow GOV.UK/DfE styling for public-facing or stakeholder documentation.
 * **Maintainability**: Low friction for developers to add or update documentation.
 * **Discovery**: Must support navigation and search.
 * **Consistency**: Align with other DfE Digital projects.
 
-## Considered Options
+## Considered options
 
-### Option 1: Keep as Markdown in the repository (Do nothing)
+### Option 1: Keep as markdown in the repository (Do nothing)
 * **Pros**: No additional tools or build steps; zero cost.
 * **Cons**: No branding; poor navigation for non-technical users; no search functionality beyond GitHub's own search.
 
-### Option 2: MkDocs with a custom theme
+### Option 2: Mkdocs with a custom theme
 * **Pros**: Very popular for technical docs; fast; easy to set up.
 * **Cons**: No mature, officially supported GOV.UK theme exists for MkDocs; requires Python environment.
 
-### Option 3: Eleventy (11ty) with the [GOV.UK Eleventy Plugin](https://x-govuk.github.io/govuk-eleventy-plugin/)
+### Option 3: Eleventy (11ty) with the [GOV.UK Eleventy plugin](https://x-govuk.github.io/govuk-eleventy-plugin/)
 * **Pros**: Provides a comprehensive GOV.UK branded documentation site out of the box; widely used within DfE Digital; flexible and extensible; high-quality navigation and search.
 * **Cons**: Requires a Node.js environment for the build process.
 
-## Decision Outcome
+## Decision outcome
 
 Chosen option: **Option 3: Eleventy (11ty) with the GOV.UK Eleventy Plugin**.
 

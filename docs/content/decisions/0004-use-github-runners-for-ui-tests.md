@@ -9,26 +9,26 @@ eleventyNavigation:
   parent: Decisions
 
 ---
-## Context and Problem Statement
+## Context and problem statement
 
 We'd like to run UI tests on PR pushes. But we don't need the expense or complexity of full ephemeral environments in Azure.
 
 This ADR does *not* preclude also running tests against an Azure deployment for other kinds of changes. For example; we'll almost certainly run tests against a deployment to Azure whenever we merge to `main`)
 
-## Decision Drivers
+## Decision drivers
 
 * Run tests as close to the change as possible.
 * Prefer lower cost or free solutions - GitHub action usage is free for public repos.
 * Prefer less complex solutions.
 * Our application can be tested without external systems like databases etc.
 
-## Considered Options
+## Considered options
 
 * Not running UI tests on PR pushes.
 * Deploying to Azure for every PR push.
 * Running the tests directly on the runner.
 
-## Decision Outcome
+## Decision outcome
 
 Chosen option: "Running the tests directly on the runner" - because it's relatively simple; and cheap to do, and lets us run tests in CI.
 

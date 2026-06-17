@@ -1,12 +1,12 @@
 ---
-title: Decision Process
+title: Decision process
 layout: sub-navigation
 sectionKey: Developers
 order: 5
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
-  key: Decision Process
+  key: Decision process
 ---
 The decision-making process follows the flow shown below:
 
@@ -55,11 +55,11 @@ flowchart BT
 
 The "standards" hard constraint includes typical implementations with the wider DfE landscape, as well as GDS compliance, for example, the use of Azure is not a standard, but a hard constraint as the preferred cloud platform for the department.
 
-## Recording Decisions
+## Recording decisions
 
 Significant decisions that impact the architecture, technology stack, or development patterns of the service are recorded as Architectural Decision Records (ADRs). We use the [Markdown Architectural Decision Records (MADR)](https://adr.github.io/madr/) format to ensure these records are consistent, readable, and version-controlled alongside our code.
 
-### When to Create an decision record
+### When to create an decision record
 
 You should consider creating a decision record when a decision:
 
@@ -67,7 +67,7 @@ You should consider creating a decision record when a decision:
 - Is not immediately obvious from the code or infrastructure configuration.
 - Is likely to be revisited or questioned by current or future team members.
 
-### Process for New Decisions
+### Process for new decisions
 
 1. Identify the Need: Recognise when a decision fits the criteria above.
 2. Draft the record: Use the sequential naming convention (e.g., `NNNN-short-title.md`) and follow the MADR template.

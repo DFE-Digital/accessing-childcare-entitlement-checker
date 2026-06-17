@@ -1,14 +1,14 @@
 ---
-title: ZAP Scanning Report
+title: ZAP scanning report
 layout: sub-navigation
 sectionKey: Testing
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Testing
-  key: Scanning Report
+  key: Scanning report
 order: 99
 ---
-## Summary of Alerts
+## Summary of alerts
 
 | Risk Level | Number of Alerts |
 | --- | --- |
@@ -59,11 +59,11 @@ order: 99
 
 
 
-## Alert Detail
+## Alert detail
 
 
 
-### [ Private IP Disclosure ](https://www.zaproxy.org/docs/alerts/2/)
+### [ Private IP disclosure ](https://www.zaproxy.org/docs/alerts/2/)
 
 
 
@@ -95,14 +95,14 @@ Remove the private IP address from the HTTP response body. For comments, use JSP
 * [ https://datatracker.ietf.org/doc/html/rfc1918 ](https://datatracker.ietf.org/doc/html/rfc1918)
 
 
-#### CWE Id: [ 497 ](https://cwe.mitre.org/data/definitions/497.html)
+#### CWE ID: [ 497 ](https://cwe.mitre.org/data/definitions/497.html)
 
 
-#### WASC Id: 13
+#### WASC ID: 13
 
 #### Source ID: 3
 
-### [ Timestamp Disclosure - Unix ](https://www.zaproxy.org/docs/alerts/10096/)
+### [ Timestamp disclosure - unix ](https://www.zaproxy.org/docs/alerts/10096/)
 
 
 
@@ -133,14 +133,14 @@ Manually confirm that the timestamp data is not sensitive, and that the data can
 * [ https://cwe.mitre.org/data/definitions/200.html ](https://cwe.mitre.org/data/definitions/200.html)
 
 
-#### CWE Id: [ 497 ](https://cwe.mitre.org/data/definitions/497.html)
+#### CWE ID: [ 497 ](https://cwe.mitre.org/data/definitions/497.html)
 
 
-#### WASC Id: 13
+#### WASC ID: 13
 
 #### Source ID: 3
 
-### [ Modern Web Application ](https://www.zaproxy.org/docs/alerts/10109/)
+### [ Modern web application ](https://www.zaproxy.org/docs/alerts/10109/)
 
 
 
@@ -200,7 +200,7 @@ This is an informational alert and so no changes are required.
 
 #### Source ID: 3
 
-### [ Re-examine Cache-control Directives ](https://www.zaproxy.org/docs/alerts/10015/)
+### [ Re-examine cache-control directives ](https://www.zaproxy.org/docs/alerts/10015/)
 
 
 
@@ -261,14 +261,14 @@ For secure content, ensure the cache-control HTTP header is set with "no-cache, 
 * [ https://grayduck.mn/2021/09/13/cache-control-recommendations/ ](https://grayduck.mn/2021/09/13/cache-control-recommendations/)
 
 
-#### CWE Id: [ 525 ](https://cwe.mitre.org/data/definitions/525.html)
+#### CWE ID: [ 525 ](https://cwe.mitre.org/data/definitions/525.html)
 
 
-#### WASC Id: 13
+#### WASC ID: 13
 
 #### Source ID: 3
 
-### [ Session Management Response Identified ](https://www.zaproxy.org/docs/alerts/10112/)
+### [ Session management response identified ](https://www.zaproxy.org/docs/alerts/10112/)
 
 
 
@@ -309,7 +309,7 @@ This is an informational alert rather than a vulnerability and so there is nothi
 
 #### Source ID: 3
 
-### [ User Agent Fuzzer ](https://www.zaproxy.org/docs/alerts/10104/)
+### [ User agent fuzzer ](https://www.zaproxy.org/docs/alerts/10104/)
 
 
 

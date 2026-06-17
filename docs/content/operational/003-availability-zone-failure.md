@@ -25,7 +25,7 @@ The loss of one or more App Service instances or storage replica paths, temporar
 - Front Door Health Probes: Azure Front Door continuously probes backend App Service instances.
 - Platform Alerts: Service health notifications in the Azure Portal.
 
-## Response & Recovery
+## Response & recovery
 
 No manual intervention is required. Azure Front Door's backend load-balancing will automatically detect unhealthy probe responses from the affected zone and stop routing traffic to those instances within seconds.
 

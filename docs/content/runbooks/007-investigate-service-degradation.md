@@ -10,16 +10,16 @@ eleventyNavigation:
 ---
 This runbook describes the investigation steps to follow when the service is experiencing high latency, excessive 5xx errors, or general degradation.
 
-## Step 1: Inspect High-Level Metrics
+## Step 1: Inspect high-level metrics
 Log into the Azure Portal and navigate to the target Application Insights instance. Inspect the following charts over the degradation timeframe:
 - Server Response Time: Is latency spiking across all endpoints or specific routes?
 - Server Requests: Are request volumes significantly higher than normal (indicating potential load issues or scrapers)?
 - Failed Requests: Is there a corresponding spike in exceptions or 500-level codes?
 
-## Step 2: Query Logs in Log Analytics
+## Step 2: Query logs in log analytics
 Navigate to the Log Analytics Workspace connected to the environment and run these core queries to locate the root cause.
 
-### Query A: Retrieve Top Server Exceptions
+### Query a: Retrieve top server exceptions
 Identify what exceptions are crashing threads or causing errors:
 ```kusto
 AppExceptions
@@ -28,7 +28,7 @@ AppExceptions
 | take 10
 ```
 
-### Query B: Trace Slow HTTP Requests
+### Query b: Trace slow http requests
 Determine which URLs are taking the longest to resolve:
 ```kusto
 AppRequests
@@ -38,7 +38,7 @@ AppRequests
 | take 20
 ```
 
-### Query C: App Service System Console Logs
+### Query c: App Service system console logs
 Check for system-level errors or boot failures from the Linux host:
 ```kusto
 AppServiceConsoleLogs
@@ -48,16 +48,16 @@ AppServiceConsoleLogs
 | take 50
 ```
 
-## Step 3: Identify Potential Causes
+## Step 3: Identify potential causes
 
-### Scenario A: Spiking Logic Exceptions in the Rules Engine
+### Scenario a: Spiking logic exceptions in the rules engine
 If logs point to exceptions within `AccessingChildcareEntitlementChecker.RulesEngine.Services`, a bug has slipped past the CI gates (e.g. unexpected date format input or null references in household facts).
 - Resolution: Isolate the inputs causing the crash and execute Runbook: Deploy an emergency fix.
 
-### Scenario B: Resource Starvation (CPU/Memory exhaustion)
+### Scenario b: Resource starvation (Cpu/memory exhaustion)
 If the App Service Plan is pinned at >90% CPU or Memory utilization:
 - Resolution: Go to the App Service Plan in the Azure Portal and scale up the instance size or scale out the instance count (e.g., from 2 instances to 4 instances) to mitigate load temporarily.
 
-### Scenario C: Front Door Handshake Failures
+### Scenario c: Front Door handshake failures
 If App Insights shows no active traffic but users receive 502/503 errors at the edge, there may be an IP restriction mismatch or SSL failure.
 - Resolution: Verify Front Door origin configs and confirm the App Service's IP restrictions are properly accepting `AzureFrontDoor.Backend`.

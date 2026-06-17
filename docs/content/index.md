@@ -11,7 +11,7 @@ Welcome to the technical documentation for the Accessing Childcare Entitlement C
 
 This service helps parents and carers in England understand which childcare support schemes they may be entitled to, based on their personal and household circumstances.
 
-## Documentation Approach
+## Documentation approach
 
 This project follows a Documentation as Code approach. Our documentation is:
 
@@ -19,11 +19,11 @@ This project follows a Documentation as Code approach. Our documentation is:
 - Peer-reviewed: Changes to documentation are submitted via Pull Requests and reviewed by the team.
 - Automated: The documentation is automatically built and deployed to GitHub Pages as part of our CI/CD pipeline.
 
-## Getting Started
+## Getting started
 
 If you are new to the project, please start with the [Getting Started](/developers/01-getting-started/) guide for instructions on setting up your local development environment.
 
-## Documentation Sections
+## Documentation sections
 
 - [Developers](/developers/) - Best-practice local onboarding, branching strategies, and our fully automated release pipeline .
 - [Architecture](/architecture/) - High-level system architecture, networking topologies, and STRIDE / Anti-Persona threat modelling .

@@ -24,7 +24,7 @@ Browsers show a red warning page ("Your connection is not private"), preventing 
 - Automated edge SSL monitoring alerts.
 - Sudden drops in traffic coupled with 5xx/handshake failure logs.
 
-## Response & Recovery
+## Response & recovery
 
 If a managed certificate fails to auto-renew (usually due to DNS validation record removal):
 1. Verify the CNAME/TXT validation records on the custom domain DNS match the required values.

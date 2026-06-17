@@ -1,11 +1,11 @@
 ---
-title: Cross-Browser Testing Strategy and Test Plan
+title: Cross-browser testing strategy and test plan
 layout: sub-navigation
 sectionKey: Testing
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Testing
-  key: Cross-Browser Test Plan
+  key: Cross-browser test plan
 order: 3
 ---
 This document defines the strategy for introducing cross-browser testing into the existing Playwright E2E automation framework.
@@ -14,14 +14,14 @@ The goal is to increase confidence that critical user journeys function correctl
 
 ## Objectives
 
-### Primary Objectives
+### Primary objectives
 
 - Validate application functionality across supported browser engines.
 - Detect browser-specific regressions before production deployment.
 - Maintain rapid feedback for pull request validation.
 - Minimise infrastructure and maintenance overhead.
 
-### Success Criteria
+### Success criteria
 
 - Critical user journeys execute successfully across all supported browsers.
 - Browser-specific defects are identified during CI execution.
@@ -30,7 +30,7 @@ The goal is to increase confidence that critical user journeys function correctl
 
 ## Scope
 
-### In Scope
+### In scope
 
 Browsers:
 
@@ -40,7 +40,7 @@ Browsers:
 | Firefox  | Gecko                             |
 | Safari   | WebKit (Safari-equivalent engine) |
 
-### Out of Scope
+### Out of scope
 
 - Legacy Internet Explorer support
 - Browser versions outside Playwright-supported releases
@@ -48,7 +48,7 @@ Browsers:
 - Native mobile applications
 - Visual regression testing (covered separately)
 
-## Browser Support Matrix
+## Browser support matrix
 
 | Browser  | Execution Frequency            | Purpose              |
 |----------|--------------------------------|----------------------|
@@ -58,7 +58,7 @@ Browsers:
 
 ## Architecture
 
-### Browser Selection
+### Browser selection
 
 Browser selection shall be configuration-driven. Supported values:
 
@@ -74,7 +74,7 @@ Configuration source:
 2. Test Run Parameter
 3. CI Pipeline Variable
 
-### Browser Factory Pattern
+### Browser factory pattern
 
 A single browser factory shall be responsible for browser instantiation.
 
@@ -85,13 +85,13 @@ Benefits:
 - Easier maintenance
 - Consistent browser launch options
 
-## CI/CD Execution Plan
+## CI/CD execution plan
 
-### Pipeline Matrix Strategy
+### Pipeline matrix strategy
 
 The CI platform shall execute tests using a browser matrix. All jobs execute the same test suite.
 
-### Parallel Execution
+### Parallel execution
 
 Browser jobs shall run in parallel where CI resources permit.
 
@@ -101,7 +101,7 @@ Expected benefits:
 - Independent browser reporting
 - Faster fault isolation
 
-## Exit Criteria
+## Exit criteria
 
 Cross-browser implementation will be considered complete when:
 
@@ -110,7 +110,7 @@ Cross-browser implementation will be considered complete when:
 - Test reporting identifies browser execution context.
 - Team members can execute tests locally against any supported browser.
 
-## Risks and Mitigations
+## Risks and mitigations
 
 | Risk                           | Impact | Mitigation                           |
 |--------------------------------|--------|--------------------------------------|
