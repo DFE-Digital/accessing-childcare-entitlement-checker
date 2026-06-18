@@ -1,16 +1,16 @@
 ---
-title: Technical Review Checklist
+title: Technical review checklist
 layout: sub-navigation
 sectionKey: Architecture
 order: 8
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Architecture
-  key: Technical Review Checklist
+  key: Technical review checklist
 ---
 This checklist tracks the project's compliance with government technical review standards, encompassing governance, build and deployment, infrastructure and data architecture, software engineering, security, and monitoring.
 
-## Project Governance
+## Project governance
 
 | Requirement / Standard                                              | Status | Reference / Action                                                                                                                                                                                               |
 |:--------------------------------------------------------------------|:------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -32,7 +32,7 @@ This checklist tracks the project's compliance with government technical review 
 | Fully documented release process and path-to-live                   |   ✅    | [Release Process](/developers/08-release-process/)                                                                                                                                                               |
 | Operational Runbooks are fully documented and tested                |   ✅    | [Runbooks Index](/runbooks/)                                                                                                                                                                                     |
 
-## Build and Deployment
+## Build and deployment
 
 | Requirement / Standard                                        | Status | Reference / Action                                                                                                                    |
 |:--------------------------------------------------------------|:------:|:--------------------------------------------------------------------------------------------------------------------------------------|
@@ -51,7 +51,7 @@ This checklist tracks the project's compliance with government technical review 
 | DORA metrics recorded to monitor development lifecycle        |   ⏳    | Not currently tracked                                                                                                                 |
 
 
-## Infrastructure Architecture
+## Infrastructure architecture
 
 | Requirement / Standard                                        | Status | Reference / Action                                                                                                                                                                |
 |:--------------------------------------------------------------|:------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -61,7 +61,7 @@ This checklist tracks the project's compliance with government technical review 
 | Infrastructure naming strategy in place and documented        |   ✅    | [infra/terraform/locals.tf](../../../infra/terraform/locals.tf)                                                                                                                      |
 | Policy as Code to prevent unauthorized service provisioning   |   ✅    | [Test Strategy](/testing/01-test-strategy/#infrastructure-testing) and see build infrastructure workflow                                                                             |
 
-## Software Architecture/Engineering
+## Software architecture/engineering
 
 | Requirement / Standard                                       | Status | Reference / Action                                                                                                                                                                                                                        |
 |:-------------------------------------------------------------|:------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -87,7 +87,7 @@ This checklist tracks the project's compliance with government technical review 
 | Threat model created, up-to-date, and documented            |   ✅    | [Security Architecture - Threat Modelling (STRIDE)](/architecture/06-security-architecture/#stride-assessment--mitigations)                                                                         |
 | Anti-personas and attack vectors actively documented        |   ✅    | [Security Architecture - Anti-personas](/architecture/06-security-architecture/#anti-personas) and [Security Architecture - Attack Vectors](/architecture/06-security-architecture/#attack-vectors) |
 
-## Monitoring and Alerting
+## Monitoring and alerting
 
 | Requirement / Standard                                   | Status | Reference / Action                                                                                                       |
 |:---------------------------------------------------------|:------:|:-------------------------------------------------------------------------------------------------------------------------|

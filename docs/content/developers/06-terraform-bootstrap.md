@@ -1,12 +1,12 @@
 ---
-title: Terraform State Bootstrapping Guide
+title: Terraform state bootstrapping guide
 layout: sub-navigation
 sectionKey: Developers
 order: 6
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
-  key: Terraform Bootstrapping
+  key: Terraform bootstrapping
 ---
 To manage infrastructure declaratively with Terraform, a remote backend is required to securely store state files (`.tfstate`) and coordinate state locking. However, this introduces a classic Day 0 "chicken-and-egg" problem:
 
@@ -17,7 +17,7 @@ To solve this, this project implements a fully automated, declarative bootstrapp
 
 This guide explains how the bootstrapping architecture works, how it is secured, how it is integrated into CI/CD, and how you can interact with it if necessary.
 
-## Architecture Overview
+## Architecture overview
 
 We use Azure Bicep for provisioning the bootstrap infrastructure. The bootstrap phase runs before any Terraform execution. It is scoped at the Azure Subscription level, allowing Bicep to dynamically create or manage the target resource group and populate it with the state backend resources.
 
@@ -46,7 +46,7 @@ sequenceDiagram
     Note over storage: Returned to hardened <br/>resting state
 ```
 
-### Components Created
+### Components created
 
 The bootstrap resources are defined in `infra/bicep/` and consist of:
 

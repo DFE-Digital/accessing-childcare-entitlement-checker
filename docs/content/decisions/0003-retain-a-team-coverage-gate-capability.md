@@ -9,7 +9,7 @@ eleventyNavigation:
   parent: Decisions
 
 ---
-## Context and Problem Statement
+## Context and problem statement
 
 We've added SonarQube to the repo to check code quality.
 
@@ -17,21 +17,21 @@ However test/code coverage percentages are set centrally via SonarCloud. We don'
 
 Note: This ADR does not intend to fix a particular standard; only make sure we retain the capability to set our own.
 
-## Decision Drivers
+## Decision drivers
 
 * We might want to exceed the standard set centrally (if any) via SonarCloud
 * We want to be able to gate our PRs with our own standard.
 
-## Considered Options
+## Considered options
 
 * Adhere only to org-wide standard
 * Discuss changing the org-wide standard with the rest of the org
 
-## Decision Outcome
+## Decision outcome
 
 We chose to retain our ability to set a team coverage standard; provided it exceeds the org wide standard.
 
-## Pros and Cons of the Options
+## Pros and cons of the options
 
 ### Adhere only to org-wide standard
 

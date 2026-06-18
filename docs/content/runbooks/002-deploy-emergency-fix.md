@@ -10,13 +10,13 @@ eleventyNavigation:
 ---
 This runbook covers the procedure for developing, testing, and deploying an emergency hotfix to resolve critical bugs or security vulnerabilities.
 
-## Step 1: Isolate the Issue & Branch
+## Step 1: Isolate the issue & branch
 1. Create a hotfix branch locally from the current stable tag or release branch (e.g., `release/vX.Y`), rather than the unreleased `main` branch.
    ```bash
    git checkout -b hotfix/critical-issue-fix release/v1.1
    ```
 
-## Step 2: Implement and Validate Locally
+## Step 2: Implement and validate locally
 1. Implement the required code correction within the C# projects.
 2. Build the solution and run all local unit tests to ensure that the rules engine has not regressed:
    ```bash
@@ -28,13 +28,13 @@ This runbook covers the procedure for developing, testing, and deploying an emer
    dotnet test tests/AccessingChildcareEntitlementChecker.Tests.E2e
    ```
 
-## Step 3: Trigger the Pull Request and Automated CI Gates
+## Step 3: Trigger the pull request and automated CI gates
 1. Push your branch to GitHub and open a Pull Request (PR) targeted at the current active release branch.
 2. The pull request will trigger the automated validation pipeline (`workflow-pr.yml`).
 3. Ensure all checks—including .NET compilation, NuGet package safety, unit tests, and E2E browser tests—pass successfully.
 4. Have at least one team member peer-review and approve the code changes.
 
-## Step 4: Execute the Deploy
+## Step 4: Execute the deploy
 1. Merge the PR. This action will trigger the `Deploy Environment` workflow to:
    - Run Terraform to apply any minor configuration patches.
    - Zip the newly compiled `.NET 10` artifact.
@@ -42,6 +42,6 @@ This runbook covers the procedure for developing, testing, and deploying an emer
 2. Verify the deployment on the target environment (e.g. `Staging`).
 3. Once staging is approved, trigger the Production run.
 
-## Step 5: Post-Deploy Verification
+## Step 5: Post-deploy verification
 1. Access the production URL and check that the `/health` endpoint is green.
 2. Perform a sanity test on the live user journey to verify the fix is active and correct.

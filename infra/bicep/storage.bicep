@@ -7,6 +7,7 @@ param storageAccountSku string = 'Standard_ZRS'
 param workspaceName string
 param subnetId string
 param privateDnsZoneId string
+param workflowPrincipalId string
 
 resource law 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: workspaceName
@@ -133,5 +134,15 @@ resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneG
         }
       }
     ]
+  }
+}
+
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(sa.id, workflowPrincipalId, 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+  scope: sa
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+    principalId: workflowPrincipalId
+    principalType: 'ServicePrincipal'
   }
 }

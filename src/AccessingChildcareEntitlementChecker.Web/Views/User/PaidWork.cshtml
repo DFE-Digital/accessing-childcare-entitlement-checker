@@ -6,6 +6,10 @@
 @model PaidWorkViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.PaidWork);
+}
+
 @section BeforeContent {
     @switch (JourneyState.Nationality)
     {

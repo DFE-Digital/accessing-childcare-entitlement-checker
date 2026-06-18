@@ -1,16 +1,16 @@
 ---
-title: Test Strategy
+title: Test strategy
 layout: sub-navigation
 sectionKey: Testing
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Testing
-  key: Test Strategy
+  key: Test strategy
 order: 1
 ---
 This document outlines the testing strategy for the Accessing Childcare Entitlement Checker. It defines the types of testing performed, the tools used, and the lifecycle of testing within our CI/CD pipelines.
 
-## Testing Principles
+## Testing principles
 
 Our strategy is guided by the following principles (as defined in [Constraints and Principles](/architecture/02-constraints-principles)):
 
@@ -19,7 +19,7 @@ Our strategy is guided by the following principles (as defined in [Constraints a
 * IT Health Checked - Regular security assessments and health checks.
 * Automation First - We automate acceptance criteria early to ensure repeatable quality and prevent regressions.
 
-## The Testing Pyramid (Layered Strategy)
+## The testing pyramid (Layered strategy)
 
 The testing strategy is organised into discrete layers. Each layer builds upon the one below it, increasing in integration and complexity while decreasing in total volume and execution speed.
 
@@ -35,39 +35,39 @@ The testing strategy is organised into discrete layers. Each layer builds upon t
 | Unit Testing            | `[#############]`  |
 | Infrastructure & IaC    | `[#############]`  |
 
-## Testing Types
+## Testing types
 
-### Unit Testing & Mutation Testing
+### Unit testing & mutation testing
 * Purpose: Validates individual components in isolation and measures test effectiveness.
 * Tools: [xUnit](https://xunit.net/), [NSubstitute](https://nsubstitute.github.io/), [Stryker.NET](https://stryker-mutator.io/).
 * Execution: Unit tests run on every push to a Pull Request. Stryker runs periodically/manually to validate suite depth (not yet integrated into every PR).
 
-### Component/Integration Testing
+### Component/integration testing
 * Purpose: Verifies the interaction between multiple layers (Routing, Controllers, Razor views, Validation) without requiring a full browser.
 * Tools: xUnit, `Microsoft.AspNetCore.Mvc.Testing`.
 * Execution: Runs on every push to a Pull Request.
 
-### End-to-End (E2E) & Accessibility (A11y) Testing
+### End-to-end (E2E) & accessibility (A11y) testing
 * Purpose: Verifies individual Acceptance Criteria (AC) and full user journeys, while ensuring WCAG 2.2 AA compliance.
 * Tools: [Reqnroll](https://reqnroll.net/), [Playwright](https://playwright.dev/), [axe-core](https://github.com/dequelabs/axe-core).
 * Execution: Runs on every push to a Pull Request. Currently runs against Chromium; additional browsers and automated accessibility scans are being integrated into the pipeline.
 
-### Security Testing (DAST & IaC)
+### Security testing (DAST & IaC)
 * Purpose: Identifies vulnerabilities in the running application and misconfigurations in infrastructure code.
 * Tools: [OWASP ZAP](https://www.zaproxy.org/), [Checkov](https://www.checkov.io/).
 * Execution: ZAP runs weekly against the Test environment. Checkov runs on every PR affecting Terraform files.
 
-### Performance & Load Testing
+### Performance & load testing
 * Priority: High.
 * Tools: [Azure Load Testing](https://learn.microsoft.com/en-us/azure/load-testing/).
 * Goal: Ensure the application meets Non-Functional Requirements (NFRs) for response times and concurrent user handling under production-like conditions.
 
-### Infrastructure Testing
+### Infrastructure testing
 * Purpose: Validates Terraform configurations for security best practices and compliance.
 * Tools: Checkov.
 * Execution: Integrated into the workflows and PR checks.
 
-## Summary of Tooling
+## Summary of tooling
 
 | Type          | Tool                  | Framework                 |
 |:--------------|:----------------------|:--------------------------|
@@ -81,7 +81,7 @@ The testing strategy is organised into discrete layers. Each layer builds upon t
 | IaC Security  | Checkov               | Terraform Static Analysis |
 | Coverage      | Coverlet / SonarQube  | CI Pipeline               |
 
-## Test Environments
+## Test environments
 
 | Environment | Purpose                         | Testing Performed                     |
 |:------------|:--------------------------------|:--------------------------------------|

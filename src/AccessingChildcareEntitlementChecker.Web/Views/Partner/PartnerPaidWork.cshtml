@@ -6,6 +6,10 @@
 @model PartnerPaidWorkViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.PartnerPaidWork);
+}
+
 @section BeforeContent {
     @if (JourneyState.PartnerNationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
     {

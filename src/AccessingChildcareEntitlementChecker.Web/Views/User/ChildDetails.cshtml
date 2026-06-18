@@ -2,4 +2,8 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
 <h1>@Localizer["Title"]</h1>

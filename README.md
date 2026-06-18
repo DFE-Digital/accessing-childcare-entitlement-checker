@@ -3,7 +3,7 @@
 A digital service developed by the Department for Education (DfE) to help parents and carers in England check their eligibility and entitlement for various childcare support schemes (e.g., 15/30 hours free childcare, Tax-Free Childcare).
 
 
-## Workflow Status
+## Workflow status
 
 | Workflow                    | Status                                                                                                                                                                                                                                                                               |
 |:----------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -13,7 +13,7 @@ A digital service developed by the Department for Education (DfE) to help parent
 | Nightly Cross-Browser Tests | [![Nightly Cross-Browser Tests](https://github.com/DFE-Digital/accessing-childcare-entitlement-checker/actions/workflows/workflow-cross-browser.yml/badge.svg)](https://github.com/DFE-Digital/accessing-childcare-entitlement-checker/actions/workflows/workflow-cross-browser.yml) |
 | OWASP ZAP Full Scan         | [![OWASP ZAP Full Scan](https://github.com/DFE-Digital/accessing-childcare-entitlement-checker/actions/workflows/workflow-zap-scan.yml/badge.svg)](https://github.com/DFE-Digital/accessing-childcare-entitlement-checker/actions/workflows/workflow-zap-scan.yml)                   |
 
-## Technical Documentation Website
+## Technical documentation website
 
 Our comprehensive, [technical documentation](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/) is automatically published and hosted on GitHub Pages.
 

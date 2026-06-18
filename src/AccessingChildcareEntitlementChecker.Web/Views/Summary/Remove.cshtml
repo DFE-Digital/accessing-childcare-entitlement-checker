@@ -4,6 +4,10 @@
 @inject IViewLocalizer Localizer
 @model RemoveChildViewModel
 
+@{
+    ViewData["Title"] = Localizer["Are you sure you want to remove {0}?", Model.Name];
+}
+
 @section BeforeContent {
     <govuk-back-link asp-controller="Summary" asp-action="@(Model.ReturnTo == ReturnTo.CheckAnswers ? "CheckAnswers" : "CheckChildDetails")">
         @Shared["Button_Back"]

@@ -6,6 +6,10 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 @model BenefitsViewModel
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.Benefits);
+}
+
 @section BeforeContent {
     @if (JourneyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold)
     {

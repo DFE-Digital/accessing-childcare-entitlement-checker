@@ -1,11 +1,11 @@
 ---
-title: Workflow Naming Conventions
+title: Workflow naming conventions
 layout: sub-navigation
 sectionKey: Developers
 order: 9
 includeInBreadcrumbs: true
 eleventyNavigation:
-  key: Workflow Naming
+  key: Workflow naming
   parent: Developers
 ---
 This project follows a strict naming convention for GitHub Actions workflows to ensure clarity, consistency, and efficient reuse of logic.
@@ -17,11 +17,11 @@ This project follows a strict naming convention for GitHub Actions workflows to 
 | Main          | `workflow-*.yml` | Events (Push, PR) | Orchestration  |
 | Reusable      | `<verb>-*.yml`   | `workflow_call`   | Implementation |
 
-## Workflow Categories
+## Workflow categories
 
 Workflows are divided into two primary categories based on their purpose and how they are triggered.
 
-### Main Workflows (`workflow-*`)
+### Main workflows (`Workflow-*`)
 
 Main workflows are the top-level orchestrators. They are triggered by GitHub events and typically coordinate multiple reusable workflows to form a complete pipeline.
 
@@ -33,7 +33,7 @@ Main workflows are the top-level orchestrators. They are triggered by GitHub eve
     - `workflow-pr.yml`: Orchestrates validation checks for pull requests.
     - `workflow-zap-scan.yml`: Orchestrates security scanning.
 
-### Reusable Workflows (`<verb>-*`)
+### Reusable workflows (`<Verb>-*`)
 
 Reusable workflows encapsulate specific, repeatable tasks. They are designed to be called by Main workflows or other reusable workflows.
 

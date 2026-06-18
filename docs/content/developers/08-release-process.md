@@ -1,16 +1,16 @@
 ---
-title: Release Process
+title: Release process
 layout: sub-navigation
 sectionKey: Developers
 order: 8
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
-  key: Release Process
+  key: Release process
 ---
 This document describes the operational release process for the Accessing Childcare Entitlement Checker. It acts as the operational and governance counterpart to the [Branching Strategy](../03-branching-strategy) workflow, ensuring that changes are safely promoted and validated.
 
-## Overall Release Steps
+## Overall release steps
 
 The release process is broken down into five distinct phases, moving code from integration to live operation.
 
@@ -59,7 +59,7 @@ sequenceDiagram
     eng->>eng: Update Jira milestones & archive release notes
 ```
 
-### Phase 1: Planning and Preparation
+### Phase 1: Planning and preparation
 
 1. Identify the Scope: Review the merged pull requests on the `main` branch since the last release. Group features and bug fixes into a logical release version.
 2. Version Assignment: Determine the next major/minor version number using Semantic Versioning (e.g., `vX.Y`).
@@ -73,7 +73,7 @@ sequenceDiagram
      git push -u origin releases/vX.Y
      ```
 
-### Phase 2: Staging and Automated Validation
+### Phase 2: Staging and automated validation
 
 1. Trigger Staging Deployment & Automated Versioning: Pushing to the `releases/vX.Y` branch triggers the GitHub Release Pipeline.
    - Automated Tagging & Versioning: The pipeline immediately runs the `version` job which validates the branch name, checks the existing Git tags to calculate the next patch version (e.g., `vX.Y.0` or `vX.Y.1`), and automatically creates and pushes the Git tag to the repository. *Do not manually create or push version tags; the pipeline fully automates this step.*
@@ -83,7 +83,7 @@ sequenceDiagram
    - Automated accessibility checks are executed against Staging to ensure compliance with digital standards.
    - Verify that the automated pipeline completes successfully with zero critical or high-severity failures.
 
-### Phase 3: Manual Testing and Approvals
+### Phase 3: Manual testing and approvals
 
 While automated tests provide safety, manual validation ensures the service meets user and operational requirements:
 
@@ -92,7 +92,7 @@ While automated tests provide safety, manual validation ensures the service meet
 3. Security Check: Check that any weekly OWASP ZAP security scan reports have been reviewed, and that no new high/medium alerts are unresolved.
 4. Sign-Off Acquisition: Collect and log formal approvals from key roles (see [Approvals](#approvals) below).
 
-### Phase 4: Production Deployment
+### Phase 4: Production deployment
 
 1. Schedule the Release Window: Ensure the deployment is scheduled during an approved operational window (preferably low-traffic periods) and does not clash with critical policy change dates.
 2. Deploy to Production:
@@ -100,7 +100,7 @@ While automated tests provide safety, manual validation ensures the service meet
    - Monitor the deployment progress, logs, and system metrics closely during the rollout.
 3. Smoke Testing: Once the deployment completes, the delivery and engineering team must perform a quick, non-destructive smoke test of the live service to confirm core functionality (such as loading the landing page and verifying basic site elements).
 
-### Phase 5: Post-Release and Cleanup
+### Phase 5: Post-release and cleanup
 
 1. Verify Release Tag: Double-check that the automated release tag was correctly generated and pushed by the pipeline, and verify the GitHub Release description is populated correctly.
 2. Reconciliation (Cherry-Pick / Merge Back):
@@ -110,7 +110,7 @@ While automated tests provide safety, manual validation ensures the service meet
 
 To ensure safety and quality, a release must pass three gates before it can be deployed to the live production environment. Each role is responsible for a specific aspect of system health.
 
-### 1. Technical Sign-Off
+### 1. Technical sign-off
 * Owner: Lead Engineer / Technical Lead
 * Verification Scope:
   - All automated unit, component, and E2E checks passed.
@@ -118,7 +118,7 @@ To ensure safety and quality, a release must pass three gates before it can be d
   - Architectural patterns have been followed and documented where necessary.
   - Active security scans (OWASP ZAP) show no high-risk vulnerabilities.
 
-### 2. Product Sign-Off
+### 2. Product sign-off
 * Owner: Product Owner / Product Manager
 * Verification Scope:
   - Features meet user expectations and functional specifications.
@@ -126,7 +126,7 @@ To ensure safety and quality, a release must pass three gates before it can be d
   - User Acceptance Testing (UAT) is complete and signed off by business stakeholders.
   - Release-specific content, guidance text, or legal references are accurate.
 
-### 3. Operations & Delivery Sign-Off
+### 3. Operations & delivery sign-off
 * Owner: Delivery Manager / Service Owner
 * Verification Scope:
   - The deployment is scheduled for an approved window.
@@ -134,7 +134,7 @@ To ensure safety and quality, a release must pass three gates before it can be d
   - Runbooks and operational documentation are up-to-date.
   - Support/helpdesk teams have been informed of upcoming user-facing changes.
 
-### Sign-Off Matrix
+### Sign-off matrix
 
 | Role             | Gate                      | Prerequisite for                    |
 |:-----------------|:--------------------------|:------------------------------------|
@@ -142,7 +142,7 @@ To ensure safety and quality, a release must pass three gates before it can be d
 | Product Owner    | Product Sign-Off          | Prod Deployment                     |
 | Delivery Manager | Release Schedule Sign-Off | Prod Deployment                     |
 
-## Emergency / Hotfix Releases
+## Emergency / hotfix releases
 
 When a critical production defect is identified (e.g., service outage, security vulnerability, or critical policy miscalculation), the release process is streamlined for speed while preserving safety:
 

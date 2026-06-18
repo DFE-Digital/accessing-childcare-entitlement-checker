@@ -1,5 +1,5 @@
 ---
-title: Bootstrap Terraform State Storage in Azure
+title: Bootstrap Terraform state storage in Azure
 layout: page
 showPagination: true
 order: 11
@@ -31,7 +31,7 @@ We need a repeatable, automated mechanism to provision the Azure resources requi
 * Be simple to execute in CI/CD pipelines.
 * Use native Azure tooling where possible.
 
-### Bootstrap Resources
+### Bootstrap resources
 
 The bootstrap process provisions:
 
@@ -42,9 +42,9 @@ The bootstrap process provisions:
 
 These resources are managed separately from the main Terraform configuration.
 
-## Options Considered
+## Options considered
 
-### Option 1: Manual Creation (Portal / ClickOps)
+### Option 1: Manual creation (Portal / clickops)
 
 Provision the Storage Account and Container manually through the Azure Portal.
 
@@ -66,7 +66,7 @@ Provision the Storage Account and Container manually through the Azure Portal.
 
 Suitable only for experimentation or temporary environments.
 
-### Option 2: Azure CLI Script
+### Option 2: Azure CLI script
 
 Use Azure CLI commands to create the required backend resources.
 
@@ -88,7 +88,7 @@ Use Azure CLI commands to create the required backend resources.
 
 A pragmatic solution but diverges from Infrastructure as Code principles.
 
-### Option 3: ARM Template
+### Option 3: Arm template
 
 Use an Azure Resource Manager (ARM) template to deploy backend resources.
 
@@ -110,7 +110,7 @@ Use an Azure Resource Manager (ARM) template to deploy backend resources.
 
 Technically viable but not preferred for new development.
 
-### Option 4: Bicep Template
+### Option 4: Bicep template
 
 Use a dedicated Bicep template to provision Terraform backend resources.
 

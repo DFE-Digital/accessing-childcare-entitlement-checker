@@ -5,6 +5,10 @@
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @model PartnerChildcareSupportViewModel
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.PartnerChildcareSupport);
+}
+
 @section BeforeContent {
     <govuk-back-link asp-controller="Partner" asp-action="PartnerBenefits">
         @Shared["Button_Back"]

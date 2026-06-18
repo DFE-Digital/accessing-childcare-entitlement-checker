@@ -93,6 +93,12 @@ jobs:
       run: |
         az rest --method put --uri "https://management.azure.com/providers/microsoft.managementpartner/partners/6084223?api-version=2018-02-01" --body '{"partnerId": "6084223"}' || true        
 
+    - name: Get Workflow Service Principal Object ID
+      id: get-sp-id
+      run: |
+        SP_OBJECT_ID=$(az ad sp show --id ${{ secrets.AZURE_CLIENT_ID }} --query id -o tsv)
+        echo "object_id=$SP_OBJECT_ID" >> "$GITHUB_OUTPUT"
+
     - name: Bootstrap Terraform
       id: bootstrap-tf
       uses: azure/arm-deploy@v2
@@ -100,7 +106,7 @@ jobs:
         scope: subscription
         region: uksouth
         template: ./infra/bicep/main.bicep
-        parameters: ./infra/bicep/environments/${{ inputs.environment }}.params.json
+        parameters: ./infra/bicep/environments/${{ inputs.environment }}.params.json workflowPrincipalId=${{ steps.get-sp-id.outputs.object_id }}
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
@@ -169,23 +175,24 @@ jobs:
         RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
         CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
       run: |
-        SA_KEY=$(az storage account keys list --resource-group "$RG_NAME" --account-name "$ACC_NAME" --query "[0].value" -o tsv)
         BLOB="package-${{ github.sha }}.zip"
         
         az storage blob upload \
           --account-name "$ACC_NAME" \
-          --account-key "$SA_KEY" \
+          --auth-mode login \
           --container-name "$CONTAINER" \
           --name "$BLOB" \
-          --file "$DEPLOY_ZIP_PATH"
+          --file "$DEPLOY_ZIP_PATH" \
           --overwrite
         
-        az storage blob update \
+        az storage blob tag set \
           --account-name "$ACC_NAME" \
-          --account-key "$SA_KEY" \
+          --auth-mode login \
           --container-name "$CONTAINER" \
           --name "$BLOB" \
-          --tags "retain=true sha=${{ github.sha }}"
+          --tags \
+              "retain=true" \
+              "sha=${{ github.sha }}"
 
     - name: Deploy package to Web App
       env:
@@ -223,12 +230,11 @@ jobs:
         RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
         CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
       run: |
-        SA_KEY=$(az storage account keys list --resource-group "$RG_NAME" --account-name "$ACC_NAME" --query "[0].value" -o tsv)
         CURRENT_SHA="${{ github.sha }}"
         
         az storage blob list \
           --account-name "$ACC_NAME" \
-          --account-key "$SA_KEY" \
+          --auth-mode login \
           --container-name "$CONTAINER" \
           --query "[?tags.retain=='true'].[name, tags.sha]" \
           -o tsv | while read -r blob sha; do
@@ -236,12 +242,14 @@ jobs:
             if [ "$sha" != "$CURRENT_SHA" ]; then
               echo "Demoting $blob (sha=$sha)"
         
-              az storage blob update \
+              az storage blob tag set \
                 --account-name "$ACC_NAME" \
-                --account-key "$SA_KEY" \
+                --auth-mode login \
                 --container-name "$CONTAINER" \
                 --name "$blob" \
-                --tags "retain=false sha=$sha"
+                --tags \
+                    "retain=false" \
+                    "sha=$sha"
             fi
         done
 

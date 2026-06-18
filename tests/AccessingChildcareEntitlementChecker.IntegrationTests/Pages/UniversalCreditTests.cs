@@ -16,12 +16,12 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     {
         var state = new JourneyState { PaidWork = PaidWorkOption.No };
         using var client = factory.CreateClientWithJourneyState(state);
-        var res = await client.GetAsync("/User/UniversalCredit", TestContext.Current.CancellationToken);
+        var res = await client.GetAsync("/benefits/universal-credit", TestContext.Current.CancellationToken);
         res.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(res.Content);
         var back = doc.QuerySelector(".govuk-back-link") as IHtmlAnchorElement;
         Assert.NotNull(back);
-        Assert.Contains("/User/PaidWork", back.GetAttribute("href") ?? string.Empty);
+        Assert.Contains("/work-status/work", back.GetAttribute("href") ?? string.Empty);
     }
 
     [Fact]
@@ -29,12 +29,12 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     {
         var state = new JourneyState { PaidWork = PaidWorkOption.Yes, SelfEmployedDuration = SelfEmployedDurationOption.LessThan12Months };
         using var client = factory.CreateClientWithJourneyState(state);
-        var res = await client.GetAsync("/User/UniversalCredit", TestContext.Current.CancellationToken);
+        var res = await client.GetAsync("/benefits/universal-credit", TestContext.Current.CancellationToken);
         res.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(res.Content);
         var back = doc.QuerySelector(".govuk-back-link") as IHtmlAnchorElement;
         Assert.NotNull(back);
-        Assert.Contains("/User/SelfEmployedDuration", back.GetAttribute("href") ?? string.Empty);
+        Assert.Contains("/work-status/self-employed", back.GetAttribute("href") ?? string.Empty);
     }
 
     [Fact]
@@ -42,25 +42,25 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     {
         var state = new JourneyState { PaidWork = PaidWorkOption.Yes, WeeklyEarnings = WeeklyEarningsOption.AboveThreshold };
         using var client = factory.CreateClientWithJourneyState(state);
-        var res = await client.GetAsync("/User/UniversalCredit", TestContext.Current.CancellationToken);
+        var res = await client.GetAsync("/benefits/universal-credit", TestContext.Current.CancellationToken);
         res.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(res.Content);
         var back = doc.QuerySelector(".govuk-back-link") as IHtmlAnchorElement;
         Assert.NotNull(back);
-        Assert.Contains("/User/YearlyEarnings", back.GetAttribute("href") ?? string.Empty);
+        Assert.Contains("/earnings/adjusted-net-income", back.GetAttribute("href") ?? string.Empty);
     }
 
     [Fact]
     public async Task Post_Receives_Redirects_To_Benefits()
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        var get = await client.GetAsync("/User/UniversalCredit", TestContext.Current.CancellationToken);
+        var get = await client.GetAsync("/benefits/universal-credit", TestContext.Current.CancellationToken);
         get.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(get.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(doc);
         var cookie = HtmlHelpers.ExtractAntiforgeryCookie(get);
 
-        var req = new HttpRequestMessage(HttpMethod.Post, "/User/UniversalCredit");
+        var req = new HttpRequestMessage(HttpMethod.Post, "/benefits/universal-credit");
         if (cookie != null) req.Headers.Add("Cookie", cookie);
         req.Content = new FormUrlEncodedContent([
             new KeyValuePair<string,string>("__RequestVerificationToken", token ?? string.Empty),
@@ -68,6 +68,6 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
         ]);
         var post = await client.SendAsync(req, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.Redirect, post.StatusCode);
-        Assert.Contains("/User/Benefits", post.Headers.Location?.ToString() ?? string.Empty);
+        Assert.Contains("/benefits/benefits", post.Headers.Location?.ToString() ?? string.Empty);
     }
 }
