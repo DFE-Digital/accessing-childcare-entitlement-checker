@@ -27,7 +27,8 @@ Scenario: Radio button selection
 Scenario: Continue without selection
 	When I do not select a radio button
 	And I click on Continue
-	Then an error summary box should appear at the top of the page
+	Then the page header is "What is your relationship to Sara?"
+	And an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Select your relationship to Sara"
 
 Scenario: Continue with selection

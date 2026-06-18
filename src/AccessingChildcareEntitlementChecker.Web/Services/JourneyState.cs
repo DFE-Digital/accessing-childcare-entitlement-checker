@@ -61,11 +61,6 @@ public class JourneyState
 
     public ChildcareVoucherReceiptOption? PartnerChildcareVoucherReceipt { get; set; }
 
-    public Child? GetChild(string childId)
-    {
-        return Children.TryGetValue(childId, out var child) ? child : null;
-    }
-
     public void Apply(LocationViewModel model)
     {
         CountryOfResidence = model.Country;
@@ -83,8 +78,7 @@ public class JourneyState
             model.ChildId = Guid.NewGuid().ToString();
         }
 
-        var child = GetChild(model.ChildId);
-        if (child == null)
+        if (!Children.TryGetValue(model.ChildId, out var child))
         {
             child = new Child(model.ChildId, model.ChildName);
             Children.Add(model.ChildId, child);
@@ -96,7 +90,10 @@ public class JourneyState
 
     public void Apply(ChildIsBornViewModel model)
     {
-        var child = Children[model.ChildId];
+        if (!Children.TryGetValue(model.ChildId, out var child))
+        {
+            throw new InvalidOperationException("Child not found");
+        }
         child.BirthStatus = model.ChildIsBorn;
     }
 
