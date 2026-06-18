@@ -28,9 +28,10 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public ViewResult Location()
+    public ViewResult Location(string? returnTo = null)
     {
-        return View(new LocationViewModel(_journeyState));
+        var backLink = Url.Action(nameof(Start), new { returnTo });
+        return View(new LocationViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -38,6 +39,8 @@ public class HomeController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = Url.Action(nameof(Start), new { returnTo = model.ReturnTo });
+            model.ReturnTo = model.ReturnTo;
             return View(model);
         }
 
