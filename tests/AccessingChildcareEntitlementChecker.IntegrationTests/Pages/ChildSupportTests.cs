@@ -1,7 +1,6 @@
 ﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Services;
-using System.Net;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
@@ -10,7 +9,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
     [Fact]
     public async Task Post_With_None_And_Another_Option_Selected_Fails_Validation_And_Preserves_Childs_Name()
     {
-        var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -24,16 +23,13 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
         });
 
-        var page = await client.GetPageAsync("/BornChildDetails/ChildSupport?childId=9fbb8965-c988-4199-8b40-189efcfe2a1e", TestContext.Current.CancellationToken);
-        var submitted = await client.SubmitPageAsync(
-            page,
-            [
+        var url = "/BornChildDetails/ChildSupport?childId=9fbb8965-c988-4199-8b40-189efcfe2a1e";
+        var submitted = await HttpClientHelpers.PostFormAsync(client, url, [
                 new KeyValuePair<string, string>("ChildSupportOptions", "ArmedForcesIndependencePayment"),
                 new KeyValuePair<string, string>("ChildSupportOptions", "NoneOfTheseApply"),
-            ]);
-
-        submitted.EnsureSuccessStatusCode();
-        var validationFailedPage = await submitted.ReadContentAsPageAsync();
-        Assert.Equal("Does Sara get any of the following support?", validationFailedPage.H1);
+            ],
+            TestContext.Current.CancellationToken);
+        var document = await HtmlHelpers.ParseHtmlAsync(submitted.Content);
+        document.AssertHeader("Does Sara get any of the following support?");
     }
 }

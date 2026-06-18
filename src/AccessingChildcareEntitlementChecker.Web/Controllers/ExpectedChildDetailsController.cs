@@ -22,7 +22,7 @@ public class ExpectedChildDetailsController : Controller
     [HttpGet]
     public IActionResult ChildDueDate(string childId, string? returnTo = null)
     {
-        if (!_journeyState.TryGetChild(childId, out var child))
+        if (!_journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
@@ -53,7 +53,7 @@ public class ExpectedChildDetailsController : Controller
     [HttpGet]
     public IActionResult ExpectedChildRelationship(string childId, string? returnTo = null)
     {
-        if (!_journeyState.TryGetChild(childId, out var child))
+        if (!_journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }

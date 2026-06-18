@@ -36,7 +36,7 @@ public class ChildSupportViewModel : IValidatableObject
         var localizer = localizerFactory!.Create(typeof(ChildSupportViewModel));
         if (ChildSupportOptions.Count == 0)
         {
-            if (!journeyState!.TryGetChild(ChildId, out var child))
+            if (!journeyState!.Children.TryGetValue(ChildId, out var child))
             {
                 throw new InvalidOperationException($"No child found with ID {ChildId}");
             }

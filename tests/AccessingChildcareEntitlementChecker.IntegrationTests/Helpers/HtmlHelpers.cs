@@ -1,5 +1,5 @@
-using AngleSharp.Html.Parser;
 using AngleSharp.Dom;
+using AngleSharp.Html.Parser;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 

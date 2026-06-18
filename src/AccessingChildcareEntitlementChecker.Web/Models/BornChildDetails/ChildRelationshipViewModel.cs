@@ -32,7 +32,7 @@ public class ChildRelationshipViewModel : IValidatableObject
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
-        if (!journeyState!.TryGetChild(ChildId, out var child))
+        if (!journeyState!.Children.TryGetValue(ChildId, out var child))
         {
             throw new InvalidOperationException($"No child found with ID {ChildId}");
         }

@@ -1,7 +1,6 @@
 ﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Services;
-using System.Net;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
@@ -10,7 +9,7 @@ public class ChildRelationshipTests(IntegrationTestFixture factory) : IClassFixt
     [Fact]
     public async Task Post_With_None_Fails_Validation_And_Preserves_Child_Name()
     {
-        var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -24,11 +23,9 @@ public class ChildRelationshipTests(IntegrationTestFixture factory) : IClassFixt
                 }
         });
 
-        var page = await client.GetPageAsync("/BornChildDetails/ChildRelationship?childId=9fbb8965-c988-4199-8b40-189efcfe2a1e", TestContext.Current.CancellationToken);
-        var submitted = await client.SubmitPageAsync(page, []);
-
-        submitted.EnsureSuccessStatusCode();
-        var validationFailedPage = await submitted.ReadContentAsPageAsync();
-        Assert.Equal("What is your relationship to Sara?", validationFailedPage.H1);
+        var url = "/BornChildDetails/ChildRelationship?childId=9fbb8965-c988-4199-8b40-189efcfe2a1e";
+        var submitted = await HttpClientHelpers.PostFormAsync(client, url, [], TestContext.Current.CancellationToken);
+        var document = await HtmlHelpers.ParseHtmlAsync(submitted.Content);
+        document.AssertHeader("What is your relationship to Sara?");
     }
 }
