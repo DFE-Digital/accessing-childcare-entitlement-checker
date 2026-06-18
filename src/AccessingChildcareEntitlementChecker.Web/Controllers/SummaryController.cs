@@ -17,6 +17,7 @@ public class SummaryController : Controller
     private readonly IJourneySession _journeySession;
     private readonly IStringLocalizerFactory _stringLocalizerFactory;
 
+    public static string Name => "Summary";
     public SummaryController(
         JourneyState journeyState,
         IJourneySession journeySession,

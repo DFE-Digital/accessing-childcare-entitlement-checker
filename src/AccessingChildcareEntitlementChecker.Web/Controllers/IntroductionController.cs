@@ -10,6 +10,8 @@ public class IntroductionController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
+    public static string Name => "Introduction";
+
     public IntroductionController(JourneyState journeyState, IJourneySession journeySession)
     {
         _journeyState = journeyState;
@@ -19,7 +21,7 @@ public class IntroductionController : Controller
     [HttpGet]
     public IActionResult ChildName(string? childId = null, string? returnTo = null)
     {
-        var backLink = Url.Action(nameof(HomeController.Location), "Home", new { returnTo });
+        var backLink = GetChildNameBackLink(childId, returnTo);
         if (childId == null)
         {
             var childNameViewModel = new ChildNameViewModel(null, backLink, returnTo);
@@ -39,7 +41,7 @@ public class IntroductionController : Controller
     {
         if (!ModelState.IsValid)
         {
-            var backLink = Url.Action(nameof(HomeController.Location), "Home", new { returnTo = model.ReturnTo });
+            var backLink = GetChildNameBackLink(model.ChildId, model.ReturnTo);
             model.BackLink = backLink;
             return View(model);
         }
@@ -87,16 +89,31 @@ public class IntroductionController : Controller
             new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
-    private string? GetIsChildBornBackLink(string childId, string? returnTo)
+    private string? GetChildNameBackLink(string? childId, string? returnTo)
     {
         if (returnTo == ReturnTo.CheckAnswers)
         {
-            return Url.Action(nameof(SummaryController.CheckAnswers), "Summary", new { returnTo });
+            return Url.Action(nameof(SummaryController.CheckAnswers), SummaryController.Name, new { childId });
         }
 
         if (returnTo == ReturnTo.CheckChildDetails)
         {
-            return Url.Action(nameof(SummaryController.CheckChildDetails), "Summary", new { childId, returnTo });
+            return Url.Action(nameof(SummaryController.CheckChildDetails), SummaryController.Name, new { childId });
+        }
+
+        return Url.Action(nameof(HomeController.Location), HomeController.Name);
+    }
+
+    private string? GetIsChildBornBackLink(string childId, string? returnTo)
+    {
+        if (returnTo == ReturnTo.CheckAnswers)
+        {
+            return Url.Action(nameof(SummaryController.CheckAnswers), SummaryController.Name, new { childId });
+        }
+
+        if (returnTo == ReturnTo.CheckChildDetails)
+        {
+            return Url.Action(nameof(SummaryController.CheckChildDetails), SummaryController.Name, new { childId });
         }
 
         return Url.Action(nameof(ChildName), new { childId });

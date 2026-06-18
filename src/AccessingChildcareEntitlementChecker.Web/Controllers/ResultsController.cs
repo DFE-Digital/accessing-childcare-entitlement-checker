@@ -14,6 +14,8 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         private readonly JourneyStateToEntitlementRequestMapper _mapper;
         private readonly EntitlementRulesEngine _rulesEngine;
 
+        public static string Name => "Results";
+
         public ResultsController(
             JourneyState journeyState,
             JourneyStateToEntitlementRequestMapper mapper,
