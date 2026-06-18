@@ -43,7 +43,6 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
         postResponse.AssertRedirect("/children/add-child-details");
     }
 
-
     [Theory]
     [InlineData(null, "/")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]

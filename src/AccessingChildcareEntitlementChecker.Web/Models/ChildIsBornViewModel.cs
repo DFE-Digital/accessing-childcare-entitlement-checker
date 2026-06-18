@@ -24,7 +24,6 @@ public class ChildIsBornViewModel
 
     public string? ReturnTo { get; set; }
 
-
     public string ChildId { get; set; }
 
     [Display(Name = "Has this child been born yet?")]
