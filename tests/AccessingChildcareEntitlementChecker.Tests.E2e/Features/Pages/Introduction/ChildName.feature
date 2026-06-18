@@ -16,14 +16,14 @@ Scenario: Continue with no name
 	And the error summary and inline validation should be "Enter a name for your child"
 
 Scenario: Continue with name over 60 characters
-	When I enter the text "This is a very, very long name that exceeds sixty characters" into "What name should we use for this child?"
+	When I enter the text "This is a very, very long name that exceeds sixty characters!" into "What name should we use for this child?"
 	And I click on Continue
 	Then the page header is "Add details about your children"
 	And an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Name must be 60 characters or fewer"
 
 Scenario: Continue with name
-	When I enter the text "This is a very very long name that is exactly 60 chars long" into "What name should we use for this child?"
+	When I enter the text "This is a very very long name that is exactly 60 chars long!" into "What name should we use for this child?"
 	And I click on Continue
 	Then the page header is "Has this child been born yet?"
 
