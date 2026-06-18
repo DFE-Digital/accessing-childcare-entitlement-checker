@@ -5,6 +5,10 @@
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @model WorkStatusViewModel
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.WorkStatus);
+}
+
 @section BeforeContent {
     <govuk-back-link asp-controller="User" asp-action="PaidWork">
         @Shared["Button_Back"]

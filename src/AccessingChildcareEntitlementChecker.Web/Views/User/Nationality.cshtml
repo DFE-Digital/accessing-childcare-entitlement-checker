@@ -6,6 +6,10 @@
 @model NationalityViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.Nationality);
+}
+
 @section BeforeContent {
     <govuk-back-link asp-controller="User" asp-action="UserAge">
         @Shared["Button_Back"]

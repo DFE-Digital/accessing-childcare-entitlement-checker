@@ -4,6 +4,10 @@
 @inject IViewLocalizer Localizer
 @model ChildBirthDateViewModel
 
+@{
+    ViewData["Title"] = Localizer["Title", Model.ChildName ?? "child"];
+}
+
 @section BeforeContent {
     @if (Model.ReturnTo is not null)
     {

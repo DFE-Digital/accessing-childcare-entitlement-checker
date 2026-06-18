@@ -119,8 +119,6 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 app.MapTestException();
 app.MapRobotsExclusionProtocol();
 app.MapHealthChecks("/health");
-app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Start}/{id?}");
+app.MapControllerRoutes();
 
 await app.RunAsync();

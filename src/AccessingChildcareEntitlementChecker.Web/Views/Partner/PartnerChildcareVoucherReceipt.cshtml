@@ -6,6 +6,10 @@
 @model PartnerChildcareVoucherReceiptViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.PartnerChildcareVoucherReceipt);
+}
+
 @section BeforeContent {
     <govuk-back-link asp-controller="Partner" asp-action="PartnerChildcareSupport">
         @Shared["Button_Back"]

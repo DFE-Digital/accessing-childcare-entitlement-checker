@@ -23,6 +23,9 @@ This document defines the development standards and operational workflows for th
 * Formatting: Follow standard C# coding conventions and GDS design patterns for the frontend.
 * Architecture: Adhere to the [Application Architecture](/architecture/01-application-architecture/). Maintain a strict separation between the stateless `RulesEngine` and the stateful `Web` application.
 
+### MVC Conventions
+* Explicit routes in [WebApplicationExtensions.cs](/src/AccessingChildcareEntitlementChecker.Web/WebApplicationExtensions.cs) - as opposed to attribute routing. The rationale is that having the routes in a single location makes them easier to update while visualising the journey as a whole.
+
 ## Branching and commits
 
 We follow a Trunk-based development model as detailed in the [Branching Strategy](../03-branching-strategy/).
