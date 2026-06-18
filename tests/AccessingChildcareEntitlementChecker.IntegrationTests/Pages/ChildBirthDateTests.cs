@@ -24,14 +24,22 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
         });
 
         var url = "/BornChildDetails/ChildBirthDate?childId=9fbb8965-c988-4199-8b40-189efcfe2a1e";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
         var tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
-        var submitted = await HttpClientHelpers.PostFormAsync(client, url, [
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
                 new KeyValuePair<string, string>("ChildBirthDate.Day", tomorrow.Day.ToString()),
                 new KeyValuePair<string, string>("ChildBirthDate.Month", tomorrow.Month.ToString()),
                 new KeyValuePair<string, string>("ChildBirthDate.Year", tomorrow.Year.ToString())
             ],
             TestContext.Current.CancellationToken);
-        var document = await HtmlHelpers.ParseHtmlAsync(submitted.Content);
-        document.AssertHeader("What is Sara's date of birth?");
+        var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
+        postDocument.AssertHeader("What is Sara's date of birth?");
     }
 }

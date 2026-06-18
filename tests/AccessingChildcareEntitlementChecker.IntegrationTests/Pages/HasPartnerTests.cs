@@ -38,9 +38,19 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
-        var response = await HttpClientHelpers.PostFormAsync(client, "/partner", [
-            new KeyValuePair<string,string>("HasPartner", "false")
-        ], TestContext.Current.CancellationToken);
-        response.AssertRedirect("/check-your-answers");
+        var url = "/partner";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+                new KeyValuePair<string,string>("HasPartner", "false")
+            ],
+            TestContext.Current.CancellationToken);
+        postResponse.AssertRedirect("/check-your-answers");
     }
 }

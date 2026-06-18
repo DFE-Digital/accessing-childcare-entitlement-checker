@@ -4,15 +4,15 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 
 public class HttpClientHelpers
 {
-    public static async Task<HttpResponseMessage> PostFormAsync(HttpClient client, string url, IEnumerable<KeyValuePair<string, string>> formFields, CancellationToken cancellationToken)
+    public static async Task<HttpResponseMessage> PostFormAsync(
+        HttpClient client,
+        string url,
+        string cookie,
+        string token,
+        IEnumerable<KeyValuePair<string, string>> formFields,
+        CancellationToken cancellationToken)
     {
-        var response = await client.GetAsync(url, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        var token = HtmlHelpers.ExtractAntiforgeryToken(document);
-        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(response);
-        var uri = response.RequestMessage?.RequestUri?.ToString() ?? throw new InvalidOperationException("No request URI");
-        var req = new HttpRequestMessage(HttpMethod.Post, uri);
+        var req = new HttpRequestMessage(HttpMethod.Post, url);
         if (cookie != null)
         {
             req.Headers.Add("Cookie", cookie);

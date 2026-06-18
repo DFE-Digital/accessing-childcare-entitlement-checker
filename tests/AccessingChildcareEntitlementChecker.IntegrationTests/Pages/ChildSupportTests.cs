@@ -24,12 +24,20 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
         });
 
         var url = "/BornChildDetails/ChildSupport?childId=9fbb8965-c988-4199-8b40-189efcfe2a1e";
-        var submitted = await HttpClientHelpers.PostFormAsync(client, url, [
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
                 new KeyValuePair<string, string>("ChildSupportOptions", "ArmedForcesIndependencePayment"),
                 new KeyValuePair<string, string>("ChildSupportOptions", "NoneOfTheseApply"),
             ],
             TestContext.Current.CancellationToken);
-        var document = await HtmlHelpers.ParseHtmlAsync(submitted.Content);
-        document.AssertHeader("Does Sara get any of the following support?");
+        var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
+        postDocument.AssertHeader("Does Sara get any of the following support?");
     }
 }
