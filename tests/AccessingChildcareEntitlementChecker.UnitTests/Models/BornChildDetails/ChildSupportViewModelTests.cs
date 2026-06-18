@@ -44,7 +44,7 @@ public class ChildSupportViewModelTests
     [Fact]
     public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
     {
-        Assert.True(_journeyState.TryGetChild("child-a", out var child));
+        Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
         var model = new ChildSupportViewModel(child)
         {
             ChildSupportOptions =
@@ -66,7 +66,7 @@ public class ChildSupportViewModelTests
     [Fact]
     public void Validate_ReturnsErrorWhenOptionsAreEmpty()
     {
-        Assert.True(_journeyState.TryGetChild("child-a", out var child));
+        Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
         var model = new ChildSupportViewModel(child)
         {
             ChildSupportOptions = [],

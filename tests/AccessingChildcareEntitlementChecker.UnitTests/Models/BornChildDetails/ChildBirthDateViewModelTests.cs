@@ -44,7 +44,7 @@ public class ChildBirthDateViewModelTests
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));
-        Assert.True(_journeyState.TryGetChild("child-a", out var child));
+        Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
         Assert.NotNull(child);
 
         var model = new ChildBirthDateViewModel(child)

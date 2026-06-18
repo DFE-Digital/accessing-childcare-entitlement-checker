@@ -38,7 +38,7 @@ public class IntroductionControllerTests
     [Fact]
     public void ChildName_Get_PopulatesModel_FromState()
     {
-        Assert.True(_journeyState.TryGetChild(childId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(childId, out var child));
         child.Name = "Example";
         var result = Assert.IsType<ViewResult>(_controller.ChildName(childId));
 
@@ -58,7 +58,7 @@ public class IntroductionControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_journeyState.TryGetChild(model.ChildId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
         Assert.Equal("Example", child.Name);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(IntroductionController.IsChildBorn), redirect.ActionName);
@@ -101,7 +101,7 @@ public class IntroductionControllerTests
     [Fact]
     public void IsChildBorn_Get_PopulatesModel_FromState()
     {
-        Assert.True(_journeyState.TryGetChild(childId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(childId, out var child));
         child.BirthStatus = BirthStatus.Born;
         var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(childId));
 
@@ -121,7 +121,7 @@ public class IntroductionControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_journeyState.TryGetChild(model.ChildId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
         Assert.Equal(BirthStatus.Born, child.BirthStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildBirthDate), redirect.ActionName);
@@ -141,7 +141,7 @@ public class IntroductionControllerTests
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_journeyState.TryGetChild(model.ChildId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
         Assert.Equal(BirthStatus.Due, child.BirthStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(ExpectedChildDetailsController.ChildDueDate), redirect.ActionName);
