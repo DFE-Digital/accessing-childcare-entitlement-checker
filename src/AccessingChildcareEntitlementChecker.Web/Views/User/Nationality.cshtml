@@ -1,17 +1,16 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.User
-@using AccessingChildcareEntitlementChecker.Web.Services
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
 @model NationalityViewModel
-@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
+
 
 @{
     ViewData["Title"] = Html.DisplayNameFor(model => model.Nationality);
 }
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="User" asp-action="UserAge">
+    <govuk-back-link href="@Url.Action(ViewData["BackLinkAction"]?.ToString(), ViewData["BackLinkController"]?.ToString(), ViewData["BackLinkRouteValues"])">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

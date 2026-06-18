@@ -14,6 +14,8 @@
 }
 
 <form method="post" novalidate>
+    <input type="hidden" asp-for="ReturnTo" />
+
     <govuk-radios for="UserAge">
         <govuk-radios-fieldset>
             <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
