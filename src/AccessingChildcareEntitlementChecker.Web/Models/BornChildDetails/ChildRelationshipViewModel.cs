@@ -32,7 +32,11 @@ public class ChildRelationshipViewModel : IValidatableObject
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
-        var child = journeyState!.GetChild(ChildId) ?? throw new InvalidOperationException($"No child found with ID {ChildId}");
+        if (!journeyState!.Children.TryGetValue(ChildId, out var child))
+        {
+            throw new InvalidOperationException($"No child found with ID {ChildId}");
+        }
+
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(ChildRelationshipViewModel));
         if (!Relationship.HasValue)
