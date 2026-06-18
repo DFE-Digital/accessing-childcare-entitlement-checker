@@ -13,6 +13,13 @@ public static class DocumentAsserts
         return document;
     }
 
+    public static IDocument AssertCheckboxCount(this IDocument document, int expectedCount)
+    {
+        var checkboxes = document.QuerySelectorAll($"input[type=checkbox]");
+        Assert.Equal(expectedCount, checkboxes.Length);
+        return document;
+    }
+
     public static IDocument AssertRadioButtonCount(this IDocument document, int expectedCount)
     {
         var radios = document.QuerySelectorAll($"input[type=radio]");
@@ -24,6 +31,13 @@ public static class DocumentAsserts
     {
         var headerText = document.QuerySelector("h1")?.TextContent.Trim();
         Assert.Equal(expectedHeader, headerText);
+        return document;
+    }
+
+    public static IDocument AssertValidationError(this IDocument document)
+    {
+        var errorMessage = document.QuerySelector(".govuk-error-message");
+        Assert.NotNull(errorMessage);
         return document;
     }
 }
