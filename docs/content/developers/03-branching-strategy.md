@@ -1,12 +1,12 @@
 ---
-title: Branching Strategy
+title: Branching strategy
 layout: sub-navigation
 sectionKey: Developers
 order: 3
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
-  key: Branching Strategy
+  key: Branching strategy
 ---
 This document defines the Git branching and release workflow for the project. The project uses:
 
@@ -28,9 +28,9 @@ The branching strategy aims to:
 * Minimise merge conflicts and branch drift
 * Ensure all production changes are reviewed via PRs
 
-## Branch Types
+## Branch types
 
-### Trunk Branch
+### Trunk branch
 
 `main` is the primary integration branch.
 
@@ -53,7 +53,7 @@ Developers should:
 * Avoid long-running feature branches
 * Use pull requests for review and validation
 
-### Release Branches
+### Release branches
 
 Release branches provide a stable snapshot for staging and production validation.
 
@@ -85,9 +85,9 @@ Release branches are used to:
 * Deploy safely to staging and production
 * Isolate production releases from ongoing development
 
-## Overall Workflow
+## Overall workflow
 
-### Development Flow
+### Development flow
 
 ```mermaid
 gitGraph
@@ -115,7 +115,7 @@ gitGraph
     * Development
     * Test
 
-### Release Flow
+### Release flow
 
 ```mermaid
 gitGraph
@@ -148,7 +148,7 @@ gitGraph
 
 For the detailed steps, approvals matrix, and stakeholder communication templates associated with this workflow, see the dedicated [Release Process](../08-release-process) guide.
 
-### Hotfix Flow
+### Hotfix flow
 
 ```mermaid
 gitGraph
@@ -185,7 +185,7 @@ gitGraph
 5. Cherry-pick the fix into a new branch from `main`
 6. Raise a PR back into `main`
 
-## Branch Protection
+## Branch protection
 
 The following protections should be enabled for `main` and `releases/*` branches:
 

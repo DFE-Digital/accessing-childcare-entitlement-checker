@@ -10,24 +10,24 @@ eleventyNavigation:
 ---
 This runbook outlines how to rotate administrative secrets and integration passwords used by the Accessing Childcare Entitlement Checker service.
 
-## Note on Subscription Credentials
+## Note on subscription credentials
 This application is configured with zero-password subscription deployments. Deployment pipelines use Azure OpenID Connect (OIDC) Federated Credentials for authentication. There are no client secrets or service principal passwords stored in GitHub Actions for subscription access, meaning subscription secrets do not need to be rotated.
 
 The only credentials that require rotation procedures are environment-specific Basic Auth keys and diagnostic keys.
 
-## Rotatable Secrets List
+## Rotatable secrets list
 
 | Secret Name | Scope | Location of Secret | Affected Resources |
 | :--- | :--- | :--- | :--- |
 | `DEVELOPMENT_BASIC_AUTH_PASSWORD` | Pre-prod access control | GitHub Actions Secrets | Dev, Test, Staging App Service Instances |
 | Log Analytics Workspace Key | Diagnostic storage | Azure Key Vault / App Settings | App Service telemetry channels |
 
-## Procedure: Rotate Basic Auth Password (`DEVELOPMENT_BASIC_AUTH_PASSWORD`)
+## Procedure: Rotate basic auth password (`Development_basic_auth_password`)
 
-### Step 1: Generate a New Strong Password
+### Step 1: Generate a new strong password
 Generate a secure 32-character random string.
 
-### Step 2: Update GitHub Actions Secrets
+### Step 2: Update GitHub actions secrets
 1. Go to the GitHub repository.
 2. Navigate to Settings -> Secrets and variables -> Actions.
 3. Under Repository secrets, locate `DEVELOPMENT_BASIC_AUTH_PASSWORD`.
@@ -39,7 +39,7 @@ The new password is fed to App Service environment variables via the Terraform v
 2. The pipeline's Terraform phase (`terraform apply`) will detect the secret update and automatically inject the new value into the App Service configuration settings.
 3. The App Service container will restart automatically to load the new settings.
 
-## Procedure: Rotate App Insights Connection Strings / Keys
+## Procedure: Rotate app insights connection strings / keys
 If diagnostic collection keys are compromised, follow these steps:
 1. Log into the Azure Portal.
 2. Go to the Log Analytics Workspace or Application Insights resource.

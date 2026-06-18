@@ -10,6 +10,7 @@ param vnetName string
 param vnetAddressPrefix string
 param subnetName string
 param subnetAddressPrefix string
+param workflowPrincipalId string
 
 output resourceGroupName string = resourceGroupName
 output storageAccountName string = storageAccountName
@@ -46,5 +47,6 @@ module storage './storage.bicep' = {
     workspaceName: workspaceName
     subnetId: network.outputs.subnetId
     privateDnsZoneId: network.outputs.privateDnsZoneId
+    workflowPrincipalId: workflowPrincipalId
   }
 }

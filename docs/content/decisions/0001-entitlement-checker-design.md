@@ -1,5 +1,5 @@
 ---
-title: Entitlement checker design
+title: Entitlement Checker design
 layout: page
 showPagination: true
 order: 1
@@ -28,7 +28,7 @@ There are options for how to design and build the entitlement checker, given the
 
 ## What options have we considered?
 
-### Option 1: Get To An Answer
+### Option 1: Get to an answer
 https://github.com/DFE-Digital/get-to-an-answer
 
 https://staging-admin.get-to-an-answer.education.gov.uk/
@@ -48,7 +48,7 @@ Get To An Answer is a tool recently built for DfE that displays answer pages giv
 
 The tool could be updated to meet our needs, but this would require an effective re-write to handle state, and base answer panels on complex combinations of question data. This would require the migration of current users and would also overly complicate what is a simple, fit for purpose tool.
 
-### Option 2: Eligibility Checking Engine
+### Option 2: Eligibility checking engine
 https://github.com.mcas.ms/DFE-Digital/eligibility-checking-engine 
 
 https://eligibility-checking-engine.education.gov.uk/swagger/index.html
@@ -95,6 +95,6 @@ See [Planning for delivery](https://dfedigital.atlassian.net/wiki/spaces/AC/page
 
 Going forward, excellent documentation will be required to allow for ease of supporting the application and managing change.
 
-## Where can I find more details?
+## Where can i find more details?
 
 https://lucid.app/lucidspark/b7452515-3d80-43d6-8031-cc5114122623/edit

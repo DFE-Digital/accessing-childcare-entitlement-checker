@@ -19,7 +19,6 @@ if [ "$ENABLE_ACCESS" = "true" ]; then
   az storage account update \
     --name "$STORAGE_ACCOUNT_NAME" \
     --resource-group "$RESOURCE_GROUP_NAME" \
-    --allow-shared-key-access true \
     --public-network-access Enabled > /dev/null
 
   az storage account network-rule add \
@@ -38,7 +37,6 @@ elif [ "$ENABLE_ACCESS" = "false" ]; then
   az storage account update \
     --name "$STORAGE_ACCOUNT_NAME" \
     --resource-group "$RESOURCE_GROUP_NAME" \
-    --allow-shared-key-access false \
     --public-network-access Disabled > /dev/null
 
 else

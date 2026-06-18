@@ -1,39 +1,39 @@
 ---
-title: Ways of Working
+title: Ways of working
 layout: sub-navigation
 sectionKey: Developers
 order: 2
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Developers
-  key: Ways of Working
+  key: Ways of working
 ---
 This document defines the development standards and operational workflows for the project.
 
-## Development Standards
+## Development standards
 
-### Technology Stack
+### Technology stack
 * Runtime: .NET 10.0
 * Web Framework: ASP.NET Core MVC
 * Testing: xUnit, NSubstitute, Reqnroll (Gherkin), Playwright
 * Infrastructure: Terraform, Azure
 
-### Code Quality
+### Code quality
 * Static Analysis: .NET Analysers are enabled and enforced on build (`EnforceCodeStyleInBuild`).
 * Formatting: Follow standard C# coding conventions and GDS design patterns for the frontend.
 * Architecture: Adhere to the [Application Architecture](/architecture/01-application-architecture/). Maintain a strict separation between the stateless `RulesEngine` and the stateful `Web` application.
 
-## Branching and Commits
+## Branching and commits
 
 We follow a Trunk-based development model as detailed in the [Branching Strategy](../03-branching-strategy/).
 
-### Branch Naming
+### Branch naming
 * Feature Branches: `feature/description`
 * Bug Fixes: `fix/description`
 * Documentation: `docs/description`
 * Releases: `release/vX.Y`
 
-### Commit Messages
+### Commit messages
 Commits should be atomic and descriptive. While not a strictly enforced standard, we recommend following a structured format such as `<type>: <description>` to help maintain a clear project history:
 
 * `feat`: A new feature
@@ -46,7 +46,7 @@ Commits should be atomic and descriptive. While not a strictly enforced standard
 
 Example: `feat: add logic for 15 hours universal entitlement`
 
-## Pull Requests
+## Pull requests
 
 All changes to `main` and `release/*` branches must be made via Pull Requests.
 
@@ -61,7 +61,7 @@ All changes to `main` and `release/*` branches must be made via Pull Requests.
 2. Ensure the PR description links to any relevant issues or Jira tickets.
 3. Once approved and CI passes, the author is responsible for merging (Squash and Merge is required to maintain a linear history).
 
-## Testing Strategy
+## Testing strategy
 
 Quality is verified through a 9-layer pyramid as defined in the [Test Strategy](/testing/01-test-strategy/).
 
@@ -71,15 +71,15 @@ Quality is verified through a 9-layer pyramid as defined in the [Test Strategy](
 * Security (DAST): OWASP ZAP scans run weekly against the Test environment.
 * Infrastructure: `checkov` validates Terraform changes on PR.
 
-## Deployment Workflow
+## Deployment workflow
 
-### Continuous Integration (CI)
+### Continuous integration (CI)
 Every push to a PR triggers the `workflow-pr.yml` workflow, which handles:
 * Building the solution
 * Running Unit and Component tests
 * Static analysis checks
 
-### Continuous Delivery (CD)
+### Continuous delivery (CD)
 * Development/Test Environments: Merges to `main` trigger automatic deployment to the Dev and Test environments.
 * Staging Environment: Deployed from `release/*` branches for final UAT and A11y/E2E validation.
 * Production: Controlled release from a stabilized `release/*` branch.

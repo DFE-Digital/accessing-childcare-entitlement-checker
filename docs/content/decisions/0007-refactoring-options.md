@@ -1,5 +1,5 @@
 ---
-title: Refactoring Options
+title: Refactoring options
 layout: page
 showPagination: true
 order: 7
@@ -9,7 +9,7 @@ eleventyNavigation:
   parent: Decisions
 
 ---
-## Context and Problem Statement
+## Context and problem statement
 
 The Accessing Childcare Entitlement (CEC) spans 40 pages of Government Design System (GDS) form pages.
 
@@ -17,7 +17,7 @@ We're currently working towards the private beta release of the MVP.
 
 In [ADR 0001 Entitlement checker design](../0001-entitlement-checker-design/) design work resulted in the selection of the "Build" option: a .net core MVC web application, hosted in azure and deployed via github actions. This ADR considers different implementation approaches for that option and documents spike work used to validate the chosen approach.
 
-## Decision Drivers
+## Decision drivers
 
 ### Primary drivers
 
@@ -44,9 +44,9 @@ While the priority is of course the current development phase; we can keep in mi
 
 Any system we build should work towards future changes wherever possible.
 
-## Considered Options
+## Considered options
 
-### Option 1: Content and rules in ASP.NET MVC C#
+### Option 1: Content and rules in asp.net MVC C#
 
 This is the "baseline approach" against which the other options are to be evaluated.
 
@@ -60,7 +60,7 @@ This is the "baseline approach" against which the other options are to be evalua
 
 * Limited authoring capability: Editing content requires development resource; and needs to go through the full deployment lifecycle.
 
-### Option 2: Content Management System (CMS) with rules described in C#
+### Option 2: Content management system (CMS) with rules described in C#
 
 The "go-to" solution within DfE for this is a system called "Contentful".
 
@@ -83,7 +83,7 @@ However; because the content (text and form structure) is extremely tightly boun
 
 Any rules engine dictates the required inputs, their structure, and how they're used to produce outputs. That creates a hard dependency on the form configuration. That means the form layer can't be treated as fully flexible. It has to be constrained and validated against the rules engine requirements.
 
-### Option 3: Logic Engine Refactor (JSON-led)
+### Option 3: Logic engine refactor (JSON-led)
 
 This was an experimental option where the journey and rules are abstracted into a generic "Engine" driven by a centralised JSON schema.
 
@@ -93,7 +93,7 @@ We found that it would be difficult or impossible at this stage to develop a set
 
 Since we can't fully anticipate what policy changes might be required, a custom policy rules definition would need to have similar expressiveness to C# itself. This nullifies almost all of the benefit of such a system, except for the centralisation of text resources.
 
-## Decision Outcome
+## Decision outcome
 
 Option 1: Baseline - we will build phase 1 of the app as a straightforward ASP.NET MVC application with no CMS or user-editable rules element. 
 

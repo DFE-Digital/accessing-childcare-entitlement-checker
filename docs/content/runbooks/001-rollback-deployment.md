@@ -10,11 +10,11 @@ eleventyNavigation:
 ---
 This runbook describes the procedure to roll back a deployment when a broken package or bad configuration is introduced to production.
 
-## Standard Rollback: Instant Slot Swap (Zero Downtime)
+## Standard rollback: Instant slot swap (Zero downtime)
 
 For environments with deployment slots enabled (such as Production), the prior stable release is preserved in the `staging` slot immediately after a swap. The fastest, safest, and only zero-downtime rollback method is to instantly swap the slots back.
 
-### Step 1: Trigger the Rollback Slot Swap via Azure CLI
+### Step 1: Trigger the rollback slot swap via Azure CLI
 
 Run the following commands in an authenticated terminal (PowerShell or Bash):
 
@@ -35,31 +35,31 @@ az webapp deployment slot swap `
 
 *This swap operation is atomic, occurs in seconds, and has zero downtime or container cold-start penalty.*
 
-## Fallback Rollback: Via GitHub Actions
+## Fallback rollback: Via GitHub actions
 
 If deployment slots are not enabled for the target environment (e.g., Development or Test running on B1 plans), or if the slots are out of sync, you must redeploy the previous successful release package.
 
-### Step 1: Identify the Prior Stable Release
+### Step 1: Identify the prior stable release
 1. Go to the GitHub repository and select the **Actions** tab.
 2. Filter the workflows by **Deploy Environment** or **Build & Deploy** to identify the last successful run on the target environment (e.g., `Production` or `Staging`).
 3. Note the git commit hash (SHA) or release tag corresponding to that successful build.
 
-### Step 2: Trigger the Rollback Run
+### Step 2: Trigger the rollback run
 1. Go to the **Actions** tab and select the **Build & Deploy** or **Deploy Environment** workflow.
 2. Click **Run workflow**.
 3. Choose the branch or tag identified in Step 1 (e.g., `release/vX.Y` or a specific commit SHA).
 4. Select the target environment and trigger the workflow.
 5. Monitor the pipeline to ensure that both the Terraform Provisioning and Zip Deploy stages succeed.
 
-## Emergency Fallback: Direct Zip Deploy Via Azure CLI
+## Emergency fallback: Direct zip deploy via Azure CLI
 
 If GitHub Actions is down or degraded and slots are not an option, you can deploy the previous deployment package directly.
 
-### Step 1: Download the Prior Deployment Package
+### Step 1: Download the prior deployment package
 Our deployment packages are stored with Read-Access Geo-Redundant Storage (RA-GRS) support. 
 1. Retrieve the stable `.zip` deployment artifact matching the previous version from the Azure storage account or your local cache.
 
-### Step 2: Authenticate and Deploy
+### Step 2: Authenticate and deploy
 Run the following commands in an authenticated terminal (PowerShell or Bash):
 
 ```powershell
@@ -77,7 +77,7 @@ az webapp deploy `
   --type zip
 ```
 
-## Post-Rollback Validation
+## Post-rollback validation
 
 1. Verify the `/health` endpoint responds with a `200 OK`.
 2. Open the application in an incognito browser window and complete a full entitlement evaluation flow to ensure that state persistence (encrypted cookies) and rules calculation function correctly.

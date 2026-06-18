@@ -1,5 +1,5 @@
 ---
-title: Use Release Branches with Trunk-Based Development for Staging and Production Releases
+title: Use release branches with trunk-based development for staging and production releases
 layout: page
 showPagination: true
 order: 9
@@ -55,9 +55,9 @@ The team requires:
 
 The team will continue using trunk-based development with `main` as the primary integration branch, but will introduce release branches for staging and production deployments.
 
-## Branching Model
+## Branching model
 
-### Trunk Branch
+### Trunk branch
 
 * `main` remains the single integration branch
 * Developers merge feature work continuously
@@ -66,7 +66,7 @@ The team will continue using trunk-based development with `main` as the primary 
     * Development
     * Test
 
-### Release Branches
+### Release branches
 
 When preparing a release:
 
@@ -91,9 +91,9 @@ Only the following changes are permitted on a release branch:
 
 No new features may be added after branch creation.
 
-## Deployment Flow
+## Deployment flow
 
-### Development Lifecycle
+### Development lifecycle
 
 ```text
 Feature Branches
@@ -106,7 +106,7 @@ CI/CD Validation
 Deploy to Development & Test
 ```
 
-### Release Lifecycle
+### Release lifecycle
 
 ```text
 main
@@ -123,7 +123,7 @@ E2E / A11y / UAT / Regression / Signoff
 Deploy to Production
 ```
 
-## Hotfix Process
+## Hotfix process
 
 If a production issue occurs:
 
@@ -161,9 +161,9 @@ The model avoids:
 
 The approach preserves the core principles of trunk-based development while introducing lightweight release isolation.
 
-## Alternatives Considered
+## Alternatives considered
 
-### Deploy Directly from `main`
+### Deploy directly from `main`
 
 **Pros:**
 
@@ -182,7 +182,7 @@ The approach preserves the core principles of trunk-based development while intr
 
 Rejected due to operational risk and poor hotfix ergonomics.
 
-### GitFlow
+### Gitflow
 
 **Pros:**
 
@@ -200,7 +200,7 @@ Rejected due to operational risk and poor hotfix ergonomics.
 
 Rejected because it introduces unnecessary process overhead.
 
-## Environment Branches (`develop`, `staging`, `production`)
+## Environment branches (`Develop`, `staging`, `production`)
 
 **Pros:**
 

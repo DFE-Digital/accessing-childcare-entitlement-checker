@@ -1,16 +1,16 @@
 ---
-title: Deployment Architecture
+title: Deployment architecture
 layout: sub-navigation
 sectionKey: Architecture
 order: 3
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Architecture
-  key: Deployment Architecture
+  key: Deployment architecture
 ---
 This document describes the cloud architecture, networking, and deployment strategy for the Accessing Childcare Entitlement Checker (ACEC). The ACEC application is a stateless ASP.NET Core web application hosted on Azure. It is designed for high availability, security, and scalability within the UK South region.
 
-## Deployment Diagram
+## Deployment diagram
 
 ```mermaid
 C4Deployment
@@ -51,7 +51,7 @@ C4Deployment
   Rel(app, law, "Sends logs to")
 ```
 
-## Infrastructure Components
+## Infrastructure components
 
 | Component  | Service                    | SLA           | Description                                                              |
 |:-----------|:---------------------------|:--------------|:-------------------------------------------------------------------------|
@@ -74,21 +74,21 @@ Approx downtime:
 * ~30 minutes/month
 * ~6.1 hours/year
 
-## Networking & Security
+## Networking & security
 
-### Ingress Protection
+### Ingress protection
 
 * Front Door WAF: Configured in Prevention mode using the Microsoft Default Rule Set.
 * App Service Restrictions: The Web App is configured with IP restrictions to only accept traffic from the `AzureFrontDoor.Backend` service tag. This ensures users cannot bypass the WAF.
 
-## Availability & Scaling
+## Availability & scaling
 
 * Region: All resources are pinned to `UK South`.
 * Redundancy: 
   * The Web App is planned to run with minimum 2 instances for high availability.
   * The deployment strategy utilises Run-From-Package backed by an RA-GRS (Read-Access Geo-Redundant Storage) account to ensure the deployment artifact is resilient.
 
-## Deployment Strategy
+## Deployment strategy
 
 The project follows a Trunk-Based Development model with Release Branches for higher environments.
 
@@ -97,7 +97,7 @@ The project follows a Trunk-Based Development model with Release Branches for hi
 * Development / Test: Automatically deployed from the `main` branch.
 * Staging / Production: Deployed from stable `release/vX.Y` branches.
 
-### CI/CD Pipeline (GitHub Actions)
+### CI/CD pipeline (GitHub actions)
 
 1. Build: Compiles the .NET application and creates a deployment ZIP.
 2. Infrastructure: Terraform (using OIDC for Azure authentication) ensures the environment is provisioned and configured.

@@ -1,17 +1,17 @@
 ---
-title: Constraints and Principles
+title: Constraints and principles
 layout: sub-navigation
 sectionKey: Architecture
 order: 2
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Architecture
-  key: Constraints and Principles
+  key: Constraints and principles
 ---
 This document defines the architectural principles and constraints for the project.
 
 
-## Architectural Principles
+## Architectural principles
 
 |   ID    | Principal                                                                                                                                                                                    |
 |:-------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

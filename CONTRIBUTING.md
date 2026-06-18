@@ -8,7 +8,7 @@ By participating in this project, you agree to abide by our standards of conduct
 
 This project is governed by the DfE Code of Conduct. By participating, you are expected to uphold this code. Please ensure interactions remain professional, inclusive, and collaborative.
 
-## Technical Documentation
+## Technical documentation
 
 We maintain a comprehensive, [Technical Documentation Site](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/)
 
@@ -17,13 +17,13 @@ Please refer to the live documentation for the most up-to-date and in-depth guid
 - [Ways of Working](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/developers/02-ways-of-working/) – Development standards, code quality, and deployment workflows.
 - [Branching Strategy](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/developers/03-branching-strategy/) – Details on our trunk-based development model.
 
-## Quick Getting Started
+## Quick getting started
 
 For a quick setup, ensure you have:
 - .NET SDK 10.0.3 (pinned via `global.json`)
 - PowerShell 7 (pwsh) (for running Playwright browser setup)
 
-### Local Build & Test
+### Local build & test
 
 1. Clone and navigate to the repository:
    ```bash
@@ -47,14 +47,14 @@ For a quick setup, ensure you have:
    dotnet format
    ```
 
-## Branching and Commits
+## Branching and commits
 
 We use trunk-based development. Please branch off `main` using the following prefixes:
 - `feature/description` for new features
 - `fix/description` for bug fixes
 - `docs/description` for documentation-only changes
 
-### Commit Messages
+### Commit messages
 We recommend using standard structured commit messages (`<type>: <description>`):
 - `feat`: A new feature (e.g., `feat: add logic for 15 hours universal entitlement`)
 - `fix`: A bug fix
@@ -63,11 +63,11 @@ We recommend using standard structured commit messages (`<type>: <description>`)
 - `refactor`: Code changes that neither fix bugs nor add features
 - `chore`: Changes to build processes, tooling, or helper scripts
 
-## Pull Requests
+## Pull requests
 
 All code changes must be submitted via Pull Requests (PRs).
 
-### PR Requirements
+### PR requirements
 1. CI Verification: All builds, unit tests, and component tests must pass.
 2. Review: At least one approval from a maintainer is required.
 3. Tests: All new features or fixes must include unit tests and, where applicable, Reqnroll/Playwright E2E tests.

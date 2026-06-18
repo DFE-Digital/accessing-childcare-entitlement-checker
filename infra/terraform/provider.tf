@@ -10,9 +10,10 @@ terraform {
     }
   }
   backend "azurerm" {
-    container_name = "tfstate"
-    key            = "accessing-childcare-entitlement-checker.tfstate"
-    use_oidc       = true
+    container_name   = "tfstate"
+    key              = "accessing-childcare-entitlement-checker.tfstate"
+    use_oidc         = true
+    use_azuread_auth = true
   }
 }
 

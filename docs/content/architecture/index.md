@@ -1,5 +1,5 @@
 ---
-title: Architecture Information
+title: Architecture information
 layout: sub-navigation
 sectionKey: Architecture
 includeInBreadcrumbs: true

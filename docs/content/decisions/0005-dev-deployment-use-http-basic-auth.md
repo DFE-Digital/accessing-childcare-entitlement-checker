@@ -1,5 +1,5 @@
 ---
-title: Use app-level HTTP Basic auth to limit access to dev deployment
+title: Use app-level http basic auth to limit access to dev deployment
 layout: page
 showPagination: true
 order: 5
@@ -9,14 +9,14 @@ eleventyNavigation:
   parent: Decisions
 
 ---
-## Context and Problem Statement
+## Context and problem statement
 
 We need to deploy the application to Azure in the dev environment, but want to limit access so that:
 
 * End-users don't stumble across the dev deployment and mistake it for the real thing.
 * The dev environment doesn't get indexed by search engines and steal rank from the production deployment.
 
-## Decision Drivers
+## Decision drivers
 
 * Ease and speed of development.
 * Ease of management.
@@ -24,14 +24,14 @@ We need to deploy the application to Azure in the dev environment, but want to l
 
 It's important to note that this isn't primarily a security solution - the security risk is low. It's a usability and hygiene issue.
 
-## Considered Options
+## Considered options
 
 * Restricting access by IP
 * Using app-level authentication with DfE Entra to restrict access to users with `...education.gov.uk` accounts
 * Using app-level HTTP Basic authentication with a single password
 * Using some other app-level authentication scheme
 
-## Decision Outcome
+## Decision outcome
 
 Chosen option: "Using app-level HTTP Basic authentication with a single password".
 

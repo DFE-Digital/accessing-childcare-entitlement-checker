@@ -10,7 +10,7 @@ eleventyNavigation:
 ---
 This project uses [Eleventy](https://www.11ty.dev/) and the [X-GOVUK plugin](https://x-govuk.github.io/govuk-eleventy-plugin/) to generate DfE-branded technical documentation from Markdown files.
 
-## Local Development
+## Local development
 
 To preview your changes locally:
 
@@ -19,12 +19,12 @@ To preview your changes locally:
 3.  Run `npm start`.
 4.  View at `http://localhost:8080/`.
 
-## Adding a New Document
+## Adding a new document
 
-### Create the File
+### Create the file
 Create a new `.md` file in one of the existing directories (`architecture/`, `decisions/`, `opetional/`, `runbook/`, `testing/`, or `developers/`).
 
-### Add Front Matter
+### Add front matter
 Every page needs "Front Matter" at the top to set the title and navigation key. 
 
 ```markdown

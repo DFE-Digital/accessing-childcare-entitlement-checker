@@ -1,11 +1,11 @@
 ---
-title: Accessibility Test Plan
+title: Accessibility test plan
 layout: sub-navigation
 sectionKey: Testing
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Testing
-  key: Accessibility Test Plan
+  key: Accessibility test plan
 order: 2
 ---
 The objective of this test plan is to verify that the application meets the requirements of WCAG 2.2 Level AA and provides an accessible experience for users who rely on assistive technologies, keyboard navigation, screen readers, zoom, and other accessibility accommodations.
@@ -22,7 +22,7 @@ Testing will focus on:
 
 ## Scope
 
-### In Scope
+### In scope
 
 User Journey Testing:
 
@@ -43,7 +43,7 @@ Accessibility Areas:
 - Responsive design
 - Zoom and reflow
 
-### Out of Scope
+### Out of scope
 
 - Performance testing
 - Security testing
@@ -51,7 +51,7 @@ Accessibility Areas:
 - Content quality review
 - Accessibility of third-party systems not controlled by the project
 
-## Test Approach
+## Test approach
 
 Accessibility testing will be performed using a combination of:
 
@@ -63,7 +63,7 @@ Accessibility testing will be performed using a combination of:
 
 This layered approach ensures coverage of both detectable technical issues and user experience issues that cannot be identified through automation alone.
 
-## Test Environment
+## Test environment
 
 Browsers: Google Chrome (latest supported version)  
 Screen Readers: NVDA (latest version) and/or JAWS (latest version)  
@@ -77,7 +77,7 @@ Accessibility Tools:
 - Lighthouse
 - Colour Contrast Analyser
 
-## Page Coverage Strategy
+## Page coverage strategy
 
 Pages will be grouped by functional pattern.
 
@@ -89,7 +89,7 @@ Pages will be grouped by functional pattern.
 
 Where reusable components are used across multiple pages, accessibility findings will be assessed at component level and spot-checked across implementations.
 
-## Automated Accessibility Testing
+## Automated accessibility testing
 
 Identify accessibility issues through automated testing integrated into the application's test suite and CI/CD pipeline.
 
@@ -112,7 +112,7 @@ Tests will run:
 
 Accessibility testing shall be treated as a standard part of the automated regression suite rather than a separate activity.
 
-### Coverage Requirements
+### Coverage requirements
 
 Accessibility scans shall be executed against:
 
@@ -146,11 +146,11 @@ Automated testing cannot reliably verify:
 
 Manual accessibility testing remains mandatory.
 
-## Keyboard Accessibility Testing
+## Keyboard accessibility testing
 
 Verify all functionality can be completed using only a keyboard.
 
-### Test Method
+### Test method
 
 Use:
 
@@ -163,7 +163,7 @@ Use:
 
 No mouse interaction permitted.
 
-### Test Cases
+### Test cases
 
 Navigation:
 
@@ -184,15 +184,15 @@ Dynamic Content:
 - Focus moves appropriately
 - Newly displayed content is accessible
 
-### Expected Outcome
+### Expected outcome
 
 Entire form journey can be completed using keyboard-only interaction.
 
-## Screen Reader Testing
+## Screen reader testing
 
 Verify users can understand and complete the application using a screen reader.
 
-### Test Scenarios
+### Test scenarios
 
 Page Structure:
 
@@ -217,15 +217,15 @@ Dynamic Updates:
 - Status messages are announced
 - Conditional content changes are communicated
 
-### Expected Outcome
+### Expected outcome
 
 All critical user journeys can be completed without visual assistance.
 
-## Error Handling Testing
+## Error handling testing
 
 Verify accessible identification and recovery from errors.
 
-### Test Cases
+### Test cases
 
 Missing Required Fields:
 
@@ -243,17 +243,17 @@ Validation Summary:
 - Summary receives focus where appropriate
 - Links navigate directly to fields
 
-### Relevant WCAG Criteria
+### Relevant WCAG criteria
 
 - 3.3.1 Error Identification
 - 3.3.2 Labels or Instructions
 - 3.3.3 Error Suggestion
 
-## Focus Management Testing
+## Focus management testing
 
 Verify focus remains predictable and meaningful.
 
-### Test Cases
+### Test cases
 
 Page Navigation:
 
@@ -267,17 +267,17 @@ Conditional Content:
 
 - Focus is managed appropriately when content appears
 
-### Relevant WCAG Criteria
+### Relevant WCAG criteria
 
 - 2.4.3 Focus Order
 - 2.4.7 Focus Visible
 - 2.4.11 Focus Not Obscured (Minimum)
 
-## Colour Contrast Testing
+## Colour contrast testing
 
 Verify sufficient visual contrast.
 
-### Test Cases
+### Test cases
 
 Text Contrast:
 
@@ -294,17 +294,17 @@ Non-Colour Indicators:
 
 - Errors are not communicated using colour alone
 
-### Relevant WCAG Criteria
+### Relevant WCAG criteria
 
 - 1.4.3 Contrast (Minimum)
 - 1.4.11 Non-text Contrast
 - 1.3.3 Sensory Characteristics
 
-## Zoom and Reflow Testing
+## Zoom and reflow testing
 
 Verify usability at increased zoom levels.
 
-### Test Cases
+### Test cases
 
 200% Zoom:
 
@@ -322,12 +322,12 @@ Responsive Layout:
 - Error messages remain visible
 - Navigation remains accessible
 
-### Relevant WCAG Criteria
+### Relevant WCAG criteria
 
 - 1.4.10 Reflow
 - 1.4.4 Resize Text
 
-## WCAG 2.2 AA Review
+## WCAG 2.2 AA review
 
 A manual review will be conducted against applicable WCAG 2.2 AA Success Criteria.
 
@@ -356,7 +356,7 @@ A manual review will be conducted against applicable WCAG 2.2 AA Success Criteri
 - 4.1.2 Name, Role, Value
 - 4.1.3 Status Messages
 
-## Defect Classification
+## Defect classification
 
 | Severity | Description                                   |
 |----------|-----------------------------------------------|
@@ -365,7 +365,7 @@ A manual review will be conducted against applicable WCAG 2.2 AA Success Criteri
 | Medium   | Accessibility issue with workaround available |
 | Low      | Minor accessibility or usability issue        |
 
-## Exit Criteria
+## Exit criteria
 
 Testing will be considered complete when:
 
