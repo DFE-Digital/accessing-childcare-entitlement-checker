@@ -13,7 +13,9 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
-        var doc = await HttpClientHelpers.GetDocumentAsync(client, "/partner", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/partner", TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(2)
             .AssertBackLink("/benefits/childcare-support");
     }
@@ -25,7 +27,9 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
         state.ChildcareSupport.Add(ChildcareSupportOption.ChildcareVouchers);
         using var client = factory.CreateClientWithJourneyState(state);
 
-        var doc = await HttpClientHelpers.GetDocumentAsync(client, "/partner", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/partner", TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink("/benefits/childcare-vouchers");
     }
 

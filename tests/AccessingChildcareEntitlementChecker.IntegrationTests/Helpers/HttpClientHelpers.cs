@@ -4,14 +4,6 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 
 public class HttpClientHelpers
 {
-    public static async Task<IDocument> GetDocumentAsync(HttpClient client, string url, CancellationToken cancellationToken)
-    {
-        var response = await client.GetAsync(url, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        return document;
-    }
-
     public static async Task<HttpResponseMessage> PostFormAsync(HttpClient client, string url, IEnumerable<KeyValuePair<string, string>> formFields, CancellationToken cancellationToken)
     {
         var response = await client.GetAsync(url, cancellationToken);
