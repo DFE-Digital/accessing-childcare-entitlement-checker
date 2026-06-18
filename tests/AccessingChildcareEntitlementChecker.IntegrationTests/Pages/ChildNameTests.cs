@@ -1,25 +1,29 @@
 ﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
-using AccessingChildcareEntitlementChecker.Web.Services;
-using System.Net;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     [Fact]
-    public async Task Post_With_Long_Name_Triggers_Validation()
+    public async Task Post_With_Long_Name_Shows_Validation_Error()
     {
-        var client = factory.CreateClient();
-        var page = await client.GetPageAsync("/Introduction/ChildName", TestContext.Current.CancellationToken);
-        var submitted = await client.SubmitPageAsync(
-            page,
-            [
-                new KeyValuePair<string, string>("ChildName", new string('A', 61))
-            ]);
+        using var client = factory.CreateClient();
+        var url = "/Introduction/ChildName";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
 
-        submitted.EnsureSuccessStatusCode();
-        var validationFailedPage = await submitted.ReadContentAsPageAsync();
-        validationFailedPage.AssertValidationError();
+        var tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+                new KeyValuePair<string, string>("ChildName", new string('A', 61))
+            ],
+            TestContext.Current.CancellationToken);
+        var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
+        postDocument.AssertValidationError();
     }
 }
