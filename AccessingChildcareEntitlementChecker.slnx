@@ -58,12 +58,16 @@
     <File Path="docs/content/index.md" />
   </Folder>
   <Folder Name="/docs/content/architecture/">
-    <File Path="docs/content/architecture/application-architecture.md" />
-    <File Path="docs/content/architecture/constraints-principles.md" />
-    <File Path="docs/content/architecture/deployed-infrastructure.md" />
-    <File Path="docs/content/architecture/deployment-architecture.md" />
+    <File Path="docs/content/architecture/01-application-architecture.md" />
+    <File Path="docs/content/architecture/02-constraints-principles.md" />
+    <File Path="docs/content/architecture/03-deployment-architecture.md" />
+    <File Path="docs/content/architecture/04-network-architecture.md" />
+    <File Path="docs/content/architecture/05-deployed-infrastructure.md" />
+    <File Path="docs/content/architecture/06-security-architecture.md" />
+    <File Path="docs/content/architecture/07-non-functional-requirements.md" />
+    <File Path="docs/content/architecture/08-technical-review-checklist.md" />
+    <File Path="docs/content/architecture/09-path-tol-live.md" />
     <File Path="docs/content/architecture/index.md" />
-    <File Path="docs/content/architecture/non-functional-requirements.md" />
   </Folder>
   <Folder Name="/docs/content/decisions/">
     <File Path="docs/content/decisions/0000-use-madr-docs.md" />
@@ -81,16 +85,19 @@
     <File Path="docs/content/decisions/index.md" />
   </Folder>
   <Folder Name="/docs/content/developers/">
-    <File Path="docs/content/developers/branching-strategy.md" />
-    <File Path="docs/content/developers/decision-process.md" />
-    <File Path="docs/content/developers/dependabot-configuration.md" />
-    <File Path="docs/content/developers/documentation-guide.md" />
-    <File Path="docs/content/developers/getting-started.md" />
+    <File Path="docs/content/developers/01-getting-started.md" />
+    <File Path="docs/content/developers/02-ways-of-working.md" />
+    <File Path="docs/content/developers/03-branching-strategy.md" />
+    <File Path="docs/content/developers/04-documentation-guide.md" />
+    <File Path="docs/content/developers/05-decision-process.md" />
+    <File Path="docs/content/developers/06-terraform-bootstrap.md" />
+    <File Path="docs/content/developers/07-conditional-deployments.md" />
+    <File Path="docs/content/developers/08-release-process.md" />
+    <File Path="docs/content/developers/09-workflow-naming-conventions.md" />
+    <File Path="docs/content/developers/10-dependabot-configuration.md" />
+    <File Path="docs/content/developers/11-zap-scan-guide.md" />
+    <File Path="docs/content/developers/12-rules-engine.md" />
     <File Path="docs/content/developers/index.md" />
-    <File Path="docs/content/developers/terraform-bootstrap.md" />
-    <File Path="docs/content/developers/ways-of-working.md" />
-    <File Path="docs/content/developers/workflow-naming-conventions.md" />
-    <File Path="docs/content/developers/zap-scan-guide.md" />
   </Folder>
   <Folder Name="/docs/content/operational/">
     <File Path="docs/content/operational/001-application-bugs.md" />
@@ -115,11 +122,11 @@
     <File Path="docs/content/runbooks/index.md" />
   </Folder>
   <Folder Name="/docs/content/testing/">
-    <File Path="docs/content/testing/accessibility-test-plan.md" />
-    <File Path="docs/content/testing/cross-browser.md" />
+    <File Path="docs/content/testing/01-test-strategy.md" />
+    <File Path="docs/content/testing/02-accessibility-test-plan.md" />
+    <File Path="docs/content/testing/03-cross-browser.md" />
+    <File Path="docs/content/testing/99-zap-report.md" />
     <File Path="docs/content/testing/index.md" />
-    <File Path="docs/content/testing/test-strategy.md" />
-    <File Path="docs/content/testing/zap-report.md" />
   </Folder>
   <Folder Name="/infra/" />
   <Folder Name="/infra/bicep/">
