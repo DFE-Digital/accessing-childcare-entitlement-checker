@@ -231,17 +231,19 @@ jobs:
         CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
       run: |
         CURRENT_SHA="${{ github.sha }}"
-        
+        echo "Current SHA=$CURRENT_SHA"
+
         az storage blob list \
           --account-name "$ACC_NAME" \
           --auth-mode login \
           --container-name "$CONTAINER" \
-          --query "[?tags.retain=='true'].[name, tags.sha]" \
+          --include t \
+          --query "[?tags.retain=='true'].[name,tags.sha]" \
           -o tsv | while read -r blob sha; do
-        
+            echo "blob='$blob' sha='$sha'"
+          
             if [ "$sha" != "$CURRENT_SHA" ]; then
-              echo "Demoting $blob (sha=$sha)"
-        
+              echo "Demoting $blob"
               az storage blob tag set \
                 --account-name "$ACC_NAME" \
                 --auth-mode login \
@@ -251,7 +253,7 @@ jobs:
                     "retain=false" \
                     "sha=$sha"
             fi
-        done
+          done
 
     - name: Lock Deployment Storage
       if: ${{ always() }}
