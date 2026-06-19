@@ -122,7 +122,7 @@ jobs:
           docker run --rm \
             -v "$WORKSPACE/$TF_DIR:/tf" \
             -v "$WORKSPACE/$CHECKOV_RESULTS:/results" \
-            bridgecrew/checkov:latest \
+            ghcr.io/dfe-digital/dfe-checkov-policies/checkov-elz:a22c074141276b0425839a5c28d910f06f5c2796 \
             -d /tf --var-file "/tf/environments/production.tfvars" \
             -o cli \
             -o junitxml \
