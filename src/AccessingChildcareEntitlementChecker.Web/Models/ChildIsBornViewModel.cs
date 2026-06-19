@@ -14,7 +14,7 @@ public class ChildIsBornViewModel
 
     public ChildIsBornViewModel(Child child, string backLink, string? returnTo = null)
     {
-        ChildId = child.ChildId ?? string.Empty;
+        ChildId = child.ChildId;
         ChildIsBorn = child.BirthStatus;
         BackLink = backLink;
         ReturnTo = returnTo;

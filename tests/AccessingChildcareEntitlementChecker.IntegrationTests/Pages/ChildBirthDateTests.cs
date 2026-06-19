@@ -72,4 +72,13 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
                     .AssertValidationError()
                     .AssertBackLink(backLinkUrl);
     }
+
+    [Fact]
+    public async Task Returns_Not_Found_For_Nonexistant_Child()
+    {
+        using var client = factory.CreateClient();
+        var url = $"/children/{ChildId}/childs-date-of-birth";
+        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+    }
 }

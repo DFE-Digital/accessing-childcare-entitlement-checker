@@ -67,4 +67,13 @@ public class ExpectantChildRelationshipTests(IntegrationTestFixture factory) : I
                     .AssertValidationError()
                     .AssertBackLink(backLinkUrl);
     }
+
+    [Fact]
+    public async Task Returns_Not_Found_For_Nonexistant_Child()
+    {
+        using var client = factory.CreateClient();
+        var url = $"/children/{ChildId}/relationship-to-expectant-child";
+        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+    }
 }

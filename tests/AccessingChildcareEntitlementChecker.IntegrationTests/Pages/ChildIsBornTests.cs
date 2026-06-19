@@ -66,4 +66,13 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
         postDocument.AssertValidationError()
                     .AssertBackLink(backLinkUrl);
     }
+
+    [Fact]
+    public async Task Returns_Not_Found_For_Nonexistant_Child()
+    {
+        using var client = factory.CreateClient();
+        var url = $"/children/{ChildId}/has-the-child-been-born";
+        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+    }
 }
