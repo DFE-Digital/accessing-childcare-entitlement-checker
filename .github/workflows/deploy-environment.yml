@@ -19,7 +19,7 @@ on:
       AZURE_TENANT_ID:
         required: true
       DEVELOPMENT_BASIC_AUTH_PASSWORD:
-        required: true
+        required: false
 
 jobs:
   deploy:

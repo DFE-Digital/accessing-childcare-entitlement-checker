@@ -126,28 +126,21 @@ jobs:
     secrets:
       DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
 
-
-
-#  deploy-prod:
-#    name: Deploy Production
-#    needs:
-#      - version
-#      - e2e-tests
-#      - a11y-tests
-#
-#    uses: ./.github/workflows/deploy-environment.yml
-#    with:
-#      environment: production
-#      version: ${{ needs.version.outputs.version }}
-#    secrets:
-#      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-#      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-#      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-#      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+  deploy-prod:
+    name: Deploy Production
+    needs: [version, e2e-tests, a11y-tests]
+    uses: ./.github/workflows/deploy-environment.yml
+    with:
+      environment: production
+      version: ${{ needs.version.outputs.version }}
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
   github-release:
     name: Create GitHub Release
-    needs: [version, deploy-stage ]
+    needs: [version, deploy-prod ]
     runs-on: ubuntu-latest
     permissions:
       contents: write
