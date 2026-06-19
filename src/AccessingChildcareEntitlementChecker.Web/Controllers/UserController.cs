@@ -12,7 +12,7 @@ public class UserController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
-    public static string Name => "User";
+    public const string Name = "User";
 
     public UserController(JourneyState journeyState, IJourneySession journeySession)
     {

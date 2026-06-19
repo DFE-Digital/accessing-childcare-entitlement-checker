@@ -9,7 +9,7 @@ public class HomeController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
-    public static string Name => "Home";
+    public const string Name = "Home";
 
     public HomeController(JourneyState journeyState, IJourneySession journeySession)
     {

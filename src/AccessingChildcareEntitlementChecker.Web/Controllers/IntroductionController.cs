@@ -10,7 +10,7 @@ public class IntroductionController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
-    public static string Name => "Introduction";
+    public const string Name = "Introduction";
 
     public IntroductionController(JourneyState journeyState, IJourneySession journeySession)
     {

@@ -12,7 +12,7 @@ public class PartnerController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
-    public static string Name => "Partner";
+    public const string Name = "Partner";
 
     public PartnerController(JourneyState journeyState, IJourneySession journeySession)
     {
