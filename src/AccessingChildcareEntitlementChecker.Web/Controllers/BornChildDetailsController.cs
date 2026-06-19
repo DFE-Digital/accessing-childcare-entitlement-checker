@@ -11,7 +11,7 @@ public class BornChildDetailsController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
-    public const string Nme = "BornChildDetails";
+    public const string Name = "BornChildDetails";
     public BornChildDetailsController(
         JourneyState journeyState,
         IJourneySession journeySession)
