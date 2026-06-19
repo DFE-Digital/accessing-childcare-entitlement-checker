@@ -8,10 +8,10 @@ public class LocationViewModel
 {
     public LocationViewModel()
     {
-
+        BackLink = string.Empty;
     }
 
-    public LocationViewModel(JourneyState journeyState, string? backlink, string? returnTo = null)
+    public LocationViewModel(JourneyState journeyState, string backlink, string? returnTo = null)
     {
         Country = journeyState.CountryOfResidence;
         BackLink = backlink;
@@ -19,7 +19,7 @@ public class LocationViewModel
     }
 
     [BindNever]
-    public string? BackLink { get; set; }
+    public string BackLink { get; set; }
 
     public string? ReturnTo { get; set; }
 

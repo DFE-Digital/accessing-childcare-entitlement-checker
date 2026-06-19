@@ -3,6 +3,7 @@ using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
@@ -20,6 +21,8 @@ public class BornChildDetailsControllerTests
         _journeyState.Children[childId] = new Child(childId, "Child A");
         _journeySession = Substitute.For<IJourneySession>();
         _controller = new BornChildDetailsController(_journeyState, _journeySession);
+        _controller.Url = Substitute.For<IUrlHelper>();
+        _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 
     [Fact]

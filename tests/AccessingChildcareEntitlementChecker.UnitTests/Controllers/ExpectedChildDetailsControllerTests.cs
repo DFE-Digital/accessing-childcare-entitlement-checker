@@ -1,9 +1,10 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
-using AccessingChildcareEntitlementChecker.Web.Services;
-using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -20,6 +21,8 @@ public class ExpectedChildDetailsControllerTests
         _journeyState.Children[childId] = new Child(childId, "Child A");
         _journeySession = Substitute.For<IJourneySession>();
         _controller = new ExpectedChildDetailsController(_journeyState, _journeySession);
+        _controller.Url = Substitute.For<IUrlHelper>();
+        _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 
     [Fact]

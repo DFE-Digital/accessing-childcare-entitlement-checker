@@ -13,7 +13,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(null, $"/children/add-child-details/{ChildId}")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Get_ChildIsBorn_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {

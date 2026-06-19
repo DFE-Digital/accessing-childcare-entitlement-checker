@@ -50,13 +50,14 @@ public class HomeController : Controller
         return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name);
     }
 
-    private string? GetLocationBackLink(string? returnTo)
+    private string GetLocationBackLink(string? returnTo)
     {
-        if (returnTo == ReturnTo.CheckAnswers)
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
         {
-            return Url.Action(nameof(SummaryController.CheckAnswers), SummaryController.Name);
+            return url;
         }
 
-        return Url.Action(nameof(Start));
+        return Url.Action(nameof(Start))
+            ?? throw new InvalidOperationException("Unable to generate back link");
     }
 }

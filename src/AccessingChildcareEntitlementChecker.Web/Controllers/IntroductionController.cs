@@ -89,33 +89,25 @@ public class IntroductionController : Controller
             new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
-    private string? GetChildNameBackLink(string? childId, string? returnTo)
+    private string GetChildNameBackLink(string? childId, string? returnTo)
     {
-        if (returnTo == ReturnTo.CheckAnswers)
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
         {
-            return Url.Action(nameof(SummaryController.CheckAnswers), SummaryController.Name, new { childId });
+            return url;
         }
 
-        if (returnTo == ReturnTo.CheckChildDetails)
-        {
-            return Url.Action(nameof(SummaryController.CheckChildDetails), SummaryController.Name, new { childId });
-        }
-
-        return Url.Action(nameof(HomeController.Location), HomeController.Name);
+        return Url.Action(nameof(HomeController.Location), HomeController.Name)
+            ?? throw new InvalidOperationException("Unable to generate back link");
     }
 
-    private string? GetIsChildBornBackLink(string childId, string? returnTo)
+    private string GetIsChildBornBackLink(string childId, string? returnTo)
     {
-        if (returnTo == ReturnTo.CheckAnswers)
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
         {
-            return Url.Action(nameof(SummaryController.CheckAnswers), SummaryController.Name, new { childId });
+            return url;
         }
 
-        if (returnTo == ReturnTo.CheckChildDetails)
-        {
-            return Url.Action(nameof(SummaryController.CheckChildDetails), SummaryController.Name, new { childId });
-        }
-
-        return Url.Action(nameof(ChildName), new { childId });
+        return Url.Action(nameof(ChildName), new { childId })
+            ?? throw new InvalidOperationException("Unable to generate back link");
     }
 }

@@ -5,12 +5,12 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
-public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
+public class ExpectantChildRelationshipTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
 
     [Theory]
-    [InlineData(null, $"/children/{ChildId}/relationship-to-child")]
+    [InlineData(null, $"/children/{ChildId}/expectant-childs-due-date")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
@@ -26,16 +26,16 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
         });
 
-        var url = $"/children/{ChildId}/child-benefits?returnTo={returnTo}";
+        var url = $"/children/{ChildId}/relationship-to-expectant-child?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertCheckboxCount(6)
+        doc.AssertRadioButtonCount(3)
             .AssertBackLink(backLinkUrl);
     }
 
     [Theory]
-    [InlineData(null, $"/children/{ChildId}/relationship-to-child")]
+    [InlineData(null, $"/children/{ChildId}/expectant-childs-due-date")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Post_With_Tomorrows_Date_Fails_Validation_And_Preserves_Childs_Name_With_BackLink(string? returnTo, string backLinkUrl)
@@ -51,7 +51,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
         });
 
-        var url = $"/children/{ChildId}/child-benefits?returnTo={returnTo}";
+        var url = $"/children/{ChildId}/relationship-to-expectant-child?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -61,13 +61,9 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
         Assert.NotNull(cookie);
 
         var tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
-               new KeyValuePair<string, string>("ChildSupportOptions", "ArmedForcesIndependencePayment"),
-                new KeyValuePair<string, string>("ChildSupportOptions", "NoneOfTheseApply"),
-            ],
-           TestContext.Current.CancellationToken);
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [], TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
-        postDocument.AssertHeader("Does Sara get any of the following support?")
+        postDocument.AssertHeader("What will your relationship be to this child?")
                     .AssertValidationError()
                     .AssertBackLink(backLinkUrl);
     }
