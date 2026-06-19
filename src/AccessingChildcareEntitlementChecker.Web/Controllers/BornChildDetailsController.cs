@@ -28,7 +28,8 @@ public class BornChildDetailsController : Controller
             return NotFound();
         }
 
-        return View(new ChildBirthDateViewModel(child) { ReturnTo = returnTo });
+        var backLink = GetChildBirthDateBackLink(childId, returnTo);
+        return View(new ChildBirthDateViewModel(child, backLink, returnTo));
     }
 
     [HttpPost]
@@ -42,6 +43,7 @@ public class BornChildDetailsController : Controller
         if (!ModelState.IsValid)
         {
             model.ChildName = child.Name;
+            model.BackLink = GetChildBirthDateBackLink(model.ChildId, model.ReturnTo);
             return View(model);
         }
 
@@ -65,7 +67,8 @@ public class BornChildDetailsController : Controller
             return NotFound();
         }
 
-        return View(new ChildRelationshipViewModel(child) { ReturnTo = returnTo });
+        var backLink = GetChildRelationshipBackLink(childId, returnTo);
+        return View(new ChildRelationshipViewModel(child, backLink, returnTo));
     }
 
     [HttpPost]
@@ -79,6 +82,7 @@ public class BornChildDetailsController : Controller
         if (!ModelState.IsValid)
         {
             model.ChildName = child.Name;
+            model.BackLink = GetChildRelationshipBackLink(model.ChildId, model.ReturnTo);
             return View(model);
         }
 
@@ -102,7 +106,8 @@ public class BornChildDetailsController : Controller
             return NotFound();
         }
 
-        return View(new ChildSupportViewModel(child) { ReturnTo = returnTo });
+        var backLink = GetChildSupportBackLink(childId, returnTo);
+        return View(new ChildSupportViewModel(child, backLink, returnTo));
     }
 
     [HttpPost]
@@ -116,11 +121,48 @@ public class BornChildDetailsController : Controller
         if (!ModelState.IsValid)
         {
             model.ChildName = child.Name;
+            model.BackLink = GetChildSupportBackLink(model.ChildId, model.ReturnTo);
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
         return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
+    }
+
+    private string GetChildBirthDateBackLink(string childId, string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
+        {
+            return url;
+        }
+
+        return this.Url.Action(
+            nameof(IntroductionController.IsChildBorn),
+            IntroductionController.Name,
+            new { childId })
+            ?? throw new InvalidOperationException("Unable to generate back link");
+    }
+
+    private string GetChildRelationshipBackLink(string childId, string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
+        {
+            return url;
+        }
+
+        return this.Url.Action(nameof(ChildBirthDate), Name, new { childId })
+            ?? throw new InvalidOperationException("Unable to generate back link");
+    }
+
+    private string GetChildSupportBackLink(string childId, string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
+        {
+            return url;
+        }
+
+        return this.Url.Action(nameof(ChildRelationship), Name, new { childId })
+            ?? throw new InvalidOperationException("Unable to generate back link");
     }
 }

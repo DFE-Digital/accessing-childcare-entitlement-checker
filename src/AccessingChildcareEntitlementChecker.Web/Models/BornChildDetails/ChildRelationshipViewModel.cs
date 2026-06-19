@@ -7,19 +7,25 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 
 public class ChildRelationshipViewModel : IValidatableObject
 {
-    public string? ReturnTo { get; set; }
-
     public ChildRelationshipViewModel()
     {
         ChildId = string.Empty;
+        BackLink = string.Empty;
     }
 
-    public ChildRelationshipViewModel(Child child)
+    public ChildRelationshipViewModel(Child child, string backLink, string? returnTo = null)
     {
         ChildId = child.ChildId;
-        ChildName = child.Name;
         Relationship = child.BornRelationship;
+        ChildName = child.Name;
+        BackLink = backLink;
+        ReturnTo = returnTo;
     }
+
+    [BindNever]
+    public string BackLink { get; set; }
+
+    public string? ReturnTo { get; set; }
 
     public string ChildId { get; set; }
 

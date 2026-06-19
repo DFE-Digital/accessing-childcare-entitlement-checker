@@ -11,7 +11,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     [InlineData(null, "/where-do-you-live")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Get_ChildName_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 

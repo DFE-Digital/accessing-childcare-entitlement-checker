@@ -8,10 +8,10 @@ public class ChildNameViewModel
 {
     public ChildNameViewModel()
     {
-
+        BackLink = string.Empty;
     }
 
-    public ChildNameViewModel(Child? child, string? backLink, string? returnTo = null)
+    public ChildNameViewModel(Child? child, string backLink, string? returnTo = null)
     {
         ChildId = child?.ChildId;
         ChildName = child?.Name;
@@ -20,7 +20,7 @@ public class ChildNameViewModel
     }
 
     [BindNever]
-    public string? BackLink { get; set; }
+    public string BackLink { get; set; }
 
     public string? ReturnTo { get; set; }
 

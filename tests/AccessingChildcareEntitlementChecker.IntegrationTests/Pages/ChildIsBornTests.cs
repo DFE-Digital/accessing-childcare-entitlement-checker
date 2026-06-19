@@ -13,7 +13,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(null, $"/children/add-child-details/{ChildId}")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Get_ChildIsBorn_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -65,5 +65,14 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
         postDocument.AssertValidationError()
                     .AssertBackLink(backLinkUrl);
+    }
+
+    [Fact]
+    public async Task Returns_Not_Found_For_Nonexistant_Child()
+    {
+        using var client = factory.CreateClient();
+        var url = $"/children/{ChildId}/has-the-child-been-born";
+        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }
 }

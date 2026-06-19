@@ -40,7 +40,7 @@ public class ChildDueDateViewModelTests
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));
         Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
-        var model = new ChildDueDateViewModel(child)
+        var model = new ChildDueDateViewModel(child, "backLink")
         {
             ChildDueDate = DateOnly.FromDateTime(now.AddDays(-1)),
         };

@@ -9,18 +9,19 @@ public class ChildIsBornViewModel
     public ChildIsBornViewModel()
     {
         ChildId = string.Empty;
+        BackLink = string.Empty;
     }
 
-    public ChildIsBornViewModel(Child? child, string? backLink, string? returnTo = null)
+    public ChildIsBornViewModel(Child child, string backLink, string? returnTo = null)
     {
-        ChildId = child?.ChildId ?? string.Empty;
-        ChildIsBorn = child?.BirthStatus;
+        ChildId = child.ChildId;
+        ChildIsBorn = child.BirthStatus;
         BackLink = backLink;
         ReturnTo = returnTo;
     }
 
     [BindNever]
-    public string? BackLink { get; set; }
+    public string BackLink { get; set; }
 
     public string? ReturnTo { get; set; }
 
