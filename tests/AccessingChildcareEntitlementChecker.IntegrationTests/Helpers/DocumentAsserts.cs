@@ -27,6 +27,13 @@ public static class DocumentAsserts
         return document;
     }
 
+    public static IDocument AssertTextInput(this IDocument document)
+    {
+        var texts = document.QuerySelectorAll($"input[type=text]");
+        Assert.Single(texts);
+        return document;
+    }
+
     public static IDocument AssertHeader(this IDocument document, string expectedHeader)
     {
         var headerText = document.QuerySelector("h1")?.TextContent.Trim();

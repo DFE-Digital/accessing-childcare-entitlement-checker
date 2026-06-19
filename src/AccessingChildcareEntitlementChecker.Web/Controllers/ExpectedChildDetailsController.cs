@@ -11,6 +11,8 @@ public class ExpectedChildDetailsController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
+    public const string Name = "ExpectedChildDetails";
+
     public ExpectedChildDetailsController(
         JourneyState journeyState,
         IJourneySession journeySession)
