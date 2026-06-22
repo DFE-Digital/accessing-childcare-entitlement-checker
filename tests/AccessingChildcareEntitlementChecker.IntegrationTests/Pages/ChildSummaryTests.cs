@@ -59,7 +59,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     [InlineData(ChildId, $"/children/{ChildId}/child-benefits")]
     public async Task Get_BackLink_Is_To_Specified_Child(string arrivedFromChildId, string expectedUrl)
     {
-        
+
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
