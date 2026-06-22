@@ -5,6 +5,7 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -39,6 +40,8 @@ public class SummaryControllerTests
         _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory);
         _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
         _controller.MetadataProvider = metadataProvider;
+        _controller.Url = Substitute.For<IUrlHelper>();
+        _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 
     [Fact]
@@ -56,7 +59,7 @@ public class SummaryControllerTests
     [Fact]
     public void CheckChildDetails_ReturnsView_WithFromChild()
     {
-        var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails(fromChildId: "child-a"));
+        var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails(childId: "child-a"));
         var model = Assert.IsType<CheckChildDetailsViewModel>(result.Model);
         Assert.Equal("child-a", model.LastEditedChild!.ChildId);
     }

@@ -139,7 +139,6 @@ public class SummaryController : Controller
 
     private static Child? ResolveLastEditedChild(JourneyState journeyState, string? childId)
     {
-
         if (childId is not null && journeyState.Children.TryGetValue(childId, out var child))
         {
             return child;
@@ -152,7 +151,7 @@ public class SummaryController : Controller
     {
         if (child?.BirthStatus == BirthStatus.Born)
         {
-            return this.Url.Action(nameof(BornChildDetailsController.ChildRelationship), BornChildDetailsController.Name, new { childId = child.ChildId })
+            return this.Url.Action(nameof(BornChildDetailsController.ChildSupport), BornChildDetailsController.Name, new { childId = child.ChildId })
                 ?? throw new InvalidOperationException("Unable to generate back link");
         }
         else if (child?.BirthStatus == BirthStatus.Due)

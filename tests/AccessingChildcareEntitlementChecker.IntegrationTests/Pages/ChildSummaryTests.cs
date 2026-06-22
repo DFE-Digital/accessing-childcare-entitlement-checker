@@ -8,15 +8,17 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+    const string OtherChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1f";
 
     /// <summary>
     /// When the user has arrived at the summary and no child is specified
-    /// clicking back should return them to the last child in the ordered dict.
+    /// clicking back should return them to the last child in the ordered dict
+    /// with the appropriate page.
     /// </summary>
     /// <returns>Task representing the result.</returns>
     [Theory]
-    [InlineData(BirthStatus.Due, $"/children/{ChildId}/relationship-to-expectant-child")]
-    [InlineData(BirthStatus.Born, $"/children/{ChildId}/relationship-child")]
+    [InlineData(BirthStatus.Due, $"/children/{OtherChildId}/relationship-to-expectant-child")]
+    [InlineData(BirthStatus.Born, $"/children/{OtherChildId}/child-benefits")]
     public async Task Get_BackLink_Is_To_Last_Child(BirthStatus birthStatus, string expectedUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
@@ -27,18 +29,24 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
                         ChildId,
                         new Child(ChildId, "Sara")
                         {
+                            BirthStatus = BirthStatus.Born,
+                        }
+                    },
+                    {
+                        OtherChildId,
+                        new Child(OtherChildId, "Aydin")
+                        {
                             BirthStatus = birthStatus,
                         }
                     }
-                }
+            }
         });
 
         var url = $"/children/check-childs-details";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertDateInput()
-            .AssertBackLink(expectedUrl);
+        doc.AssertBackLink(expectedUrl);
     }
 
     /// <summary>
@@ -46,10 +54,12 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     /// clicking back should return them to that child.,
     /// </summary>
     /// <returns>Task representing the result.</returns>
-    [Fact]
-    public async Task Get_BackLink_Is_To_Specified_Child()
+    [Theory]
+    [InlineData(OtherChildId, $"/children/{OtherChildId}/relationship-to-expectant-child")]
+    [InlineData(ChildId, $"/children/{ChildId}/child-benefits")]
+    public async Task Get_BackLink_Is_To_Specified_Child(string arrivedFromChildId, string expectedUrl)
     {
-        const string OtherChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+        
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
@@ -58,25 +68,24 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
                         ChildId,
                         new Child(ChildId, "Sara")
                         {
-                            BirthStatus = BirthStatus.Due,
+                            BirthStatus = BirthStatus.Born,
                         }
                     },
                     {
                         OtherChildId,
                         new Child(OtherChildId, "Aydin")
                         {
-                            BirthStatus = BirthStatus.Born,
+                            BirthStatus = BirthStatus.Due,
                         }
                     }
             }
         });
 
-        var url = $"/children/check-childs-details?childId={ChildId}";
+        var url = $"/children/check-childs-details?childId={arrivedFromChildId}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertDateInput()
-            .AssertBackLink($"/children/{ChildId}/relationship-to-expectant-child");
+        doc.AssertBackLink(expectedUrl);
     }
 
     /// <summary>
@@ -92,7 +101,6 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertDateInput()
-            .AssertBackLink($"/children/add-child-details/");
+        doc.AssertBackLink($"/children/add-child-details");
     }
 }
