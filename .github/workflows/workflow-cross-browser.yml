@@ -29,7 +29,7 @@ jobs:
       FD_ENDPOINT: s279t01-uks-cec-web-fd-endpoint
     steps:
       - name: Checkout Git metadata
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           sparse-checkout: .
           sparse-checkout-cone-mode: false
