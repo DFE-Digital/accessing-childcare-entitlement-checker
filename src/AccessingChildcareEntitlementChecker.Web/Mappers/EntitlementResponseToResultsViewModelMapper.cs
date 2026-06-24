@@ -8,7 +8,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Mappers;
 
 public class EntitlementResponseToResultsViewModelMapper
 {
-
+    private const string UnknownSchemeCodeMessage = "Unknown scheme code";
     private readonly IStringLocalizer _localizer;
 
     public EntitlementResponseToResultsViewModelMapper(
@@ -63,6 +63,8 @@ public class EntitlementResponseToResultsViewModelMapper
 
     private string GetWhenToApply(SchemeResultDto schemeResult, ChildResultDto childResult)
     {
+        var now = _localizer["WhenToApply_Now"];
+
         if (schemeResult.SchemeCode == SchemeCode.FifteenHoursUniversal)
         {
             return _localizer["WhenToApply_AskProviderOrCouncil"];
@@ -70,24 +72,24 @@ public class EntitlementResponseToResultsViewModelMapper
 
         if (schemeResult.SchemeCode == SchemeCode.TaxFreeChildcare)
         {
-            return schemeResult.EligibleNow ? _localizer["WhenToApply_Now"] : _localizer["WhenToApply_WhenBorn"];
+            return schemeResult.EligibleNow ? now : _localizer["WhenToApply_WhenBorn"];
         }
 
         if (schemeResult.SchemeCode == SchemeCode.UniversalCreditChildcare)
         {
-            return schemeResult.EligibleNow ? _localizer["WhenToApply_Now"] : _localizer["WhenToApply_WhenBorn"];
+            return schemeResult.EligibleNow ? now : _localizer["WhenToApply_WhenBorn"];
         }
 
         if (schemeResult.SchemeCode == SchemeCode.FifteenHoursForDisadvantagedChildren)
         {
-            return schemeResult.EligibleNow ? _localizer["WhenToApply_Now"] : _localizer["WhenToApply_FromDate", schemeResult.ApplyFromDate!.Value];
+            return schemeResult.EligibleNow ? now : _localizer["WhenToApply_FromDate", schemeResult.ApplyFromDate!.Value];
         }
 
         if (schemeResult.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies)
         {
             if (schemeResult.EligibleNow)
             {
-                return _localizer["WhenToApply_Now"];
+                return now;
             }
 
             if (!childResult.IsBorn)
@@ -100,13 +102,10 @@ public class EntitlementResponseToResultsViewModelMapper
 
         }
 
-        throw new ArgumentOutOfRangeException(
-            nameof(schemeResult.SchemeCode),
-            schemeResult.SchemeCode,
-            "Unknown scheme code");
+        throw new InvalidOperationException($"{UnknownSchemeCodeMessage}: {schemeResult.SchemeCode}");
     }
 
-    private bool GetThirtyHourWarning(ChildResultDto childResult)
+    private static bool GetThirtyHourWarning(ChildResultDto childResult)
     {
         var schemes = childResult.Schemes
             .Select(s => s.SchemeCode)
@@ -120,7 +119,7 @@ public class EntitlementResponseToResultsViewModelMapper
 
     }
 
-    private int GetSchemeOrder(SchemeCode schemeCode)
+    private static int GetSchemeOrder(SchemeCode schemeCode)
     {
         return schemeCode switch
         {
@@ -147,11 +146,11 @@ public class EntitlementResponseToResultsViewModelMapper
             _ => throw new ArgumentOutOfRangeException(
                 nameof(schemeCode),
                 schemeCode,
-                "Unknown scheme code")
+                UnknownSchemeCodeMessage)
         };
     }
 
-    private string GetSchemeUrl(SchemeCode schemeCode)
+    private static string GetSchemeUrl(SchemeCode schemeCode)
     {
         return schemeCode switch
         {
@@ -164,7 +163,7 @@ public class EntitlementResponseToResultsViewModelMapper
             _ => throw new ArgumentOutOfRangeException(
                 nameof(schemeCode),
                 schemeCode,
-                "Unknown scheme code")
+                UnknownSchemeCodeMessage)
         };
     }
 
@@ -181,7 +180,7 @@ public class EntitlementResponseToResultsViewModelMapper
             _ => throw new ArgumentOutOfRangeException(
                 nameof(schemeCode),
                 schemeCode,
-                "Unknown scheme code")
+                UnknownSchemeCodeMessage)
         };
     }
 
