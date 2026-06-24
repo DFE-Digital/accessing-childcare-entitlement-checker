@@ -51,7 +51,7 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
- Terraform local state
+# Terraform local state
 terraform.tfstate*
 .terraform.lock.hcl
 
