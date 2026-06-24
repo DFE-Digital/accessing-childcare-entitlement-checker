@@ -392,14 +392,10 @@ public class PartnerController : Controller
             return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
-        if (_journeyState.Nationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+        if (_journeyState.Nationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland
+            && _journeyState.SettledStatus == SettledStatusOption.Yes)
         {
-            if (_journeyState.SettledStatus == SettledStatusOption.Yes)
-            {
-                return Url.ActionOrThrow(nameof(PartnerAge));
-            }
-
-            return Url.ActionOrThrow(nameof(PartnerSettledStatus));
+            return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
         if (_journeyState.PartnerNationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
