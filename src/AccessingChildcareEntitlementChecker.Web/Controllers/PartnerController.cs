@@ -387,18 +387,23 @@ public class PartnerController : Controller
             return url;
         }
 
-        if (_journeyState.PartnerNationality == NationalityOption.BritishOrIrishCitizen)
+        if (_journeyState.Nationality == NationalityOption.BritishOrIrishCitizen)
         {
             return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
-        if (_journeyState.PartnerNationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+        if (_journeyState.Nationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
         {
             if (_journeyState.SettledStatus == SettledStatusOption.Yes)
             {
                 return Url.ActionOrThrow(nameof(PartnerAge));
             }
 
+            return Url.ActionOrThrow(nameof(PartnerSettledStatus));
+        }
+
+        if (_journeyState.PartnerNationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+        {
             return Url.ActionOrThrow(nameof(PartnerSettledStatus));
         }
 
