@@ -2,7 +2,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   name                = "${local.prefix}webfirewallpolicy"
   resource_group_name = azurerm_resource_group.web-rg.name
   tags                = local.common_tags
-  mode                = "Prevention"
+  mode                = var.waf_mode
   sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
 
   dynamic "managed_rule" {

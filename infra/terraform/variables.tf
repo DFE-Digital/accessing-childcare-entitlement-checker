@@ -97,3 +97,9 @@ variable "location_short_code" {
   type        = string
   default     = "uks"
 }
+
+variable "waf_mode" {
+  description = "The mode the WAF should be deployed in (Prevention or Detection)"
+  type        = string
+  default     = "Prevention"
+}

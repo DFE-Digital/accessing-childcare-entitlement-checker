@@ -14,3 +14,4 @@ webapp_always_on            = false
 enable_web_test             = false
 location                    = "uksouth"
 location_short_code         = "uks"
+waf_mode                    = "Prevention"

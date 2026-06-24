@@ -1,4 +1,4 @@
-elz_environment            = "Prod"
+elz_environment             = "Prod"
 environment_prefix          = "p01"
 aspnetcore_environment      = "Production"
 azure_frontdoor_sku         = "Premium"
@@ -14,3 +14,4 @@ webapp_always_on            = true
 enable_web_test             = true
 location                    = "uksouth"
 location_short_code         = "uks"
+waf_mode                    = "Detection"
