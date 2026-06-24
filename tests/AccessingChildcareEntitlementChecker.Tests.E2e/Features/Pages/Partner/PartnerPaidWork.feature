@@ -48,10 +48,20 @@ Scenario: Continue with No
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "Which of these best describes your partners nationality?"
+	Then the page header is "What is your partner's age?"
 
 Scenario: Back navigation from Does your partner have settled or pre-settled status under the EU Settlement Scheme?
-	Given I answer "Which of these best describes your partners nationality?" as "Citizen of an EU country, EEA country or Switzerland"
-	And I answer "Does your partner have settled or pre-settled status under the EU Settlement Scheme?" as "Yes"
+	Given I answer "What is your nationality?" as "Citizen of a different country"
+	And I answer questions as follows:
+		| Question                                                                             | Answer                                               |
+		| Are you in paid work?                                                                | No                                                   |
+		| Does your household receive universal credit?                                        | Yes                                                  |
+		| Do you get any of these benefits?                                                    | Carer's Allowance                                    |
+		| Do you already get any of this childcare support?                                    | Childcare vouchers                                   |
+		| How do you receive your childcare vouchers?                                          | A workplace nursery scheme                           |
+		| Do you live with a partner?                                                          | Yes                                                  |
+		| What is your partner's age?                                                          | 21 or over                                           |
+		| Which of these best describes your partners nationality?                             | Citizen of an EU country, EEA country or Switzerland |
+		| Does your partner have settled or pre-settled status under the EU Settlement Scheme? | Yes                                                  |
 	When I click the back link
 	Then the page header is "Does your partner have settled or pre-settled status under the EU Settlement Scheme?"
