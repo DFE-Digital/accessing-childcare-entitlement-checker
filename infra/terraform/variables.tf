@@ -85,3 +85,21 @@ variable "enable_web_test" {
   type        = bool
   default     = false
 }
+
+variable "location" {
+  description = "The Azure region to deploy resources into"
+  type        = string
+  default     = "uksouth"
+}
+
+variable "location_short_code" {
+  description = "The short code for the Azure region (e.g. uks)"
+  type        = string
+  default     = "uks"
+}
+
+variable "waf_mode" {
+  description = "The mode the WAF should be deployed in (Prevention or Detection)"
+  type        = string
+  default     = "Prevention"
+}

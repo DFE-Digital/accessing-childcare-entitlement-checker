@@ -16,21 +16,14 @@ resource "azurerm_application_insights" "application-insights" {
   tags                = local.common_tags
 }
 
-resource "random_uuid" "idgen" {
-}
-
-resource "random_uuid" "guidgen" {
-}
-
-resource "azurerm_application_insights_web_test" "web-app-test" {
+resource "azurerm_application_insights_standard_web_test" "web-app-test" {
   count = var.enable_web_test ? 1 : 0
 
   name                    = "${local.service_prefix}-web-app-test"
   description             = "Web application availability test"
-  resource_group_name     = azurerm_resource_group.web-rg.location
+  resource_group_name     = azurerm_resource_group.web-rg.name
   location                = azurerm_resource_group.web-rg.location
   application_insights_id = azurerm_application_insights.application-insights.id
-  kind                    = "ping"
   frequency               = 600
   timeout                 = 60
   enabled                 = true
@@ -41,11 +34,11 @@ resource "azurerm_application_insights_web_test" "web-app-test" {
     ignore_changes = [tags]
   }
 
-  configuration = <<XML
-<WebTest Name="${local.service_prefix}-web-app-test" Id="${random_uuid.idgen.result}" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="60" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
-  <Items>
-    <Request Method="GET" Guid="${random_uuid.guidgen.result}" Version="1.1" Url="https://${local.host_name}" ThinkTime="0" Timeout="60" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="60" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
-  </Items>
-</WebTest>
-XML
+  request {
+    url = "https://${local.host_name}"
+  }
+
+  validation_rules {
+    expected_status_code = 200
+  }
 }

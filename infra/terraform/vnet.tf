@@ -1,6 +1,6 @@
 resource "azurerm_virtual_network" "vnet" {
   name                = "${local.service_prefix}-vnet"
-  location            = local.location
+  location            = var.location
   resource_group_name = azurerm_resource_group.web-rg.name
   address_space       = ["10.0.0.0/16"]
   tags                = local.common_tags
@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "vnet" {
 
 resource "azurerm_network_security_group" "app_nsg" {
   name                = "${local.service_prefix}-app-nsg"
-  location            = local.location
+  location            = var.location
   resource_group_name = azurerm_resource_group.web-rg.name
   tags                = local.common_tags
 }
@@ -44,7 +44,7 @@ resource "azapi_resource" "app_subnet" {
 
 resource "azurerm_network_security_group" "pe_nsg" {
   name                = "${local.service_prefix}-pe-nsg"
-  location            = local.location
+  location            = var.location
   resource_group_name = azurerm_resource_group.web-rg.name
   tags                = local.common_tags
 }
@@ -67,5 +67,6 @@ resource "azapi_resource" "pe_subnet" {
   depends_on = [
     azurerm_network_security_group.pe_nsg,
     azurerm_virtual_network.vnet,
+    azapi_resource.app_subnet
   ]
 }

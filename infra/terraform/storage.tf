@@ -4,7 +4,7 @@ resource "azurerm_storage_account" "deployment_storage" {
   #checkov:skip=CKV_AZURE_206: ZRS is intentionally used to provide zonal resilience aligned with the App Service architecture.
   name                            = "${local.prefix}webappdeploy"
   resource_group_name             = azurerm_resource_group.web-rg.name
-  location                        = local.location
+  location                        = var.location
   account_tier                    = "Standard"
   account_replication_type        = "ZRS"
   public_network_access_enabled   = false
@@ -71,7 +71,7 @@ resource "azurerm_private_dns_zone" "blob_dns_zone" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "blob_dns_link" {
-  name                  = "${local.service_prefix}-blob-dns-link"
+  name                  = "${local.prefix}-blob-dns-link"
   resource_group_name   = azurerm_resource_group.web-rg.name
   private_dns_zone_name = azurerm_private_dns_zone.blob_dns_zone.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
@@ -80,7 +80,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "blob_dns_link" {
 
 resource "azurerm_private_endpoint" "deployment_pe" {
   name                = "${local.service_prefix}-deployment-pe"
-  location            = local.location
+  location            = var.location
   resource_group_name = azurerm_resource_group.web-rg.name
   subnet_id           = azapi_resource.pe_subnet.id
   tags                = local.common_tags
