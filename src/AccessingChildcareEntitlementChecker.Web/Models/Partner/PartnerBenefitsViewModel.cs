@@ -1,4 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,16 +7,22 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.Partner;
 
 public class PartnerBenefitsViewModel : IValidatableObject
 {
-    public string? ReturnTo { get; set; }
-
     public PartnerBenefitsViewModel()
     {
+        BackLink = string.Empty;
     }
 
-    public PartnerBenefitsViewModel(JourneyState journeyState)
+    public PartnerBenefitsViewModel(JourneyState journeyState, string backLink, string? returnTo = null)
     {
         PartnerBenefits = journeyState.PartnerBenefits;
+        BackLink = backLink;
+        ReturnTo = returnTo;
     }
+
+    [BindNever]
+    public string BackLink { get; set; }
+
+    public string? ReturnTo { get; set; }
 
     [Display(Name = "Does your partner get any of these benefits?", Description = "Select all that apply.")]
     public List<PartnerBenefitsOption> PartnerBenefits { get; set; } = [];
