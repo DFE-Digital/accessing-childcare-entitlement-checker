@@ -5,4 +5,5 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.Summary;
 public record CheckChildDetailsViewModel(
     IReadOnlyList<ChildSummaryViewModel> Children,
     bool HasChildren,
-    Child? LastEditedChild);
+    Child? LastEditedChild,
+    string BackLink);

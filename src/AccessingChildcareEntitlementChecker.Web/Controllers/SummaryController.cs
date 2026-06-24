@@ -30,12 +30,13 @@ public class SummaryController : Controller
     }
 
     [HttpGet]
-    public ViewResult CheckChildDetails(string? fromChildId = null)
+    public ViewResult CheckChildDetails(string? childId = null)
     {
         var summaries = _journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckChildDetails)).ToList().AsReadOnly();
         var hasChildren = _journeyState.Children.Count > 0;
-        var lastEditedChild = ResolveLastEditedChild(_journeyState, fromChildId);
-        return View(new CheckChildDetailsViewModel(summaries, hasChildren, lastEditedChild));
+        var lastEditedChild = ResolveLastEditedChild(_journeyState, childId);
+        var backLink = GetCheckChildDetailsBackLink(lastEditedChild);
+        return View(new CheckChildDetailsViewModel(summaries, hasChildren, lastEditedChild, backLink));
     }
 
     [HttpGet]
@@ -136,14 +137,30 @@ public class SummaryController : Controller
         return new ChildSummaryViewModel(child.ChildId, child.Name, returnTo, summaryRows);
     }
 
-    private static Child? ResolveLastEditedChild(JourneyState journeyState, string? fromChildId)
+    private static Child? ResolveLastEditedChild(JourneyState journeyState, string? childId)
     {
-
-        if (fromChildId is not null && journeyState.Children.TryGetValue(fromChildId, out var fromChild))
+        if (childId is not null && journeyState.Children.TryGetValue(childId, out var child))
         {
-            return fromChild;
+            return child;
         }
 
         return journeyState.Children.Values.LastOrDefault();
+    }
+
+    private string GetCheckChildDetailsBackLink(Child? child)
+    {
+        if (child?.BirthStatus == BirthStatus.Born)
+        {
+            return this.Url.Action(nameof(BornChildDetailsController.ChildSupport), BornChildDetailsController.Name, new { childId = child.ChildId })
+                ?? throw new InvalidOperationException("Unable to generate back link");
+        }
+        else if (child?.BirthStatus == BirthStatus.Due)
+        {
+            return this.Url.Action(nameof(ExpectedChildDetailsController.ExpectedChildRelationship), ExpectedChildDetailsController.Name, new { childId = child.ChildId })
+                ?? throw new InvalidOperationException("Unable to generate back link");
+        }
+
+        return this.Url.Action(nameof(IntroductionController.ChildName), IntroductionController.Name)
+                   ?? throw new InvalidOperationException("Unable to generate back link");
     }
 }
