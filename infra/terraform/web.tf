@@ -1,5 +1,5 @@
 resource "azurerm_service_plan" "web-app-service-plan" {
-  location               = local.location
+  location               = var.location
   name                   = "${local.service_prefix}-web-app-service-plan"
   resource_group_name    = azurerm_resource_group.web-rg.name
   os_type                = "Linux"
@@ -17,7 +17,7 @@ resource "azurerm_linux_web_app" "web-app-service" {
   #checkov:skip=CKV_AZURE_66: Application Insights provides request tracing and diagnostics
   #checkov:skip=CKV_AZURE_65: Application Insights provides exception tracking and diagnostics
   service_plan_id               = azurerm_service_plan.web-app-service-plan.id
-  location                      = local.location
+  location                      = var.location
   name                          = "${local.service_prefix}-web-app-service"
   resource_group_name           = azurerm_resource_group.web-rg.name
   https_only                    = true
@@ -136,7 +136,7 @@ resource "azurerm_private_dns_zone" "web_dns_zone" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "web_dns_link" {
-  name                  = "${local.service_prefix}-web-dns-link"
+  name                  = "${local.prefix}-web-dns-link"
   resource_group_name   = azurerm_resource_group.web-rg.name
   private_dns_zone_name = azurerm_private_dns_zone.web_dns_zone.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
@@ -145,7 +145,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "web_dns_link" {
 
 resource "azurerm_private_endpoint" "web_pe" {
   name                = "${local.service_prefix}-web-pe"
-  location            = local.location
+  location            = var.location
   resource_group_name = azurerm_resource_group.web-rg.name
   subnet_id           = azapi_resource.pe_subnet.id
   tags                = local.common_tags
@@ -170,7 +170,7 @@ resource "azurerm_private_endpoint" "web_pe" {
 resource "azurerm_private_endpoint" "staging_pe" {
   count               = var.webapp_enable_staging_slot ? 1 : 0
   name                = "${local.service_prefix}-staging-pe"
-  location            = local.location
+  location            = var.location
   resource_group_name = azurerm_resource_group.web-rg.name
   subnet_id           = azapi_resource.pe_subnet.id
   tags                = local.common_tags

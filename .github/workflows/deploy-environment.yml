@@ -106,6 +106,7 @@ jobs:
         scope: subscription
         region: uksouth
         template: ./infra/bicep/main.bicep
+        deploymentName: terraform-${{ inputs.environment }}
         parameters: ./infra/bicep/environments/${{ inputs.environment }}.params.json workflowPrincipalId=${{ steps.get-sp-id.outputs.object_id }}
 
     - name: Set up Terraform
@@ -194,24 +195,45 @@ jobs:
               "retain=true" \
               "sha=${{ github.sha }}"
 
-    - name: Deploy package to Web App
+    - name: Update WEBSITE_RUN_FROM_PACKAGE
+      env:
+        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
+        APP_NAME: ${{ steps.tf-outputs.outputs.web_app_name }}
+        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
+        CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
+      run: |
+        PACKAGE_URL="https://${ACC_NAME}.blob.core.windows.net/${CONTAINER}/package-${{ github.sha }}.zip"
+    
+        APP_ARGS=(
+          --resource-group "$RG_NAME"
+          --name "$APP_NAME"
+        )
+    
+        if [ "${{ steps.tf-outputs.outputs.staging_slot_in_use }}" == "true" ]; then
+          APP_ARGS+=(--slot staging)
+        fi
+    
+        az webapp config appsettings set \
+          "${APP_ARGS[@]}" \
+          --settings WEBSITE_RUN_FROM_PACKAGE="$PACKAGE_URL" \
+          --output none
+
+    - name: Restart Web App
       env:
         RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
         APP_NAME: ${{ steps.tf-outputs.outputs.web_app_name }}
       run: |
-        DEPLOY_ARGS=(
+        APP_ARGS=(
           --resource-group "$RG_NAME"
           --name "$APP_NAME"
-          --src-path "$DEPLOY_ZIP_PATH"
-          --type zip
         )
-
+    
         if [ "${{ steps.tf-outputs.outputs.staging_slot_in_use }}" == "true" ]; then
-          DEPLOY_ARGS+=(--slot staging)
+          APP_ARGS+=(--slot staging)
         fi
-
-        az webapp deploy "${DEPLOY_ARGS[@]}"
-
+    
+        az webapp restart "${APP_ARGS[@]}"
+    
     - name: Swap Staging to Production
       if: ${{ steps.tf-outputs.outputs.staging_slot_in_use == 'true' }}
       env:

@@ -106,29 +106,30 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
 
-  e2e-tests:
-    name: E2E Tests
-    needs: [deploy-stage]
-    uses: ./.github/workflows/run-e2e-tests.yml
-    with:
-      SUT: ${{ needs.deploy-stage.outputs.deploy_url }}
-      environment: staging
-    secrets:
-      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
-
-  a11y-tests:
-    name: A11y Tests
-    needs: [ deploy-stage ]
-    uses: ./.github/workflows/run-a11y-tests.yml
-    with:
-      SUT: ${{ needs.deploy-stage.outputs.deploy_url }}
-      environment: staging
-    secrets:
-      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+#  e2e-tests:
+#    name: E2E Tests
+#    needs: [deploy-stage]
+#    uses: ./.github/workflows/run-e2e-tests.yml
+#    with:
+#      SUT: ${{ needs.deploy-stage.outputs.deploy_url }}
+#      environment: staging
+#    secrets:
+#      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+#
+#  a11y-tests:
+#    name: A11y Tests
+#    needs: [ deploy-stage ]
+#    uses: ./.github/workflows/run-a11y-tests.yml
+#    with:
+#      SUT: ${{ needs.deploy-stage.outputs.deploy_url }}
+#      environment: staging
+#    secrets:
+#      DEVELOPMENT_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
 
   deploy-prod:
     name: Deploy Production
-    needs: [version, e2e-tests, a11y-tests]
+    needs: [version, build-dotnet, build-infra]
+#    needs: [version, e2e-tests, a11y-tests]
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment: production

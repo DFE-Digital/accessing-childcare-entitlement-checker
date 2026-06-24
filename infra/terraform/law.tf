@@ -27,7 +27,7 @@ resource "azurerm_application_insights_web_test" "web-app-test" {
 
   name                    = "${local.service_prefix}-web-app-test"
   description             = "Web application availability test"
-  resource_group_name     = azurerm_resource_group.web-rg.location
+  resource_group_name     = azurerm_resource_group.web-rg.name
   location                = azurerm_resource_group.web-rg.location
   application_insights_id = azurerm_application_insights.application-insights.id
   kind                    = "ping"

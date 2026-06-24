@@ -1,5 +1,5 @@
 resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
-  name                = "webFirewallPolicy"
+  name                = "${local.prefix}webfirewallpolicy"
   resource_group_name = azurerm_resource_group.web-rg.name
   tags                = local.common_tags
   mode                = "Prevention"
