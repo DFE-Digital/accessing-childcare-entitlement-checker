@@ -1,4 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,16 +7,22 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.User;
 
 public class ChildcareSupportViewModel : IValidatableObject
 {
-    public string? ReturnTo { get; set; }
-
     public ChildcareSupportViewModel()
     {
+        BackLink = string.Empty;
     }
 
-    public ChildcareSupportViewModel(JourneyState journeyState)
+    public ChildcareSupportViewModel(JourneyState journeyState, string backLink, string? returnTo = null)
     {
         ChildcareSupport = journeyState.ChildcareSupport;
+        BackLink = backLink;
+        ReturnTo = returnTo;
     }
+
+    [BindNever]
+    public string BackLink { get; set; }
+
+    public string? ReturnTo { get; set; }
 
     [Display(Name = "Do you already get any of this childcare support?", Description = "Select all that apply.")]
     public List<ChildcareSupportOption> ChildcareSupport { get; set; } = [];

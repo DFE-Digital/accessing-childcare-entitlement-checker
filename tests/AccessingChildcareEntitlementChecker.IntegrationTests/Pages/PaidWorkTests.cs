@@ -8,35 +8,41 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class PaidWorkTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    [Fact]
-    public async Task Get_PaidWork_Has_Radios_And_BackLink()
+    [Theory]
+    [InlineData(null, NationalityOption.CitizenOfADifferentCountry, "/nationality")]
+    [InlineData(null, NationalityOption.BritishOrIrishCitizen, "/nationality")]
+    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "/nationality/settled-status")]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
+    public async Task Get_Has_Input_And_BackLink(string? returnTo, NationalityOption? nationality, string backLinkUrl)
     {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Nationality = nationality,
+        });
 
-        var response = await client.GetAsync("work-status/work", TestContext.Current.CancellationToken);
+        var url = $"/work-status/work?returnTo={returnTo}";
+        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(3)
-            .AssertBackLink("/nationality");
+            .AssertBackLink(backLinkUrl);
     }
 
-    [Fact]
-    public async Task Get_PaidWork_BackLink_When_Nationality_EU_Points_To_SettledStatus()
+    [Theory]
+    [InlineData(null, NationalityOption.CitizenOfADifferentCountry, "/nationality")]
+    [InlineData(null, NationalityOption.BritishOrIrishCitizen, "/nationality")]
+    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "/nationality/settled-status")]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
+    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, NationalityOption? nationality, string backLinkUrl)
     {
-        var state = new JourneyState { Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland };
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Nationality = nationality,
+        });
 
-        var response = await client.GetAsync("work-status/work", TestContext.Current.CancellationToken);
-        response.EnsureSuccessStatusCode();
-        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertBackLink("/nationality/settled-status");
-    }
-
-    [Fact]
-    public async Task Post_Invalid_Shows_Validation_Error()
-    {
-        using var client = factory.CreateClient();
-        var url = "/work-status/work";
+        var url = $"/work-status/work?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -45,10 +51,10 @@ public class PaidWorkTests(IntegrationTestFixture factory) : IClassFixture<Integ
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [], TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
-        postDocument.AssertValidationError();
+        postDocument.AssertValidationError()
+            .AssertBackLink(backLinkUrl);
     }
 
     [Fact]

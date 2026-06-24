@@ -57,7 +57,6 @@ public class HomeController : Controller
             return url;
         }
 
-        return Url.Action(nameof(Start))
-            ?? throw new InvalidOperationException("Unable to generate back link");
+        return Url.ActionOrThrow(nameof(Start));
     }
 }

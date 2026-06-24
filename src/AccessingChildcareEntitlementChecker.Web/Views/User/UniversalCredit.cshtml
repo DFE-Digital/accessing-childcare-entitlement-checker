@@ -1,6 +1,4 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.User
-@using AccessingChildcareEntitlementChecker.Web.Services
-@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @model UniversalCreditViewModel
@@ -11,30 +9,9 @@
 }
 
 @section BeforeContent {
-    @if (JourneyState.PaidWork == PaidWorkOption.No)
-    {
-        <govuk-back-link asp-controller="User" asp-action="PaidWork">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else if (JourneyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
-    {
-        <govuk-back-link asp-controller="User" asp-action="SelfEmployedDuration">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else if (JourneyState.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold)
-    {
-        <govuk-back-link asp-controller="User" asp-action="YearlyEarnings">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else
-    {
-        <govuk-back-link asp-controller="User" asp-action="WeeklyEarnings">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
+    <govuk-back-link href="@Model.BackLink">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <div class="govuk-grid-row">

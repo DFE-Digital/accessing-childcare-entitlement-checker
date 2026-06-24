@@ -137,11 +137,10 @@ public class BornChildDetailsController : Controller
             return url;
         }
 
-        return this.Url.Action(
+        return this.Url.ActionOrThrow(
             nameof(IntroductionController.IsChildBorn),
             IntroductionController.Name,
-            new { childId })
-            ?? throw new InvalidOperationException("Unable to generate back link");
+            new { childId });
     }
 
     private string GetChildRelationshipBackLink(string childId, string? returnTo)
@@ -151,8 +150,7 @@ public class BornChildDetailsController : Controller
             return url;
         }
 
-        return this.Url.Action(nameof(ChildBirthDate), Name, new { childId })
-            ?? throw new InvalidOperationException("Unable to generate back link");
+        return this.Url.ActionOrThrow(nameof(ChildBirthDate), new { childId });
     }
 
     private string GetChildSupportBackLink(string childId, string? returnTo)
@@ -162,7 +160,6 @@ public class BornChildDetailsController : Controller
             return url;
         }
 
-        return this.Url.Action(nameof(ChildRelationship), Name, new { childId })
-            ?? throw new InvalidOperationException("Unable to generate back link");
+        return this.Url.ActionOrThrow(nameof(ChildRelationship), new { childId });
     }
 }
