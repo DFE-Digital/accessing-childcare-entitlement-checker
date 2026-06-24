@@ -9,7 +9,6 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
 public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
 {
     private const int MaximumEligibleAgeInYears = 2;
-    private const int WeeksBeforeTermStartParentsCanApply = 16;
 
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
@@ -50,7 +49,9 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
                 : null;
 
         DateOnly? applyFromDate =
-            useFromDate?.AddDays(-(WeeksBeforeTermStartParentsCanApply * 7));
+            secondBirthdayDate is not null
+                ? GetApplicationStartDate(secondBirthdayDate.Value)
+                : null;
 
         return new SchemeResultDto
         {
@@ -105,4 +106,17 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
         PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
         PersonBenefit.GuaranteedElementOfPensionCredit
     ];
+
+    private static DateOnly GetApplicationStartDate(
+        DateOnly secondBirthdayDate)
+    {
+        var year = secondBirthdayDate.Year;
+
+        return secondBirthdayDate.Month switch
+        {
+            <= 3 => new DateOnly(year, 1, 1),
+            <= 8 => new DateOnly(year, 4, 1),
+            _ => new DateOnly(year, 9, 1)
+        };
+    }
 }

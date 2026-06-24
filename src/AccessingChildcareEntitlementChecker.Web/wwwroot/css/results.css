@@ -8,7 +8,7 @@
     font-family: GDS Transport, arial, sans-serif;
     font-size: 1rem;
     line-height: 1.25;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     text-decoration: none;
 }
 
@@ -21,4 +21,25 @@
     background-color: #fd0;
     box-shadow: 0 -2px #fd0,0 4px #0b0c0c;
     text-decoration: none
+}
+
+.results-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.results-table th,
+.results-table td {
+    width: 33.33%;
+    word-wrap: break-word;
+}
+
+.child-results,
+.getHelp{
+    margin-top: 40px;
+}
+
+.app-back-to-top {
+    margin-top: 40px;
+    margin-bottom: 40px;
 }

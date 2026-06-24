@@ -40,6 +40,7 @@ public class EntitlementRulesEngine
             {
                 ChildName = child.Name,
                 AgeInYears = child.AgeInYears,
+                IsBorn = child.IsBorn,
                 Schemes = schemes
             });
         }

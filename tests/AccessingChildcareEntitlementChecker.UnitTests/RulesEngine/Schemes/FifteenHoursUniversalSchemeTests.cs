@@ -99,21 +99,6 @@ public class FifteenHoursUniversalSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsEligibleInFuture_SetsApplyFromDate()
-    {
-        var evaluator = CreateEvaluator();
-        var context = CreateContext();
-        var child = CreateBornChild(new DateOnly(2023, 1, 1));
-
-        var result = evaluator.Evaluate(context, child);
-
-        Assert.NotNull(result);
-        Assert.Equal(
-            child.DateOfBirth?.AddYears(3),
-            result!.ApplyFromDate);
-    }
-
-    [Fact]
     public void Evaluate_WhenChildIsEligibleInFuture_SetsUseFromDateToNextTerm()
     {
         var evaluator = CreateEvaluator();

@@ -1,7 +1,7 @@
 @inject IViewLocalizer Localizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @using Microsoft.AspNetCore.Mvc.Localization
-@model AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses.EntitlementResponse
+@model AccessingChildcareEntitlementChecker.Web.Models.Results.ResultsViewModel
 
 @{
     ViewData["Title"] = Localizer["Childcare support you could get"];
@@ -15,51 +15,151 @@
     </govuk-back-link>
 }
 
-<h1 class="govuk-heading-xl">@Localizer["Childcare support you could get"]</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-
-<button id="print-button" class="app-print-link" type="button">
-    @Localizer["Print this page"]
-</button>
-
-<script add-nonce="true">
-    document
-        .getElementById('print-button')
-        ?.addEventListener('click', () => window.print());
-</script>
-
-@foreach (var child in Model.ChildResults)
-{
-    <h2 class="govuk-heading-l">
-        @child.ChildName
-
-        @if (child.AgeInYears != null)
+        <h1 id="top" class="govuk-heading-xl">@Localizer["Childcare support you could get"]</h1>
+        
+        <button class="app-print-link" type="button">
+            @Localizer["Print this page"]
+        </button>
+        
+        @if (Model.Children.Count > 0)
         {
-            <text>(age: @child.AgeInYears)</text>
+            <p class="govuk-body">
+                @Localizer["Based on the answers you gave us, this is the childcare support we think you might be able to get."]
+            </p>
+    
+            <p class="govuk-body">
+                @Localizer["You should re-check if your circumstances change as this may change the support you can get"]
+            </p>   
         }
-        else
+
+
+
+        @foreach (var child in Model.Children)
         {
-            <text>(due)</text>
+            <div class="child-results">
+
+                <h2 class="govuk-heading-l results-name">
+                    @child.Name
+                </h2>
+                
+                <p class="govuk-body">
+                    @Localizer["This is a summary of {0}'s childcare support.", child.Name]
+                </p>  
+                
+                <p class="govuk-body">
+                    <a asp-action="ResultsDetailed"
+                       class="govuk-link"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        @Localizer["See the full details for {0}. Including when each scheme starts, ends and where to apply", child.Name]
+                    </a>
+                </p>
+
+                <table class="govuk-table results-table">
+                    <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header">@Localizer["Scheme"]</th>
+                        <th scope="col" class="govuk-table__header">@Localizer["What you get"]</th>
+                        <th scope="col" class="govuk-table__header">@Localizer["When to apply"]</th>
+                    </tr>
+                    </thead>
+
+                    <tbody class="govuk-table__body">
+                    @foreach (var scheme in child.Schemes)
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">
+                                <a class="govuk-link" href="@scheme.Url" target="_blank" rel="noopener noreferrer">
+                                    @scheme.Name
+                                    <span class="govuk-visually-hidden">@Localizer["(opens in new tab)"]</span>
+                                </a>
+                            </td>
+
+                            <td class="govuk-table__cell">
+                                @scheme.WhatYouGet
+                            </td>
+
+                            <td class="govuk-table__cell">
+                                @scheme.WhenToApply
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            
+            @if (child.ShowThirtyHourWarning)
+            {
+                <div class="govuk-inset-text">
+                    <p>@Localizer["You can only get 30 hours of childcare a week in total, even if you use more than one scheme."]</p>
+                    <p>@Localizer["You will need to pay for any hours over this."]</p>
+                </div>
+            }
+            
+            
         }
-    </h2>
+        <div class="getHelp">
+            <h2 class="govuk-heading-l">
+                @Localizer["Get help and advice about childcare support"]
+            </h2>
 
-    @foreach (var scheme in child.Schemes)
-    {
-        <div class="govuk-body">
-            <h3 class="govuk-heading-m">@scheme.SchemeCode</h3>
+            <p class="govuk-body">
+                @Localizer["To understand more you can"]
+                <text> </text>
+                <a href=""
+                   class="govuk-link"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    @Localizer["read the step by step guide about childcare and getting help paying for it (opens in new tab)"]
+                </a>
+                <text> </text>
+            </p>
 
-            <p>Eligible now: @scheme.EligibleNow</p>
-            <p>Eligible in future: @scheme.EligibleInFuture</p>
+            <h3 class="govuk-heading-s">
+                @Localizer["Get help and advice at a family hub"]
+            </h3>
 
-            @if (scheme.ApplyFromDate is not null)
-            {
-                <p>Apply from: @scheme.ApplyFromDate.Value.ToString("d MMMM yyyy")</p>
-            }
+            <p class="govuk-body">@Localizer["Family hubs offer local support for parents and carers. They can help explain childcare options and find support in your area."]</p>
 
-            @if (scheme.UseFromDate is not null)
-            {
-                <p>Use from: @scheme.UseFromDate.Value.ToString("d MMMM yyyy")</p>
-            }
+            <p class="govuk-body">
+                <a class="govuk-link"
+                   href=""
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    @Localizer["Find out if there's a family hub in your area (opens in new tab)"]
+                </a>
+            </p>
         </div>
-    }
-}
+        <div class="app-back-to-top">
+            <a class="govuk-link govuk-link--no-visited-state app-back-to-top__link"
+               href="#top">
+                <svg
+                    class="app-back-to-top__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="17"
+                    viewBox="0 0 13 17"
+                    aria-hidden="true">
+                    <path fill="currentColor"
+                          d="M6.5 0L0 6.5 1.4 8l4-4v12.7h2V4l4.3 4L13 6.4z" />
+                </svg>
+                @Localizer["Back to top"]
+            </a>
+        </div>
+        
+        <button class="app-print-link" type="button">
+            @Localizer["Print this page"]
+        </button>
+        
+    </div>
+    
+    <script add-nonce="true">
+        document
+            .querySelectorAll('.app-print-link')
+            .forEach(button =>
+                button.addEventListener('click', () => window.print()));
+    </script>
+</div>
