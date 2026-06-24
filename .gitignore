@@ -1,5 +1,8 @@
 # Build outputs
 /artifacts/
+docs/_site/
+docs/node_modules/
+*.feature.cs
 
 # Mac
 .DS_Store
@@ -16,6 +19,16 @@ Thumbs.db
 *.sln.iml
 .idea/
 
+# Visual Studio Code
+.vscode
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Local environment variables
+.env
+*.env
 
 ### Terraform ###
 # Local .terraform directories
@@ -24,10 +37,6 @@ Thumbs.db
 # .tfstate files
 *.tfstate
 *.tfstate.*
-
-# Crash log files
-crash.log
-crash.*.log
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
@@ -42,14 +51,7 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
-# Local environment variables
-.env
-*.env
-# Terraform local state
+ Terraform local state
 terraform.tfstate*
-*.feature.cs
 .terraform.lock.hcl
 
-# Documentation
-docs/_site/
-docs/node_modules/
