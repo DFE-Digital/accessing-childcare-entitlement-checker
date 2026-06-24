@@ -9,7 +9,7 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     [Theory]
-    [InlineData(null, PartnerPaidWorkOption.No, null, null, null, null, "/work-status/work-partner")]        
+    [InlineData(null, PartnerPaidWorkOption.No, null, null, null, null, "/work-status/work-partner")]
     [InlineData(null, PartnerPaidWorkOption.Yes, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, null, "/work-status/self-employed-partner")]
     [InlineData(null, PartnerPaidWorkOption.Yes, null, null, WeeklyEarningsOption.BelowThreshold, null, "/earnings/wage-partner")]
     [InlineData(null, PartnerPaidWorkOption.Yes, null, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.AboveThreshold, "/earnings/adjusted-net-income-partner")]
@@ -43,7 +43,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
     }
 
     [Theory]
-    [InlineData(null, PartnerPaidWorkOption.No, null, null, null, null, "/work-status/work-partner")]        
+    [InlineData(null, PartnerPaidWorkOption.No, null, null, null, null, "/work-status/work-partner")]
     [InlineData(null, PartnerPaidWorkOption.Yes, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, null, "/work-status/self-employed-partner")]
     [InlineData(null, PartnerPaidWorkOption.Yes, null, null, WeeklyEarningsOption.BelowThreshold, null, "/earnings/wage-partner")]
     [InlineData(null, PartnerPaidWorkOption.Yes, null, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.AboveThreshold, "/earnings/adjusted-net-income-partner")]
