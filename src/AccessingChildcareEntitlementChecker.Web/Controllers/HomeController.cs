@@ -9,6 +9,8 @@ public class HomeController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
+    public const string Name = "Home";
+
     public HomeController(JourneyState journeyState, IJourneySession journeySession)
     {
         _journeyState = journeyState;
@@ -28,9 +30,10 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public ViewResult Location()
+    public ViewResult Location(string? returnTo = null)
     {
-        return View(new LocationViewModel(_journeyState));
+        var backLink = GetLocationBackLink(returnTo);
+        return View(new LocationViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -38,11 +41,22 @@ public class HomeController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetLocationBackLink(model.ReturnTo);
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return RedirectToAction(nameof(IntroductionController.ChildName), "Introduction");
+        return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name);
+    }
+
+    private string GetLocationBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(Start));
     }
 }

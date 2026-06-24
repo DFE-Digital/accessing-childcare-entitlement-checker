@@ -4,12 +4,15 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using AccessingChildcareEntitlementChecker.Web.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using System.Diagnostics.CodeAnalysis;
+
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
 public class PartnerController : Controller
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+
+    public const string Name = "Partner";
 
     public PartnerController(JourneyState journeyState, IJourneySession journeySession)
     {

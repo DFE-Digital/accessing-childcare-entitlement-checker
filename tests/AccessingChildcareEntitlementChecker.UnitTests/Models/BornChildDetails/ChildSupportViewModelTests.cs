@@ -30,7 +30,7 @@ public class ChildSupportViewModelTests
     public void Validate_ThrowsWhenNoChild()
     {
         var child = new Child("DOES-NOT-EXIST", "Child b");
-        var model = new ChildSupportViewModel(child)
+        var model = new ChildSupportViewModel(child, "backLink")
         {
             ChildSupportOptions = []
         };
@@ -44,8 +44,8 @@ public class ChildSupportViewModelTests
     [Fact]
     public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
     {
-        var child = _journeyState.GetChild("child-a")!;
-        var model = new ChildSupportViewModel(child)
+        Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
+        var model = new ChildSupportViewModel(child, "backLink")
         {
             ChildSupportOptions =
             [
@@ -66,8 +66,8 @@ public class ChildSupportViewModelTests
     [Fact]
     public void Validate_ReturnsErrorWhenOptionsAreEmpty()
     {
-        var child = _journeyState.GetChild("child-a")!;
-        var model = new ChildSupportViewModel(child)
+        Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
+        var model = new ChildSupportViewModel(child, "backLink")
         {
             ChildSupportOptions = [],
         };

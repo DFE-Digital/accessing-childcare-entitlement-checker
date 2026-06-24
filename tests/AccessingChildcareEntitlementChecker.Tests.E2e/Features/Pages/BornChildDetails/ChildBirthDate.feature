@@ -19,19 +19,22 @@ Scenario: Page load
 Scenario: Enter an invalid date
 	When I enter the day "46" month "3" and year "2026"
 	And I click on Continue
-	Then an error summary box should appear at the top of the page
+	Then the page header is "What is Sara's date of birth?"
+	And an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "The date of birth must be a real date"
 
 Scenario: Enter a a future date
 	When I enter tomorrow's date
 	And I click on Continue
-	Then an error summary box should appear at the top of the page
+	Then the page header is "What is Sara's date of birth?"
+	And an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Enter a date of birth in the past"
 
 Scenario: Continue without entering a date
 	When I do not enter a date
 	And I click on Continue
-	Then an error summary box should appear at the top of the page
+	Then the page header is "What is Sara's date of birth?"
+	And an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Enter this child's date of birth"
 
 Scenario: Continue with a past date

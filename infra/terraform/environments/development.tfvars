@@ -12,3 +12,6 @@ webapp_enable_staging_slot  = false
 webapp_enable_public_access = true
 webapp_always_on            = false
 enable_web_test             = false
+location                    = "uksouth"
+location_short_code         = "uks"
+waf_mode                    = "Prevention"

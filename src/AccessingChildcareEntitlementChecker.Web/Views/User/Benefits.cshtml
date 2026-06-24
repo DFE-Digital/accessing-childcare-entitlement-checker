@@ -1,6 +1,4 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.User
-@using AccessingChildcareEntitlementChecker.Web.Services
-@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
@@ -11,18 +9,9 @@
 }
 
 @section BeforeContent {
-    @if (JourneyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold)
-    {
-        <govuk-back-link asp-controller="User" asp-action="YearlyEarnings">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else
-    {
-        <govuk-back-link asp-controller="User" asp-action="UniversalCredit">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
+    <govuk-back-link href="@Model.BackLink">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <div class="govuk-grid-row">

@@ -1,6 +1,4 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.User
-@using AccessingChildcareEntitlementChecker.Web.Services
-@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer 
 @model SelfEmployedDurationViewModel
@@ -11,7 +9,7 @@
 }
 
 @section BeforeContent {
-    <govuk-back-link asp-controller="User" asp-action="WorkStatus">
+    <govuk-back-link href="@Model.BackLink">
         @Shared["Button_Back"]
     </govuk-back-link>
 }

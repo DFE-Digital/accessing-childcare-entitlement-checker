@@ -1,22 +1,29 @@
 using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models;
 
 public class ChildIsBornViewModel
 {
-    public string? ReturnTo { get; set; }
-
     public ChildIsBornViewModel()
     {
         ChildId = string.Empty;
+        BackLink = string.Empty;
     }
 
-    public ChildIsBornViewModel(Child child)
+    public ChildIsBornViewModel(Child child, string backLink, string? returnTo = null)
     {
         ChildId = child.ChildId;
         ChildIsBorn = child.BirthStatus;
+        BackLink = backLink;
+        ReturnTo = returnTo;
     }
+
+    [BindNever]
+    public string BackLink { get; set; }
+
+    public string? ReturnTo { get; set; }
 
     public string ChildId { get; set; }
 

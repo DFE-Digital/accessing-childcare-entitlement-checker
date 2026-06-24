@@ -33,7 +33,7 @@ jobs:
       checks: write
     steps:
       - name: Checkout Git metadata
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           sparse-checkout: .
           sparse-checkout-cone-mode: false

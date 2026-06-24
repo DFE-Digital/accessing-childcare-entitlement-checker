@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 

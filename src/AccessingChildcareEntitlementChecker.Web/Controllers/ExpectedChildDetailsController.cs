@@ -11,6 +11,8 @@ public class ExpectedChildDetailsController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
+    public const string Name = "ExpectedChildDetails";
+
     public ExpectedChildDetailsController(
         JourneyState journeyState,
         IJourneySession journeySession)
@@ -22,13 +24,13 @@ public class ExpectedChildDetailsController : Controller
     [HttpGet]
     public IActionResult ChildDueDate(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
 
-        return View(new ChildDueDateViewModel(child) { ReturnTo = returnTo });
+        var backLink = GetChildDueDateBackLink(childId, returnTo);
+        return View(new ChildDueDateViewModel(child, backLink, returnTo));
     }
 
     [HttpPost]
@@ -36,6 +38,7 @@ public class ExpectedChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetChildDueDateBackLink(model.ChildId, model.ReturnTo);
             return View(model);
         }
 
@@ -54,13 +57,13 @@ public class ExpectedChildDetailsController : Controller
     [HttpGet]
     public IActionResult ExpectedChildRelationship(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
 
-        return View(new ExpectedChildRelationshipViewModel(child) { ReturnTo = returnTo });
+        var backLink = GetExpectedChildRelationshipBackLink(childId, returnTo);
+        return View(new ExpectedChildRelationshipViewModel(child, backLink, returnTo));
     }
 
     [HttpPost]
@@ -68,11 +71,32 @@ public class ExpectedChildDetailsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetExpectedChildRelationshipBackLink(model.ChildId, model.ReturnTo);
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
         return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
+    }
+
+    private string GetChildDueDateBackLink(string childId, string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
+        {
+            return url;
+        }
+
+        return this.Url.ActionOrThrow(nameof(IntroductionController.IsChildBorn), IntroductionController.Name, new { childId });
+    }
+
+    private string GetExpectedChildRelationshipBackLink(string childId, string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
+        {
+            return url;
+        }
+
+        return this.Url.ActionOrThrow(nameof(ChildDueDate), new { childId });
     }
 }

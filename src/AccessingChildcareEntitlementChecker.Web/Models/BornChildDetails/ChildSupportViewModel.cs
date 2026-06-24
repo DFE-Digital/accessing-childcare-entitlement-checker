@@ -7,19 +7,25 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 
 public class ChildSupportViewModel : IValidatableObject
 {
-    public string? ReturnTo { get; set; }
-
     public ChildSupportViewModel()
     {
         ChildId = string.Empty;
+        BackLink = string.Empty;
     }
 
-    public ChildSupportViewModel(Child child)
+    public ChildSupportViewModel(Child child, string backLink, string? returnTo = null)
     {
         ChildId = child.ChildId;
-        ChildName = child.Name;
         ChildSupportOptions = child.ChildSupportOptions;
+        ChildName = child.Name;
+        BackLink = backLink;
+        ReturnTo = returnTo;
     }
+
+    [BindNever]
+    public string BackLink { get; set; }
+
+    public string? ReturnTo { get; set; }
 
     public string ChildId { get; set; }
 
@@ -36,7 +42,11 @@ public class ChildSupportViewModel : IValidatableObject
         var localizer = localizerFactory!.Create(typeof(ChildSupportViewModel));
         if (ChildSupportOptions.Count == 0)
         {
-            var child = journeyState!.GetChild(ChildId) ?? throw new InvalidOperationException($"No child found with ID {ChildId}");
+            if (!journeyState!.Children.TryGetValue(ChildId, out var child))
+            {
+                throw new InvalidOperationException($"No child found with ID {ChildId}");
+            }
+
             yield return new ValidationResult(localizer["Select any support {0} gets, or select 'No, none of these apply'", child.Name], [nameof(ChildSupportOptions)]);
         }
 

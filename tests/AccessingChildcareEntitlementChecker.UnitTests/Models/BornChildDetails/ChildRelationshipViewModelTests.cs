@@ -36,7 +36,7 @@ public class ChildRelationshipViewModelTests
     public void Validate_ThrowsWhenNoChild()
     {
         var child = new Child("DOES-NOT-EXIST", "Child b");
-        var model = new ChildRelationshipViewModel(child);
+        var model = new ChildRelationshipViewModel(child, "backLink");
 
         var validationContext = new ValidationContext(model);
         validationContext.InitializeServiceProvider(_serviceProviderFunc);
@@ -47,8 +47,8 @@ public class ChildRelationshipViewModelTests
     [Fact]
     public void Validate_ReturnsErrorWithChildNameWhenNoRelationshipSelected()
     {
-        var child = _journeyState.GetChild("child-a")!;
-        var model = new ChildRelationshipViewModel(child);
+        Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
+        var model = new ChildRelationshipViewModel(child, "backLink");
         var validationContext = new ValidationContext(model);
         validationContext.InitializeServiceProvider(_serviceProviderFunc);
 
@@ -61,8 +61,8 @@ public class ChildRelationshipViewModelTests
     [Fact]
     public void Validate_ReturnsNoErrorsWhenRelationshipSelected()
     {
-        var child = _journeyState.GetChild("child-a")!;
-        var model = new ChildRelationshipViewModel(child)
+        Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
+        var model = new ChildRelationshipViewModel(child, "backLink")
         {
             Relationship = Relationship.Parent
         };

@@ -1,5 +1,5 @@
 resource "azurerm_cdn_frontdoor_profile" "frontdoor-web-profile" {
-  name                = "${local.service_prefix}-web-fd-profile"
+  name                = "${local.prefix}-web-fd-profile"
   resource_group_name = azurerm_resource_group.web-rg.name
   sku_name            = "${var.azure_frontdoor_sku}_AzureFrontDoor"
   tags                = local.common_tags
@@ -7,7 +7,7 @@ resource "azurerm_cdn_frontdoor_profile" "frontdoor-web-profile" {
 
 resource "azurerm_cdn_frontdoor_origin_group" "frontdoor-origin-group" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
-  name                     = "${local.service_prefix}-web-fd-origin-group"
+  name                     = "${local.prefix}-web-fd-origin-group"
   session_affinity_enabled = false
 
   load_balancing {
@@ -18,23 +18,22 @@ resource "azurerm_cdn_frontdoor_origin_group" "frontdoor-origin-group" {
 
 resource "azurerm_cdn_frontdoor_origin" "frontdoor-web-origin" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group.id
-  certificate_name_check_enabled = false
+  certificate_name_check_enabled = true
   host_name                      = azurerm_linux_web_app.web-app-service.default_hostname
   http_port                      = 80
   https_port                     = 443
   origin_host_header             = azurerm_linux_web_app.web-app-service.default_hostname
   priority                       = 1
   weight                         = 1
-  name                           = "${local.service_prefix}-web-fd-origin"
+  name                           = "${local.prefix}-web-fd-origin"
   enabled                        = true
-
 
   dynamic "private_link" {
     for_each = var.fd_use_private_link ? ["apply"] : []
     content {
       request_message        = "Request access for Front Door Private Link"
       target_type            = "sites"
-      location               = local.location
+      location               = var.location
       private_link_target_id = azurerm_linux_web_app.web-app-service.id
     }
   }
@@ -42,12 +41,12 @@ resource "azurerm_cdn_frontdoor_origin" "frontdoor-web-origin" {
 
 resource "azurerm_cdn_frontdoor_endpoint" "frontdoor-web-endpoint" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
-  name                     = "${local.service_prefix}-web-fd-endpoint"
+  name                     = "${local.prefix}-web-fd-endpoint"
   tags                     = local.common_tags
 }
 
 resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
-  name                          = "${local.service_prefix}-web-fd-route"
+  name                          = "${local.prefix}-web-fd-route"
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.frontdoor-web-origin.id]
@@ -64,7 +63,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy" {
-  name                     = "${local.service_prefix}-web-fd-security-policy"
+  name                     = "${local.prefix}-web-fd-security-policy"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
 
   security_policies {
@@ -91,7 +90,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
 
 resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
   count                    = var.custom_domain == "" ? 0 : 1
-  name                     = "${local.service_prefix}-fd-custom-domain"
+  name                     = "${local.prefix}-fd-custom-domain"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
   host_name                = var.custom_domain
 

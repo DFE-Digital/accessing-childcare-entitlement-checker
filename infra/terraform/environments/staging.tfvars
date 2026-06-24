@@ -1,5 +1,5 @@
-elz_environment             = "Test"
-environment_prefix          = "t02"
+elz_environment             = "Prod"
+environment_prefix          = "p02"
 aspnetcore_environment      = "Staging"
 azure_frontdoor_sku         = "Standard"
 fd_use_private_link         = false
@@ -12,3 +12,6 @@ webapp_enable_staging_slot  = true
 webapp_enable_public_access = true
 webapp_always_on            = false
 enable_web_test             = false
+location                    = "uksouth"
+location_short_code         = "uks"
+waf_mode                    = "Prevention"

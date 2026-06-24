@@ -7,19 +7,25 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 
 public class ChildRelationshipViewModel : IValidatableObject
 {
-    public string? ReturnTo { get; set; }
-
     public ChildRelationshipViewModel()
     {
         ChildId = string.Empty;
+        BackLink = string.Empty;
     }
 
-    public ChildRelationshipViewModel(Child child)
+    public ChildRelationshipViewModel(Child child, string backLink, string? returnTo = null)
     {
         ChildId = child.ChildId;
-        ChildName = child.Name;
         Relationship = child.BornRelationship;
+        ChildName = child.Name;
+        BackLink = backLink;
+        ReturnTo = returnTo;
     }
+
+    [BindNever]
+    public string BackLink { get; set; }
+
+    public string? ReturnTo { get; set; }
 
     public string ChildId { get; set; }
 
@@ -32,7 +38,11 @@ public class ChildRelationshipViewModel : IValidatableObject
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
-        var child = journeyState!.GetChild(ChildId) ?? throw new InvalidOperationException($"No child found with ID {ChildId}");
+        if (!journeyState!.Children.TryGetValue(ChildId, out var child))
+        {
+            throw new InvalidOperationException($"No child found with ID {ChildId}");
+        }
+
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(ChildRelationshipViewModel));
         if (!Relationship.HasValue)

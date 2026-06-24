@@ -11,6 +11,7 @@ public class BornChildDetailsController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
+    public const string Name = "BornChildDetails";
     public BornChildDetailsController(
         JourneyState journeyState,
         IJourneySession journeySession)
@@ -22,20 +23,27 @@ public class BornChildDetailsController : Controller
     [HttpGet]
     public IActionResult ChildBirthDate(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
 
-        return View(new ChildBirthDateViewModel(child) { ReturnTo = returnTo });
+        var backLink = GetChildBirthDateBackLink(childId, returnTo);
+        return View(new ChildBirthDateViewModel(child, backLink, returnTo));
     }
 
     [HttpPost]
     public IActionResult ChildBirthDate(ChildBirthDateViewModel model)
     {
+        if (!_journeyState.Children.TryGetValue(model.ChildId, out var child))
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
+            model.ChildName = child.Name;
+            model.BackLink = GetChildBirthDateBackLink(model.ChildId, model.ReturnTo);
             return View(model);
         }
 
@@ -54,20 +62,27 @@ public class BornChildDetailsController : Controller
     [HttpGet]
     public IActionResult ChildRelationship(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
 
-        return View(new ChildRelationshipViewModel(child) { ReturnTo = returnTo });
+        var backLink = GetChildRelationshipBackLink(childId, returnTo);
+        return View(new ChildRelationshipViewModel(child, backLink, returnTo));
     }
 
     [HttpPost]
     public IActionResult ChildRelationship(ChildRelationshipViewModel model)
     {
+        if (!_journeyState.Children.TryGetValue(model.ChildId, out var child))
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
+            model.ChildName = child.Name;
+            model.BackLink = GetChildRelationshipBackLink(model.ChildId, model.ReturnTo);
             return View(model);
         }
 
@@ -86,25 +101,65 @@ public class BornChildDetailsController : Controller
     [HttpGet]
     public IActionResult ChildSupport(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
 
-        return View(new ChildSupportViewModel(child) { ReturnTo = returnTo });
+        var backLink = GetChildSupportBackLink(childId, returnTo);
+        return View(new ChildSupportViewModel(child, backLink, returnTo));
     }
 
     [HttpPost]
     public IActionResult ChildSupport(ChildSupportViewModel model)
     {
+        if (!_journeyState.Children.TryGetValue(model.ChildId, out var child))
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
+            model.ChildName = child.Name;
+            model.BackLink = GetChildSupportBackLink(model.ChildId, model.ReturnTo);
             return View(model);
         }
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
         return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
+    }
+
+    private string GetChildBirthDateBackLink(string childId, string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
+        {
+            return url;
+        }
+
+        return this.Url.ActionOrThrow(
+            nameof(IntroductionController.IsChildBorn),
+            IntroductionController.Name,
+            new { childId });
+    }
+
+    private string GetChildRelationshipBackLink(string childId, string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
+        {
+            return url;
+        }
+
+        return this.Url.ActionOrThrow(nameof(ChildBirthDate), new { childId });
+    }
+
+    private string GetChildSupportBackLink(string childId, string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
+        {
+            return url;
+        }
+
+        return this.Url.ActionOrThrow(nameof(ChildRelationship), new { childId });
     }
 }

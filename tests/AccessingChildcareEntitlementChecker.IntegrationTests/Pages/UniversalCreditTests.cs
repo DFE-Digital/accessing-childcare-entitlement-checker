@@ -1,73 +1,87 @@
-using System.Net;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Services;
 using AccessingChildcareEntitlementChecker.Web.Models.User;
-using AngleSharp.Html.Dom;
-using Microsoft.AspNetCore.Mvc.Testing;
+using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    [Fact]
-    public async Task Get_UniversalCredit_BackLink_When_PaidWork_No_Points_To_PaidWork()
+
+    /// <remarks>
+    /// N.b. Skips type of leave - design is pending.
+    /// </remarks>
+    [Theory]
+    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/earnings/adjusted-net-income")]
+    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.BelowThreshold, null, "/earnings/wage")]
+    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, null, "/work-status/self-employed")]
+    [InlineData(null, PaidWorkOption.No, null, null, null, null, "/work-status/work")]
+    [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/children/check-childs-details")]
+    public async Task Get_Has_Input_And_BackLink(
+        string? returnTo,
+        PaidWorkOption? paidWork,
+        WorkStatusOption? workStatus,
+        SelfEmployedDurationOption? selfEmployedDuration,
+        WeeklyEarningsOption? weeklyEarnings,
+        YearlyEarningsOption? yearlyEarnings,
+        string backLinkUrl)
     {
-        var state = new JourneyState { PaidWork = PaidWorkOption.No };
-        using var client = factory.CreateClientWithJourneyState(state);
-        var res = await client.GetAsync("/benefits/universal-credit", TestContext.Current.CancellationToken);
-        res.EnsureSuccessStatusCode();
-        var doc = await HtmlHelpers.ParseHtmlAsync(res.Content);
-        var back = doc.QuerySelector(".govuk-back-link") as IHtmlAnchorElement;
-        Assert.NotNull(back);
-        Assert.Contains("/work-status/work", back.GetAttribute("href") ?? string.Empty);
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            PaidWork = paidWork,
+            WorkStatus = workStatus.HasValue ? [workStatus.Value] : [],
+            SelfEmployedDuration = selfEmployedDuration,
+            WeeklyEarnings = weeklyEarnings,
+            YearlyEarnings = yearlyEarnings,
+        });
+
+        var url = $"/benefits/universal-credit?returnTo={returnTo}";
+        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+        doc.AssertRadioButtonCount(2)
+            .AssertBackLink(backLinkUrl);
     }
 
-    [Fact]
-    public async Task Get_UniversalCredit_BackLink_When_SelfEmployedDuration_LessThan12_Points_To_SelfEmployedDuration()
+    [Theory]
+    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/earnings/adjusted-net-income")]
+    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.BelowThreshold, null, "/earnings/wage")]
+    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, null, "/work-status/self-employed")]
+    [InlineData(null, PaidWorkOption.No, null, null, null, null, "/work-status/work")]
+    [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/children/check-childs-details")]
+    public async Task Post_Invalid_Shows_Validation_Error(
+        string? returnTo,
+        PaidWorkOption? paidWork,
+        WorkStatusOption? workStatus,
+        SelfEmployedDurationOption? selfEmployedDuration,
+        WeeklyEarningsOption? weeklyEarnings,
+        YearlyEarningsOption? yearlyEarnings,
+        string backLinkUrl)
     {
-        var state = new JourneyState { PaidWork = PaidWorkOption.Yes, SelfEmployedDuration = SelfEmployedDurationOption.LessThan12Months };
-        using var client = factory.CreateClientWithJourneyState(state);
-        var res = await client.GetAsync("/benefits/universal-credit", TestContext.Current.CancellationToken);
-        res.EnsureSuccessStatusCode();
-        var doc = await HtmlHelpers.ParseHtmlAsync(res.Content);
-        var back = doc.QuerySelector(".govuk-back-link") as IHtmlAnchorElement;
-        Assert.NotNull(back);
-        Assert.Contains("/work-status/self-employed", back.GetAttribute("href") ?? string.Empty);
-    }
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            PaidWork = paidWork,
+            WorkStatus = workStatus.HasValue ? [workStatus.Value] : [],
+            SelfEmployedDuration = selfEmployedDuration,
+            WeeklyEarnings = weeklyEarnings,
+            YearlyEarnings = yearlyEarnings,
+        });
 
-    [Fact]
-    public async Task Get_UniversalCredit_BackLink_When_WeeklyEarnings_Above_YearlyEarnings()
-    {
-        var state = new JourneyState { PaidWork = PaidWorkOption.Yes, WeeklyEarnings = WeeklyEarningsOption.AboveThreshold };
-        using var client = factory.CreateClientWithJourneyState(state);
-        var res = await client.GetAsync("/benefits/universal-credit", TestContext.Current.CancellationToken);
-        res.EnsureSuccessStatusCode();
-        var doc = await HtmlHelpers.ParseHtmlAsync(res.Content);
-        var back = doc.QuerySelector(".govuk-back-link") as IHtmlAnchorElement;
-        Assert.NotNull(back);
-        Assert.Contains("/earnings/adjusted-net-income", back.GetAttribute("href") ?? string.Empty);
-    }
+        var url = $"/benefits/universal-credit?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
 
-    [Fact]
-    public async Task Post_Receives_Redirects_To_Benefits()
-    {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-        var get = await client.GetAsync("/benefits/universal-credit", TestContext.Current.CancellationToken);
-        get.EnsureSuccessStatusCode();
-        var doc = await HtmlHelpers.ParseHtmlAsync(get.Content);
-        var token = HtmlHelpers.ExtractAntiforgeryToken(doc);
-        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(get);
-
-        var req = new HttpRequestMessage(HttpMethod.Post, "/benefits/universal-credit");
-        if (cookie != null) req.Headers.Add("Cookie", cookie);
-        req.Content = new FormUrlEncodedContent([
-            new KeyValuePair<string,string>("__RequestVerificationToken", token ?? string.Empty),
-            new KeyValuePair<string,string>("UniversalCredit", "Receives")
-        ]);
-        var post = await client.SendAsync(req, TestContext.Current.CancellationToken);
-        Assert.Equal(HttpStatusCode.Redirect, post.StatusCode);
-        Assert.Contains("/benefits/benefits", post.Headers.Location?.ToString() ?? string.Empty);
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [], TestContext.Current.CancellationToken);
+        var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
+        postDocument.AssertValidationError()
+            .AssertBackLink(backLinkUrl);
     }
 }

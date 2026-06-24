@@ -10,6 +10,8 @@ public class IntroductionController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
 
+    public const string Name = "Introduction";
+
     public IntroductionController(JourneyState journeyState, IJourneySession journeySession)
     {
         _journeyState = journeyState;
@@ -17,21 +19,21 @@ public class IntroductionController : Controller
     }
 
     [HttpGet]
-    public IActionResult ChildName(string? childId = null)
+    public IActionResult ChildName(string? childId = null, string? returnTo = null)
     {
+        var backLink = GetChildNameBackLink(childId, returnTo);
         if (childId == null)
         {
-            var childNameViewModel = new ChildNameViewModel();
+            var childNameViewModel = new ChildNameViewModel(null, backLink, returnTo);
             return View(childNameViewModel);
         }
 
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
 
-        return View(new ChildNameViewModel(child));
+        return View(new ChildNameViewModel(child, backLink, returnTo));
     }
 
     [HttpPost]
@@ -39,6 +41,8 @@ public class IntroductionController : Controller
     {
         if (!ModelState.IsValid)
         {
+            var backLink = GetChildNameBackLink(model.ChildId, model.ReturnTo);
+            model.BackLink = backLink;
             return View(model);
         }
 
@@ -47,19 +51,19 @@ public class IntroductionController : Controller
 
         return this.RedirectTo<IntroductionController>(
             nameof(IsChildBorn),
-            new { childId = model.ChildId });
+            new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult IsChildBorn(string childId, string? returnTo = null)
     {
-        var child = _journeyState.GetChild(childId);
-        if (child == null)
+        if (!_journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
 
-        return View(new ChildIsBornViewModel(child) { ReturnTo = returnTo });
+        var backLink = GetIsChildBornBackLink(childId, returnTo);
+        return View(new ChildIsBornViewModel(child, backLink, returnTo));
     }
 
     [HttpPost]
@@ -67,11 +71,12 @@ public class IntroductionController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetIsChildBornBackLink(model.ChildId, model.ReturnTo);
             return View(model);
         }
+
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-
         if (model.ChildIsBorn == BirthStatus.Born)
         {
             return this.RedirectTo<BornChildDetailsController>(
@@ -82,5 +87,25 @@ public class IntroductionController : Controller
         return this.RedirectTo<ExpectedChildDetailsController>(
             nameof(ExpectedChildDetailsController.ChildDueDate),
             new { childId = model.ChildId, returnTo = model.ReturnTo });
+    }
+
+    private string GetChildNameBackLink(string? childId, string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(HomeController.Location), HomeController.Name);
+    }
+
+    private string GetIsChildBornBackLink(string childId, string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(ChildName), new { childId });
     }
 }

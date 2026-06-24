@@ -1,4 +1,3 @@
-using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.Extensions.Localization;
@@ -40,8 +39,8 @@ public class ChildDueDateViewModelTests
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));
-        var child = _journeyState.GetChild("child-a")!;
-        var model = new ChildDueDateViewModel(child)
+        Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
+        var model = new ChildDueDateViewModel(child, "backLink")
         {
             ChildDueDate = DateOnly.FromDateTime(now.AddDays(-1)),
         };

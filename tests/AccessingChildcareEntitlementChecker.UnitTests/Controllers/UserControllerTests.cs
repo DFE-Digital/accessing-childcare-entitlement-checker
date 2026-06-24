@@ -1,9 +1,10 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
-using AccessingChildcareEntitlementChecker.Web.Services;
-using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.User;
+using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -18,6 +19,8 @@ public class UserControllerTests
         _journeyState = new JourneyState();
         _journeySession = Substitute.For<IJourneySession>();
         _controller = new UserController(_journeyState, _journeySession);
+        _controller.Url = Substitute.For<IUrlHelper>();
+        _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 
     [Fact]
