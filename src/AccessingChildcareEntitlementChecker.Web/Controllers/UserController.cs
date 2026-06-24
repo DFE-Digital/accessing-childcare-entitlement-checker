@@ -21,9 +21,10 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    public ViewResult UserAge()
+    public ViewResult UserAge(string? returnTo = null)
     {
-        return View(new UserAgeViewModel(_journeyState));
+        var backLink = GetUserAgeBackLink(returnTo);
+        return View(new UserAgeViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -31,6 +32,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetUserAgeBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -42,7 +44,8 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult Nationality(string? returnTo = null)
     {
-        return View(new NationalityViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetNationalityBackLink(returnTo);
+        return View(new NationalityViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -50,6 +53,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetNationalityBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -70,7 +74,8 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult SettledStatus(string? returnTo = null)
     {
-        return View(new SettledStatusViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetSettledStatusBackLink(returnTo);
+        return View(new SettledStatusViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -78,6 +83,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetSettledStatusBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -94,7 +100,8 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult PaidWork(string? returnTo = null)
     {
-        return View(new PaidWorkViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetPaidWorkBackLink(returnTo);
+        return View(new PaidWorkViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -102,6 +109,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetPaidWorkBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -123,10 +131,10 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
     public IActionResult WorkStatus(string? returnTo = null)
     {
-        return View(new WorkStatusViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetWorkStatusBackLink(returnTo);
+        return View(new WorkStatusViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -134,6 +142,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetWorkStatusBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -163,7 +172,8 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult SelfEmployedDuration(string? returnTo = null)
     {
-        return View(new SelfEmployedDurationViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetSelfEmployedDurationBackLink(returnTo);
+        return View(new SelfEmployedDurationViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -171,6 +181,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetSelfEmployedDurationBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -193,7 +204,8 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult YearlyEarnings(string? returnTo = null)
     {
-        return View(new YearlyEarningsViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetYearlyEarningsBackLink(returnTo);
+        return View(new YearlyEarningsViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -201,6 +213,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetYearlyEarningsBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -223,7 +236,8 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult WeeklyEarnings(string? returnTo = null)
     {
-        return View(new WeeklyEarningsViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetWeeklyEarningsBackLink(returnTo);
+        return View(new WeeklyEarningsViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -231,6 +245,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetWeeklyEarningsBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -253,7 +268,8 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult UniversalCredit(string? returnTo = null)
     {
-        return View(new UniversalCreditViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetUniversalCreditBackLink(returnTo);
+        return View(new UniversalCreditViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -261,6 +277,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetUniversalCreditBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -277,7 +294,8 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult Benefits(string? returnTo = null)
     {
-        return View(new BenefitsViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetBenefitsBackLink(returnTo);
+        return View(new BenefitsViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -285,6 +303,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetBenefitsBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -301,7 +320,8 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult ChildcareSupport(string? returnTo = null)
     {
-        return View(new ChildcareSupportViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetChildcareSupportBackLink(returnTo);
+        return View(new ChildcareSupportViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -309,6 +329,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetChildcareSupportBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -330,7 +351,8 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult ChildcareVoucherReceipt(string? returnTo = null)
     {
-        return View(new ChildcareVoucherReceiptViewModel(_journeyState) { ReturnTo = returnTo });
+        var backLink = GetChildcareVoucherReceiptBackLink(returnTo);
+        return View(new ChildcareVoucherReceiptViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -338,6 +360,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetChildcareVoucherReceiptBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -352,9 +375,10 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    public ViewResult HasPartner()
+    public ViewResult HasPartner(string? returnTo = null)
     {
-        return View(new HasPartnerViewModel(_journeyState));
+        var backLink = GetHasPartnerBackLink(returnTo);
+        return View(new HasPartnerViewModel(_journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -362,6 +386,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.BackLink = GetHasPartnerBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -374,5 +399,169 @@ public class UserController : Controller
         }
 
         return this.RedirectTo<SummaryController>(nameof(SummaryController.CheckAnswers));
+    }
+
+    private string GetUserAgeBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(SummaryController.CheckChildDetails), SummaryController.Name);
+    }
+
+    private string GetNationalityBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(UserAge));
+    }
+
+    private string GetSettledStatusBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(Nationality));
+    }
+
+    private string GetPaidWorkBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        if (_journeyState.Nationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+        {
+            return Url.ActionOrThrow(nameof(SettledStatus));
+        }
+
+        return Url.ActionOrThrow(nameof(Nationality));
+    }
+
+    private string GetWorkStatusBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(PaidWork));
+    }
+
+    private string GetSelfEmployedDurationBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(WorkStatus));
+    }
+
+    private string GetWeeklyEarningsBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        if (_journeyState.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
+        {
+            return Url.ActionOrThrow(nameof(SelfEmployedDuration));
+        }
+
+        return Url.ActionOrThrow(nameof(WorkStatus));
+    }
+
+    private string GetYearlyEarningsBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(WeeklyEarnings));
+    }
+
+    private string GetUniversalCreditBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        if (_journeyState.PaidWork == PaidWorkOption.No)
+        {
+            return Url.ActionOrThrow(nameof(PaidWork));
+        }
+        else if (_journeyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
+        {
+            return Url.ActionOrThrow(nameof(SelfEmployedDuration));
+        }
+        else if (_journeyState.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold)
+        {
+            return Url.ActionOrThrow(nameof(YearlyEarnings));
+        }
+
+        return Url.ActionOrThrow(nameof(WeeklyEarnings));
+    }
+
+    private string GetBenefitsBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        if (_journeyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold)
+        {
+            return Url.Action(nameof(YearlyEarnings), Name)
+                ?? throw new InvalidOperationException("Unable to generate back link");
+        }
+
+        return Url.ActionOrThrow(nameof(UniversalCredit));
+    }
+
+    private string GetChildcareSupportBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(Benefits));
+    }
+
+    private string GetChildcareVoucherReceiptBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(ChildcareSupport));
+    }
+
+    private string GetHasPartnerBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        if (_journeyState.ChildcareSupport != null && _journeyState.ChildcareSupport.Contains(ChildcareSupportOption.ChildcareVouchers))
+        {
+            return Url.ActionOrThrow(nameof(ChildcareVoucherReceipt));
+        }
+
+        return Url.ActionOrThrow(nameof(ChildcareSupport));
     }
 }

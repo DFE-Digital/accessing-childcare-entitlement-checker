@@ -96,8 +96,7 @@ public class IntroductionController : Controller
             return url;
         }
 
-        return Url.Action(nameof(HomeController.Location), HomeController.Name)
-            ?? throw new InvalidOperationException("Unable to generate back link");
+        return Url.ActionOrThrow(nameof(HomeController.Location), HomeController.Name);
     }
 
     private string GetIsChildBornBackLink(string childId, string? returnTo)
@@ -107,7 +106,6 @@ public class IntroductionController : Controller
             return url;
         }
 
-        return Url.Action(nameof(ChildName), new { childId })
-            ?? throw new InvalidOperationException("Unable to generate back link");
+        return Url.ActionOrThrow(nameof(ChildName), new { childId });
     }
 }

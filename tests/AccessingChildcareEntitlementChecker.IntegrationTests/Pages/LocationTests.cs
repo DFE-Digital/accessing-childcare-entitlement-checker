@@ -10,9 +10,10 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     [Theory]
     [InlineData(null, "/")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
-    public async Task Get_Location_Has_Radios_And_BackLink(string? returnTo, string backLinkUrl)
+    [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
+    public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = factory.CreateClient();
 
         var url = $"/where-do-you-live?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -46,7 +47,8 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     [Theory]
     [InlineData(null, "/")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
-    public async Task Post_With_Long_Name_Shows_Validation_Error_And_BackLink(string? returnTo, string backLinkUrl)
+    [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
+    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClient();
         var url = $"/where-do-you-live?returnTo={returnTo}";
@@ -58,13 +60,9 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
-                new KeyValuePair<string, string>("ChildName", new string('A', 61))
-            ],
-            TestContext.Current.CancellationToken);
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [], TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
         postDocument.AssertValidationError()
-                    .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl);
     }
 }
