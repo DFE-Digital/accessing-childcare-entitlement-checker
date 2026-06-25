@@ -315,6 +315,17 @@ public class UserControllerTests
         Assert.Null(result.Model<PaidWorkViewModel>().PaidWork);
     }
 
+    [Fact]
+    public void PaidWork_Post_Unreachable_Coverage()
+    {
+        var model = new PaidWorkViewModel
+        {
+            PaidWork = (PaidWorkOption)99,
+        };
+
+        Assert.Throws<UnreachableException>(() => _controller.PaidWork(model));
+    }
+
     [Theory]
     [InlineData(WorkStatusOption.PaidEmployment, null, nameof(UserController.WeeklyEarnings))]
     [InlineData(WorkStatusOption.SelfEmployed, null, nameof(UserController.SelfEmployedDuration))]
@@ -410,6 +421,17 @@ public class UserControllerTests
         Assert.NotNull(result.Model<SelfEmployedDurationViewModel>());
     }
 
+    [Fact]
+    public void SelfEmployedDuration_Post_Unreachable_Coverage()
+    {
+        var model = new SelfEmployedDurationViewModel
+        {
+            SelfEmployedDuration = (SelfEmployedDurationOption)99,
+        };
+
+        Assert.Throws<UnreachableException>(() => _controller.SelfEmployedDuration(model));
+    }
+
     [Theory]
     [InlineData(YearlyEarningsOption.AboveThreshold, null, nameof(UserController.Benefits))]
     [InlineData(YearlyEarningsOption.BelowThreshold, null, nameof(UserController.UniversalCredit))]
@@ -456,6 +478,17 @@ public class UserControllerTests
         Assert.NotNull(result.Model<YearlyEarningsViewModel>());
     }
 
+    [Fact]
+    public void YearlyEarnings_Post_Unreachable_Coverage()
+    {
+        var model = new YearlyEarningsViewModel
+        {
+            YearlyEarnings = (YearlyEarningsOption)99,
+        };
+
+        Assert.Throws<UnreachableException>(() => _controller.YearlyEarnings(model));
+    }
+
     [Theory]
     [InlineData(WeeklyEarningsOption.AboveThreshold, null, nameof(UserController.YearlyEarnings))]
     [InlineData(WeeklyEarningsOption.BelowThreshold, null, nameof(UserController.UniversalCredit))]
@@ -500,6 +533,17 @@ public class UserControllerTests
     {
         var result = Assert.IsType<ViewResult>(_controller.WeeklyEarnings());
         Assert.NotNull(result.Model<WeeklyEarningsViewModel>());
+    }
+
+    [Fact]
+    public void WeeklyEarnings_Post_Unreachable_Coverage()
+    {
+        var model = new WeeklyEarningsViewModel
+        {
+            WeeklyEarnings = (WeeklyEarningsOption)99,
+        };
+
+        Assert.Throws<UnreachableException>(() => _controller.WeeklyEarnings(model));
     }
 
     [Theory]
