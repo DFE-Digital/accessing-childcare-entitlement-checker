@@ -6,5 +6,7 @@ public class ChildResultDto
 
     public int? AgeInYears { get; set; }
 
+    public bool IsBorn { get; set; }
+
     public List<SchemeResultDto> Schemes { get; set; } = [];
 }

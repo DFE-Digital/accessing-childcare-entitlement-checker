@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+
+    <data name="TaxFreeChildcare_Name" xml:space="preserve">
+        <value>Tax-Free Childcare</value>
+    </data>
+
+    <data name="TaxFreeChildcare_Description" xml:space="preserve">
+        <value>Up to £2,000 a year towards childcare costs or £4,000 if your child is disabled</value>
+    </data>
+
+    <data name="UniversalCreditChildcare_Name" xml:space="preserve">
+        <value>Universal Credit childcare</value>
+    </data>
+
+    <data name="UniversalCreditChildcare_Description" xml:space="preserve">
+        <value>Claim back up to £1,071 of childcare costs a month (or £1,836 for 2 or more children)</value>
+    </data>
+
+    <data name="ThirtyHoursForWorkingFamilies_Name" xml:space="preserve">
+        <value>Free Childcare for Working Parents</value>
+    </data>
+
+    <data name="ThirtyHoursForWorkingFamilies_Description" xml:space="preserve">
+        <value>30 hours of childcare a week during term time (38 weeks)</value>
+    </data>
+
+    <data name="FifteenHoursForDisadvantagedChildren_Name" xml:space="preserve">
+        <value>Early learning for 2-year-olds</value>
+    </data>
+
+    <data name="FifteenHoursForDisadvantagedChildren_Description" xml:space="preserve">
+        <value>15 hours of childcare a week during term time (38 weeks)</value>
+    </data>
+
+    <data name="FifteenHoursUniversal_Name" xml:space="preserve">
+        <value>15 hours free childcare for 3 and 4-year-olds</value>
+    </data>
+
+    <data name="FifteenHoursUniversal_Description" xml:space="preserve">
+        <value>15 hours of childcare a week during term time (38 weeks)</value>
+    </data>
+
+    <data name="WhenToApply_AskProviderOrCouncil" xml:space="preserve">
+      <value>Ask your childcare provider or local council</value>
+    </data>
+
+    <data name="WhenToApply_Now" xml:space="preserve">
+      <value>Now</value>
+    </data>
+
+    <data name="WhenToApply_WhenBorn" xml:space="preserve">
+      <value>When they are born</value>
+    </data>
+
+    <data name="WhenToApply_WhenTwentyThreeWeeksOld" xml:space="preserve">
+      <value>When they are 23 weeks old</value>
+    </data>
+
+    <data name="WhenToApply_FromDate" xml:space="preserve">
+      <value>From {0:dd MMM yyyy}</value>
+    </data> 
+
+</root>

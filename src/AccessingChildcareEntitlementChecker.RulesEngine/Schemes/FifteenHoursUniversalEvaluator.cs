@@ -32,7 +32,6 @@ public class FifteenHoursUniversalEvaluator : ISchemeEvaluator
                 ? child.DateOfBirth?.AddYears(MinimumEligibleAgeInYears)
                 : child.DueDate?.AddYears(MinimumEligibleAgeInYears);
 
-        DateOnly? applyFromDate = thirdBirthdayDate;
 
         DateOnly? useFromDate =
             thirdBirthdayDate is not null
@@ -45,7 +44,6 @@ public class FifteenHoursUniversalEvaluator : ISchemeEvaluator
             SchemeCode = SchemeCode.FifteenHoursUniversal,
             EligibleNow = eligibleNow,
             EligibleInFuture = eligibleInFuture,
-            ApplyFromDate = applyFromDate,
             UseFromDate = useFromDate
         };
     }
