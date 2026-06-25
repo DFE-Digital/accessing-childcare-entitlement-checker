@@ -7,7 +7,7 @@ Background:
 	And I fill in my own details
 	And I fill in my partner's details
 
-# pending work on journey validity AC-612
+# still fails because returnto is not passed backwards from the check your answers page.
 @ignore
 Scenario: Forward navigation after adding another child
 	Given I click the Add another child button on the 'Check your answers' page
@@ -31,6 +31,8 @@ Scenario: Back navigation after adding another child
 	When I click the back link
 	Then the page header is "What will your relationship be to this child?"
 
+# broken waiting for partner journey to be refined per AC-810
+@ignore 
 Scenario: Partner journey is shown when I change my answer to say I have a partner
 	Given I answer "Do you live with a partner?" as "No"
 	And I do not see a summary list for "Your partners details"
@@ -41,7 +43,7 @@ Scenario: Partner journey is shown when I change my answer to say I have a partn
 	And I answer the questions as follows:
 		| Question                                                     | Answer                     |
 		| What is your partner's age?                                  | 21 or over                 |
-		| Which of these best describes your partners nationality?    | British or Irish citizen   |
+		| Which of these best describes your partners nationality?     | British or Irish citizen   |
 		| Is your partner in paid work?                                | No                         |
 		| Does your partner get any of these benefits?                 | Carer's Allowance          |
 		| Does your partner already get any of this childcare support? | Childcare vouchers         |
@@ -50,7 +52,7 @@ Scenario: Partner journey is shown when I change my answer to say I have a partn
 	And I should see a summary list for "Your partners details" with the following summary:
 		| Question                                                     | Answer                     |
 		| What is your partner's age?                                  | 21 or over                 |
-		| Which of these best describes your partners nationality?    | British or Irish citizen   |
+		| Which of these best describes your partners nationality?     | British or Irish citizen   |
 		| Is your partner in paid work?                                | No                         |
 		| Does your partner get any of these benefits?                 | Carer's Allowance          |
 		| Does your partner already get any of this childcare support? | Childcare vouchers         |

@@ -249,6 +249,21 @@ public class JourneyState
 
     public void Apply(HasPartnerViewModel model)
     {
+        if (model.HasPartner == false)
+        {
+            PartnerAge = null;
+            PartnerNationality = null;
+            PartnerSettledStatus = null;
+            PartnerPaidWork = null;
+            PartnerWorkStatus = [];
+            PartnerSelfEmployedDuration = null;
+            PartnerWeeklyEarnings = null;
+            PartnerYearlyEarnings = null;
+            PartnerBenefits = [];
+            PartnerChildcareSupport = [];
+            PartnerChildcareVoucherReceipt = null;
+        }
+
         HasPartner = model.HasPartner;
     }
 
