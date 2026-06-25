@@ -8,6 +8,7 @@ public static class DevelopmentExtensions
 
     public static IApplicationBuilder UseDevelopmentAuth(this IApplicationBuilder app)
     {
+        var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(DevelopmentExtensions));
         var config = app.ApplicationServices.GetRequiredService<IConfiguration>();
         var env = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
 
@@ -32,6 +33,7 @@ public static class DevelopmentExtensions
 
             if (!authorizationHeader.StartsWith(basicPrefix, StringComparison.OrdinalIgnoreCase))
             {
+                logger.LogWarning("Development auth failed: Missing or invalid Authorization header format.");
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                 return;
@@ -46,13 +48,15 @@ public static class DevelopmentExtensions
 
                 if (!string.Equals(password, developmentBasicAuthPassword, StringComparison.Ordinal))
                 {
+                    logger.LogWarning("Development auth failed: Incorrect password provided.");
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                     return;
                 }
             }
-            catch (FormatException)
+            catch (FormatException ex)
             {
+                logger.LogWarning(ex, "Development auth failed: Malformed credentials format.");
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                 return;
