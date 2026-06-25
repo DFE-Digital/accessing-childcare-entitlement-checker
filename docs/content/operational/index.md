@@ -33,6 +33,9 @@ data:
   - url: "/operational/009-third-party-dependencies"
     data:
       title: Third-party dependency failures
+  - url: "/operational/010-alerts-and-monitoring"
+    data:
+      title: Alerts and monitoring runbook
 includeInBreadcrumbs: true
 ---
 Operational resilience is the ability of a service to prevent, withstand, respond to and recover from operational disruptions.
