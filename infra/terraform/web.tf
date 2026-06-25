@@ -16,6 +16,7 @@ resource "azurerm_linux_web_app" "web-app-service" {
   #checkov:skip=CKV_AZURE_63: HTTP request telemetry is collected via Application Insights and Log Analytics
   #checkov:skip=CKV_AZURE_66: Application Insights provides request tracing and diagnostics
   #checkov:skip=CKV_AZURE_65: Application Insights provides exception tracking and diagnostics
+  #checkov:skip=CKV_AZURE_222: Public network access is required, restricted by Front Door IP restrictions
   service_plan_id               = azurerm_service_plan.web-app-service-plan.id
   location                      = var.location
   name                          = "${local.service_prefix}-web-app-service"
@@ -23,7 +24,7 @@ resource "azurerm_linux_web_app" "web-app-service" {
   https_only                    = true
   virtual_network_subnet_id     = azapi_resource.app_subnet.id
   app_settings                  = local.web_app_settings
-  public_network_access_enabled = var.webapp_enable_public_access
+  public_network_access_enabled = true
   client_affinity_enabled       = true
   tags                          = local.common_tags
 
@@ -42,6 +43,9 @@ resource "azurerm_linux_web_app" "web-app-service" {
     ip_restriction {
       name        = "Access from Front Door"
       service_tag = "AzureFrontDoor.Backend"
+      headers {
+        x_azure_fdid = [azurerm_cdn_frontdoor_profile.frontdoor-web-profile.resource_guid]
+      }
     }
   }
 
@@ -101,7 +105,7 @@ resource "azurerm_linux_web_app_slot" "staging" {
   https_only                    = true
   virtual_network_subnet_id     = azapi_resource.app_subnet.id
   app_settings                  = local.web_app_settings
-  public_network_access_enabled = var.webapp_enable_public_access
+  public_network_access_enabled = true
   client_affinity_enabled       = true
   tags                          = local.common_tags
 
@@ -120,6 +124,9 @@ resource "azurerm_linux_web_app_slot" "staging" {
     ip_restriction {
       name        = "Access from Front Door"
       service_tag = "AzureFrontDoor.Backend"
+      headers {
+        x_azure_fdid = [azurerm_cdn_frontdoor_profile.frontdoor-web-profile.resource_guid]
+      }
     }
   }
 
@@ -129,65 +136,4 @@ resource "azurerm_linux_web_app_slot" "staging" {
   }
 }
 
-resource "azurerm_private_dns_zone" "web_dns_zone" {
-  name                = "privatelink.azurewebsites.net"
-  resource_group_name = azurerm_resource_group.web-rg.name
-  tags                = merge(local.common_tags, { "Service Offering" = null })
-}
 
-resource "azurerm_private_dns_zone_virtual_network_link" "web_dns_link" {
-  name                  = "${local.prefix}-web-dns-link"
-  resource_group_name   = azurerm_resource_group.web-rg.name
-  private_dns_zone_name = azurerm_private_dns_zone.web_dns_zone.name
-  virtual_network_id    = azurerm_virtual_network.vnet.id
-  tags                  = merge(local.common_tags, { "Service Offering" = null })
-}
-
-resource "azurerm_private_endpoint" "web_pe" {
-  name                = "${local.service_prefix}-web-pe"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.web-rg.name
-  subnet_id           = azapi_resource.pe_subnet.id
-  tags                = local.common_tags
-
-  private_service_connection {
-    name                           = "${local.service_prefix}-web-psc"
-    private_connection_resource_id = azurerm_linux_web_app.web-app-service.id
-    is_manual_connection           = false
-    subresource_names              = ["sites"]
-  }
-
-  private_dns_zone_group {
-    name                 = "web-dns-zone-group"
-    private_dns_zone_ids = [azurerm_private_dns_zone.web_dns_zone.id]
-  }
-
-  depends_on = [
-    azurerm_private_dns_zone_virtual_network_link.web_dns_link
-  ]
-}
-
-resource "azurerm_private_endpoint" "staging_pe" {
-  count               = var.webapp_enable_staging_slot ? 1 : 0
-  name                = "${local.service_prefix}-staging-pe"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.web-rg.name
-  subnet_id           = azapi_resource.pe_subnet.id
-  tags                = local.common_tags
-
-  private_service_connection {
-    name                           = "${local.service_prefix}-staging-psc"
-    private_connection_resource_id = azurerm_linux_web_app.web-app-service.id
-    is_manual_connection           = false
-    subresource_names              = ["sites-staging"]
-  }
-
-  private_dns_zone_group {
-    name                 = "web-dns-zone-group"
-    private_dns_zone_ids = [azurerm_private_dns_zone.web_dns_zone.id]
-  }
-
-  depends_on = [
-    azurerm_private_dns_zone_virtual_network_link.web_dns_link
-  ]
-}

@@ -27,16 +27,6 @@ resource "azurerm_cdn_frontdoor_origin" "frontdoor-web-origin" {
   weight                         = 1
   name                           = "${local.prefix}-web-fd-origin"
   enabled                        = true
-
-  dynamic "private_link" {
-    for_each = var.fd_use_private_link ? ["apply"] : []
-    content {
-      request_message        = "Request access for Front Door Private Link"
-      target_type            = "sites"
-      location               = var.location
-      private_link_target_id = azurerm_linux_web_app.web-app-service.id
-    }
-  }
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "frontdoor-web-endpoint" {

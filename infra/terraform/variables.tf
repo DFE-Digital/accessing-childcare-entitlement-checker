@@ -26,12 +26,6 @@ variable "azure_frontdoor_sku" {
   default     = "Standard"
 }
 
-variable "fd_use_private_link" {
-  description = "Should use private link to connect to app service"
-  type        = bool
-  default     = false
-}
-
 variable "custom_domain" {
   description = "Custom front-door domain"
   type        = string
@@ -66,12 +60,6 @@ variable "webapp_enable_staging_slot" {
   description = "Enable staging slot for web app"
   type        = bool
   default     = false
-}
-
-variable "webapp_enable_public_access" {
-  description = "Enable public access for web app"
-  type        = bool
-  default     = true
 }
 
 variable "webapp_always_on" {
