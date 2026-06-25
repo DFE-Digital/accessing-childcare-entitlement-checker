@@ -87,6 +87,33 @@ resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
   }
 }
 
+resource "azurerm_monitor_diagnostic_setting" "staging_webapp_logs" {
+  count                      = var.webapp_enable_staging_slot ? 1 : 0
+  name                       = "${var.environment_prefix}-staging-web-app-diagnostics"
+  target_resource_id         = azurerm_linux_web_app_slot.staging[0].id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
+
+  enabled_log {
+    category = "AppServiceConsoleLogs"
+  }
+
+  enabled_log {
+    category = "AppServiceHTTPLogs"
+  }
+
+  enabled_log {
+    category = "AppServicePlatformLogs"
+  }
+
+  enabled_log {
+    category = "AppServiceAppLogs"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
+
 resource "azurerm_linux_web_app_slot" "staging" {
   count = var.webapp_enable_staging_slot ? 1 : 0
 

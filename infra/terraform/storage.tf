@@ -64,6 +64,20 @@ resource "azurerm_monitor_diagnostic_setting" "blob_logs" {
   }
 }
 
+resource "azurerm_monitor_diagnostic_setting" "storage_diagnostics" {
+  name                       = "${local.prefix}-deploy-storage-diagnostics"
+  target_resource_id         = azurerm_storage_account.deployment_storage.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
+
+  enabled_metric {
+    category = "Transaction"
+  }
+
+  enabled_metric {
+    category = "Capacity"
+  }
+}
+
 resource "azurerm_private_dns_zone" "blob_dns_zone" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = azurerm_resource_group.web-rg.name
