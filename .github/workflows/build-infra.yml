@@ -123,7 +123,7 @@ jobs:
             -v "$WORKSPACE/$TF_DIR:/tf" \
             -v "$WORKSPACE/$CHECKOV_RESULTS:/results" \
             -v "$WORKSPACE/$TF_DIR/environments:/env" \
-            ghcr.io/dfe-digital/dfe-checkov-policies/checkov-elz:a22c074141276b0425839a5c28d910f06f5c2796 \
+            ghcr.io/dfe-digital/dfe-checkov-policies/checkov-elz:96cb6f51d70e794fbcd9ef5e45d5e23d8a33fec7 \
             -d /tf --var-file "/env/sproduction.tfvars" \
             -o cli \
             -o junitxml \
