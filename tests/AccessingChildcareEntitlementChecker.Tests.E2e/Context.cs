@@ -1,5 +1,6 @@
 using AccessingChildcareEntitlementChecker.Tests.E2e.Steps.DeferredBackground;
 using Microsoft.Playwright;
+using System.Text;
 
 namespace AccessingChildcareEntitlementChecker.Tests.E2e;
 
@@ -27,10 +28,10 @@ public class Context
 
         if (!string.IsNullOrEmpty(password))
         {
-            contextOptions.HttpCredentials = new HttpCredentials
+            var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"e2e:{password}"));
+            contextOptions.ExtraHTTPHeaders = new Dictionary<string, string>
             {
-                Username = "e2e",
-                Password = password
+                ["Authorization"] = $"Basic {credentials}"
             };
         }
 
@@ -40,7 +41,7 @@ public class Context
         return new Context(page);
     }
 
-    public static Uri Uri => new(Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252/");
+    public static Uri Uri => new(Environment.GetEnvironmentVariable("TEST_URL") ?? "https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net");
 
     public async Task DisposeAsync()
     {
