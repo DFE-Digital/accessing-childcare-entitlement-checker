@@ -35,6 +35,38 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
     }
 
     [Theory]
+    [InlineData(null, $"/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
+    public async Task Post_Valid_Redirects(string? returnTo, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+                {
+                    {
+                        ChildId,
+                        new Child(ChildId, "Sara")
+                    }
+                }
+        });
+
+        var url = $"/children/{ChildId}/child-benefits?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+                new KeyValuePair<string, string>("ChildSupportOptions", "ArmedForcesIndependencePayment")],
+            TestContext.Current.CancellationToken);
+        postResponse.AssertRedirect(continueUrl);
+    }
+
+    [Theory]
     [InlineData(null, $"/children/{ChildId}/relationship-to-child")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]

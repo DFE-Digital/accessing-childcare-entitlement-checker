@@ -23,6 +23,34 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
             .AssertBackLink(backLinkUrl);
     }
 
+    /// <remarks>
+    /// Child name (aka add child details) is a special case in the flow.
+    /// You cannot directly return to this page from a summary screen.
+    /// To get here you must either be going forwards through the flow, or have clicked "back" from "is child born".
+    ///
+    /// From here; you may only go forwards to "is child born".
+    /// </remarks>
+    [Fact]
+    public async Task Post_Valid_Redirects()
+    {
+        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+
+        var url = $"/children/add-child-details";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+                new KeyValuePair<string,string>("ChildName", "Sara")
+            ],
+            TestContext.Current.CancellationToken);
+        postResponse.AssertRedirect("has-the-child-been-born");
+    }
+
     [Theory]
     [InlineData(null, "/where-do-you-live")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]

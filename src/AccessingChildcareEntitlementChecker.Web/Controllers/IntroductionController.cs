@@ -2,6 +2,7 @@ using AccessingChildcareEntitlementChecker.Web.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -69,6 +70,11 @@ public class IntroductionController : Controller
     [HttpPost]
     public IActionResult IsChildBorn(ChildIsBornViewModel model)
     {
+        if (!_journeyState.Children.TryGetValue(model.ChildId, out var child))
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
             model.BackLink = GetIsChildBornBackLink(model.ChildId, model.ReturnTo);
@@ -77,15 +83,22 @@ public class IntroductionController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ChildIsBorn == BirthStatus.Born)
+
+        var (nextAction, nextController, nextAnswerMissing) = child.BirthStatus switch
         {
-            return this.RedirectTo<BornChildDetailsController>(
-                nameof(BornChildDetailsController.ChildBirthDate),
-                new { childId = model.ChildId, returnTo = model.ReturnTo });
+            BirthStatus.Born => (nameof(BornChildDetailsController.ChildBirthDate), BornChildDetailsController.Name, child.BirthDate is null),
+            BirthStatus.Due => (nameof(ExpectedChildDetailsController.ChildDueDate), ExpectedChildDetailsController.Name, child.DueDate is null),
+            _ => throw new UnreachableException($"Unexpected birth status: {child.BirthStatus}")
+        };
+
+        if (model.ReturnTo is not null && !nextAnswerMissing)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectTo<ExpectedChildDetailsController>(
-            nameof(ExpectedChildDetailsController.ChildDueDate),
+        return this.RedirectToAction(
+            nextAction,
+            nextController,
             new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 

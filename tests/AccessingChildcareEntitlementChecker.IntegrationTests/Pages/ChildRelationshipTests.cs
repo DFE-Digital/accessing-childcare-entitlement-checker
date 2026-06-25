@@ -1,6 +1,7 @@
 ﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
@@ -35,10 +36,47 @@ public class ChildRelationshipTests(IntegrationTestFixture factory) : IClassFixt
     }
 
     [Theory]
+    [InlineData(null, null, $"/children/{ChildId}/child-benefits")]
+    [InlineData(ReturnTo.CheckAnswers, null, $"/children/{ChildId}/child-benefits")]
+    [InlineData(ReturnTo.CheckChildDetails, null, $"/children/{ChildId}/child-benefits")]
+    [InlineData(ReturnTo.CheckAnswers, ChildSupport.EducationHealthAndCarePlan, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, ChildSupport.EducationHealthAndCarePlan, "/children/check-childs-details")]
+    public async Task Post_Valid_Redirects(string? returnTo, ChildSupport? childSupport, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+                {
+                    {
+                        ChildId,
+                        new Child(ChildId, "Sara")
+                        {
+                            ChildSupportOptions = childSupport == null ? [] : [childSupport.Value]
+                        }
+                    }
+                }
+        });
+
+        var url = $"/children/{ChildId}/relationship-to-child?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+                new KeyValuePair<string, string>("Relationship", "Parent")],
+            TestContext.Current.CancellationToken);
+        postResponse.AssertRedirect(continueUrl);
+    }
+
+    [Theory]
     [InlineData(null, $"/children/{ChildId}/childs-date-of-birth")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_With_Tomorrows_Date_Fails_Validation_And_Preserves_Childs_Name_With_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Post_Invalid_Fails_Validation_And_Preserves_Childs_Name_With_BackLink(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {

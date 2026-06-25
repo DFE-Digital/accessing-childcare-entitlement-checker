@@ -4,6 +4,7 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using NSubstitute;
+using System.Diagnostics;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -126,6 +127,8 @@ public class IntroductionControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
         Assert.Equal(BirthStatus.Born, child.BirthStatus);
+        Assert.Null(child.DueDate);
+        Assert.Null(child.ExpectedRelationship);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildBirthDate), redirect.ActionName);
         Assert.Equal("BornChildDetails", redirect.ControllerName);
@@ -146,6 +149,9 @@ public class IntroductionControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
         Assert.Equal(BirthStatus.Due, child.BirthStatus);
+        Assert.Null(child.BirthDate);
+        Assert.Null(child.BornRelationship);
+        Assert.Empty(child.ChildSupportOptions);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(ExpectedChildDetailsController.ChildDueDate), redirect.ActionName);
         Assert.Equal("ExpectedChildDetails", redirect.ControllerName);
@@ -168,5 +174,29 @@ public class IntroductionControllerTests
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildIsBorn)));
         _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void IsChildBorn_Post_Unreachable_Coverage()
+    {
+        var model = new ChildIsBornViewModel
+        {
+            ChildId = "child-a",
+            ChildIsBorn = (BirthStatus)99,
+        };
+
+        Assert.Throws<UnreachableException>(() => _controller.IsChildBorn(model));
+    }
+
+    [Fact]
+    public void IsChildBorn_Post_NotFound()
+    {
+        var model = new ChildIsBornViewModel
+        {
+            ChildId = "child-b",
+        };
+
+        var result = _controller.IsChildBorn(model);
+        Assert.IsType<NotFoundResult>(result);
     }
 }
