@@ -25,8 +25,8 @@ jobs:
       SUT_URL: ${{ steps.get-url.outputs.TARGET_URL }}
     env:
       RESOURCE_GROUP: s279t01rg-uks-cec-web
-      FD_PROFILE: s279t01-uks-cec-web-fd-profile
-      FD_ENDPOINT: s279t01-uks-cec-web-fd-endpoint
+      FD_PROFILE: s279t01-web-fd-profile
+      FD_ENDPOINT: s279t01-web-fd-endpoint
     steps:
       - name: Checkout Git metadata
         uses: actions/checkout@v7
