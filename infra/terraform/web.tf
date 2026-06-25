@@ -22,7 +22,6 @@ resource "azurerm_linux_web_app" "web-app-service" {
   name                          = "${local.service_prefix}-web-app-service"
   resource_group_name           = azurerm_resource_group.web-rg.name
   https_only                    = true
-  virtual_network_subnet_id     = azapi_resource.app_subnet.id
   app_settings                  = local.web_app_settings
   public_network_access_enabled = true
   client_affinity_enabled       = true
@@ -52,12 +51,6 @@ resource "azurerm_linux_web_app" "web-app-service" {
   identity {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.app_identity.id]
-  }
-
-  lifecycle {
-    ignore_changes = [
-      app_settings["WEBSITE_RUN_FROM_PACKAGE"]
-    ]
   }
 }
 
@@ -122,15 +115,11 @@ resource "azurerm_linux_web_app_slot" "staging" {
       condition     = contains(local.slot_supported_skus, upper(var.webapp_sku))
       error_message = "Deployment slots require Standard or higher App Service plans."
     }
-    ignore_changes = [
-      app_settings["WEBSITE_RUN_FROM_PACKAGE"]
-    ]
   }
 
   name                          = "staging"
   app_service_id                = azurerm_linux_web_app.web-app-service.id
   https_only                    = true
-  virtual_network_subnet_id     = azapi_resource.app_subnet.id
   app_settings                  = local.web_app_settings
   public_network_access_enabled = true
   client_affinity_enabled       = true

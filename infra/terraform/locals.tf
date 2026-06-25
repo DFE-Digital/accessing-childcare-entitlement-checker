@@ -18,12 +18,10 @@ locals {
   }
 
   web_app_settings = merge({
-    "ASPNETCORE_ENVIRONMENT"                       = var.aspnetcore_environment
-    "APPLICATIONINSIGHTS_CONNECTION_STRING"        = azurerm_application_insights.application-insights.connection_string
-    "WEBSITE_SWAP_WARMUP_PING_PATH"                = "/health"
-    "WEBSITE_SWAP_WARMUP_PING_STATUSES"            = "200"
-    "WEBSITE_RUN_FROM_PACKAGE"                     = ""
-    "WEBSITE_RUN_FROM_PACKAGE_BLOB_MI_RESOURCE_ID" = azurerm_user_assigned_identity.app_identity.id
+    "ASPNETCORE_ENVIRONMENT"                = var.aspnetcore_environment
+    "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.application-insights.connection_string
+    "WEBSITE_SWAP_WARMUP_PING_PATH"         = "/health"
+    "WEBSITE_SWAP_WARMUP_PING_STATUSES"     = "200"
     }, var.aspnetcore_environment != "Production" ? {
     "DevelopmentBasicAuthPassword" = var.development_basic_auth_password
   } : {})

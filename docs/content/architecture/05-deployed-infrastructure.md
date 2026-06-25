@@ -94,9 +94,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_deployment_storage_account_name"></a> [deployment\_storage\_account\_name](#output\_deployment\_storage\_account\_name) | The name of the deployment storage account. |
-| <a name="output_deployment_storage_blob_endpoint"></a> [deployment\_storage\_blob\_endpoint](#output\_deployment\_storage\_blob\_endpoint) | The primary blob endpoint URL of the deployment storage account. |
-| <a name="output_deployment_storage_container_name"></a> [deployment\_storage\_container\_name](#output\_deployment\_storage\_container\_name) | The name of the deployment blob container. |
 | <a name="output_frontdoor_hostname"></a> [frontdoor\_hostname](#output\_frontdoor\_hostname) | n/a |
 | <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | n/a |
 | <a name="output_staging_slot_in_use"></a> [staging\_slot\_in\_use](#output\_staging\_slot\_in\_use) | Indicates whether the staging slot is enabled for the web app. |
