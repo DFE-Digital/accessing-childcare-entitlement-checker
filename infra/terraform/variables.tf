@@ -91,3 +91,15 @@ variable "waf_mode" {
   type        = string
   default     = "Prevention"
 }
+
+variable "alert_email_address" {
+  description = "The email address to send alert notifications to"
+  type        = string
+  default     = ""
+}
+
+variable "enable_alerts" {
+  description = "Toggle to enable/disable Azure Monitor alerts"
+  type        = bool
+  default     = false
+}
