@@ -32,7 +32,7 @@ order: 99
 | Timestamp Disclosure - Unix | Low | 1 |
 | Modern Web Application | Informational | Systemic |
 | Re-examine Cache-control Directives | Informational | Systemic |
-| Session Management Response Identified | Informational | 10 |
+| Session Management Response Identified | Informational | 9 |
 | User Agent Fuzzer | Informational | Systemic |
 
 
@@ -52,36 +52,36 @@ order: 99
 
 A cookie has been set with its SameSite attribute set to "none", which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.
 
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
   * Method: `GET`
   * Parameter: `ARRAffinitySameSite`
   * Attack: ``
   * Evidence: `Set-Cookie: ARRAffinitySameSite`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/favicon.svg%3Fv=6.0.0
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/favicon.svg (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-180.png%3Fv=6.0.0
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-180.png (v)`
   * Method: `GET`
   * Parameter: `ARRAffinitySameSite`
   * Attack: ``
   * Evidence: `Set-Cookie: ARRAffinitySameSite`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/govuk-icon-180.png%3Fv=6.0.0
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/govuk-icon-180.png (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-mask.svg%3Fv=6.0.0
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-mask.svg (v)`
   * Method: `GET`
   * Parameter: `ARRAffinitySameSite`
   * Attack: ``
   * Evidence: `Set-Cookie: ARRAffinitySameSite`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/govuk-icon-mask.svg%3Fv=6.0.0
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/govuk-icon-mask.svg (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt`
   * Method: `GET`
   * Parameter: `ARRAffinitySameSite`
   * Attack: ``
   * Evidence: `Set-Cookie: ARRAffinitySameSite`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/sitemap.xml
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/sitemap.xml`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
   * Method: `GET`
   * Parameter: `ARRAffinitySameSite`
   * Attack: ``
@@ -118,36 +118,36 @@ Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' fo
 
 A cookie has been set without the SameSite attribute, which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.
 
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `Set-Cookie: ARRAffinity`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/favicon.svg%3Fv=6.0.0
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/favicon.svg (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-180.png%3Fv=6.0.0
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-180.png (v)`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `Set-Cookie: ARRAffinity`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/govuk-icon-180.png%3Fv=6.0.0
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/govuk-icon-180.png (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-mask.svg%3Fv=6.0.0
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-mask.svg (v)`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `Set-Cookie: ARRAffinity`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/govuk-icon-mask.svg%3Fv=6.0.0
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/govuk-icon-mask.svg (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `Set-Cookie: ARRAffinity`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/sitemap.xml
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/sitemap.xml`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
@@ -184,8 +184,8 @@ Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' fo
 
 A private IP (such as 10.x.x.x, 172.x.x.x, 192.168.x.x) or an Amazon EC2 private hostname (for example, ip-10-0-56-78) has been found in the HTTP response body. This information might be helpful for further attacks targeting internal systems.
 
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/favicon.svg%3Fv=6.0.0
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/images/favicon.svg (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/favicon.svg%3Fv=6.0.0
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/favicon.svg (v)`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -223,8 +223,8 @@ Remove the private IP address from the HTTP response body. For comments, use JSP
 
 A timestamp was disclosed by the application/web server. - Unix
 
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/govuk-frontend.min.css%3Fv=6.0.0
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/govuk-frontend.min.css (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/govuk-frontend.min.css%3Fv=6.0.0
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/govuk-frontend.min.css (v)`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -261,36 +261,36 @@ Manually confirm that the timestamp data is not sensitive, and that the data can
 
 The application appears to be a modern web application. If you need to explore it automatically then the Ajax Spider may well be more effective than the standard one.
 
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/children/add-child-details`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/sitemap.xml
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/sitemap.xml`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/where-do-you-live`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/ ()(__RequestVerificationToken)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/ ()(__RequestVerificationToken)`
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
@@ -321,36 +321,36 @@ This is an informational alert and so no changes are required.
 
 The cache-control header has not been set properly or is missing, allowing the browser and proxies to cache content. For static assets like css, js, or image files this might be intended, however, the resources should be reviewed to ensure that no sensitive content will be cached.
 
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
   * Evidence: `no-cache, no-store`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/manifest.json%3Fv=6.0.0
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/manifest.json (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json%3Fv=6.0.0
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json (v)`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
   * Evidence: `cache-control: public, max-age=31536000, immutable`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/children/add-child-details`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
   * Evidence: `no-cache, no-store`
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/robots.txt
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/robots.txt`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/where-do-you-live`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
@@ -389,8 +389,8 @@ For secure content, ensure the cache-control HTTP header is set with "no-cache, 
 
 The given response has been identified as containing a session management token. The 'Other Info' field contains a set of header tokens that can be used in the Header Based Session Management Method. If the request is in a context which has a Session Management Method set to "Auto-Detect" then this rule will change the session management to use the tokens identified.
 
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
@@ -398,72 +398,64 @@ The given response has been identified as containing a session management token.
   * Other Info: `cookie:ARRAffinity
 cookie:ARRAffinitySameSite
 cookie:.AspNetCore.Antiforgery.RtGCWVXC8-4`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/manifest.json%3Fv=6.0.0
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/assets/manifest.json (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json%3Fv=6.0.0
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json (v)`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `ARRAffinity`
   * Other Info: `cookie:ARRAffinity
 cookie:ARRAffinitySameSite`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/children/532c17ac-0fbe-46c1-a415-25e7a1364d11/has-the-child-been-born
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/children/532c17ac-0fbe-46c1-a415-25e7a1364d11/has-the-child-been-born`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/67197208-4e55-4ca8-9f55-7ec96cf99c87/has-the-child-been-born
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/67197208-4e55-4ca8-9f55-7ec96cf99c87/has-the-child-been-born`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `ARRAffinity`
   * Other Info: `cookie:ARRAffinity
 cookie:ARRAffinitySameSite`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/children/add-child-details`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `ARRAffinity`
   * Other Info: `cookie:ARRAffinity
 cookie:ARRAffinitySameSite`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/robots.txt
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/robots.txt`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `ARRAffinity`
   * Other Info: `cookie:ARRAffinity
 cookie:ARRAffinitySameSite`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/sitemap.xml
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/sitemap.xml`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
   * Method: `GET`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `ARRAffinity`
   * Other Info: `cookie:ARRAffinity
 cookie:ARRAffinitySameSite`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/where-do-you-live`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `ARRAffinity`
-  * Other Info: `cookie:ARRAffinity
-cookie:ARRAffinitySameSite`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/ ()(__RequestVerificationToken)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/ ()(__RequestVerificationToken)`
   * Method: `POST`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `ARRAffinity`
   * Other Info: `cookie:ARRAffinity
 cookie:ARRAffinitySameSite`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/children/add-child-details ()(ChildName,__RequestVerificationToken)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details ()(ChildName,__RequestVerificationToken)`
   * Method: `POST`
   * Parameter: `ARRAffinity`
   * Attack: ``
   * Evidence: `ARRAffinity`
   * Other Info: `cookie:ARRAffinity
 cookie:ARRAffinitySameSite`
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/where-do-you-live ()(Country,__RequestVerificationToken)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live ()(Country,ReturnTo,__RequestVerificationToken)`
   * Method: `POST`
   * Parameter: `.AspNetCore.Session`
   * Attack: ``
@@ -473,7 +465,7 @@ cookie:ARRAffinity
 cookie:ARRAffinitySameSite`
 
 
-Instances: 10
+Instances: 9
 
 ### Solution
 
@@ -498,22 +490,22 @@ This is an informational alert rather than a vulnerability and so there is nothi
 
 Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.
 
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
   * Method: `GET`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
   * Method: `GET`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/
-  * Node Name: `https://s279t01-uks-cec-web-fd-endpoint-epgjc9h2b8hxgehc.a02.azurefd.net/ ()(__RequestVerificationToken)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/ ()(__RequestVerificationToken)`
   * Method: `POST`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
