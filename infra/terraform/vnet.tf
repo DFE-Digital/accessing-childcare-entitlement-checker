@@ -70,3 +70,45 @@ resource "azapi_resource" "pe_subnet" {
     azapi_resource.app_subnet
   ]
 }
+
+resource "azurerm_monitor_diagnostic_setting" "app_nsg_logs" {
+  name                       = "${var.environment_prefix}-app-nsg-diagnostics"
+  target_resource_id         = azurerm_network_security_group.app_nsg.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
+
+  enabled_log {
+    category = "NetworkSecurityGroupEvent"
+  }
+
+  enabled_log {
+    category = "NetworkSecurityGroupRuleCounter"
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "pe_nsg_logs" {
+  name                       = "${var.environment_prefix}-pe-nsg-diagnostics"
+  target_resource_id         = azurerm_network_security_group.pe_nsg.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
+
+  enabled_log {
+    category = "NetworkSecurityGroupEvent"
+  }
+
+  enabled_log {
+    category = "NetworkSecurityGroupRuleCounter"
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "vnet_logs" {
+  name                       = "${var.environment_prefix}-vnet-diagnostics"
+  target_resource_id         = azurerm_virtual_network.vnet.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
+
+  enabled_log {
+    category = "VMProtectionAlerts"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
