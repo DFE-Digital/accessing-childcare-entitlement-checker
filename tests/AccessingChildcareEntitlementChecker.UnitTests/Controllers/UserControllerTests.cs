@@ -264,6 +264,7 @@ public class UserControllerTests
     [InlineData(PaidWorkOption.Yes, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
     public void PaidWork_Post_SavesState_AndRedirects(PaidWorkOption option, string? returnTo, string actionName)
     {
+        _journeyState.WorkStatus = [WorkStatusOption.SelfEmployed];
         var model = new PaidWorkViewModel
         {
             PaidWork = option,

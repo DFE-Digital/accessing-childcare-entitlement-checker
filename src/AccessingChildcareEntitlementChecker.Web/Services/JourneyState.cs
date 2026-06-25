@@ -156,6 +156,8 @@ public class JourneyState
         if (model.Nationality != Nationality)
         {
             SettledStatus = null;
+            PartnerNationality = null;
+            PartnerSettledStatus = null;
         }
 
         Nationality = model.Nationality;
@@ -168,26 +170,55 @@ public class JourneyState
 
     public void Apply(PaidWorkViewModel model)
     {
+        if (model.PaidWork == PaidWorkOption.No || model.PaidWork == PaidWorkOption.OnLeave)
+        {
+            WorkStatus = [];
+            SelfEmployedDuration = null;
+            WeeklyEarnings = null;
+            YearlyEarnings = null;
+        }
+
         PaidWork = model.PaidWork;
     }
 
     public void Apply(WorkStatusViewModel model)
     {
+        if (!model.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
+        {
+            SelfEmployedDuration = null;
+        }
+
         WorkStatus = model.WorkStatus;
     }
 
     public void Apply(SelfEmployedDurationViewModel model)
     {
+        if (model.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
+        {
+            WeeklyEarnings = null;
+            YearlyEarnings = null;
+        }
+
         SelfEmployedDuration = model.SelfEmployedDuration;
     }
 
     public void Apply(WeeklyEarningsViewModel model)
     {
+        if (model.WeeklyEarnings == WeeklyEarningsOption.BelowThreshold)
+        {
+            YearlyEarnings = null;
+        }
+
         WeeklyEarnings = model.WeeklyEarnings;
     }
 
     public void Apply(YearlyEarningsViewModel model)
     {
+        if (model.YearlyEarnings == YearlyEarningsOption.AboveThreshold)
+        {
+            UniversalCredit = null;
+        }
+
         YearlyEarnings = model.YearlyEarnings;
     }
 
@@ -203,6 +234,11 @@ public class JourneyState
 
     public void Apply(ChildcareSupportViewModel model)
     {
+        if (!model.ChildcareSupport.Contains(ChildcareSupportOption.ChildcareVouchers))
+        {
+            ChildcareVoucherReceipt = null;
+        }
+
         ChildcareSupport = model.ChildcareSupport;
     }
 
