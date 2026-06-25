@@ -104,7 +104,7 @@ resource "azurerm_monitor_metric_alert" "app_service_5xx_errors" {
   criteria {
     metric_namespace = "Microsoft.Web/sites"
     metric_name      = "Http5xx"
-    aggregation      = "Sum"
+    aggregation      = "Total"
     operator         = "GreaterThan"
     threshold        = 10
   }
@@ -176,7 +176,7 @@ resource "azurerm_monitor_metric_alert" "waf_blocked_requests" {
   criteria {
     metric_namespace = "Microsoft.Cdn/profiles"
     metric_name      = "WebApplicationFirewallRequestCount"
-    aggregation      = "Sum"
+    aggregation      = "Total"
     operator         = "GreaterThan"
     threshold        = 50
 
