@@ -35,6 +35,47 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Theory]
+    [InlineData(null, null, $"/children/{ChildId}/relationship-to-child")]
+    [InlineData(ReturnTo.CheckAnswers, null, $"/children/{ChildId}/relationship-to-child")]
+    [InlineData(ReturnTo.CheckChildDetails, null, $"/children/{ChildId}/relationship-to-child")]
+    [InlineData(ReturnTo.CheckAnswers, Relationship.Parent, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, Relationship.Parent, "/children/check-childs-details")]
+    public async Task Post_Valid_Redirects(string? returnTo, Relationship? bornRelationship, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+                {
+                    {
+                        ChildId,
+                        new Child(ChildId, "Sara")
+                        {
+                            BornRelationship = bornRelationship
+                        }
+                    }
+                }
+        });
+
+        var url = $"/children/{ChildId}/childs-date-of-birth?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+                new KeyValuePair<string, string>("ChildBirthDate.Day", yesterday.Day.ToString()),
+                new KeyValuePair<string, string>("ChildBirthDate.Month", yesterday.Month.ToString()),
+                new KeyValuePair<string, string>("ChildBirthDate.Year", yesterday.Year.ToString())
+            ],
+            TestContext.Current.CancellationToken);
+        postResponse.AssertRedirect(continueUrl);
+    }
+
+    [Theory]
     [InlineData(null, $"/children/{ChildId}/has-the-child-been-born")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]

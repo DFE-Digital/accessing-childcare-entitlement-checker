@@ -5,6 +5,7 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using NSubstitute;
+using System.Diagnostics;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -18,7 +19,11 @@ public class BornChildDetailsControllerTests
     public BornChildDetailsControllerTests()
     {
         _journeyState = new JourneyState();
-        _journeyState.Children[childId] = new Child(childId, "Child A");
+        _journeyState.Children[childId] = new Child(childId, "Child A")
+        {
+            BirthStatus = BirthStatus.Born,
+        };
+
         _journeySession = Substitute.For<IJourneySession>();
         _controller = new BornChildDetailsController(_journeyState, _journeySession);
         _controller.Url = Substitute.For<IUrlHelper>();
@@ -55,7 +60,7 @@ public class BornChildDetailsControllerTests
         var model = new ChildBirthDateViewModel
         {
             ChildId = childId,
-            ChildBirthDate = new DateOnly(2020, 1, 15)
+            ChildBirthDate = new DateOnly(2020, 1, 15),
         };
 
         var result = _controller.ChildBirthDate(model);
@@ -66,12 +71,14 @@ public class BornChildDetailsControllerTests
         Assert.Equal(new DateOnly(2020, 1, 15), child.BirthDate);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildRelationship), redirect.ActionName);
-        Assert.Equal("BornChildDetails", redirect.ControllerName);
     }
 
     [Fact]
     public void ChildBirthDate_Post_ValidSelection_SavesState_AndReturnsTo()
     {
+        _journeyState.Children[childId].BornRelationship = Relationship.Parent;
+        _journeyState.Children[childId].ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment];
+
         var model = new ChildBirthDateViewModel
         {
             ChildId = childId,
@@ -107,6 +114,18 @@ public class BornChildDetailsControllerTests
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildBirthDate)));
         _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void ChildBirthDate_Post_NotFound()
+    {
+        var model = new ChildBirthDateViewModel
+        {
+            ChildId = "child-b",
+        };
+
+        var result = _controller.ChildBirthDate(model);
+        Assert.IsType<NotFoundResult>(result);
     }
 
     [Fact]
@@ -152,12 +171,13 @@ public class BornChildDetailsControllerTests
         Assert.Equal(Relationship.Parent, child.BornRelationship);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildSupport), redirect.ActionName);
-        Assert.Equal("BornChildDetails", redirect.ControllerName);
     }
 
     [Fact]
     public void ChildRelationship_Post_ValidSelection_SavesState_AndReturnsTo()
     {
+        _journeyState.Children[childId].ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment];
+
         var model = new ChildRelationshipViewModel
         {
             ChildId = childId,
@@ -193,6 +213,18 @@ public class BornChildDetailsControllerTests
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.Relationship)));
         _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void ChildRelationship_Post_NotFound()
+    {
+        var model = new ChildRelationshipViewModel
+        {
+            ChildId = "child-b",
+        };
+
+        var result = _controller.ChildRelationship(model);
+        Assert.IsType<NotFoundResult>(result);
     }
 
     [Fact]
@@ -261,5 +293,17 @@ public class BornChildDetailsControllerTests
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildSupportOptions)));
         _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void ChildSupport_Post_NotFound()
+    {
+        var model = new ChildSupportViewModel
+        {
+            ChildId = "child-b",
+        };
+
+        var result = _controller.ChildSupport(model);
+        Assert.IsType<NotFoundResult>(result);
     }
 }

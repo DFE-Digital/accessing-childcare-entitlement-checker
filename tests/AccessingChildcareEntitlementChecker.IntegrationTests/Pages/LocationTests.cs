@@ -23,12 +23,14 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
             .AssertBackLink(backLinkUrl);
     }
 
-    [Fact]
-    public async Task Post_Redirects_To_ChildName()
+    [Theory]
+    [InlineData(null, "/children/add-child-details")]
+    [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(string? returnTo, string continueUrl)
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
-        var url = "/where-do-you-live";
+        var url = $"/where-do-you-live?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -41,7 +43,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
                 new KeyValuePair<string,string>("Country", "England")
             ],
             TestContext.Current.CancellationToken);
-        postResponse.AssertRedirect("/children/add-child-details");
+        postResponse.AssertRedirect(continueUrl);
     }
 
     [Theory]

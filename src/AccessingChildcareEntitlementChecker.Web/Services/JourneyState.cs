@@ -94,7 +94,20 @@ public class JourneyState
         {
             throw new InvalidOperationException("Child not found");
         }
+
         child.BirthStatus = model.ChildIsBorn;
+
+        if (child.BirthStatus == BirthStatus.Born)
+        {
+            child.DueDate = null;
+            child.ExpectedRelationship = null;
+        }
+        else
+        {
+            child.BirthDate = null;
+            child.BornRelationship = null;
+            child.ChildSupportOptions = [];
+        }
     }
 
     public void Apply(ChildBirthDateViewModel model)

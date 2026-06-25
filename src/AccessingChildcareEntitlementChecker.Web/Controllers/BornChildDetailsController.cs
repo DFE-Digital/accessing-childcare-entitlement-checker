@@ -49,12 +49,14 @@ public class BornChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo is not null)
+
+        var nextAnswerMissing = child.BornRelationship == null;
+        if (model.ReturnTo is not null && !nextAnswerMissing)
         {
-            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
+            return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectTo<BornChildDetailsController>(
+        return this.RedirectToAction(
             nameof(ChildRelationship),
             new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
@@ -88,12 +90,13 @@ public class BornChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo is not null)
+        var nextAnswerMissing = child.ChildSupportOptions.Count == 0;
+        if (model.ReturnTo is not null && !nextAnswerMissing)
         {
-            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
+            return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectTo<BornChildDetailsController>(
+        return this.RedirectToAction(
             nameof(ChildSupport),
             new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
@@ -127,7 +130,15 @@ public class BornChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
+        if (model.ReturnTo is not null)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
+
+        return this.RedirectToAction(
+            nameof(SummaryController.CheckChildDetails),
+            SummaryController.Name,
+            new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
     private string GetChildBirthDateBackLink(string childId, string? returnTo)

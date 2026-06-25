@@ -36,6 +36,11 @@ public class ExpectedChildDetailsController : Controller
     [HttpPost]
     public IActionResult ChildDueDate(ChildDueDateViewModel model)
     {
+        if (!_journeyState.Children.TryGetValue(model.ChildId, out var child))
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
             model.BackLink = GetChildDueDateBackLink(model.ChildId, model.ReturnTo);
@@ -44,12 +49,13 @@ public class ExpectedChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo is not null)
+        var nextAnswerMissing = child.ExpectedRelationship == null;
+        if (model.ReturnTo is not null && !nextAnswerMissing)
         {
-            return this.RedirectToReturnTo(model.ReturnTo, model.ChildId);
+            return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectTo<ExpectedChildDetailsController>(
+        return this.RedirectToAction(
             nameof(ExpectedChildRelationship),
             new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
@@ -69,6 +75,11 @@ public class ExpectedChildDetailsController : Controller
     [HttpPost]
     public IActionResult ExpectedChildRelationship(ExpectedChildRelationshipViewModel model)
     {
+        if (!_journeyState.Children.TryGetValue(model.ChildId, out var _))
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid)
         {
             model.BackLink = GetExpectedChildRelationshipBackLink(model.ChildId, model.ReturnTo);
@@ -77,7 +88,15 @@ public class ExpectedChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        return this.RedirectToReturnTo(model.ReturnTo ?? ReturnTo.CheckChildDetails, model.ChildId);
+        if (model.ReturnTo is not null)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
+
+        return this.RedirectToAction(
+            nameof(SummaryController.CheckChildDetails),
+            SummaryController.Name,
+            new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
     private string GetChildDueDateBackLink(string childId, string? returnTo)

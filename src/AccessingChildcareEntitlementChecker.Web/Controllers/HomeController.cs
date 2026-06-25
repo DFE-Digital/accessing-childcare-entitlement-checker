@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.Web.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,11 @@ public class HomeController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (model.ReturnTo is not null)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
+
         return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name);
     }
 
