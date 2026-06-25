@@ -1,6 +1,4 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.Partner
-@using AccessingChildcareEntitlementChecker.Web.Services
-@using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @model PartnerWeeklyEarningsViewModel
@@ -11,18 +9,9 @@
 }
 
 @section BeforeContent {
-    @if (JourneyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
-    {
-        <govuk-back-link asp-controller="Partner" asp-action="PartnerSelfEmployedDuration">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else
-    {
-        <govuk-back-link asp-controller="Partner" asp-action="PartnerWorkStatus">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
+    <govuk-back-link href="@Model.BackLink">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <div class="govuk-grid-row">
