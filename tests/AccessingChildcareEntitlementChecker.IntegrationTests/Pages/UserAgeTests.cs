@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
@@ -20,6 +21,43 @@ public class UserAgeTests(IntegrationTestFixture factory) : IClassFixture<Integr
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(3)
             .AssertBackLink(backLinkUrl);
+    }
+
+    [Theory]
+    [InlineData(null, null, null, null, AgeRange.EighteenToTwenty, "/nationality")]
+    [InlineData(ReturnTo.CheckAnswers, null, null, null, AgeRange.EighteenToTwenty, "/nationality")]
+    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, null, AgeRange.EighteenToTwenty, "/earnings/wage")]
+    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, WeeklyEarningsOption.AboveThreshold, AgeRange.EighteenToTwenty, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, WeeklyEarningsOption.AboveThreshold, AgeRange.TwentyOneOrOver, "/earnings/wage")]
+    public async Task Post_Valid_Redirects(
+        string? returnTo,
+        AgeRange? oldUserAge,
+        NationalityOption? nationality,
+        WeeklyEarningsOption? weeklyEarnings,
+        AgeRange newUserAge,
+        string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            UserAge = oldUserAge,
+            Nationality = nationality,
+            WeeklyEarnings = weeklyEarnings,
+        });
+
+        var url = $"/age/parent-age?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+                new KeyValuePair<string,string>("UserAge", newUserAge.ToString())
+            ],
+            TestContext.Current.CancellationToken);
+        postResponse.AssertRedirect(continueUrl);
     }
 
     [Theory]

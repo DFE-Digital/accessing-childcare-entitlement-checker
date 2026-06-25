@@ -142,11 +142,22 @@ public class JourneyState
 
     public void Apply(UserAgeViewModel model)
     {
+        if (model.UserAge != UserAge)
+        {
+            WeeklyEarnings = null;
+            YearlyEarnings = null;
+        }
+
         UserAge = model.UserAge;
     }
 
     public void Apply(NationalityViewModel model)
     {
+        if (model.Nationality != Nationality)
+        {
+            SettledStatus = null;
+        }
+
         Nationality = model.Nationality;
     }
 

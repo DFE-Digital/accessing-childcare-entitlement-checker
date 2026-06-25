@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
@@ -21,6 +22,38 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertCheckboxCount(3)
             .AssertBackLink(backLinkUrl);
+    }
+
+    [Theory]
+    [InlineData(null, WorkStatusOption.SelfEmployed, null, null, "/work-status/self-employed")]
+    [InlineData(null, WorkStatusOption.PaidEmployment, null, null, "/earnings/wage")]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.SelfEmployed, null, null, "/work-status/self-employed")]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, null, "/earnings/wage")]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(string? returnTo, WorkStatusOption workStatus, SelfEmployedDurationOption? selfEmployedDuration, WeeklyEarningsOption? weeklyEarnings, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            WorkStatus = [workStatus],
+            SelfEmployedDuration = selfEmployedDuration,
+            WeeklyEarnings = weeklyEarnings,
+        });
+
+        var url = $"/work-status/work-status?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+            new KeyValuePair<string, string>("WorkStatus", workStatus.ToString())
+        ], TestContext.Current.CancellationToken);
+
+        postResponse.AssertRedirect(continueUrl);
     }
 
     [Theory]

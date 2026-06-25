@@ -48,7 +48,8 @@ public class HomeController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        if (model.ReturnTo is not null)
+        var nextAnswerMissing = _journeyState.Children.Count == 0;
+        if (model.ReturnTo is not null && !nextAnswerMissing)
         {
             return this.RedirectToReturnTo(model.ReturnTo);
         }
