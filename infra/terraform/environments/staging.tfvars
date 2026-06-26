@@ -8,7 +8,6 @@ webapp_sku                 = "P0v3"
 webapp_zone_balancing      = false
 webapp_instance_count      = 1
 webapp_enable_staging_slot = true
-webapp_always_on           = false
 enable_web_test            = false
 location                   = "uksouth"
 location_short_code        = "uks"
