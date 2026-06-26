@@ -26,14 +26,14 @@ jobs:
         with:
           working-dir: infra/terraform
           config-file: ${{ github.workspace }}/.terraform-docs.yml
-          output-file: ${{ github.workspace }}/docs/content/architecture/deployed-infrastructure.md
+          output-file: ${{ github.workspace }}/docs/content/architecture/05-deployed-infrastructure.md
           output-method: inject
           git-push: "false"
 
       - name: Check for changes
         id: verify-changed-files
         run: |
-          if git diff --quiet -- "docs/content/architecture/deployed-infrastructure.md"; then
+          if git diff --quiet -- "docs/content/architecture/05-deployed-infrastructure.md"; then
             echo "changed=false" >> $GITHUB_OUTPUT
             echo "No documentation changes detected"
           else
