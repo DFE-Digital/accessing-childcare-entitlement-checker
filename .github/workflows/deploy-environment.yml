@@ -145,8 +145,6 @@ jobs:
         FRONTDOOR_HOSTNAME=$(terraform output -raw frontdoor_hostname)
         echo "frontdoor_hostname=$FRONTDOOR_HOSTNAME" >> "$GITHUB_OUTPUT"
         echo "deploy_url=https://$FRONTDOOR_HOSTNAME" >> "$GITHUB_OUTPUT"
-        echo "deploy_sa_name=$(terraform output -raw deployment_storage_account_name)" >> "$GITHUB_OUTPUT"
-        echo "deploy_sa_container=$(terraform output -raw deployment_storage_container_name)" >> "$GITHUB_OUTPUT"
         echo "staging_slot_in_use=$(terraform output -raw staging_slot_in_use)" >> "$GITHUB_OUTPUT"
 
     - name: Lock Terraform State
@@ -160,65 +158,7 @@ jobs:
         chmod +x scripts/manage-storage-access.sh
         ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"
 
-    - name: Unlock Deployment Storage
-      working-directory: ./infra
-      env:
-        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
-        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
-      shell: bash
-      run: |
-        chmod +x scripts/manage-storage-access.sh
-        ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "true"
-
-    - name: Upload Deployment package + tag
-      env:
-        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
-        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
-        CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
-      run: |
-        BLOB="package-${{ github.sha }}.zip"
-        
-        az storage blob upload \
-          --account-name "$ACC_NAME" \
-          --auth-mode login \
-          --container-name "$CONTAINER" \
-          --name "$BLOB" \
-          --file "$DEPLOY_ZIP_PATH" \
-          --overwrite
-        
-        az storage blob tag set \
-          --account-name "$ACC_NAME" \
-          --auth-mode login \
-          --container-name "$CONTAINER" \
-          --name "$BLOB" \
-          --tags \
-              "retain=true" \
-              "sha=${{ github.sha }}"
-
-    - name: Update WEBSITE_RUN_FROM_PACKAGE
-      env:
-        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
-        APP_NAME: ${{ steps.tf-outputs.outputs.web_app_name }}
-        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
-        CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
-      run: |
-        PACKAGE_URL="https://${ACC_NAME}.blob.core.windows.net/${CONTAINER}/package-${{ github.sha }}.zip"
-    
-        APP_ARGS=(
-          --resource-group "$RG_NAME"
-          --name "$APP_NAME"
-        )
-    
-        if [ "${{ steps.tf-outputs.outputs.staging_slot_in_use }}" == "true" ]; then
-          APP_ARGS+=(--slot staging)
-        fi
-    
-        az webapp config appsettings set \
-          "${APP_ARGS[@]}" \
-          --settings WEBSITE_RUN_FROM_PACKAGE="$PACKAGE_URL" \
-          --output none
-
-    - name: Restart Web App
+    - name: Deploy Web App (Zip Deploy)
       env:
         RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
         APP_NAME: ${{ steps.tf-outputs.outputs.web_app_name }}
@@ -226,13 +166,14 @@ jobs:
         APP_ARGS=(
           --resource-group "$RG_NAME"
           --name "$APP_NAME"
+          --src "$DEPLOY_ZIP_PATH"
         )
     
         if [ "${{ steps.tf-outputs.outputs.staging_slot_in_use }}" == "true" ]; then
           APP_ARGS+=(--slot staging)
         fi
     
-        az webapp restart "${APP_ARGS[@]}"
+        az webapp deployment source config-zip "${APP_ARGS[@]}"
     
     - name: Swap Staging to Production
       if: ${{ steps.tf-outputs.outputs.staging_slot_in_use == 'true' }}
@@ -245,48 +186,6 @@ jobs:
           --name "$APP_NAME" \
           --slot staging \
           --target-slot production
-
-    - name: Demote old retained blobs except current
-      env:
-        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
-        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
-        CONTAINER: ${{ steps.tf-outputs.outputs.deploy_sa_container }}
-      run: |
-        CURRENT_SHA="${{ github.sha }}"
-        echo "Current SHA=$CURRENT_SHA"
-
-        az storage blob list \
-          --account-name "$ACC_NAME" \
-          --auth-mode login \
-          --container-name "$CONTAINER" \
-          --include t \
-          --query "[?tags.retain=='true'].[name,tags.sha]" \
-          -o tsv | while read -r blob sha; do
-            echo "blob='$blob' sha='$sha'"
-          
-            if [ "$sha" != "$CURRENT_SHA" ]; then
-              echo "Demoting $blob"
-              az storage blob tag set \
-                --account-name "$ACC_NAME" \
-                --auth-mode login \
-                --container-name "$CONTAINER" \
-                --name "$blob" \
-                --tags \
-                    "retain=false" \
-                    "sha=$sha"
-            fi
-          done
-
-    - name: Lock Deployment Storage
-      if: ${{ always() }}
-      working-directory: ./infra
-      env:
-        ACC_NAME: ${{ steps.tf-outputs.outputs.deploy_sa_name }}
-        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
-      shell: bash
-      run: |
-        chmod +x scripts/manage-storage-access.sh
-        ./scripts/manage-storage-access.sh  "$ACC_NAME" "$RG_NAME" "false"
 
     - name: Publish deployment summary
       env:

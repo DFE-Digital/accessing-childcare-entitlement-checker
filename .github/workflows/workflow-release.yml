@@ -144,9 +144,21 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Download web app artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: web-app
+          path: ./artifacts/web-app
+
+      - name: Zip web app
+        run: |
+          cd ./artifacts/web-app
+          zip -r ../../webapp.zip .
+
       - name: Create Release
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ needs.version.outputs.version }}
           name: Release ${{ needs.version.outputs.version }}
           body: Successfully deployed to production.
+          files: webapp.zip

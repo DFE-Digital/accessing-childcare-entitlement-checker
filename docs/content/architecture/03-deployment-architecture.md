@@ -56,8 +56,7 @@ C4Deployment
 | Component  | Service                    | SLA           | Description                                                              |
 |:-----------|:---------------------------|:--------------|:-------------------------------------------------------------------------|
 | Edge       | Azure Front Door           | 99.99%        | Global entry point, SSL termination, and Web Application Firewall (WAF). |
-| Compute    | Azure App Service          | 99.95%        | Hosts the ASP.NET Core package-based application.                        |
-| Storage    | Azure Storage Account      | 99.99% (read) | Read-Access Geo-Redundant Storage Account for deployment artifacts.      |
+| Compute    | Azure App Service          | 99.95%        | Hosts the ASP.NET Core application.                                      |
 | Monitoring | Azure Application Insights | N/A           | Distributed tracing, performance monitoring, and application logs.       |
 | Logging    | Log Analytics Workspace    | N/A           | Centralized store for platform and application logs (30-day retention).  |
 
@@ -106,4 +105,6 @@ The project follows a Trunk-Based Development model with Release Branches for hi
 ## Monitoring
 
 * Observability: Application Insights tracks request latency, failure rates, and custom exceptions.
+* Retention: Logs are retained in the Log Analytics Workspace.
+re rates, and custom exceptions.
 * Retention: Logs are retained in the Log Analytics Workspace.
