@@ -1,4 +1,5 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.User
+@using AccessingChildcareEntitlementChecker.Web.Services
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @model ParentalLeaveViewModel
@@ -21,27 +22,11 @@
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
-            <govuk-checkboxes for="ParentalLeaveChildrenIds">
-                <govuk-checkboxes-fieldset>
-                    <govuk-checkboxes-fieldset-legend class="govuk-visually-hidden">
-                        @Html.DisplayNameFor(model => model.ParentalLeaveChildrenIds)
-                    </govuk-checkboxes-fieldset-legend>
-                    <govuk-checkboxes-error-message />
-                    @foreach (var child in Model.Children)
-                    {
-                    <govuk-checkboxes-item value="@child.ChildId">
-                        @child.Name
-                    </govuk-checkboxes-item>
-                    }
-                     <govuk-checkboxes-divider>
-                        @Localizer["or"]
-                    </govuk-checkboxes-divider>
-
-                    <govuk-checkboxes-item value="None">
-                        @Localizer["None of these children"]
-                    </govuk-checkboxes-item>
-                </govuk-checkboxes-fieldset>
-            </govuk-checkboxes>
+            <partial name="~/Views/_ChildrenCheckboxes.cshtml" model="@((
+                nameof(Model.ParentalLeaveChildrenIds),
+                Html.DisplayNameFor(m => m.ParentalLeaveChildrenIds),
+                (IReadOnlyList<Child>)Model.Children,
+                (IReadOnlyList<string>)Model.ParentalLeaveChildrenIds))" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
