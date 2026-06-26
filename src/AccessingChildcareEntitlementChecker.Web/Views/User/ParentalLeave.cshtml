@@ -16,17 +16,22 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+
+        <partial name="~/Views/Shared/_ErrorSummary.cshtml" />
+
         <h1 class="govuk-heading-l">
             @Html.DisplayNameFor(model => model.ParentalLeaveChildrenIds)
         </h1>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
-            <partial name="~/Views/_ChildrenCheckboxes.cshtml" model="@((
+            <partial name="~/Views/Shared/_ChildrenCheckboxes.cshtml" model="@((
                 nameof(Model.ParentalLeaveChildrenIds),
                 Html.DisplayNameFor(m => m.ParentalLeaveChildrenIds),
                 (IReadOnlyList<Child>)Model.Children,
                 (IReadOnlyList<string>)Model.ParentalLeaveChildrenIds))" />
+
+            <govuk-error-summary/>
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
