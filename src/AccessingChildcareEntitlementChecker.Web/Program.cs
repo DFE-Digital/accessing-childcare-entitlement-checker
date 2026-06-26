@@ -24,7 +24,7 @@ if (!string.IsNullOrEmpty(appInsightsConnectionString))
 
 services
     .AddLocalization(options => options.ResourcesPath = "Resources")
-    .AddDistributedMemoryCache()
+    .AddDistributedCacheConfiguration(builder.Configuration)
     .AddSession(options =>
     {
         options.Cookie.HttpOnly = true;
