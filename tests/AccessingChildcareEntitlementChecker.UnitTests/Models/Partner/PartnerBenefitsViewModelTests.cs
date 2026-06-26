@@ -14,7 +14,7 @@ public class PartnerBenefitsViewModelTests
     public PartnerBenefitsViewModelTests()
     {
         _journeyState = new JourneyState();
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory<PartnerBenefitsViewModel>();
+        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType =>
         {
             if (serviceType == typeof(JourneyState)) return _journeyState;

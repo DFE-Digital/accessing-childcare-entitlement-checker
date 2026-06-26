@@ -16,7 +16,7 @@ public class ChildSupportViewModelTests
         _journeyState = new JourneyState();
         _journeyState.Children["child-a"] = new Child("child-a", "Jack");
 
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory<ChildSupportViewModel>();
+        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType => _localizerFactory;
         _serviceProviderFunc = serviceType =>
         {

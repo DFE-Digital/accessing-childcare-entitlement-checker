@@ -14,7 +14,7 @@ public class PartnerChildcareSupportViewModelTests
     public PartnerChildcareSupportViewModelTests()
     {
         _journeyState = new JourneyState();
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory<PartnerChildcareSupportViewModel>();
+        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType =>
         {
             if (serviceType == typeof(JourneyState)) return _journeyState;

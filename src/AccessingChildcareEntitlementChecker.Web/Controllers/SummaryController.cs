@@ -80,8 +80,8 @@ public class SummaryController : Controller
 
         var userDetails = homeBuilder.ViewModels.Concat(userBuilder.ViewModels).ToList().AsReadOnly();
         var partnerDetails = partnerBuilder.ViewModels;
-
-        return View(new CheckAnswersViewModel(summaries, hasChildren, lastEditedChild, userDetails, partnerDetails));
+        var backLink = GetCheckAnswersBackLink();
+        return View(new CheckAnswersViewModel(summaries, hasChildren, lastEditedChild, userDetails, partnerDetails, backLink));
     }
 
     [HttpGet]
@@ -151,16 +151,35 @@ public class SummaryController : Controller
     {
         if (child?.BirthStatus == BirthStatus.Born)
         {
-            return this.Url.Action(nameof(BornChildDetailsController.ChildSupport), BornChildDetailsController.Name, new { childId = child.ChildId })
-                ?? throw new InvalidOperationException("Unable to generate back link");
+            return this.Url.ActionOrThrow(nameof(BornChildDetailsController.ChildSupport), BornChildDetailsController.Name, new { childId = child.ChildId });
         }
         else if (child?.BirthStatus == BirthStatus.Due)
         {
-            return this.Url.Action(nameof(ExpectedChildDetailsController.ExpectedChildRelationship), ExpectedChildDetailsController.Name, new { childId = child.ChildId })
-                ?? throw new InvalidOperationException("Unable to generate back link");
+            return this.Url.ActionOrThrow(nameof(ExpectedChildDetailsController.ExpectedChildRelationship), ExpectedChildDetailsController.Name, new { childId = child.ChildId });
         }
 
-        return this.Url.Action(nameof(IntroductionController.ChildName), IntroductionController.Name)
-                   ?? throw new InvalidOperationException("Unable to generate back link");
+        return this.Url.ActionOrThrow(nameof(IntroductionController.ChildName), IntroductionController.Name);
+    }
+
+    /// <remarks>
+    /// Note null forgiving - although not encoded in the types we expect all required questions
+    /// to have values at this point; and fail fast if not!
+    /// </remarks>
+    private string GetCheckAnswersBackLink()
+    {
+        if (_journeyState.HasPartner!.Value)
+        {
+            if (_journeyState.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
+            {
+                return this.Url.ActionOrThrow(nameof(PartnerController.PartnerChildcareVoucherReceipt), PartnerController.Name);
+
+            }
+            else
+            {
+                return this.Url.ActionOrThrow(nameof(PartnerController.PartnerChildcareSupport), PartnerController.Name);
+            }
+        }
+
+        return this.Url.ActionOrThrow(nameof(UserController.HasPartner), UserController.Name);
     }
 }
