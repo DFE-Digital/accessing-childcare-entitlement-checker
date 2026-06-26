@@ -7,4 +7,5 @@ public record CheckAnswersViewModel(
     bool HasChildren,
     Child? LastEditedChild,
     IReadOnlyList<SummaryRowViewModel> UserDetails,
-    IReadOnlyList<SummaryRowViewModel> PartnerDetails);
+    IReadOnlyList<SummaryRowViewModel> PartnerDetails,
+    string BackLink);

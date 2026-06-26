@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Summary;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,8 @@ public class SummaryControllerTests
         _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
         _journeyState.Children[childId] = new Child(childId, "Child A");
         _journeySession = Substitute.For<IJourneySession>();
-        var stringLocalizerFactory = Substitute.For<IStringLocalizerFactory>();
+        var stringLocalizerFactory = AcecSubstitute.ForLocalizerFactory();
+
 
         var services = new ServiceCollection();
         services
@@ -131,24 +133,49 @@ public class SummaryControllerTests
     [Fact]
     public void CheckAnswers_ReturnsView()
     {
+        _journeyState.HasPartner = false;
         var result = Assert.IsType<ViewResult>(_controller.CheckAnswers());
         var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.True(checkAnswersViewModel.HasChildren);
         var child = Assert.Single(checkAnswersViewModel.Children);
         Assert.Equal("child-a", child.ChildId);
         Assert.Equal("Child A", child.Name);
-        var userDetail = Assert.Single(checkAnswersViewModel.UserDetails);
-        Assert.Equal("What is your nationality?", userDetail.Key);
-        Assert.Equal("British or Irish citizen", userDetail.Value);
-        Assert.Equal("Nationality", userDetail.ChangeAction);
-        Assert.Equal("User", userDetail.ChangeController);
+        Assert.Equal(2, checkAnswersViewModel.UserDetails.Count);
+
+        var nationalityDetail = checkAnswersViewModel.UserDetails[0];
+        Assert.Equal("What is your nationality?", nationalityDetail.Key);
+        Assert.Equal("British or Irish citizen", nationalityDetail.Value);
+        Assert.Equal("Nationality", nationalityDetail.ChangeAction);
+        Assert.Equal("User", nationalityDetail.ChangeController);
+
+        var hasPartnerDetail = checkAnswersViewModel.UserDetails[1];
+        Assert.Equal("Title", hasPartnerDetail.Key);
+        Assert.Equal("No", hasPartnerDetail.Value);
+        Assert.Equal("HasPartner", hasPartnerDetail.ChangeAction);
+        Assert.Equal("User", hasPartnerDetail.ChangeController);
     }
 
     [Fact]
     public void CheckAnswers_ReturnsView_WithFromChild()
     {
+        _journeyState.HasPartner = false;
         var result = Assert.IsType<ViewResult>(_controller.CheckAnswers(fromChildId: "child-a"));
         var model = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.Equal("child-a", model.LastEditedChild!.ChildId);
+    }
+
+    [Fact]
+    public void CheckAnswers_ReturnsView_WithPartner()
+    {
+        _journeyState.HasPartner = true;
+        _journeyState.PartnerAge = AgeRange.TwentyOneOrOver;
+        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers());
+        var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
+
+        var partnerDetail = checkAnswersViewModel.PartnerDetails[0];
+        Assert.Equal("Title", partnerDetail.Key);
+        Assert.Equal("Option_21OrOver", partnerDetail.Value);
+        Assert.Equal("PartnerAge", partnerDetail.ChangeAction);
+        Assert.Equal("Partner", partnerDetail.ChangeController);
     }
 }

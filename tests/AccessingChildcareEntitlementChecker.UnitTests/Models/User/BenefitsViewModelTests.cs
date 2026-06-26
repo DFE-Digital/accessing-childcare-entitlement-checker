@@ -14,7 +14,7 @@ public class BenefitsViewModelTests
     public BenefitsViewModelTests()
     {
         _journeyState = new JourneyState();
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory<BenefitsViewModel>();
+        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType => _localizerFactory;
         _serviceProviderFunc = serviceType =>
         {

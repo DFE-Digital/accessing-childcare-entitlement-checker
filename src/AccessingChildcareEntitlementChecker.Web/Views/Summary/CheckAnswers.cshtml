@@ -11,27 +11,9 @@
 }
 
 @section BeforeContent {
-    @if (!JourneyState.HasPartner!.Value)
-    {
-        <govuk-back-link asp-controller="User" asp-action="HasPartner">
-            @Shared["Button_Back"]
-        </govuk-back-link>
-    }
-    else
-    {
-        if (JourneyState.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
-        {
-            <govuk-back-link asp-controller="Partner" asp-action="PartnerChildcareVoucherReceipt">
-                @Shared["Button_Back"]
-            </govuk-back-link>
-        }
-        else
-        {
-            <govuk-back-link asp-controller="Partner" asp-action="PartnerChildcareSupport">
-                @Shared["Button_Back"]
-            </govuk-back-link>
-        }
-    }
+    <govuk-back-link href="@Model.BackLink">
+        @Shared["Button_Back"]
+    </govuk-back-link>
 }
 
 <div class="govuk-grid-row">
@@ -65,7 +47,7 @@
             }
 
             <div class="govuk-!-margin-bottom-4">
-                <govuk-button-link class="govuk-button--secondary" asp-controller="Introduction" asp-action="ChildName">
+                <govuk-button-link class="govuk-button--secondary" asp-controller="Introduction" asp-action="ChildName" asp-route-returnTo="@ReturnTo.CheckAnswers">
                     @Localizer["Add another child"]
                 </govuk-button-link>
             </div>

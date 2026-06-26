@@ -5,10 +5,10 @@ namespace AccessingChildcareEntitlementChecker.UnitTests;
 
 public static class AcecSubstitute
 {
-    public static IStringLocalizerFactory ForLocalizerFactory<T>()
+    public static IStringLocalizerFactory ForLocalizerFactory()
     {
         var localizerFactory = Substitute.For<IStringLocalizerFactory>();
-        var localizer = Substitute.For<IStringLocalizer<T>>();
+        var localizer = Substitute.For<IStringLocalizer>();
         localizer[Arg.Any<string>()].Returns(callInfo =>
         {
             var key = callInfo.Arg<string>();
@@ -23,7 +23,8 @@ public static class AcecSubstitute
             return new LocalizedString(key, formattedValue);
         });
 
-        localizerFactory.Create(typeof(T)).Returns(localizer);
+        localizerFactory.Create(Arg.Any<Type>()).Returns(localizer);
+        localizerFactory.Create(Arg.Any<string>(), Arg.Any<string>()).Returns(localizer);
 
         return localizerFactory;
     }

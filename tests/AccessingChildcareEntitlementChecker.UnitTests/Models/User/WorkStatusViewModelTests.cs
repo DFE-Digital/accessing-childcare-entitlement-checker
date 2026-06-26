@@ -14,7 +14,7 @@ public class WorkStatusViewModelTests
     public WorkStatusViewModelTests()
     {
         _journeyState = new JourneyState();
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory<WorkStatusViewModel>();
+        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType => _localizerFactory;
         _serviceProviderFunc = serviceType =>
         {
