@@ -14,3 +14,4 @@ location_short_code        = "uks"
 waf_mode                   = "Detection"
 alert_email_address        = "Childcare.ENTITLEMENTS@education.gov.uk"
 enable_alerts              = true
+redis_sku_name             = "Balanced_B1"

@@ -97,3 +97,9 @@ variable "enable_alerts" {
   type        = bool
   default     = false
 }
+
+variable "redis_sku_name" {
+  description = "The SKU of the Managed Redis instance"
+  type        = string
+  default     = "Balanced_B1"
+}
