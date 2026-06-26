@@ -104,6 +104,34 @@ public class DevelopmentExtensionsTests
     }
 
     [Theory]
+    [InlineData("AlwaysOn")]
+    [InlineData("SiteWarmup")]
+    public async Task UseDevelopmentAuth_Allows_Azure_Probes_Without_Authentication(string userAgent)
+    {
+        _config["DevelopmentBasicAuthPassword"].Returns("password");
+        _env.EnvironmentName.Returns(Environments.Development);
+
+        _app.UseDevelopmentAuth();
+
+        var context = new DefaultHttpContext();
+        context.Request.Path = "/";
+        context.Request.Method = "GET";
+        context.Request.Headers.UserAgent = userAgent;
+
+        var nextCalled = false;
+        RequestDelegate next = (ctx) =>
+        {
+            nextCalled = true;
+            return Task.CompletedTask;
+        };
+
+        await InvokeMiddlewareAsync(context, next);
+
+        Assert.True(nextCalled);
+        Assert.Equal(StatusCodes.Status200OK, context.Response.StatusCode);
+    }
+
+    [Theory]
     [InlineData("/")]
     [InlineData("/home")]
     [InlineData("/assets")] // Not ending with trailing slash, not considered asset folder path
