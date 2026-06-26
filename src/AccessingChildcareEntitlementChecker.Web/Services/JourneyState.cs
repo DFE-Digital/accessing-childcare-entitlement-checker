@@ -23,6 +23,8 @@ public class JourneyState
 
     public List<WorkStatusOption> WorkStatus { get; set; } = [];
 
+    public List<string> ParentalLeaveChildrenIds { get; set; } = [];
+
     public SelfEmployedDurationOption? SelfEmployedDuration { get; set; }
 
     public WeeklyEarningsOption? WeeklyEarnings { get; set; }
@@ -48,6 +50,8 @@ public class JourneyState
     public PartnerPaidWorkOption? PartnerPaidWork { get; set; }
 
     public List<WorkStatusOption> PartnerWorkStatus { get; set; } = [];
+
+    public List<string> PartnerParentalLeaveChildrenIds { get; set; } = [];
 
     public SelfEmployedDurationOption? PartnerSelfEmployedDuration { get; set; }
 
@@ -170,15 +174,37 @@ public class JourneyState
 
     public void Apply(PaidWorkViewModel model)
     {
-        if (model.PaidWork == PaidWorkOption.No || model.PaidWork == PaidWorkOption.OnLeave)
+        if (model.PaidWork == PaidWorkOption.Yes)
+        {
+            ParentalLeaveChildrenIds = [];
+        }
+
+        if (model.PaidWork == PaidWorkOption.ParentalLeave)
+        {
+            WeeklyEarnings = null;
+        }
+
+        if (model.PaidWork == PaidWorkOption.SickLeave)
+        {
+            ParentalLeaveChildrenIds = [];
+            WeeklyEarnings = null;
+        }
+
+        if (model.PaidWork == PaidWorkOption.No)
         {
             WorkStatus = [];
+            ParentalLeaveChildrenIds = [];
             SelfEmployedDuration = null;
             WeeklyEarnings = null;
             YearlyEarnings = null;
         }
 
         PaidWork = model.PaidWork;
+    }
+
+    public void Apply(ParentalLeaveViewModel model)
+    {
+        ParentalLeaveChildrenIds = model.ParentalLeaveChildrenIds;
     }
 
     public void Apply(WorkStatusViewModel model)
@@ -295,15 +321,37 @@ public class JourneyState
 
     public void Apply(PartnerPaidWorkViewModel model)
     {
-        if (model.PartnerPaidWork == PartnerPaidWorkOption.No || model.PartnerPaidWork == PartnerPaidWorkOption.OnLeave)
+        if (model.PartnerPaidWork == PartnerPaidWorkOption.Yes)
+        {
+            PartnerParentalLeaveChildrenIds = [];
+        }
+
+        if (model.PartnerPaidWork == PartnerPaidWorkOption.ParentalLeave)
+        {
+            PartnerWeeklyEarnings = null;
+        }
+
+        if (model.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
+        {
+            PartnerParentalLeaveChildrenIds = [];
+            PartnerWeeklyEarnings = null;
+        }
+
+        if (model.PartnerPaidWork == PartnerPaidWorkOption.No)
         {
             PartnerWorkStatus = [];
+            PartnerParentalLeaveChildrenIds = [];
             PartnerSelfEmployedDuration = null;
             PartnerWeeklyEarnings = null;
             PartnerYearlyEarnings = null;
         }
 
         PartnerPaidWork = model.PartnerPaidWork;
+    }
+
+    public void Apply(PartnerParentalLeaveViewModel model)
+    {
+        PartnerParentalLeaveChildrenIds = model.PartnerParentalLeaveChildrenIds;
     }
 
     public void Apply(PartnerWorkStatusViewModel model)

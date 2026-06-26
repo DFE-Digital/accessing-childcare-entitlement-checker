@@ -7,9 +7,12 @@ public enum PartnerPaidWorkOption
     [Display(Name = "Yes")]
     Yes,
 
-    [Display(Name = "No")]
-    No,
+    [Display(Name = "Yes, but they are on parental leave", Description = "Parental leave includes maternity, paternity, shared parental, adoption, neonatal care and bereaved partners leave")]
+    ParentalLeave,
 
-    [Display(Name = "They are on leave from work", Description = "This includes maternity, paternity, adoption or neonatal care leave and sick leave")]
-    OnLeave,
+    [Display(Name = "Yes, but they are on sick leave")]
+    SickLeave,
+
+    [Display(Name = "No, they are not in work")]
+    No,
 }

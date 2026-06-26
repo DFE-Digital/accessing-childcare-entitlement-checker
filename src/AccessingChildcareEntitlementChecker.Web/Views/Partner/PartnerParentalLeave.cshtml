@@ -1,0 +1,51 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.Partner
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@model PartnerParentalLeaveViewModel
+
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.PartnerParentalLeaveChildrenIds);
+}
+
+@section BeforeContent {
+    <govuk-back-link href="@Model.BackLink">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Html.DisplayNameFor(model => model.PartnerParentalLeaveChildrenIds)
+        </h1>
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+
+            <govuk-checkboxes for="PartnerParentalLeaveChildrenIds">
+                <govuk-checkboxes-fieldset>
+                    <govuk-checkboxes-fieldset-legend class="govuk-visually-hidden">
+                        @Html.DisplayNameFor(model => model.PartnerParentalLeaveChildrenIds)
+                    </govuk-checkboxes-fieldset-legend>
+                    <govuk-checkboxes-error-message />
+                    @foreach (var child in Model.Children)
+                    {
+                    <govuk-checkboxes-item value="@child.ChildId">
+                        @child.Name
+                    </govuk-checkboxes-item>
+                    }
+                     <govuk-checkboxes-divider>
+                        @Localizer["or"]
+                    </govuk-checkboxes-divider>
+
+                    <govuk-checkboxes-item value="None">
+                        @Localizer["None of these children"]
+                    </govuk-checkboxes-item>
+                </govuk-checkboxes-fieldset>
+            </govuk-checkboxes>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

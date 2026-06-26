@@ -33,10 +33,11 @@
                     {
                         <govuk-radios-item value="@value">
                             @Html.EnumDisplayName(value)
-                            @if (value == PaidWorkOption.OnLeave)
+
+                            @if (Html.EnumDescription(value) is string description)
                             {
                                 <govuk-radios-item-hint>
-                                    @Localizer["This includes maternity, paternity, adoption or neonatal care leave and sick leave"]
+                                    @description
                                 </govuk-radios-item-hint>
                             }
                         </govuk-radios-item>

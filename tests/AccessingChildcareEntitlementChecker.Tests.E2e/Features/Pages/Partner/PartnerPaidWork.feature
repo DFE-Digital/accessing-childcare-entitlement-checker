@@ -12,16 +12,17 @@ Background:
 
 Scenario: Page load
 	When the page header is "Is your partner in paid work?"
-	Then I should see 3 radio buttons with the following options:
-		| Option                      |
-		| Yes                         |
-		| No                          |
-		| They are on leave from work |
+	Then I should see 4 radio buttons with the following options:
+		| Option                              |
+		| Yes                                 |
+		| Yes, but they are on parental leave |
+		| Yes, but they are on sick leave     |
+		| No, they are not in work            |
 
 Scenario: Radio button selection
 	When I select the "Yes" radio button
-	And I select the "No" radio button
-	Then the "No" radio button should be selected
+	And I select the "No, they are not in work" radio button
+	Then the "No, they are not in work" radio button should be selected
 	And all other options should be deselected
 
 Scenario: Continue without selection
@@ -36,12 +37,12 @@ Scenario: Continue with Yes
 	Then the page header is "How would you describe your partner's work status?"
 
 Scenario: Continue with They are on leave from work
-	When I select the "They are on leave from work" radio button
+	When I select the "Yes, but they are on parental leave" radio button
 	And I click on Continue
-	Then the page header is "What type of leave is your partner on?"
+	Then the page header is "Which child is your partner on leave for?"
 
 Scenario: Continue with No
-	When I select the "No" radio button
+	When I select the "No, they are not in work" radio button
 	And I click on Continue
 	Then the page header is "Does your partner get any of these benefits?"
 
@@ -53,7 +54,7 @@ Scenario: Back navigation from Does your partner have settled or pre-settled sta
 	Given I answer "What is your nationality?" as "Citizen of a different country"
 	And I answer questions as follows:
 		| Question                                                                             | Answer                                               |
-		| Are you in paid work?                                                                | No                                                   |
+		| Are you in paid work?                                                                | No, I am not in work                                 |
 		| Does your household receive universal credit?                                        | Yes                                                  |
 		| Do you get any of these benefits?                                                    | Carer's Allowance                                    |
 		| Do you already get any of this childcare support?                                    | Childcare vouchers                                   |
