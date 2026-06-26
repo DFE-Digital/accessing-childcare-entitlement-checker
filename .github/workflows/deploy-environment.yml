@@ -166,14 +166,14 @@ jobs:
         APP_ARGS=(
           --resource-group "$RG_NAME"
           --name "$APP_NAME"
-          --src "$DEPLOY_ZIP_PATH"
+          --src-path "$DEPLOY_ZIP_PATH"
         )
-    
+
         if [ "${{ steps.tf-outputs.outputs.staging_slot_in_use }}" == "true" ]; then
           APP_ARGS+=(--slot staging)
         fi
-    
-        az webapp deployment source config-zip "${APP_ARGS[@]}"
+
+        az webapp deploy "${APP_ARGS[@]}"
     
     - name: Swap Staging to Production
       if: ${{ steps.tf-outputs.outputs.staging_slot_in_use == 'true' }}
