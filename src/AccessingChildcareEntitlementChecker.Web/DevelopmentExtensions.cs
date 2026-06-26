@@ -8,7 +8,8 @@ public static class DevelopmentExtensions
 
     public static IApplicationBuilder UseDevelopmentAuth(this IApplicationBuilder app)
     {
-        var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(DevelopmentExtensions));
+        var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>()
+            .CreateLogger(typeof(DevelopmentExtensions));
         var config = app.ApplicationServices.GetRequiredService<IConfiguration>();
         var env = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
 
@@ -21,8 +22,9 @@ public static class DevelopmentExtensions
 
         app.Use(async (context, next) =>
         {
-            if (context.Request.Path.Equals("/health", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.Equals("/robots.txt", StringComparison.OrdinalIgnoreCase))
+            var path = context.Request.Path.Value ?? string.Empty;
+
+            if (IsExcludedPath(path))
             {
                 await next();
                 return;
@@ -33,7 +35,9 @@ public static class DevelopmentExtensions
 
             if (!authorizationHeader.StartsWith(basicPrefix, StringComparison.OrdinalIgnoreCase))
             {
-                logger.LogWarning("Development auth failed: Missing or invalid Authorization header format.");
+                logger.LogWarning(
+                    "Development auth failed: Missing or invalid Authorization header format. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}",
+                    context.Request.Method, context.Request.Path, context.Request.Headers["User-Agent"]);
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                 return;
@@ -48,7 +52,9 @@ public static class DevelopmentExtensions
 
                 if (!string.Equals(password, developmentBasicAuthPassword, StringComparison.Ordinal))
                 {
-                    logger.LogWarning("Development auth failed: Incorrect password provided.");
+                    logger.LogWarning(
+                        "Development auth failed: Incorrect password provided. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}",
+                        context.Request.Method, context.Request.Path, context.Request.Headers["User-Agent"]);
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                     return;
@@ -56,7 +62,9 @@ public static class DevelopmentExtensions
             }
             catch (FormatException ex)
             {
-                logger.LogWarning(ex, "Development auth failed: Malformed credentials format.");
+                logger.LogWarning(ex,
+                    "Development auth failed: Malformed credentials format. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}",
+                    context.Request.Method, context.Request.Path, context.Request.Headers["User-Agent"]);
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                 return;
@@ -67,6 +75,21 @@ public static class DevelopmentExtensions
 
         return app;
     }
+
+    private static bool IsExcludedPath(string path) =>
+        IsHealth(path) ||
+        IsAssets(path) ||
+        IsRobotsTxt(path);
+
+    private static bool IsHealth(string path) =>
+        path.Equals("/health", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsAssets(string path) =>
+        path.StartsWith("/assets/", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsRobotsTxt(string path) =>
+        path.StartsWith("/robots", StringComparison.OrdinalIgnoreCase) &&
+        path.EndsWith(".txt", StringComparison.OrdinalIgnoreCase);
 
     public static IEndpointRouteBuilder MapRobotsExclusionProtocol(this IEndpointRouteBuilder builder)
     {
@@ -86,10 +109,7 @@ public static class DevelopmentExtensions
 
         if (!env.IsProduction())
         {
-            builder.MapGet("/throw", () =>
-            {
-                throw new InvalidOperationException("Test exception for error page");
-            });
+            builder.MapGet("/throw", () => { throw new InvalidOperationException("Test exception for error page"); });
         }
 
         return builder;
