@@ -43,7 +43,6 @@ Scenario: Partner journey is shown when I change my answer to say I have a partn
 	And I answer the questions as follows:
 		| Question                                                     | Answer                     |
 		| What is your partner's age?                                  | 21 or over                 |
-		| Which of these best describes your partners nationality?     | British or Irish citizen   |
 		| Is your partner in paid work?                                | No                         |
 		| Does your partner get any of these benefits?                 | Carer's Allowance          |
 		| Does your partner already get any of this childcare support? | Childcare vouchers         |
@@ -52,7 +51,6 @@ Scenario: Partner journey is shown when I change my answer to say I have a partn
 	And I should see a summary list for "Your partners details" with the following summary:
 		| Question                                                     | Answer                     |
 		| What is your partner's age?                                  | 21 or over                 |
-		| Which of these best describes your partners nationality?     | British or Irish citizen   |
 		| Is your partner in paid work?                                | No                         |
 		| Does your partner get any of these benefits?                 | Carer's Allowance          |
 		| Does your partner already get any of this childcare support? | Childcare vouchers         |

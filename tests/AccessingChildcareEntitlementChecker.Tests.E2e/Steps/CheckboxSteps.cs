@@ -22,6 +22,14 @@ public class CheckboxSteps
             .CheckAsync();
     }
 
+    [When("I deselect the {string} checkbox")]
+    public async Task WhenIDeselectTheCheckbox(string label)
+    {
+        await _context.Page
+            .GetByLabel(label, new() { Exact = true })
+            .UncheckAsync();
+    }
+
     [When("I do not select a checkbox")]
     public async Task WhenIDoNotSelectACheckbox()
     {

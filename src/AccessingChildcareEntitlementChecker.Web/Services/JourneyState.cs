@@ -269,11 +269,22 @@ public class JourneyState
 
     public void Apply(PartnerAgeViewModel model)
     {
+        if (model.PartnerAge != PartnerAge)
+        {
+            PartnerWeeklyEarnings = null;
+            PartnerYearlyEarnings = null;
+        }
+
         PartnerAge = model.PartnerAge;
     }
 
     public void Apply(PartnerNationalityViewModel model)
     {
+        if (model.PartnerNationality != PartnerNationality)
+        {
+            PartnerSettledStatus = null;
+        }
+
         PartnerNationality = model.PartnerNationality;
     }
 
@@ -284,21 +295,45 @@ public class JourneyState
 
     public void Apply(PartnerPaidWorkViewModel model)
     {
+        if (model.PartnerPaidWork == PartnerPaidWorkOption.No || model.PartnerPaidWork == PartnerPaidWorkOption.OnLeave)
+        {
+            PartnerWorkStatus = [];
+            PartnerSelfEmployedDuration = null;
+            PartnerWeeklyEarnings = null;
+            PartnerYearlyEarnings = null;
+        }
+
         PartnerPaidWork = model.PartnerPaidWork;
     }
 
     public void Apply(PartnerWorkStatusViewModel model)
     {
+        if (!model.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
+        {
+            PartnerSelfEmployedDuration = null;
+        }
+
         PartnerWorkStatus = model.PartnerWorkStatus;
     }
 
     public void Apply(PartnerSelfEmployedDurationViewModel model)
     {
+        if (model.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
+        {
+            PartnerWeeklyEarnings = null;
+            PartnerYearlyEarnings = null;
+        }
+
         PartnerSelfEmployedDuration = model.PartnerSelfEmployedDuration;
     }
 
     public void Apply(PartnerWeeklyEarningsViewModel model)
     {
+        if (model.PartnerWeeklyEarnings == WeeklyEarningsOption.BelowThreshold)
+        {
+            PartnerYearlyEarnings = null;
+        }
+
         PartnerWeeklyEarnings = model.PartnerWeeklyEarnings;
     }
 
@@ -314,6 +349,11 @@ public class JourneyState
 
     public void Apply(PartnerChildcareSupportViewModel model)
     {
+        if (!model.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
+        {
+            PartnerChildcareVoucherReceipt = null;
+        }
+
         PartnerChildcareSupport = model.PartnerChildcareSupport;
     }
 

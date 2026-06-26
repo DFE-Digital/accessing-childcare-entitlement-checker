@@ -37,7 +37,6 @@ Scenario: Page Load
 	And I should see a summary list for "Your partners details" with the following summary:
 		| Question                                                     | Answer                     |
 		| What is your partner's age?                                  | 21 or over                 |
-		| Which of these best describes your partners nationality?    | British or Irish citizen   |
 		| Is your partner in paid work?                                | No                         |
 		| Does your partner get any of these benefits?                 | Carer's Allowance          |
 		| Does your partner already get any of this childcare support? | Childcare vouchers         |
@@ -76,12 +75,11 @@ Scenario: Self employed details are not shown when I am not self employed
 	Given I answer "How would you describe your work status?" as "Paid employment"
 	Then I do not see a summary row "Have you been self-employed for less than 12 months"
 
-# ignored pending journey validity work AC-612 - shouldn't be showing self employment answers
-@ignore 
 Scenario: Self employed details are not shown when I change my answer
 	When I click the Change link in the "Your details" summary list for "How would you describe your work status?"
 	And the page header is "How would you describe your work status?"
 	And I select the "Paid employment" checkbox
+	And I deselect the "Self-employed" checkbox
 	And I click on Continue
 	Then the page header is "Check your answers"
 	And I do not see a summary row "Have you been self-employed for less than 12 months"

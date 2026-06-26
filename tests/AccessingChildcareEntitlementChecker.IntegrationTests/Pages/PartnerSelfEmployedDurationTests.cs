@@ -1,6 +1,8 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.Partner;
+using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
@@ -19,6 +21,37 @@ public class PartnerSelfEmployedDurationTests(IntegrationTestFixture factory) : 
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink(backLinkUrl);
+    }
+
+    [Theory]
+    [InlineData(null, SelfEmployedDurationOption.LessThan12Months, null, null, "/Partner/PartnerBenefits")]
+    [InlineData(null, SelfEmployedDurationOption.NotLessThan12Months, null, null, "/earnings/wage-partner")]
+    [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.LessThan12Months, null, null, "/Partner/PartnerBenefits")]
+    [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.LessThan12Months, PartnerBenefitsOption.CarersAllowance, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.NotLessThan12Months, null, null, "/earnings/wage-partner")]
+    [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.NotLessThan12Months, null, WeeklyEarningsOption.AboveThreshold, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(string? returnTo, SelfEmployedDurationOption partnerSelfEmployedDuration, PartnerBenefitsOption? partnerBenefits, WeeklyEarningsOption? partnerWeeklyEarnings, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            PartnerSelfEmployedDuration = partnerSelfEmployedDuration,
+            PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
+            PartnerWeeklyEarnings = partnerWeeklyEarnings,
+        });
+        var url = $"/work-status/self-employed-partner?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+            new KeyValuePair<string, string>("PartnerSelfEmployedDuration", partnerSelfEmployedDuration.ToString())
+        ], TestContext.Current.CancellationToken);
+
+        postResponse.AssertRedirect(continueUrl);
     }
 
     [Theory]

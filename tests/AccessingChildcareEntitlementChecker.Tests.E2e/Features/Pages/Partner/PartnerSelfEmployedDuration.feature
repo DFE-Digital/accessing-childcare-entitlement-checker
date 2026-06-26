@@ -9,7 +9,6 @@ Background:
 		| Question                                                 | Answer                   |
 		| Do you live with a partner?                              | Yes                      |
 		| What is your partner's age?                              | 21 or over               |
-		| Which of these best describes your partners nationality? | British or Irish citizen |
 		| Is your partner in paid work?                            | Yes                      |
 		| How would you describe your partner's work status?       | Self-employed            |
 

@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
@@ -21,6 +22,35 @@ public class PartnerChildcareVoucherReceiptTests(IntegrationTestFixture factory)
         doc
             .AssertRadioButtonCount(3)
             .AssertBackLink(backLinkUrl);
+    }
+
+    [Theory]
+    [InlineData(null, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, "/check-your-answers")]
+    [InlineData(null, ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, "/check-your-answers")]
+    [InlineData(null, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(string? returnTo, ChildcareVoucherReceiptOption partnerChildcareVoucherReceipt, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            PartnerChildcareVoucherReceipt = partnerChildcareVoucherReceipt,
+        });
+        var url = $"/benefits/childcare-vouchers-partner?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+            new KeyValuePair<string, string>("PartnerChildcareVoucherReceipt", partnerChildcareVoucherReceipt.ToString())
+        ], TestContext.Current.CancellationToken);
+
+        postResponse.AssertRedirect(continueUrl);
     }
 
     [Theory]

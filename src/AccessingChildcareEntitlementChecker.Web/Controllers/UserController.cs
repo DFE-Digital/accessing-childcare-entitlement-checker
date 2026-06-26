@@ -1,5 +1,6 @@
 using AccessingChildcareEntitlementChecker.Web.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -39,19 +40,30 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        // Logic here a little complex because this changes not just the next question,
+        // but also a question a couple of steps ahead. So we need to walk forward through
+        // the journey.
+        //
+        // See also - PartnerController.PartnerAge
         var nationalityMissing = _journeyState.Nationality == null;
-        var weeklyEarningsMissing = _journeyState.WeeklyEarnings == null;
+        var paidWorkMissing = _journeyState.PaidWork == null;
+        var weeklyEarningsMissing = _journeyState.PaidWork == PaidWorkOption.Yes && _journeyState.WeeklyEarnings == null;
+        var nextAnswerMissing = nationalityMissing || paidWorkMissing || weeklyEarningsMissing;
 
-        var nextAction = nameof(WeeklyEarnings);
-        if (nationalityMissing)
-        {
-            nextAction = nameof(Nationality);
-        }
-
-        var nextAnswerMissing = nationalityMissing || weeklyEarningsMissing;
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
             return this.RedirectToReturnTo(model.ReturnTo);
+        }
+
+        // Now walk backwards from weekly earnings.
+        var nextAction = nameof(WeeklyEarnings);
+        if (paidWorkMissing)
+        {
+            nextAction = nameof(PaidWork);
+        }
+        if (nationalityMissing)
+        {
+            nextAction = nameof(Nationality);
         }
 
         return this.RedirectToAction(
