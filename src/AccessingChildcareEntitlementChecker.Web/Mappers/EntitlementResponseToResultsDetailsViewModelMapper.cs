@@ -42,7 +42,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
                 x.SchemeCode == SchemeCode.UniversalCreditChildcare)
             .ToList();
 
-        if (helpWithCosts.Any())
+        if (helpWithCosts.Count > 0)
         {
             sections.Add(new SchemeSectionViewModel
             {
@@ -69,7 +69,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             );
 
 
-        if (fundedHours.Any())
+        if (fundedHours.Count > 0)
         {
             sections.Add(new SchemeSectionViewModel
             {
@@ -206,20 +206,22 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
     private string GetStarts(SchemeResultDto schemeResult, ChildResultDto child)
     {
+        var startsNow = _localizer["Starts_Now"];
+
         return schemeResult.SchemeCode switch
         {
             SchemeCode.TaxFreeChildcare => child.IsBorn
-                ? _localizer["Starts_Now"]
+                ? startsNow
                 : _localizer["Starts_WhenReturnToWork"],
 
             SchemeCode.UniversalCreditChildcare => child.IsBorn
-                ? _localizer["Starts_Now"]
+                ? startsNow
                 : _localizer["Starts_WhenReturnToWork"],
 
             SchemeCode.ThirtyHoursForWorkingFamilies => GetThirtyHoursStarts(schemeResult, child),
 
             SchemeCode.FifteenHoursForDisadvantagedChildren => schemeResult.EligibleNow
-                ? _localizer["Starts_Now"]
+                ? startsNow
                 : _localizer["Starts_FromDate", schemeResult.UseFromDate!.Value],
 
             SchemeCode.FifteenHoursUniversal => GetFifteenHoursUniversalStarts(schemeResult, child),
@@ -283,7 +285,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
         };
     }
 
-    private List<SchemeCode> GetCanBeUsedWith(SchemeResultDto schemeResult, ChildResultDto child)
+    private static List<SchemeCode> GetCanBeUsedWith(SchemeResultDto schemeResult, ChildResultDto child)
     {
         List<SchemeCode> compatibleSchemes = schemeResult.SchemeCode switch
         {
@@ -336,8 +338,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
     }
 
     private static ArgumentOutOfRangeException UnknownSchemeCode(SchemeCode schemeCode) =>
-        new(
-            nameof(schemeCode),
+        new(nameof(schemeCode),
             schemeCode,
             UnknownSchemeCodeMessage);
 }
