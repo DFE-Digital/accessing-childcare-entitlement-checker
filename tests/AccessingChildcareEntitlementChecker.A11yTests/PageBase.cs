@@ -28,10 +28,19 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
     {
         _playwright = await Playwright.CreateAsync();
 
-        _browser = await _playwright.Chromium.LaunchAsync(new()
+        var browserName = Environment.GetEnvironmentVariable("PLAYWRIGHT_BROWSER")?.ToLowerInvariant() ?? "chromium";
+
+        var launchOptions = new BrowserTypeLaunchOptions
         {
             Headless = true
-        });
+        };
+
+        _browser = browserName switch
+        {
+            "firefox" => await _playwright.Firefox.LaunchAsync(launchOptions),
+            "webkit" => await _playwright.Webkit.LaunchAsync(launchOptions),
+            _ => await _playwright.Chromium.LaunchAsync(launchOptions)
+        };
 
         var password = Environment.GetEnvironmentVariable("TEST_BASIC_AUTH_PASSWORD");
 
