@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
@@ -24,11 +25,17 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     }
 
     [Theory]
-    [InlineData(null, "/children/add-child-details")]
-    [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, string continueUrl)
+    [InlineData(null, false, "/children/add-child-details")]
+    [InlineData(ReturnTo.CheckAnswers, false, "/children/add-child-details")]
+    [InlineData(ReturnTo.CheckAnswers, true, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(string? returnTo, bool hasChild, string continueUrl)
     {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = hasChild
+                ? new Dictionary<string, Child> { { "child1", new Child("child1", "Child 1") } }
+                : new Dictionary<string, Child>()
+        });
 
         var url = $"/where-do-you-live?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

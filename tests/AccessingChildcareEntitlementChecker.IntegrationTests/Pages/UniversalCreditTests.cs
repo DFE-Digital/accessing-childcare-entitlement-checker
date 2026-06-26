@@ -46,6 +46,36 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     }
 
     [Theory]
+    [InlineData(null, UniversalCreditOption.Receives, null, "/benefits/benefits")]
+    [InlineData(null, UniversalCreditOption.DoesNotReceive, null, "/benefits/benefits")]
+    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.Receives, null, "/benefits/benefits")]
+    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.Receives, BenefitsOption.CarersAllowance, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.DoesNotReceive, null, "/benefits/benefits")]
+    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.DoesNotReceive, BenefitsOption.CarersAllowance, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(string? returnTo, UniversalCreditOption universalCredit, BenefitsOption? benefits, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            UniversalCredit = universalCredit,
+            Benefits = benefits is null ? new() : [benefits.Value],
+        });
+        var url = $"/benefits/universal-credit?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+            new KeyValuePair<string, string>("UniversalCredit", universalCredit.ToString())
+        ], TestContext.Current.CancellationToken);
+
+        postResponse.AssertRedirect(continueUrl);
+    }
+
+    [Theory]
     [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/earnings/adjusted-net-income")]
     [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.BelowThreshold, null, "/earnings/wage")]
     [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, null, "/work-status/self-employed")]

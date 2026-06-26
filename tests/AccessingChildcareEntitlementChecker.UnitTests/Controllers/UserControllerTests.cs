@@ -5,6 +5,7 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using NSubstitute;
+using System.Diagnostics;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -55,7 +56,6 @@ public class UserControllerTests
         Assert.Equal(AgeRange.UnderEighteen, _journeyState.UserAge);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(UserController.Nationality), redirect.ActionName);
-        Assert.Equal("User", redirect.ControllerName);
     }
 
     [Fact]
@@ -95,13 +95,10 @@ public class UserControllerTests
     }
 
     [Theory]
-    [InlineData(NationalityOption.BritishOrIrishCitizen, null, "User", nameof(UserController.PaidWork))]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, "User", nameof(UserController.SettledStatus))]
-    [InlineData(NationalityOption.CitizenOfADifferentCountry, null, "User", nameof(UserController.PaidWork))]
-    [InlineData(NationalityOption.BritishOrIrishCitizen, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    [InlineData(NationalityOption.CitizenOfADifferentCountry, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void Nationality_Post_SavesState_AndRedirects(NationalityOption nationality, string? returnTo, string controllerName, string actionName)
+    [InlineData(NationalityOption.BritishOrIrishCitizen, null, nameof(UserController.PaidWork))]
+    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, nameof(UserController.SettledStatus))]
+    [InlineData(NationalityOption.CitizenOfADifferentCountry, null, nameof(UserController.PaidWork))]
+    public void Nationality_Post_SavesState_AndRedirects(NationalityOption nationality, string? returnTo, string actionName)
     {
         var model = new NationalityViewModel
         {
@@ -114,9 +111,9 @@ public class UserControllerTests
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(nationality, _journeyState.Nationality);
+        Assert.Null(_journeyState.SettledStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -134,6 +131,17 @@ public class UserControllerTests
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.Nationality)));
         _journeySession.DidNotReceive().Set(_journeyState);
+    }
+
+    [Fact]
+    public void Nationality_Post_Unreachable_Coverage()
+    {
+        var model = new NationalityViewModel
+        {
+            Nationality = (NationalityOption)99,
+        };
+
+        Assert.Throws<UnreachableException>(() => _controller.Nationality(model));
     }
 
     [Fact]
@@ -192,12 +200,13 @@ public class UserControllerTests
     }
 
     [Theory]
-    [InlineData(SettledStatusOption.Yes, null, "User", nameof(UserController.PaidWork))]
-    [InlineData(SettledStatusOption.No, null, "User", nameof(UserController.PaidWork))]
-    [InlineData(SettledStatusOption.StillWaiting, null, "User", nameof(UserController.PaidWork))]
-    [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void SettledStatus_Post_SavesState_AndRedirects(SettledStatusOption option, string? returnTo, string controllerName, string actionName)
+    [InlineData(SettledStatusOption.Yes, null, nameof(UserController.PaidWork))]
+    [InlineData(SettledStatusOption.No, null, nameof(UserController.PaidWork))]
+    [InlineData(SettledStatusOption.StillWaiting, null, nameof(UserController.PaidWork))]
+    [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void SettledStatus_Post_SavesState_AndRedirects(SettledStatusOption option, string? returnTo, string actionName)
     {
+        _journeyState.PaidWork = PaidWorkOption.Yes;
         var model = new SettledStatusViewModel
         {
             SettledStatus = option,
@@ -211,7 +220,6 @@ public class UserControllerTests
         Assert.Equal(option, _journeyState.SettledStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -250,12 +258,13 @@ public class UserControllerTests
     }
 
     [Theory]
-    [InlineData(PaidWorkOption.No, null, "User", nameof(UserController.UniversalCredit))]
-    [InlineData(PaidWorkOption.OnLeave, null, "User", nameof(UserController.TypeOfLeave))]
-    [InlineData(PaidWorkOption.Yes, null, "User", nameof(UserController.WorkStatus))]
-    [InlineData(PaidWorkOption.Yes, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void PaidWork_Post_SavesState_AndRedirects(PaidWorkOption option, string? returnTo, string controllerName, string actionName)
+    [InlineData(PaidWorkOption.No, null, nameof(UserController.UniversalCredit))]
+    [InlineData(PaidWorkOption.OnLeave, null, nameof(UserController.TypeOfLeave))]
+    [InlineData(PaidWorkOption.Yes, null, nameof(UserController.WorkStatus))]
+    [InlineData(PaidWorkOption.Yes, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void PaidWork_Post_SavesState_AndRedirects(PaidWorkOption option, string? returnTo, string actionName)
     {
+        _journeyState.WorkStatus = [WorkStatusOption.SelfEmployed];
         var model = new PaidWorkViewModel
         {
             PaidWork = option,
@@ -269,7 +278,6 @@ public class UserControllerTests
         Assert.Equal(option, _journeyState.PaidWork);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -307,13 +315,25 @@ public class UserControllerTests
         Assert.Null(result.Model<PaidWorkViewModel>().PaidWork);
     }
 
-    [Theory]
-    [InlineData(WorkStatusOption.PaidEmployment, null, "User", nameof(UserController.WeeklyEarnings))]
-    [InlineData(WorkStatusOption.SelfEmployed, null, "User", nameof(UserController.SelfEmployedDuration))]
-    [InlineData(WorkStatusOption.Apprentice, null, "User", nameof(UserController.WeeklyEarnings))]
-    [InlineData(WorkStatusOption.Apprentice, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void WorkStatus_Post_SavesState_AndRedirects(WorkStatusOption option, string? returnTo, string controllerName, string actionName)
+    [Fact]
+    public void PaidWork_Post_Unreachable_Coverage()
     {
+        var model = new PaidWorkViewModel
+        {
+            PaidWork = (PaidWorkOption)99,
+        };
+
+        Assert.Throws<UnreachableException>(() => _controller.PaidWork(model));
+    }
+
+    [Theory]
+    [InlineData(WorkStatusOption.PaidEmployment, null, nameof(UserController.WeeklyEarnings))]
+    [InlineData(WorkStatusOption.SelfEmployed, null, nameof(UserController.SelfEmployedDuration))]
+    [InlineData(WorkStatusOption.Apprentice, null, nameof(UserController.WeeklyEarnings))]
+    [InlineData(WorkStatusOption.Apprentice, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void WorkStatus_Post_SavesState_AndRedirects(WorkStatusOption option, string? returnTo, string actionName)
+    {
+        _journeyState.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
         var model = new WorkStatusViewModel
         {
             WorkStatus = [option],
@@ -325,7 +345,6 @@ public class UserControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -356,22 +375,23 @@ public class UserControllerTests
     }
 
     [Theory]
-    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, null, "User", nameof(UserController.WeeklyEarnings))]
-    [InlineData(SelfEmployedDurationOption.LessThan12Months, null, "User", nameof(UserController.UniversalCredit))]
-    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void SelfEmployedDuration_Post_SavesState_AndRedirects(SelfEmployedDurationOption option, string? returnTo, string controllerName, string actionName)
+    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, null, nameof(UserController.WeeklyEarnings))]
+    [InlineData(SelfEmployedDurationOption.LessThan12Months, null, nameof(UserController.UniversalCredit))]
+    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void SelfEmployedDuration_Post_SavesState_AndRedirects(SelfEmployedDurationOption option, string? returnTo, string actionName)
     {
+        _journeyState.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
         var model = new SelfEmployedDurationViewModel
         {
             SelfEmployedDuration = option,
             ReturnTo = returnTo
         };
+
         var result = _controller.SelfEmployedDuration(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -401,12 +421,24 @@ public class UserControllerTests
         Assert.NotNull(result.Model<SelfEmployedDurationViewModel>());
     }
 
-    [Theory]
-    [InlineData(YearlyEarningsOption.AboveThreshold, null, "User", nameof(UserController.Benefits))]
-    [InlineData(YearlyEarningsOption.BelowThreshold, null, "User", nameof(UserController.UniversalCredit))]
-    [InlineData(YearlyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void YearlyEarnings_Post_SavesState_AndRedirects(YearlyEarningsOption option, string? returnTo, string controllerName, string actionName)
+    [Fact]
+    public void SelfEmployedDuration_Post_Unreachable_Coverage()
     {
+        var model = new SelfEmployedDurationViewModel
+        {
+            SelfEmployedDuration = (SelfEmployedDurationOption)99,
+        };
+
+        Assert.Throws<UnreachableException>(() => _controller.SelfEmployedDuration(model));
+    }
+
+    [Theory]
+    [InlineData(YearlyEarningsOption.AboveThreshold, null, nameof(UserController.Benefits))]
+    [InlineData(YearlyEarningsOption.BelowThreshold, null, nameof(UserController.UniversalCredit))]
+    [InlineData(YearlyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void YearlyEarnings_Post_SavesState_AndRedirects(YearlyEarningsOption option, string? returnTo, string actionName)
+    {
+        _journeyState.Benefits = [BenefitsOption.None];
         var model = new YearlyEarningsViewModel
         {
             YearlyEarnings = option,
@@ -417,7 +449,6 @@ public class UserControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -447,12 +478,24 @@ public class UserControllerTests
         Assert.NotNull(result.Model<YearlyEarningsViewModel>());
     }
 
-    [Theory]
-    [InlineData(WeeklyEarningsOption.AboveThreshold, null, "User", nameof(UserController.YearlyEarnings))]
-    [InlineData(WeeklyEarningsOption.BelowThreshold, null, "User", nameof(UserController.UniversalCredit))]
-    [InlineData(WeeklyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void WeeklyEarnings_Post_SavesState_AndRedirects(WeeklyEarningsOption option, string? returnTo, string controllerName, string actionName)
+    [Fact]
+    public void YearlyEarnings_Post_Unreachable_Coverage()
     {
+        var model = new YearlyEarningsViewModel
+        {
+            YearlyEarnings = (YearlyEarningsOption)99,
+        };
+
+        Assert.Throws<UnreachableException>(() => _controller.YearlyEarnings(model));
+    }
+
+    [Theory]
+    [InlineData(WeeklyEarningsOption.AboveThreshold, null, nameof(UserController.YearlyEarnings))]
+    [InlineData(WeeklyEarningsOption.BelowThreshold, null, nameof(UserController.UniversalCredit))]
+    [InlineData(WeeklyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void WeeklyEarnings_Post_SavesState_AndRedirects(WeeklyEarningsOption option, string? returnTo, string actionName)
+    {
+        _journeyState.YearlyEarnings = YearlyEarningsOption.BelowThreshold;
         var model = new WeeklyEarningsViewModel
         {
             WeeklyEarnings = option,
@@ -463,7 +506,6 @@ public class UserControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -493,12 +535,24 @@ public class UserControllerTests
         Assert.NotNull(result.Model<WeeklyEarningsViewModel>());
     }
 
-    [Theory]
-    [InlineData(UniversalCreditOption.Receives, null, "User", nameof(UserController.Benefits))]
-    [InlineData(UniversalCreditOption.DoesNotReceive, null, "User", nameof(UserController.Benefits))]
-    [InlineData(UniversalCreditOption.Receives, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void UniversalCredit_Post_SavesState_AndRedirects(UniversalCreditOption option, string? returnTo, string controllerName, string actionName)
+    [Fact]
+    public void WeeklyEarnings_Post_Unreachable_Coverage()
     {
+        var model = new WeeklyEarningsViewModel
+        {
+            WeeklyEarnings = (WeeklyEarningsOption)99,
+        };
+
+        Assert.Throws<UnreachableException>(() => _controller.WeeklyEarnings(model));
+    }
+
+    [Theory]
+    [InlineData(UniversalCreditOption.Receives, null, nameof(UserController.Benefits))]
+    [InlineData(UniversalCreditOption.DoesNotReceive, null, nameof(UserController.Benefits))]
+    [InlineData(UniversalCreditOption.Receives, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void UniversalCredit_Post_SavesState_AndRedirects(UniversalCreditOption option, string? returnTo, string actionName)
+    {
+        _journeyState.Benefits = [BenefitsOption.None];
         var model = new UniversalCreditViewModel
         {
             UniversalCredit = option,
@@ -511,7 +565,6 @@ public class UserControllerTests
         Assert.Equal(option, _journeyState.UniversalCredit);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -542,18 +595,19 @@ public class UserControllerTests
     }
 
     [Theory]
-    [InlineData(BenefitsOption.CarersAllowance, null, "User", nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.ContributionBasedEmploymentAndSupportAllowance, null, "User", nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.EmploymentAndSupportAllowance, null, "User", nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.GuaranteedElementOfPensionCredit, null, "User", nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.IncapacityBenefit, null, "User", nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.LimitedCapabilityForWork, null, "User", nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.LimitedCapabilityForWorkRelatedActivity, null, "User", nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.SevereDisablementAllowance, null, "User", nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.None, null, "User", nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.None, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void Benefits_Post_SavesState_AndRedirects(BenefitsOption option, string? returnTo, string controllerName, string actionName)
+    [InlineData(BenefitsOption.CarersAllowance, null, nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.ContributionBasedEmploymentAndSupportAllowance, null, nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.EmploymentAndSupportAllowance, null, nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.GuaranteedElementOfPensionCredit, null, nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.IncapacityBenefit, null, nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.LimitedCapabilityForWork, null, nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.LimitedCapabilityForWorkRelatedActivity, null, nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.SevereDisablementAllowance, null, nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.None, null, nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.None, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void Benefits_Post_SavesState_AndRedirects(BenefitsOption option, string? returnTo, string actionName)
     {
+        _journeyState.ChildcareSupport = [ChildcareSupportOption.None];
         var model = new BenefitsViewModel
         {
             Benefits = [option],
@@ -566,7 +620,6 @@ public class UserControllerTests
         Assert.Equal([option], _journeyState.Benefits);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -597,12 +650,13 @@ public class UserControllerTests
     }
 
     [Theory]
-    [InlineData(ChildcareSupportOption.ChildcareVouchers, null, "User", nameof(UserController.ChildcareVoucherReceipt))]
-    [InlineData(ChildcareSupportOption.ChildcareBursaryOrGrant, null, "User", nameof(UserController.HasPartner))]
-    [InlineData(ChildcareSupportOption.None, null, "User", nameof(UserController.HasPartner))]
-    [InlineData(ChildcareSupportOption.ChildcareVouchers, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void ChildcareSupport_Post_SavesState_AndRedirects(ChildcareSupportOption option, string? returnTo, string controllerName, string actionName)
+    [InlineData(ChildcareSupportOption.ChildcareVouchers, null, nameof(UserController.ChildcareVoucherReceipt))]
+    [InlineData(ChildcareSupportOption.ChildcareBursaryOrGrant, null, nameof(UserController.HasPartner))]
+    [InlineData(ChildcareSupportOption.None, null, nameof(UserController.HasPartner))]
+    [InlineData(ChildcareSupportOption.ChildcareVouchers, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void ChildcareSupport_Post_SavesState_AndRedirects(ChildcareSupportOption option, string? returnTo, string actionName)
     {
+        _journeyState.ChildcareVoucherReceipt = ChildcareVoucherReceiptOption.WorkplaceNurseryScheme;
         var model = new ChildcareSupportViewModel
         {
             ChildcareSupport = [option],
@@ -615,7 +669,6 @@ public class UserControllerTests
         Assert.Equal([option], _journeyState.ChildcareSupport);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]
@@ -646,24 +699,25 @@ public class UserControllerTests
     }
 
     [Theory]
-    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, null, "User", nameof(UserController.HasPartner))]
-    [InlineData(ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, null, "User", nameof(UserController.HasPartner))]
-    [InlineData(ChildcareVoucherReceiptOption.ThroughSalarySacrifice, null, "User", nameof(UserController.HasPartner))]
-    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void ChildcareVoucherReceipt_Post_SavesState_AndRedirects(ChildcareVoucherReceiptOption option, string? returnTo, string controllerName, string actionName)
+    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, null, nameof(UserController.HasPartner))]
+    [InlineData(ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, null, nameof(UserController.HasPartner))]
+    [InlineData(ChildcareVoucherReceiptOption.ThroughSalarySacrifice, null, nameof(UserController.HasPartner))]
+    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    public void ChildcareVoucherReceipt_Post_SavesState_AndRedirects(ChildcareVoucherReceiptOption option, string? returnTo, string actionName)
     {
+        _journeyState.HasPartner = false;
         var model = new ChildcareVoucherReceiptViewModel
         {
             ChildcareVoucherReceipt = option,
             ReturnTo = returnTo
         };
+
         var result = _controller.ChildcareVoucherReceipt(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(option, _journeyState.ChildcareVoucherReceipt);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal(controllerName, redirect.ControllerName);
     }
 
     [Fact]

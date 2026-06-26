@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
@@ -28,6 +29,33 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertCheckboxCount(9)
             .AssertBackLink(backLinkUrl);
+    }
+
+    [Theory]
+    [InlineData(null, BenefitsOption.CarersAllowance, null, "/benefits/childcare-support")]
+    [InlineData(ReturnTo.CheckAnswers, BenefitsOption.CarersAllowance, null, "/benefits/childcare-support")]
+    [InlineData(ReturnTo.CheckAnswers, BenefitsOption.CarersAllowance, ChildcareSupportOption.ChildcareVouchers, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(string? returnTo, BenefitsOption benefits, ChildcareSupportOption? childcareSupport, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Benefits = [benefits],
+            ChildcareSupport = childcareSupport is null ? new() : [childcareSupport.Value],
+        });
+        var url = $"/benefits/benefits?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+            new KeyValuePair<string, string>("Benefits", benefits.ToString())
+        ], TestContext.Current.CancellationToken);
+
+        postResponse.AssertRedirect(continueUrl);
     }
 
     [Theory]

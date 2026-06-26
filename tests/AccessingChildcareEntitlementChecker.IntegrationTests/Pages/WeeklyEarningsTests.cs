@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
@@ -31,6 +32,38 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(2)
             .AssertBackLink(backLinkUrl);
+    }
+
+    [Theory]
+    [InlineData(null, WeeklyEarningsOption.AboveThreshold, null, null, "/earnings/adjusted-net-income")]
+    [InlineData(null, WeeklyEarningsOption.BelowThreshold, null, null, "/benefits/universal-credit")]
+    [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.AboveThreshold, null, null, "/earnings/adjusted-net-income")]
+    [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.AboveThreshold, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, null, "/benefits/universal-credit")]
+    [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, UniversalCreditOption.Receives, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(string? returnTo, WeeklyEarningsOption weeklyEarnings, YearlyEarningsOption? yearlyEarnings, UniversalCreditOption? universalCredit, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            WeeklyEarnings = weeklyEarnings,
+            YearlyEarnings = yearlyEarnings,
+            UniversalCredit = universalCredit,
+        });
+
+        var url = $"/earnings/wage?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+            new KeyValuePair<string, string>("WeeklyEarnings", weeklyEarnings.ToString())
+        ], TestContext.Current.CancellationToken);
+
+        postResponse.AssertRedirect(continueUrl);
     }
 
     [Theory]
