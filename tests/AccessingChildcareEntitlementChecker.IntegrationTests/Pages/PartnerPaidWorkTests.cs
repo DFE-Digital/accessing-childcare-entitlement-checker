@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
@@ -34,6 +35,39 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(3)
             .AssertBackLink(backLinkUrl);
+    }
+
+    [Theory]
+    [InlineData(null, PartnerPaidWorkOption.Yes, null, null, "/work-status/work-status-partner")]
+    [InlineData(null, PartnerPaidWorkOption.No, null, null, "/Partner/PartnerBenefits")]
+    [InlineData(null, PartnerPaidWorkOption.OnLeave, null, null, "/leave/type-of-leave-partner")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.Yes, null, null, "/work-status/work-status-partner")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.No, null, null, "/Partner/PartnerBenefits")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.No, null, PartnerBenefitsOption.CarersAllowance, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.OnLeave, null, null, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(string? returnTo, PartnerPaidWorkOption partnerPaidWork, WorkStatusOption? partnerWorkStatus, PartnerBenefitsOption? partnerBenefits, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            PartnerPaidWork = partnerPaidWork,
+            PartnerWorkStatus = partnerWorkStatus is null ? new() : [partnerWorkStatus.Value],
+            PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
+        });
+        var url = $"/work-status/work-partner?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+            new KeyValuePair<string, string>("PartnerPaidWork", partnerPaidWork.ToString())
+        ], TestContext.Current.CancellationToken);
+
+        postResponse.AssertRedirect(continueUrl);
     }
 
     [Theory]

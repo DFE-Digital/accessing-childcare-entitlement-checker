@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
@@ -24,15 +25,20 @@ public class UserAgeTests(IntegrationTestFixture factory) : IClassFixture<Integr
     }
 
     [Theory]
-    [InlineData(null, null, null, null, AgeRange.EighteenToTwenty, "/nationality")]
-    [InlineData(ReturnTo.CheckAnswers, null, null, null, AgeRange.EighteenToTwenty, "/nationality")]
-    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, null, AgeRange.EighteenToTwenty, "/earnings/wage")]
-    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, WeeklyEarningsOption.AboveThreshold, AgeRange.EighteenToTwenty, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, WeeklyEarningsOption.AboveThreshold, AgeRange.TwentyOneOrOver, "/earnings/wage")]
+    [InlineData(null, null, null, null, null, AgeRange.EighteenToTwenty, "/nationality")]
+    [InlineData(ReturnTo.CheckAnswers, null, null, null, null, AgeRange.EighteenToTwenty, "/nationality")]
+    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, null, WeeklyEarningsOption.AboveThreshold, AgeRange.EighteenToTwenty, "/work-status/work")]
+    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, null, null, AgeRange.EighteenToTwenty, "/work-status/work")]
+    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, null, WeeklyEarningsOption.AboveThreshold, AgeRange.TwentyOneOrOver, "/work-status/work")]
+    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, PaidWorkOption.Yes, null, AgeRange.EighteenToTwenty, "/earnings/wage")]
+    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, PaidWorkOption.No, null, AgeRange.EighteenToTwenty, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, PaidWorkOption.Yes, WeeklyEarningsOption.AboveThreshold, AgeRange.EighteenToTwenty, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, PaidWorkOption.Yes, WeeklyEarningsOption.AboveThreshold, AgeRange.TwentyOneOrOver, "/earnings/wage")]
     public async Task Post_Valid_Redirects(
         string? returnTo,
         AgeRange? oldUserAge,
         NationalityOption? nationality,
+        PaidWorkOption? paidWork,
         WeeklyEarningsOption? weeklyEarnings,
         AgeRange newUserAge,
         string continueUrl)
@@ -41,6 +47,7 @@ public class UserAgeTests(IntegrationTestFixture factory) : IClassFixture<Integr
         {
             UserAge = oldUserAge,
             Nationality = nationality,
+            PaidWork = paidWork,
             WeeklyEarnings = weeklyEarnings,
         });
 

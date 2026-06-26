@@ -36,9 +36,9 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
 
     [Theory]
     [InlineData(null, true, null, "/age/partner-age")]
-    [InlineData(null, false, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckAnswers, true, null, "/age/partner-age")]
     [InlineData(ReturnTo.CheckAnswers, true, AgeRange.UnderEighteen, "/check-your-answers")]
+    [InlineData(null, false, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckAnswers, false, null, "/check-your-answers")]
     public async Task Post_Valid_Redirects(string? returnTo, bool hasPartner, AgeRange? partnerAge, string continueUrl)
     {
@@ -61,26 +61,5 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
         ], TestContext.Current.CancellationToken);
 
         postResponse.AssertRedirect(continueUrl);
-    }
-
-    [Fact]
-    public async Task Post_No_Redirects_To_CheckAnswers()
-    {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
-
-        var url = "/partner";
-        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
-        getResponse.EnsureSuccessStatusCode();
-        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
-        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
-        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
-        Assert.NotNull(token);
-        Assert.NotNull(cookie);
-
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
-                new KeyValuePair<string,string>("HasPartner", "false")
-            ],
-            TestContext.Current.CancellationToken);
-        postResponse.AssertRedirect("/check-your-answers");
     }
 }

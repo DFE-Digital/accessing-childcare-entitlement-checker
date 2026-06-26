@@ -32,7 +32,7 @@ Scenario: Continue without selection
 Scenario: Continue with selection
 	When I select the "Under 18" radio button
 	And I click on Continue
-	Then the page header is "Which of these best describes your partners nationality?"
+	Then the page header is "Is your partner in paid work?"
 
 Scenario: Back navigation
 	When I click the back link

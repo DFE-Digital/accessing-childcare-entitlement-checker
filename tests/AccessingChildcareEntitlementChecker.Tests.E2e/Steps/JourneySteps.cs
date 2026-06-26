@@ -105,7 +105,6 @@ public class JourneySteps(Context context)
         _context.Queue.Answers([
             ("Do you live with a partner?", "Yes"),
             ("What is your partner's age?", "21 or over"),
-            ("Which of these best describes your partners nationality?", "British or Irish citizen"),
             ("Is your partner in paid work?", "No"),
             ("Does your partner get any of these benefits?", "Carer's Allowance"),
             ("Does your partner already get any of this childcare support?", "Childcare vouchers"),

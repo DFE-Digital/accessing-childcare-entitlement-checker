@@ -43,6 +43,33 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
     }
 
     [Theory]
+    [InlineData(null, PartnerBenefitsOption.CarersAllowance, null, "/benefits/childcare-support-partner")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerBenefitsOption.CarersAllowance, null, "/benefits/childcare-support-partner")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerBenefitsOption.CarersAllowance, PartnerChildcareSupportOption.ChildcareVouchers, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(string? returnTo, PartnerBenefitsOption partnerBenefits, PartnerChildcareSupportOption? partnerChildcareSupport, string continueUrl)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            PartnerBenefits = [partnerBenefits],
+            PartnerChildcareSupport = partnerChildcareSupport is null ? new() : [partnerChildcareSupport.Value],
+        });
+        var url = $"/Partner/PartnerBenefits?returnTo={returnTo}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+            new KeyValuePair<string, string>("PartnerBenefits", partnerBenefits.ToString())
+        ], TestContext.Current.CancellationToken);
+
+        postResponse.AssertRedirect(continueUrl);
+    }
+
+    [Theory]
     [InlineData(null, PartnerPaidWorkOption.No, null, null, null, null, "/work-status/work-partner")]
     [InlineData(null, PartnerPaidWorkOption.Yes, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, null, "/work-status/self-employed-partner")]
     [InlineData(null, PartnerPaidWorkOption.Yes, null, null, WeeklyEarningsOption.BelowThreshold, null, "/earnings/wage-partner")]
