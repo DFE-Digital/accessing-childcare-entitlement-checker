@@ -80,7 +80,7 @@ public class SummaryController : Controller
 
         var userDetails = homeBuilder.ViewModels.Concat(userBuilder.ViewModels).ToList().AsReadOnly();
         var partnerDetails = partnerBuilder.ViewModels;
-        var backLink = GetCheckAnswersBackLink(lastEditedChild);
+        var backLink = GetCheckAnswersBackLink();
         return View(new CheckAnswersViewModel(summaries, hasChildren, lastEditedChild, userDetails, partnerDetails, backLink));
     }
 
@@ -165,7 +165,7 @@ public class SummaryController : Controller
     /// Note null forgiving - although not encoded in the types we expect all required questions
     /// to have values at this point; and fail fast if not!
     /// </remarks>
-    private string GetCheckAnswersBackLink(Child? child)
+    private string GetCheckAnswersBackLink()
     {
         if (_journeyState.HasPartner!.Value)
         {
