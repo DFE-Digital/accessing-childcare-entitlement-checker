@@ -24,7 +24,7 @@ public static class DevelopmentExtensions
         {
             var path = context.Request.Path.Value ?? string.Empty;
 
-            if (IsExcludedPath(path) || IsAlwaysOnProbe(context, path))
+            if (IsExcludedPath(path) || IsAlwaysOnOrWarmupProbe(context, path))
             {
                 await next();
                 return;
@@ -81,10 +81,11 @@ public static class DevelopmentExtensions
         IsAssets(path) ||
         IsRobotsTxt(path);
 
-    private static bool IsAlwaysOnProbe(HttpContext context, string path) =>
+    private static bool IsAlwaysOnOrWarmupProbe(HttpContext context, string path) =>
         string.Equals(context.Request.Method, "GET", StringComparison.OrdinalIgnoreCase) &&
         path.Equals("/", StringComparison.OrdinalIgnoreCase) &&
-        string.Equals(context.Request.Headers.UserAgent.ToString(), "AlwaysOn", StringComparison.OrdinalIgnoreCase);
+        (string.Equals(context.Request.Headers.UserAgent.ToString(), "AlwaysOn", StringComparison.OrdinalIgnoreCase) ||
+         string.Equals(context.Request.Headers.UserAgent.ToString(), "SiteWarmup", StringComparison.OrdinalIgnoreCase));
 
     private static bool IsHealth(string path) =>
         path.Equals("/health", StringComparison.OrdinalIgnoreCase);

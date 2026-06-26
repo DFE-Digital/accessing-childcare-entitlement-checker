@@ -103,8 +103,10 @@ public class DevelopmentExtensionsTests
         Assert.Equal(StatusCodes.Status200OK, context.Response.StatusCode); // Default status since next ran
     }
 
-    [Fact]
-    public async Task UseDevelopmentAuth_Allows_AlwaysOn_Probe_Without_Authentication()
+    [Theory]
+    [InlineData("AlwaysOn")]
+    [InlineData("SiteWarmup")]
+    public async Task UseDevelopmentAuth_Allows_Azure_Probes_Without_Authentication(string userAgent)
     {
         _config["DevelopmentBasicAuthPassword"].Returns("password");
         _env.EnvironmentName.Returns(Environments.Development);
@@ -114,7 +116,7 @@ public class DevelopmentExtensionsTests
         var context = new DefaultHttpContext();
         context.Request.Path = "/";
         context.Request.Method = "GET";
-        context.Request.Headers.UserAgent = "AlwaysOn";
+        context.Request.Headers.UserAgent = userAgent;
 
         var nextCalled = false;
         RequestDelegate next = (ctx) =>
