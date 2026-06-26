@@ -5,7 +5,6 @@ using AccessingChildcareEntitlementChecker.Web;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using AccessingChildcareEntitlementChecker.RulesEngine.Services;
 using AccessingChildcareEntitlementChecker.RulesEngine.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Mappers;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
@@ -65,7 +64,7 @@ services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto;
     options.KnownProxies.Clear();
     options.KnownIPNetworks.Clear();
-    options.AllowedHosts = ["*.azurefd.net"]; //custom domain to be added to the list
+    options.AllowedHosts = ["*.azurefd.net", "check-if-you-are-eligible-for-childcare-funding.education.gov.uk"];
 });
 
 var app = builder.Build();

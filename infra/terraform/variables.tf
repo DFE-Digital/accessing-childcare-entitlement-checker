@@ -62,12 +62,6 @@ variable "webapp_enable_staging_slot" {
   default     = false
 }
 
-variable "webapp_always_on" {
-  description = "Set always for web app"
-  type        = bool
-  default     = false
-}
-
 variable "enable_web_test" {
   description = "Enable application insights web test"
   type        = bool
