@@ -144,10 +144,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             SchemeCode.UniversalCreditChildcare => _localizer["UniversalCreditChildcare_Name"],
             SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["ThirtyHoursForWorkingFamilies_Name"],
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(schemeCode),
-                schemeCode,
-                UnknownSchemeCodeMessage)
+            _ => throw UnknownSchemeCode(schemeCode)
         };
     }
 
@@ -161,10 +158,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             SchemeCode.UniversalCreditChildcare => "https://www.gov.uk/help-with-childcare-costs/universal-credit",
             SchemeCode.ThirtyHoursForWorkingFamilies => "https://www.gov.uk/free-childcare-if-working",
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(schemeCode),
-                schemeCode,
-                UnknownSchemeCodeMessage)
+            _ => throw UnknownSchemeCode(schemeCode)
         };
     }
 
@@ -178,11 +172,14 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             SchemeCode.UniversalCreditChildcare => _localizer["UniversalCreditChildcare_Description"],
             SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["ThirtyHoursForWorkingFamilies_Description"],
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(schemeCode),
-                schemeCode,
-                UnknownSchemeCodeMessage)
+            _ => throw UnknownSchemeCode(schemeCode)
         };
     }
+
+    private static ArgumentOutOfRangeException UnknownSchemeCode(SchemeCode schemeCode) =>
+        new(
+            nameof(schemeCode),
+            schemeCode,
+            UnknownSchemeCodeMessage);
 
 }

@@ -31,6 +31,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
         };
 
     }
+
     private List<SchemeSectionViewModel> GetSections(ChildResultDto child)
     {
         var sections = new List<SchemeSectionViewModel>();
@@ -113,10 +114,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             SchemeCode.UniversalCreditChildcare => _localizer["UniversalCreditChildcare_Name"],
             SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["ThirtyHoursForWorkingFamilies_Name"],
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(schemeCode),
-                schemeCode,
-                UnknownSchemeCodeMessage)
+            _ => throw UnknownSchemeCode(schemeCode)
         };
     }
 
@@ -125,15 +123,14 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
         return schemeCode switch
         {
             SchemeCode.TaxFreeChildcare => "https://www.gov.uk/tax-free-childcare",
-            SchemeCode.FifteenHoursUniversal => "https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-3-to-4-year-olds",
-            SchemeCode.FifteenHoursForDisadvantagedChildren => "https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-extra-support",
+            SchemeCode.FifteenHoursUniversal =>
+                "https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-3-to-4-year-olds",
+            SchemeCode.FifteenHoursForDisadvantagedChildren =>
+                "https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-extra-support",
             SchemeCode.UniversalCreditChildcare => "https://www.gov.uk/help-with-childcare-costs/universal-credit",
             SchemeCode.ThirtyHoursForWorkingFamilies => "https://www.gov.uk/free-childcare-if-working",
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(schemeCode),
-                schemeCode,
-                UnknownSchemeCodeMessage)
+            _ => throw UnknownSchemeCode(schemeCode)
         };
     }
 
@@ -141,15 +138,19 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
     {
         return schemeResult.SchemeCode switch
         {
-            SchemeCode.TaxFreeChildcare => child.IsBorn ? _localizer["WhenToApply_Now"] : _localizer["WhenToApply_WhenBorn"],
+            SchemeCode.TaxFreeChildcare => child.IsBorn
+                ? _localizer["WhenToApply_Now"]
+                : _localizer["WhenToApply_WhenBorn"],
 
-            SchemeCode.UniversalCreditChildcare => child.IsBorn ? _localizer["WhenToApply_Now"] : _localizer["WhenToApply_WhenBorn"],
+            SchemeCode.UniversalCreditChildcare => child.IsBorn
+                ? _localizer["WhenToApply_Now"]
+                : _localizer["WhenToApply_WhenBorn"],
 
             SchemeCode.FifteenHoursUniversal => _localizer["WhenToApply_AskProviderOrCouncil"],
 
             SchemeCode.FifteenHoursForDisadvantagedChildren => schemeResult.EligibleNow
-                    ? _localizer["WhenToApply_Now"]
-                    : _localizer["WhenToApply_FromDate", schemeResult.ApplyFromDate!.Value],
+                ? _localizer["WhenToApply_Now"]
+                : _localizer["WhenToApply_FromDate", schemeResult.ApplyFromDate!.Value],
 
             SchemeCode.ThirtyHoursForWorkingFamilies => GetThirtyHoursWhenToApply(schemeResult, child),
 
@@ -187,8 +188,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             4 => new DateOnly(useFromDate.Year, 1, 1),
             9 => new DateOnly(useFromDate.Year, 4, 1),
 
-            _ => throw new InvalidOperationException(
-                $"Unexpected term start date: {useFromDate}")
+            _ => throw new InvalidOperationException($"Unexpected term start date: {useFromDate}")
         };
     }
 
@@ -200,8 +200,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             4 => new DateOnly(useFromDate.Year, 3, 31),
             9 => new DateOnly(useFromDate.Year, 8, 31),
 
-            _ => throw new InvalidOperationException(
-                $"Unexpected term start date: {useFromDate}")
+            _ => throw new InvalidOperationException($"Unexpected term start date: {useFromDate}")
         };
     }
 
@@ -210,12 +209,12 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
         return schemeResult.SchemeCode switch
         {
             SchemeCode.TaxFreeChildcare => child.IsBorn
-                    ? _localizer["Starts_Now"]
-                    : _localizer["Starts_WhenReturnToWork"],
+                ? _localizer["Starts_Now"]
+                : _localizer["Starts_WhenReturnToWork"],
 
             SchemeCode.UniversalCreditChildcare => child.IsBorn
-                    ? _localizer["Starts_Now"]
-                    : _localizer["Starts_WhenReturnToWork"],
+                ? _localizer["Starts_Now"]
+                : _localizer["Starts_WhenReturnToWork"],
 
             SchemeCode.ThirtyHoursForWorkingFamilies => GetThirtyHoursStarts(schemeResult, child),
 
@@ -225,8 +224,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             SchemeCode.FifteenHoursUniversal => GetFifteenHoursUniversalStarts(schemeResult, child),
 
-            _ => throw new InvalidOperationException(
-                $"{UnknownSchemeCodeMessage} {schemeResult.SchemeCode}")
+            _ => throw new InvalidOperationException($"{UnknownSchemeCodeMessage} {schemeResult.SchemeCode}")
         };
     }
 
@@ -275,9 +273,11 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             SchemeCode.FifteenHoursUniversal => _localizer["Ends_FifteenHoursUniversal", child.ChildName],
 
-            SchemeCode.FifteenHoursForDisadvantagedChildren => _localizer["Ends_FifteenHoursForDisadvantagedChildren", child.ChildName],
+            SchemeCode.FifteenHoursForDisadvantagedChildren => _localizer["Ends_FifteenHoursForDisadvantagedChildren",
+                child.ChildName],
 
-            SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["Ends_ThirtyHoursForWorkingFamilies", child.ChildName],
+            SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["Ends_ThirtyHoursForWorkingFamilies",
+                child.ChildName],
 
             _ => throw new InvalidOperationException($"{UnknownSchemeCodeMessage} {schemeResult.SchemeCode}")
         };
@@ -323,8 +323,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
                 SchemeCode.ThirtyHoursForWorkingFamilies
             ],
 
-            _ => throw new InvalidOperationException(
-                $"{UnknownSchemeCodeMessage} {schemeResult.SchemeCode}")
+            _ => throw new InvalidOperationException($"{UnknownSchemeCodeMessage} {schemeResult.SchemeCode}")
         };
 
         var eligibleSchemes = child.Schemes
@@ -335,4 +334,10 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             .Where(eligibleSchemes.Contains)
             .ToList();
     }
+
+    private static ArgumentOutOfRangeException UnknownSchemeCode(SchemeCode schemeCode) =>
+        new(
+            nameof(schemeCode),
+            schemeCode,
+            UnknownSchemeCodeMessage);
 }
