@@ -103,6 +103,32 @@ public class DevelopmentExtensionsTests
         Assert.Equal(StatusCodes.Status200OK, context.Response.StatusCode); // Default status since next ran
     }
 
+    [Fact]
+    public async Task UseDevelopmentAuth_Allows_AlwaysOn_Probe_Without_Authentication()
+    {
+        _config["DevelopmentBasicAuthPassword"].Returns("password");
+        _env.EnvironmentName.Returns(Environments.Development);
+
+        _app.UseDevelopmentAuth();
+
+        var context = new DefaultHttpContext();
+        context.Request.Path = "/";
+        context.Request.Method = "GET";
+        context.Request.Headers.UserAgent = "AlwaysOn";
+
+        var nextCalled = false;
+        RequestDelegate next = (ctx) =>
+        {
+            nextCalled = true;
+            return Task.CompletedTask;
+        };
+
+        await InvokeMiddlewareAsync(context, next);
+
+        Assert.True(nextCalled);
+        Assert.Equal(StatusCodes.Status200OK, context.Response.StatusCode);
+    }
+
     [Theory]
     [InlineData("/")]
     [InlineData("/home")]
