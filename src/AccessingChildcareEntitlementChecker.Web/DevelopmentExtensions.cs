@@ -37,7 +37,7 @@ public static class DevelopmentExtensions
             {
                 logger.LogWarning(
                     "Development auth failed: Missing or invalid Authorization header format. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}",
-                    context.Request.Method, context.Request.Path, context.Request.Headers["User-Agent"]);
+                    context.Request.Method, context.Request.Path, context.Request.Headers.UserAgent);
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                 return;
@@ -54,7 +54,7 @@ public static class DevelopmentExtensions
                 {
                     logger.LogWarning(
                         "Development auth failed: Incorrect password provided. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}",
-                        context.Request.Method, context.Request.Path, context.Request.Headers["User-Agent"]);
+                        context.Request.Method, context.Request.Path, context.Request.Headers.UserAgent);
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                     return;
@@ -64,7 +64,7 @@ public static class DevelopmentExtensions
             {
                 logger.LogWarning(ex,
                     "Development auth failed: Malformed credentials format. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}",
-                    context.Request.Method, context.Request.Path, context.Request.Headers["User-Agent"]);
+                    context.Request.Method, context.Request.Path, context.Request.Headers.UserAgent);
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                 return;
