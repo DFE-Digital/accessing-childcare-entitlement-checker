@@ -2,16 +2,16 @@ using AccessingChildcareEntitlementChecker.RulesEngine.Types;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models.Results;
 
-public class ResultsViewModel
+public class ResultsSummaryViewModel
 {
     public List<ChildResultsViewModel> Children { get; set; } = [];
 }
 
 public class ChildResultsViewModel
 {
+    public string ChildId { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public bool ShowThirtyHourWarning { get; set; }
-
     public bool IsBorn { get; set; }
     public List<SchemeResultsViewModel> Schemes { get; set; } = [];
 }

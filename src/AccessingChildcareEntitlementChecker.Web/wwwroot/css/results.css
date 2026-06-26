@@ -12,6 +12,11 @@
     text-decoration: none;
 }
 
+.results-section + .app-print-link,
+.getHelp + .app-print-link {
+    margin-top: 30px;
+}
+
 .app-print-link:hover {
     background-color: rgb(243, 242, 241);
 }
@@ -34,12 +39,16 @@
     word-wrap: break-word;
 }
 
-.child-results,
-.getHelp{
-    margin-top: 40px;
+.app-back-to-top {
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-.app-back-to-top {
-    margin-top: 40px;
-    margin-bottom: 40px;
+.results-section,
+.getHelp {
+    margin-top: 80px;
+}
+
+.results-scheme {
+    margin-top: 70px;
 }

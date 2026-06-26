@@ -12,21 +12,24 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
     {
 
         private readonly JourneyState _journeyState;
-        private readonly JourneyStateToEntitlementRequestMapper _mapper;
-        private readonly EntitlementResponseToResultsViewModelMapper _mapperER;
+        private readonly JourneyStateToEntitlementRequestMapper _journeyStateMapper;
+        private readonly EntitlementResponseToResultsSummaryViewModelMapper _resultsSummaryMapper;
+        private readonly EntitlementResponseToResultsDetailsViewModelMapper _resultsDetailsModelMapper;
         private readonly EntitlementRulesEngine _rulesEngine;
 
         public const string Name = "Results";
 
         public ResultsController(
             JourneyState journeyState,
-            JourneyStateToEntitlementRequestMapper mapper,
-            EntitlementResponseToResultsViewModelMapper mapperER,
+            JourneyStateToEntitlementRequestMapper journeyStateMapper,
+            EntitlementResponseToResultsSummaryViewModelMapper resultsSummaryMapper,
+            EntitlementResponseToResultsDetailsViewModelMapper resultsDetailsModelMapper,
             EntitlementRulesEngine rulesEngine)
         {
             _journeyState = journeyState;
-            _mapper = mapper;
-            _mapperER = mapperER;
+            _journeyStateMapper = journeyStateMapper;
+            _resultsSummaryMapper = resultsSummaryMapper;
+            _resultsDetailsModelMapper = resultsDetailsModelMapper;
             _rulesEngine = rulesEngine;
         }
 
@@ -34,13 +37,25 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         [HttpGet]
         public IActionResult Results()
         {
-            var request = _mapper.Map(_journeyState);
+            var request = _journeyStateMapper.Map(_journeyState);
 
             var response = _rulesEngine.Evaluate(request, DateOnly.FromDateTime(DateTime.Today));
 
-            var resultsViewModel = _mapperER.Map(response);
+            var resultsSummaryViewModel = _resultsSummaryMapper.Map(response);
 
-            return View(resultsViewModel);
+            return View(resultsSummaryViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult ResultsDetailed(string childID)
+        {
+            var request = _journeyStateMapper.Map(_journeyState);
+
+            var response = _rulesEngine.Evaluate(request, DateOnly.FromDateTime(DateTime.Today));
+
+            var resultsDetailsViewModel = _resultsDetailsModelMapper.Map(response, childID);
+
+            return View(resultsDetailsViewModel);
         }
     }
 }

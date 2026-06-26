@@ -1,7 +1,7 @@
 @inject IViewLocalizer Localizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @using Microsoft.AspNetCore.Mvc.Localization
-@model AccessingChildcareEntitlementChecker.Web.Models.Results.ResultsViewModel
+@model AccessingChildcareEntitlementChecker.Web.Models.Results.ResultsSummaryViewModel
 
 @{
     ViewData["Title"] = Localizer["Childcare support you could get"];
@@ -39,7 +39,7 @@
 
         @foreach (var child in Model.Children)
         {
-            <div class="child-results">
+            <div class="results-section">
 
                 <h2 class="govuk-heading-l results-name">
                     @child.Name
@@ -51,6 +51,7 @@
                 
                 <p class="govuk-body">
                     <a asp-action="ResultsDetailed"
+                       asp-route-childId="@child.ChildId"
                        class="govuk-link"
                        target="_blank"
                        rel="noopener noreferrer">
@@ -109,7 +110,7 @@
             <p class="govuk-body">
                 @Localizer["To understand more you can"]
                 <text> </text>
-                <a href=""
+                <a href="https://www.gov.uk/get-childcare"
                    class="govuk-link"
                    target="_blank"
                    rel="noopener noreferrer">
@@ -126,13 +127,18 @@
 
             <p class="govuk-body">
                 <a class="govuk-link"
-                   href=""
+                   href="https://www.gov.uk/find-family-hub-local-area"
                    target="_blank"
                    rel="noopener noreferrer">
                     @Localizer["Find out if there's a family hub in your area (opens in new tab)"]
                 </a>
             </p>
         </div>
+        
+        <button class="app-print-link" type="button">
+            @Localizer["Print this page"]
+        </button>
+        
         <div class="app-back-to-top">
             <a class="govuk-link govuk-link--no-visited-state app-back-to-top__link"
                href="#top">
@@ -149,10 +155,6 @@
                 @Localizer["Back to top"]
             </a>
         </div>
-        
-        <button class="app-print-link" type="button">
-            @Localizer["Print this page"]
-        </button>
         
     </div>
     
