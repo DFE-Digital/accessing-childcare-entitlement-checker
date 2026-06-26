@@ -14,7 +14,7 @@ order: 99
 | --- | --- |
 | High | 0 |
 | Medium | 0 |
-| Low | 4 |
+| Low | 2 |
 | Informational | 4 |
 
 
@@ -26,13 +26,11 @@ order: 99
 
 | Name | Risk Level | Number of Instances |
 | --- | --- | --- |
-| Cookie with SameSite Attribute None | Low | Systemic |
-| Cookie without SameSite Attribute | Low | Systemic |
 | Private IP Disclosure | Low | 1 |
 | Timestamp Disclosure - Unix | Low | 1 |
 | Modern Web Application | Informational | Systemic |
 | Re-examine Cache-control Directives | Informational | Systemic |
-| Session Management Response Identified | Informational | 9 |
+| Session Management Response Identified | Informational | 2 |
 | User Agent Fuzzer | Informational | Systemic |
 
 
@@ -41,138 +39,6 @@ order: 99
 ## Alert Detail
 
 
-
-### [ Cookie with SameSite Attribute None ](https://www.zaproxy.org/docs/alerts/10054/)
-
-
-
-##### Low (Medium)
-
-### Description
-
-A cookie has been set with its SameSite attribute set to "none", which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.
-
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
-  * Method: `GET`
-  * Parameter: `ARRAffinitySameSite`
-  * Attack: ``
-  * Evidence: `Set-Cookie: ARRAffinitySameSite`
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-180.png%3Fv=6.0.0
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-180.png (v)`
-  * Method: `GET`
-  * Parameter: `ARRAffinitySameSite`
-  * Attack: ``
-  * Evidence: `Set-Cookie: ARRAffinitySameSite`
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-mask.svg%3Fv=6.0.0
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-mask.svg (v)`
-  * Method: `GET`
-  * Parameter: `ARRAffinitySameSite`
-  * Attack: ``
-  * Evidence: `Set-Cookie: ARRAffinitySameSite`
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt`
-  * Method: `GET`
-  * Parameter: `ARRAffinitySameSite`
-  * Attack: ``
-  * Evidence: `Set-Cookie: ARRAffinitySameSite`
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
-  * Method: `GET`
-  * Parameter: `ARRAffinitySameSite`
-  * Attack: ``
-  * Evidence: `Set-Cookie: ARRAffinitySameSite`
-  * Other Info: ``
-
-Instances: Systemic
-
-
-### Solution
-
-Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' for all cookies.
-
-### Reference
-
-
-* [ https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cookie-same-site ](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cookie-same-site)
-
-
-#### CWE Id: [ 1275 ](https://cwe.mitre.org/data/definitions/1275.html)
-
-
-#### WASC Id: 13
-
-#### Source ID: 3
-
-### [ Cookie without SameSite Attribute ](https://www.zaproxy.org/docs/alerts/10054/)
-
-
-
-##### Low (Medium)
-
-### Description
-
-A cookie has been set without the SameSite attribute, which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.
-
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `Set-Cookie: ARRAffinity`
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-180.png%3Fv=6.0.0
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-180.png (v)`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `Set-Cookie: ARRAffinity`
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-mask.svg%3Fv=6.0.0
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/govuk-icon-mask.svg (v)`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `Set-Cookie: ARRAffinity`
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `Set-Cookie: ARRAffinity`
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `Set-Cookie: ARRAffinity`
-  * Other Info: ``
-
-Instances: Systemic
-
-
-### Solution
-
-Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' for all cookies.
-
-### Reference
-
-
-* [ https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cookie-same-site ](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cookie-same-site)
-
-
-#### CWE Id: [ 1275 ](https://cwe.mitre.org/data/definitions/1275.html)
-
-
-#### WASC Id: 13
-
-#### Source ID: 3
 
 ### [ Private IP Disclosure ](https://www.zaproxy.org/docs/alerts/2/)
 
@@ -268,8 +134,8 @@ The application appears to be a modern web application. If you need to explore i
   * Attack: ``
   * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/169a9b0a-48f6-4390-ba37-0a35c5bda2ba/has-the-child-been-born
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/169a9b0a-48f6-4390-ba37-0a35c5bda2ba/has-the-child-been-born`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -392,80 +258,20 @@ The given response has been identified as containing a session management token.
 * URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
   * Method: `GET`
-  * Parameter: `ARRAffinity`
+  * Parameter: `.AspNetCore.Antiforgery.RtGCWVXC8-4`
   * Attack: ``
-  * Evidence: `ARRAffinity`
-  * Other Info: `cookie:ARRAffinity
-cookie:ARRAffinitySameSite
-cookie:.AspNetCore.Antiforgery.RtGCWVXC8-4`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json%3Fv=6.0.0
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json (v)`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `ARRAffinity`
-  * Other Info: `cookie:ARRAffinity
-cookie:ARRAffinitySameSite`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/67197208-4e55-4ca8-9f55-7ec96cf99c87/has-the-child-been-born
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/67197208-4e55-4ca8-9f55-7ec96cf99c87/has-the-child-been-born`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `ARRAffinity`
-  * Other Info: `cookie:ARRAffinity
-cookie:ARRAffinitySameSite`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `ARRAffinity`
-  * Other Info: `cookie:ARRAffinity
-cookie:ARRAffinitySameSite`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `ARRAffinity`
-  * Other Info: `cookie:ARRAffinity
-cookie:ARRAffinitySameSite`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
-  * Method: `GET`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `ARRAffinity`
-  * Other Info: `cookie:ARRAffinity
-cookie:ARRAffinitySameSite`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/ ()(__RequestVerificationToken)`
-  * Method: `POST`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `ARRAffinity`
-  * Other Info: `cookie:ARRAffinity
-cookie:ARRAffinitySameSite`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details ()(ChildName,__RequestVerificationToken)`
-  * Method: `POST`
-  * Parameter: `ARRAffinity`
-  * Attack: ``
-  * Evidence: `ARRAffinity`
-  * Other Info: `cookie:ARRAffinity
-cookie:ARRAffinitySameSite`
+  * Evidence: `.AspNetCore.Antiforgery.RtGCWVXC8-4`
+  * Other Info: `cookie:.AspNetCore.Antiforgery.RtGCWVXC8-4`
 * URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live ()(Country,ReturnTo,__RequestVerificationToken)`
   * Method: `POST`
   * Parameter: `.AspNetCore.Session`
   * Attack: ``
   * Evidence: `.AspNetCore.Session`
-  * Other Info: `cookie:.AspNetCore.Session
-cookie:ARRAffinity
-cookie:ARRAffinitySameSite`
+  * Other Info: `cookie:.AspNetCore.Session`
 
 
-Instances: 9
+Instances: 2
 
 ### Solution
 
