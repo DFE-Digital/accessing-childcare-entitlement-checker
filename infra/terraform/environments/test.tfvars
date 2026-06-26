@@ -14,3 +14,4 @@ location_short_code        = "uks"
 waf_mode                   = "Prevention"
 alert_email_address        = ""
 enable_alerts              = false
+redis_sku_name             = "Balanced_B0"

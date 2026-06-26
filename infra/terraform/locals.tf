@@ -22,6 +22,7 @@ locals {
     "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.application-insights.connection_string
     "WEBSITE_SWAP_WARMUP_PING_PATH"         = "/health"
     "WEBSITE_SWAP_WARMUP_PING_STATUSES"     = "200"
+    "RedisConnection"                       = "${azurerm_managed_redis.redis.hostname}:10000,abortConnect=False,ssl=True"
     }, var.aspnetcore_environment != "Production" ? {
     "DevelopmentBasicAuthPassword" = var.development_basic_auth_password
   } : {})

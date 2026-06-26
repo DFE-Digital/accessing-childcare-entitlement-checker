@@ -193,3 +193,75 @@ resource "azurerm_monitor_metric_alert" "waf_blocked_requests" {
 
   tags = local.common_tags
 }
+
+resource "azurerm_monitor_metric_alert" "redis_high_cpu" {
+  count               = var.enable_alerts ? 1 : 0
+  name                = "${local.service_prefix}-redis-high-cpu"
+  resource_group_name = azurerm_resource_group.web-rg.name
+  scopes              = [azurerm_managed_redis.redis.id]
+  severity            = 2
+  frequency           = "PT1M"
+  window_size         = "PT5M"
+
+  criteria {
+    metric_namespace = "Microsoft.Cache/redisEnterprise"
+    metric_name      = "CPU"
+    aggregation      = "Average"
+    operator         = "GreaterThan"
+    threshold        = 80
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+  }
+
+  tags = local.common_tags
+}
+
+resource "azurerm_monitor_metric_alert" "redis_high_memory" {
+  count               = var.enable_alerts ? 1 : 0
+  name                = "${local.service_prefix}-redis-high-memory"
+  resource_group_name = azurerm_resource_group.web-rg.name
+  scopes              = [azurerm_managed_redis.redis.id]
+  severity            = 2
+  frequency           = "PT1M"
+  window_size         = "PT5M"
+
+  criteria {
+    metric_namespace = "Microsoft.Cache/redisEnterprise"
+    metric_name      = "usedmemorypercentage"
+    aggregation      = "Average"
+    operator         = "GreaterThan"
+    threshold        = 80
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+  }
+
+  tags = local.common_tags
+}
+
+resource "azurerm_monitor_metric_alert" "redis_high_connections" {
+  count               = var.enable_alerts ? 1 : 0
+  name                = "${local.service_prefix}-redis-high-connections"
+  resource_group_name = azurerm_resource_group.web-rg.name
+  scopes              = [azurerm_managed_redis.redis.id]
+  severity            = 3
+  frequency           = "PT1M"
+  window_size         = "PT5M"
+
+  criteria {
+    metric_namespace = "Microsoft.Cache/redisEnterprise"
+    metric_name      = "connectedclients"
+    aggregation      = "Average"
+    operator         = "GreaterThan"
+    threshold        = 1000
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+  }
+
+  tags = local.common_tags
+}
