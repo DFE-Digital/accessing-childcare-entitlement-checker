@@ -29,6 +29,7 @@ crash.*.log
 # Local environment variables
 .env
 *.env
+appsettings.Local.json
 
 ### Terraform ###
 # Local .terraform directories

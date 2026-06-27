@@ -69,7 +69,7 @@ jobs:
           dotnet-version: ${{ steps.metadata.outputs.dotnet_version }}
 
       - name: Set execution permissions
-        run: chmod +x ./e2e-tests/AccessingChildcareEntitlementChecker.Tests.E2e
+        run: chmod +x ./e2e-tests/AccessingChildcareEntitlementChecker.E2eTests
 
       - name: Install Playwright Browsers
         working-directory: e2e-tests
@@ -115,9 +115,10 @@ jobs:
           TEST_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
           PLAYWRIGHT_BROWSER: ${{ inputs.browser }}
         run: |
-          dotnet test ./e2e-tests/AccessingChildcareEntitlementChecker.Tests.E2e.dll \
+          dotnet test ./e2e-tests/AccessingChildcareEntitlementChecker.E2eTests.dll \
             --logger "trx;LogFileName=test-results.trx" \
-            --results-directory ./TestResults
+            --results-directory ./TestResults \
+            --verbosity normal
 
       - name: Stop app
         if: always() && env.APP_STARTED == 'true'
