@@ -77,7 +77,7 @@ jobs:
             -e TARGET_URL="$T_URL" \
             -e AUTH_HEADER="$A_HEADER" \
             ghcr.io/zaproxy/zaproxy:stable \
-            zap.sh -cmd -autorun /zap/wrk/zap/automation-plan.yaml
+            zap-x.sh -cmd -autorun /zap/wrk/zap/automation-plan.yaml
 
       - name: Post-process ZAP Markdown Report
         if: always()
