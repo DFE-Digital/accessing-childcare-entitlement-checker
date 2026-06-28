@@ -16,3 +16,4 @@ alert_email_address          = ""
 enable_alerts                = false
 redis_sku_name               = "Balanced_B0"
 log_analytics_daily_quota_gb = 0.5
+enable_load_testing          = false

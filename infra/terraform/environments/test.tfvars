@@ -16,3 +16,4 @@ alert_email_address          = "Childcare.ENTITLEMENTS@education.gov.uk"
 enable_alerts                = true
 redis_sku_name               = "Balanced_B0"
 log_analytics_daily_quota_gb = 1
+enable_load_testing          = true
