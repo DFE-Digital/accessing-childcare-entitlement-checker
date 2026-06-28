@@ -205,8 +205,8 @@ resource "azurerm_monitor_metric_alert" "redis_high_cpu" {
 
   criteria {
     metric_namespace = "Microsoft.Cache/redisEnterprise"
-    metric_name      = "CPU"
-    aggregation      = "Average"
+    metric_name      = "percentProcessorTime"
+    aggregation      = "Maximum"
     operator         = "GreaterThan"
     threshold        = 80
   }
@@ -230,7 +230,7 @@ resource "azurerm_monitor_metric_alert" "redis_high_memory" {
   criteria {
     metric_namespace = "Microsoft.Cache/redisEnterprise"
     metric_name      = "usedmemorypercentage"
-    aggregation      = "Average"
+    aggregation      = "Maximum"
     operator         = "GreaterThan"
     threshold        = 80
   }
@@ -254,7 +254,7 @@ resource "azurerm_monitor_metric_alert" "redis_high_connections" {
   criteria {
     metric_namespace = "Microsoft.Cache/redisEnterprise"
     metric_name      = "connectedclients"
-    aggregation      = "Average"
+    aggregation      = "Maximum"
     operator         = "GreaterThan"
     threshold        = 1000
   }
