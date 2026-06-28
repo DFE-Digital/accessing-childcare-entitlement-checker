@@ -6,6 +6,17 @@ env:
       includePaths:
         - ${TARGET_URL}.*
 jobs:
+  - type: alertFilter
+    name: "Ignore False Positives and Informational alerts"
+    alertFilters:
+      - ruleId: 10112
+        newRisk: "False Positive"
+        context: Application
+        parameter: ".AspNetCore.Session"
+      - ruleId: 10109
+        newRisk: "False Positive"
+        context: Application
+
   - type: script
     parameters:
       action: add
@@ -25,26 +36,6 @@ jobs:
     parameters:
       context: Application
       maxScanDurationInMins: 60
-
-  - type: alertFilter
-    name: "Ignore False Positives and Informational alerts"
-    alertFilters:
-      - ruleId: 10054
-        newRisk: "False Positive"
-        context: Application
-        parameter: "ARRAffinitySameSite"
-      - ruleId: 10054
-        newRisk: "False Positive"
-        context: Application
-        parameter: "ARRAffinity"
-      - ruleId: 10112
-        newRisk: "False Positive"
-        context: Application
-        parameter: "ARRAffinity"
-      - ruleId: 10112
-        newRisk: "False Positive"
-        context: Application
-        parameter: ".AspNetCore.Session"
 
   - type: report
     parameters:
