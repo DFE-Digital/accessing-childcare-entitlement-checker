@@ -12,10 +12,21 @@ jobs:
       - ruleId: 10112
         newRisk: "False Positive"
         context: Application
-        parameter: ".AspNetCore.Session"
+        parameter: "\\.AspNetCore\\.(Session|Antiforgery\\..*)"
+        parameterRegex: true
       - ruleId: 10109
         newRisk: "False Positive"
         context: Application
+      - ruleId: 2
+        newRisk: "False Positive"
+        context: Application
+        url: ".*favicon\\.svg.*"
+        urlRegex: true
+      - ruleId: 10096
+        newRisk: "False Positive"
+        context: Application
+        url: ".*govuk-frontend\\.min\\.css.*"
+        urlRegex: true
 
   - type: script
     parameters:
