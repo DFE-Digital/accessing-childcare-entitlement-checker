@@ -41,7 +41,7 @@ jobs:
       context: Application
       maxDuration: 20
 
-  - type: ajaxSpider
+  - type: spiderAjax
     parameters:
       context: Application
       maxDuration: 20
