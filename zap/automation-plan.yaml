@@ -44,7 +44,7 @@ jobs:
   - type: spiderAjax
     parameters:
       context: Application
-      url: "${TARGET_URL}"
+      url: ${TARGET_URL}
       browserId: firefox-headless
       maxDuration: 20
       maxCrawlDepth: 0
