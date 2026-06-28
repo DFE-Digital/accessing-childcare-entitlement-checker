@@ -41,6 +41,13 @@ jobs:
       context: Application
       maxDuration: 20
 
+  - type: ajaxSpider
+    parameters:
+      context: Application
+      maxDuration: 20
+      maxCrawlDepth: 0
+      numberOfBrowsers: 1
+
   - type: passiveScan-wait
 
   - type: activeScan
