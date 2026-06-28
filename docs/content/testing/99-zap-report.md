@@ -15,7 +15,7 @@ order: 99
 | High | 0 |
 | Medium | 0 |
 | Low | 2 |
-| Informational | 4 |
+| Informational | 3 |
 
 
 
@@ -28,10 +28,11 @@ order: 99
 | --- | --- | --- |
 | Private IP Disclosure | Low | 1 |
 | Timestamp Disclosure - Unix | Low | 1 |
-| Modern Web Application | Informational | Systemic |
 | Re-examine Cache-control Directives | Informational | Systemic |
-| Session Management Response Identified | Informational | 2 |
+| Session Management Response Identified | Informational | 1 |
 | User Agent Fuzzer | Informational | Systemic |
+| Modern Web Application | 				False Positives: | 4 |
+| Session Management Response Identified | 				False Positives: | 1 |
 
 
 
@@ -114,66 +115,6 @@ Manually confirm that the timestamp data is not sensitive, and that the data can
 
 
 #### WASC Id: 13
-
-#### Source ID: 3
-
-### [ Modern Web Application ](https://www.zaproxy.org/docs/alerts/10109/)
-
-
-
-##### Informational (Medium)
-
-### Description
-
-The application appears to be a modern web application. If you need to explore it automatically then the Ajax Spider may well be more effective than the standard one.
-
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/169a9b0a-48f6-4390-ba37-0a35c5bda2ba/has-the-child-been-born
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/169a9b0a-48f6-4390-ba37-0a35c5bda2ba/has-the-child-been-born`
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/ ()(__RequestVerificationToken)`
-  * Method: `POST`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-
-Instances: Systemic
-
-
-### Solution
-
-This is an informational alert and so no changes are required.
-
-### Reference
-
-
-
 
 #### Source ID: 3
 
@@ -262,16 +203,9 @@ The given response has been identified as containing a session management token.
   * Attack: ``
   * Evidence: `.AspNetCore.Antiforgery.RtGCWVXC8-4`
   * Other Info: `cookie:.AspNetCore.Antiforgery.RtGCWVXC8-4`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live ()(Country,ReturnTo,__RequestVerificationToken)`
-  * Method: `POST`
-  * Parameter: `.AspNetCore.Session`
-  * Attack: ``
-  * Evidence: `.AspNetCore.Session`
-  * Other Info: `cookie:.AspNetCore.Session`
 
 
-Instances: 2
+Instances: 1
 
 ### Solution
 
@@ -300,18 +234,18 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
   * Method: `GET`
   * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
-  * Method: `GET`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details ()(ChildName,ReturnTo,__RequestVerificationToken)`
+  * Method: `POST`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/ ()(__RequestVerificationToken)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live ()(Country,ReturnTo,__RequestVerificationToken)`
   * Method: `POST`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
@@ -333,5 +267,92 @@ Instances: Systemic
 
 
 #### Source ID: 1
+
+### [ Modern Web Application ](https://www.zaproxy.org/docs/alerts/10109/)
+
+
+
+##### 				False Positives: (False Positive)
+
+### Description
+
+The application appears to be a modern web application. If you need to explore it automatically then the Ajax Spider may well be more effective than the standard one.
+
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
+  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
+  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
+  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/ ()(__RequestVerificationToken)`
+  * Method: `POST`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
+  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
+
+
+Instances: 4
+
+### Solution
+
+This is an informational alert and so no changes are required.
+
+### Reference
+
+
+
+
+#### Source ID: 3
+
+### [ Session Management Response Identified ](https://www.zaproxy.org/docs/alerts/10112/)
+
+
+
+##### 				False Positives: (False Positive)
+
+### Description
+
+The given response has been identified as containing a session management token. The 'Other Info' field contains a set of header tokens that can be used in the Header Based Session Management Method. If the request is in a context which has a Session Management Method set to "Auto-Detect" then this rule will change the session management to use the tokens identified.
+
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live ()(Country,ReturnTo,__RequestVerificationToken)`
+  * Method: `POST`
+  * Parameter: `.AspNetCore.Session`
+  * Attack: ``
+  * Evidence: `.AspNetCore.Session`
+  * Other Info: `cookie:.AspNetCore.Session`
+
+
+Instances: 1
+
+### Solution
+
+This is an informational alert rather than a vulnerability and so there is nothing to fix.
+
+### Reference
+
+
+* [ https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id/ ](https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id/)
+
+
+
+#### Source ID: 3
 
 
