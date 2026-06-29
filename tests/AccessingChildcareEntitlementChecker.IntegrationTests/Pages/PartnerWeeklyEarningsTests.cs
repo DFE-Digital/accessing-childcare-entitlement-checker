@@ -9,18 +9,19 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     [Theory]
-    [InlineData(null, null, "/work-status/work-status-partner")]
+    [InlineData(null, WorkStatusOption.PaidEmployment, "/work-status/work-status-partner")]
     [InlineData(null, WorkStatusOption.SelfEmployed, "/work-status/self-employed-partner")]
-    [InlineData(ReturnTo.CheckAnswers, null, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckChildDetails, null, "/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.PaidEmployment, "/children/check-childs-details")]
     public async Task Get_Has_Input_And_BackLink(
         string? returnTo,
-        WorkStatusOption? partnerWorkStatus,
+        WorkStatusOption partnerWorkStatus,
         string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
-            PartnerWorkStatus = partnerWorkStatus.HasValue ? [partnerWorkStatus.Value] : [],
+            PartnerAge = AgeRange.TwentyOneOrOver,
+            PartnerWorkStatus = [partnerWorkStatus],
         });
 
         var url = $"/earnings/wage-partner?returnTo={returnTo}";
@@ -41,6 +42,8 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
+            PartnerAge = AgeRange.TwentyOneOrOver,
+            PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
             PartnerWeeklyEarnings = partnerWeeklyEarnings,
             PartnerYearlyEarnings = partnerYearlyEarnings,
             PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
@@ -62,18 +65,19 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
     }
 
     [Theory]
-    [InlineData(null, null, "/work-status/work-status-partner")]
+    [InlineData(null, WorkStatusOption.PaidEmployment, "/work-status/work-status-partner")]
     [InlineData(null, WorkStatusOption.SelfEmployed, "/work-status/self-employed-partner")]
-    [InlineData(ReturnTo.CheckAnswers, null, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckChildDetails, null, "/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.PaidEmployment, "/children/check-childs-details")]
     public async Task Post_Invalid_Shows_Validation_Error(
         string? returnTo,
-        WorkStatusOption? partnerWorkStatus,
+        WorkStatusOption partnerWorkStatus,
         string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
-            PartnerWorkStatus = partnerWorkStatus.HasValue ? [partnerWorkStatus.Value] : [],
+            PartnerAge = AgeRange.TwentyOneOrOver,
+            PartnerWorkStatus = [partnerWorkStatus],
         });
 
         var url = $"/earnings/wage-partner?returnTo={returnTo}";

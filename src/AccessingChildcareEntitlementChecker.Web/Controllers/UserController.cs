@@ -324,7 +324,8 @@ public class UserController : Controller
     public IActionResult WeeklyEarnings(string? returnTo = null)
     {
         var backLink = GetWeeklyEarningsBackLink(returnTo);
-        return View(new WeeklyEarningsViewModel(_journeyState, backLink, returnTo));
+        var weeklyEarningsThresholds = WeeklyEarningsThresholds.Factory(_journeyState.UserAge, _journeyState.WorkStatus);
+        return View(new WeeklyEarningsViewModel(_journeyState, weeklyEarningsThresholds, backLink, returnTo));
     }
 
     [HttpPost]
@@ -332,6 +333,8 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
+            var weeklyEarningsThresholds = WeeklyEarningsThresholds.Factory(_journeyState.UserAge, _journeyState.WorkStatus);
+            model.WeeklyEarningsThresholds = weeklyEarningsThresholds;
             model.BackLink = GetWeeklyEarningsBackLink(model.ReturnTo);
             return View(model);
         }

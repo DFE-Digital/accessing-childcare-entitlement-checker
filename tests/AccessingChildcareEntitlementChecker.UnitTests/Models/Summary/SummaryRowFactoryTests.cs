@@ -171,7 +171,7 @@ public class SummaryRowFactoryTests
     {
         var journeyState = new JourneyState();
         var value = new List<string>();
-        _summaryRowFactory.AddParentalLeave(value, journeyState);
+        _summaryRowFactory.AddParentalLeave(journeyState);
 
         var rows = _summaryRowFactory.ViewModels;
         Assert.Empty(rows);
@@ -182,7 +182,7 @@ public class SummaryRowFactoryTests
     {
         var journeyState = new JourneyState();
         var value = new List<string>() { ParentalLeaveViewModel.NoneSelectedValue };
-        _summaryRowFactory.AddParentalLeave(value, journeyState);
+        _summaryRowFactory.AddParentalLeave(journeyState);
         var rows = _summaryRowFactory.ViewModels;
         Assert.Empty(rows);
     }
@@ -192,7 +192,7 @@ public class SummaryRowFactoryTests
     {
         var journeyState = new JourneyState();
         var value = new List<string>() { "1" };
-        _summaryRowFactory.AddParentalLeave(value, journeyState);
+        _summaryRowFactory.AddParentalLeave(journeyState);
         var rows = _summaryRowFactory.ViewModels;
         Assert.Empty(rows);
     }
@@ -206,11 +206,11 @@ public class SummaryRowFactoryTests
             {
                 { "1", new Child("1", "Child One") },
                 { "2", new Child("2", "Child Two") }
-            }
+            },
+            ParentalLeaveChildrenIds = ["1", "2"],
         };
 
-        var value = new List<string>() { "1", "2" };
-        _summaryRowFactory.AddParentalLeave(value, journeyState);
+        _summaryRowFactory.AddParentalLeave(journeyState);
         var rows = _summaryRowFactory.ViewModels;
         Assert.Single(rows);
         Assert.Equal("Which child are you on leave for?", rows[0].Key);
@@ -224,7 +224,7 @@ public class SummaryRowFactoryTests
     {
         var journeyState = new JourneyState();
         var value = new List<string>();
-        _summaryRowFactory.AddPartnerParentalLeave(value, journeyState);
+        _summaryRowFactory.AddPartnerParentalLeave(journeyState);
 
         var rows = _summaryRowFactory.ViewModels;
         Assert.Empty(rows);
@@ -235,7 +235,7 @@ public class SummaryRowFactoryTests
     {
         var journeyState = new JourneyState();
         var value = new List<string>() { PartnerParentalLeaveViewModel.NoneSelectedValue };
-        _summaryRowFactory.AddPartnerParentalLeave(value, journeyState);
+        _summaryRowFactory.AddPartnerParentalLeave(journeyState);
         var rows = _summaryRowFactory.ViewModels;
         Assert.Empty(rows);
     }
@@ -245,7 +245,7 @@ public class SummaryRowFactoryTests
     {
         var journeyState = new JourneyState();
         var value = new List<string>() { "1" };
-        _summaryRowFactory.AddPartnerParentalLeave(value, journeyState);
+        _summaryRowFactory.AddPartnerParentalLeave(journeyState);
         var rows = _summaryRowFactory.ViewModels;
         Assert.Empty(rows);
     }
@@ -259,11 +259,11 @@ public class SummaryRowFactoryTests
             {
                 { "1", new Child("1", "Child One") },
                 { "2", new Child("2", "Child Two") }
-            }
+            },
+            PartnerParentalLeaveChildrenIds = ["1", "2"],
         };
 
-        var value = new List<string>() { "1", "2" };
-        _summaryRowFactory.AddPartnerParentalLeave(value, journeyState);
+        _summaryRowFactory.AddPartnerParentalLeave(journeyState);
         var rows = _summaryRowFactory.ViewModels;
         Assert.Single(rows);
         Assert.Equal("Which child is your partner on leave for?", rows[0].Key);

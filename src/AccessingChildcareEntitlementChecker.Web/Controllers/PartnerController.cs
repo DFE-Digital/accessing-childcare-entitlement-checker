@@ -313,7 +313,8 @@ public class PartnerController : Controller
     public IActionResult PartnerWeeklyEarnings(string? returnTo = null)
     {
         var backLink = GetPartnerWeeklyEarningsBackLink(returnTo);
-        return View(new PartnerWeeklyEarningsViewModel(_journeyState, backLink, returnTo));
+        var weeklyEarningsThresholds = WeeklyEarningsThresholds.Factory(_journeyState.PartnerAge, _journeyState.PartnerWorkStatus);
+        return View(new PartnerWeeklyEarningsViewModel(_journeyState, weeklyEarningsThresholds, backLink, returnTo));
     }
 
     [HttpPost]
@@ -321,6 +322,7 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.WeeklyEarningsThresholds = WeeklyEarningsThresholds.Factory(_journeyState.PartnerAge, _journeyState.PartnerWorkStatus);
             model.BackLink = GetPartnerWeeklyEarningsBackLink(model.ReturnTo);
             return View(model);
         }

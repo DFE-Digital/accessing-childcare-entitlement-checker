@@ -27,7 +27,7 @@ Scenario: Page Load
 		| Are you in paid work?                                   | Yes                        |
 		| How would you describe your work status?                | Self-employed              |
 		| Have you been self-employed for less than 12 months?    | No                         |
-		| On average, do you earn £203 a week or more before tax? | Yes                        |
+		| On average, do you earn £128 a week or more before tax? | Yes                        |
 		| Is your adjusted net income more than £100,000 a year?  | No                         |
 		| Does your household receive universal credit?           | Yes                        |
 		| Do you get any of these benefits?                       | Carer's Allowance          |
@@ -66,6 +66,34 @@ Scenario: Change my relationship to Sara
 		| What is Sara's date of birth?               | Yesterday                             |
 		| What is your relationship to Sara?          | Parent                                |
 		| Does Sara get any of the following support? | Education, health and care (EHC) plan |
+
+Scenario: Change my age
+	When I click the Change link in the "Your details" summary list for "What is your age?"
+	And I answer the questions as follows:
+		| Question                                                | Answer   |
+		| What is your age?                                       | 18 to 20 |
+		| On average, do you earn £174 a week or more before tax? | Yes      |
+		| Is your adjusted net income more than £100,000 a year?  | No       |
+	Then the page header is "Check your answers"
+	And I should see a summary list for "Your details" with the following summary:
+		| Question                                                | Answer   |
+		| What is your age?                                       | 18 to 20 |
+		| On average, do you earn £174 a week or more before tax? | Yes      |
+		| Is your adjusted net income more than £100,000 a year?  | No       |
+
+Scenario: Change my partner's age
+	When I click the Change link in the "Your partners details" summary list for "What is your partner's age?"
+	And I answer the questions as follows:
+		| Question                                                           | Answer   |
+		| What is your partner's age?                                        | 18 to 20 |
+		| On average, does your partner earn £174 a week or more before tax? | Yes      |
+		| Is your partner's adjusted net income more than £100,000 a year?   | No       |
+	Then the page header is "Check your answers"
+	And I should see a summary list for "Your partners details" with the following summary:
+		| Question                                                           | Answer   |
+		| What is your partner's age?                                        | 18 to 20 |
+		| On average, does your partner earn £174 a week or more before tax? | Yes      |
+		| Is your partner's adjusted net income more than £100,000 a year?   | No       |
 
 Scenario: Partner details are not shown when I don't have a partner
 	When I click the Change link in the "Your details" summary list for "Do you live with a partner?"

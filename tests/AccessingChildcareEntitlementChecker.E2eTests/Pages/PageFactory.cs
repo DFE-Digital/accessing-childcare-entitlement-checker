@@ -25,6 +25,14 @@ internal class PageFactory(IPage page)
         {
             return new ChildDueDatePage(page);
         }
+        if (cleaned.Contains(PageNames.WeeklyEarnings, StringComparison.OrdinalIgnoreCase))
+        {
+            return new WeeklyEarningsPage(page);
+        }
+        if (cleaned.Contains(PageNames.PartnerWeeklyEarnings, StringComparison.OrdinalIgnoreCase))
+        {
+            return new PartnerWeeklyEarningsPage(page);
+        }
 
         return cleaned switch
         {
@@ -35,7 +43,6 @@ internal class PageFactory(IPage page)
             PageNames.PaidWork => new PaidWorkPage(page),
             PageNames.WorkStatus => new WorkStatusPage(page),
             PageNames.SelfEmployedDuration => new SelfEmployedDurationPage(page),
-            PageNames.WeeklyEarnings => new WeeklyEarningsPage(page),
             PageNames.YearlyEarnings => new YearlyEarningsPage(page),
             PageNames.UniversalCredit => new UniversalCreditPage(page),
             PageNames.Benefits => new BenefitsPage(page),

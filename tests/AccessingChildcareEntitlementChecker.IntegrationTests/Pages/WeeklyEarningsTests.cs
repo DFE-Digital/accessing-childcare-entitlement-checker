@@ -16,13 +16,14 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.PaidEmployment, null, "/children/check-childs-details")]
     public async Task Get_Has_Input_And_BackLink(
         string? returnTo,
-        WorkStatusOption? workStatus,
+        WorkStatusOption workStatus,
         SelfEmployedDurationOption? selfEmployedDuration,
         string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
-            WorkStatus = workStatus.HasValue ? [workStatus.Value] : [],
+            UserAge = AgeRange.UnderEighteen,
+            WorkStatus = [workStatus],
             SelfEmployedDuration = selfEmployedDuration,
         });
 
@@ -45,6 +46,8 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
+            UserAge = AgeRange.UnderEighteen,
+            WorkStatus = [WorkStatusOption.PaidEmployment],
             WeeklyEarnings = weeklyEarnings,
             YearlyEarnings = yearlyEarnings,
             UniversalCredit = universalCredit,
@@ -74,13 +77,14 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.PaidEmployment, null, "/children/check-childs-details")]
     public async Task Post_Invalid_Shows_Validation_Error(
         string? returnTo,
-        WorkStatusOption? workStatus,
+        WorkStatusOption workStatus,
         SelfEmployedDurationOption? selfEmployedDuration,
         string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
-            WorkStatus = workStatus.HasValue ? [workStatus.Value] : [],
+            UserAge = AgeRange.UnderEighteen,
+            WorkStatus = [workStatus],
             SelfEmployedDuration = selfEmployedDuration,
         });
 
