@@ -47,14 +47,18 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult ResultsDetailed(string childID)
+        public IActionResult ResultsDetailed(string childId)
         {
             var request = _journeyStateMapper.Map(_journeyState);
-
             var response = _rulesEngine.Evaluate(request, DateOnly.FromDateTime(DateTime.Today));
+            var child = response.ChildResults.SingleOrDefault(x => x.ChildId == childId);
 
-            var resultsDetailsViewModel = _resultsDetailsModelMapper.Map(response, childID);
+            if (child is null)
+            {
+                return BadRequest();
+            }
 
+            var resultsDetailsViewModel = _resultsDetailsModelMapper.Map(child);
             return View(resultsDetailsViewModel);
         }
     }

@@ -19,12 +19,8 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             typeof(ResultsController).Assembly.GetName().Name!);
     }
 
-    public ResultsDetailsViewModel Map(EntitlementResponse response, string childId)
+    public ResultsDetailsViewModel Map(ChildResultDto child)
     {
-        var child = response.ChildResults.SingleOrDefault(x => x.ChildId == childId)
-                    ?? throw new InvalidOperationException(
-                        $"No child found with id '{childId}'.");
-
         return new ResultsDetailsViewModel()
         {
             ChildId = child.ChildId,
