@@ -20,6 +20,12 @@ internal class PartnerPaidWorkPage(IPage page) : BasePage(page)
     public override async Task AnswerAsync(string answer) => await SelectRadioAsync(answer);
 }
 
+internal class PartnerParentalLeavePage(IPage page) : BasePage(page)
+{
+    public override string PageTitle => PageNames.PartnerParentalLeave;
+    public override async Task AnswerAsync(string answer) => await CheckCheckboxesAsync(answer);
+}
+
 internal class PartnerBenefitsPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerBenefits;

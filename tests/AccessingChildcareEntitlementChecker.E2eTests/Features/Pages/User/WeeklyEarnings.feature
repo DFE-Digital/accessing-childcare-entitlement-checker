@@ -29,11 +29,12 @@ Examples:
 
 Scenario Outline: Page load for different age groups on parental leave
 	Given I answer questions as follows:
-		| Question                          | Answer                          |
-		| What is your age?                 | <Age>                           |
-		| What is your nationality?         | British or Irish citizen        |
-		| Are you in paid work?             | Yes, but I am on parental leave |
-		| Which child are you on leave for? | Sara                            |
+		| Question                                 | Answer                          |
+		| What is your age?                        | <Age>                           |
+		| What is your nationality?                | British or Irish citizen        |
+		| Are you in paid work?                    | Yes, but I am on parental leave |
+		| Which child are you on leave for?        | Sara                            |
+		| How would you describe your work status? | <Work Status>                   |
 	When the page header is "On average, will you earn £<Earnings> a week or more before tax when your parental leave ends?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
@@ -41,10 +42,13 @@ Scenario Outline: Page load for different age groups on parental leave
 		| No     |
 
 Examples:
-	| Age        | Earnings |
-	| Under 18   |      128 |
-	| 18 to 20   |      174 |
-	| 21 or over |      203 |
+	| Age        | Work Status     | Earnings |
+	| Under 18   | Paid employment |      128 |
+	| 18 to 20   | Paid employment |      174 |
+	| 21 or over | Paid employment |      203 |
+	| Under 18   | Apprentice      |      128 |
+	| 18 to 20   | Apprentice      |      128 |
+	| 21 or over | Apprentice      |      128 |
 
 Scenario Outline: Continue without selection for different age groups and employment statuses
 	Given I answer questions as follows:

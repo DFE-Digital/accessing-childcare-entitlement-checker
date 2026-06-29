@@ -37,7 +37,7 @@ Scenario: Page Load
 	And I should see a summary list for "Your partners details" with the following summary:
 		| Question                                                     | Answer                     |
 		| What is your partner's age?                                  | 21 or over                 |
-		| Is your partner in paid work?                                | No, they are not in work   |
+		| Is your partner in paid work?                                | Yes                        |
 		| Does your partner get any of these benefits?                 | Carer's Allowance          |
 		| Does your partner already get any of this childcare support? | Childcare vouchers         |
 		| How does your partner receive childcare vouchers?            | A workplace nursery scheme |
@@ -81,8 +81,15 @@ Scenario: Change my age
 		| On average, do you earn £174 a week or more before tax? | Yes      |
 		| Is your adjusted net income more than £100,000 a year?  | No       |
 
-Scenario: Change my partner's age
-	When I click the Change link in the "Your partners details" summary list for "What is your partner's age?"
+Scenario: Change my partner's employment status and age to trigger a different threshold
+	When I click the Change link in the "Your partners details" summary list for "Is your partner in paid work?"
+	And I answer the questions as follows:
+		| Question                                                           | Answer          |
+		| Is your partner in paid work?                                      | Yes             |
+		| How would you describe your partner's work status?                 | Paid employment |
+		| On average, does your partner earn £208 a week or more before tax? | Yes             |
+		| Is your partner's adjusted net income more than £100,000 a year?   | No              |
+	And I click the Change link in the "Your partners details" summary list for "What is your partner's age?"
 	And I answer the questions as follows:
 		| Question                                                           | Answer   |
 		| What is your partner's age?                                        | 18 to 20 |

@@ -10,6 +10,7 @@ internal static class PageNames
     public const string UserAge = "What is your age?";
     public const string Nationality = "What is your nationality?";
     public const string PaidWork = "Are you in paid work?";
+    public const string ParentalLeave = "Which child are you on leave for?";
     public const string WorkStatus = "How would you describe your work status?";
     public const string SelfEmployedDuration = "Have you been self-employed for less than 12 months?";
     public const string WeeklyEarnings = "On average, do you earn";
@@ -25,6 +26,7 @@ internal static class PageNames
     public const string HasPartner = "Do you live with a partner?";
     public const string PartnerAge = "What is your partner's age?";
     public const string PartnerPaidWork = "Is your partner in paid work?";
+    public const string PartnerParentalLeave = "Which child is your partner on leave for?";
     public const string PartnerWorkStatus = "How would you describe your partner's work status?";
     public const string PartnerSelfEmployedDuration = "Has your partner been self-employed for less than 12 months?";
     public const string PartnerWeeklyEarnings = "On average, does your partner earn";

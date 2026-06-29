@@ -38,6 +38,12 @@ internal class PaidWorkPage(IPage page) : BasePage(page)
     public override async Task AnswerAsync(string answer) => await SelectRadioAsync(answer);
 }
 
+internal class ParentalLeavePage(IPage page) : BasePage(page)
+{
+    public override string PageTitle => PageNames.ParentalLeave;
+    public override async Task AnswerAsync(string answer) => await CheckCheckboxesAsync(answer);
+}
+
 internal class WorkStatusPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.WorkStatus;
