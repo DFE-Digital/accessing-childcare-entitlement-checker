@@ -88,34 +88,28 @@ public class SummaryRowFactory
 
     public SummaryRowFactory AddParentalLeave(List<string> value, JourneyState journeyState)
     {
-        if (value.Count == 0)
-        {
-            return this;
-        }
-
         var childrenNames = journeyState.Children
             .Where(c => value.Contains(c.Key))
             .Select(c => c.Value.Name)
             .ToList();
 
         var displayValue = string.Join(", ", childrenNames);
-        return Add((ParentalLeaveViewModel s) => s.ParentalLeaveChildrenIds, displayValue, nameof(UserController.ParentalLeave));
+        return displayValue == string.Empty
+            ? this
+            : Add((ParentalLeaveViewModel s) => s.ParentalLeaveChildrenIds, displayValue, nameof(UserController.ParentalLeave));
     }
 
     public SummaryRowFactory AddPartnerParentalLeave(List<string> value, JourneyState journeyState)
     {
-        if (value.Count == 0)
-        {
-            return this;
-        }
-
         var childrenNames = journeyState.Children
             .Where(c => value.Contains(c.Key))
             .Select(c => c.Value.Name)
             .ToList();
 
         var displayValue = string.Join(", ", childrenNames);
-        return Add((PartnerParentalLeaveViewModel s) => s.PartnerParentalLeaveChildrenIds, displayValue, nameof(PartnerController.PartnerParentalLeave));
+        return displayValue == string.Empty
+            ? this
+            : Add((PartnerParentalLeaveViewModel s) => s.PartnerParentalLeaveChildrenIds, displayValue, nameof(PartnerController.PartnerParentalLeave));
     }
 
     public SummaryRowFactory AddLocation(CountryOfResidence? countryOfResidence)

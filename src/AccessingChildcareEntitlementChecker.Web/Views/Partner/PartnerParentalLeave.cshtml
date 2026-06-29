@@ -1,5 +1,5 @@
+@* sonarignore:start - duplication with User/ParentalLeave.cshtml accepted for readability *@
 @using AccessingChildcareEntitlementChecker.Web.Models.Partner
-@using AccessingChildcareEntitlementChecker.Web.Services
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @model PartnerParentalLeaveViewModel
@@ -16,22 +16,33 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
-        <partial name="~/Views/Shared/_ErrorSummary.cshtml" />
-
         <h1 class="govuk-heading-l">
             @Html.DisplayNameFor(model => model.PartnerParentalLeaveChildrenIds)
         </h1>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
-            <partial name="~/Views/Shared/_ChildrenCheckboxes.cshtml" model="@((
-                nameof(Model.PartnerParentalLeaveChildrenIds),
-                Html.DisplayNameFor(m => m.PartnerParentalLeaveChildrenIds),
-                (IReadOnlyList<Child>)Model.Children,
-                (IReadOnlyList<string>)Model.PartnerParentalLeaveChildrenIds))" />
+            <govuk-checkboxes for="PartnerParentalLeaveChildrenIds">
+                <govuk-checkboxes-fieldset>
+                    <govuk-checkboxes-fieldset-legend class="govuk-visually-hidden">
+                        @Html.DisplayNameFor(model => model.PartnerParentalLeaveChildrenIds)
+                    </govuk-checkboxes-fieldset-legend>
+                    <govuk-checkboxes-error-message />
+                    @foreach (var child in Model.Children)
+                    {
+                    <govuk-checkboxes-item value="@child.ChildId">
+                        @child.Name
+                    </govuk-checkboxes-item>
+                    }
+                     <govuk-checkboxes-divider>
+                        @Localizer["or"]
+                    </govuk-checkboxes-divider>
 
-            <govuk-error-summary/>
+                    <govuk-checkboxes-item value="@PartnerParentalLeaveViewModel.NoneSelectedValue">
+                        @Localizer["None of these children"]
+                    </govuk-checkboxes-item>
+                </govuk-checkboxes-fieldset>
+            </govuk-checkboxes>
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
@@ -39,3 +50,4 @@
         </form>
     </div>
 </div>
+@* sonarignore:end *@

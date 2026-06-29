@@ -7,6 +7,8 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.User;
 
 public class ParentalLeaveViewModel : IValidatableObject
 {
+    public const string NoneSelectedValue = "None";
+
     public ParentalLeaveViewModel()
     {
         BackLink = string.Empty;
@@ -41,7 +43,7 @@ public class ParentalLeaveViewModel : IValidatableObject
             yield return new ValidationResult(localizer["Select which child you are on leave for, or 'None of these children'"], [nameof(ParentalLeaveChildrenIds)]);
         }
 
-        if (ParentalLeaveChildrenIds.Count > 1 && ParentalLeaveChildrenIds.Contains("None"))
+        if (ParentalLeaveChildrenIds.Count > 1 && ParentalLeaveChildrenIds.Contains(NoneSelectedValue))
         {
             yield return new ValidationResult(localizer["Select which child you are on leave for, or 'None of these children'"], [nameof(ParentalLeaveChildrenIds)]);
         }

@@ -167,6 +167,11 @@ jobs:
             echo "FORMAT=failed" >> $GITHUB_ENV
           fi
 
+      # Exclusions
+      # - `Program.cs` - this is partially tested by an integration test; but awkward to test - 
+      # - `**/PartnerParentalLeave.cshtml` - this template triggers CPD against `User/ParentalLeave.cshtml`. Deduplicating is awkward
+      #   due to govuk tag helpers - we can't easily use a partial. A more comprehensive fix is required, possibly using custom
+      #   tag helpers.
       - name: Sonar Begin
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -180,6 +185,7 @@ jobs:
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
             /d:sonar.exclusions="**/docs/**,**/infra/**,**/.github/**,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
             /d:sonar.coverage.exclusions="**/Program.cs" \
+            /d:sonar.cpd.exclusions="**/PartnerParentalLeave.cshtml" \
             /d:sonar.qualitygate.wait=true
 
       - name: Build
