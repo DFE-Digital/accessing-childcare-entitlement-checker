@@ -103,3 +103,14 @@ variable "redis_sku_name" {
   type        = string
   default     = "Balanced_B1"
 }
+
+variable "log_analytics_daily_quota_gb" {
+  description = "The daily quota in GB for the Log Analytics workspace"
+  type        = number
+}
+
+variable "enable_load_testing" {
+  description = "Enable Azure Load Testing"
+  type        = bool
+  default     = false
+}

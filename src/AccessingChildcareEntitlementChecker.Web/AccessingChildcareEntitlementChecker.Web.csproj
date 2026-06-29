@@ -39,6 +39,9 @@
   <ItemGroup>
     <PackageReference Include="GovUk.Frontend.AspNetCore" />
     <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.Azure.StackExchangeRedis" />
+    <PackageReference Include="Azure.Identity" />
   </ItemGroup>
   
   <ItemGroup>

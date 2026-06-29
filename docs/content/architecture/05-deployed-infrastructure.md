@@ -48,6 +48,7 @@ No modules.
 | [azurerm_cdn_frontdoor_security_policy.frontdoor-web-security-policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_security_policy) | resource |
 | [azurerm_linux_web_app.web-app-service](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app) | resource |
 | [azurerm_linux_web_app_slot.staging](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app_slot) | resource |
+| [azurerm_load_test.load_test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/load_test) | resource |
 | [azurerm_log_analytics_workspace.log-analytics-workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_managed_redis.redis](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis) | resource |
 | [azurerm_managed_redis_access_policy_assignment.app_redis_access](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis_access_policy_assignment) | resource |
@@ -67,6 +68,8 @@ No modules.
 | [azurerm_monitor_metric_alert.redis_high_memory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.waf_blocked_requests](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.web_test_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert_v2.law_daily_cap_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
+| [azurerm_resource_group.load_test_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.web-rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_service_plan.web-app-service-plan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan) | resource |
 | [azurerm_user_assigned_identity.app_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
@@ -83,10 +86,12 @@ No modules.
 | <a name="input_development_basic_auth_password"></a> [development\_basic\_auth\_password](#input\_development\_basic\_auth\_password) | Shared password for development-only basic auth | `string` | `""` | no |
 | <a name="input_elz_environment"></a> [elz\_environment](#input\_elz\_environment) | The ELZ environment to match subscription (e.g. Dev) | `string` | n/a | yes |
 | <a name="input_enable_alerts"></a> [enable\_alerts](#input\_enable\_alerts) | Toggle to enable/disable Azure Monitor alerts | `bool` | `false` | no |
+| <a name="input_enable_load_testing"></a> [enable\_load\_testing](#input\_enable\_load\_testing) | Enable Azure Load Testing | `bool` | `false` | no |
 | <a name="input_enable_web_test"></a> [enable\_web\_test](#input\_enable\_web\_test) | Enable application insights web test | `bool` | `false` | no |
 | <a name="input_environment_prefix"></a> [environment\_prefix](#input\_environment\_prefix) | Environment prefix (e.g. d01) | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | The Azure region to deploy resources into | `string` | `"uksouth"` | no |
 | <a name="input_location_short_code"></a> [location\_short\_code](#input\_location\_short\_code) | The short code for the Azure region (e.g. uks) | `string` | `"uks"` | no |
+| <a name="input_log_analytics_daily_quota_gb"></a> [log\_analytics\_daily\_quota\_gb](#input\_log\_analytics\_daily\_quota\_gb) | The daily quota in GB for the Log Analytics workspace | `number` | n/a | yes |
 | <a name="input_redis_sku_name"></a> [redis\_sku\_name](#input\_redis\_sku\_name) | The SKU of the Managed Redis instance | `string` | `"Balanced_B1"` | no |
 | <a name="input_waf_enable_managed_rules"></a> [waf\_enable\_managed\_rules](#input\_waf\_enable\_managed\_rules) | Enable managed rule sets in WAF | `bool` | `false` | no |
 | <a name="input_waf_mode"></a> [waf\_mode](#input\_waf\_mode) | The mode the WAF should be deployed in (Prevention or Detection) | `string` | `"Prevention"` | no |

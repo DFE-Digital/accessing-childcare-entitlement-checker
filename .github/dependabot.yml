@@ -12,7 +12,6 @@ updates:
       semver-major-days: 7
     open-pull-requests-limit: 10
     rebase-strategy: "auto"
-    insecure-external-code-execution: "deny"
     commit-message:
       prefix: "chore(deps): "
     labels:
@@ -107,3 +106,29 @@ updates:
           - "hashicorp/*"
         update-types:
           - "minor"
+
+  - package-ecosystem: "npm"
+    directory: "/docs"
+    target-branch: "main"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 3
+      semver-minor-days: 5
+    open-pull-requests-limit: 5
+    rebase-strategy: "auto"
+    commit-message:
+      prefix: "chore(deps): "
+    labels:
+      - "dependencies"
+      - "npm"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      npm-patch-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"

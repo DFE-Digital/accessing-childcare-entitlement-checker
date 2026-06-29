@@ -205,8 +205,8 @@ resource "azurerm_monitor_metric_alert" "redis_high_cpu" {
 
   criteria {
     metric_namespace = "Microsoft.Cache/redisEnterprise"
-    metric_name      = "CPU"
-    aggregation      = "Average"
+    metric_name      = "percentProcessorTime"
+    aggregation      = "Maximum"
     operator         = "GreaterThan"
     threshold        = 80
   }
@@ -230,7 +230,7 @@ resource "azurerm_monitor_metric_alert" "redis_high_memory" {
   criteria {
     metric_namespace = "Microsoft.Cache/redisEnterprise"
     metric_name      = "usedmemorypercentage"
-    aggregation      = "Average"
+    aggregation      = "Maximum"
     operator         = "GreaterThan"
     threshold        = 80
   }
@@ -254,13 +254,42 @@ resource "azurerm_monitor_metric_alert" "redis_high_connections" {
   criteria {
     metric_namespace = "Microsoft.Cache/redisEnterprise"
     metric_name      = "connectedclients"
-    aggregation      = "Average"
+    aggregation      = "Maximum"
     operator         = "GreaterThan"
     threshold        = 1000
   }
 
   action {
     action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+  }
+
+  tags = local.common_tags
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "law_daily_cap_alert" {
+  count                = var.enable_alerts ? 1 : 0
+  name                 = "${local.service_prefix}-law-daily-cap-alert"
+  resource_group_name  = azurerm_resource_group.web-rg.name
+  location             = azurerm_resource_group.web-rg.location
+  scopes               = [azurerm_log_analytics_workspace.log-analytics-workspace.id]
+  severity             = 2
+  evaluation_frequency = "PT15M"
+  window_duration      = "P1D"
+
+  criteria {
+    query                   = <<-QUERY
+      Usage
+      | where IsBillable == true
+      | summarize IngestedGB = sum(Quantity) / 1024
+      | where IngestedGB > ${var.log_analytics_daily_quota_gb * 0.8}
+    QUERY
+    time_aggregation_method = "Count"
+    threshold               = 0
+    operator                = "GreaterThan"
+  }
+
+  action {
+    action_groups = [azurerm_monitor_action_group.email_action_group[0].id]
   }
 
   tags = local.common_tags
