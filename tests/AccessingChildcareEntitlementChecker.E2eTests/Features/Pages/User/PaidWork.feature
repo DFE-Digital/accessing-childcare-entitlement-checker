@@ -7,50 +7,45 @@ Background:
 	And I answer questions as follows:
 		| Question                  | Answer                   |
 		| What is your age?         | Under 18                 |
+		| What is your nationality? | British or Irish citizen |
 
 Scenario: Page load
-	Given I answer "What is your nationality?" as "British or Irish citizen"
 	When the page header is "Are you in paid work?"
-	Then I should see 3 radio buttons with the following options:
-		| Option                  |
-		| Yes                     |
-		| No                      |
-		| I am on leave from work |
+	Then I should see 4 radio buttons with the following options:
+		| Option                          |
+		| Yes                             |
+		| Yes, but I am on parental leave |
+		| Yes, but I am on sick leave     |
+		| No, I am not in work            |
 
 Scenario: Radio button selection
-	Given I answer "What is your nationality?" as "British or Irish citizen"
 	When I select the "Yes" radio button
-	And I select the "No" radio button
-	Then the "No" radio button should be selected
+	And I select the "No, I am not in work" radio button
+	Then the "No, I am not in work" radio button should be selected
 	And all other options should be deselected
 
 Scenario: Continue without selection
-	Given I answer "What is your nationality?" as "British or Irish citizen"
 	When I do not select a radio button
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Select if you are in paid work"
 
 Scenario: Continue with Yes
-	Given I answer "What is your nationality?" as "British or Irish citizen"
 	When I select the "Yes" radio button
 	And I click on Continue
 	Then the page header is "How would you describe your work status?"
 
 Scenario: Continue with I am on leave from work
-	Given I answer "What is your nationality?" as "British or Irish citizen"
-	When I select the "I am on leave from work" radio button
+	When I select the "Yes, but I am on parental leave" radio button
 	And I click on Continue
-	Then the page header is "TypeOfLeave"
+	Then the page header is "Which child are you on leave for?"
 
 Scenario: Continue with No
-	Given I answer "What is your nationality?" as "British or Irish citizen"
-	When I select the "No" radio button
+	When I select the "No, I am not in work" radio button
 	And I click on Continue
 	Then the page header is "Does your household receive universal credit?"
 
 Scenario: Back navigation from What is your nationality?
-	Given I answer "What is your nationality?" as "British or Irish citizen"
 	When I click the back link
 	Then the page header is "What is your nationality?"
 

@@ -8,9 +8,9 @@ Background:
 		| Question                  | Answer                   |
 		| What is your age?         | Under 18                 |
 		| What is your nationality? | British or Irish citizen |
+		| Are you in paid work?     | No, I am not in work     |
 
 Scenario: Page load
-	Given I answer "Are you in paid work?" as "No"
 	When the page header is "Does your household receive universal credit?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
@@ -18,27 +18,23 @@ Scenario: Page load
 		| No     |
 
 Scenario: Radio button selection
-	Given I answer "Are you in paid work?" as "No"
 	When I select the "Yes" radio button
 	And I select the "No" radio button
 	Then the "No" radio button should be selected
 	And all other options should be deselected
 
 Scenario: Continue without selection
-	Given I answer "Are you in paid work?" as "No"
 	When I do not select a radio button
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Select if your household receives universal credit"
 
 Scenario: Continue with Yes
-	Given I answer "Are you in paid work?" as "No"
 	When I select the "Yes" radio button
 	And I click on Continue
 	Then the page header is "Do you get any of these benefits?"
 
 Scenario: Back navigation
-	Given I answer "Are you in paid work?" as "No"
 	When I click the back link
 	Then the page header is "Are you in paid work?"
 

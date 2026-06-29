@@ -46,7 +46,7 @@ Scenario: Partner journey is shown when I change my answer to say I have a partn
 	And I answer the questions as follows:
 		| Question                                                     | Answer                     |
 		| What is your partner's age?                                  | 21 or over                 |
-		| Is your partner in paid work?                                | No                         |
+		| Is your partner in paid work?                                | No, they are not in work   |
 		| Does your partner get any of these benefits?                 | Carer's Allowance          |
 		| Does your partner already get any of this childcare support? | Childcare vouchers         |
 		| How does your partner receive childcare vouchers?            | A workplace nursery scheme |
@@ -54,7 +54,7 @@ Scenario: Partner journey is shown when I change my answer to say I have a partn
 	And I should see a summary list for "Your partners details" with the following summary:
 		| Question                                                     | Answer                     |
 		| What is your partner's age?                                  | 21 or over                 |
-		| Is your partner in paid work?                                | No                         |
+		| Is your partner in paid work?                                | No, they are not in work   |
 		| Does your partner get any of these benefits?                 | Carer's Allowance          |
 		| Does your partner already get any of this childcare support? | Childcare vouchers         |
 		| How does your partner receive childcare vouchers?            | A workplace nursery scheme |
@@ -71,13 +71,13 @@ Scenario: Back during partner journey checks for valid journey
 	And I select the "Yes" radio button
 	And I click on Continue
 	And I answer the questions as follows:
-		| Question                                                     | Answer                     |
-		| What is your partner's age?                                  | 21 or over                 |
-		| Is your partner in paid work?                                | No                         |
+		| Question                      | Answer                   |
+		| What is your partner's age?   | 21 or over               |
+		| Is your partner in paid work? | No, they are not in work |
 	And I click the back link
 	Then the page header is "Check your answers"
 	And I should see a summary list for "Your partners details" with the following summary:
-		| Question                                                     | Answer                     |
-		| What is your partner's age?                                  | 21 or over                 |
-		| Is your partner in paid work?                                | No                         |
+		| Question                      | Answer                   |
+		| What is your partner's age?   | 21 or over               |
+		| Is your partner in paid work? | No, they are not in work |
 		# This is now in an invalid state - on the summary screen with no answers for the required partner qs

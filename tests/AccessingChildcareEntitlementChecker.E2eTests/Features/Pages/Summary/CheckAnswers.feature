@@ -37,7 +37,7 @@ Scenario: Page Load
 	And I should see a summary list for "Your partners details" with the following summary:
 		| Question                                                     | Answer                     |
 		| What is your partner's age?                                  | 21 or over                 |
-		| Is your partner in paid work?                                | No                         |
+		| Is your partner in paid work?                                | No, they are not in work   |
 		| Does your partner get any of these benefits?                 | Carer's Allowance          |
 		| Does your partner already get any of this childcare support? | Childcare vouchers         |
 		| How does your partner receive childcare vouchers?            | A workplace nursery scheme |
@@ -68,11 +68,12 @@ Scenario: Change my relationship to Sara
 		| Does Sara get any of the following support? | Education, health and care (EHC) plan |
 
 Scenario: Partner details are not shown when I don't have a partner
-	When I click the Change link in the "Your details" summary list for "Do you live with a partner?"
-	And I select the "No" radio button
-	And I click on Continue
-	Then the page header is "Check your answers"
-	And I do not see a summary list for "Your partners details"
+	Given I answer "Do you live with a partner?" as "No"
+	Then I do not see a summary list for "Your partners details"
+
+Scenario: Self employed details are not shown when I am not self employed
+	Given I answer "How would you describe your work status?" as "Paid employment"
+	Then I do not see a summary row "Have you been self-employed for less than 12 months"
 
 Scenario: Self employed details are not shown when I change my answer
 	When I click the Change link in the "Your details" summary list for "How would you describe your work status?"
@@ -84,18 +85,11 @@ Scenario: Self employed details are not shown when I change my answer
 	And I do not see a summary row "Have you been self-employed for less than 12 months"
 
 Scenario: Back navigation to Does your partner already get any of this childcare support?
-	When I click the Change link in the "Your partners details" summary list for "Does your partner already get any of this childcare support?"
-	And I deselect the "Childcare vouchers" checkbox
-	And I select the "No, they do not get any of this childcare support" checkbox
-	And I click on Continue
-	And the page header is "Check your answers"
+	Given I answer "Does your partner already get any of this childcare support?" as "No, they do not get any of this childcare support"
 	When I click the back link
 	Then the page header is "Does your partner already get any of this childcare support?"
 
 Scenario: Back navigation to Do you live with a partner?
-	When I click the Change link in the "Your details" summary list for "Do you live with a partner?"
-	And I select the "No" radio button
-	And I click on Continue
-	And the page header is "Check your answers"
+	Given I answer "Do you live with a partner?" as "No"
 	When I click the back link
 	Then the page header is "Do you live with a partner?"
