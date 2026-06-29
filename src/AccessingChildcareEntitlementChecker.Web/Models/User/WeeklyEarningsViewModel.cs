@@ -10,16 +10,19 @@ public class WeeklyEarningsViewModel : IValidatableObject
     public WeeklyEarningsViewModel()
     {
         BackLink = string.Empty;
+        IsOnParentalLeave = false;
     }
 
     public WeeklyEarningsViewModel(
         JourneyState journeyState,
         WeeklyEarningsThresholds weeklyEarningsThresholds,
+        bool isOnParentalLeave,
         string backLink,
         string? returnTo = null)
     {
         WeeklyEarnings = journeyState.WeeklyEarnings;
         WeeklyEarningsThresholds = weeklyEarningsThresholds;
+        IsOnParentalLeave = isOnParentalLeave;
         BackLink = backLink;
         ReturnTo = returnTo;
     }
@@ -31,6 +34,9 @@ public class WeeklyEarningsViewModel : IValidatableObject
 
     [BindNever]
     public WeeklyEarningsThresholds? WeeklyEarningsThresholds { get; set; }
+
+    [BindNever]
+    public bool IsOnParentalLeave { get; set; }
 
     public WeeklyEarningsOption? WeeklyEarnings { get; set; }
 

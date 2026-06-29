@@ -21,11 +21,30 @@ Scenario Outline: Page load for different age groups and employment statuses
 Examples:
 	| Age        | Work Status     | Earnings |
 	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      173 |
+	| 18 to 20   | Paid employment |      174 |
 	| 21 or over | Paid employment |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |
 	| 21 or over | Apprentice      |      128 |
+
+Scenario Outline: Page load for different age groups on parental leave
+	Given I answer questions as follows:
+		| Question                          | Answer                          |
+		| What is your age?                 | <Age>                           |
+		| What is your nationality?         | British or Irish citizen        |
+		| Are you in paid work?             | Yes, but I am on parental leave |
+		| Which child are you on leave for? | Sara                            |
+	When the page header is "On average, will you earn £<Earnings> a week or more before tax when your parental leave ends?"
+	Then I should see 2 radio buttons with the following options:
+		| Option |
+		| Yes    |
+		| No     |
+
+Examples:
+	| Age        | Earnings |
+	| Under 18   |      128 |
+	| 18 to 20   |      174 |
+	| 21 or over |      203 |
 
 Scenario Outline: Continue without selection for different age groups and employment statuses
 	Given I answer questions as follows:
@@ -42,7 +61,7 @@ Scenario Outline: Continue without selection for different age groups and employ
 Examples:
 	| Age        | Work Status     | Earnings |
 	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      173 |
+	| 18 to 20   | Paid employment |      174 |
 	| 21 or over | Paid employment |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |

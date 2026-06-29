@@ -325,7 +325,8 @@ public class UserController : Controller
     {
         var backLink = GetWeeklyEarningsBackLink(returnTo);
         var weeklyEarningsThresholds = WeeklyEarningsThresholds.Factory(_journeyState.UserAge, _journeyState.WorkStatus);
-        return View(new WeeklyEarningsViewModel(_journeyState, weeklyEarningsThresholds, backLink, returnTo));
+        var isOnParentalLeave = _journeyState.PaidWork == PaidWorkOption.ParentalLeave;
+        return View(new WeeklyEarningsViewModel(_journeyState, weeklyEarningsThresholds, isOnParentalLeave, backLink, returnTo));
     }
 
     [HttpPost]
@@ -335,6 +336,7 @@ public class UserController : Controller
         {
             var weeklyEarningsThresholds = WeeklyEarningsThresholds.Factory(_journeyState.UserAge, _journeyState.WorkStatus);
             model.WeeklyEarningsThresholds = weeklyEarningsThresholds;
+            model.IsOnParentalLeave = _journeyState.PaidWork == PaidWorkOption.ParentalLeave;
             model.BackLink = GetWeeklyEarningsBackLink(model.ReturnTo);
             return View(model);
         }

@@ -165,7 +165,10 @@ public class SummaryRowFactory
         var displayValue = GetEnumDisplayName(state.WeeklyEarnings.Value);
 
         var thresholds = WeeklyEarningsThresholds.Factory(state.UserAge, state.WorkStatus);
-        var label = GetResourceValueFromSharedResourcesForLocale("WeeklyEarnings_Question", thresholds.PerWeek);
+        var questionKey = state.PaidWork == PaidWorkOption.ParentalLeave
+            ? "WeeklyEarnings_ParentalLeave_Question"
+            : "WeeklyEarnings_Question";
+        var label = GetResourceValueFromSharedResourcesForLocale(questionKey, thresholds.PerWeek);
         return Add(label, displayValue, "WeeklyEarnings");
     }
 
@@ -218,7 +221,10 @@ public class SummaryRowFactory
         var displayValue = GetEnumDisplayName(state.PartnerWeeklyEarnings.Value);
 
         var thresholds = WeeklyEarningsThresholds.Factory(state.PartnerAge, state.PartnerWorkStatus);
-        var label = GetResourceValueFromSharedResourcesForLocale("PartnerWeeklyEarnings_Question", thresholds.PerWeek);
+        var questionKey = state.PartnerPaidWork == PartnerPaidWorkOption.ParentalLeave
+            ? "PartnerWeeklyEarnings_ParentalLeave_Question"
+            : "PartnerWeeklyEarnings_Question";
+        var label = GetResourceValueFromSharedResourcesForLocale(questionKey, thresholds.PerWeek);
         return Add(label, displayValue, "PartnerWeeklyEarnings");
     }
 
