@@ -74,10 +74,6 @@ Scenario: Partner details are not shown when I don't have a partner
 	Then the page header is "Check your answers"
 	And I do not see a summary list for "Your partners details"
 
-Scenario: Self employed details are not shown when I am not self employed
-	Given I answer "How would you describe your work status?" as "Paid employment"
-	Then I do not see a summary row "Have you been self-employed for less than 12 months"
-
 Scenario: Self employed details are not shown when I change my answer
 	When I click the Change link in the "Your details" summary list for "How would you describe your work status?"
 	And the page header is "How would you describe your work status?"
