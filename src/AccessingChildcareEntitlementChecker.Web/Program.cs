@@ -10,6 +10,11 @@ using AccessingChildcareEntitlementChecker.Web.Mappers;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.AspNetCore.HttpOverrides;
 
+// Prevent Redis timeouts under bursty load (e.g. E2E tests, traffic spikes)
+// by explicitly setting a higher minimum for the ThreadPool.
+// See: https://stackexchange.github.io/StackExchange.Redis/Timeouts#threadpool-growth
+ThreadPool.SetMinThreads(200, 200);
+
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var securePolicy = builder.Environment.IsDevelopment()
