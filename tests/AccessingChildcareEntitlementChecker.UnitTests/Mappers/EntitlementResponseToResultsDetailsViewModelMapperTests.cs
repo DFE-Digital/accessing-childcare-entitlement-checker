@@ -270,7 +270,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         Assert.Equal("Katie", result.ChildName);
     }
@@ -280,7 +280,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-2");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-2"));
 
         var scheme = result
             .Sections
@@ -296,7 +296,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-6");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-6"));
 
         var scheme = result
             .Sections
@@ -312,7 +312,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -326,7 +326,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-4");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-4"));
 
         var scheme = result
             .Sections
@@ -340,7 +340,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -356,7 +356,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-5");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-5"));
 
         var scheme = result
             .Sections
@@ -373,7 +373,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-4");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-4"));
 
         var scheme = result
             .Sections
@@ -390,7 +390,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -406,7 +406,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-7");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-7"));
 
         var scheme = result
             .Sections
@@ -422,7 +422,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-3");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-3"));
 
         var scheme = result
             .Sections
@@ -438,7 +438,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -455,7 +455,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-3");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-3"));
 
         var scheme = result
             .Sections
@@ -472,7 +472,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-3");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-3"));
 
         var scheme = result
             .Sections
@@ -488,7 +488,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-6");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-6"));
 
         var scheme = result
             .Sections
@@ -504,7 +504,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-8");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-8"));
 
         var scheme = result
             .Sections
@@ -518,7 +518,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -534,7 +534,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-2");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-2"));
 
         var scheme = result
             .Sections
@@ -550,7 +550,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-3");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-3"));
 
         var scheme = result
             .Sections
@@ -566,7 +566,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -582,7 +582,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-3");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-3"));
 
         var scheme = result
             .Sections
@@ -598,7 +598,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-6");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-6"));
 
         var scheme = result
             .Sections
@@ -614,7 +614,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-3");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-3"));
 
         var scheme = result
             .Sections
@@ -630,7 +630,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-5");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-5"));
 
         var scheme = result
             .Sections
@@ -646,7 +646,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-4");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-4"));
 
         var scheme = result
             .Sections
@@ -662,7 +662,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -678,7 +678,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-3");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-3"));
 
         var scheme = result
             .Sections
@@ -694,7 +694,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -710,7 +710,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-6");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-6"));
 
         var scheme = result
             .Sections
@@ -726,7 +726,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -742,7 +742,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -758,7 +758,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -776,7 +776,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-6");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-6"));
 
         var scheme = result
             .Sections
@@ -792,7 +792,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
@@ -810,7 +810,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-4");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-4"));
 
         var scheme = result
             .Sections
@@ -827,7 +827,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response, "child-1");
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"));
 
         var scheme = result
             .Sections
