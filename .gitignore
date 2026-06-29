@@ -1,8 +1,10 @@
 # Build outputs
 /artifacts/
+/test-results/
 docs/_site/
 docs/node_modules/
 *.feature.cs
+coverage.json
 
 # Mac
 .DS_Store
