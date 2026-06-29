@@ -6,12 +6,12 @@ using Microsoft.Extensions.Localization;
 
 namespace AccessingChildcareEntitlementChecker.Web.Mappers;
 
-public class EntitlementResponseToResultsViewModelMapper
+public class EntitlementResponseToResultsSummaryViewModelMapper
 {
     private const string UnknownSchemeCodeMessage = "Unknown scheme code";
     private readonly IStringLocalizer _localizer;
 
-    public EntitlementResponseToResultsViewModelMapper(
+    public EntitlementResponseToResultsSummaryViewModelMapper(
         IStringLocalizerFactory stringLocalizerFactory)
     {
         _localizer = stringLocalizerFactory.Create(
@@ -20,9 +20,9 @@ public class EntitlementResponseToResultsViewModelMapper
     }
 
 
-    public ResultsViewModel Map(EntitlementResponse response)
+    public ResultsSummaryViewModel Map(EntitlementResponse response)
     {
-        return new ResultsViewModel()
+        return new ResultsSummaryViewModel()
         {
             Children = response.ChildResults.Select(MapChildResults).ToList(),
         };
@@ -33,6 +33,7 @@ public class EntitlementResponseToResultsViewModelMapper
     {
         return new ChildResultsViewModel()
         {
+            ChildId = childResult.ChildId,
             Name = childResult.ChildName,
             ShowThirtyHourWarning = GetThirtyHourWarning(childResult),
             IsBorn = childResult.IsBorn,
@@ -87,19 +88,19 @@ public class EntitlementResponseToResultsViewModelMapper
 
         if (schemeResult.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies)
         {
-            if (schemeResult.EligibleNow)
+            if (!childResult.IsBorn)
+            {
+                return _localizer["WhenToApply_WhenTwentyThreeWeeksOld"];
+            }
+
+            var today = DateOnly.FromDateTime(DateTime.Today);
+
+            if (schemeResult.ApplyFromDate!.Value <= today)
             {
                 return now;
             }
 
-            if (!childResult.IsBorn)
-            {
-                return _localizer["WhenToApply_WhenTwentyThreeWeeksOld"];
-
-            }
-
-            return _localizer["WhenToApply_FromDate", schemeResult.ApplyFromDate!.Value];
-
+            return _localizer["WhenToApply_FromDate", schemeResult.ApplyFromDate.Value];
         }
 
         throw new InvalidOperationException($"{UnknownSchemeCodeMessage}: {schemeResult.SchemeCode}");
@@ -143,10 +144,7 @@ public class EntitlementResponseToResultsViewModelMapper
             SchemeCode.UniversalCreditChildcare => _localizer["UniversalCreditChildcare_Name"],
             SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["ThirtyHoursForWorkingFamilies_Name"],
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(schemeCode),
-                schemeCode,
-                UnknownSchemeCodeMessage)
+            _ => throw UnknownSchemeCode(schemeCode)
         };
     }
 
@@ -160,10 +158,7 @@ public class EntitlementResponseToResultsViewModelMapper
             SchemeCode.UniversalCreditChildcare => "https://www.gov.uk/help-with-childcare-costs/universal-credit",
             SchemeCode.ThirtyHoursForWorkingFamilies => "https://www.gov.uk/free-childcare-if-working",
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(schemeCode),
-                schemeCode,
-                UnknownSchemeCodeMessage)
+            _ => throw UnknownSchemeCode(schemeCode)
         };
     }
 
@@ -177,11 +172,14 @@ public class EntitlementResponseToResultsViewModelMapper
             SchemeCode.UniversalCreditChildcare => _localizer["UniversalCreditChildcare_Description"],
             SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["ThirtyHoursForWorkingFamilies_Description"],
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(schemeCode),
-                schemeCode,
-                UnknownSchemeCodeMessage)
+            _ => throw UnknownSchemeCode(schemeCode)
         };
     }
+
+    private static ArgumentOutOfRangeException UnknownSchemeCode(SchemeCode schemeCode) =>
+        new(
+            nameof(schemeCode),
+            schemeCode,
+            UnknownSchemeCodeMessage);
 
 }

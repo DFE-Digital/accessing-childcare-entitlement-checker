@@ -12,6 +12,11 @@
     text-decoration: none;
 }
 
+.app-results-section + .app-print-link,
+.app-getHelp + .app-print-link {
+    margin-top: 30px;
+}
+
 .app-print-link:hover {
     background-color: rgb(243, 242, 241);
 }
@@ -23,23 +28,27 @@
     text-decoration: none
 }
 
-.results-table {
+.app-results-table {
     width: 100%;
     table-layout: fixed;
 }
 
-.results-table th,
-.results-table td {
+.app-results-table th,
+.app-results-table td {
     width: 33.33%;
     word-wrap: break-word;
 }
 
-.child-results,
-.getHelp{
-    margin-top: 40px;
+.app-back-to-top {
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-.app-back-to-top {
-    margin-top: 40px;
-    margin-bottom: 40px;
+.app-results-section,
+.app-getHelp {
+    margin-top: 80px;
+}
+
+.app-results-scheme {
+    margin-top: 70px;
 }

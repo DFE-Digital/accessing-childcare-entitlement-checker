@@ -1,0 +1,193 @@
+@inject IViewLocalizer Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@using AccessingChildcareEntitlementChecker.RulesEngine.Types
+@using AccessingChildcareEntitlementChecker.Web.Models.Results
+@using Microsoft.AspNetCore.Mvc.Localization
+@model AccessingChildcareEntitlementChecker.Web.Models.Results.ResultsDetailsViewModel
+
+@{
+    ViewData["Title"] = Localizer["Childcare support details"];
+}
+
+<link rel="stylesheet" href="~/css/results.css" />
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="Results" asp-action="Results">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 id="top" class="govuk-heading-xl">@Localizer["{0}'s childcare support", Model.ChildName ]</h1>
+        
+        <button class="app-print-link" type="button">
+            @Localizer["Print this page"]
+        </button>
+        
+        <p class="govuk-body">
+            @Localizer["Based on your answers, this is the support you can get for {0} now or as they get older.", Model.ChildName]
+        </p> 
+        
+        <p class="govuk-body">
+            @Localizer["You may not be able to use some of this straight away."]
+        </p> 
+
+        @foreach (var section in Model.Sections)
+        {
+            <div class="app-results-section">
+                @switch (section.SectionType)
+                {
+                    case SchemeSectionType.HelpWithChildcareCosts:
+                        @if (section.Schemes.Any(x => x.SchemeCode == SchemeCode.TaxFreeChildcare))
+                        {
+                            <h2 class="govuk-heading-l">
+                                @Localizer["Help with childcare costs (up to £2,000 a year)"]
+                            </h2>
+                        }
+                        @if (section.Schemes.Any(x => x.SchemeCode == SchemeCode.UniversalCreditChildcare))
+                        {
+                            <h2 class="govuk-heading-l">
+                                @Localizer["Help with childcare costs (up to £1,071 a month)"]
+                            </h2>
+                        }
+
+                        
+                        break;
+
+                    case SchemeSectionType.FundedChildCareHours:
+                        var hours = section.Schemes.Any(x => x.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies)
+                            ? 30
+                            : 15;
+                        <h2 class="govuk-heading-l">
+                            @Localizer["Childcare hours paid for each week (up to {0} hours a week)", hours]
+                        </h2>
+                        break;
+
+                    default:
+                        throw new InvalidOperationException(
+                            $"Unknown section type: {section.SectionType}");
+                }
+                
+                @if (section.ShowThirtyHourWarning)
+                {
+                    <div class="govuk-inset-text">
+                        <p>@Localizer["You can only get 30 hours of childcare a week in total, even if you use more than one scheme."]</p>
+                        <p>@Localizer["You will need to pay for any hours over this."]</p>
+                    </div>
+                }
+
+                @foreach (var scheme in section.Schemes)
+                {
+                    <div class="app-results-scheme">
+                        <h3 class="govuk-heading-m">
+                            @scheme.Name
+                        </h3>
+
+                        @switch (scheme.SchemeCode)
+                        {
+                            case SchemeCode.UniversalCreditChildcare:
+                                <p class="govuk-body">@Localizer[$"{scheme.SchemeCode}_Paragraph1"]</p>
+                                <p class="govuk-body">@Localizer[$"{scheme.SchemeCode}_Paragraph2"]</p>
+                                break;
+
+                            default:
+                                <p class="govuk-body">@Localizer[$"{scheme.SchemeCode}_Paragraph1"]</p>
+                                <p class="govuk-body">@Localizer[$"{scheme.SchemeCode}_Paragraph2"]</p>
+                                <p class="govuk-body">@Localizer[$"{scheme.SchemeCode}_Paragraph3"]</p>
+                                break;
+                        }
+
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    @Localizer["When to apply"]
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @scheme.WhenToApply
+                                </dd>
+                            </div>
+
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    @Localizer["Starts"]
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @scheme.Starts
+                                </dd>
+                            </div>
+
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    @Localizer["Ends"]
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    @scheme.Ends
+                                </dd>
+                            </div>
+                            
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    @Localizer["Can be used with"]
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    <ul class="govuk-list govuk-list--bullet">
+                                        @foreach (var compatibleScheme in scheme.CanBeUsedWith)
+                                        {
+                                            <li>
+                                                @Localizer[$"{compatibleScheme}_Name"]
+                                            </li>
+                                        }
+                                    </ul>
+                                </dd>
+                            </div>
+                            
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    @Localizer["Next steps"]
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    <a class="govuk-link" href="@scheme.Url" target="_blank" rel="noopener noreferrer">
+                                        @Localizer["Find out more or apply for {0} (opens in new tab)", scheme.Name]
+                                    </a>
+                                </dd>
+                            </div>
+
+
+                        </dl>
+                    </div>
+                }
+            </div>
+        }
+        <button class="app-print-link" type="button">
+            @Localizer["Print this page"]
+        </button>
+        
+        <div class="app-back-to-top">
+            <a class="govuk-link govuk-link--no-visited-state app-back-to-top__link"
+               href="#top">
+                <svg
+                    class="app-back-to-top__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="17"
+                    viewBox="0 0 13 17"
+                    aria-hidden="true">
+                    <path fill="currentColor"
+                          d="M6.5 0L0 6.5 1.4 8l4-4v12.7h2V4l4.3 4L13 6.4z" />
+                </svg>
+                @Localizer["Back to top"]
+            </a>
+        </div>
+
+    </div>
+    
+    <script add-nonce="true">
+        document
+            .querySelectorAll('.app-print-link')
+            .forEach(button =>
+                button.addEventListener('click', () => window.print()));
+    </script>
+</div>

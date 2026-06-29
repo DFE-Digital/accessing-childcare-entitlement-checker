@@ -1,5 +1,6 @@
 using AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Requests;
 using AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses;
+using AccessingChildcareEntitlementChecker.RulesEngine.Helpers;
 using AccessingChildcareEntitlementChecker.RulesEngine.Types;
 using AccessingChildcareEntitlementChecker.Web.Mappers;
 using Microsoft.Extensions.Localization;
@@ -7,11 +8,23 @@ using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Mappers;
 
-public class EntitlementResponseToResultsViewModelMapperTests
+public class EntitlementResponseToResultsSummaryViewModelMapperTests
 {
-    private readonly EntitlementResponseToResultsViewModelMapper _mapper;
+    private readonly EntitlementResponseToResultsSummaryViewModelMapper _mapper;
 
-    public EntitlementResponseToResultsViewModelMapperTests()
+    private static DateOnly GetThirtyHoursApplyFrom(DateOnly dateOfBirth) =>
+        dateOfBirth.AddDays(23 * 7);
+
+    private static DateOnly GetThirtyHoursUseFrom(DateOnly dateOfBirth) =>
+        TermDateCalculator.GetNextTermStartDate(dateOfBirth.AddMonths(9));
+
+    private static DateOnly GetFifteenHoursUniversalUseFrom(DateOnly dateOfBirth) =>
+        TermDateCalculator.GetNextTermStartDate(dateOfBirth.AddYears(3));
+
+    private static DateOnly GetDisadvantagedTwoYearOldUseFrom(DateOnly dateOfBirth) =>
+        TermDateCalculator.GetNextTermStartDate(dateOfBirth.AddYears(2));
+
+    public EntitlementResponseToResultsSummaryViewModelMapperTests()
     {
         var localizerFactory = Substitute.For<IStringLocalizerFactory>();
         var localizer = Substitute.For<IStringLocalizer>();
@@ -38,11 +51,24 @@ public class EntitlementResponseToResultsViewModelMapperTests
                     key);
             });
 
-        _mapper = new EntitlementResponseToResultsViewModelMapper(localizerFactory);
+        _mapper = new EntitlementResponseToResultsSummaryViewModelMapper(localizerFactory);
     }
 
     private static EntitlementResponse CreateTestEntitlementResponse()
     {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+
+        var katieDob = today.AddYears(-3);
+        var jackDob = today.AddMonths(-6);
+        var emilyDob = today.AddYears(-1);
+        var miaDob = today.AddYears(-2);
+        var alfieDob = today.AddYears(-1);
+        var oliverDob = today.AddMonths(-1);
+        var tomDob = today.AddYears(-3);
+
+        var useFromDate = TermDateCalculator.GetNextTermStartDate(
+            today.AddMonths(-6));
+
         return new EntitlementResponse()
         {
             ChildResults =
@@ -50,6 +76,7 @@ public class EntitlementResponseToResultsViewModelMapperTests
                 // Child 1 - eligible now, triggers 30-hour warning
                 new ChildResultDto
                 {
+                    ChildId = "child-1",
                     ChildName = "Katie",
                     IsBorn = true,
                     AgeInYears = 3,
@@ -58,12 +85,15 @@ public class EntitlementResponseToResultsViewModelMapperTests
                         new SchemeResultDto
                         {
                             SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
-                            EligibleNow = true
+                            EligibleNow = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(katieDob),
+                            UseFromDate = GetThirtyHoursUseFrom(katieDob)
                         },
                         new SchemeResultDto
                         {
                             SchemeCode = SchemeCode.FifteenHoursUniversal,
-                            EligibleNow = true
+                            EligibleNow = true,
+                            UseFromDate = GetFifteenHoursUniversalUseFrom(katieDob)
                         },
                         new SchemeResultDto
                         {
@@ -76,6 +106,7 @@ public class EntitlementResponseToResultsViewModelMapperTests
                 // Child 2 - born but not yet eligible for FCWP
                 new ChildResultDto
                 {
+                    ChildId = "child-2",
                     ChildName = "Jack",
                     IsBorn = true,
                     AgeInYears = 0,
@@ -85,7 +116,8 @@ public class EntitlementResponseToResultsViewModelMapperTests
                         {
                             SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
                             EligibleInFuture = true,
-                            ApplyFromDate = new DateOnly(2027, 1, 12)
+                            ApplyFromDate = GetThirtyHoursApplyFrom(jackDob),
+                            UseFromDate = GetThirtyHoursUseFrom(jackDob)
                         },
                         new SchemeResultDto
                         {
@@ -98,6 +130,7 @@ public class EntitlementResponseToResultsViewModelMapperTests
                 // Child 3 - unborn
                 new ChildResultDto
                 {
+                    ChildId = "child-3",
                     ChildName = "Baby Smith",
                     IsBorn = false,
                     Schemes =
@@ -123,6 +156,7 @@ public class EntitlementResponseToResultsViewModelMapperTests
                 // Child 4 - disadvantaged 2 yr old Eligible in future
                 new ChildResultDto
                 {
+                    ChildId = "child-4",
                     ChildName = "Emily",
                     IsBorn = true,
                     AgeInYears = 1,
@@ -132,13 +166,15 @@ public class EntitlementResponseToResultsViewModelMapperTests
                         {
                             SchemeCode = SchemeCode.FifteenHoursForDisadvantagedChildren,
                             EligibleInFuture = true,
-                            ApplyFromDate = new DateOnly(2027, 4, 1),
-                            UseFromDate = new DateOnly(2027, 9, 1)
+                            ApplyFromDate = emilyDob.AddYears(2),
+                            UseFromDate = GetDisadvantagedTwoYearOldUseFrom(emilyDob)
                         },
                         new SchemeResultDto
                         {
                             SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
-                            EligibleNow = true
+                            EligibleNow = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(emilyDob),
+                            UseFromDate = GetThirtyHoursUseFrom(emilyDob)
                         },
                     ]
                 },
@@ -146,6 +182,7 @@ public class EntitlementResponseToResultsViewModelMapperTests
                 // Child 5 - disadvantaged 2 yr old Eligible now
                 new ChildResultDto
                 {
+                    ChildId = "child-5",
                     ChildName = "Mia",
                     IsBorn = true,
                     AgeInYears = 2,
@@ -154,18 +191,23 @@ public class EntitlementResponseToResultsViewModelMapperTests
                         new SchemeResultDto
                         {
                             SchemeCode = SchemeCode.FifteenHoursForDisadvantagedChildren,
-                            EligibleNow = true
+                            EligibleNow = true,
+                            ApplyFromDate = miaDob.AddYears(2),
+                            UseFromDate = GetDisadvantagedTwoYearOldUseFrom(miaDob)
                         },
                         new SchemeResultDto
                         {
                             SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
-                            EligibleNow = true
+                            EligibleNow = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(miaDob),
+                            UseFromDate = GetThirtyHoursUseFrom(miaDob)
                         },
                     ]
                 },
                 // Child 6 - UC Eligible now
                 new ChildResultDto
                 {
+                    ChildId = "child-6",
                     ChildName = "Alfie",
                     IsBorn = true,
                     AgeInYears = 1,
@@ -177,15 +219,48 @@ public class EntitlementResponseToResultsViewModelMapperTests
                             EligibleNow = true
                         },
                     ]
+                },
+                // Child 7 - born, less than 23 weeks old
+                new ChildResultDto
+                {
+                    ChildId = "child-7",
+                    ChildName = "Oliver",
+                    IsBorn = true,
+                    AgeInYears = 0,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
+                            EligibleInFuture = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(oliverDob),
+                            UseFromDate = GetThirtyHoursUseFrom(oliverDob)
+                        }
+                    ]
+                },
+                // Child 8 - born, 15 hours eligible now
+                new ChildResultDto
+                {
+                    ChildId = "child-8",
+                    ChildName = "Tom",
+                    IsBorn = true,
+                    AgeInYears = 0,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursUniversal,
+                            EligibleNow = true,
+                            UseFromDate = GetFifteenHoursUniversalUseFrom(tomDob)
+                        }
+                    ]
                 }
             ]
         };
     }
 
-
-
     [Fact]
-    public void Map_ChildsName()
+    public void Map_ChildName()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -336,7 +411,7 @@ public class EntitlementResponseToResultsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ThirtyHoursForWorkingFamilies_BornAndEligibleInFuture_ReturnsApplyFromDate()
+    public void Map_ThirtyHoursForWorkingFamilies_BornAndEligibleToApplyNow_ReturnsNow()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -346,7 +421,7 @@ public class EntitlementResponseToResultsViewModelMapperTests
 
         var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies);
 
-        Assert.Equal("WhenToApply_FromDate", scheme.WhenToApply);
+        Assert.Equal("WhenToApply_Now", scheme.WhenToApply);
     }
 
     [Fact]
@@ -361,6 +436,21 @@ public class EntitlementResponseToResultsViewModelMapperTests
         var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies);
 
         Assert.Equal("WhenToApply_WhenTwentyThreeWeeksOld", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void Map_ThirtyHoursForWorkingFamilies_BornAndEligibleToApplyInFuture_ReturnsApplyFromDate()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Oliver");
+
+        var scheme = child.Schemes.Single(x =>
+            x.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies);
+
+        Assert.Equal("WhenToApply_FromDate", scheme.WhenToApply);
     }
 
     [Fact]
@@ -392,7 +482,7 @@ public class EntitlementResponseToResultsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_UniversalCreditChildcare_EligibleInFuture_ReturnsWhenTheyAreBorn()
+    public void Map_UniversalCreditChildcare_UnbornEligibleInFuture_ReturnsWhenTheyAreBorn()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -422,29 +512,13 @@ public class EntitlementResponseToResultsViewModelMapperTests
     [Fact]
     public void Map_DoesNotShowThirtyHourWarning_WhenThirtyHoursSchemeMissing()
     {
-        var response = new EntitlementResponse()
-        {
-            ChildResults =
-            [
-                new ChildResultDto()
-                {
-                    ChildName = "Test Child",
-                    IsBorn = true,
-                    Schemes =
-                    [
-                        new SchemeResultDto()
-                        {
-                            SchemeCode = SchemeCode.FifteenHoursUniversal,
-                            EligibleNow = true
-                        }
-                    ]
-                }
-            ]
-        };
+        var response = CreateTestEntitlementResponse();
 
         var result = _mapper.Map(response);
 
-        Assert.False(result.Children[0].ShowThirtyHourWarning);
+        var child = result.Children.Single(x => x.Name == "Tom");
+
+        Assert.False(child.ShowThirtyHourWarning);
     }
 }
 

@@ -59,8 +59,9 @@ services
 
 services.AddJourneyServices();
 
-services.AddScoped<EntitlementResponseToResultsViewModelMapper>();
-services.AddScoped<JourneyStateToEntitlementRequestMapper>();
+services.AddSingleton<EntitlementResponseToResultsSummaryViewModelMapper>();
+services.AddSingleton<EntitlementResponseToResultsDetailsViewModelMapper>();
+services.AddSingleton<JourneyStateToEntitlementRequestMapper>();
 
 services.AddRulesEngine();
 

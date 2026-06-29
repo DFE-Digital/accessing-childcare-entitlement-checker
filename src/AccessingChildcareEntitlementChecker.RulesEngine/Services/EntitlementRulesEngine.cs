@@ -38,6 +38,7 @@ public class EntitlementRulesEngine
 
             childResults.Add(new ChildResultDto
             {
+                ChildId = child.ChildId,
                 ChildName = child.Name,
                 AgeInYears = child.AgeInYears,
                 IsBorn = child.IsBorn,
