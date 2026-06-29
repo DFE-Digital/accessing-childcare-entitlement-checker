@@ -18,7 +18,7 @@ env:
   WEB_APP: src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj
   UNIT_TESTS: tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
   INTEGRATION_TESTS: tests/AccessingChildcareEntitlementChecker.IntegrationTests/AccessingChildcareEntitlementChecker.IntegrationTests.csproj
-  E2E_TESTS: tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj
+  E2E_TESTS: tests/AccessingChildcareEntitlementChecker.E2eTests/AccessingChildcareEntitlementChecker.E2eTests.csproj
   A11Y_TESTS: tests/AccessingChildcareEntitlementChecker.A11yTests/AccessingChildcareEntitlementChecker.A11yTests.csproj
   CONFIGURATION: Release
 

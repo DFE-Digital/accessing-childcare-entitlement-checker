@@ -46,6 +46,7 @@
 
   <Folder Name="/tests/">
     <Project Path="tests/AccessingChildcareEntitlementChecker.A11yTests/AccessingChildcareEntitlementChecker.A11yTests.csproj" />
+    <Project Path="tests/AccessingChildcareEntitlementChecker.E2eTests/AccessingChildcareEntitlementChecker.E2eTests.csproj" />
     <Project Path="tests/AccessingChildcareEntitlementChecker.IntegrationTests/AccessingChildcareEntitlementChecker.IntegrationTests.csproj" />
     <Project Path="tests/AccessingChildcareEntitlementChecker.Tests.E2e/AccessingChildcareEntitlementChecker.Tests.E2e.csproj" />
     <Project Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
