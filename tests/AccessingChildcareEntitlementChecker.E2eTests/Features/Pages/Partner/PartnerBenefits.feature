@@ -9,9 +9,9 @@ Background:
 		| Question                      | Answer                   |
 		| Do you live with a partner?   | Yes                      |
 		| What is your partner's age?   | 21 or over               |
-		| Is your partner in paid work? | No, they are not in work |
 
 Scenario: Page load
+	Given I answer "Is your partner in paid work?" as "No, they are not in work"
 	When the page header is "Does your partner get any of these benefits?"
 	Then I should see 9 checkboxes with the following options:
 		| Checkbox                                             |
@@ -26,6 +26,7 @@ Scenario: Page load
 		| No, they do not get any of these benefits            |
 
 Scenario: Checkbox selection
+	Given I answer "Is your partner in paid work?" as "No, they are not in work"
 	When I select the "Carer's Allowance" checkbox
 	And I select the "Contribution-based Employment and Support Allowance" checkbox
 	Then the following checkboxes should be selected:
@@ -34,17 +35,20 @@ Scenario: Checkbox selection
 		| Contribution-based Employment and Support Allowance |
 
 Scenario: Continue without selection
+	Given I answer "Is your partner in paid work?" as "No, they are not in work"
 	When I do not select a checkbox
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Select any benefits your partner gets, or select 'No, they do not get any of these benefits'"
 
 Scenario: Continue with Carer's Allowance
+	Given I answer "Is your partner in paid work?" as "No, they are not in work"
 	When I select the "Carer's Allowance" checkbox
 	And I click on Continue
 	Then the page header is "Does your partner already get any of this childcare support?"
 
 Scenario: Back navigation
+	Given I answer "Is your partner in paid work?" as "No, they are not in work"
 	When I click the back link
 	Then the page header is "Is your partner in paid work?"
 

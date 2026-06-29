@@ -68,8 +68,11 @@ Scenario: Change my relationship to Sara
 		| Does Sara get any of the following support? | Education, health and care (EHC) plan |
 
 Scenario: Partner details are not shown when I don't have a partner
-	Given I answer "Do you live with a partner?" as "No"
-	Then I do not see a summary list for "Your partners details"
+	When I click the Change link in the "Your details" summary list for "Do you live with a partner?"
+	And I select the "No" radio button
+	And I click on Continue
+	Then the page header is "Check your answers"
+	And I do not see a summary list for "Your partners details"
 
 Scenario: Self employed details are not shown when I am not self employed
 	Given I answer "How would you describe your work status?" as "Paid employment"
@@ -85,11 +88,18 @@ Scenario: Self employed details are not shown when I change my answer
 	And I do not see a summary row "Have you been self-employed for less than 12 months"
 
 Scenario: Back navigation to Does your partner already get any of this childcare support?
-	Given I answer "Does your partner already get any of this childcare support?" as "No, they do not get any of this childcare support"
+	When I click the Change link in the "Your partners details" summary list for "Does your partner already get any of this childcare support?"
+	And I deselect the "Childcare vouchers" checkbox
+	And I select the "No, they do not get any of this childcare support" checkbox
+	And I click on Continue
+	And the page header is "Check your answers"
 	When I click the back link
 	Then the page header is "Does your partner already get any of this childcare support?"
 
 Scenario: Back navigation to Do you live with a partner?
-	Given I answer "Do you live with a partner?" as "No"
+	When I click the Change link in the "Your details" summary list for "Do you live with a partner?"
+	And I select the "No" radio button
+	And I click on Continue
+	And the page header is "Check your answers"
 	When I click the back link
 	Then the page header is "Do you live with a partner?"
