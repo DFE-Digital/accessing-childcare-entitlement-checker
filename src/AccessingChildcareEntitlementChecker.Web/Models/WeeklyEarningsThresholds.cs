@@ -1,6 +1,6 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Services;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+
+namespace AccessingChildcareEntitlementChecker.Web.Models;
 
 public record WeeklyEarningsThresholds(string PerWeek, string PerMonth, string PerYear)
 {

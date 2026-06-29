@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.Web;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
@@ -38,6 +39,13 @@ public class SummaryRowFactoryTests
                 return new LocalizedString(key, key);
             });
 
+        localizer[Arg.Any<string>(), Arg.Any<object[]>()]
+            .Returns(callInfo =>
+            {
+                var key = callInfo.Arg<string>();
+                return new LocalizedString(key, key);
+            });
+
         stringLocalizerFactory
             .Create("Views.Home.Location", Arg.Any<string>())
             .Returns(localizer);
@@ -52,6 +60,10 @@ public class SummaryRowFactoryTests
 
         stringLocalizerFactory
             .Create("Views.Partner.PartnerAge", Arg.Any<string>())
+            .Returns(localizer);
+
+        stringLocalizerFactory
+            .Create(typeof(SharedResources))
             .Returns(localizer);
 
         _summaryRowFactory = new SummaryRowFactory(metadataProvider, "Test", stringLocalizerFactory);
@@ -270,6 +282,72 @@ public class SummaryRowFactoryTests
         Assert.Equal("Child One, Child Two", rows[0].Value);
         Assert.Equal("PartnerParentalLeave", rows[0].ChangeAction);
         Assert.Equal("Test", rows[0].ChangeController);
+    }
+
+    [Theory]
+    [InlineData(PaidWorkOption.Yes, "WeeklyEarnings_Question")]
+    [InlineData(PaidWorkOption.ParentalLeave, "WeeklyEarnings_ParentalLeave_Question")]
+    public void ItExtractsTheSharedResourcesForWeeklyEarnings(
+        PaidWorkOption paidWorkOption,
+        string expectedKey)
+    {
+        var journeyState = new JourneyState
+        {
+            UserAge = AgeRange.UnderEighteen,
+            PaidWork = paidWorkOption,
+            WorkStatus = [WorkStatusOption.PaidEmployment],
+            WeeklyEarnings = WeeklyEarningsOption.BelowThreshold,
+        };
+
+        _summaryRowFactory.AddWeeklyEarnings(journeyState);
+        var rows = _summaryRowFactory.ViewModels;
+        var row = Assert.Single(rows);
+        Assert.Equal(expectedKey, row.Key);
+    }
+
+    [Fact]
+    public void ItSkipsTheRowIfWeeklyEarningsIsNotAnswered()
+    {
+        var journeyState = new JourneyState
+        {
+            WeeklyEarnings = null,
+        };
+        _summaryRowFactory.AddWeeklyEarnings(journeyState);
+        var rows = _summaryRowFactory.ViewModels;
+        Assert.Empty(rows);
+    }
+
+    [Theory]
+    [InlineData(PartnerPaidWorkOption.Yes, "PartnerWeeklyEarnings_Question")]
+    [InlineData(PartnerPaidWorkOption.ParentalLeave, "PartnerWeeklyEarnings_ParentalLeave_Question")]
+    public void ItExtractsTheSharedResourcesForPartnerWeeklyEarnings(
+    PartnerPaidWorkOption paidWorkOption,
+    string expectedKey)
+    {
+        var journeyState = new JourneyState
+        {
+            PartnerAge = AgeRange.UnderEighteen,
+            PartnerPaidWork = paidWorkOption,
+            PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
+            PartnerWeeklyEarnings = WeeklyEarningsOption.BelowThreshold,
+        };
+
+        _summaryRowFactory.AddPartnerWeeklyEarnings(journeyState);
+        var rows = _summaryRowFactory.ViewModels;
+        var row = Assert.Single(rows);
+        Assert.Equal(expectedKey, row.Key);
+    }
+
+    [Fact]
+    public void ItSkipsTheRowIfPartnerWeeklyEarningsIsNotAnswered()
+    {
+        var journeyState = new JourneyState
+        {
+            WeeklyEarnings = null,
+        };
+        _summaryRowFactory.AddWeeklyEarnings(journeyState);
+        var rows = _summaryRowFactory.ViewModels;
+        Assert.Empty(rows);
     }
 
     public enum TestEnum
