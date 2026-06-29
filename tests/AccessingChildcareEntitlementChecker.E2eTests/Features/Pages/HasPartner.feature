@@ -47,9 +47,9 @@ Scenario: Back navigation from Do you already get any of this childcare support?
 		| How would you describe your work status?                | Self-employed                                  |
 		| Have you been self-employed for less than 12 months?    | No                                             |
 		| On average, do you earn £203 a week or more before tax? | Yes                                            |
-		| Is your adjusted net income more than £100,000 a year?   | No                                             |
-		| Does your household receive universal credit?            | Yes                                            |
+		| Is your adjusted net income more than £100,000 a year?  | No                                             |
+		| Does your household receive universal credit?           | Yes                                            |
 		| Do you get any of these benefits?                       | Carer's Allowance                              |
-		| Do you already get any of this childcare support?        | No, I do not get any of this childcare support |
+		| Do you already get any of this childcare support?       | No, I do not get any of this childcare support |
 	When I click the back link
 	Then the page header is "Do you already get any of this childcare support?"

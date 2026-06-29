@@ -41,7 +41,7 @@ public static class WebApplicationExtensions
         app.MapControllerRoute(name: "work-status-work", pattern: "work-status/work", defaults: new { controller = User, action = nameof(UserController.PaidWork) });
         app.MapControllerRoute(name: "work-status-work-status", pattern: "work-status/work-status", defaults: new { controller = User, action = nameof(UserController.WorkStatus) });
         // N.b. undefined on the lucid - pending design
-        app.MapControllerRoute(name: "leave-type-of-leave", pattern: "leave/type-of-leave", defaults: new { controller = User, action = nameof(UserController.TypeOfLeave) });
+        app.MapControllerRoute(name: "leave-parental-leave", pattern: "leave/parental-leave", defaults: new { controller = User, action = nameof(UserController.ParentalLeave) });
         app.MapControllerRoute(name: "work-status-self-employed", pattern: "work-status/self-employed", defaults: new { controller = User, action = nameof(UserController.SelfEmployedDuration) });
         app.MapControllerRoute(name: "earnings-adjusted-net-income", pattern: "earnings/adjusted-net-income", defaults: new { controller = User, action = nameof(UserController.YearlyEarnings) });
         app.MapControllerRoute(name: "earnings-wage", pattern: "earnings/wage", defaults: new { controller = User, action = nameof(UserController.WeeklyEarnings) });
@@ -55,6 +55,7 @@ public static class WebApplicationExtensions
         app.MapControllerRoute(name: "nationality-nationality-partner", pattern: "nationality/nationality-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerNationality) });
         app.MapControllerRoute(name: "nationality-settled-status-partner", pattern: "nationality/settled-status-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerSettledStatus) });
         app.MapControllerRoute(name: "work-status-work-partner", pattern: "work-status/work-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerPaidWork) });
+        app.MapControllerRoute(name: "leave-partner-parental-leave", pattern: "leave/parental-leave-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerParentalLeave) });
         app.MapControllerRoute(name: "work-status-work-status-partner", pattern: "work-status/work-status-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerWorkStatus) });
         app.MapControllerRoute(name: "Partner-PartnerBenefits", pattern: "Partner/PartnerBenefits", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerBenefits) });
         // N.b. undefined on the lucid from here on out

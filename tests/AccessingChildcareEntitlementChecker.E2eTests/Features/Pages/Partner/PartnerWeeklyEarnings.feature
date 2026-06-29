@@ -6,10 +6,10 @@ Background:
 	And I check my children's details and click on Continue
 	And I fill in my own details
 	And I answer questions as follows:
-		| Question                      | Answer     |
-		| Do you live with a partner?   | Yes        |
-		| What is your partner's age?   | 21 or over |
-		| Is your partner in paid work? | Yes        |
+		| Question                                                 | Answer                   |
+		| Do you live with a partner?                              | Yes                      |
+		| What is your partner's age?                              | 21 or over               |
+		| Is your partner in paid work?                            | Yes                      |
 
 Scenario: Page load
 	Given I answer "How would you describe your partner's work status?" as "Paid employment"

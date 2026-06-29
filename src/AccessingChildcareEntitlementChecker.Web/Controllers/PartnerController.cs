@@ -1,4 +1,3 @@
-using AccessingChildcareEntitlementChecker.RulesEngine.Types;
 using AccessingChildcareEntitlementChecker.Web.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
@@ -155,8 +154,9 @@ public class PartnerController : Controller
         var (nextAction, nextAnswerMissing) = _journeyState.PartnerPaidWork switch
         {
             PartnerPaidWorkOption.Yes => (nameof(PartnerWorkStatus), _journeyState.PartnerWorkStatus.Count == 0),
+            PartnerPaidWorkOption.ParentalLeave => (nameof(PartnerParentalLeave), _journeyState.PartnerParentalLeaveChildrenIds.Count == 0),
+            PartnerPaidWorkOption.SickLeave => (nameof(PartnerWorkStatus), _journeyState.PartnerWorkStatus.Count == 0),
             PartnerPaidWorkOption.No => (nameof(PartnerBenefits), _journeyState.PartnerBenefits.Count == 0),
-            PartnerPaidWorkOption.OnLeave => (nameof(PartnerTypeOfLeave), false),
             _ => throw new UnreachableException($"Unexpected PartnerPaidWork: {_journeyState.PartnerPaidWork}"),
         };
 
@@ -166,6 +166,38 @@ public class PartnerController : Controller
         }
 
         return this.RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+    }
+
+    [HttpGet]
+    public IActionResult PartnerParentalLeave(string? returnTo = null)
+    {
+        var backLink = GetPartnerParentalLeaveBackLink(returnTo);
+        return View(new PartnerParentalLeaveViewModel(_journeyState, backLink, returnTo));
+    }
+
+    [HttpPost]
+    public IActionResult PartnerParentalLeave(PartnerParentalLeaveViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            model.BackLink = GetPartnerParentalLeaveBackLink(model.ReturnTo);
+            model.Children = _journeyState.Children.Values.ToList();
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        var nextAction = nameof(PartnerWorkStatus);
+        var nextAnswerMissing = _journeyState.PartnerWorkStatus.Count == 0;
+
+        if (model.ReturnTo is not null && !nextAnswerMissing)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
+
+        return this.RedirectToAction(
+            nextAction,
+            new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -186,22 +218,25 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        var nextAction = nameof(PartnerWeeklyEarnings);
+        var nextAnswerMissing = _journeyState.PartnerWeeklyEarnings is null;
         if (_journeyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
         {
-            if (model.ReturnTo is not null && _journeyState.PartnerSelfEmployedDuration is not null)
-            {
-                return this.RedirectToReturnTo(model.ReturnTo);
-            }
-
-            return this.RedirectToAction(nameof(PartnerSelfEmployedDuration), new { returnTo = model.ReturnTo });
+            nextAction = nameof(PartnerSelfEmployedDuration);
+            nextAnswerMissing = _journeyState.PartnerSelfEmployedDuration is null;
+        }
+        else if (_journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
+        {
+            nextAction = nameof(PartnerYearlyEarnings);
+            nextAnswerMissing = _journeyState.PartnerYearlyEarnings is null;
         }
 
-        if (model.ReturnTo is not null && _journeyState.PartnerWeeklyEarnings is not null)
+        if (model.ReturnTo is not null && !nextAnswerMissing)
         {
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(nameof(PartnerWeeklyEarnings), new { returnTo = model.ReturnTo });
+        return this.RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -249,12 +284,22 @@ public class PartnerController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        var (nextAction, nextAnswerMissing) = _journeyState.PartnerSelfEmployedDuration switch
+
+        // Complex logic for sick leave falls through
+        var nextAction = nameof(PartnerWeeklyEarnings);
+        var nextAnswerMissing = _journeyState.PartnerWeeklyEarnings is null;
+
+        if (_journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
         {
-            SelfEmployedDurationOption.LessThan12Months => (nameof(PartnerBenefits), _journeyState.PartnerBenefits.Count == 0),
-            SelfEmployedDurationOption.NotLessThan12Months => (nameof(PartnerWeeklyEarnings), _journeyState.PartnerWeeklyEarnings is null),
-            _ => throw new UnreachableException($"Unexpected PartnerSelfEmployedDuration: {_journeyState.PartnerSelfEmployedDuration}"),
-        };
+            nextAction = nameof(PartnerYearlyEarnings);
+            nextAnswerMissing = _journeyState.PartnerYearlyEarnings is null;
+        }
+
+        if (_journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
+        {
+            nextAction = nameof(PartnerBenefits);
+            nextAnswerMissing = _journeyState.PartnerBenefits.Count == 0;
+        }
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
@@ -437,6 +482,16 @@ public class PartnerController : Controller
         }
 
         return Url.ActionOrThrow(nameof(PartnerNationality));
+    }
+
+    private string GetPartnerParentalLeaveBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(PartnerPaidWork));
     }
 
     private string GetPartnerWorkStatusBackLink(string? returnTo)

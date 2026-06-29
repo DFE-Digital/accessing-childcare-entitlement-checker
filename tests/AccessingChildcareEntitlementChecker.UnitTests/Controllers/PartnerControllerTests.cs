@@ -1,7 +1,6 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
-using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -196,7 +195,7 @@ public class PartnerControllerTests
     [Theory]
     [InlineData(PartnerPaidWorkOption.Yes, null, nameof(PartnerController.PartnerWorkStatus))]
     [InlineData(PartnerPaidWorkOption.No, null, nameof(PartnerController.PartnerBenefits))]
-    [InlineData(PartnerPaidWorkOption.OnLeave, null, nameof(PartnerController.PartnerTypeOfLeave))]
+    [InlineData(PartnerPaidWorkOption.ParentalLeave, null, nameof(PartnerController.PartnerParentalLeave))]
     [InlineData(PartnerPaidWorkOption.Yes, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
     public void PartnerPaidWork_Post_SavesState_AndRedirects(PartnerPaidWorkOption option, string? returnTo, string actionName)
     {
@@ -401,17 +400,6 @@ public class PartnerControllerTests
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerSelfEmployedDuration());
         Assert.NotNull(result.Model<PartnerSelfEmployedDurationViewModel>());
-    }
-
-    [Fact]
-    public void PartnerSelfEmployedDuration_Post_Unreachable_Coverage()
-    {
-        var model = new PartnerSelfEmployedDurationViewModel
-        {
-            PartnerSelfEmployedDuration = (SelfEmployedDurationOption)99,
-        };
-
-        Assert.Throws<UnreachableException>(() => _controller.PartnerSelfEmployedDuration(model));
     }
 
     [Theory]

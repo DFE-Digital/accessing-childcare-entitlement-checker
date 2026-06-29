@@ -1,5 +1,9 @@
+using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using AccessingChildcareEntitlementChecker.Web.Models.Summary;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
+using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -160,6 +164,112 @@ public class SummaryRowFactoryTests
         Assert.Equal(rowValue, row.Value);
         Assert.Equal("PartnerAge", row.ChangeAction);
         Assert.Equal("Test", row.ChangeController);
+    }
+
+    [Fact]
+    public void ParentalLeave_Returns_No_Summary_When_Not_Answered()
+    {
+        var journeyState = new JourneyState();
+        var value = new List<string>();
+        _summaryRowFactory.AddParentalLeave(value, journeyState);
+
+        var rows = _summaryRowFactory.ViewModels;
+        Assert.Empty(rows);
+    }
+
+    [Fact]
+    public void ParentalLeave_Returns_No_Summary_When_None_Selected()
+    {
+        var journeyState = new JourneyState();
+        var value = new List<string>() { ParentalLeaveViewModel.NoneSelectedValue };
+        _summaryRowFactory.AddParentalLeave(value, journeyState);
+        var rows = _summaryRowFactory.ViewModels;
+        Assert.Empty(rows);
+    }
+
+    [Fact]
+    public void ParentalLeave_Returns_No_Summary_When_Child_Does_Not_Exist()
+    {
+        var journeyState = new JourneyState();
+        var value = new List<string>() { "1" };
+        _summaryRowFactory.AddParentalLeave(value, journeyState);
+        var rows = _summaryRowFactory.ViewModels;
+        Assert.Empty(rows);
+    }
+
+    [Fact]
+    public void ParentalLeave_Returns_Child_Name_When_Selected()
+    {
+        var journeyState = new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                { "1", new Child("1", "Child One") },
+                { "2", new Child("2", "Child Two") }
+            }
+        };
+
+        var value = new List<string>() { "1", "2" };
+        _summaryRowFactory.AddParentalLeave(value, journeyState);
+        var rows = _summaryRowFactory.ViewModels;
+        Assert.Single(rows);
+        Assert.Equal("Which child are you on leave for?", rows[0].Key);
+        Assert.Equal("Child One, Child Two", rows[0].Value);
+        Assert.Equal("ParentalLeave", rows[0].ChangeAction);
+        Assert.Equal("Test", rows[0].ChangeController);
+    }
+
+    [Fact]
+    public void PartnerParentalLeave_Returns_No_Summary_When_Not_Answered()
+    {
+        var journeyState = new JourneyState();
+        var value = new List<string>();
+        _summaryRowFactory.AddPartnerParentalLeave(value, journeyState);
+
+        var rows = _summaryRowFactory.ViewModels;
+        Assert.Empty(rows);
+    }
+
+    [Fact]
+    public void PartnerParentalLeave_Returns_No_Summary_When_None_Selected()
+    {
+        var journeyState = new JourneyState();
+        var value = new List<string>() { PartnerParentalLeaveViewModel.NoneSelectedValue };
+        _summaryRowFactory.AddPartnerParentalLeave(value, journeyState);
+        var rows = _summaryRowFactory.ViewModels;
+        Assert.Empty(rows);
+    }
+
+    [Fact]
+    public void PartnerParentalLeave_Returns_No_Summary_When_Child_Does_Not_Exist()
+    {
+        var journeyState = new JourneyState();
+        var value = new List<string>() { "1" };
+        _summaryRowFactory.AddPartnerParentalLeave(value, journeyState);
+        var rows = _summaryRowFactory.ViewModels;
+        Assert.Empty(rows);
+    }
+
+    [Fact]
+    public void PartnerParentalLeave_Returns_Child_Name_When_Selected()
+    {
+        var journeyState = new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                { "1", new Child("1", "Child One") },
+                { "2", new Child("2", "Child Two") }
+            }
+        };
+
+        var value = new List<string>() { "1", "2" };
+        _summaryRowFactory.AddPartnerParentalLeave(value, journeyState);
+        var rows = _summaryRowFactory.ViewModels;
+        Assert.Single(rows);
+        Assert.Equal("Which child is your partner on leave for?", rows[0].Key);
+        Assert.Equal("Child One, Child Two", rows[0].Value);
+        Assert.Equal("PartnerParentalLeave", rows[0].ChangeAction);
+        Assert.Equal("Test", rows[0].ChangeController);
     }
 
     public enum TestEnum

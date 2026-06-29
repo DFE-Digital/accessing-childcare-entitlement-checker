@@ -157,10 +157,43 @@ public class UserController : Controller
         var (nextAction, nextAnswerMissing) = _journeyState.PaidWork switch
         {
             PaidWorkOption.Yes => (nameof(WorkStatus), _journeyState.WorkStatus.Count == 0),
+            PaidWorkOption.ParentalLeave => (nameof(ParentalLeave), _journeyState.ParentalLeaveChildrenIds.Count == 0),
+            PaidWorkOption.SickLeave => (nameof(WorkStatus), _journeyState.WorkStatus.Count == 0),
             PaidWorkOption.No => (nameof(UniversalCredit), _journeyState.UniversalCredit is null),
-            PaidWorkOption.OnLeave => (nameof(TypeOfLeave), false),
             _ => throw new UnreachableException($"Unexpected PaidWork: {_journeyState.PaidWork}"),
         };
+
+        if (model.ReturnTo is not null && !nextAnswerMissing)
+        {
+            return this.RedirectToReturnTo(model.ReturnTo);
+        }
+
+        return this.RedirectToAction(
+            nextAction,
+            new { returnTo = model.ReturnTo });
+    }
+
+    [HttpGet]
+    public IActionResult ParentalLeave(string? returnTo = null)
+    {
+        var backLink = GetParentalLeaveBackLink(returnTo);
+        return View(new ParentalLeaveViewModel(_journeyState, backLink, returnTo));
+    }
+
+    [HttpPost]
+    public IActionResult ParentalLeave(ParentalLeaveViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            model.BackLink = GetParentalLeaveBackLink(model.ReturnTo);
+            model.Children = _journeyState.Children.Values.ToList();
+            return View(model);
+        }
+
+        _journeyState.Apply(model);
+        _journeySession.Set(_journeyState);
+        var nextAction = nameof(WorkStatus);
+        var nextAnswerMissing = _journeyState.WorkStatus.Count == 0;
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
@@ -190,27 +223,26 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+
+        var nextAction = nameof(WeeklyEarnings);
+        var nextAnswerMissing = _journeyState.WeeklyEarnings is null;
         if (_journeyState.WorkStatus.Contains(WorkStatusOption.SelfEmployed))
         {
-            if (model.ReturnTo is not null && _journeyState.SelfEmployedDuration is not null)
-                return this.RedirectToReturnTo(model.ReturnTo);
-            return this.RedirectToAction(nameof(SelfEmployedDuration), new { returnTo = model.ReturnTo });
+            nextAction = nameof(SelfEmployedDuration);
+            nextAnswerMissing = _journeyState.SelfEmployedDuration is null;
+        }
+        else if (_journeyState.PaidWork == PaidWorkOption.SickLeave)
+        {
+            nextAction = nameof(YearlyEarnings);
+            nextAnswerMissing = _journeyState.YearlyEarnings is null;
         }
 
-        if (model.ReturnTo is not null && _journeyState.WeeklyEarnings is not null)
+        if (model.ReturnTo is not null && !nextAnswerMissing)
         {
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(nameof(WeeklyEarnings), new { returnTo = model.ReturnTo });
-    }
-
-    [HttpGet]
-    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
-    public IActionResult TypeOfLeave(string? returnTo = null)
-    {
-        // This page a stub as not yet confirmed in design.
-        return Content("<h1>TypeOfLeave</h1>", "text/html");
+        return this.RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
@@ -231,12 +263,22 @@ public class UserController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        var (nextAction, nextAnswerMissing) = _journeyState.SelfEmployedDuration switch
+
+        // Complex logic for sick leave falls through
+        var nextAction = nameof(WeeklyEarnings);
+        var nextAnswerMissing = _journeyState.WeeklyEarnings is null;
+
+        if (_journeyState.PaidWork == PaidWorkOption.SickLeave)
         {
-            SelfEmployedDurationOption.LessThan12Months => (nameof(UniversalCredit), _journeyState.UniversalCredit is null),
-            SelfEmployedDurationOption.NotLessThan12Months => (nameof(WeeklyEarnings), _journeyState.WeeklyEarnings is null),
-            _ => throw new UnreachableException($"Unexpected SelfEmployedDuration: {_journeyState.SelfEmployedDuration}"),
-        };
+            nextAction = nameof(YearlyEarnings);
+            nextAnswerMissing = _journeyState.YearlyEarnings is null;
+        }
+
+        if (_journeyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
+        {
+            nextAction = nameof(UniversalCredit);
+            nextAnswerMissing = _journeyState.UniversalCredit is null;
+        }
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
@@ -505,6 +547,16 @@ public class UserController : Controller
         }
 
         return Url.ActionOrThrow(nameof(Nationality));
+    }
+
+    private string GetParentalLeaveBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        return Url.ActionOrThrow(nameof(PaidWork));
     }
 
     private string GetWorkStatusBackLink(string? returnTo)

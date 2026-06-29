@@ -1,4 +1,7 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
+using AccessingChildcareEntitlementChecker.Web.Models.Partner;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
+using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
@@ -81,6 +84,32 @@ public class SummaryRowFactory
 
         var displayValue = value.Value.ToString("d MMMM yyyy");
         return Add(viewModelProperty, displayValue, controllerActionName);
+    }
+
+    public SummaryRowFactory AddParentalLeave(List<string> value, JourneyState journeyState)
+    {
+        var childrenNames = journeyState.Children
+            .Where(c => value.Contains(c.Key))
+            .Select(c => c.Value.Name)
+            .ToList();
+
+        var displayValue = string.Join(", ", childrenNames);
+        return displayValue == string.Empty
+            ? this
+            : Add((ParentalLeaveViewModel s) => s.ParentalLeaveChildrenIds, displayValue, nameof(UserController.ParentalLeave));
+    }
+
+    public SummaryRowFactory AddPartnerParentalLeave(List<string> value, JourneyState journeyState)
+    {
+        var childrenNames = journeyState.Children
+            .Where(c => value.Contains(c.Key))
+            .Select(c => c.Value.Name)
+            .ToList();
+
+        var displayValue = string.Join(", ", childrenNames);
+        return displayValue == string.Empty
+            ? this
+            : Add((PartnerParentalLeaveViewModel s) => s.PartnerParentalLeaveChildrenIds, displayValue, nameof(PartnerController.PartnerParentalLeave));
     }
 
     public SummaryRowFactory AddLocation(CountryOfResidence? countryOfResidence)

@@ -8,6 +8,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+
     [Theory]
     [InlineData(null, null, null, null, "/nationality/nationality-partner")]
     [InlineData(null, null, null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "/nationality/settled-status-partner")]
@@ -33,24 +35,42 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertRadioButtonCount(3)
+        doc.AssertRadioButtonCount(4)
             .AssertBackLink(backLinkUrl);
     }
 
     [Theory]
-    [InlineData(null, PartnerPaidWorkOption.Yes, null, null, "/work-status/work-status-partner")]
-    [InlineData(null, PartnerPaidWorkOption.No, null, null, "/Partner/PartnerBenefits")]
-    [InlineData(null, PartnerPaidWorkOption.OnLeave, null, null, "/leave/type-of-leave-partner")]
-    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.Yes, null, null, "/work-status/work-status-partner")]
-    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.No, null, null, "/Partner/PartnerBenefits")]
-    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.No, null, PartnerBenefitsOption.CarersAllowance, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.OnLeave, null, null, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, PartnerPaidWorkOption partnerPaidWork, WorkStatusOption? partnerWorkStatus, PartnerBenefitsOption? partnerBenefits, string continueUrl)
+    [InlineData(null, PartnerPaidWorkOption.Yes, false, null, null, "/work-status/work-status-partner")]
+    [InlineData(null, PartnerPaidWorkOption.No, false, null, null, "/Partner/PartnerBenefits")]
+    [InlineData(null, PartnerPaidWorkOption.ParentalLeave, true, null, null, "/leave/parental-leave-partner")]
+    [InlineData(null, PartnerPaidWorkOption.SickLeave, false, null, null, "/work-status/work-status-partner")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.Yes, false, null, null, "/work-status/work-status-partner")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.Yes, false, WorkStatusOption.PaidEmployment, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.No, false, null, null, "/Partner/PartnerBenefits")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.No, false, null, PartnerBenefitsOption.CarersAllowance, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.ParentalLeave, false, null, null, "/leave/parental-leave-partner")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.ParentalLeave, true, null, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.SickLeave, false, null, null, "/work-status/work-status-partner")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.SickLeave, false, WorkStatusOption.PaidEmployment, null, "/check-your-answers")]
+    public async Task Post_Valid_Redirects(
+        string? returnTo,
+        PartnerPaidWorkOption partnerPaidWork,
+        bool hasAnsweredParentalLeaveChildren,
+        WorkStatusOption? partnerWorkStatus,
+        PartnerBenefitsOption? partnerBenefits,
+        string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
+            Children = new Dictionary<string, Child>
+                {
+                    {
+                        ChildId,
+                        new Child(ChildId, "Sara")
+                    }
+                },
             PartnerPaidWork = partnerPaidWork,
+            PartnerParentalLeaveChildrenIds = hasAnsweredParentalLeaveChildren ? [ChildId] : [],
             PartnerWorkStatus = partnerWorkStatus is null ? new() : [partnerWorkStatus.Value],
             PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
         });

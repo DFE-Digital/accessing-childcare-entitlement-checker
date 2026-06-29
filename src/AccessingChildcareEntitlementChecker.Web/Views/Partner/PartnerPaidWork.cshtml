@@ -30,15 +30,16 @@
                     <govuk-radios-error-message />
                     @foreach (var value in Enum.GetValues<PartnerPaidWorkOption>())
                     {
-                    <govuk-radios-item value="@value">
-                        @Html.EnumDisplayName(value)
-                        @if (value == PartnerPaidWorkOption.OnLeave)
-                        {
-                            <govuk-radios-item-hint>
-                                @Localizer["This includes maternity, paternity, adoption or neonatal care leave and sick leave"]
-                            </govuk-radios-item-hint>
-                        }
-                    </govuk-radios-item>
+                        <govuk-radios-item value="@value">
+                            @Html.EnumDisplayName(value)
+
+                            @if (Html.EnumDescription(value) is string description)
+                            {
+                                <govuk-radios-item-hint>
+                                    @description
+                                </govuk-radios-item-hint>
+                            }
+                        </govuk-radios-item>
                     }
                 </govuk-radios-fieldset>
             </govuk-radios>

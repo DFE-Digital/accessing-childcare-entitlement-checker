@@ -146,7 +146,7 @@ internal class JourneySteps(IPage page)
         {
             ("Do you live with a partner?", "Yes"),
             ("What is your partner's age?", "21 or over"),
-            ("Is your partner in paid work?", "No"),
+            ("Is your partner in paid work?", "No, they are not in work"),
             ("Does your partner get any of these benefits?", "Carer's Allowance"),
             ("Does your partner already get any of this childcare support?", "Childcare vouchers"),
             ("How does your partner receive childcare vouchers?", "A workplace nursery scheme"),

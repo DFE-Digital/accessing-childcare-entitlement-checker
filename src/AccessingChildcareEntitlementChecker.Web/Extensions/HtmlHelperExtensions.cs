@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace AccessingChildcareEntitlementChecker.Web.Extensions;
 
@@ -26,6 +28,22 @@ public static class HtmlHelperExtensions
             .Name;
 
         return displayName ?? value.ToString();
+    }
+
+    /// <remarks>
+    /// Similar to EnumDisplayName.
+    /// </remarks>
+    [ExcludeFromCodeCoverage(Justification = "May be replaced and covered by UI tests")]
+    public static string? EnumDescription<TEnum>(this IHtmlHelper html, TEnum value)
+        where TEnum : struct, Enum
+    {
+        var member = typeof(TEnum)
+            .GetMember(value.ToString())
+            .SingleOrDefault();
+
+        return member?
+            .GetCustomAttribute<DisplayAttribute>()?
+            .GetDescription();
     }
 
     public static string? GetDescriptionFor<TModel, TValue>(

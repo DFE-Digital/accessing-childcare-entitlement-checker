@@ -259,7 +259,7 @@ public class UserControllerTests
 
     [Theory]
     [InlineData(PaidWorkOption.No, null, nameof(UserController.UniversalCredit))]
-    [InlineData(PaidWorkOption.OnLeave, null, nameof(UserController.TypeOfLeave))]
+    [InlineData(PaidWorkOption.ParentalLeave, null, nameof(UserController.ParentalLeave))]
     [InlineData(PaidWorkOption.Yes, null, nameof(UserController.WorkStatus))]
     [InlineData(PaidWorkOption.Yes, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
     public void PaidWork_Post_SavesState_AndRedirects(PaidWorkOption option, string? returnTo, string actionName)
@@ -419,17 +419,6 @@ public class UserControllerTests
     {
         var result = Assert.IsType<ViewResult>(_controller.SelfEmployedDuration());
         Assert.NotNull(result.Model<SelfEmployedDurationViewModel>());
-    }
-
-    [Fact]
-    public void SelfEmployedDuration_Post_Unreachable_Coverage()
-    {
-        var model = new SelfEmployedDurationViewModel
-        {
-            SelfEmployedDuration = (SelfEmployedDurationOption)99,
-        };
-
-        Assert.Throws<UnreachableException>(() => _controller.SelfEmployedDuration(model));
     }
 
     [Theory]

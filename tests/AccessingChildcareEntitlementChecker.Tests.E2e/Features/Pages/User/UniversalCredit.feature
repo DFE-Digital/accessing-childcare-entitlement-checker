@@ -8,7 +8,7 @@ Background:
 		| Question                  | Answer                   |
 		| What is your age?         | Under 18                 |
 		| What is your nationality? | British or Irish citizen |
-		| Are you in paid work?     | No                       |
+		| Are you in paid work?     | No, I am not in work     |
 
 Scenario: Page load
 	When the page header is "Does your household receive universal credit?"
