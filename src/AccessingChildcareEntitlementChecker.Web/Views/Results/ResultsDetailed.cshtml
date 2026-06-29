@@ -37,13 +37,24 @@
 
         @foreach (var section in Model.Sections)
         {
-            <div class="results-section">
+            <div class="app-results-section">
                 @switch (section.SectionType)
                 {
                     case SchemeSectionType.HelpWithChildcareCosts:
-                        <h2 class="govuk-heading-l">
-                            @Localizer["Help with childcare costs (up to £2,000 a year)"]
-                        </h2>
+                        @if (section.Schemes.Any(x => x.SchemeCode == SchemeCode.TaxFreeChildcare))
+                        {
+                            <h2 class="govuk-heading-l">
+                                @Localizer["Help with childcare costs (up to £2,000 a year)"]
+                            </h2>
+                        }
+                        @if (section.Schemes.Any(x => x.SchemeCode == SchemeCode.UniversalCreditChildcare))
+                        {
+                            <h2 class="govuk-heading-l">
+                                @Localizer["Help with childcare costs (up to £1,071 a month)"]
+                            </h2>
+                        }
+
+                        
                         break;
 
                     case SchemeSectionType.FundedChildCareHours:
@@ -70,7 +81,7 @@
 
                 @foreach (var scheme in section.Schemes)
                 {
-                    <div class="results-scheme">
+                    <div class="app-results-scheme">
                         <h3 class="govuk-heading-m">
                             @scheme.Name
                         </h3>

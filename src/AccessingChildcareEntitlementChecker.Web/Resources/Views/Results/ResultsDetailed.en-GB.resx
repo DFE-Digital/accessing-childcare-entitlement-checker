@@ -84,7 +84,7 @@
     </data>
 
     <data name="WhenToApply_FromToDate" xml:space="preserve">
-      <value>From {0:dd MMM yyyy} To {0:dd MMM yyyy}</value>
+      <value>From {0:dd MMM yyyy} To {1:dd MMM yyyy}</value>
     </data>
 
     <data name="Starts_Now" xml:space="preserve">

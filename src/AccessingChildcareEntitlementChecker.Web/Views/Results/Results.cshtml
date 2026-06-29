@@ -39,7 +39,7 @@
 
         @foreach (var child in Model.Children)
         {
-            <div class="results-section">
+            <div class="app-results-section">
 
                 <h2 class="govuk-heading-l results-name">
                     @child.Name
@@ -59,7 +59,7 @@
                     </a>
                 </p>
 
-                <table class="govuk-table results-table">
+                <table class="govuk-table app-results-table">
                     <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
                         <th scope="col" class="govuk-table__header">@Localizer["Scheme"]</th>
@@ -102,7 +102,7 @@
             
             
         }
-        <div class="getHelp">
+        <div class="app-getHelp">
             <h2 class="govuk-heading-l">
                 @Localizer["Get help and advice about childcare support"]
             </h2>

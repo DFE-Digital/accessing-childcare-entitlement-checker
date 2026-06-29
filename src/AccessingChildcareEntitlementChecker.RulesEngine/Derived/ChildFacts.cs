@@ -4,7 +4,7 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Derived;
 
 public class ChildFacts
 {
-    public string? ChildId { get; set; }
+    public string ChildId { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public bool IsBorn { get; set; }
     public DateOnly? DateOfBirth { get; set; }

@@ -14,8 +14,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Mappers;
 public class JourneyStateToEntitlementRequestMapper
 {
 
-    public EntitlementRequest Map(
-        JourneyState journeyState)
+    public EntitlementRequest Map(JourneyState journeyState)
     {
         return new EntitlementRequest
         {

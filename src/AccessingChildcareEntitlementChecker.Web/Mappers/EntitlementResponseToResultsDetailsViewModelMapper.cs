@@ -21,7 +21,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
     public ResultsDetailsViewModel Map(EntitlementResponse response, string childId)
     {
-        var child = response.ChildResults.Single(x => x.ChildId == childId);
+        var child = response.ChildResults.SingleOrDefault(x => x.ChildId == childId)
+                    ?? throw new InvalidOperationException(
+                        $"No child found with id '{childId}'.");
 
         return new ResultsDetailsViewModel()
         {
@@ -150,7 +152,12 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             SchemeCode.FifteenHoursForDisadvantagedChildren => schemeResult.EligibleNow
                 ? _localizer["WhenToApply_Now"]
-                : _localizer["WhenToApply_FromDate", schemeResult.ApplyFromDate!.Value],
+                : _localizer[
+                    "WhenToApply_FromDate",
+                    schemeResult.ApplyFromDate
+                    ?? throw new InvalidOperationException(
+                        $"{schemeResult.SchemeCode} must have an ApplyFromDate.")
+                ],
 
             SchemeCode.ThirtyHoursForWorkingFamilies => GetThirtyHoursWhenToApply(schemeResult, child),
 
@@ -167,10 +174,19 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
         var today = DateOnly.FromDateTime(DateTime.Today);
 
-        var canApplyNow = schemeResult.ApplyFromDate!.Value <= today;
 
-        var windowStart = GetApplicationWindowStart(schemeResult.UseFromDate!.Value);
-        var windowEnd = GetApplicationWindowEnd(schemeResult.UseFromDate!.Value);
+        var applyFrom = schemeResult.ApplyFromDate
+                        ?? throw new InvalidOperationException(
+                            $"{schemeResult.SchemeCode} must have an ApplyFromDate.");
+
+        var useFrom = schemeResult.UseFromDate
+                      ?? throw new InvalidOperationException(
+                          $"{schemeResult.SchemeCode} must have a UseFromDate.");
+
+        var canApplyNow = applyFrom <= today;
+
+        var windowStart = GetApplicationWindowStart(useFrom);
+        var windowEnd = GetApplicationWindowEnd(useFrom);
 
         if (canApplyNow)
         {
