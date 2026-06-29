@@ -117,7 +117,6 @@ updates:
       semver-minor-days: 5
     open-pull-requests-limit: 5
     rebase-strategy: "auto"
-    insecure-external-code-execution: "deny"
     commit-message:
       prefix: "chore(deps): "
     labels:
