@@ -9,7 +9,6 @@
     var questionKey = Model.IsOnParentalLeave ? "WeeklyEarnings_ParentalLeave_Question" : "WeeklyEarnings_Question";
     var question = Shared[questionKey, thresholds.PerWeek];
     var description = Localizer["This is the same as £{0} a month or £{1} a year. If your income varies, use what you earn in a typical week.", thresholds.PerMonth, thresholds.PerYear];
-    var required = Localizer["Select if you earn £{0} a week or more before tax", thresholds.PerWeek];
     ViewData["Title"] = question;
 }
 
