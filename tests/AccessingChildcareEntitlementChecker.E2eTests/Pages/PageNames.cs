@@ -2,8 +2,6 @@ namespace AccessingChildcareEntitlementChecker.E2eTests.Pages;
 
 internal static class PageNames
 {
-    public const string Action = "ACTION";
-
     // User Pages
     public const string StartPage = "Check what help you could get with childcare costs";
     public const string Location = "Where do you live?";

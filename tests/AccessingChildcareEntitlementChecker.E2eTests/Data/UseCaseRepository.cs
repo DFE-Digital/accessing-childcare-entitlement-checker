@@ -1,4 +1,5 @@
 using System.Reflection;
+using AccessingChildcareEntitlementChecker.E2eTests.Data.Builders;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.Data;
 
@@ -15,7 +16,7 @@ internal static class UseCaseRepository
             .ToDictionary(u => u.Name, u => u, StringComparer.OrdinalIgnoreCase);
     }
 
-    public static IEnumerable<(string PageName, string Answer)> GetJourney(string useCaseName)
+    public static IEnumerable<JourneyStep> GetJourney(string useCaseName)
     {
         return UseCases.TryGetValue(useCaseName, out var useCase)
             ? useCase.GetJourney()
