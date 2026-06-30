@@ -9,8 +9,8 @@
     "start": "npm run prebuild:css && eleventy --serve"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.0.0",
-    "@x-govuk/govuk-eleventy-plugin": "^9.0.0"
+    "@11ty/eleventy": "^3.1.6",
+    "@x-govuk/govuk-eleventy-plugin": "^9.0.2"
   },
   "dependencies": {
     "@11ty/eleventy-navigation": "^1.0.5"
