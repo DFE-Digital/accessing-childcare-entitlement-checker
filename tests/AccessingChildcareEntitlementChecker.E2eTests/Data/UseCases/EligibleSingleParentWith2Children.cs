@@ -30,7 +30,7 @@ internal class EligibleSingleParentWith2Children : IUseCase
                 .IsBorn("No")
                 .WithDueDate("Tomorrow")
                 .WithExpectingRelationship("Parent"))
-            
+
             // Complete child details loop
             .Action("Continue")
 
