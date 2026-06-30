@@ -1,8 +1,6 @@
+using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
-
-using AccessingChildcareEntitlementChecker.E2eTests.Data.Builders;
-
-namespace AccessingChildcareEntitlementChecker.E2eTests.Data.UseCases;
+namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
 internal class EligibleSingleParentWith2Children : IUseCase
 {

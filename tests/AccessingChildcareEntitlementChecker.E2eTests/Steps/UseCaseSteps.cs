@@ -1,12 +1,13 @@
-using AccessingChildcareEntitlementChecker.E2eTests.Data;
-using AccessingChildcareEntitlementChecker.E2eTests.Data.Builders;
 using AccessingChildcareEntitlementChecker.E2eTests.Pages;
+using AccessingChildcareEntitlementChecker.E2eTests.UseCases;
+using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 using Microsoft.Playwright;
 using Reqnroll;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
+[Scope(Feature = "End to End Use Cases")]
 internal class UseCaseSteps(IPage page)
 {
     [Given("I complete the journey for the use case {string}")]

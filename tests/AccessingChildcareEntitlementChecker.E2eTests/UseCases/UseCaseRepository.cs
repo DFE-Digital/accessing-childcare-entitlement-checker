@@ -1,7 +1,7 @@
 using System.Reflection;
-using AccessingChildcareEntitlementChecker.E2eTests.Data.Builders;
+using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
-namespace AccessingChildcareEntitlementChecker.E2eTests.Data;
+namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases;
 
 internal static class UseCaseRepository
 {

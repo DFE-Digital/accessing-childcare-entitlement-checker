@@ -1,4 +1,4 @@
-namespace AccessingChildcareEntitlementChecker.E2eTests.Data.Builders;
+namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 internal abstract record JourneyStep;
 internal record AnswerStep(string PageName, string Answer) : JourneyStep;

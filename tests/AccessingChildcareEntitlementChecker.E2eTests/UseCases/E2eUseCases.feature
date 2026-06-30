@@ -1,3 +1,4 @@
+@tag smoke_tests
 Feature: End to End Use Cases
 
 Background:

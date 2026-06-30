@@ -1,6 +1,6 @@
 using AccessingChildcareEntitlementChecker.E2eTests.Pages;
 
-namespace AccessingChildcareEntitlementChecker.E2eTests.Data.Builders;
+namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 internal class ChildBuilder
 {
