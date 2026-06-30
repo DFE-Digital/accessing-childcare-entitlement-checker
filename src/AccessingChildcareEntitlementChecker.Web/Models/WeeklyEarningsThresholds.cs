@@ -8,7 +8,7 @@ public record WeeklyEarningsThresholds(string PerWeek, string PerMonth, string P
     public static readonly WeeklyEarningsThresholds EighteenToTwenty = new("174", "752", "9,027");
     public static readonly WeeklyEarningsThresholds TwentyOneOrOver = new("203", "879", "10,574");
 
-    public static WeeklyEarningsThresholds Factory(AgeRange? age, List<WorkStatusOption> workStatus)
+    public static WeeklyEarningsThresholds Create(AgeRange? age, List<WorkStatusOption> workStatus)
     {
         if (age == null || workStatus.Count == 0)
         {

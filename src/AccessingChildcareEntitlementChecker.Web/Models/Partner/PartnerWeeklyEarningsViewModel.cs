@@ -51,7 +51,7 @@ public class PartnerWeeklyEarningsViewModel : IValidatableObject
 
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(WorkStatusViewModel));
-        var weeklyEarningsThresholds = WeeklyEarningsThresholds.Factory(journeyState.PartnerAge, journeyState.PartnerWorkStatus);
+        var weeklyEarningsThresholds = WeeklyEarningsThresholds.Create(journeyState.PartnerAge, journeyState.PartnerWorkStatus);
         if (PartnerWeeklyEarnings == null)
         {
             yield return new ValidationResult(localizer["Select if your partner earns £{0} a week or more before tax", weeklyEarningsThresholds.PerWeek], [nameof(PartnerWeeklyEarnings)]);

@@ -164,7 +164,7 @@ public class SummaryRowFactory
 
         var displayValue = GetEnumDisplayName(state.WeeklyEarnings.Value);
 
-        var thresholds = WeeklyEarningsThresholds.Factory(state.UserAge, state.WorkStatus);
+        var thresholds = WeeklyEarningsThresholds.Create(state.UserAge, state.WorkStatus);
         var questionKey = state.PaidWork == PaidWorkOption.ParentalLeave
             ? "WeeklyEarnings_ParentalLeave_Question"
             : "WeeklyEarnings_Question";
@@ -220,7 +220,7 @@ public class SummaryRowFactory
 
         var displayValue = GetEnumDisplayName(state.PartnerWeeklyEarnings.Value);
 
-        var thresholds = WeeklyEarningsThresholds.Factory(state.PartnerAge, state.PartnerWorkStatus);
+        var thresholds = WeeklyEarningsThresholds.Create(state.PartnerAge, state.PartnerWorkStatus);
         var questionKey = state.PartnerPaidWork == PartnerPaidWorkOption.ParentalLeave
             ? "PartnerWeeklyEarnings_ParentalLeave_Question"
             : "PartnerWeeklyEarnings_Question";

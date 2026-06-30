@@ -11,26 +11,26 @@ public class WeeklyEarningsThresholdsTests
     [InlineData(AgeRange.TwentyOneOrOver, "203")]
     public void Returns_Expected_Weekly_Threshold(AgeRange ageRange, string expected)
     {
-        var actual = WeeklyEarningsThresholds.Factory(ageRange, [WorkStatusOption.PaidEmployment]);
+        var actual = WeeklyEarningsThresholds.Create(ageRange, [WorkStatusOption.PaidEmployment]);
         Assert.Equal(expected, actual.PerWeek);
     }
 
     [Fact]
     public void Throws_If_Age_Range_Is_Not_Answered()
     {
-        Assert.Throws<InvalidOperationException>(() => WeeklyEarningsThresholds.Factory(null, []));
+        Assert.Throws<InvalidOperationException>(() => WeeklyEarningsThresholds.Create(null, []));
     }
 
     [Fact]
     public void Throws_If_Work_Status_Is_Not_Answered()
     {
-        Assert.Throws<InvalidOperationException>(() => WeeklyEarningsThresholds.Factory(AgeRange.EighteenToTwenty, []));
+        Assert.Throws<InvalidOperationException>(() => WeeklyEarningsThresholds.Create(AgeRange.EighteenToTwenty, []));
     }
 
     [Fact]
     public void Coverage_Throws_If_Invalid_AgeRange_Passed()
     {
         var invalid = (AgeRange)99;
-        Assert.Throws<UnreachableException>(() => WeeklyEarningsThresholds.Factory(invalid, [WorkStatusOption.PaidEmployment]));
+        Assert.Throws<UnreachableException>(() => WeeklyEarningsThresholds.Create(invalid, [WorkStatusOption.PaidEmployment]));
     }
 }

@@ -324,7 +324,7 @@ public class UserController : Controller
     public IActionResult WeeklyEarnings(string? returnTo = null)
     {
         var backLink = GetWeeklyEarningsBackLink(returnTo);
-        var weeklyEarningsThresholds = WeeklyEarningsThresholds.Factory(_journeyState.UserAge, _journeyState.WorkStatus);
+        var weeklyEarningsThresholds = WeeklyEarningsThresholds.Create(_journeyState.UserAge, _journeyState.WorkStatus);
         var isOnParentalLeave = _journeyState.PaidWork == PaidWorkOption.ParentalLeave;
         return View(new WeeklyEarningsViewModel(_journeyState, weeklyEarningsThresholds, isOnParentalLeave, backLink, returnTo));
     }
@@ -334,7 +334,7 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
-            var weeklyEarningsThresholds = WeeklyEarningsThresholds.Factory(_journeyState.UserAge, _journeyState.WorkStatus);
+            var weeklyEarningsThresholds = WeeklyEarningsThresholds.Create(_journeyState.UserAge, _journeyState.WorkStatus);
             model.WeeklyEarningsThresholds = weeklyEarningsThresholds;
             model.IsOnParentalLeave = _journeyState.PaidWork == PaidWorkOption.ParentalLeave;
             model.BackLink = GetWeeklyEarningsBackLink(model.ReturnTo);
