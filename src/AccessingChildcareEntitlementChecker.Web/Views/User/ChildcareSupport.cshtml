@@ -15,39 +15,11 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Html.DisplayNameFor(model => model.ChildcareSupport)
-        </h1>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
-            <govuk-checkboxes for="ChildcareSupport">
-                <govuk-checkboxes-fieldset>
-                    <govuk-checkboxes-fieldset-legend class="govuk-visually-hidden">
-                        @Html.DisplayNameFor(model => model.ChildcareSupport)
-                    </govuk-checkboxes-fieldset-legend>
-                    <govuk-checkboxes-error-message />
-                    @foreach (var value in Enum.GetValues<ChildcareSupportOption>())
-                    {
-                        if (value == ChildcareSupportOption.None)
-                        {
-                            <govuk-checkboxes-divider>
-                                @Localizer["or"]
-                            </govuk-checkboxes-divider>
-
-                            <govuk-checkboxes-item value="@value" behavior="CheckboxesItemBehavior.Exclusive">
-                                @Html.EnumDisplayName(value)
-                            </govuk-checkboxes-item>
-                        }
-                        else
-                        {
-                            <govuk-checkboxes-item value="@value">
-                                @Html.EnumDisplayName(value)
-                            </govuk-checkboxes-item>
-                        }
-                    }
-                </govuk-checkboxes-fieldset>
-            </govuk-checkboxes>
+            <cec-enum-checkboxes for="ChildcareSupport"
+                                 exclusive-value="ChildcareSupportOption.None" />
 
             <govuk-details>
                 <govuk-details-summary>
