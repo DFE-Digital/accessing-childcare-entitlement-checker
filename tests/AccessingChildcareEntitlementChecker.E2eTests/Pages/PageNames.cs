@@ -20,7 +20,7 @@ internal static class PageNames
     public const string ChildcareSupport = "Do you already get any of this childcare support?";
     public const string ChildcareVoucherReceipt = "How do you receive your childcare vouchers?";
     public const string UserSettledStatus = "Do you have settled or pre-settled status under the EU Settlement Scheme?";
-    public const string TypeOfLeave = "TypeOfLeave";
+    public const string TypeOfLeave = "Which child are you on leave for?";
 
     // Partner Pages
     public const string HasPartner = "Do you live with a partner?";
@@ -36,13 +36,21 @@ internal static class PageNames
     public const string PartnerBenefits = "Does your partner get any of these benefits?";
     public const string PartnerChildcareSupport = "Does your partner already get any of this childcare support?";
     public const string PartnerChildcareVoucherReceipt = "How does your partner receive childcare vouchers?";
-    public const string PartnerLeaveType = "What type of leave is your partner on?";
+    public const string PartnerLeaveType = "Which child is your partner on leave for?";
 
     // Child Pages
     public const string ChildName = "Add details about your children";
     public const string ChildIsBorn = "Has this child been born yet?";
-    public const string ChildDueDate = "due date";
-    public const string ChildBirthDate = "date of birth";
-    public const string ChildRelationship = "relationship";
-    public const string ChildSupport = "support";
+    public const string ChildDueDate = "What is this child's due date?";
+    public const string ChildBirthDate = "What is __PLACEHOLDER__'s date of birth?";
+    public const string ChildRelationship = "What is your relationship to __PLACEHOLDER__?";
+    public const string ExpectedChildRelationship = "What will your relationship be to this child?";
+    public const string ChildSupport = "Does __PLACEHOLDER__ get any of the following support?";
+
+    public static System.Text.RegularExpressions.Regex GetRegexForPattern(string pattern)
+    {
+        var escaped = System.Text.RegularExpressions.Regex.Escape(pattern);
+        var regexPattern = @"^\s*" + escaped.Replace("__PLACEHOLDER__", "(.*?)") + @"\s*$";
+        return new System.Text.RegularExpressions.Regex(regexPattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    }
 }
