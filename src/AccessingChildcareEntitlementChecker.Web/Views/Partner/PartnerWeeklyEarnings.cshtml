@@ -6,9 +6,7 @@
 
 @{
     var thresholds = Model.WeeklyEarningsThresholds!;
-    var questionKey = Model.IsOnParentalLeave ? "PartnerWeeklyEarnings_ParentalLeave_Question" : "PartnerWeeklyEarnings_Question";
-    var question = Shared[questionKey, thresholds.PerWeek];
-    var description = Localizer["This is the same as £{0} a month or £{1} a year. If your income varies, use what you earn in a typical week.", thresholds.PerMonth, thresholds.PerYear];
+    var question = Shared[Model.IsOnParentalLeave ? "PartnerWeeklyEarnings_ParentalLeave_Question" : "PartnerWeeklyEarnings_Question", thresholds.PerWeek];
     ViewData["Title"] = question;
 }
 
@@ -24,7 +22,7 @@
             @question
         </h1>
         <p class="govuk-hint">
-            @description
+            @Localizer["This is the same as £{0} a month or £{1} a year. If your income varies, use what you earn in a typical week.", thresholds.PerMonth, thresholds.PerYear]
         </p>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
