@@ -23,6 +23,7 @@ internal class UseCaseSteps(IPage page)
             }
 
             var pageObj = factory.GetPage(pageName);
+            await pageObj.AssertHeaderAsync();
             await pageObj.AnswerAsync(answer);
             await pageObj.ContinueAsync();
         }

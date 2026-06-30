@@ -27,6 +27,7 @@ internal class JourneySteps(IPage page)
     {
         var factory = new PageFactory(page);
         var pageObj = factory.GetPage(question);
+        await pageObj.AssertHeaderAsync();
         await pageObj.AnswerAsync(answer);
         await pageObj.ContinueAsync();
     }
@@ -39,6 +40,7 @@ internal class JourneySteps(IPage page)
         foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
         {
             var pageObj = factory.GetPage(pageName);
+            await pageObj.AssertHeaderAsync();
             await pageObj.AnswerAsync(answer);
             await pageObj.ContinueAsync();
         }
@@ -52,6 +54,7 @@ internal class JourneySteps(IPage page)
         foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
         {
             var pageObj = factory.GetPage(pageName);
+            await pageObj.AssertHeaderAsync();
             await pageObj.AnswerAsync(answer);
             await pageObj.ContinueAsync();
         }
@@ -63,44 +66,55 @@ internal class JourneySteps(IPage page)
         await GivenIClickTheStartNowLink();
 
         var locationPage = new LocationPage(page);
+        await locationPage.AssertHeaderAsync();
         await locationPage.AnswerAsync("England");
         await locationPage.ContinueAsync();
 
         // Aydin details
         var childName = new ChildNamePage(page);
+        await childName.AssertHeaderAsync();
         await childName.AnswerAsync("Aydin");
         await childName.ContinueAsync();
 
         var childIsBorn = new ChildIsBornPage(page);
+        await childIsBorn.AssertHeaderAsync();
         await childIsBorn.AnswerAsync("No");
         await childIsBorn.ContinueAsync();
 
         var childDueDate = new ChildDueDatePage(page);
+        await childDueDate.AssertHeaderAsync();
         await childDueDate.AnswerAsync("Tomorrow");
         await childDueDate.ContinueAsync();
 
-        var childRelationship = new ChildRelationshipPage(page);
-        await childRelationship.AnswerAsync("Parent");
-        await childRelationship.ContinueAsync();
+        var expectedChildRelationship = new ExpectedChildRelationshipPage(page);
+        await expectedChildRelationship.AssertHeaderAsync();
+        await expectedChildRelationship.AnswerAsync("Parent");
+        await expectedChildRelationship.ContinueAsync();
 
         // Add another child
         await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
 
         // Sara details
+        await childName.AssertHeaderAsync();
         await childName.AnswerAsync("Sara");
         await childName.ContinueAsync();
 
+        await childIsBorn.AssertHeaderAsync();
         await childIsBorn.AnswerAsync("Yes");
         await childIsBorn.ContinueAsync();
 
         var childBirthDate = new ChildBirthDatePage(page);
+        await childBirthDate.AssertHeaderAsync();
         await childBirthDate.AnswerAsync("Yesterday");
         await childBirthDate.ContinueAsync();
 
+        var childRelationship = new ChildRelationshipPage(page);
+        await childRelationship.AssertHeaderAsync();
         await childRelationship.AnswerAsync("Parent");
         await childRelationship.ContinueAsync();
 
         var childSupport = new ChildSupportPage(page);
+        await childSupport.AssertHeaderAsync();
         await childSupport.AnswerAsync("Education, health and care (EHC) plan");
         await childSupport.ContinueAsync();
     }
@@ -133,6 +147,7 @@ internal class JourneySteps(IPage page)
         foreach (var (pageName, answer) in answers)
         {
             var pageObj = factory.GetPage(pageName);
+            await pageObj.AssertHeaderAsync();
             await pageObj.AnswerAsync(answer);
             await pageObj.ContinueAsync();
         }
@@ -155,6 +170,7 @@ internal class JourneySteps(IPage page)
         foreach (var (pageName, answer) in answers)
         {
             var pageObj = factory.GetPage(pageName);
+            await pageObj.AssertHeaderAsync();
             await pageObj.AnswerAsync(answer);
             await pageObj.ContinueAsync();
         }
@@ -179,6 +195,7 @@ internal class JourneySteps(IPage page)
         foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
         {
             var pageObj = factory.GetPage(pageName);
+            await pageObj.AssertHeaderAsync();
             await pageObj.AnswerAsync(answer);
             await pageObj.ContinueAsync();
         }

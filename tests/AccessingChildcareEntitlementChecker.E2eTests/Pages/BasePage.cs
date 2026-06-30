@@ -17,15 +17,26 @@ internal abstract class BasePage(IPage page) : IPageObject
         await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
     }
 
-    protected virtual async Task AssertHeaderAsync()
+    public virtual async Task AssertHeaderAsync()
     {
         var heading = Page.GetByRole(AriaRole.Heading, new PageGetByRoleOptions { Level = 1 });
-        await Expect(heading).ToContainTextAsync(PageTitle);
+        if (PageTitle.Contains("__PLACEHOLDER__"))
+        {
+            await Expect(heading)
+                .ToHaveTextAsync(PageNames.GetRegexForPattern(PageTitle));
+        }
+        else
+        {
+            await Expect(heading)
+                .ToContainTextAsync(PageTitle);
+        }
     }
 
     protected async Task SelectRadioAsync(string option)
     {
-        await Page.GetByRole(AriaRole.Radio, new PageGetByRoleOptions { Name = option, Exact = true }).CheckAsync();
+        await Page
+            .GetByRole(AriaRole.Radio, new PageGetByRoleOptions { Name = option, Exact = true })
+            .CheckAsync();
     }
 
     protected async Task FillTextAsync(string text)
@@ -46,7 +57,9 @@ internal abstract class BasePage(IPage page) : IPageObject
     {
         foreach (var checkboxAnswer in checkboxAnswers.Split(';').Select(a => a.Trim()))
         {
-            await Page.GetByRole(AriaRole.Checkbox, new PageGetByRoleOptions { Name = checkboxAnswer, Exact = true }).CheckAsync();
+            await Page
+                .GetByRole(AriaRole.Checkbox, new PageGetByRoleOptions { Name = checkboxAnswer, Exact = true })
+                .CheckAsync();
         }
     }
 }
