@@ -28,7 +28,7 @@ internal class EligibleSingleParentWith2Children : IUseCase
             (PageNames.ChildName, "Sara"),
             (PageNames.ChildIsBorn, "No"),
             (PageNames.ChildDueDate, "Tomorrow"),
-            (PageNames.ChildRelationship, "Parent"),
+            (PageNames.ExpectedChildRelationship, "Parent"),
 
             // Complete child details loop
             (PageNames.Action, "Continue"),
