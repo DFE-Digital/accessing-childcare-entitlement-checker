@@ -35,11 +35,17 @@
                             <govuk-checkboxes-divider>
                                 @Localizer["or"]
                             </govuk-checkboxes-divider>
-                        }
 
-                        <govuk-checkboxes-item value="@value">
-                            @Html.EnumDisplayName(value)
-                        </govuk-checkboxes-item>
+                            <govuk-checkboxes-item value="@value" behavior="CheckboxesItemBehavior.Exclusive">
+                                @Html.EnumDisplayName(value)
+                            </govuk-checkboxes-item>
+                        }
+                        else
+                        {
+                            <govuk-checkboxes-item value="@value">
+                                @Html.EnumDisplayName(value)
+                            </govuk-checkboxes-item>
+                        }
                     }
                 </govuk-checkboxes-fieldset>
             </govuk-checkboxes>

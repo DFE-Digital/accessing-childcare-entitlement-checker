@@ -18,7 +18,7 @@
     <div class="govuk-grid-column-two-thirds">
         <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
-            <govuk-checkboxes for="ChildSupportOptions">
+            <govuk-checkboxes for="ChildSupportOptions" beh>
                 <govuk-checkboxes-fieldset>
                     <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
                         @Localizer["Does {0} get any of the following support?", Model.ChildName]
@@ -36,11 +36,17 @@
                             <govuk-checkboxes-divider>
                                 @Localizer["or"]
                             </govuk-checkboxes-divider>
-                        }
 
-                        <govuk-checkboxes-item value="@value">
-                            @Html.EnumDisplayName(value)
-                        </govuk-checkboxes-item>
+                            <govuk-checkboxes-item value="@value" behavior="CheckboxesItemBehavior.Exclusive">
+                                @Html.EnumDisplayName(value)
+                            </govuk-checkboxes-item>
+                        }
+                        else
+                        {
+                            <govuk-checkboxes-item value="@value">
+                                @Html.EnumDisplayName(value)
+                            </govuk-checkboxes-item>
+                        }
                     }
                 </govuk-checkboxes-fieldset>
             </govuk-checkboxes>
