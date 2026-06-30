@@ -5,7 +5,9 @@
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @{
-    ViewData["Title"] = Html.DisplayNameFor(model => model.PartnerWeeklyEarnings);
+    var thresholds = Model.WeeklyEarningsThresholds!;
+    var question = Shared[Model.IsOnParentalLeave ? "PartnerWeeklyEarnings_ParentalLeave_Question" : "PartnerWeeklyEarnings_Question", thresholds.PerWeek];
+    ViewData["Title"] = question;
 }
 
 @section BeforeContent {
@@ -17,15 +19,18 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">
-            @Html.DisplayNameFor(model => model.PartnerWeeklyEarnings)
+            @question
         </h1>
+        <p class="govuk-hint">
+            @Localizer["This is the same as £{0} a month or £{1} a year. If your income varies, use what you earn in a typical week.", thresholds.PerMonth, thresholds.PerYear]
+        </p>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
             <govuk-radios for="PartnerWeeklyEarnings">
                 <govuk-radios-fieldset>
                     <govuk-radios-fieldset-legend class="govuk-visually-hidden">
-                        @Html.DisplayNameFor(model => model.PartnerWeeklyEarnings)
+                        @question
                     </govuk-radios-fieldset-legend>
                     <govuk-radios-error-message />
                     @foreach (var value in Enum.GetValues<WeeklyEarningsOption>())

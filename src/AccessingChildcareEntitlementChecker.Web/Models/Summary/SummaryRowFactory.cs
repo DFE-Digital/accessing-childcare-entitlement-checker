@@ -86,8 +86,9 @@ public class SummaryRowFactory
         return Add(viewModelProperty, displayValue, controllerActionName);
     }
 
-    public SummaryRowFactory AddParentalLeave(List<string> value, JourneyState journeyState)
+    public SummaryRowFactory AddParentalLeave(JourneyState journeyState)
     {
+        var value = journeyState.ParentalLeaveChildrenIds;
         var childrenNames = journeyState.Children
             .Where(c => value.Contains(c.Key))
             .Select(c => c.Value.Name)
@@ -99,8 +100,9 @@ public class SummaryRowFactory
             : Add((ParentalLeaveViewModel s) => s.ParentalLeaveChildrenIds, displayValue, nameof(UserController.ParentalLeave));
     }
 
-    public SummaryRowFactory AddPartnerParentalLeave(List<string> value, JourneyState journeyState)
+    public SummaryRowFactory AddPartnerParentalLeave(JourneyState journeyState)
     {
+        var value = journeyState.PartnerParentalLeaveChildrenIds;
         var childrenNames = journeyState.Children
             .Where(c => value.Contains(c.Key))
             .Select(c => c.Value.Name)
@@ -153,6 +155,23 @@ public class SummaryRowFactory
         return Add(label, displayValue, "UserAge");
     }
 
+    public SummaryRowFactory AddWeeklyEarnings(JourneyState state)
+    {
+        if (state.WeeklyEarnings == null)
+        {
+            return this;
+        }
+
+        var displayValue = GetEnumDisplayName(state.WeeklyEarnings.Value);
+
+        var thresholds = WeeklyEarningsThresholds.Create(state.UserAge, state.WorkStatus);
+        var questionKey = state.PaidWork == PaidWorkOption.ParentalLeave
+            ? "WeeklyEarnings_ParentalLeave_Question"
+            : "WeeklyEarnings_Question";
+        var label = GetResourceValueFromSharedResourcesForLocale(questionKey, thresholds.PerWeek);
+        return Add(label, displayValue, "WeeklyEarnings");
+    }
+
     public SummaryRowFactory AddHasPartner(bool? hasPartner)
     {
         if (hasPartner == null)
@@ -190,6 +209,23 @@ public class SummaryRowFactory
         var displayValue = GetResourceValueFromViewForLocale("Views.Partner.PartnerAge", displayKey);
         var label = GetResourceValueFromViewForLocale("Views.Partner.PartnerAge", TitleResourceKey);
         return Add(label, displayValue, "PartnerAge");
+    }
+
+    public SummaryRowFactory AddPartnerWeeklyEarnings(JourneyState state)
+    {
+        if (state.PartnerWeeklyEarnings == null)
+        {
+            return this;
+        }
+
+        var displayValue = GetEnumDisplayName(state.PartnerWeeklyEarnings.Value);
+
+        var thresholds = WeeklyEarningsThresholds.Create(state.PartnerAge, state.PartnerWorkStatus);
+        var questionKey = state.PartnerPaidWork == PartnerPaidWorkOption.ParentalLeave
+            ? "PartnerWeeklyEarnings_ParentalLeave_Question"
+            : "PartnerWeeklyEarnings_Question";
+        var label = GetResourceValueFromSharedResourcesForLocale(questionKey, thresholds.PerWeek);
+        return Add(label, displayValue, "PartnerWeeklyEarnings");
     }
 
     private SummaryRowFactory Add(
@@ -267,5 +303,11 @@ public class SummaryRowFactory
     {
         var localizer = _stringLocalizerFactory.Create(viewName, typeof(SummaryController).Assembly.GetName().Name!);
         return localizer[resourceKey];
+    }
+
+    private string GetResourceValueFromSharedResourcesForLocale(string resourceKey, params object[] arguments)
+    {
+        var localizer = _stringLocalizerFactory.Create(typeof(SharedResources));
+        return localizer[resourceKey, arguments];
     }
 }

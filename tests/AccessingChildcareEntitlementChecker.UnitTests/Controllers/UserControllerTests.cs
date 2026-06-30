@@ -500,6 +500,9 @@ public class UserControllerTests
     [Fact]
     public void WeeklyEarnings_Post_InvalidSelection_ReturnsViewWithError()
     {
+        _journeyState.UserAge = AgeRange.UnderEighteen;
+        _journeyState.WorkStatus = [WorkStatusOption.PaidEmployment];
+
         var model = new WeeklyEarningsViewModel();
         _controller.ModelState.AddModelError(nameof(model.WeeklyEarnings), "Faked Model Binding Error");
         var result = _controller.WeeklyEarnings(model);
@@ -512,6 +515,8 @@ public class UserControllerTests
     [Fact]
     public void WeeklyEarnings_Get_PopulatesModel_FromState()
     {
+        _journeyState.UserAge = AgeRange.UnderEighteen;
+        _journeyState.WorkStatus = [WorkStatusOption.PaidEmployment];
         _journeyState.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
         var result = Assert.IsType<ViewResult>(_controller.WeeklyEarnings());
         Assert.Equal(WeeklyEarningsOption.AboveThreshold, result.Model<WeeklyEarningsViewModel>().WeeklyEarnings);
@@ -520,6 +525,8 @@ public class UserControllerTests
     [Fact]
     public void WeeklyEarnings_ReturnsView()
     {
+        _journeyState.UserAge = AgeRange.UnderEighteen;
+        _journeyState.WorkStatus = [WorkStatusOption.PaidEmployment];
         var result = Assert.IsType<ViewResult>(_controller.WeeklyEarnings());
         Assert.NotNull(result.Model<WeeklyEarningsViewModel>());
     }

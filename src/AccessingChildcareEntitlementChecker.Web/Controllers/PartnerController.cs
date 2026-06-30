@@ -313,7 +313,9 @@ public class PartnerController : Controller
     public IActionResult PartnerWeeklyEarnings(string? returnTo = null)
     {
         var backLink = GetPartnerWeeklyEarningsBackLink(returnTo);
-        return View(new PartnerWeeklyEarningsViewModel(_journeyState, backLink, returnTo));
+        var weeklyEarningsThresholds = WeeklyEarningsThresholds.Create(_journeyState.PartnerAge, _journeyState.PartnerWorkStatus);
+        var isOnParentalLeave = _journeyState.PartnerPaidWork == PartnerPaidWorkOption.ParentalLeave;
+        return View(new PartnerWeeklyEarningsViewModel(_journeyState, weeklyEarningsThresholds, isOnParentalLeave, backLink, returnTo));
     }
 
     [HttpPost]
@@ -321,6 +323,8 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.WeeklyEarningsThresholds = WeeklyEarningsThresholds.Create(_journeyState.PartnerAge, _journeyState.PartnerWorkStatus);
+            model.IsOnParentalLeave = _journeyState.PartnerPaidWork == PartnerPaidWorkOption.ParentalLeave;
             model.BackLink = GetPartnerWeeklyEarningsBackLink(model.ReturnTo);
             return View(model);
         }

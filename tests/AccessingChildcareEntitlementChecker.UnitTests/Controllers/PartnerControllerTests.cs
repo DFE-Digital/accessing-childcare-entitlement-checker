@@ -425,6 +425,9 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerWeeklyEarnings_Post_InvalidSelection_ReturnsViewWithError()
     {
+        _journeyState.PartnerAge = AgeRange.UnderEighteen;
+        _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
+
         var model = new PartnerWeeklyEarningsViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerWeeklyEarnings), "Faked Model Binding Error");
         var result = _controller.PartnerWeeklyEarnings(model);
@@ -437,6 +440,8 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerWeeklyEarnings_Get_PopulatesModel_FromState()
     {
+        _journeyState.PartnerAge = AgeRange.UnderEighteen;
+        _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
         _journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
         var result = Assert.IsType<ViewResult>(_controller.PartnerWeeklyEarnings());
         Assert.Equal(WeeklyEarningsOption.AboveThreshold, result.Model<PartnerWeeklyEarningsViewModel>().PartnerWeeklyEarnings);
@@ -445,6 +450,8 @@ public class PartnerControllerTests
     [Fact]
     public void PartnerWeeklyEarnings_ReturnsView()
     {
+        _journeyState.PartnerAge = AgeRange.UnderEighteen;
+        _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
         var result = Assert.IsType<ViewResult>(_controller.PartnerWeeklyEarnings());
         Assert.NotNull(result.Model<PartnerWeeklyEarningsViewModel>());
     }

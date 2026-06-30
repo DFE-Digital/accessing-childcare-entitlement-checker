@@ -35,6 +35,14 @@ internal class PageFactory(IPage page)
                 return (IPageObject)Activator.CreateInstance(pageType, page)!;
             }
         }
+        if (cleaned.Contains(PageNames.WeeklyEarnings, StringComparison.OrdinalIgnoreCase))
+        {
+            return new WeeklyEarningsPage(page);
+        }
+        if (cleaned.Contains(PageNames.PartnerWeeklyEarnings, StringComparison.OrdinalIgnoreCase))
+        {
+            return new PartnerWeeklyEarningsPage(page);
+        }
 
         throw new KeyNotFoundException($"No Page Object mapped for page: '{pageNameOrHeading}'");
     }

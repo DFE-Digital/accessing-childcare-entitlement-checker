@@ -1,19 +1,28 @@
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models.User;
 
-public class WeeklyEarningsViewModel
+public class WeeklyEarningsViewModel : IValidatableObject
 {
     public WeeklyEarningsViewModel()
     {
         BackLink = string.Empty;
+        IsOnParentalLeave = false;
     }
 
-    public WeeklyEarningsViewModel(JourneyState journeyState, string backLink, string? returnTo = null)
+    public WeeklyEarningsViewModel(
+        JourneyState journeyState,
+        WeeklyEarningsThresholds weeklyEarningsThresholds,
+        bool isOnParentalLeave,
+        string backLink,
+        string? returnTo = null)
     {
         WeeklyEarnings = journeyState.WeeklyEarnings;
+        WeeklyEarningsThresholds = weeklyEarningsThresholds;
+        IsOnParentalLeave = isOnParentalLeave;
         BackLink = backLink;
         ReturnTo = returnTo;
     }
@@ -23,7 +32,28 @@ public class WeeklyEarningsViewModel
 
     public string? ReturnTo { get; set; }
 
-    [Display(Name = "On average, do you earn £203 a week or more before tax?", Description = "This is the same as £879 a month or £10,556 a year. If your income varies, use what you earn in a typical week.")]
-    [Required(ErrorMessage = "Select if you earn £203 a week or more before tax")]
+    [BindNever]
+    public WeeklyEarningsThresholds? WeeklyEarningsThresholds { get; set; }
+
+    [BindNever]
+    public bool IsOnParentalLeave { get; set; }
+
     public WeeklyEarningsOption? WeeklyEarnings { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
+        if (journeyState is null)
+        {
+            throw new InvalidOperationException($"JourneyState service is not available in the validation context for {nameof(WeeklyEarningsViewModel)}");
+        }
+
+        var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
+        var localizer = localizerFactory!.Create(typeof(WorkStatusViewModel));
+        var weeklyEarningsThresholds = WeeklyEarningsThresholds.Create(journeyState.UserAge, journeyState.WorkStatus);
+        if (WeeklyEarnings == null)
+        {
+            yield return new ValidationResult(localizer["Select if you earn £{0} a week or more before tax", weeklyEarningsThresholds.PerWeek], [nameof(WeeklyEarnings)]);
+        }
+    }
 }

@@ -1,37 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <data name="Button_Continue" xml:space="preserve">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Button_Continue" xml:space="preserve">
         <value>Continue</value>
     </data>
-    <data name="Button_Back" xml:space="preserve">
+  <data name="Button_Back" xml:space="preserve">
         <value>Back</value>
     </data>
-    <data name="Option_Yes" xml:space="preserve">
+  <data name="Option_Yes" xml:space="preserve">
         <value>Yes</value>
     </data>
-    <data name="Option_No" xml:space="preserve">
+  <data name="Option_No" xml:space="preserve">
         <value>No</value>
     </data>
-    <data name="ErrorSummary_Title" xml:space="preserve">
+  <data name="ErrorSummary_Title" xml:space="preserve">
         <value>There is a problem</value>
     </data>
-
+  <data name="WeeklyEarnings_Question" xml:space="preserve">
+        <value>On average, do you earn £{0} a week or more before tax?</value>
+  </data>
+  <data name="WeeklyEarnings_ParentalLeave_Question" xml:space="preserve">
+        <value>On average, will you earn £{0} a week or more before tax when your parental leave ends?</value>
+  </data>
+  <data name="PartnerWeeklyEarnings_Question" xml:space="preserve">
+        <value>On average, does your partner earn £{0} a week or more before tax?</value>
+  </data>
+  <data name="PartnerWeeklyEarnings_ParentalLeave_Question" xml:space="preserve">
+        <value>On average, will your partner earn £{0} a week or more before tax when their parental leave ends?</value>
+  </data>
 </root>

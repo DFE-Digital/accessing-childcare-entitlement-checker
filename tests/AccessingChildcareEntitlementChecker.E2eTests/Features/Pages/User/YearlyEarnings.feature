@@ -43,4 +43,4 @@ Scenario: Continue with No
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "On average, do you earn £203 a week or more before tax?"
+	Then the page header is "On average, do you earn £128 a week or more before tax?"
