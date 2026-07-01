@@ -32,4 +32,4 @@ Scenario: Continue with selection
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "Check what help you could get with childcare costs"
+	Then the page header is "Before you continue"
