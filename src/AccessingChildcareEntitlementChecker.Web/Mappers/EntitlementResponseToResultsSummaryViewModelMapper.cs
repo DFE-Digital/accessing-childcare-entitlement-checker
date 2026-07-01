@@ -25,6 +25,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
         return new ResultsSummaryViewModel()
         {
             Children = response.ChildResults.Select(MapChildResults).ToList(),
+            HasAccessToPublicFunds = response.HasAccessToPublicFunds,
         };
 
     }

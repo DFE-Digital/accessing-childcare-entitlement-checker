@@ -35,7 +35,10 @@
             </p>   
         }
 
-
+        @if (!Model.HasAccessToPublicFunds)
+        {
+            <partial name="_PublicFundsWarning" />
+        }
 
         @foreach (var child in Model.Children)
         {
