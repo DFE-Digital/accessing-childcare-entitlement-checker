@@ -29,7 +29,7 @@ Scenario: Change whether Sara gets any support
 	And I should see a summary card with the title "Sara" and the following summary:
 		| Question                                    | Answer                                                                  |
 		| What is Sara's date of birth?               | Yesterday                                                               |
-		| Does Sara get any of the following support? | Education, health and care (EHC) plan, Certificate of visual impairment |
+		| Does Sara get any of the following support? | Certificate of visual impairment, Education, health and care (EHC) plan |
    
 Scenario: Continue with selection
 	When I click on Continue

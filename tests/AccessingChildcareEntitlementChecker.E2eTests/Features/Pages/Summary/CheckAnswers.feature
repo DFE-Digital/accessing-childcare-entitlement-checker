@@ -57,12 +57,12 @@ Scenario: Change whether Sara gets any support
 	And I answer the questions as follows:
 		| Question                                    | Answer                           |
 		| Does Sara get any of the following support? | Certificate of visual impairment |
-	Then the page header is "Check your children's details"
+	Then the page header is "Check your answers"
 	And I should see 2 summary cards
 	And I should see a summary card with the title "Sara" and the following summary:
 		| Question                                    | Answer                                                                  |
 		| What is Sara's date of birth?               | Yesterday                                                               |
-		| Does Sara get any of the following support? | Education, health and care (EHC) plan, Certificate of visual impairment |
+		| Does Sara get any of the following support? | Certificate of visual impairment, Education, health and care (EHC) plan |
 
 Scenario: Change my age
 	When I click the Change link in the "Your details" summary list for "What is your age?"

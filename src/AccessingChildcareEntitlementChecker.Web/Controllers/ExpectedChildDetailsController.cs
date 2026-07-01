@@ -36,7 +36,7 @@ public class ExpectedChildDetailsController : Controller
     [HttpPost]
     public IActionResult ChildDueDate(ChildDueDateViewModel model)
     {
-        if (!_journeyState.Children.TryGetValue(model.ChildId, out var child))
+        if (!_journeyState.Children.TryGetValue(model.ChildId, out var _))
         {
             return NotFound();
         }
