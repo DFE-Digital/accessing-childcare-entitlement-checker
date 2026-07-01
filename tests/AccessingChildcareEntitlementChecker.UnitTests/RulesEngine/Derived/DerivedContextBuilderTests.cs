@@ -22,7 +22,8 @@ public class DerivedContextBuilderTests
                 Nationality = Nationality.BritishOrIrishCitizen,
                 HasSettledOrPreSettledStatus = false,
                 Benefits = [],
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.Yes
+
             }
         };
 

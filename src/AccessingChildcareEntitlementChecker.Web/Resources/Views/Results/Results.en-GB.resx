@@ -74,6 +74,30 @@
 
     <data name="WhenToApply_FromDate" xml:space="preserve">
       <value>From {0:dd MMM yyyy}</value>
-    </data> 
+    </data>
+
+    <data name="WhenToApply_TaxFreeChildcare_UserParentalLeave" xml:space="preserve">
+      <value>The date you return from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="WhenToApply_TaxFreeChildcare_PartnerParentalLeave" xml:space="preserve">
+      <value>The date your partner returns from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="WhenToApply_TaxFreeChildcare_UserAndPartnerParentalLeave" xml:space="preserve">
+      <value>The date you and your partner return from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="WhenToApply_ThirtyHours_UserParentalLeave" xml:space="preserve">
+      <value>The date you return from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="WhenToApply_ThirtyHours_PartnerParentalLeave" xml:space="preserve">
+      <value>The date your partner returns from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="WhenToApply_ThirtyHours_UserAndPartnerParentalLeave" xml:space="preserve">
+      <value>The date you and your partner return from parental leave affects when you can apply</value>
+    </data>
 
 </root>

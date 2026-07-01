@@ -5,7 +5,7 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Requests;
 public class PersonDto
 {
     public AgeRange? AgeRange { get; set; }
-    public bool? IsInPaidWork { get; set; }
+    public PaidWorkStatus? PaidWorkStatus { get; set; }
     public List<WorkStatus> WorkStatuses { get; set; } = [];
     public bool? SelfEmployedLessThan12Months { get; set; }
     public bool? EarnsAboveThreshold { get; set; }

@@ -6,7 +6,7 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
-public class PaidWorkTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
+public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
 

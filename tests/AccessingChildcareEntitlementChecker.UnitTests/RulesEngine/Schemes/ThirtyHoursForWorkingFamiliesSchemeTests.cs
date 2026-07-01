@@ -8,6 +8,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.RulesEngine.Schemes;
 public class ThirtyHoursForWorkingFamiliesSchemeTests
 {
     private static readonly DateOnly Today = new(2025, 1, 1);
+
     private static ThirtyHoursForWorkingFamiliesEvaluator CreateEvaluator()
     {
         return new ThirtyHoursForWorkingFamiliesEvaluator();
@@ -26,7 +27,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
                 ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = true
             }
@@ -41,13 +42,9 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
             Name = "Jack",
             IsBorn = true,
             DateOfBirth = dateOfBirth,
-            AgeInYears = AgeCalculations.CalculateAgeInYears(
-                dateOfBirth,
-                Today),
+            AgeInYears = AgeCalculations.CalculateAgeInYears(dateOfBirth, Today),
 
-            AgeInMonths = AgeCalculations.CalculateAgeInMonths(
-                dateOfBirth,
-                Today)
+            AgeInMonths = AgeCalculations.CalculateAgeInMonths(dateOfBirth, Today)
         };
     }
 
@@ -63,9 +60,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(
-            SchemeCode.ThirtyHoursForWorkingFamilies,
-            result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
@@ -81,9 +76,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(
-            SchemeCode.ThirtyHoursForWorkingFamilies,
-            result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
         Assert.False(result.EligibleNow);
         Assert.True(result.EligibleInFuture);
     }
@@ -103,9 +96,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(
-            SchemeCode.ThirtyHoursForWorkingFamilies,
-            result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
         Assert.False(result.EligibleNow);
         Assert.True(result.EligibleInFuture);
     }
@@ -139,7 +130,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
                 ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = true
             }
@@ -168,7 +159,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
                 ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = false
             }
@@ -197,7 +188,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
                 ExceedsAdjustedNetIncomeLimit = true,
                 EarnsAboveThreshold = true
             }
@@ -226,7 +217,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
                 ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = false,
                 SelfEmployedLessThan12Months = true
@@ -238,9 +229,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(
-            SchemeCode.ThirtyHoursForWorkingFamilies,
-            result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
@@ -261,13 +250,13 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
                 ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = true
             },
             Partner = new PersonFacts
             {
-                IsInPaidWork = false,
+                PaidWorkStatus = PaidWorkStatus.No,
                 ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = false,
                 Benefits =
@@ -282,9 +271,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(
-            SchemeCode.ThirtyHoursForWorkingFamilies,
-            result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
@@ -305,13 +292,13 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
                 ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = true
             },
             Partner = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
                 ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = true
             }
@@ -322,9 +309,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(
-            SchemeCode.ThirtyHoursForWorkingFamilies,
-            result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
@@ -339,9 +324,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
         var result = scheme.Evaluate(context, child);
 
-        Assert.Equal(
-            child.DateOfBirth!.Value.AddDays(23 * 7),
-            result!.ApplyFromDate);
+        Assert.Equal(child.DateOfBirth!.Value.AddDays(23 * 7), result!.ApplyFromDate);
     }
 
     [Fact]
@@ -361,8 +344,209 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
         var result = scheme.Evaluate(context, child);
 
-        Assert.Equal(
-            expectedUseFromDate,
-            result!.UseFromDate);
+        Assert.Equal(expectedUseFromDate, result!.UseFromDate);
+    }
+
+    [Fact]
+    public void Evaluate_SingleParentBelowIncome_LeaveChildIsIneligibleAndOtherChildIsTemporarilyEligible()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = false,
+                HasAccessToPublicFunds = true,
+                CountryOfResidence = CountryOfResidence.England
+            },
+
+            User = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.ParentalLeave,
+                ExceedsAdjustedNetIncomeLimit = false,
+                EarnsAboveThreshold = false,
+                SelfEmployedLessThan12Months = false
+            }
+        };
+
+        var leaveChild = CreateBornChild(new DateOnly(2023, 12, 1));
+
+        leaveChild.UserIsOnParentalLeaveForChild = true;
+
+        var otherChild = CreateBornChild(new DateOnly(2023, 9, 1));
+
+        otherChild.UserIsOnParentalLeaveForChild = false;
+
+        var leaveChildResult = scheme.Evaluate(context, leaveChild);
+
+        var otherChildResult = scheme.Evaluate(context, otherChild);
+
+        Assert.Null(leaveChildResult);
+        Assert.NotNull(otherChildResult);
+        Assert.True(otherChildResult!.EligibleNow);
+        Assert.False(otherChildResult.EligibleInFuture);
+        Assert.Null(otherChildResult.ApplyAndStartAffectedByParentalLeave);
+        Assert.Equal(ParentalLeaveParty.User, otherChildResult.EligibilityEndsWithParentalLeaveFor);
+    }
+
+    [Fact]
+    public void Evaluate_UserLeaveChildAndPartnerOnLeaveForAnotherChild_ReturnsDifferentApplyAndEndParties()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = true,
+                HasAccessToPublicFunds = true,
+                CountryOfResidence = CountryOfResidence.England
+            },
+
+            User = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.ParentalLeave,
+                ExceedsAdjustedNetIncomeLimit = false,
+                EarnsAboveThreshold = true
+            },
+
+            Partner = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.ParentalLeave,
+                ExceedsAdjustedNetIncomeLimit = false,
+                EarnsAboveThreshold = false,
+                SelfEmployedLessThan12Months = false
+            }
+        };
+
+        var userLeaveChild = CreateBornChild(new DateOnly(2023, 12, 1));
+
+        userLeaveChild.UserIsOnParentalLeaveForChild = true;
+        userLeaveChild.PartnerIsOnParentalLeaveForChild = false;
+
+        var partnerLeaveChild = CreateBornChild(new DateOnly(2023, 9, 1));
+
+        partnerLeaveChild.UserIsOnParentalLeaveForChild = false;
+        partnerLeaveChild.PartnerIsOnParentalLeaveForChild = true;
+
+        var userLeaveChildResult = scheme.Evaluate(context, userLeaveChild);
+
+        var partnerLeaveChildResult = scheme.Evaluate(context, partnerLeaveChild);
+
+        Assert.NotNull(userLeaveChildResult);
+        Assert.True(userLeaveChildResult!.EligibleNow);
+        Assert.Equal(ParentalLeaveParty.User, userLeaveChildResult.ApplyAndStartAffectedByParentalLeave);
+        Assert.Equal(ParentalLeaveParty.Partner, userLeaveChildResult.EligibilityEndsWithParentalLeaveFor);
+        Assert.Null(partnerLeaveChildResult);
+    }
+
+    [Fact]
+    public void Evaluate_BothParentsOnLeaveForDifferentChildrenAndBelowIncome_OnlyOtherChildIsEligible()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = true,
+                HasAccessToPublicFunds = true,
+                CountryOfResidence = CountryOfResidence.England
+            },
+
+            User = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.ParentalLeave,
+                ExceedsAdjustedNetIncomeLimit = false,
+                EarnsAboveThreshold = false,
+                SelfEmployedLessThan12Months = false
+            },
+
+            Partner = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.ParentalLeave,
+                ExceedsAdjustedNetIncomeLimit = false,
+                EarnsAboveThreshold = false,
+                SelfEmployedLessThan12Months = false
+            }
+        };
+
+        var userLeaveChild = CreateBornChild(new DateOnly(2023, 12, 1));
+
+        userLeaveChild.UserIsOnParentalLeaveForChild = true;
+        userLeaveChild.PartnerIsOnParentalLeaveForChild = false;
+
+        var partnerLeaveChild = CreateBornChild(new DateOnly(2023, 9, 1));
+
+        partnerLeaveChild.UserIsOnParentalLeaveForChild = false;
+        partnerLeaveChild.PartnerIsOnParentalLeaveForChild = true;
+
+        var otherChild = CreateBornChild(new DateOnly(2022, 12, 1));
+
+        otherChild.UserIsOnParentalLeaveForChild = false;
+        otherChild.PartnerIsOnParentalLeaveForChild = false;
+
+        var userLeaveChildResult = scheme.Evaluate(context, userLeaveChild);
+
+        var partnerLeaveChildResult = scheme.Evaluate(context, partnerLeaveChild);
+
+        var otherChildResult = scheme.Evaluate(context, otherChild);
+
+        Assert.Null(userLeaveChildResult);
+        Assert.Null(partnerLeaveChildResult);
+        Assert.NotNull(otherChildResult);
+        Assert.True(otherChildResult!.EligibleNow);
+        Assert.False(otherChildResult.EligibleInFuture);
+        Assert.Null(otherChildResult.ApplyAndStartAffectedByParentalLeave);
+        Assert.Equal(ParentalLeaveParty.UserAndPartner, otherChildResult.EligibilityEndsWithParentalLeaveFor);
+    }
+
+    [Fact]
+    public void Evaluate_TemporaryLeaveExemptionIsAvailableButBenefitRouteQualifies_ReturnsNoSpecialEndParty()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = true,
+                HasAccessToPublicFunds = true,
+                CountryOfResidence = CountryOfResidence.England
+            },
+
+            User = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.ParentalLeave,
+                ExceedsAdjustedNetIncomeLimit = false,
+                EarnsAboveThreshold = false,
+                SelfEmployedLessThan12Months = false,
+                Benefits =
+                [
+                    PersonBenefit.CarersAllowance
+                ]
+            },
+
+            Partner = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.Yes,
+                ExceedsAdjustedNetIncomeLimit = false,
+                EarnsAboveThreshold = true
+            }
+        };
+
+        var otherChild = CreateBornChild(new DateOnly(2023, 12, 1));
+
+        otherChild.UserIsOnParentalLeaveForChild = false;
+        otherChild.PartnerIsOnParentalLeaveForChild = false;
+
+        var result = scheme.Evaluate(context, otherChild);
+
+        Assert.NotNull(result);
+        Assert.True(result!.EligibleNow);
+        Assert.False(result.EligibleInFuture);
+        Assert.Null(result.ApplyAndStartAffectedByParentalLeave);
+        Assert.Null(result.EligibilityEndsWithParentalLeaveFor);
     }
 }

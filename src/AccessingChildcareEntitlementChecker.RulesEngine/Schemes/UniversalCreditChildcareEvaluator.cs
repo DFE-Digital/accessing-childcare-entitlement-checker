@@ -42,16 +42,14 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
 
     private static bool MeetsWorkRequirements(DerivedContext context)
     {
+        var userWorking = HasQualifyingPaidWorkStatus(context.User);
+
         if (!context.Household.HasPartner)
         {
-            return context.User.IsInPaidWork;
+            return userWorking;
         }
 
-        var userWorking =
-            context.User.IsInPaidWork;
-
-        var partnerWorking =
-            context.Partner?.IsInPaidWork == true;
+        var partnerWorking = context.Partner is not null && HasQualifyingPaidWorkStatus(context.Partner);
 
         var userExempt =
             HasQualifyingExemptionBenefit(context.User);
@@ -64,6 +62,14 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
             (userWorking && partnerWorking) ||
             (userWorking && partnerExempt) ||
             (partnerWorking && userExempt);
+    }
+
+    private static bool HasQualifyingPaidWorkStatus(PersonFacts person)
+    {
+        return person.PaidWorkStatus is
+            PaidWorkStatus.Yes or
+            PaidWorkStatus.SickLeave or
+            PaidWorkStatus.ParentalLeave;
     }
 
     private static bool HasQualifyingExemptionBenefit(

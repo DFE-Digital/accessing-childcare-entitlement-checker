@@ -186,5 +186,77 @@
     <data name="FifteenHoursUniversal_Paragraph3" xml:space="preserve">
       <value>You may still need to pay for things like meals or activities.</value>
     </data>
+
+    <data name="WhenToApply_TaxFreeChildcare_UserParentalLeave" xml:space="preserve">
+      <value>The date you return from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="WhenToApply_TaxFreeChildcare_PartnerParentalLeave" xml:space="preserve">
+      <value>The date your partner returns from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="WhenToApply_TaxFreeChildcare_UserAndPartnerParentalLeave" xml:space="preserve">
+      <value>The date you and your partner return from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="Starts_TaxFreeChildcare_UserParentalLeave" xml:space="preserve">
+      <value>When you are returning from parental leave</value>
+    </data>
+
+    <data name="Starts_TaxFreeChildcare_PartnerParentalLeave" xml:space="preserve">
+      <value>When your partner is returning from parental leave</value>
+    </data>
+
+    <data name="Starts_TaxFreeChildcare_UserAndPartnerParentalLeave" xml:space="preserve">
+      <value>When you and your partner are returning from parental leave</value>
+    </data>
+
+    <data name="Ends_TaxFreeChildcare_UserParentalLeave" xml:space="preserve">
+      <value>When you return from parental leave</value>
+    </data>
+
+    <data name="Ends_TaxFreeChildcare_PartnerParentalLeave" xml:space="preserve">
+      <value>When your partner returns from parental leave</value>
+    </data>
+
+    <data name="Ends_TaxFreeChildcare_UserAndPartnerParentalLeave" xml:space="preserve">
+      <value>When you and your partner return from parental leave</value>
+    </data>
+
+    <data name="WhenToApply_ThirtyHours_UserParentalLeave" xml:space="preserve">
+      <value>The date you return from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="WhenToApply_ThirtyHours_PartnerParentalLeave" xml:space="preserve">
+      <value>The date your partner returns from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="WhenToApply_ThirtyHours_UserAndPartnerParentalLeave" xml:space="preserve">
+      <value>The date you and your partner return from parental leave affects when you can apply</value>
+    </data>
+
+    <data name="Starts_ThirtyHours_UserParentalLeave" xml:space="preserve">
+      <value>When you are returning from parental leave</value>
+    </data>
+
+    <data name="Starts_ThirtyHours_PartnerParentalLeave" xml:space="preserve">
+      <value>When your partner is returning from parental leave</value>
+    </data>
+
+    <data name="Starts_ThirtyHours_UserAndPartnerParentalLeave" xml:space="preserve">
+      <value>When you and your partner are returning from parental leave</value>
+    </data>
+
+    <data name="Ends_ThirtyHours_UserParentalLeave" xml:space="preserve">
+      <value>When you return from parental leave</value>
+    </data>
+
+    <data name="Ends_ThirtyHours_PartnerParentalLeave" xml:space="preserve">
+      <value>When your partner returns from parental leave</value>
+    </data>
+
+    <data name="Ends_ThirtyHours_UserAndPartnerParentalLeave" xml:space="preserve">
+      <value>When you and your partner return from parental leave</value>
+    </data>
     
 </root>

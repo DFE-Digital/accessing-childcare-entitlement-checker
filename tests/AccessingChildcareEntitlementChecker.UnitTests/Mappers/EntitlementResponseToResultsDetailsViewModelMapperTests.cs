@@ -352,7 +352,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursForDisadvantagedChildren_EligibleNow_ReturnsNow()
+    public void Map_FifteenHoursForDisadvantagedChildren_EligibleNow_ReturnsApplyNow()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -514,7 +514,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ThirtyHoursForWorkingFamilies_EligibleNow_StartsNow()
+    public void Map_ThirtyHoursForWorkingFamilies_EligibleNow_StartsFromTheStartOfNextTerm()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -526,7 +526,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
             .Schemes
             .Single(x => x.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies);
 
-        Assert.Equal("Starts_Now", scheme.Starts);
+        Assert.Equal("Starts_FromDate", scheme.Starts);
     }
 
     [Fact]
@@ -626,7 +626,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursForDisadvantagedChildren_EligibleNow_StartsNow()
+    public void Map_FifteenHoursForDisadvantagedChildren_EligibleNowButBeforeWindowStart_ReturnsFrom()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -638,7 +638,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
             .Schemes
             .Single(x => x.SchemeCode == SchemeCode.FifteenHoursForDisadvantagedChildren);
 
-        Assert.Equal("Starts_Now", scheme.Starts);
+        Assert.Equal("Starts_FromDate", scheme.Starts);
     }
 
     [Fact]
