@@ -8,7 +8,7 @@ Background:
 Scenario: Page load
 	When the page header is "Add details about your children"
 	Then I should see a text box with the label "What name should we use for this child?"
-	And the text box is empty
+	And the text box with the label "What name should we use for this child?" is empty
 
 Scenario: Continue with no name
 	When I click on Continue

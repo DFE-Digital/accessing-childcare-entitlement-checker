@@ -27,7 +27,7 @@ public class ParentalLeaveViewModelTests
     [Fact]
     public void Constructor_InitializesPropertiesCorrectly()
     {
-        _journeyState.ParentalLeaveChildrenIds = new List<string> { "child1", "child2" };
+        _journeyState.ParentalLeaveChildrenIds = ["child1", "child2"];
         var backLink = "/previous-page";
         var returnTo = "some-return-to-value";
         var model = new ParentalLeaveViewModel(_journeyState, backLink, returnTo);
