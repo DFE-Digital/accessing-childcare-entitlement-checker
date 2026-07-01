@@ -44,6 +44,12 @@ internal class JourneyBuilder
         return this;
     }
 
+    public JourneyBuilder SetSelfEmployedDuration(string duration)
+    {
+        _journey.Add(new AnswerStep(PageNames.SelfEmployedDuration, duration));
+        return this;
+    }
+
     public JourneyBuilder SetWeeklyEarnings(string weeklyEarnings)
     {
         _journey.Add(new AnswerStep(PageNames.WeeklyEarnings, weeklyEarnings));
@@ -77,6 +83,66 @@ internal class JourneyBuilder
     public JourneyBuilder SetHasPartner(string hasPartner)
     {
         _journey.Add(new AnswerStep(PageNames.HasPartner, hasPartner));
+        return this;
+    }
+
+    public JourneyBuilder SetSettledStatus(string settledStatus)
+    {
+        _journey.Add(new AnswerStep(PageNames.UserSettledStatus, settledStatus));
+        return this;
+    }
+
+    public JourneyBuilder SetPartnerAge(string age)
+    {
+        _journey.Add(new AnswerStep(PageNames.PartnerAge, age));
+        return this;
+    }
+
+    public JourneyBuilder SetPartnerPaidWork(string paidWork)
+    {
+        _journey.Add(new AnswerStep(PageNames.PartnerPaidWork, paidWork));
+        return this;
+    }
+
+    public JourneyBuilder SetPartnerWorkStatus(string paidWork)
+    {
+        _journey.Add(new AnswerStep(PageNames.PartnerWorkStatus, paidWork));
+        return this;
+    }
+
+    public JourneyBuilder SetPartnerWeeklyEarnings(string weeklyEarnings)
+    {
+        _journey.Add(new AnswerStep(PageNames.PartnerWeeklyEarnings, weeklyEarnings));
+        return this;
+    }
+
+    public JourneyBuilder SetPartnerYearlyEarnings(string yearlyEarnings)
+    {
+        _journey.Add(new AnswerStep(PageNames.PartnerYearlyEarnings, yearlyEarnings));
+        return this;
+    }
+
+    public JourneyBuilder SetPartnerBenefits(string benefits)
+    {
+        _journey.Add(new AnswerStep(PageNames.PartnerBenefits, benefits));
+        return this;
+    }
+
+    public JourneyBuilder SetPartnerChildcareSupport(string childcareSupport)
+    {
+        _journey.Add(new AnswerStep(PageNames.PartnerChildcareSupport, childcareSupport));
+        return this;
+    }
+
+    public JourneyBuilder SetPartnerChildLeave(string childLeave)
+    {
+        _journey.Add(new AnswerStep(PageNames.PartnerLeaveType, childLeave));
+        return this;
+    }
+
+    public JourneyBuilder SetPartnerLeaveWeeklyEarnings(string weeklyEarnings)
+    {
+        _journey.Add(new AnswerStep(PageNames.PartnerLeaveWeeklyEarnings, weeklyEarnings));
         return this;
     }
 
