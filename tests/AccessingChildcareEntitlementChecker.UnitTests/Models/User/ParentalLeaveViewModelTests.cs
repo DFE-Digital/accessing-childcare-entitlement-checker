@@ -25,6 +25,19 @@ public class ParentalLeaveViewModelTests
     }
 
     [Fact]
+    public void Constructor_InitializesPropertiesCorrectly()
+    {
+        _journeyState.ParentalLeaveChildrenIds = ["child1", "child2"];
+        var backLink = "/previous-page";
+        var returnTo = "some-return-to-value";
+        var model = new ParentalLeaveViewModel(_journeyState, backLink, returnTo);
+        Assert.Equal(backLink, model.BackLink);
+        Assert.Equal(returnTo, model.ReturnTo);
+        Assert.Equal(_journeyState.ParentalLeaveChildrenIds, model.ParentalLeaveChildrenIds);
+        Assert.Equal(_journeyState.Children.Values.ToList(), model.Children);
+    }
+
+    [Fact]
     public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
     {
         var model = new ParentalLeaveViewModel()

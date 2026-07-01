@@ -17,6 +17,7 @@ Scenario: Page load
 		| Parent                               |
 		| Guardian or short-term respite carer |
 		| Foster parent                        |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	When I select the "Parent" radio button

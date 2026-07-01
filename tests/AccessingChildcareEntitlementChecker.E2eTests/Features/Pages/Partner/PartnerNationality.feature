@@ -24,6 +24,7 @@ Scenario: Page load
 		| British or Irish citizen                             |
 		| Citizen of an EU country, EEA country or Switzerland |
 		| Citizen of a different country                       |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	When I select the "British or Irish citizen" radio button

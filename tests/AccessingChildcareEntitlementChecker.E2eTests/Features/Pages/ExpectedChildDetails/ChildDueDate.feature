@@ -13,6 +13,7 @@ Scenario: Page load
 	When the page header is "What is this child's due date?"
 	Then I should see the hint text "For example, 30 9 2026"
 	And I should see a date entry input
+	And the date entry input is empty
 
 # The GDS component covers date validity, we do a single test to validate
 # we've integrated it correctly.

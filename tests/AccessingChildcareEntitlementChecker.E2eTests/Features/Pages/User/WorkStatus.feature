@@ -17,6 +17,7 @@ Scenario: Page load
 		| Paid employment |
 		| Self-employed   |
 		| Apprentice      |
+	And no checkboxes are selected
 
 Scenario: Checkbox selection
 	When I select the "Paid employment" checkbox

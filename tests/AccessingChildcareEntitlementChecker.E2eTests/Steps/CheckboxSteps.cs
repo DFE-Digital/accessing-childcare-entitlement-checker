@@ -24,6 +24,7 @@ internal class CheckboxSteps(IPage page)
     }
 
     [When("I do not select a checkbox")]
+    [Then("no checkboxes are selected")]
     public async Task WhenIDoNotSelectACheckbox()
     {
         var checkedCheckboxes = page

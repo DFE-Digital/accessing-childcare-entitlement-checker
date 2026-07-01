@@ -24,6 +24,7 @@ Scenario: Page load
 		| Limited capability for work related activity (LCWRA) |
 		| Severe Disablement Allowance                         |
 		| No, they do not get any of these benefits            |
+	And no checkboxes are selected
 
 Scenario: Checkbox selection
 	Given I answer "Is your partner in paid work?" as "No, they are not in work"

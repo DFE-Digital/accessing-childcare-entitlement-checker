@@ -19,6 +19,7 @@ Scenario: Page load
 		| Childcare vouchers                                          |
 		| A childcare bursary or grant (as part of education funding) |
 		| No, they do not get any of this childcare support           |
+	And no checkboxes are selected
 
 Scenario: Checkbox selection
 	When I select the "Childcare vouchers" checkbox

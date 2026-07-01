@@ -12,6 +12,7 @@ Scenario: Page load
 		| Scotland         |
 		| Wales            |
 		| Northern Ireland |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	When I select the "Scotland" radio button
