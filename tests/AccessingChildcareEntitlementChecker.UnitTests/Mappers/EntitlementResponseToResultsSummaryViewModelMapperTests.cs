@@ -520,7 +520,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
 
         Assert.False(child.ShowThirtyHourWarning);
     }
-    
+
     [Theory]
     [InlineData(ParentalLeaveParty.User, "WhenToApply_TaxFreeChildcare_UserParentalLeave")]
     [InlineData(ParentalLeaveParty.Partner, "WhenToApply_TaxFreeChildcare_PartnerParentalLeave")]
@@ -557,7 +557,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
 
         Assert.Equal(expectedText, scheme.WhenToApply);
     }
-    
+
 }
 
 

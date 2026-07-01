@@ -839,7 +839,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
         Assert.Contains(SchemeCode.ThirtyHoursForWorkingFamilies, scheme.CanBeUsedWith);
         Assert.Contains(SchemeCode.TaxFreeChildcare, scheme.CanBeUsedWith);
     }
-    
+
     [Theory]
     [InlineData(ParentalLeaveParty.User, "WhenToApply_TaxFreeChildcare_UserParentalLeave", "Starts_TaxFreeChildcare_UserParentalLeave", "Ends_TaxFreeChildcare_UserParentalLeave")]
     [InlineData(ParentalLeaveParty.Partner, "WhenToApply_TaxFreeChildcare_PartnerParentalLeave", "Starts_TaxFreeChildcare_PartnerParentalLeave", "Ends_TaxFreeChildcare_PartnerParentalLeave")]
