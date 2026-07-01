@@ -109,10 +109,9 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
                 ? _localizer["WhenToApply_Now"]
                 : _localizer["WhenToApply_WhenBorn"],
 
-            _ => throw new ArgumentOutOfRangeException(
+            _ => throw InvalidParentalLeaveParty(
                 nameof(schemeResult.ApplyAndStartAffectedByParentalLeave),
-                schemeResult.ApplyAndStartAffectedByParentalLeave,
-                null)
+                schemeResult.ApplyAndStartAffectedByParentalLeave)
         };
     }
 
@@ -128,10 +127,9 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
 
             null => GetStandardThirtyHoursWhenToApply(schemeResult, child),
 
-            _ => throw new ArgumentOutOfRangeException(
+            _ => throw InvalidParentalLeaveParty(
                 nameof(schemeResult.ApplyAndStartAffectedByParentalLeave),
-                schemeResult.ApplyAndStartAffectedByParentalLeave,
-                null)
+                schemeResult.ApplyAndStartAffectedByParentalLeave)
         };
     }
 
@@ -227,5 +225,13 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             nameof(schemeCode),
             schemeCode,
             UnknownSchemeCodeMessage);
+
+    private static ArgumentOutOfRangeException InvalidParentalLeaveParty(string parameterName, ParentalLeaveParty? value)
+    {
+        return new ArgumentOutOfRangeException(
+            parameterName,
+            value,
+            null);
+    }
 
 }

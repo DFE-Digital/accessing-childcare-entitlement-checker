@@ -303,10 +303,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => child.IsBorn ? _localizer["Starts_Now"] : _localizer["Starts_WhenReturnToWork"],
 
-            _ => throw new ArgumentOutOfRangeException(
+            _ => throw InvalidParentalLeaveParty(
                 nameof(schemeResult.ApplyAndStartAffectedByParentalLeave),
-                schemeResult.ApplyAndStartAffectedByParentalLeave,
-                null)
+                schemeResult.ApplyAndStartAffectedByParentalLeave)
         };
     }
 
@@ -322,10 +321,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => GetStandardThirtyHoursStarts(schemeResult, child),
 
-            _ => throw new ArgumentOutOfRangeException(
+            _ => throw InvalidParentalLeaveParty(
                 nameof(schemeResult.ApplyAndStartAffectedByParentalLeave),
-                schemeResult.ApplyAndStartAffectedByParentalLeave,
-                null)
+                schemeResult.ApplyAndStartAffectedByParentalLeave)
         };
     }
 
@@ -417,10 +415,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => _localizer["Ends_TaxFreeChildcare", child.ChildName],
 
-            _ => throw new ArgumentOutOfRangeException(
+            _ => throw InvalidParentalLeaveParty(
                 nameof(schemeResult.EligibilityEndsWithParentalLeaveFor),
-                schemeResult.EligibilityEndsWithParentalLeaveFor,
-                null)
+                schemeResult.EligibilityEndsWithParentalLeaveFor)
         };
     }
 
@@ -436,10 +433,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => _localizer["Ends_ThirtyHoursForWorkingFamilies", child.ChildName],
 
-            _ => throw new ArgumentOutOfRangeException(
+            _ => throw InvalidParentalLeaveParty(
                 nameof(schemeResult.EligibilityEndsWithParentalLeaveFor),
-                schemeResult.EligibilityEndsWithParentalLeaveFor,
-                null)
+                schemeResult.EligibilityEndsWithParentalLeaveFor)
         };
     }
 
@@ -499,4 +495,12 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
         new(nameof(schemeCode),
             schemeCode,
             UnknownSchemeCodeMessage);
+
+    private static ArgumentOutOfRangeException InvalidParentalLeaveParty(string parameterName, ParentalLeaveParty? value)
+    {
+        return new ArgumentOutOfRangeException(
+            parameterName,
+            value,
+            null);
+    }
 }
