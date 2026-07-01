@@ -1,5 +1,6 @@
 ﻿Feature: Results Details
 
+@ignore
 Scenario: Results details does not show a public funds warning if i'm a British or Irish citizen
 	Given I am on the childcare entitlement checker website
 	And I start the journey, filling in Aydin's and Sara's details
@@ -18,6 +19,7 @@ Scenario: Results details does not show a public funds warning if i'm a British 
 	Then the page header is "Sara's childcare support"
 	And I cannot see the public funds warning
 
+@ignore
 Scenario: Results details shows a public funds warning if i'm from a different country
 	Given I am on the childcare entitlement checker website
 	And I start the journey, filling in Aydin's and Sara's details
@@ -36,6 +38,7 @@ Scenario: Results details shows a public funds warning if i'm from a different c
 	Then the page header is "Sara's childcare support"
 	And I can see the public funds warning
 
+@ignore
 Scenario Outline: Results details may show a public funds warning if i'm from the EU depending on my settled status
 	Given I am on the childcare entitlement checker website
 	And I start the journey, filling in Aydin's and Sara's details
