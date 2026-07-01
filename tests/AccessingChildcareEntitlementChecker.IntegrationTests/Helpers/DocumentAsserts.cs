@@ -54,4 +54,14 @@ public static class DocumentAsserts
         Assert.NotNull(errorMessage);
         return document;
     }
+
+    public static IElement AssertResultsSection(this IDocument document, string childName)
+    {
+        var resultsSection = document
+            .QuerySelectorAll(".app-results-section")
+            .SingleOrDefault(s => s.QuerySelector(".results-name")?.TextContent.Trim() == childName);
+
+        Assert.NotNull(resultsSection);
+        return resultsSection;
+    }
 }

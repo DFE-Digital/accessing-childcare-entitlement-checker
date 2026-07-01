@@ -6,7 +6,7 @@ Background:
     And I click the link to start the journey
 
     
-Scenario: Scenario 1 - ingle parent earning below the threshold, household receives Universal Credit, child is not born yet
+Scenario: Scenario 01 - Single parent earning below the threshold, household receives Universal Credit, child is not born yet
     Given I complete the journey for the use case "Single parent earning below the threshold, household receives Universal Credit, child is not born yet"
     Then the page header is "Check your answers"
     And I should see 3 summary cards
@@ -25,7 +25,7 @@ Scenario: Scenario 1 - ingle parent earning below the threshold, household recei
     When I click on Continue
     Then the page header is "Childcare support you could get"    
 
-Scenario: Scenario 2 - One parent on carer's allowance, child receives DLA
+Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
     Given I complete the journey for the use case "One parent on carer's allowance, child receives DLA"
     Then the page header is "Check your answers"
     And I should see 2 summary cards
@@ -51,7 +51,7 @@ Scenario: Scenario 2 - One parent on carer's allowance, child receives DLA
     When I click on Continue
     Then the page header is "Childcare support you could get"          
     
-Scenario: Scenario 3 - One parent is earning under the threshold, household receives Universal Credit
+Scenario: Scenario 03 - One parent is earning under the threshold, household receives Universal Credit
     Given I complete the journey for the use case "One parent is earning under the threshold, household receives Universal Credit"
     Then the page header is "Check your answers"
     And I should see 1 summary cards
@@ -79,7 +79,7 @@ Scenario: Scenario 3 - One parent is earning under the threshold, household rece
     When I click on Continue
     Then the page header is "Childcare support you could get"     
 
-Scenario: Scenario 4 - One parent aged 18-20, child not yet born
+Scenario: Scenario 04 - One parent aged 18-20, child not yet born
     Given I complete the journey for the use case "One parent aged 18-20, child not yet born"
     Then the page header is "Check your answers"
     And I should see 2 summary cards
@@ -108,7 +108,7 @@ Scenario: Scenario 4 - One parent aged 18-20, child not yet born
     When I click on Continue
     Then the page header is "Childcare support you could get"    
 
-Scenario: Scenario 5 - Single parent who is self employed, child is not born yet
+Scenario: Scenario 05 - Single parent who is self employed, child is not born yet
     Given I complete the journey for the use case "Single parent who is self employed, child is not born yet"
     Then the page header is "Check your answers"
     And I should see 1 summary cards
@@ -127,7 +127,7 @@ Scenario: Scenario 5 - Single parent who is self employed, child is not born yet
     When I click on Continue
     Then the page header is "Childcare support you could get"    
         
-Scenario: Scenario 6 - Both parents under 18, one parent an apprentice, one parent earning under the threshold
+Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one parent earning under the threshold
     Given I complete the journey for the use case "Both parents under 18, one parent an apprentice, one parent earning under the threshold"
     Then the page header is "Check your answers"
     And I should see 1 summary cards
@@ -155,7 +155,7 @@ Scenario: Scenario 6 - Both parents under 18, one parent an apprentice, one pare
     When I click on Continue
     Then the page header is "Childcare support you could get"
 
-Scenario: Scenario 7 - One parent on parental leave
+Scenario: Scenario 07 - One parent on parental leave
     Given I complete the journey for the use case "One parent on parental leave"
     Then the page header is "Check your answers"
     And I should see 2 summary cards
@@ -186,7 +186,7 @@ Scenario: Scenario 7 - One parent on parental leave
     #TODO: Pending leave results page updates
     #Then the page header is "Childcare support you could get"
 
-Scenario: Scenario 8 - Single parent on sick leave, parent is a citizen of a different country
+Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a different country
     Given I complete the journey for the use case "Single parent on sick leave, parent is a citizen of a different country"
     Then the page header is "Check your answers"
     And I should see 1 summary cards
@@ -206,7 +206,7 @@ Scenario: Scenario 8 - Single parent on sick leave, parent is a citizen of a dif
     #TODO: Pending leave results page updates
     #Then the page header is "Childcare support you could get"
 
-Scenario: Scenario 9 - One parent not working, one parent receiving ESA
+Scenario: Scenario 09 - One parent not working, one parent receiving ESA
     Given I complete the journey for the use case "One parent not working, one parent receiving ESA"
     Then the page header is "Check your answers"
     And I should see 2 summary cards
