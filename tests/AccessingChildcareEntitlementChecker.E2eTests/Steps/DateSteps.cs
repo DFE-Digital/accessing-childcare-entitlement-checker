@@ -48,6 +48,17 @@ internal class DateSteps(IPage page)
             .ToBeVisibleAsync();
     }
 
+    [Then("the date entry input is empty")]
+    public async Task ThenTheDateEntryInputIsEmpty()
+    {
+        await Expect(page.GetByLabel("Day"))
+            .ToHaveValueAsync(string.Empty);
+        await Expect(page.GetByLabel("Month"))
+            .ToHaveValueAsync(string.Empty);
+        await Expect(page.GetByLabel("Year"))
+            .ToHaveValueAsync(string.Empty);
+    }
+
     private async Task EnterDate(DateTime date)
     {
         await EnterDate(date.Day.ToString(), date.Month.ToString(), date.Year.ToString());

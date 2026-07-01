@@ -99,6 +99,17 @@ Scenario: Change my partner's employment status and age to trigger a different t
 		| On average, does your partner earn £174 a week or more before tax? | Yes      |
 		| Is your partner's adjusted net income more than £100,000 a year?   | No       |
 
+Scenario: Change my weekly earnings
+	When I click the Change link in the "Your details" summary list for "On average, do you earn £128 a week or more before tax?"
+	And I answer the questions as follows:
+		| Question                                                | Answer |
+		| On average, do you earn £128 a week or more before tax? | No     |
+	Then the page header is "Check your answers"
+	And I should see a summary list for "Your details" with the following summary:
+		| Question                                                | Answer |
+		| On average, do you earn £128 a week or more before tax? | No     |
+	And I do not see a summary row "Is your adjusted net income more than £100,000 a year?"
+
 Scenario: Partner details are not shown when I don't have a partner
 	When I click the Change link in the "Your details" summary list for "Do you live with a partner?"
 	And I select the "No" radio button

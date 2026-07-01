@@ -20,6 +20,7 @@ Scenario: Page load
 		| Education, health and care (EHC) plan |
 		| Personal Independence Payment (PIP)   |
 		| No, none of these apply               |
+	And no checkboxes are selected
 
 Scenario: Checkbox selection
 	When I select the "Armed Forces Independence Payment" checkbox

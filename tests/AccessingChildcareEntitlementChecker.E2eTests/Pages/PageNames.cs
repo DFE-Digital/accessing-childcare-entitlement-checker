@@ -11,7 +11,7 @@ internal static class PageNames
     public const string ParentalLeave = "Which child are you on leave for?";
     public const string WorkStatus = "How would you describe your work status?";
     public const string SelfEmployedDuration = "Have you been self-employed for less than 12 months?";
-    public const string WeeklyEarnings = "On average, do you earn";
+    public const string WeeklyEarnings = "On average, __PLACEHOLDER__ you earn __PLACEHOLDER__";
     public const string YearlyEarnings = "Is your adjusted net income more than £100,000 a year?";
     public const string UniversalCredit = "Does your household receive universal credit?";
     public const string Benefits = "Do you get any of these benefits?";
@@ -27,7 +27,7 @@ internal static class PageNames
     public const string PartnerParentalLeave = "Which child is your partner on leave for?";
     public const string PartnerWorkStatus = "How would you describe your partner's work status?";
     public const string PartnerSelfEmployedDuration = "Has your partner been self-employed for less than 12 months?";
-    public const string PartnerWeeklyEarnings = "On average, does your partner earn";
+    public const string PartnerWeeklyEarnings = "On average, __PLACEHOLDER__ your partner earn __PLACEHOLDER__";
     public const string PartnerYearlyEarnings = "Is your partner's adjusted net income more than £100,000 a year?";
     public const string PartnerNationality = "Which of these best describes your partners nationality?";
     public const string PartnerSettledStatus = "Does your partner have settled or pre-settled status under the EU Settlement Scheme?";

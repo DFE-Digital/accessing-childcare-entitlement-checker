@@ -25,6 +25,7 @@ Scenario: Page load
 		| Yes                                                              |
 		| No                                                               |
 		| I applied before 1 July 2021 and am still waiting for a decision |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	When I select the "Yes" radio button

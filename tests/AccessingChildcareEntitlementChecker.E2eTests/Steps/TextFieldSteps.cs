@@ -1,5 +1,6 @@
 using Microsoft.Playwright;
 using Reqnroll;
+using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
@@ -15,6 +16,13 @@ internal class TextFieldSteps(IPage page)
     [Then("I should see a text box with the label {string}")]
     public async Task ThenIShouldSeeATextBoxWithTheLabelString(string label)
     {
-        await page.GetByLabel(label).IsVisibleAsync();
+        await Expect(page.GetByLabel(label)).ToBeVisibleAsync();
+    }
+
+    [Then("the text box with the label {string} is empty")]
+    public async Task ThenTheTextBoxWithTheLabelIsEmpty(string label)
+    {
+        await Expect(page.GetByLabel(label))
+                    .ToHaveValueAsync(string.Empty);
     }
 }

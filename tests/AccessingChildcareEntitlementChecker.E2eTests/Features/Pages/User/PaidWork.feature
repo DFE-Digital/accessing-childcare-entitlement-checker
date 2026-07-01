@@ -17,6 +17,7 @@ Scenario: Page load
 		| Yes, but I am on parental leave |
 		| Yes, but I am on sick leave     |
 		| No, I am not in work            |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	Given I answer "What is your nationality?" as "British or Irish citizen"
