@@ -1,0 +1,71 @@
+@inject IViewLocalizer Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@using Microsoft.AspNetCore.Mvc.Localization
+@model AccessingChildcareEntitlementChecker.Web.Models.Results.ResultsSummaryViewModel
+
+@{
+    var title = Localizer["You are not currently eligible for childcare support"];
+    ViewData["Title"] = title;
+}
+
+<link rel="stylesheet" href="~/css/results.css" />
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="Summary" asp-action="CheckAnswers">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 id="top" class="govuk-heading-xl">@title</h1>
+        
+        <p class="govuk-body">
+            @Localizer["Based on your answers, you do not meet the criteria for the childcare support this service checks."]
+        </p>
+
+        <p class="govuk-body">
+            @Localizer["This service checks your eligibility for:"]
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@Localizer["Free Childcare for Working Parents"]</li>
+            <li>@Localizer["Early learning for 2-year-olds"]</li>
+            <li>@Localizer["15 hours childcare for 3 and 4-year-olds"]</li>
+            <li>@Localizer["Tax-Free Childcare"]</li>
+            <li>@Localizer["Universal Credit childcare support"]</li>
+        </ul>
+
+        <p class="govuk-body">
+            To understand more about this support and when you may be eligible,
+            <a href="https://www.gov.uk/get-childcare"
+               class="govuk-link"
+               target="_blank"
+               rel="noopener noreferrer">
+                @Localizer["read the step by step guide about childcare (opens in new tab)."]
+            </a>
+        </p>
+
+        <p class="govuk-body">
+            @Localizer["You should re-check if your circumstances change as this may change the support you can get."]
+        </p>
+
+        <h2 class="govuk-heading-l">
+            @Localizer["Get help and advice about childcare support"]
+        </h2>
+
+        <p class="govuk-body">
+            @Localizer["Family hubs offer local support for parents and carers. They can help explain childcare options and find support in your area."]
+        </p>
+
+        <p class="govuk-body">
+            <a class="govuk-link"
+               href="https://www.gov.uk/find-family-hub-local-area"
+               target="_blank"
+               rel="noopener noreferrer">
+                @Localizer["Find out if there's a family hub in your area (opens in new tab)"]
+            </a>
+        </p>
+    </div>
+</div>

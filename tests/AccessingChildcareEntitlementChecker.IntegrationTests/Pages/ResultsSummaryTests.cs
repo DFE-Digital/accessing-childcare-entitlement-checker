@@ -26,6 +26,13 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     public async Task Get_Results_Has_Two_Print_Buttons()
     {
         var state = new JourneyState();
+        state.CountryOfResidence = CountryOfResidence.England;
+        state.Children["child-1"] = new Child("child-1", "Jack")
+        {
+            BirthStatus = BirthStatus.Born,
+            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            BornRelationship = Relationship.Parent
+        };
         using var client = factory.CreateClientWithJourneyState(state);
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
@@ -40,6 +47,13 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     public async Task Get_Results_ReturnsView()
     {
         var state = new JourneyState();
+        state.CountryOfResidence = CountryOfResidence.England;
+        state.Children["child-1"] = new Child("child-1", "Jack")
+        {
+            BirthStatus = BirthStatus.Born,
+            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            BornRelationship = Relationship.Parent
+        };
         using var client = factory.CreateClientWithJourneyState(state);
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
@@ -160,5 +174,62 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             Assert.DoesNotContain(WarningText, doc.Body?.TextContent);
         }
+    }
+
+    [Fact]
+    public async Task Get_Results_Displays_With_Mixed_Eligibility()
+    {
+        var state = new JourneyState();
+        state.CountryOfResidence = CountryOfResidence.England;
+        state.Children["child-1"] = new Child("child-1", "CHILD-1")
+        {
+            BirthStatus = BirthStatus.Born,
+            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            BornRelationship = Relationship.Parent
+        };
+
+        state.Children["child-2"] = new Child("child-2", "CHILD-2")
+        {
+            BirthStatus = BirthStatus.Born,
+            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
+            BornRelationship = Relationship.Parent
+        };
+
+        using var client = factory.CreateClientWithJourneyState(state);
+        var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        doc.AssertResultsSection("CHILD-1")
+            .AssertContainsText("This is a summary of CHILD-1's childcare support.");
+
+        doc.AssertResultsSection("CHILD-2")
+            .AssertContainsText("You cannot currently get any of the childcare support this service checks for CHILD-2.");
+    }
+
+    [Fact]
+    public async Task Get_Results_Displays_With_No_Eligibility()
+    {
+        var state = new JourneyState();
+        state.CountryOfResidence = CountryOfResidence.England;
+        state.Children["child-1"] = new Child("child-1", "CHILD-1")
+        {
+            BirthStatus = BirthStatus.Born,
+            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
+            BornRelationship = Relationship.Parent
+        };
+
+        state.Children["child-2"] = new Child("child-2", "CHILD-2")
+        {
+            BirthStatus = BirthStatus.Born,
+            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
+            BornRelationship = Relationship.Parent
+        };
+
+        using var client = factory.CreateClientWithJourneyState(state);
+        var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+        doc.AssertHeader("You are not currently eligible for childcare support");
     }
 }
