@@ -48,7 +48,8 @@ public class EntitlementRulesEngine
 
         return new EntitlementResponse
         {
-            ChildResults = childResults
+            ChildResults = childResults,
+            HasAccessToPublicFunds = context.Household.HasAccessToPublicFunds,
         };
     }
 }

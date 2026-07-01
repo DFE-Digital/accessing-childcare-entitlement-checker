@@ -33,7 +33,12 @@
         
         <p class="govuk-body">
             @Localizer["You may not be able to use some of this straight away."]
-        </p> 
+        </p>
+
+        @if (!Model.HouseholdHasAccessToPublicFunds)
+        {
+            <partial name="_PublicFundsWarning" />
+        }
 
         @foreach (var section in Model.Sections)
         {

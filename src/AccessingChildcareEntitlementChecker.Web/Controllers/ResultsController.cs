@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.CodeAnalysis;
-using AccessingChildcareEntitlementChecker.RulesEngine.Services;
+﻿using AccessingChildcareEntitlementChecker.RulesEngine.Services;
 using AccessingChildcareEntitlementChecker.Web.Mappers;
-using AccessingChildcareEntitlementChecker.Web.Models.Results;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
@@ -58,7 +57,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
                 return BadRequest();
             }
 
-            var resultsDetailsViewModel = _resultsDetailsModelMapper.Map(child);
+            var resultsDetailsViewModel = _resultsDetailsModelMapper.Map(child, response.HasAccessToPublicFunds);
             return View(resultsDetailsViewModel);
         }
     }

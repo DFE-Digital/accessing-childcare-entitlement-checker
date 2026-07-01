@@ -7,6 +7,7 @@ public class ResultsDetailsViewModel
     public string ChildId { get; set; } = string.Empty;
     public string ChildName { get; set; } = string.Empty;
     public List<SchemeSectionViewModel> Sections { get; set; } = [];
+    public bool HouseholdHasAccessToPublicFunds { get; set; }
 }
 
 public class SchemeSectionViewModel

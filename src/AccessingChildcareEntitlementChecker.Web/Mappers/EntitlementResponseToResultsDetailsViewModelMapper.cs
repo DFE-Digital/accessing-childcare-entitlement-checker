@@ -19,13 +19,14 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             typeof(ResultsController).Assembly.GetName().Name!);
     }
 
-    public ResultsDetailsViewModel Map(ChildResultDto child)
+    public ResultsDetailsViewModel Map(ChildResultDto child, bool householdHasAccessToPublicFunds)
     {
         return new ResultsDetailsViewModel()
         {
             ChildId = child.ChildId,
             ChildName = child.ChildName,
-            Sections = GetSections(child)
+            Sections = GetSections(child),
+            HouseholdHasAccessToPublicFunds = householdHasAccessToPublicFunds,
         };
 
     }

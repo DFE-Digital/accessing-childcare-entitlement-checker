@@ -52,3 +52,7 @@
 .app-results-scheme {
     margin-top: 70px;
 }
+
+.app-inset-text--warning {
+    border-left-color: #d4351c;
+}
