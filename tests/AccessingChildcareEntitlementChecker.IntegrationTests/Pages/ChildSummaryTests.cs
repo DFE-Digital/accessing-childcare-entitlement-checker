@@ -57,7 +57,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     /// </summary>
     /// <returns>Task representing the result.</returns>
     [Theory]
-    [InlineData(OtherChildId, $"/children/{ChildId}/expectant-childs-due-date")]
+    [InlineData(OtherChildId, $"/children/{OtherChildId}/expectant-childs-due-date")]
     [InlineData(ChildId, $"/children/{ChildId}/child-benefits")]
     public async Task Get_BackLink_Is_To_Specified_Child(string arrivedFromChildId, string expectedUrl)
     {
