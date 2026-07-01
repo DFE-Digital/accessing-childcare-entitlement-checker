@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses;
 using AccessingChildcareEntitlementChecker.RulesEngine.Helpers;
 using AccessingChildcareEntitlementChecker.RulesEngine.Types;
@@ -10,6 +11,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Mappers;
 public class EntitlementResponseToResultsDetailsViewModelMapper
 {
     private const string UnknownSchemeCodeMessage = "Unknown scheme code";
+    private const string StartsNowKey = "Starts_Now";
     private readonly IStringLocalizer _localizer;
 
     public EntitlementResponseToResultsDetailsViewModelMapper(
@@ -173,9 +175,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => child.IsBorn ? _localizer["WhenToApply_Now"] : _localizer["WhenToApply_WhenBorn"],
 
-            _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult),
-                schemeResult.ApplyAndStartAffectedByParentalLeave)
+            _ => throw new UnreachableException(
+                $"Unsupported parental leave party: " +
+                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
         };
     }
 
@@ -191,9 +193,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => GetStandardThirtyHoursWhenToApply(schemeResult, child),
 
-            _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult),
-                schemeResult.ApplyAndStartAffectedByParentalLeave)
+            _ => throw new UnreachableException(
+                $"Unsupported parental leave party: " +
+                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
         };
     }
 
@@ -269,7 +271,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
     private string GetStarts(SchemeResultDto schemeResult, ChildResultDto child)
     {
-        var startsNow = _localizer["Starts_Now"];
+        var startsNow = _localizer[StartsNowKey];
 
         return schemeResult.SchemeCode switch
         {
@@ -281,7 +283,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             SchemeCode.ThirtyHoursForWorkingFamilies => GetThirtyHoursStarts(schemeResult, child),
 
-            SchemeCode.FifteenHoursForDisadvantagedChildren => GetFifteenHoursForDisadvantagedChildrenStarts(schemeResult, child),
+            SchemeCode.FifteenHoursForDisadvantagedChildren => GetFifteenHoursForDisadvantagedChildrenStarts(schemeResult),
 
             SchemeCode.FifteenHoursUniversal => GetFifteenHoursUniversalStarts(schemeResult, child),
 
@@ -299,11 +301,11 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             ParentalLeaveParty.UserAndPartner => _localizer["Starts_TaxFreeChildcare_UserAndPartnerParentalLeave"],
 
-            null => child.IsBorn ? _localizer["Starts_Now"] : _localizer["Starts_WhenReturnToWork"],
+            null => child.IsBorn ? _localizer[StartsNowKey] : _localizer["Starts_WhenReturnToWork"],
 
-            _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult),
-                schemeResult.ApplyAndStartAffectedByParentalLeave)
+            _ => throw new UnreachableException(
+                $"Unsupported parental leave party: " +
+                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
         };
     }
 
@@ -319,9 +321,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => GetStandardThirtyHoursStarts(schemeResult, child),
 
-            _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult),
-                schemeResult.ApplyAndStartAffectedByParentalLeave)
+            _ => throw new UnreachableException(
+                $"Unsupported parental leave party: " +
+                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
         };
     }
 
@@ -346,7 +348,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
         return _localizer["Starts_FromDate", useFrom];
     }
 
-    private string GetFifteenHoursForDisadvantagedChildrenStarts(SchemeResultDto schemeResult, ChildResultDto child)
+    private string GetFifteenHoursForDisadvantagedChildrenStarts(SchemeResultDto schemeResult)
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
 
@@ -356,7 +358,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
         if (schemeResult.EligibleNow && useFrom < today)
         {
-            return _localizer["Starts_Now"];
+            return _localizer[StartsNowKey];
         }
 
         return _localizer["Starts_FromDate", useFrom];
@@ -371,7 +373,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
         if (schemeResult.EligibleNow)
         {
-            return _localizer["Starts_Now"];
+            return _localizer[StartsNowKey];
         }
 
         if (schemeResult.EligibleInFuture)
@@ -413,9 +415,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => _localizer["Ends_TaxFreeChildcare", child.ChildName],
 
-            _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult),
-                schemeResult.EligibilityEndsWithParentalLeaveFor)
+            _ => throw new UnreachableException(
+                $"Unsupported parental leave party: " +
+                $"{schemeResult.EligibilityEndsWithParentalLeaveFor}")
         };
     }
 
@@ -431,9 +433,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => _localizer["Ends_ThirtyHoursForWorkingFamilies", child.ChildName],
 
-            _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult),
-                schemeResult.EligibilityEndsWithParentalLeaveFor)
+            _ => throw new UnreachableException(
+                $"Unsupported parental leave party: " +
+                $"{schemeResult.EligibilityEndsWithParentalLeaveFor}")
         };
     }
 
@@ -493,9 +495,4 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
         new(nameof(schemeCode),
             schemeCode,
             UnknownSchemeCodeMessage);
-
-    private static ArgumentOutOfRangeException InvalidParentalLeaveParty(string parameterName, ParentalLeaveParty? value)
-    {
-        return new ArgumentOutOfRangeException(parameterName, value, "Unsupported parental leave party.");
-    }
 }

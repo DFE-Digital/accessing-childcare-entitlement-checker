@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses;
 using AccessingChildcareEntitlementChecker.RulesEngine.Types;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
@@ -109,9 +110,9 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
                 ? _localizer["WhenToApply_Now"]
                 : _localizer["WhenToApply_WhenBorn"],
 
-            _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult.ApplyAndStartAffectedByParentalLeave),
-                schemeResult.ApplyAndStartAffectedByParentalLeave)
+            _ => throw new UnreachableException(
+                $"Unsupported parental leave party: " +
+                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
         };
     }
 
@@ -127,9 +128,9 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
 
             null => GetStandardThirtyHoursWhenToApply(schemeResult, child),
 
-            _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult.ApplyAndStartAffectedByParentalLeave),
-                schemeResult.ApplyAndStartAffectedByParentalLeave)
+            _ => throw new UnreachableException(
+                $"Unsupported parental leave party: " +
+                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
         };
     }
 
@@ -225,13 +226,4 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             nameof(schemeCode),
             schemeCode,
             UnknownSchemeCodeMessage);
-
-    private static ArgumentOutOfRangeException InvalidParentalLeaveParty(string parameterName, ParentalLeaveParty? value)
-    {
-        return new ArgumentOutOfRangeException(
-            parameterName,
-            value,
-            null);
-    }
-
 }
