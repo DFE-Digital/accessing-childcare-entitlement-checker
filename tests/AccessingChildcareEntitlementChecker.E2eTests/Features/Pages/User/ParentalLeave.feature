@@ -17,6 +17,7 @@ Scenario: Page load
 		| Sara                   |
 		| Aydin                  |
 		| None of these children |
+	And no checkboxes are selected
 
 Scenario: Checkbox selection
 	When I select the "Sara" checkbox

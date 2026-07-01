@@ -12,6 +12,7 @@ Scenario: Page load
 		| Option |
 		| Yes    |
 		| No     |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	Given I fill in my own details

@@ -25,6 +25,19 @@ public class PartnerParentalLeaveViewModelTests
     }
 
     [Fact]
+    public void Constructor_InitializesPropertiesCorrectly()
+    {
+        _journeyState.PartnerParentalLeaveChildrenIds = new List<string> { "child1", "child2" };
+        var backLink = "/previous-page";
+        var returnTo = "some-return-to-value";
+        var model = new PartnerParentalLeaveViewModel(_journeyState, backLink, returnTo);
+        Assert.Equal(backLink, model.BackLink);
+        Assert.Equal(returnTo, model.ReturnTo);
+        Assert.Equal(_journeyState.PartnerParentalLeaveChildrenIds, model.PartnerParentalLeaveChildrenIds);
+        Assert.Equal(_journeyState.Children.Values.ToList(), model.Children);
+    }
+
+    [Fact]
     public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
     {
         var model = new PartnerParentalLeaveViewModel()

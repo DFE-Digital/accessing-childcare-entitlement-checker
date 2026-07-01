@@ -26,6 +26,7 @@ Scenario: Page load
 		| Limited capability for work related activity (LCWRA) |
 		| Severe Disablement Allowance                         |
 		| No, I do not get any of these benefits               |
+	And no checkboxes are selected
 
 Scenario: Checkbox selection
 	Given I answer questions as follows:

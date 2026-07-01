@@ -20,6 +20,7 @@ Scenario: Page load
 		| A workplace nursery scheme             |
 		| Your employer arranges with a provider |
 		| Through a salary sacrifice scheme      |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	When I select the "A workplace nursery scheme" radio button

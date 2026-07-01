@@ -12,6 +12,7 @@ Scenario: Page load
 		| Under 18   |
 		| 18 to 20   |
 		| 21 or over |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	When I select the "Under 18" radio button

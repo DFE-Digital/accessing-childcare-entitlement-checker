@@ -19,6 +19,7 @@ Scenario: Page load
 		| Option |
 		| Yes    |
 		| No     |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	When I select the "Yes" radio button

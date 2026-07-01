@@ -16,6 +16,7 @@ Scenario: Page load
 		| Option |
 		| Yes    |
 		| No     |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	Given I answer "Are you in paid work?" as "No, I am not in work"

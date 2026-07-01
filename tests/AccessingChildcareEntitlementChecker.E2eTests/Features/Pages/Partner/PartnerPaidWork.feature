@@ -18,6 +18,7 @@ Scenario: Page load
 		| Yes, but they are on parental leave |
 		| Yes, but they are on sick leave     |
 		| No, they are not in work            |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	Given I fill in my own details
