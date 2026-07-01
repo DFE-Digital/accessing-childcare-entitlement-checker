@@ -4,7 +4,7 @@ namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
 internal class Scenario2 : IUseCase
 {
-    public string Name => "One parent on carer's allowance, Child receives DLA";
+    public string Name => "One parent on carer's allowance, child receives DLA";
 
     public IEnumerable<JourneyStep> GetJourney()
     {
