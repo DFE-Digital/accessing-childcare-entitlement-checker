@@ -40,9 +40,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             var response = _rulesEngine.Evaluate(request, DateOnly.FromDateTime(DateTime.Today));
 
-            var resultsSummaryViewModel = _resultsSummaryMapper.Map(response);
-
-            return View(resultsSummaryViewModel);
+            return response.ChildResults.SelectMany(c => c.Schemes).Any()
+                ? View(_resultsSummaryMapper.Map(response))
+                : View("ResultsNotEligible");
         }
 
         [HttpGet]

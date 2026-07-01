@@ -47,6 +47,25 @@
                 <h2 class="govuk-heading-l results-name">
                     @child.Name
                 </h2>
+
+                @if (child.Schemes.Count == 0)
+                {
+                    <p class="govuk-body">
+                        @Localizer["You cannot currently get any of the childcare support this service checks for {0}.", child.Name]
+                    </p>
+
+                    <p class="govuk-body">
+                        @Localizer["To understand more about the support this service checks and when you may be eligible,"]
+                        <a href="https://www.gov.uk/get-childcare"
+                           class="govuk-link"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            @Localizer["read the step by step guide about childcare (opens in new tab)."]
+                        </a>
+                    </p>
+
+                    continue;
+                }
                 
                 <p class="govuk-body">
                     @Localizer["This is a summary of {0}'s childcare support.", child.Name]
