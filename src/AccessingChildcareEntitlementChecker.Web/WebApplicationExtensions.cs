@@ -25,11 +25,9 @@ public static class WebApplicationExtensions
         app.MapControllerRoute(name: "children-childId-has-the-child-been-born", pattern: "children/{childId}/has-the-child-been-born", defaults: new { controller = Introduction, action = nameof(IntroductionController.IsChildBorn) });
 
         app.MapControllerRoute(name: "children-childId-childs-date-of-birth", pattern: "children/{childId}/childs-date-of-birth", defaults: new { controller = BornChildDetails, action = nameof(BornChildDetailsController.ChildBirthDate) });
-        app.MapControllerRoute(name: "children-childId-relationship-to-child", pattern: "children/{childId}/relationship-to-child", defaults: new { controller = BornChildDetails, action = nameof(BornChildDetailsController.ChildRelationship) });
         app.MapControllerRoute(name: "children-childId-child-benefits", pattern: "children/{childId}/child-benefits", defaults: new { controller = BornChildDetails, action = nameof(BornChildDetailsController.ChildSupport) });
 
         app.MapControllerRoute(name: "children-childId-expectant-childs-due-date", pattern: "children/{childId}/expectant-childs-due-date", defaults: new { controller = ExpectedChildDetails, action = nameof(ExpectedChildDetailsController.ChildDueDate) });
-        app.MapControllerRoute(name: "children-childId-relationship-to-expectant-child", pattern: "children/{childId}/relationship-to-expectant-child", defaults: new { controller = ExpectedChildDetails, action = nameof(ExpectedChildDetailsController.ExpectedChildRelationship) });
 
         app.MapControllerRoute(name: "children-check-childs-details", pattern: "children/check-childs-details", defaults: new { controller = Summary, action = nameof(SummaryController.CheckChildDetails) });
         app.MapControllerRoute(name: "children-childId-remove", pattern: "children/{childId?}/remove", defaults: new { controller = Summary, action = nameof(SummaryController.Remove) });

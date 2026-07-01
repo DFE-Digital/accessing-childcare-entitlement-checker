@@ -35,12 +35,10 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
     }
 
     [Theory]
-    [InlineData(null, null, $"/children/{ChildId}/relationship-to-expectant-child")]
-    [InlineData(ReturnTo.CheckAnswers, null, $"/children/{ChildId}/relationship-to-expectant-child")]
-    [InlineData(ReturnTo.CheckChildDetails, null, $"/children/{ChildId}/relationship-to-expectant-child")]
-    [InlineData(ReturnTo.CheckAnswers, Relationship.Parent, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckChildDetails, Relationship.Parent, "/children/check-childs-details")]
-    public async Task Post_Valid_Redirects(string? returnTo, Relationship? bornRelationship, string continueUrl)
+    [InlineData(null, $"/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, $"/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckChildDetails, $"/children/check-childs-details")]
+    public async Task Post_Valid_Redirects(string? returnTo, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -49,9 +47,6 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
                     {
                         ChildId,
                         new Child(ChildId, "Sara")
-                        {
-                            ExpectedRelationship = bornRelationship
-                        }
                     }
                 }
         });

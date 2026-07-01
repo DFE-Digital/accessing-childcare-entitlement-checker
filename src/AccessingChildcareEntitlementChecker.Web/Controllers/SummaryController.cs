@@ -128,12 +128,10 @@ public class SummaryController : Controller
     {
         var born = new SummaryRowFactory(MetadataProvider, "BornChildDetails", _stringLocalizerFactory)
             .Add((ChildBirthDateViewModel m) => m.ChildBirthDate, child.BirthDate, nameof(BornChildDetailsController.ChildBirthDate))
-            .Add((ChildRelationshipViewModel m) => m.Relationship, child.BornRelationship, nameof(BornChildDetailsController.ChildRelationship))
             .Add((ChildSupportViewModel m) => m.ChildSupportOptions, child.ChildSupportOptions, nameof(BornChildDetailsController.ChildSupport));
 
         var expected = new SummaryRowFactory(MetadataProvider, "ExpectedChildDetails", _stringLocalizerFactory)
-            .Add((ChildDueDateViewModel m) => m.ChildDueDate, child.DueDate, nameof(ExpectedChildDetailsController.ChildDueDate))
-            .Add((ExpectedChildRelationshipViewModel m) => m.ExpectedChildRelationship, child.ExpectedRelationship, nameof(ExpectedChildDetailsController.ExpectedChildRelationship));
+            .Add((ChildDueDateViewModel m) => m.ChildDueDate, child.DueDate, nameof(ExpectedChildDetailsController.ChildDueDate));
 
         var summaryRows = born.ViewModels.Concat(expected.ViewModels).ToList().AsReadOnly();
         return new ChildSummaryViewModel(child.ChildId, child.Name, returnTo, summaryRows);
@@ -157,7 +155,7 @@ public class SummaryController : Controller
         }
         else if (child?.BirthStatus == BirthStatus.Due)
         {
-            return this.Url.ActionOrThrow(nameof(ExpectedChildDetailsController.ExpectedChildRelationship), ExpectedChildDetailsController.Name, new { childId = child.ChildId });
+            return this.Url.ActionOrThrow(nameof(ExpectedChildDetailsController.ChildDueDate), ExpectedChildDetailsController.Name, new { childId = child.ChildId });
         }
 
         return this.Url.ActionOrThrow(nameof(IntroductionController.ChildName), IntroductionController.Name);

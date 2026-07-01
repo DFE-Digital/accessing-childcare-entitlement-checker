@@ -9,7 +9,6 @@ Background:
 		| Add details about your children    | Sara      |
 		| Has this child been born yet?      | Yes       |
 		| What is Sara's date of birth?      | Yesterday |
-		| What is your relationship to Sara? | Parent    |
 
 Scenario: Page load
 	When the page header is "Does Sara get any of the following support?"
@@ -59,4 +58,4 @@ Scenario: Continue with none applicable
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "What is your relationship to Sara?"
+	Then the page header is "What is Sara's date of birth?"

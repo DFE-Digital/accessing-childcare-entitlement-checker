@@ -42,8 +42,6 @@ internal static class PageNames
     public const string ChildIsBorn = "Has this child been born yet?";
     public const string ChildDueDate = "What is this child's due date?";
     public const string ChildBirthDate = "What is __PLACEHOLDER__'s date of birth?";
-    public const string ChildRelationship = "What is your relationship to __PLACEHOLDER__?";
-    public const string ExpectedChildRelationship = "What will your relationship be to this child?";
     public const string ChildSupport = "Does __PLACEHOLDER__ get any of the following support?";
 
     public static System.Text.RegularExpressions.Regex GetRegexForPattern(string pattern)

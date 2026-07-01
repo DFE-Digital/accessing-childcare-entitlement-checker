@@ -50,46 +50,6 @@ public class BornChildDetailsController : Controller
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
 
-        var nextAnswerMissing = child.BornRelationship == null;
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectToAction(
-            nameof(ChildRelationship),
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
-    }
-
-    [HttpGet]
-    public IActionResult ChildRelationship(string childId, string? returnTo = null)
-    {
-        if (!_journeyState.Children.TryGetValue(childId, out var child))
-        {
-            return NotFound();
-        }
-
-        var backLink = GetChildRelationshipBackLink(childId, returnTo);
-        return View(new ChildRelationshipViewModel(child, backLink, returnTo));
-    }
-
-    [HttpPost]
-    public IActionResult ChildRelationship(ChildRelationshipViewModel model)
-    {
-        if (!_journeyState.Children.TryGetValue(model.ChildId, out var child))
-        {
-            return NotFound();
-        }
-
-        if (!ModelState.IsValid)
-        {
-            model.ChildName = child.Name;
-            model.BackLink = GetChildRelationshipBackLink(model.ChildId, model.ReturnTo);
-            return View(model);
-        }
-
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
         var nextAnswerMissing = child.ChildSupportOptions.Count == 0;
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
@@ -154,16 +114,6 @@ public class BornChildDetailsController : Controller
             new { childId });
     }
 
-    private string GetChildRelationshipBackLink(string childId, string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
-        {
-            return url;
-        }
-
-        return this.Url.ActionOrThrow(nameof(ChildBirthDate), new { childId });
-    }
-
     private string GetChildSupportBackLink(string childId, string? returnTo)
     {
         if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
@@ -171,6 +121,6 @@ public class BornChildDetailsController : Controller
             return url;
         }
 
-        return this.Url.ActionOrThrow(nameof(ChildRelationship), new { childId });
+        return this.Url.ActionOrThrow(nameof(ChildBirthDate), new { childId });
     }
 }

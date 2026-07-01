@@ -96,7 +96,6 @@ public class JourneyStateToEntitlementRequestMapper
             BirthStatus = MapBirthStatus(child.BirthStatus),
             DateOfBirth = child.BirthDate,
             DueDate = child.DueDate,
-            RelationshipToChild = MapRelationship(child),
             ChildRelatedBenefits = MapChildBenefits(child)
         };
     }
@@ -328,32 +327,6 @@ public class JourneyStateToEntitlementRequestMapper
 
             _ => throw new ArgumentOutOfRangeException(
                 nameof(birthStatus))
-        };
-    }
-
-    private static RelationshipToChild? MapRelationship(
-        Child child)
-    {
-        var relationship =
-            child.BirthStatus == Web.Models.BirthStatus.Born
-                ? child.BornRelationship
-                : child.ExpectedRelationship;
-
-        return relationship switch
-        {
-            Relationship.Parent =>
-                RelationshipToChild.Parent,
-
-            Relationship.GuardianOrCarer =>
-                RelationshipToChild.Guardian,
-
-            Relationship.FosterParent =>
-                RelationshipToChild.FosterParent,
-
-            null => null,
-
-            _ => throw new InvalidOperationException(
-                $"Unexpected relationship value: {relationship}")
         };
     }
 

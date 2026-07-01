@@ -17,7 +17,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     /// </summary>
     /// <returns>Task representing the result.</returns>
     [Theory]
-    [InlineData(BirthStatus.Due, $"/children/{OtherChildId}/relationship-to-expectant-child")]
+    [InlineData(BirthStatus.Due, $"/children/check-childs-details")]
     [InlineData(BirthStatus.Born, $"/children/{OtherChildId}/child-benefits")]
     public async Task Get_BackLink_Is_To_Last_Child(BirthStatus birthStatus, string expectedUrl)
     {
@@ -55,11 +55,10 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     /// </summary>
     /// <returns>Task representing the result.</returns>
     [Theory]
-    [InlineData(OtherChildId, $"/children/{OtherChildId}/relationship-to-expectant-child")]
+    [InlineData(OtherChildId, $"/children/check-childs-details")]
     [InlineData(ChildId, $"/children/{ChildId}/child-benefits")]
     public async Task Get_BackLink_Is_To_Specified_Child(string arrivedFromChildId, string expectedUrl)
     {
-
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>

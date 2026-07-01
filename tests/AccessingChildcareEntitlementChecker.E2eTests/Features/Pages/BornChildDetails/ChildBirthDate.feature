@@ -40,12 +40,12 @@ Scenario: Continue without entering a date
 Scenario: Continue with a past date
 	When I enter yesterdays date
 	And I click on Continue
-	Then the page header is "What is your relationship to Sara?"
+	Then the page header is "Does Sara get any of the following support?"
 
 Scenario: Continue with todays date
 	When I enter todays date
 	And I click on Continue
-	Then the page header is "What is your relationship to Sara?"
+	Then the page header is "Does Sara get any of the following support?"
 
 Scenario: Back navigation
 	When I click the back link

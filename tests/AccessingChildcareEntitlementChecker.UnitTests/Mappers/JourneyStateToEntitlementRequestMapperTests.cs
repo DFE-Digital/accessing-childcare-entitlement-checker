@@ -22,7 +22,6 @@ public class JourneyStateToEntitlementRequestMapperTests
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = new DateOnly(2023, 1, 1),
-            BornRelationship = Relationship.Parent,
             ChildSupportOptions =
             [
                 ChildSupport.DisabilityLivingAllowance
@@ -107,7 +106,6 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Equal("Jack", child.Name);
         Assert.Equal(RulesBirthStatus.Born, child.BirthStatus);
         Assert.Equal(new DateOnly(2023, 1, 1), child.DateOfBirth);
-        Assert.Equal(RelationshipToChild.Parent, child.RelationshipToChild);
         Assert.Contains(ChildRelatedBenefit.DisabilityLivingAllowance, child.ChildRelatedBenefits);
     }
 
@@ -120,7 +118,6 @@ public class JourneyStateToEntitlementRequestMapperTests
         {
             BirthStatus = BirthStatus.Due,
             DueDate = new DateOnly(2026, 1, 1),
-            ExpectedRelationship = Relationship.FosterParent,
             ChildSupportOptions =
             [
                 ChildSupport.ArmedForcesIndependencePayment,
@@ -175,7 +172,6 @@ public class JourneyStateToEntitlementRequestMapperTests
         var mappedChild = Assert.Single(result.Children);
 
         Assert.Equal(RulesBirthStatus.Due, mappedChild.BirthStatus);
-        Assert.Equal(RelationshipToChild.FosterParent, mappedChild.RelationshipToChild);
 
         Assert.Contains(ChildRelatedBenefit.ArmedForcesIndependencePayment, mappedChild.ChildRelatedBenefits);
         Assert.Contains(ChildRelatedBenefit.CertificateOfVisualImpairment, mappedChild.ChildRelatedBenefits);

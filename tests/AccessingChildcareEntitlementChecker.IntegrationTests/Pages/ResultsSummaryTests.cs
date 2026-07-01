@@ -31,7 +31,6 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
-            BornRelationship = Relationship.Parent
         };
         using var client = factory.CreateClientWithJourneyState(state);
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -52,7 +51,6 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
-            BornRelationship = Relationship.Parent
         };
         using var client = factory.CreateClientWithJourneyState(state);
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -73,7 +71,6 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
-            BornRelationship = Relationship.Parent
         };
         using var client = factory.CreateClientWithJourneyState(state);
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -98,7 +95,6 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
-            BornRelationship = Relationship.Parent
         };
 
         using var client = factory.CreateClientWithJourneyState(state);
@@ -126,7 +122,6 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
-            BornRelationship = Relationship.Parent
         };
 
         using var client = factory.CreateClientWithJourneyState(state);
@@ -153,7 +148,6 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
-            BornRelationship = Relationship.Parent
         };
         state.Nationality = nationality;
         state.SettledStatus = settledStatus;
@@ -185,14 +179,12 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
-            BornRelationship = Relationship.Parent
         };
 
         state.Children["child-2"] = new Child("child-2", "CHILD-2")
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
-            BornRelationship = Relationship.Parent
         };
 
         using var client = factory.CreateClientWithJourneyState(state);
@@ -216,14 +208,12 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
-            BornRelationship = Relationship.Parent
         };
 
         state.Children["child-2"] = new Child("child-2", "CHILD-2")
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
-            BornRelationship = Relationship.Parent
         };
 
         using var client = factory.CreateClientWithJourneyState(state);

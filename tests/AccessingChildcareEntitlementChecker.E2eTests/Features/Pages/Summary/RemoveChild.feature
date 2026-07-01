@@ -38,7 +38,6 @@ Scenario: Remove Aydin
 	And I should see a summary card with the title "Sara" and the following summary:
 		| Question                                    | Answer                                |
 		| What is Sara's date of birth?               | Yesterday                             |
-		| What is your relationship to Sara?          | Parent                                |
 		| Does Sara get any of the following support? | Education, health and care (EHC) plan |
 
 Scenario: Remove both children

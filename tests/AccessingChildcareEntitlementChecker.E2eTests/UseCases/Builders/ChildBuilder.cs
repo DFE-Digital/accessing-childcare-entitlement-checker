@@ -30,18 +30,6 @@ internal class ChildBuilder
         return this;
     }
 
-    public ChildBuilder WithRelationship(string relationship)
-    {
-        _steps.Add(new AnswerStep(PageNames.ChildRelationship, relationship));
-        return this;
-    }
-
-    public ChildBuilder WithExpectingRelationship(string relationship)
-    {
-        _steps.Add(new AnswerStep(PageNames.ExpectedChildRelationship, relationship));
-        return this;
-    }
-
     public ChildBuilder WithSupport(string support)
     {
         _steps.Add(new AnswerStep(PageNames.ChildSupport, support));

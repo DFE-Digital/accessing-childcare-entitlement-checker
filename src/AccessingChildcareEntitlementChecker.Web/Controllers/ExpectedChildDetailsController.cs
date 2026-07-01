@@ -49,45 +49,6 @@ public class ExpectedChildDetailsController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
-        var nextAnswerMissing = child.ExpectedRelationship == null;
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return this.RedirectToAction(
-            nameof(ExpectedChildRelationship),
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
-    }
-
-    [HttpGet]
-    public IActionResult ExpectedChildRelationship(string childId, string? returnTo = null)
-    {
-        if (!_journeyState.Children.TryGetValue(childId, out var child))
-        {
-            return NotFound();
-        }
-
-        var backLink = GetExpectedChildRelationshipBackLink(childId, returnTo);
-        return View(new ExpectedChildRelationshipViewModel(child, backLink, returnTo));
-    }
-
-    [HttpPost]
-    public IActionResult ExpectedChildRelationship(ExpectedChildRelationshipViewModel model)
-    {
-        if (!_journeyState.Children.TryGetValue(model.ChildId, out var _))
-        {
-            return NotFound();
-        }
-
-        if (!ModelState.IsValid)
-        {
-            model.BackLink = GetExpectedChildRelationshipBackLink(model.ChildId, model.ReturnTo);
-            return View(model);
-        }
-
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
         if (model.ReturnTo is not null)
         {
             return this.RedirectToReturnTo(model.ReturnTo);
@@ -107,15 +68,5 @@ public class ExpectedChildDetailsController : Controller
         }
 
         return this.Url.ActionOrThrow(nameof(IntroductionController.IsChildBorn), IntroductionController.Name, new { childId });
-    }
-
-    private string GetExpectedChildRelationshipBackLink(string childId, string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
-        {
-            return url;
-        }
-
-        return this.Url.ActionOrThrow(nameof(ChildDueDate), new { childId });
     }
 }

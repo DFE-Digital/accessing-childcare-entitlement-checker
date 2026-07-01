@@ -16,7 +16,6 @@ internal class Scenario4 : IUseCase
                 .WithName("Daphne")
                 .IsBorn("Yes")
                 .WithBirthDate("03 JAN 2019") //TODO : need a better way to handle these dates. Test will become flaky over time
-                .WithRelationship("Parent")
                 .WithSupport("No, none of these apply"))
 
             // Action: Add another child
@@ -26,8 +25,7 @@ internal class Scenario4 : IUseCase
             .AddChild(child => child
                 .WithName("Baby")
                 .IsBorn("No")
-                .WithDueDate("17 OCT 2026") //TODO : need a better way to handle these dates. Test will become flaky over time
-                .WithExpectingRelationship("Parent"))
+                .WithDueDate("17 OCT 2026")) //TODO : need a better way to handle these dates. Test will become flaky over time
 
             // Complete child details loop
             .Action("Continue")

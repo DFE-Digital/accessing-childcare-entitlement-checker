@@ -9,6 +9,5 @@ public class ChildDto
     public BirthStatus? BirthStatus { get; set; }
     public DateOnly? DateOfBirth { get; set; }
     public DateOnly? DueDate { get; set; }
-    public RelationshipToChild? RelationshipToChild { get; set; }
     public List<ChildRelatedBenefit> ChildRelatedBenefits { get; set; } = [];
 }
