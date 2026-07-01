@@ -36,7 +36,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
 
     [Theory]
     [InlineData(null, $"/children/check-childs-details")]
-    [InlineData(ReturnTo.CheckAnswers, $"/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, $"/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, $"/children/check-childs-details")]
     public async Task Post_Valid_Redirects(string? returnTo, string continueUrl)
     {
