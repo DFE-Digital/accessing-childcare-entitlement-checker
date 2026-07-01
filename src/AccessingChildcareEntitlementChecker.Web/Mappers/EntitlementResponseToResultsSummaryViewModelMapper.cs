@@ -93,7 +93,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             return GetThirtyHoursWhenToApply(schemeResult, childResult);
         }
 
-        throw new InvalidOperationException($"{UnknownSchemeCodeMessage}: {schemeResult.SchemeCode}");
+        throw new InvalidOperationException($"Unknown scheme code while mapping GetWhenToApply(): {schemeResult.SchemeCode}");
     }
 
     private string GetTaxFreeChildcareWhenToApply(SchemeResultDto schemeResult, ChildResultDto child)
@@ -111,7 +111,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
                 : _localizer["WhenToApply_WhenBorn"],
 
             _ => throw new UnreachableException(
-                $"Unsupported parental leave party: " +
+                $"Unsupported parental leave party while mapping GetTaxFreeChildcareWhenToApply(): " +
                 $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
         };
     }
@@ -129,7 +129,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             null => GetStandardThirtyHoursWhenToApply(schemeResult, child),
 
             _ => throw new UnreachableException(
-                $"Unsupported parental leave party: " +
+                $"Unsupported parental leave party while mapping GetThirtyHoursWhenToApply(): " +
                 $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
         };
     }
