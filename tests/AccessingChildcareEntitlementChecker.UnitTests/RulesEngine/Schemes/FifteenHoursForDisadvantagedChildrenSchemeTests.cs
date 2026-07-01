@@ -164,12 +164,12 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true
+                PaidWorkStatus = PaidWorkStatus.Yes
             },
 
             Partner = new PersonFacts
             {
-                IsInPaidWork = false,
+                PaidWorkStatus = PaidWorkStatus.No,
                 Benefits = [
                     PersonBenefit.GuaranteedElementOfPensionCredit
                 ]
@@ -201,12 +201,12 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.No
             },
 
             Partner = new PersonFacts
             {
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.No
             }
         };
 
@@ -244,12 +244,12 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.No
             },
 
             Partner = new PersonFacts
             {
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.No
             }
         };
 
@@ -287,13 +287,13 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
                 ExceedsAdjustedNetIncomeLimit = true
             },
 
             Partner = new PersonFacts
             {
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.No
             }
         };
 

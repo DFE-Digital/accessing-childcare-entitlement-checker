@@ -13,4 +13,6 @@ public class ChildFacts
     public int? AgeInMonths { get; set; }
     public List<ChildRelatedBenefit> ChildRelatedBenefits { get; set; } = [];
     public RelationshipToChild? RelationshipToChild { get; set; }
+    public bool UserIsOnParentalLeaveForChild { get; set; }
+    public bool PartnerIsOnParentalLeaveForChild { get; set; }
 }

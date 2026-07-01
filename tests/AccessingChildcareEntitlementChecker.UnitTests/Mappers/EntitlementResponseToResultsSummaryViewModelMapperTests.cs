@@ -520,6 +520,44 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
 
         Assert.False(child.ShowThirtyHourWarning);
     }
+
+    [Theory]
+    [InlineData(ParentalLeaveParty.User, "WhenToApply_TaxFreeChildcare_UserParentalLeave")]
+    [InlineData(ParentalLeaveParty.Partner, "WhenToApply_TaxFreeChildcare_PartnerParentalLeave")]
+    [InlineData(ParentalLeaveParty.UserAndPartner, "WhenToApply_TaxFreeChildcare_UserAndPartnerParentalLeave")]
+    public void Map_TaxFreeChildcare_ParentalLeave_ReturnsExpectedWhenToApply(ParentalLeaveParty parentalLeaveParty, string expectedText)
+    {
+        var response = new EntitlementResponse
+        {
+            ChildResults =
+            [
+                new ChildResultDto
+                {
+                    ChildId = "child-9",
+                    ChildName = "Bradley",
+                    IsBorn = true,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.TaxFreeChildcare,
+                            EligibleNow = true,
+                            ApplyAndStartAffectedByParentalLeave = parentalLeaveParty
+                        }
+                    ]
+                }
+            ]
+        };
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.ChildId == "child-9");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.TaxFreeChildcare);
+
+        Assert.Equal(expectedText, scheme.WhenToApply);
+    }
+
 }
 
 
