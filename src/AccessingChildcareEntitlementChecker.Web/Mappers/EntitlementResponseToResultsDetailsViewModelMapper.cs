@@ -173,10 +173,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => child.IsBorn ? _localizer["WhenToApply_Now"] : _localizer["WhenToApply_WhenBorn"],
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(schemeResult.ApplyAndStartAffectedByParentalLeave),
-                schemeResult.ApplyAndStartAffectedByParentalLeave,
-                null)
+            _ => throw InvalidParentalLeaveParty(
+                nameof(schemeResult),
+                schemeResult.ApplyAndStartAffectedByParentalLeave)
         };
     }
 
@@ -192,10 +191,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => GetStandardThirtyHoursWhenToApply(schemeResult, child),
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(schemeResult.ApplyAndStartAffectedByParentalLeave),
-                schemeResult.ApplyAndStartAffectedByParentalLeave,
-                null)
+            _ => throw InvalidParentalLeaveParty(
+                nameof(schemeResult),
+                schemeResult.ApplyAndStartAffectedByParentalLeave)
         };
     }
 
@@ -304,7 +302,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             null => child.IsBorn ? _localizer["Starts_Now"] : _localizer["Starts_WhenReturnToWork"],
 
             _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult.ApplyAndStartAffectedByParentalLeave),
+                nameof(schemeResult),
                 schemeResult.ApplyAndStartAffectedByParentalLeave)
         };
     }
@@ -322,7 +320,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             null => GetStandardThirtyHoursStarts(schemeResult, child),
 
             _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult.ApplyAndStartAffectedByParentalLeave),
+                nameof(schemeResult),
                 schemeResult.ApplyAndStartAffectedByParentalLeave)
         };
     }
@@ -416,7 +414,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             null => _localizer["Ends_TaxFreeChildcare", child.ChildName],
 
             _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult.EligibilityEndsWithParentalLeaveFor),
+                nameof(schemeResult),
                 schemeResult.EligibilityEndsWithParentalLeaveFor)
         };
     }
@@ -434,7 +432,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             null => _localizer["Ends_ThirtyHoursForWorkingFamilies", child.ChildName],
 
             _ => throw InvalidParentalLeaveParty(
-                nameof(schemeResult.EligibilityEndsWithParentalLeaveFor),
+                nameof(schemeResult),
                 schemeResult.EligibilityEndsWithParentalLeaveFor)
         };
     }
@@ -498,9 +496,6 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
     private static ArgumentOutOfRangeException InvalidParentalLeaveParty(string parameterName, ParentalLeaveParty? value)
     {
-        return new ArgumentOutOfRangeException(
-            parameterName,
-            value,
-            null);
+        return new ArgumentOutOfRangeException(parameterName, value, "Unsupported parental leave party.");
     }
 }
