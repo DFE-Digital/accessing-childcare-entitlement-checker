@@ -175,9 +175,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => child.IsBorn ? _localizer["WhenToApply_Now"] : _localizer["WhenToApply_WhenBorn"],
 
-            _ => throw new UnreachableException(
-                $"Unsupported parental leave party while mapping GetTaxFreeChildcareWhenToApply(): " +
-                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
+            _ => throw InvalidParentalLeaveParty(
+                schemeResult.ApplyAndStartAffectedByParentalLeave,
+                nameof(GetTaxFreeChildcareWhenToApply))
         };
     }
 
@@ -193,9 +193,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => GetStandardThirtyHoursWhenToApply(schemeResult, child),
 
-            _ => throw new UnreachableException(
-                $"Unsupported parental leave party while mapping GetThirtyHoursWhenToApply(): " +
-                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
+            _ => throw InvalidParentalLeaveParty(
+                schemeResult.ApplyAndStartAffectedByParentalLeave,
+                nameof(GetThirtyHoursWhenToApply))
         };
     }
 
@@ -303,9 +303,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => child.IsBorn ? _localizer[StartsNowKey] : _localizer["Starts_WhenReturnToWork"],
 
-            _ => throw new UnreachableException(
-                $"Unsupported parental leave party while mapping GetTaxFreeChildcareStarts(): " +
-                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
+            _ => throw InvalidParentalLeaveParty(
+                schemeResult.ApplyAndStartAffectedByParentalLeave,
+                nameof(GetTaxFreeChildcareStarts))
         };
     }
 
@@ -321,9 +321,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => GetStandardThirtyHoursStarts(schemeResult, child),
 
-            _ => throw new UnreachableException(
-                $"Unsupported parental leave party while mapping GetThirtyHoursStarts(): " +
-                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
+            _ => throw InvalidParentalLeaveParty(
+                schemeResult.ApplyAndStartAffectedByParentalLeave,
+                nameof(GetThirtyHoursStarts))
         };
     }
 
@@ -415,9 +415,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => _localizer["Ends_TaxFreeChildcare", child.ChildName],
 
-            _ => throw new UnreachableException(
-                $"Unsupported parental leave party while mapping tax free childcare ends GetTaxFreeChildcareEnds(): " +
-                $"{schemeResult.EligibilityEndsWithParentalLeaveFor}")
+            _ => throw InvalidParentalLeaveParty(
+                schemeResult.EligibilityEndsWithParentalLeaveFor,
+                nameof(GetTaxFreeChildcareEnds))
         };
     }
 
@@ -433,9 +433,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
             null => _localizer["Ends_ThirtyHoursForWorkingFamilies", child.ChildName],
 
-            _ => throw new UnreachableException(
-                $"Unsupported parental leave party while mapping thirty hours ends GetThirtyHoursEnds(): " +
-                $"{schemeResult.EligibilityEndsWithParentalLeaveFor}")
+            _ => throw InvalidParentalLeaveParty(
+                schemeResult.EligibilityEndsWithParentalLeaveFor,
+                nameof(GetThirtyHoursEnds))
         };
     }
 
@@ -495,4 +495,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
         new(nameof(schemeCode),
             schemeCode,
             UnknownSchemeCodeMessage);
+
+    private static UnreachableException InvalidParentalLeaveParty(ParentalLeaveParty? value, string context)
+    {
+        return new UnreachableException($"Unsupported parental leave party in {context}: {value}");
+    }
 }
