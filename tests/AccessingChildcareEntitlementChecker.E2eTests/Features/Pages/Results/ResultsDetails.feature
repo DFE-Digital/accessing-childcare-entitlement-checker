@@ -1,5 +1,7 @@
 ﻿Feature: Results Details
 
+# Scenarios here ignored - the test infra doesn't support new tabs
+
 @ignore
 Scenario: Results details does not show a public funds warning if i'm a British or Irish citizen
 	Given I am on the childcare entitlement checker website
