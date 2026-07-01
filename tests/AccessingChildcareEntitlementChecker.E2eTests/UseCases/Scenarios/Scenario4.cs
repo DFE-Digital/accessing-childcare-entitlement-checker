@@ -2,9 +2,9 @@ using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
-internal class EligibleSingleParentWith2Children : IUseCase
+internal class Scenario4 : IUseCase
 {
-    public string Name => "Single parent with 2 children (Eligible)";
+    public string Name => "One parent aged 18-20, child not yet born";
 
     public IEnumerable<JourneyStep> GetJourney()
     {
@@ -13,9 +13,9 @@ internal class EligibleSingleParentWith2Children : IUseCase
 
             // Child 1
             .AddChild(child => child
-                .WithName("Aydin")
+                .WithName("Daphne")
                 .IsBorn("Yes")
-                .WithBirthDate("Yesterday")
+                .WithBirthDate("03 JAN 2019") //TODO : need a better way to handle these dates. Test will become flaky over time
                 .WithRelationship("Parent")
                 .WithSupport("No, none of these apply"))
 
@@ -24,15 +24,15 @@ internal class EligibleSingleParentWith2Children : IUseCase
 
             // Child 2
             .AddChild(child => child
-                .WithName("Sara")
+                .WithName("Baby")
                 .IsBorn("No")
-                .WithDueDate("Tomorrow")
+                .WithDueDate("17 OCT 2026") //TODO : need a better way to handle these dates. Test will become flaky over time
                 .WithExpectingRelationship("Parent"))
 
             // Complete child details loop
             .Action("Continue")
 
-            .SetUserAge("21 or over")
+            .SetUserAge("18 to 20")
             .SetNationality("British or Irish citizen")
             .SetPaidWork("Yes")
             .SetWorkStatus("Paid employment")
@@ -41,7 +41,16 @@ internal class EligibleSingleParentWith2Children : IUseCase
             .SetUniversalCredit("No")
             .SetBenefits("No, I do not get any of these benefits")
             .SetChildcareSupport("No, I do not get any of this childcare support")
-            .SetHasPartner("No")
+            .SetHasPartner("Yes")
+
+            .SetPartnerAge("21 or over")
+            .SetPartnerPaidWork("Yes")
+            .SetPartnerWorkStatus("Paid employment")
+            .SetPartnerWeeklyEarnings("Yes")
+            .SetPartnerYearlyEarnings("No")
+            .SetPartnerBenefits("No, they do not get any of these benefits")
+            .SetPartnerChildcareSupport("No, they do not get any of this childcare support")
+
             .Build();
     }
 }
