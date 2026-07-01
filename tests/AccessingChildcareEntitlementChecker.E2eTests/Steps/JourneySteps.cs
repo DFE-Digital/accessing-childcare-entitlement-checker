@@ -15,8 +15,8 @@ internal class JourneySteps(IPage page)
         await page.GotoAsync("/");
     }
 
-    [Given("I click the Start now link")]
-    public async Task GivenIClickTheStartNowLink()
+    [Given("I click the link to start the journey")]
+    public async Task GivenIClickTheLinkToStartTheJourney()
     {
         var startPage = new StartPage(page);
         await startPage.ContinueAsync();
@@ -63,7 +63,7 @@ internal class JourneySteps(IPage page)
     [Given("I start the journey, filling in Aydin's and Sara's details")]
     public async Task GivenIStartTheJourneyFillingInAydinsDetails()
     {
-        await GivenIClickTheStartNowLink();
+        await GivenIClickTheLinkToStartTheJourney();
 
         var locationPage = new LocationPage(page);
         await locationPage.AssertHeaderAsync();

@@ -3,7 +3,7 @@ Feature: End to End Use Cases
 
 Background:
     Given I am on the childcare entitlement checker website
-    And I click the Start now link
+    And I click the link to start the journey
 
     
 Scenario: Scenario 1 - ingle parent earning below the threshold, household receives Universal Credit, child is not born yet
