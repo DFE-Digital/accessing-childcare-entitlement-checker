@@ -206,10 +206,10 @@
       },
       "Microsoft.Extensions.FileProviders.Embedded": {
         "type": "Transitive",
-        "resolved": "10.0.9",
-        "contentHash": "UpRgjjSUmF7KYZTIv1Zd2Y0Wv2oK9jE+Jmyp4UMynTowjvJGG1yrRe2JodYyVgcDgZF2auGwYEl+U0J1+YhBRw==",
+        "resolved": "8.0.26",
+        "contentHash": "aDii3fAsoPB9EwrbJgUMdZ48qXYIiJF5VIkRdw9rGBiwo4vZpxDGVgwRk6/bdmzhgQEG8jHlkg8MwIV5K8yFUQ==",
         "dependencies": {
-          "Microsoft.Extensions.FileProviders.Abstractions": "10.0.9"
+          "Microsoft.Extensions.FileProviders.Abstractions": "8.0.0"
         }
       },
       "Microsoft.Extensions.FileProviders.Physical": {
@@ -663,7 +663,7 @@
           "AccessingChildcareEntitlementChecker.RulesEngine": "[1.0.0, )",
           "Azure.Identity": "[1.21.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.5.0, )",
-          "GovUk.Frontend.AspNetCore": "[4.2.1, )",
+          "GovUk.Frontend.AspNetCore": "[4.1.1, )",
           "Microsoft.Azure.StackExchangeRedis": "[3.3.1, )",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[10.0.9, )"
         }
@@ -692,11 +692,11 @@
       },
       "GovUk.Frontend.AspNetCore": {
         "type": "CentralTransitive",
-        "requested": "[4.2.1, )",
-        "resolved": "4.2.1",
-        "contentHash": "pWuRZhx7AwjYY/CTllRiKrjcOPXEFWzBOJRzeAqrMj0OsEklnZcssVOlPVFm6XJ2ldaGRJi6xPmoTzVZrIcyGA==",
+        "requested": "[4.1.1, )",
+        "resolved": "4.1.1",
+        "contentHash": "HAMWsNj1Z1jJg35Dq0fuE0MkSrrdYmND6f+44m6brvqLE1w5TGGzXN7hTFSU7OJ7hUw5hfVbH5VhKXf5AQhX5g==",
         "dependencies": {
-          "Microsoft.Extensions.FileProviders.Embedded": "10.0.9"
+          "Microsoft.Extensions.FileProviders.Embedded": "8.0.26"
         }
       },
       "Microsoft.Azure.StackExchangeRedis": {
