@@ -52,7 +52,7 @@ public class ChildSupportViewModel : IValidatableObject
 
         if (ChildSupportOptions.Contains(ChildSupport.NoneOfTheseApply) && ChildSupportOptions.Count > 1)
         {
-            yield return new ValidationResult(localizer["You may not select 'no, none of these apply' with other options"], [nameof(ChildSupportOptions)]);
+            yield return new ValidationResult(localizer["Select any support {0} gets, or select 'No, none of these apply'"], [nameof(ChildSupportOptions)]);
         }
     }
 }

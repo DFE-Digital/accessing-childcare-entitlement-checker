@@ -38,12 +38,9 @@ public class ParentalLeaveViewModel : IValidatableObject
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(ParentalLeaveViewModel));
 
-        if (ParentalLeaveChildrenIds.Count == 0)
-        {
-            yield return new ValidationResult(localizer["Select which child you are on leave for, or 'None of these children'"], [nameof(ParentalLeaveChildrenIds)]);
-        }
-
-        if (ParentalLeaveChildrenIds.Count > 1 && ParentalLeaveChildrenIds.Contains(NoneSelectedValue))
+        var isEmpty = ParentalLeaveChildrenIds.Count == 0;
+        var isNoneSelectedWithOption = ParentalLeaveChildrenIds.Count > 1 && ParentalLeaveChildrenIds.Contains(NoneSelectedValue);
+        if (isEmpty || isNoneSelectedWithOption)
         {
             yield return new ValidationResult(localizer["Select which child you are on leave for, or 'None of these children'"], [nameof(ParentalLeaveChildrenIds)]);
         }

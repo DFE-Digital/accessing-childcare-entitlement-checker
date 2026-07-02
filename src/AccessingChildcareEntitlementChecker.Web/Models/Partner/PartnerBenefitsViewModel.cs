@@ -39,7 +39,7 @@ public class PartnerBenefitsViewModel : IValidatableObject
 
         if (PartnerBenefits.Contains(PartnerBenefitsOption.None) && PartnerBenefits.Count > 1)
         {
-            yield return new ValidationResult(localizer["Select any benefits your partner gets, or select 'No, I do not get any of these benefits'"], [nameof(PartnerBenefits)]);
+            yield return new ValidationResult(localizer["Select any benefits your partner gets, or select 'No, they do not get any of these benefits'"], [nameof(PartnerBenefits)]);
         }
     }
 }

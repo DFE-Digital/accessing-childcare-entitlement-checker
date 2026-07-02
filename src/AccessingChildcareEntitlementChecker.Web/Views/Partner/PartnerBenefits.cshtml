@@ -1,6 +1,5 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.Partner
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
-@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @model PartnerBenefitsViewModel
 @inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
@@ -16,33 +15,11 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Html.DisplayNameFor(model => model.PartnerBenefits)
-        </h1>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
-            <govuk-checkboxes for="PartnerBenefits">
-                <govuk-checkboxes-fieldset>
-                    <govuk-checkboxes-fieldset-legend class="govuk-visually-hidden">
-                        @Html.DisplayNameFor(model => model.PartnerBenefits)
-                    </govuk-checkboxes-fieldset-legend>
-                    <govuk-checkboxes-error-message />
-                    @foreach (var value in Enum.GetValues<PartnerBenefitsOption>())
-                    {
-                        @if (value == PartnerBenefitsOption.None)
-                        {
-                            <govuk-checkboxes-divider>
-                                @Localizer["or"]
-                            </govuk-checkboxes-divider>
-                        }
-
-                        <govuk-checkboxes-item value="@value">
-                            @Html.EnumDisplayName(value)
-                        </govuk-checkboxes-item>
-                    }
-                </govuk-checkboxes-fieldset>
-            </govuk-checkboxes>
+            <cec-enum-checkboxes for="PartnerBenefits"
+                                 exclusive-value="PartnerBenefitsOption.None" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
