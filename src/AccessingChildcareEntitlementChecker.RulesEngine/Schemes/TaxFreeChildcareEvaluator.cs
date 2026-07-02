@@ -1,7 +1,6 @@
 using AccessingChildcareEntitlementChecker.RulesEngine.Derived;
 using AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses;
 using AccessingChildcareEntitlementChecker.RulesEngine.Evaluators;
-using AccessingChildcareEntitlementChecker.RulesEngine.Helpers;
 using AccessingChildcareEntitlementChecker.RulesEngine.Types;
 
 namespace AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
@@ -13,11 +12,12 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
 
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
+        var parentalLeaveAssessment = AssessParentalLeave(context, child);
 
         var meetsHouseholdRequirements =
             context.Household.HasAccessToPublicFunds &&
             !context.Household.ReceivesUniversalCredit &&
-            MeetsWorkRequirements(context);
+            MeetsWorkRequirements(context, parentalLeaveAssessment);
 
         var eligibleNow =
             meetsHouseholdRequirements &&
@@ -37,105 +37,204 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
         {
             SchemeCode = SchemeCode.TaxFreeChildcare,
             EligibleNow = eligibleNow,
-            EligibleInFuture = eligibleInFuture
+            EligibleInFuture = eligibleInFuture,
+            ApplyAndStartAffectedByParentalLeave = parentalLeaveAssessment.ApplyAndStartAffectedByParentalLeave,
+            EligibilityEndsWithParentalLeaveFor = GetEligibilityEndParty(context, parentalLeaveAssessment)
         };
     }
 
-    private static bool ChildIsWithinMaximumEligibleAgeInYears(
-        ChildFacts child)
+    private static ParentalLeaveAssessment AssessParentalLeave(DerivedContext context, ChildFacts child)
     {
-        bool childHasEligibleDisability =
+        var userIsOnParentalLeave =
+            context.User.PaidWorkStatus ==
+            PaidWorkStatus.ParentalLeave;
+
+        var partnerIsOnParentalLeave =
+            context.Partner?.PaidWorkStatus ==
+            PaidWorkStatus.ParentalLeave;
+
+        var userIsOnLeaveForChild =
+            userIsOnParentalLeave &&
+            child.UserIsOnParentalLeaveForChild;
+
+        var partnerIsOnLeaveForChild =
+            partnerIsOnParentalLeave &&
+            child.PartnerIsOnParentalLeaveForChild;
+
+        // A person can use the temporary parental-leave income exemption
+        // only for children they are not on leave for.
+        var userCanUseTemporaryIncomeExemption =
+            userIsOnParentalLeave &&
+            !userIsOnLeaveForChild;
+
+        var partnerCanUseTemporaryIncomeExemption =
+            partnerIsOnParentalLeave &&
+            !partnerIsOnLeaveForChild;
+
+        return new ParentalLeaveAssessment(
+            UserCanUseTemporaryIncomeExemption:
+                userCanUseTemporaryIncomeExemption,
+
+            PartnerCanUseTemporaryIncomeExemption:
+                partnerCanUseTemporaryIncomeExemption,
+
+            ApplyAndStartAffectedByParentalLeave:
+                GetParentalLeaveParty(
+                    userIsOnLeaveForChild,
+                    partnerIsOnLeaveForChild));
+    }
+
+    private static bool ChildIsWithinMaximumEligibleAgeInYears(ChildFacts child)
+    {
+        var childHasEligibleDisability =
             child.ChildRelatedBenefits.Contains(
                 ChildRelatedBenefit.DisabilityLivingAllowance)
+
             || child.ChildRelatedBenefits.Contains(
                 ChildRelatedBenefit.EducationHealthAndCarePlan);
 
-        int maximumEligibleAgeInYears = childHasEligibleDisability
-            ? MaximumEligibleAgeInYearsWithDisability
-            : MaximumEligibleAgeInYears;
+        var maximumEligibleAgeInYears =
+            childHasEligibleDisability
+                ? MaximumEligibleAgeInYearsWithDisability
+                : MaximumEligibleAgeInYears;
 
         return child.AgeInYears <= maximumEligibleAgeInYears;
     }
 
-    private static bool MeetsWorkRequirements(
-        DerivedContext context)
+    private static bool MeetsWorkRequirements(DerivedContext context, ParentalLeaveAssessment parentalLeaveAssessment)
     {
         if (!context.Household.HasPartner)
         {
             return SingleParentMeetsRequirements(
-                context.User);
+                context.User,
+                parentalLeaveAssessment.UserCanUseTemporaryIncomeExemption);
         }
 
         return CoupleMeetsRequirements(
             context.User,
-            context.Partner!);
+            context.Partner!,
+            parentalLeaveAssessment);
     }
 
-    private static bool SingleParentMeetsRequirements(
-        PersonFacts person)
+    private static bool SingleParentMeetsRequirements(PersonFacts person, bool canUseTemporaryIncomeExemption)
     {
+        var meetsIncomeRequirement =
+            MeetsMinimumIncomeRequirement(person) ||
+            canUseTemporaryIncomeExemption;
+
         return
-            person.IsInPaidWork &&
-            MeetsMinimumIncomeRequirement(person) &&
+            HasQualifyingPaidWorkStatus(person) &&
+            meetsIncomeRequirement &&
             !person.ExceedsAdjustedNetIncomeLimit &&
             !ReceivesDisqualifyingChildcareSupport(person);
     }
 
-    private static bool CoupleMeetsRequirements(
-        PersonFacts user,
-        PersonFacts partner)
+    private static bool CoupleMeetsRequirements(PersonFacts user, PersonFacts partner, ParentalLeaveAssessment parentalLeaveAssessment)
     {
-        var bothWorking =
-            user.IsInPaidWork
-            && partner.IsInPaidWork;
-
-        if (bothWorking)
+        if (user.ExceedsAdjustedNetIncomeLimit || partner.ExceedsAdjustedNetIncomeLimit || PersonIsDisqualified(user) || PersonIsDisqualified(partner))
         {
-            return
-                MeetsMinimumIncomeRequirement(user)
-                && MeetsMinimumIncomeRequirement(partner)
-                && !user.ExceedsAdjustedNetIncomeLimit
-                && !partner.ExceedsAdjustedNetIncomeLimit
-                && !PersonIsDisqualified(user)
-                && !PersonIsDisqualified(partner);
+            return false;
         }
 
+        var userMeetsWorkingRequirements =
+            MeetsWorkingRequirements(user, parentalLeaveAssessment.UserCanUseTemporaryIncomeExemption);
+
+        var partnerMeetsWorkingRequirements =
+            MeetsWorkingRequirements(partner, parentalLeaveAssessment.PartnerCanUseTemporaryIncomeExemption);
+
+        var bothMeetWorkingRequirements =
+            userMeetsWorkingRequirements &&
+            partnerMeetsWorkingRequirements;
+
         var userWorkingPartnerExempt =
-            user.IsInPaidWork
-            && MeetsMinimumIncomeRequirement(user)
-            && !user.ExceedsAdjustedNetIncomeLimit
-            && !PersonIsDisqualified(user)
-            && HasQualifyingExemptionBenefit(partner);
+            userMeetsWorkingRequirements &&
+            HasQualifyingExemptionBenefit(partner);
 
         var partnerWorkingUserExempt =
-            partner.IsInPaidWork
-            && MeetsMinimumIncomeRequirement(partner)
-            && !partner.ExceedsAdjustedNetIncomeLimit
-            && !PersonIsDisqualified(partner)
-            && HasQualifyingExemptionBenefit(user);
+            partnerMeetsWorkingRequirements &&
+            HasQualifyingExemptionBenefit(user);
 
         return
-            userWorkingPartnerExempt
-            || partnerWorkingUserExempt;
+            bothMeetWorkingRequirements ||
+            userWorkingPartnerExempt ||
+            partnerWorkingUserExempt;
     }
 
-    private static bool MeetsMinimumIncomeRequirement(
-        PersonFacts person)
+    private static bool MeetsWorkingRequirements(PersonFacts person, bool canUseTemporaryIncomeExemption)
+    {
+        var meetsIncomeRequirement =
+            MeetsMinimumIncomeRequirement(person) ||
+            canUseTemporaryIncomeExemption;
+
+        return
+            HasQualifyingPaidWorkStatus(person) &&
+            meetsIncomeRequirement;
+    }
+
+    private static bool HasQualifyingPaidWorkStatus(PersonFacts person)
+    {
+        return person.PaidWorkStatus is
+            PaidWorkStatus.Yes
+            or PaidWorkStatus.ParentalLeave
+            or PaidWorkStatus.SickLeave;
+    }
+
+    private static bool MeetsMinimumIncomeRequirement(PersonFacts person)
     {
         return
-            person.EarnsAboveThreshold
-            || person.SelfEmployedLessThan12Months;
+            person.EarnsAboveThreshold ||
+            person.SelfEmployedLessThan12Months;
     }
 
-    private static bool PersonIsDisqualified(
-        PersonFacts person)
+    private static ParentalLeaveParty? GetEligibilityEndParty(DerivedContext context, ParentalLeaveAssessment parentalLeaveAssessment)
     {
-        return
-           ReceivesDisqualifyingChildcareSupport(person);
+        var eligibilityDependsOnUserLeave =
+            parentalLeaveAssessment
+                .UserCanUseTemporaryIncomeExemption
+            &&
+            !MeetsWorkRequirements(
+                context,
+                parentalLeaveAssessment with
+                {
+                    UserCanUseTemporaryIncomeExemption = false
+                });
+
+        var eligibilityDependsOnPartnerLeave =
+            parentalLeaveAssessment
+                .PartnerCanUseTemporaryIncomeExemption
+            &&
+            !MeetsWorkRequirements(
+                context,
+                parentalLeaveAssessment with
+                {
+                    PartnerCanUseTemporaryIncomeExemption = false
+                });
+
+        return GetParentalLeaveParty(
+            eligibilityDependsOnUserLeave,
+            eligibilityDependsOnPartnerLeave);
     }
 
-    private static bool ReceivesDisqualifyingChildcareSupport(
-        PersonFacts person)
+    private static ParentalLeaveParty? GetParentalLeaveParty(bool appliesToUser, bool appliesToPartner)
+    {
+        return (appliesToUser, appliesToPartner) switch
+        {
+            (true, true) => ParentalLeaveParty.UserAndPartner,
+
+            (true, false) => ParentalLeaveParty.User,
+
+            (false, true) => ParentalLeaveParty.Partner,
+
+            _ => null
+        };
+    }
+
+    private static bool PersonIsDisqualified(PersonFacts person)
+    {
+        return ReceivesDisqualifyingChildcareSupport(person);
+    }
+
+    private static bool ReceivesDisqualifyingChildcareSupport(PersonFacts person)
     {
         return
             person.ChildcareSupport.Contains(
@@ -145,18 +244,23 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
                 ChildcareSupport.ChildcareBursaryOrGrant);
     }
 
-    private static bool HasQualifyingExemptionBenefit(
-        PersonFacts person)
+    private static bool HasQualifyingExemptionBenefit(PersonFacts person)
     {
         return person.Benefits.Any(
             QualifyingExemptionBenefits.Contains);
     }
 
-    private static readonly List<PersonBenefit> QualifyingExemptionBenefits =
+    private static readonly List<PersonBenefit>
+        QualifyingExemptionBenefits =
     [
         PersonBenefit.CarersAllowance,
         PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
         PersonBenefit.IncapacityBenefit,
         PersonBenefit.SevereDisablementAllowance
     ];
+
+    private sealed record ParentalLeaveAssessment(
+        bool UserCanUseTemporaryIncomeExemption,
+        bool PartnerCanUseTemporaryIncomeExemption,
+        ParentalLeaveParty? ApplyAndStartAffectedByParentalLeave);
 }

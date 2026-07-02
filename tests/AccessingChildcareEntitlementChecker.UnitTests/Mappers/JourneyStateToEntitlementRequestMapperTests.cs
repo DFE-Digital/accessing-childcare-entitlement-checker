@@ -89,14 +89,14 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Contains(WorkStatus.PaidEmployment, result.User.WorkStatuses);
         Assert.Contains(WorkStatus.SelfEmployed, result.User.WorkStatuses);
         Assert.Equal(Nationality.BritishOrIrishCitizen, result.User.Nationality);
-        Assert.True(result.User.IsInPaidWork);
+        Assert.Equal(PaidWorkStatus.Yes, result.User.PaidWorkStatus);
         Assert.Contains(ChildcareSupport.ChildcareBursaryOrGrant, result.User.ChildcareSupport);
 
         // Partner
         Assert.NotNull(result.Partner);
         Assert.Equal(RulesAgeRange.EighteenToTwenty, result.Partner!.AgeRange);
         Assert.Contains(PersonBenefit.ContributionBasedEmploymentAndSupportAllowance, result.Partner.Benefits);
-        Assert.False(result.Partner.IsInPaidWork);
+        Assert.Equal(PaidWorkStatus.No, result.Partner.PaidWorkStatus);
         Assert.Contains(ChildcareSupport.ChildcareVouchers, result.Partner.ChildcareSupport);
 
         // Child
@@ -164,7 +164,7 @@ public class JourneyStateToEntitlementRequestMapperTests
 
         Assert.Equal(RulesCountryOfResidence.Wales, result.Household.CountryOfResidence);
         Assert.Equal(RulesAgeRange.UnderEighteen, result.User.AgeRange);
-        Assert.False(result.User.IsInPaidWork);
+        Assert.Equal(PaidWorkStatus.No, result.User.PaidWorkStatus);
         Assert.True(result.User.HasSettledOrPreSettledStatus);
 
         Assert.Null(result.Partner);
@@ -201,7 +201,7 @@ public class JourneyStateToEntitlementRequestMapperTests
 
         Assert.Null(result.Household.CountryOfResidence);
         Assert.Null(result.User.AgeRange);
-        Assert.Null(result.User.IsInPaidWork);
+        Assert.Null(result.User.PaidWorkStatus);
         Assert.Null(result.User.Nationality);
         Assert.Null(result.User.HasSettledOrPreSettledStatus);
         Assert.Empty(result.Children);

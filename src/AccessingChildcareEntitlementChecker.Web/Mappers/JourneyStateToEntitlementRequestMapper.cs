@@ -40,7 +40,7 @@ public class JourneyStateToEntitlementRequestMapper
         return new PersonDto
         {
             AgeRange = MapAgeRange(journeyState.UserAge),
-            IsInPaidWork = MapPaidWork(journeyState.PaidWork),
+            PaidWorkStatus = MapPaidWorkStatus(journeyState.PaidWork),
             WorkStatuses = journeyState.WorkStatus.Select(MapWorkStatus).ToList(),
             SelfEmployedLessThan12Months = journeyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months,
             EarnsAboveThreshold = journeyState.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold,
@@ -62,7 +62,7 @@ public class JourneyStateToEntitlementRequestMapper
         return new PersonDto
         {
             AgeRange = MapAgeRange(journeyState.PartnerAge),
-            IsInPaidWork = MapPaidWork(journeyState.PartnerPaidWork),
+            PaidWorkStatus = MapPaidWorkStatus(journeyState.PartnerPaidWork),
             WorkStatuses = journeyState.PartnerWorkStatus.Select(MapWorkStatus).ToList(),
             SelfEmployedLessThan12Months = journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months,
             EarnsAboveThreshold = journeyState.PartnerWeeklyEarnings == WeeklyEarningsOption.AboveThreshold,
@@ -74,20 +74,19 @@ public class JourneyStateToEntitlementRequestMapper
         };
     }
 
-    private static List<ChildDto> MapChildren(
-        JourneyState journeyState)
+    private static List<ChildDto> MapChildren(JourneyState journeyState)
     {
         var children = new List<ChildDto>();
 
         foreach (var child in journeyState.Children.Values)
         {
-            children.Add(MapChild(child));
+            children.Add(MapChild(child, journeyState));
         }
 
         return children;
     }
 
-    private static ChildDto MapChild(Child child)
+    private static ChildDto MapChild(Child child, JourneyState journeyState)
     {
         return new ChildDto()
         {
@@ -96,7 +95,9 @@ public class JourneyStateToEntitlementRequestMapper
             BirthStatus = MapBirthStatus(child.BirthStatus),
             DateOfBirth = child.BirthDate,
             DueDate = child.DueDate,
-            ChildRelatedBenefits = MapChildBenefits(child)
+            ChildRelatedBenefits = MapChildBenefits(child),
+            UserIsOnParentalLeaveForChild = journeyState.ParentalLeaveChildrenIds.Contains(child.ChildId),
+            PartnerIsOnParentalLeaveForChild = journeyState.PartnerParentalLeaveChildrenIds.Contains(child.ChildId),
         };
     }
 
@@ -145,28 +146,34 @@ public class JourneyStateToEntitlementRequestMapper
         };
     }
 
-    private static bool? MapPaidWork(PaidWorkOption? paidWork)
+
+    private static PaidWorkStatus? MapPaidWorkStatus(PaidWorkOption? paidWorkOption)
     {
-        return paidWork switch
+        return paidWorkOption switch
         {
-            PaidWorkOption.Yes => true,
-            PaidWorkOption.No => false,
+            PaidWorkOption.Yes => PaidWorkStatus.Yes,
+            PaidWorkOption.No => PaidWorkStatus.No,
+            PaidWorkOption.ParentalLeave => PaidWorkStatus.ParentalLeave,
+            PaidWorkOption.SickLeave => PaidWorkStatus.SickLeave,
             null => null,
-            _ => throw new ArgumentOutOfRangeException(nameof(paidWork))
+            _ => throw new ArgumentOutOfRangeException(nameof(paidWorkOption))
+
         };
     }
 
-    private static bool? MapPaidWork(PartnerPaidWorkOption? paidWork)
+    private static PaidWorkStatus? MapPaidWorkStatus(PartnerPaidWorkOption? partnerPaidWorkOption)
     {
-        return paidWork switch
+        return partnerPaidWorkOption switch
         {
-            PartnerPaidWorkOption.Yes => true,
-            PartnerPaidWorkOption.No => false,
+            PartnerPaidWorkOption.Yes => PaidWorkStatus.Yes,
+            PartnerPaidWorkOption.No => PaidWorkStatus.No,
+            PartnerPaidWorkOption.ParentalLeave => PaidWorkStatus.ParentalLeave,
+            PartnerPaidWorkOption.SickLeave => PaidWorkStatus.SickLeave,
             null => null,
-            _ => throw new ArgumentOutOfRangeException(nameof(paidWork))
+            _ => throw new ArgumentOutOfRangeException(nameof(partnerPaidWorkOption))
+
         };
     }
-
 
     private static WorkStatus MapWorkStatus(WorkStatusOption workStatus)
     {
@@ -312,8 +319,7 @@ public class JourneyStateToEntitlementRequestMapper
         };
     }
 
-    private static BirthStatus? MapBirthStatus(
-        Models.BirthStatus? birthStatus)
+    private static BirthStatus? MapBirthStatus(Models.BirthStatus? birthStatus)
     {
         return birthStatus switch
         {
@@ -330,8 +336,37 @@ public class JourneyStateToEntitlementRequestMapper
         };
     }
 
+<<<<<<< HEAD
     private static List<ChildRelatedBenefit> MapChildBenefits(
         Child child)
+=======
+    private static RelationshipToChild? MapRelationship(Child child)
+    {
+        var relationship =
+            child.BirthStatus == Web.Models.BirthStatus.Born
+                ? child.BornRelationship
+                : child.ExpectedRelationship;
+
+        return relationship switch
+        {
+            Relationship.Parent =>
+                RelationshipToChild.Parent,
+
+            Relationship.GuardianOrCarer =>
+                RelationshipToChild.Guardian,
+
+            Relationship.FosterParent =>
+                RelationshipToChild.FosterParent,
+
+            null => null,
+
+            _ => throw new InvalidOperationException(
+                $"Unexpected relationship value: {relationship}")
+        };
+    }
+
+    private static List<ChildRelatedBenefit> MapChildBenefits(Child child)
+>>>>>>> main
     {
         return child.ChildSupportOptions
             .Select(MapChildBenefit)
@@ -339,8 +374,7 @@ public class JourneyStateToEntitlementRequestMapper
             .ToList();
     }
 
-    private static ChildRelatedBenefit? MapChildBenefit(
-        ChildSupport childSupport)
+    private static ChildRelatedBenefit? MapChildBenefit(ChildSupport childSupport)
     {
         return childSupport switch
         {

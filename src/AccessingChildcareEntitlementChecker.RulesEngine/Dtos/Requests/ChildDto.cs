@@ -10,4 +10,6 @@ public class ChildDto
     public DateOnly? DateOfBirth { get; set; }
     public DateOnly? DueDate { get; set; }
     public List<ChildRelatedBenefit> ChildRelatedBenefits { get; set; } = [];
+    public bool UserIsOnParentalLeaveForChild { get; set; }
+    public bool PartnerIsOnParentalLeaveForChild { get; set; }
 }

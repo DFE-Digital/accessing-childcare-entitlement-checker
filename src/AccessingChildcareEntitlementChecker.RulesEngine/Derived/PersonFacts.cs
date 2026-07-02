@@ -4,7 +4,7 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Derived;
 
 public class PersonFacts
 {
-    public bool IsInPaidWork { get; set; }
+    public PaidWorkStatus? PaidWorkStatus { get; set; }
     public bool SelfEmployedLessThan12Months { get; set; }
     public bool EarnsAboveThreshold { get; set; }
     public bool ExceedsAdjustedNetIncomeLimit { get; set; }
