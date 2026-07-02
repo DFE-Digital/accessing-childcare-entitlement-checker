@@ -24,22 +24,18 @@ public class ChildcareSupportViewModel : IValidatableObject
 
     public string? ReturnTo { get; set; }
 
-    [Display(Name = "Do you already get any of this childcare support?", Description = "Select all that apply.")]
+    [Display(Name = "Do you already get any of these to help pay for childcare?", Description = "Select all that apply.")]
     public List<ChildcareSupportOption> ChildcareSupport { get; set; } = [];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(ChildcareSupportViewModel));
-
-        if (ChildcareSupport.Count == 0)
+        var noneSelected = ChildcareSupport.Count == 0;
+        var selectedAndNone = ChildcareSupport.Contains(ChildcareSupportOption.None) && ChildcareSupport.Count > 1;
+        if (noneSelected || selectedAndNone)
         {
-            yield return new ValidationResult(localizer["Select any of this childcare support you already get, or select 'No, I do not get any of this childcare support'"], [nameof(ChildcareSupport)]);
-        }
-
-        if (ChildcareSupport.Contains(ChildcareSupportOption.None) && ChildcareSupport.Count > 1)
-        {
-            yield return new ValidationResult(localizer["Select any of this childcare support you already get, or select 'No, I do not get any of this childcare support'"], [nameof(ChildcareSupport)]);
+            yield return new ValidationResult(localizer["Select any of this childcare support you already get, or select 'No, I do not get any of these'"], [nameof(ChildcareSupport)]);
         }
     }
 }

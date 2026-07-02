@@ -89,7 +89,7 @@ Scenario: Back navigation from Does your partner have settled or pre-settled sta
 		| Are you in paid work?                                                                | No, I am not in work                                 |
 		| Does your household receive universal credit?                                        | Yes                                                  |
 		| Do you get any of these benefits?                                                    | Carer's Allowance                                    |
-		| Do you already get any of this childcare support?                                    | Childcare vouchers                                   |
+		| Do you already get any of these to help pay for childcare?                           | Childcare vouchers                                   |
 		| How do you receive your childcare vouchers?                                          | A workplace nursery scheme                           |
 		| Do you live with a partner?                                                          | Yes                                                  |
 		| What is your partner's age?                                                          | 21 or over                                           |

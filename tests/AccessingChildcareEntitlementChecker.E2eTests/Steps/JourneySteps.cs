@@ -130,7 +130,7 @@ internal class JourneySteps(IPage page)
             ("Is your adjusted net income more than £100,000 a year?", "No"),
             ("Does your household receive universal credit?", "Yes"),
             ("Do you get any of these benefits?", "Carer's Allowance"),
-            ("Do you already get any of this childcare support?", "Childcare vouchers"),
+            ("Do you already get any of these to help pay for childcare?", "Childcare vouchers"),
             ("How do you receive your childcare vouchers?", "A workplace nursery scheme"),
         };
 
@@ -153,7 +153,7 @@ internal class JourneySteps(IPage page)
             ("What is your partner's age?", "21 or over"),
             ("Is your partner in paid work?", "No, they are not in work"),
             ("Does your partner get any of these benefits?", "Carer's Allowance"),
-            ("Does your partner already get any of this childcare support?", "Childcare vouchers"),
+            ("Does your partner already get any of these to help pay for childcare?", "Childcare vouchers"),
             ("How does your partner receive childcare vouchers?", "A workplace nursery scheme"),
         };
 
