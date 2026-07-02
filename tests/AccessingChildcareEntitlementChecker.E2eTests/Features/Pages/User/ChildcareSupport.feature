@@ -15,10 +15,10 @@ Background:
 Scenario: Page load
 	When the page header is "Do you already get any of these to help pay for childcare?"
 	Then I should see 3 checkboxes with the following options:
-		| Checkbox                                                    |
-		| Childcare vouchers                                          |
-		| A childcare bursary or grant (as part of education funding) |
-		| No, I do not get any of these                               |
+		| Checkbox                      |
+		| Childcare vouchers            |
+		| A childcare bursary or grant  |
+		| No, I do not get any of these |
 	And no checkboxes are selected
 
 Scenario: Checkbox selection

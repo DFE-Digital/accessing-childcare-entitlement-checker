@@ -29,7 +29,7 @@ internal class Scenario6 : IUseCase
             .SetYearlyEarnings("No")
             .SetUniversalCredit("No")
             .SetBenefits("No, I do not get any of these benefits")
-            .SetChildcareSupport("No, I do not get any of this childcare support")
+            .SetChildcareSupport("No, I do not get any of these")
             .SetHasPartner("Yes")
 
             .SetPartnerAge("Under 18")
@@ -37,7 +37,7 @@ internal class Scenario6 : IUseCase
             .SetPartnerWorkStatus("Paid employment")
             .SetPartnerWeeklyEarnings("No")
             .SetPartnerBenefits("No, they do not get any of these benefits")
-            .SetPartnerChildcareSupport("No, they do not get any of this childcare support")
+            .SetPartnerChildcareSupport("No, they do not get any of these")
 
             .Build();
     }

@@ -34,7 +34,7 @@ public class PartnerChildcareSupportViewModel : IValidatableObject
         var noneSelected = PartnerChildcareSupport.Count == 0;
         var selectedAndNone = PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.None) && PartnerChildcareSupport.Count > 1;
         if (noneSelected || selectedAndNone)
-        { 
+        {
             yield return new ValidationResult(localizer["Select any of this childcare support your partner already gets, or select 'No, they do not get any of these'"], [nameof(PartnerChildcareSupport)]);
         }
     }
