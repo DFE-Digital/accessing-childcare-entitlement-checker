@@ -336,37 +336,8 @@ public class JourneyStateToEntitlementRequestMapper
         };
     }
 
-<<<<<<< HEAD
     private static List<ChildRelatedBenefit> MapChildBenefits(
         Child child)
-=======
-    private static RelationshipToChild? MapRelationship(Child child)
-    {
-        var relationship =
-            child.BirthStatus == Web.Models.BirthStatus.Born
-                ? child.BornRelationship
-                : child.ExpectedRelationship;
-
-        return relationship switch
-        {
-            Relationship.Parent =>
-                RelationshipToChild.Parent,
-
-            Relationship.GuardianOrCarer =>
-                RelationshipToChild.Guardian,
-
-            Relationship.FosterParent =>
-                RelationshipToChild.FosterParent,
-
-            null => null,
-
-            _ => throw new InvalidOperationException(
-                $"Unexpected relationship value: {relationship}")
-        };
-    }
-
-    private static List<ChildRelatedBenefit> MapChildBenefits(Child child)
->>>>>>> main
     {
         return child.ChildSupportOptions
             .Select(MapChildBenefit)
