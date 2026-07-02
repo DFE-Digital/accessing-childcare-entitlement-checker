@@ -39,10 +39,12 @@ public class CecEnumCheckboxesTagHelperTests
             ViewData = new ViewDataDictionary(_metadataProvider, new ModelStateDictionary())
         };
 
+#pragma warning disable CA2012 // ValueTask instances should be consumed correctly
         _componentGenerator = Substitute.For<IComponentGenerator>();
         _componentGenerator
             .GenerateCheckboxesAsync(Arg.Do<CheckboxesOptions>(options => _generatedOptions = options))
             .Returns(_ => ValueTask.FromResult<GovUkComponent>(new TestGovUkComponent()));
+#pragma warning restore CA2012
 
         _tagHelperContext = new TagHelperContext(
             tagName: "cec-enum-checkboxes",
