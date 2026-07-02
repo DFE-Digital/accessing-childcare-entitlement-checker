@@ -2,7 +2,7 @@
   "resourceGroupName": { "value": "s279p01rg-uks-cec-terraform" },
   "location": { "value": "uksouth" },
   "storageAccountName" : { "value" : "s279p01tfstatestorage"},
-  "workspaceName" : { "value" : "279p01-uks-cec-law-tf-state"},
+  "workspaceName" : { "value" : "s279p01-uks-cec-law-tf-state"},
   "vnetName": { "value": "s279p01-uks-cec-vnet-tf-state" },
   "vnetAddressPrefix": { "value": "10.1.0.0/16" },
   "subnetName": { "value": "s279p01-uks-cec-snet-tf-state" },
