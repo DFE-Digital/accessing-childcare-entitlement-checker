@@ -15,9 +15,6 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Html.DisplayNameFor(model => model.WorkStatus)
-        </h1>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
             <cec-enum-checkboxes for="WorkStatus" />

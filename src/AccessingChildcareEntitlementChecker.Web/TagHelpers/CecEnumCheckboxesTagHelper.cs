@@ -93,9 +93,10 @@ public class CecEnumCheckboxesTagHelper(
         var model = ((IEnumerable)For.Model).Cast<Enum>();
         var selectedValues = GetSelectedValues(fieldName, model);
         var items = new List<CheckboxesOptionsItem>();
+        var exclusiveValueText = ExclusiveValue is null ? null : Convert.ToUInt64(ExclusiveValue).ToString();
         foreach (var (groupAndName, valueText) in enumMetadata.EnumGroupedDisplayNamesAndValues!)
         {
-            var isExclusive = ExclusiveValue == null ? false : valueText == Convert.ToUInt64(ExclusiveValue).ToString();
+            var isExclusive = valueText == exclusiveValueText;
 
             if (isExclusive)
             {

@@ -42,7 +42,7 @@ public class CecEnumCheckboxesTagHelperTests
         _componentGenerator = Substitute.For<IComponentGenerator>();
         _componentGenerator
             .GenerateCheckboxesAsync(Arg.Do<CheckboxesOptions>(options => _generatedOptions = options))
-            .Returns(callInfo => ValueTask.FromResult<GovUkComponent>(new TestGovUkComponent()));
+            .Returns(_ => ValueTask.FromResult<GovUkComponent>(new TestGovUkComponent()));
 
         _tagHelperContext = new TagHelperContext(
             tagName: "cec-enum-checkboxes",
