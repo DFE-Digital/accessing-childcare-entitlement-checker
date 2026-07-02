@@ -50,6 +50,8 @@ public class CecEnumCheckboxesTagHelper(
         var legendHtml = BuildLegendHtml();
         var items = BuildCheckboxItems(fieldName, modelType);
         var errorMessageOptions = BuildError(fieldName, idPrefix);
+        var text = For.Metadata.DisplayName ?? For.Name;
+        var hint = Hint is null ? null : new HintOptions { Text = Hint };
         var component = await componentGenerator.GenerateCheckboxesAsync(new CheckboxesOptions
         {
             IdPrefix = idPrefix,
@@ -58,13 +60,13 @@ public class CecEnumCheckboxesTagHelper(
             {
                 Legend = new FieldsetOptionsLegend
                 {
-                    Text = For.Metadata.DisplayName ?? For.Name,
+                    Text = text,
                     Html = legendHtml,
                     Classes = "govuk-fieldset__legend--l",
                     IsPageHeading = true
                 },
             },
-            Hint = Hint is null ? null : new HintOptions { Text = Hint },
+            Hint = hint,
             ErrorMessage = errorMessageOptions,
             Items = items
         });
@@ -93,7 +95,7 @@ public class CecEnumCheckboxesTagHelper(
         var items = new List<CheckboxesOptionsItem>();
         foreach (var (groupAndName, valueText) in enumMetadata.EnumGroupedDisplayNamesAndValues!)
         {
-            var isExclusive = valueText == ExclusiveValue?.ToString();
+            var isExclusive = ExclusiveValue == null ? false : valueText == Convert.ToUInt64(ExclusiveValue).ToString();
 
             if (isExclusive)
             {
@@ -139,7 +141,7 @@ public class CecEnumCheckboxesTagHelper(
         }
 
         return model
-            .Select(v => v.ToString())
+            .Select(v => Convert.ToUInt64(v).ToString())
             .ToHashSet(StringComparer.Ordinal);
     }
 }

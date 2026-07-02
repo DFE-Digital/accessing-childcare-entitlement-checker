@@ -20,21 +20,7 @@
         </h1>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
-
-            <govuk-checkboxes for="WorkStatus">
-                <govuk-checkboxes-fieldset>
-                    <govuk-checkboxes-fieldset-legend class="govuk-visually-hidden">
-                        @Html.DisplayNameFor(model => model.WorkStatus)
-                    </govuk-checkboxes-fieldset-legend>
-                    <govuk-checkboxes-error-message />
-                    @foreach (var value in Enum.GetValues<WorkStatusOption>())
-                    {
-                    <govuk-checkboxes-item value="@value">
-                        @Html.EnumDisplayName(value)
-                    </govuk-checkboxes-item>
-                    }
-                </govuk-checkboxes-fieldset>
-            </govuk-checkboxes>
+            <cec-enum-checkboxes for="WorkStatus" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
