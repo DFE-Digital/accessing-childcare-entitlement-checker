@@ -16,7 +16,6 @@ internal class Scenario8 : IUseCase
                 .WithName("Lee")
                 .IsBorn("Yes")
                 .WithBirthDate("03 MAR 2025") //TODO : need a better way to handle these dates. Test will become flaky over time
-                .WithRelationship("Parent")
                 .WithSupport("No, none of these apply"))
 
             // Complete child details loop

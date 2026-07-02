@@ -84,9 +84,8 @@ public static class DerivedContextBuilder
             AgeInYears = ageInYears,
             AgeInMonths = ageInMonths,
             ChildRelatedBenefits = child.ChildRelatedBenefits.ToList(),
-            RelationshipToChild = child.RelationshipToChild,
             UserIsOnParentalLeaveForChild = child.UserIsOnParentalLeaveForChild,
-            PartnerIsOnParentalLeaveForChild = child.PartnerIsOnParentalLeaveForChild
+            PartnerIsOnParentalLeaveForChild = child.PartnerIsOnParentalLeaveForChild,
         };
     }
 

@@ -24,7 +24,6 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
         {
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
-            BornRelationship = Relationship.Parent
         };
 
         return state;

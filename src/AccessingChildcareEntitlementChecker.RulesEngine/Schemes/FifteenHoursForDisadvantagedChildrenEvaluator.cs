@@ -75,9 +75,7 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
                 ChildRelatedBenefit.DisabilityLivingAllowance)
 
             || child.ChildRelatedBenefits.Contains(
-                ChildRelatedBenefit.EducationHealthAndCarePlan)
-
-            || child.RelationshipToChild == RelationshipToChild.FosterParent;
+                ChildRelatedBenefit.EducationHealthAndCarePlan);
     }
 
     private static bool HouseholdMeetsBenefitEligibility(

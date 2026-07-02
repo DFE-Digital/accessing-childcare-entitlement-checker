@@ -1,6 +1,7 @@
 ﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
@@ -17,7 +18,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     /// </summary>
     /// <returns>Task representing the result.</returns>
     [Theory]
-    [InlineData(BirthStatus.Due, $"/children/{OtherChildId}/relationship-to-expectant-child")]
+    [InlineData(BirthStatus.Due, $"/children/{OtherChildId}/expectant-childs-due-date")]
     [InlineData(BirthStatus.Born, $"/children/{OtherChildId}/child-benefits")]
     public async Task Get_BackLink_Is_To_Last_Child(BirthStatus birthStatus, string expectedUrl)
     {
@@ -30,6 +31,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
                         new Child(ChildId, "Sara")
                         {
                             BirthStatus = BirthStatus.Born,
+                            ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
                         }
                     },
                     {
@@ -55,11 +57,10 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     /// </summary>
     /// <returns>Task representing the result.</returns>
     [Theory]
-    [InlineData(OtherChildId, $"/children/{OtherChildId}/relationship-to-expectant-child")]
+    [InlineData(OtherChildId, $"/children/{OtherChildId}/expectant-childs-due-date")]
     [InlineData(ChildId, $"/children/{ChildId}/child-benefits")]
     public async Task Get_BackLink_Is_To_Specified_Child(string arrivedFromChildId, string expectedUrl)
     {
-
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
@@ -69,6 +70,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
                         new Child(ChildId, "Sara")
                         {
                             BirthStatus = BirthStatus.Born,
+                            ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
                         }
                     },
                     {

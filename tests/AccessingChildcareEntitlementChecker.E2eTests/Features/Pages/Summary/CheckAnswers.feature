@@ -13,11 +13,9 @@ Scenario: Page Load
 	And I should see a summary card with the title "Aydin" and the following summary:
 		| Question                                      | Answer   |
 		| What is this child's due date?                | Tomorrow |
-		| What will your relationship be to this child? | Parent   |
 	And I should see a summary card with the title "Sara" and the following summary:
 		| Question                                    | Answer                                |
 		| What is Sara's date of birth?               | Yesterday                             |
-		| What is your relationship to Sara?          | Parent                                |
 		| Does Sara get any of the following support? | Education, health and care (EHC) plan |
 	And I should see a summary list for "Your details" with the following summary:
 		| Question                                                | Answer                     |
@@ -54,18 +52,17 @@ Scenario: Back navigation
 	When I click the back link
 	Then the page header is "How does your partner receive childcare vouchers?"
 
-Scenario: Change my relationship to Sara
-	When I click the Change link in the "Sara" card for "What is your relationship to Sara?"
+Scenario: Change whether Sara gets any support
+	When I click the Change link in the "Sara" card for "Does Sara get any of the following support?"
 	And I answer the questions as follows:
-		| Question                           | Answer |
-		| What is your relationship to Sara? | Parent |
+		| Question                                    | Answer                           |
+		| Does Sara get any of the following support? | Certificate of visual impairment |
 	Then the page header is "Check your answers"
 	And I should see 2 summary cards
 	And I should see a summary card with the title "Sara" and the following summary:
-		| Question                                    | Answer                                |
-		| What is Sara's date of birth?               | Yesterday                             |
-		| What is your relationship to Sara?          | Parent                                |
-		| Does Sara get any of the following support? | Education, health and care (EHC) plan |
+		| Question                                    | Answer                                                                  |
+		| What is Sara's date of birth?               | Yesterday                                                               |
+		| Does Sara get any of the following support? | Certificate of visual impairment, Education, health and care (EHC) plan |
 
 Scenario: Change my age
 	When I click the Change link in the "Your details" summary list for "What is your age?"

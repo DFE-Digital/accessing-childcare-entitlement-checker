@@ -95,7 +95,6 @@ public class JourneyStateToEntitlementRequestMapper
             BirthStatus = MapBirthStatus(child.BirthStatus),
             DateOfBirth = child.BirthDate,
             DueDate = child.DueDate,
-            RelationshipToChild = MapRelationship(child),
             ChildRelatedBenefits = MapChildBenefits(child),
             UserIsOnParentalLeaveForChild = journeyState.ParentalLeaveChildrenIds.Contains(child.ChildId),
             PartnerIsOnParentalLeaveForChild = journeyState.PartnerParentalLeaveChildrenIds.Contains(child.ChildId),
@@ -337,32 +336,8 @@ public class JourneyStateToEntitlementRequestMapper
         };
     }
 
-    private static RelationshipToChild? MapRelationship(Child child)
-    {
-        var relationship =
-            child.BirthStatus == Web.Models.BirthStatus.Born
-                ? child.BornRelationship
-                : child.ExpectedRelationship;
-
-        return relationship switch
-        {
-            Relationship.Parent =>
-                RelationshipToChild.Parent,
-
-            Relationship.GuardianOrCarer =>
-                RelationshipToChild.Guardian,
-
-            Relationship.FosterParent =>
-                RelationshipToChild.FosterParent,
-
-            null => null,
-
-            _ => throw new InvalidOperationException(
-                $"Unexpected relationship value: {relationship}")
-        };
-    }
-
-    private static List<ChildRelatedBenefit> MapChildBenefits(Child child)
+    private static List<ChildRelatedBenefit> MapChildBenefits(
+        Child child)
     {
         return child.ChildSupportOptions
             .Select(MapChildBenefit)

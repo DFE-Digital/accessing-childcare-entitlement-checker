@@ -86,11 +86,6 @@ internal class JourneySteps(IPage page)
         await childDueDate.AnswerAsync("Tomorrow");
         await childDueDate.ContinueAsync();
 
-        var expectedChildRelationship = new ExpectedChildRelationshipPage(page);
-        await expectedChildRelationship.AssertHeaderAsync();
-        await expectedChildRelationship.AnswerAsync("Parent");
-        await expectedChildRelationship.ContinueAsync();
-
         // Add another child
         await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
 
@@ -107,11 +102,6 @@ internal class JourneySteps(IPage page)
         await childBirthDate.AssertHeaderAsync();
         await childBirthDate.AnswerAsync("Yesterday");
         await childBirthDate.ContinueAsync();
-
-        var childRelationship = new ChildRelationshipPage(page);
-        await childRelationship.AssertHeaderAsync();
-        await childRelationship.AnswerAsync("Parent");
-        await childRelationship.ContinueAsync();
 
         var childSupport = new ChildSupportPage(page);
         await childSupport.AssertHeaderAsync();

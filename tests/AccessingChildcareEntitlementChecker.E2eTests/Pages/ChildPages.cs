@@ -30,20 +30,6 @@ internal class ChildBirthDatePage(IPage page) : BasePage(page)
     public override async Task AnswerAsync(string answer) => await FillDateAsync(answer);
 }
 
-[PagePattern(PageNames.ChildRelationship)]
-internal class ChildRelationshipPage(IPage page) : BasePage(page)
-{
-    public override string PageTitle => PageNames.ChildRelationship;
-    public override async Task AnswerAsync(string answer) => await SelectRadioAsync(answer);
-}
-
-[PagePattern(PageNames.ExpectedChildRelationship)]
-internal class ExpectedChildRelationshipPage(IPage page) : BasePage(page)
-{
-    public override string PageTitle => PageNames.ExpectedChildRelationship;
-    public override async Task AnswerAsync(string answer) => await SelectRadioAsync(answer);
-}
-
 [PagePattern(PageNames.ChildSupport)]
 internal class ChildSupportPage(IPage page) : BasePage(page)
 {
