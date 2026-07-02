@@ -39,18 +39,18 @@ Scenario: Back navigation from How do you receive your childcare vouchers?
 	When I click the back link
 	Then the page header is "How do you receive your childcare vouchers?"
 
-Scenario: Back navigation from Do you already get any of this childcare support?
+Scenario: Back navigation from Do you already get any of these to help pay for childcare?
 	Given I answer the following pages:
-		| Page                                                    | Answer                                         |
-		| What is your age?                                       | Under 18                                       |
-		| What is your nationality?                               | British or Irish citizen                       |
-		| Are you in paid work?                                   | Yes                                            |
-		| How would you describe your work status?                | Self-employed                                  |
-		| Have you been self-employed for less than 12 months?    | No                                             |
-		| On average, do you earn £203 a week or more before tax? | Yes                                            |
-		| Is your adjusted net income more than £100,000 a year?  | No                                             |
-		| Does your household receive universal credit?           | Yes                                            |
-		| Do you get any of these benefits?                       | Carer's Allowance                              |
-		| Do you already get any of this childcare support?       | No, I do not get any of this childcare support |
+		| Page                                                       | Answer                        |
+		| What is your age?                                          | Under 18                      |
+		| What is your nationality?                                  | British or Irish citizen      |
+		| Are you in paid work?                                      | Yes                           |
+		| How would you describe your work status?                   | Self-employed                 |
+		| Have you been self-employed for less than 12 months?       | No                            |
+		| On average, do you earn £203 a week or more before tax?    | Yes                           |
+		| Is your adjusted net income more than £100,000 a year?     | No                            |
+		| Does your household receive universal credit?              | Yes                           |
+		| Do you get any of these benefits?                          | Carer's Allowance             |
+		| Do you already get any of these to help pay for childcare? | No, I do not get any of these |
 	When I click the back link
-	Then the page header is "Do you already get any of this childcare support?"
+	Then the page header is "Do you already get any of these to help pay for childcare?"

@@ -6,12 +6,12 @@ Background:
 	And I check my children's details and click on Continue
 	And I fill in my own details
 	And I answer questions as follows:
-		| Question                                                     | Answer                   |
-		| Do you live with a partner?                                  | Yes                      |
-		| What is your partner's age?                                  | 21 or over               |
-		| Is your partner in paid work?                                | No, they are not in work |
-		| Does your partner get any of these benefits?                 | Carer's Allowance        |
-		| Does your partner already get any of this childcare support? | Childcare vouchers       |
+		| Question                                                              | Answer                   |
+		| Do you live with a partner?                                           | Yes                      |
+		| What is your partner's age?                                           | 21 or over               |
+		| Is your partner in paid work?                                         | No, they are not in work |
+		| Does your partner get any of these benefits?                          | Carer's Allowance        |
+		| Does your partner already get any of these to help pay for childcare? | Childcare vouchers       |
 
 Scenario: Page load
 	When the page header is "How does your partner receive childcare vouchers?"
@@ -41,4 +41,4 @@ Scenario: Continue with A workplace nursery scheme
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "Does your partner already get any of this childcare support?"
+	Then the page header is "Does your partner already get any of these to help pay for childcare?"

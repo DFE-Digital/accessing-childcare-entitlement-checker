@@ -57,7 +57,7 @@ Scenario: Continue with Carer's Allowance
 		| Does your household receive universal credit? | Yes                  |
 	When I select the "Carer's Allowance" checkbox
 	And I click on Continue
-	Then the page header is "Do you already get any of this childcare support?"
+	Then the page header is "Do you already get any of these to help pay for childcare?"
 
 Scenario: Back navigation from Is your adjusted net income more than £100,000 a year?
 	Given I answer "Are you in paid work?" as "Yes"

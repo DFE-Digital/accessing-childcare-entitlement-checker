@@ -1,4 +1,4 @@
-Feature: Does your partner already get any of this childcare support?
+Feature: Does your partner already get any of these to help pay for childcare?
 
 Background:
 	Given I am on the childcare entitlement checker website
@@ -13,35 +13,35 @@ Background:
 		| Does your partner get any of these benefits? | Carer's Allowance        |
 
 Scenario: Page load
-	When the page header is "Does your partner already get any of this childcare support?"
+	When the page header is "Does your partner already get any of these to help pay for childcare?"
 	Then I should see 3 checkboxes with the following options:
-		| Checkbox                                                    |
-		| Childcare vouchers                                          |
-		| A childcare bursary or grant (as part of education funding) |
-		| No, they do not get any of this childcare support           |
+		| Checkbox                         |
+		| Childcare vouchers               |
+		| A childcare bursary or grant     |
+		| No, they do not get any of these |
 	And no checkboxes are selected
 
 Scenario: Checkbox selection
 	When I select the "Childcare vouchers" checkbox
-	And I select the "A childcare bursary or grant (as part of education funding)" checkbox
+	And I select the "A childcare bursary or grant" checkbox
 	Then the following checkboxes should be selected:
-		| Checkbox                                                    |
-		| Childcare vouchers                                          |
-		| A childcare bursary or grant (as part of education funding) |
+		| Checkbox                     |
+		| Childcare vouchers           |
+		| A childcare bursary or grant |
 
 Scenario: Continue without selection
 	When I do not select a checkbox
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
-	And the error summary and inline validation should be "Select any of this childcare support your partner already gets, or select 'No, they do not get any of this childcare support'"
+	And the error summary and inline validation should be "Select any of this childcare support your partner already gets, or select 'No, they do not get any of these'"
 
 Scenario: Continue with Childcare vouchers
 	When I select the "Childcare vouchers" checkbox
 	And I click on Continue
 	Then the page header is "How does your partner receive childcare vouchers?"
 
-Scenario: Continue with A childcare bursary or grant (as part of education funding)
-	When I select the "A childcare bursary or grant (as part of education funding)" checkbox
+Scenario: Continue with A childcare bursary or grant
+	When I select the "A childcare bursary or grant" checkbox
 	And I click on Continue
 	Then the page header is "Check your answers"
 

@@ -5,19 +5,19 @@ Background:
 	And I start the journey, filling in Aydin's and Sara's details
 	And I check my children's details and click on Continue
 	And I answer questions as follows:
-		| Question                                                | Answer                                         |
-		| What is your age?                                       | Under 18                                       |
-		| What is your nationality?                               | British or Irish citizen                       |
-		| Are you in paid work?                                   | Yes, but I am on parental leave                |
-		| Which child are you on leave for?                       | Sara                                           |
-		| How would you describe your work status?                | Paid employment                                |
-		| On average, do you earn £203 a week or more before tax? | No                                             |
-		| Does your household receive universal credit?           | No                                             |
-		| Do you get any of these benefits?                       | No, I do not get any of these benefits         |
-		| Do you already get any of this childcare support?       | No, I do not get any of this childcare support |
-		| Do you live with a partner?                             | Yes                                            |
-		| What is your partner's age?                             | 21 or over                                     |
-		| Is your partner in paid work?                           | Yes, but they are on parental leave            |
+		| Question                                                   | Answer                                 |
+		| What is your age?                                          | Under 18                               |
+		| What is your nationality?                                  | British or Irish citizen               |
+		| Are you in paid work?                                      | Yes, but I am on parental leave        |
+		| Which child are you on leave for?                          | Sara                                   |
+		| How would you describe your work status?                   | Paid employment                        |
+		| On average, do you earn £203 a week or more before tax?    | No                                     |
+		| Does your household receive universal credit?              | No                                     |
+		| Do you get any of these benefits?                          | No, I do not get any of these benefits |
+		| Do you already get any of these to help pay for childcare? | No, I do not get any of these          |
+		| Do you live with a partner?                                | Yes                                    |
+		| What is your partner's age?                                | 21 or over                             |
+		| Is your partner in paid work?                              | Yes, but they are on parental leave    |
 
 Scenario: Page load
 	When the page header is "Which child is your partner on leave for?"
