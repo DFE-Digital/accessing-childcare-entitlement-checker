@@ -17,7 +17,7 @@
     <div class="govuk-grid-column-two-thirds">
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
-            <cec-enum-checkboxes for="WorkStatus" />
+            <app-checkboxes for="WorkStatus" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]

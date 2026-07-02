@@ -18,7 +18,7 @@
     <div class="govuk-grid-column-two-thirds">
         <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
-            <cec-enum-checkboxes for="ChildSupportOptions"
+            <app-checkboxes for="ChildSupportOptions"
                                  legend="@Localizer["Does {0} get any of the following support?", Model.ChildName]"
                                  hint="@Html.GetDescriptionFor(m => m.ChildSupportOptions)"
                                  exclusive-value="ChildSupport.NoneOfTheseApply" />

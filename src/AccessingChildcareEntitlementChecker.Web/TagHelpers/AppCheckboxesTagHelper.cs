@@ -11,8 +11,8 @@ using System.Text.Encodings.Web;
 
 namespace AccessingChildcareEntitlementChecker.Web.TagHelpers;
 
-[HtmlTargetElement("cec-enum-checkboxes", TagStructure = TagStructure.WithoutEndTag)]
-public class CecEnumCheckboxesTagHelper(
+[HtmlTargetElement("app-checkboxes", TagStructure = TagStructure.WithoutEndTag)]
+public class AppCheckboxesTagHelper(
     IComponentGenerator componentGenerator,
     IModelMetadataProvider metadataProvider) : TagHelper
 {

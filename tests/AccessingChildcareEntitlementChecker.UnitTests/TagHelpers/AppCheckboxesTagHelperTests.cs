@@ -13,7 +13,7 @@ using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.TagHelpers;
 
-public class CecEnumCheckboxesTagHelperTests
+public class AppCheckboxesTagHelperTests
 {
     private readonly TagHelperContext _tagHelperContext;
     private readonly TagHelperOutput _tagHelperOutput;
@@ -24,7 +24,7 @@ public class CecEnumCheckboxesTagHelperTests
     private readonly ModelMetadata _modelMetadata;
     private CheckboxesOptions? _generatedOptions;
 
-    public CecEnumCheckboxesTagHelperTests()
+    public AppCheckboxesTagHelperTests()
     {
         var services = new ServiceCollection();
         services.AddLogging();
@@ -47,13 +47,13 @@ public class CecEnumCheckboxesTagHelperTests
 #pragma warning restore CA2012
 
         _tagHelperContext = new TagHelperContext(
-            tagName: "cec-enum-checkboxes",
+            tagName: "app-checkboxes",
             allAttributes: [],
             items: new Dictionary<object, object>(),
             uniqueId: "test");
 
         _tagHelperOutput = new TagHelperOutput(
-            "cec-enum-checkboxes",
+            "app-checkboxes",
             attributes: [],
             getChildContentAsync: (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
 
@@ -72,7 +72,7 @@ public class CecEnumCheckboxesTagHelperTests
             nameof(BenefitsViewModel.Benefits),
             new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
 
-        var helper = new CecEnumCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
         {
             For = modelExpression,
             ViewContext = _viewContext
@@ -107,7 +107,7 @@ public class CecEnumCheckboxesTagHelperTests
             nameof(BenefitsViewModel.Benefits),
             new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
 
-        var helper = new CecEnumCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
         {
             For = modelExpression,
             ExclusiveValue = BenefitsOption.None,
@@ -135,7 +135,7 @@ public class CecEnumCheckboxesTagHelperTests
             nameof(BenefitsViewModel.Benefits),
             new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
 
-        var helper = new CecEnumCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
         {
             For = modelExpression,
             Hint = "Select all that apply",
@@ -156,7 +156,7 @@ public class CecEnumCheckboxesTagHelperTests
             nameof(BenefitsViewModel.Benefits),
             new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
 
-        var helper = new CecEnumCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
         {
             For = modelExpression,
             Legend = new HtmlString("Custom Legend"),
@@ -179,7 +179,7 @@ public class CecEnumCheckboxesTagHelperTests
             nameof(BenefitsViewModel.Benefits),
             new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
 
-        var helper = new CecEnumCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
         {
             For = modelExpression,
             ViewContext = _viewContext
@@ -201,7 +201,7 @@ public class CecEnumCheckboxesTagHelperTests
             nameof(BenefitsViewModel.Benefits),
             new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
 
-        var helper = new CecEnumCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
         {
             For = modelExpression,
             ViewContext = _viewContext
@@ -222,7 +222,7 @@ public class CecEnumCheckboxesTagHelperTests
             nameof(BenefitsViewModel.Benefits),
             new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
 
-        var helper = new CecEnumCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
         {
             For = modelExpression,
             ViewContext = _viewContext
