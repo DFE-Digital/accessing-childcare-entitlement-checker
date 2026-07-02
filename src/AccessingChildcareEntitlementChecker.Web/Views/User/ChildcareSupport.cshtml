@@ -36,7 +36,7 @@
                             </govuk-checkboxes-divider>
                         }
 
-                        <govuk-checkboxes-item value="@value" behaviour="@(value == ChildcareSupportOption.None ? CheckboxesItemBehavior.Exclusive : null)">
+                        <govuk-checkboxes-item value="@value" behavior="@(value == ChildcareSupportOption.None ? CheckboxesItemBehavior.Exclusive : null)">
                             @Html.EnumDisplayName(value)
                             <govuk-checkboxes-item-hint>
                                 @Html.EnumDescription(value)
