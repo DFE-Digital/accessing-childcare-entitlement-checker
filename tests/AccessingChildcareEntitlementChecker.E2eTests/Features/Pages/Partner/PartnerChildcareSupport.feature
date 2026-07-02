@@ -14,11 +14,11 @@ Background:
 
 Scenario: Page load
 	When the page header is "Does your partner already get any of these to help pay for childcare?"
-	Then I should see 3 checkboxes with the following options:
-		| Checkbox                         |
-		| Childcare vouchers               |
-		| A childcare bursary or grant     |
-		| No, they do not get any of these |
+	Then I should see the following checkboxes:
+		| Name                             | Hint                                                                                                                 |
+		| Childcare vouchers               | A scheme that lets you pay for childcare from your salary before tax, which closed to new applicants in October 2018 |
+		| A childcare bursary or grant     | Money to help pay for childcare while you study, for example through a college or university                         |
+		| No, they do not get any of these |                                                                                                                      |
 	And no checkboxes are selected
 
 Scenario: Checkbox selection
@@ -28,6 +28,14 @@ Scenario: Checkbox selection
 		| Checkbox                     |
 		| Childcare vouchers           |
 		| A childcare bursary or grant |
+
+Scenario: None selection is exclusive
+	When I select the "Childcare vouchers" checkbox
+	And I select the "A childcare bursary or grant" checkbox
+	And I select the "No, they do not get any of these" checkbox
+	Then the following checkboxes should be selected:
+		| Checkbox                         |
+		| No, they do not get any of these |
 
 Scenario: Continue without selection
 	When I do not select a checkbox

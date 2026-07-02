@@ -15,8 +15,8 @@ Scenario: Page load
 		| Are you in paid work?                         | No, I am not in work |
 		| Does your household receive universal credit? | Yes                  |
 	When the page header is "Do you get any of these benefits?"
-	Then I should see 9 checkboxes with the following options:
-		| Checkbox                                             |
+	Then I should see the following checkboxes:
+		| Name                                                 |
 		| Carer's Allowance                                    |
 		| Contribution-based Employment and Support Allowance  |
 		| Employment and support allowance (ESA)               |

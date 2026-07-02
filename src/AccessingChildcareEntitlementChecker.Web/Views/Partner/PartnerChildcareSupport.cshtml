@@ -29,15 +29,18 @@
                     <govuk-checkboxes-error-message />
                     @foreach (var value in Enum.GetValues<PartnerChildcareSupportOption>())
                     {
-                        @if (value == PartnerChildcareSupportOption.None)
+                        if (value == PartnerChildcareSupportOption.None)
                         {
                             <govuk-checkboxes-divider>
                                 @Localizer["or"]
                             </govuk-checkboxes-divider>
                         }
 
-                        <govuk-checkboxes-item value="@value" behaviour="@(value == PartnerChildcareSupportOption.None ? "exclusive" : null)">
+                        <govuk-checkboxes-item value="@value" behaviour="@(value == PartnerChildcareSupportOption.None ? CheckboxesItemBehavior.Exclusive : null)">
                             @Html.EnumDisplayName(value)
+                            <govuk-checkboxes-item-hint>
+                                @Html.EnumDescription(value)
+                            </govuk-checkboxes-item-hint>
                         </govuk-checkboxes-item>
                     }
                 </govuk-checkboxes-fieldset>

@@ -31,14 +31,17 @@
                     {
                         if (value == ChildcareSupportOption.None)
                         {
-                    <govuk-checkboxes-divider>
-                        @Localizer["or"]
-                    </govuk-checkboxes-divider>
+                            <govuk-checkboxes-divider>
+                                @Localizer["or"]
+                            </govuk-checkboxes-divider>
                         }
 
-                        <govuk-checkboxes-item value="@value" behaviour="@(value == ChildcareSupportOption.None ? "exclusive" : null)">
-                        @Html.EnumDisplayName(value)
-                    </govuk-checkboxes-item>
+                        <govuk-checkboxes-item value="@value" behaviour="@(value == ChildcareSupportOption.None ? CheckboxesItemBehavior.Exclusive : null)">
+                            @Html.EnumDisplayName(value)
+                            <govuk-checkboxes-item-hint>
+                                @Html.EnumDescription(value)
+                            </govuk-checkboxes-item-hint>
+                        </govuk-checkboxes-item>
                     }
                 </govuk-checkboxes-fieldset>
             </govuk-checkboxes>

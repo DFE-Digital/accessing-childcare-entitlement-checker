@@ -13,8 +13,8 @@ Background:
 Scenario: Page load
 	Given I answer "Is your partner in paid work?" as "No, they are not in work"
 	When the page header is "Does your partner get any of these benefits?"
-	Then I should see 9 checkboxes with the following options:
-		| Checkbox                                             |
+	Then I should see the following checkboxes:
+		| Name                                                 |
 		| Carer's Allowance                                    |
 		| Contribution-based Employment and Support Allowance  |
 		| Employment and support allowance (ESA)               |
