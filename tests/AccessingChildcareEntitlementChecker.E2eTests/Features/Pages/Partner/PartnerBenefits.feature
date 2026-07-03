@@ -67,10 +67,10 @@ Scenario: Back navigation from On average, does your partner earn £203 a week o
 	When I click the back link
 	Then the page header is "On average, does your partner earn £203 a week or more before tax?"
 
-Scenario: Back navigation from Is your partner's adjusted net income more than £100,000 a year?
+Scenario: Back navigation from Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?
 	Given I answer "Is your partner in paid work?" as "Yes"
 	And I answer "How would you describe your partner's work status?" as "Paid employment"
 	And I answer "On average, does your partner earn £203 a week or more before tax?" as "Yes"
-	And I answer "Is your partner's adjusted net income more than £100,000 a year?" as "Yes"
+	And I answer "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?" as "Yes"
 	When I click the back link
-	Then the page header is "Is your partner's adjusted net income more than £100,000 a year?"
+	Then the page header is "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?"

@@ -59,13 +59,13 @@ Scenario: Continue with Carer's Allowance
 	And I click on Continue
 	Then the page header is "Do you already get any of these to help pay for childcare?"
 
-Scenario: Back navigation from Is your adjusted net income more than £100,000 a year?
+Scenario: Back navigation from Do you expect your adjusted net income to be more than £100,000 for the current tax year?
 	Given I answer "Are you in paid work?" as "Yes"
 	And I answer "How would you describe your work status?" as "Paid employment"
 	And I answer "On average, do you earn £203 a week or more before tax?" as "Yes"
-	And I answer "Is your adjusted net income more than £100,000 a year?" as "Yes"
+	And I answer "Do you expect your adjusted net income to be more than £100,000 for the current tax year?" as "Yes"
 	When I click the back link
-	Then the page header is "Is your adjusted net income more than £100,000 a year?"
+	Then the page header is "Do you expect your adjusted net income to be more than £100,000 for the current tax year?"
 
 Scenario: Back navigation
 	Given I answer questions as follows:

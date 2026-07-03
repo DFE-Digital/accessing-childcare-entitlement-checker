@@ -127,7 +127,7 @@ internal class JourneySteps(IPage page)
             ("How would you describe your work status?", "Self-employed"),
             ("Have you been self-employed for less than 12 months?", "No"),
             ("On average, do you earn £203 a week or more before tax?", "Yes"),
-            ("Is your adjusted net income more than £100,000 a year?", "No"),
+            ("Do you expect your adjusted net income to be more than £100,000 for the current tax year?", "No"),
             ("Does your household receive universal credit?", "Yes"),
             ("Do you get any of these benefits?", "Carer's Allowance"),
             ("Do you already get any of these to help pay for childcare?", "Childcare vouchers"),
