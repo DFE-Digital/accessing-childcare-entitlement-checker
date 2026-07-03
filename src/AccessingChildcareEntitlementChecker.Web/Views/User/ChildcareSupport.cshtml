@@ -19,18 +19,6 @@
             <input type="hidden" asp-for="ReturnTo" />
             <app-checkboxes for="ChildcareSupport" exclusive-value="ChildcareSupportOption.None" />
 
-            <govuk-details>
-                <govuk-details-summary>
-                    @Localizer["Why this childcare support matters"]
-                </govuk-details-summary>
-                <govuk-details-text>
-                    <p class="govuk-body">
-                        @Localizer["Some childcare support schemes cannot be used together. This information helps give you the most accurate results."]
-                    </p>
-
-                </govuk-details-text>
-            </govuk-details>
-
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
             </govuk-button>
