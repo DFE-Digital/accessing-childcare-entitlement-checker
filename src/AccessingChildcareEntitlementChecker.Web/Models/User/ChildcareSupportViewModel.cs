@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
@@ -31,10 +32,9 @@ public class ChildcareSupportViewModel : IValidatableObject
     {
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(ChildcareSupportViewModel));
-
         var isEmpty = ChildcareSupport.Count == 0;
-        var isNoneSelectedWithOtherOption = ChildcareSupport.Count > 1 && ChildcareSupport.Contains(ChildcareSupportOption.None);
-        if (isEmpty || isNoneSelectedWithOtherOption)
+        var selectedAndNone = ChildcareSupport.Count > 1 && ChildcareSupport.Contains(ChildcareSupportOption.None);
+        if (isEmpty || selectedAndNone)
         {
             yield return new ValidationResult(localizer["Select any of this childcare support you already get, or select 'No, I do not get any of this childcare support'"], [nameof(ChildcareSupport)]);
         }

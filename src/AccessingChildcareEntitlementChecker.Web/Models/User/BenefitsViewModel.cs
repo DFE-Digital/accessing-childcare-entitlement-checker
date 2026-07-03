@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.RulesEngine.Types;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
@@ -31,10 +32,9 @@ public class BenefitsViewModel : IValidatableObject
     {
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(BenefitsViewModel));
-
         var isEmpty = Benefits.Count == 0;
-        var isNoneSelectedWithOtherOption = Benefits.Count > 1 && Benefits.Contains(BenefitsOption.None);
-        if (isEmpty || isNoneSelectedWithOtherOption)
+        var selectedAndNone = Benefits.Count > 1 && Benefits.Contains(BenefitsOption.None);
+        if (isEmpty || selectedAndNone)
         {
             yield return new ValidationResult(localizer["Select any benefits you get, or select 'No, I do not get any of these benefits'"], [nameof(Benefits)]);
         }

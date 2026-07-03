@@ -31,8 +31,8 @@ public class WorkStatusViewModel : IValidatableObject
     {
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(WorkStatusViewModel));
-
-        if (WorkStatus.Count == 0)
+        var isEmpty = WorkStatus.Count == 0;
+        if (isEmpty)
         {
             yield return new ValidationResult(localizer["Select your work status"], [nameof(WorkStatus)]);
         }

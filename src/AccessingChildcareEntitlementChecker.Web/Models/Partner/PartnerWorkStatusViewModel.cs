@@ -31,8 +31,8 @@ public class PartnerWorkStatusViewModel : IValidatableObject
     {
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(PartnerWorkStatusViewModel));
-
-        if (PartnerWorkStatus.Count == 0)
+        var isEmpty = PartnerWorkStatus.Count == 0;
+        if (isEmpty)
         {
             yield return new ValidationResult(localizer["Select how you would describe your partner's work status"], [nameof(PartnerWorkStatus)]);
         }

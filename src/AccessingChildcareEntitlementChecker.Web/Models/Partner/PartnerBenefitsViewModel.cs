@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
@@ -31,13 +32,9 @@ public class PartnerBenefitsViewModel : IValidatableObject
     {
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(PartnerBenefitsViewModel));
-
-        if (PartnerBenefits.Count == 0)
-        {
-            yield return new ValidationResult(localizer["Select any benefits your partner gets, or select 'No, they do not get any of these benefits'"], [nameof(PartnerBenefits)]);
-        }
-
-        if (PartnerBenefits.Contains(PartnerBenefitsOption.None) && PartnerBenefits.Count > 1)
+        var isEmpty = PartnerBenefits.Count == 0;
+        var selectedAndNone = PartnerBenefits.Contains(PartnerBenefitsOption.None) && PartnerBenefits.Count > 1;
+        if (isEmpty || selectedAndNone)
         {
             yield return new ValidationResult(localizer["Select any benefits your partner gets, or select 'No, they do not get any of these benefits'"], [nameof(PartnerBenefits)]);
         }
