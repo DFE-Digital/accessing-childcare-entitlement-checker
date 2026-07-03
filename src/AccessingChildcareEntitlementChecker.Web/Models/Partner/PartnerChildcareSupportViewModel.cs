@@ -24,7 +24,7 @@ public class PartnerChildcareSupportViewModel : IValidatableObject
 
     public string? ReturnTo { get; set; }
 
-    [Display(Name = "Does your partner already get any of this childcare support?", Description = "Select all that apply.")]
+    [Display(Name = "Does your partner already get any of these to help pay for childcare?", Description = "Select all that apply.")]
     public List<PartnerChildcareSupportOption> PartnerChildcareSupport { get; set; } = [];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -35,7 +35,7 @@ public class PartnerChildcareSupportViewModel : IValidatableObject
         var selectedAndNone = PartnerChildcareSupport.Count > 1 && PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.None);
         if (isEmpty || selectedAndNone)
         {
-            yield return new ValidationResult(localizer["Select any of this childcare support your partner already gets, or select 'No, they do not get any of this childcare support'"], [nameof(PartnerChildcareSupport)]);
+            yield return new ValidationResult(localizer["Select any of this childcare support your partner already gets, or select 'No, they do not get any of these'"], [nameof(PartnerChildcareSupport)]);
         }
     }
 }

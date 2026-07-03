@@ -15,8 +15,8 @@ Scenario: Page load
 		| Are you in paid work?                         | No, I am not in work |
 		| Does your household receive universal credit? | Yes                  |
 	When the page header is "Do you get any of these benefits?"
-	Then I should see 9 checkboxes with the following options:
-		| Checkbox                                             |
+	Then I should see the following checkboxes:
+		| Name                                                 |
 		| Carer's Allowance                                    |
 		| Contribution-based Employment and Support Allowance  |
 		| Employment and support allowance (ESA)               |
@@ -57,15 +57,15 @@ Scenario: Continue with Carer's Allowance
 		| Does your household receive universal credit? | Yes                  |
 	When I select the "Carer's Allowance" checkbox
 	And I click on Continue
-	Then the page header is "Do you already get any of this childcare support?"
+	Then the page header is "Do you already get any of these to help pay for childcare?"
 
-Scenario: Back navigation from Is your adjusted net income more than £100,000 a year?
+Scenario: Back navigation from Do you expect your adjusted net income to be more than £100,000 for the current tax year?
 	Given I answer "Are you in paid work?" as "Yes"
 	And I answer "How would you describe your work status?" as "Paid employment"
 	And I answer "On average, do you earn £203 a week or more before tax?" as "Yes"
-	And I answer "Is your adjusted net income more than £100,000 a year?" as "Yes"
+	And I answer "Do you expect your adjusted net income to be more than £100,000 for the current tax year?" as "Yes"
 	When I click the back link
-	Then the page header is "Is your adjusted net income more than £100,000 a year?"
+	Then the page header is "Do you expect your adjusted net income to be more than £100,000 for the current tax year?"
 
 Scenario: Back navigation
 	Given I answer questions as follows:

@@ -13,8 +13,8 @@ Background:
 Scenario: Page load
 	Given I answer "Is your partner in paid work?" as "No, they are not in work"
 	When the page header is "Does your partner get any of these benefits?"
-	Then I should see 9 checkboxes with the following options:
-		| Checkbox                                             |
+	Then I should see the following checkboxes:
+		| Name                                                 |
 		| Carer's Allowance                                    |
 		| Contribution-based Employment and Support Allowance  |
 		| Employment and support allowance (ESA)               |
@@ -46,7 +46,7 @@ Scenario: Continue with Carer's Allowance
 	Given I answer "Is your partner in paid work?" as "No, they are not in work"
 	When I select the "Carer's Allowance" checkbox
 	And I click on Continue
-	Then the page header is "Does your partner already get any of this childcare support?"
+	Then the page header is "Does your partner already get any of these to help pay for childcare?"
 
 Scenario: Back navigation
 	Given I answer "Is your partner in paid work?" as "No, they are not in work"
@@ -67,10 +67,10 @@ Scenario: Back navigation from On average, does your partner earn £203 a week o
 	When I click the back link
 	Then the page header is "On average, does your partner earn £203 a week or more before tax?"
 
-Scenario: Back navigation from Is your partner's adjusted net income more than £100,000 a year?
+Scenario: Back navigation from Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?
 	Given I answer "Is your partner in paid work?" as "Yes"
 	And I answer "How would you describe your partner's work status?" as "Paid employment"
 	And I answer "On average, does your partner earn £203 a week or more before tax?" as "Yes"
-	And I answer "Is your partner's adjusted net income more than £100,000 a year?" as "Yes"
+	And I answer "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?" as "Yes"
 	When I click the back link
-	Then the page header is "Is your partner's adjusted net income more than £100,000 a year?"
+	Then the page header is "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?"
