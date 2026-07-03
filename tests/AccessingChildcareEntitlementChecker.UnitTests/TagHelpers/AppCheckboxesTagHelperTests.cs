@@ -74,7 +74,7 @@ public class AppCheckboxesTagHelperTests
             nameof(ChildcareSupportViewModel.ChildcareSupport),
             new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             ViewContext = _viewContext
@@ -114,7 +114,7 @@ public class AppCheckboxesTagHelperTests
             nameof(ChildcareSupportViewModel.ChildcareSupport),
             new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             ExclusiveValue = ChildcareSupportOption.None,
@@ -142,7 +142,7 @@ public class AppCheckboxesTagHelperTests
             nameof(ChildcareSupportViewModel.ChildcareSupport),
             new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             Hint = "Select all that apply",
@@ -163,7 +163,7 @@ public class AppCheckboxesTagHelperTests
             nameof(ChildcareSupportViewModel.ChildcareSupport),
             new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             Legend = new HtmlString("Custom Legend"),
@@ -188,7 +188,7 @@ public class AppCheckboxesTagHelperTests
             nameof(ChildcareSupportViewModel.ChildcareSupport),
             new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             ViewContext = _viewContext
@@ -210,7 +210,7 @@ public class AppCheckboxesTagHelperTests
             nameof(ChildcareSupportViewModel.ChildcareSupport),
             new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             ViewContext = _viewContext
@@ -231,7 +231,7 @@ public class AppCheckboxesTagHelperTests
             nameof(ChildcareSupportViewModel.ChildcareSupport),
             new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             ViewContext = _viewContext

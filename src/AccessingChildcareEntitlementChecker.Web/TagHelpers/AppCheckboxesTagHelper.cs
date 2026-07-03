@@ -14,9 +14,8 @@ using System.Text.Encodings.Web;
 namespace AccessingChildcareEntitlementChecker.Web.TagHelpers;
 
 [HtmlTargetElement("app-checkboxes", TagStructure = TagStructure.WithoutEndTag)]
-public class AppCheckboxesTagHelper(
-    IComponentGenerator componentGenerator,
-    IModelMetadataProvider metadataProvider) : TagHelper
+public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
+    : TagHelper
 {
     [HtmlAttributeName("for")]
     public ModelExpression For { get; set; } = null!;
