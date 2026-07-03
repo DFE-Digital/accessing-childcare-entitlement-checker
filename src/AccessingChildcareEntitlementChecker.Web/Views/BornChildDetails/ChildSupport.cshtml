@@ -18,32 +18,10 @@
     <div class="govuk-grid-column-two-thirds">
         <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
-            <govuk-checkboxes for="ChildSupportOptions">
-                <govuk-checkboxes-fieldset>
-                    <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                        @Localizer["Does {0} get any of the following support?", Model.ChildName]
-                    </govuk-checkboxes-fieldset-legend>
-                    <govuk-checkboxes-hint>
-                        @Html.GetDescriptionFor(m => m.ChildSupportOptions)
-                    </govuk-checkboxes-hint>
-
-                    <govuk-checkboxes-error-message />
-
-                    @foreach (var value in Enum.GetValues<ChildSupport>())
-                    {
-                        if (value == ChildSupport.NoneOfTheseApply)
-                        {
-                            <govuk-checkboxes-divider>
-                                @Localizer["or"]
-                            </govuk-checkboxes-divider>
-                        }
-
-                        <govuk-checkboxes-item value="@value">
-                            @Html.EnumDisplayName(value)
-                        </govuk-checkboxes-item>
-                    }
-                </govuk-checkboxes-fieldset>
-            </govuk-checkboxes>
+            <app-checkboxes for="ChildSupportOptions"
+                                 legend="@Localizer["Does {0} get any of the following support?", Model.ChildName]"
+                                 hint="@Html.GetDescriptionFor(m => m.ChildSupportOptions)"
+                                 exclusive-value="ChildSupport.NoneOfTheseApply" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]

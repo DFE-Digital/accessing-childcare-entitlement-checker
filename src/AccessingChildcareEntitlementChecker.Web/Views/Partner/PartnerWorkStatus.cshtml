@@ -15,26 +15,9 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Html.DisplayNameFor(model => model.PartnerWorkStatus)
-        </h1>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
-
-            <govuk-checkboxes for="PartnerWorkStatus">
-                <govuk-checkboxes-fieldset>
-                    <govuk-checkboxes-fieldset-legend class="govuk-visually-hidden">
-                        @Html.DisplayNameFor(model => model.PartnerWorkStatus)
-                    </govuk-checkboxes-fieldset-legend>
-                    <govuk-checkboxes-error-message />
-                    @foreach (var value in Enum.GetValues<WorkStatusOption>())
-                    {
-                        <govuk-checkboxes-item value="@value">
-                            @Html.EnumDisplayName(value)
-                        </govuk-checkboxes-item>
-                    }
-                </govuk-checkboxes-fieldset>
-            </govuk-checkboxes>
+            <app-checkboxes for="PartnerWorkStatus" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
