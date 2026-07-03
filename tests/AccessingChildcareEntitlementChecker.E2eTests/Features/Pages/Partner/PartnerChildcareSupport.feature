@@ -33,15 +33,15 @@ Scenario: Checkbox selection
 Scenario: None selection is exclusive with JavaScript enabled
 	When I select the "Childcare vouchers" checkbox
 	And I select the "A childcare bursary or grant" checkbox
-	And I select the "No, I do not get any of these" checkbox
+	And I select the "No, they do not get any of these" checkbox
 	Then the following checkboxes should be selected:
-		| Checkbox                      |
-		| No, I do not get any of these |
+		| Checkbox                         |
+		| No, they do not get any of these |
 
 Scenario: None selection is validated without Javascript
 	When I select the "Childcare vouchers" checkbox
 	And I select the "A childcare bursary or grant" checkbox
-	And I select the "No, I do not get any of these" checkbox
+	And I select the "No, they do not get any of these" checkbox
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Select any of this childcare support your partner already gets, or select 'No, they do not get any of these'"
