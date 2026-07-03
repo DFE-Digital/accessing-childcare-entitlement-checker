@@ -14,7 +14,8 @@ Background:
 
 Scenario: Page load
 	When the page header is "Has your partner been self-employed for less than 12 months?"
-	Then I should see 2 radio buttons with the following options:
+	Then I should see the hint text "Think about when they first began working for themself"
+	And I should see 2 radio buttons with the following options:
 		| Option |
 		| Yes    |
 		| No     |
