@@ -26,7 +26,7 @@ public class ResultsSteps(IPage page)
     [When("I click the details link for {string}")]
     public async Task WhenIClickTheDetailsLinkForString(string childName)
     {
-        var text = $"See the full details for {childName}. Including when each scheme starts, ends and where to apply";
+        var text = $"See the full details for {childName},";
         await page.GetByText(text).ClickAsync();
     }
 }
