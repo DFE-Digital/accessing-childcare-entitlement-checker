@@ -21,8 +21,19 @@
         <h1 class="govuk-heading-l">
             @question
         </h1>
+        if (@Model.IsOnParentalLeave) {
+            <p class="govuk-hint">
+                @Localizer["Think about what you will expect to earn over the next 3 months after your return from leave."]
+            </p>
+        }
+        else
+        {
+            <p class="govuk-hint">
+                @Localizer["Think about what you expect to earn over the next 3 months."]
+            </p>
+        }
         <p class="govuk-hint">
-            @Localizer["This is the same as £{0} a month or £{1} a year. If your income varies, use what you earn in a typical week.", thresholds.PerMonth, thresholds.PerYear]
+            @Localizer["This is the same as approximately £{0} a month or £{1} a year.", thresholds.PerMonth, thresholds.PerYear]
         </p>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />

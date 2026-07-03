@@ -7,7 +7,7 @@ public class WeeklyEarningsThresholdsTests
 {
     [Theory]
     [InlineData(AgeRange.UnderEighteen, "128")]
-    [InlineData(AgeRange.EighteenToTwenty, "174")]
+    [InlineData(AgeRange.EighteenToTwenty, "173")]
     [InlineData(AgeRange.TwentyOneOrOver, "203")]
     public void Returns_Expected_Weekly_Threshold(AgeRange ageRange, string expected)
     {

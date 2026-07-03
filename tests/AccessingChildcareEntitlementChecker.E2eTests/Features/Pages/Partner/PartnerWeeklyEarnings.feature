@@ -25,7 +25,7 @@ Scenario Outline: Page load for different age groups and employment statuses
 Examples:
 	| Age        | Work Status     | Earnings |
 	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      174 |
+	| 18 to 20   | Paid employment |      173 |
 	| 21 or over | Paid employment |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |
@@ -48,7 +48,7 @@ Scenario Outline: Page load for different age groups on parental leave
 Examples:
 	| Age        | Work Status     | Earnings |
 	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      174 |
+	| 18 to 20   | Paid employment |      173 |
 	| 21 or over | Paid employment |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |
@@ -68,7 +68,7 @@ Scenario Outline: Continue without selection for different age groups and employ
 Examples:
 	| Age        | Work Status     | Earnings |
 	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      174 |
+	| 18 to 20   | Paid employment |      173 |
 	| 21 or over | Paid employment |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |

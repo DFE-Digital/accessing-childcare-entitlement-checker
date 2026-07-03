@@ -69,13 +69,13 @@ Scenario: Change my age
 	And I answer the questions as follows:
 		| Question                                                | Answer   |
 		| What is your age?                                       | 18 to 20 |
-		| On average, do you earn £174 a week or more before tax? | Yes      |
+		| On average, do you earn £173 a week or more before tax? | Yes      |
 		| Is your adjusted net income more than £100,000 a year?  | No       |
 	Then the page header is "Check your answers"
 	And I should see a summary list for "Your details" with the following summary:
 		| Question                                                | Answer   |
 		| What is your age?                                       | 18 to 20 |
-		| On average, do you earn £174 a week or more before tax? | Yes      |
+		| On average, do you earn £173 a week or more before tax? | Yes      |
 		| Is your adjusted net income more than £100,000 a year?  | No       |
 
 Scenario: Change my partner's employment status and age to trigger a different threshold
@@ -90,13 +90,13 @@ Scenario: Change my partner's employment status and age to trigger a different t
 	And I answer the questions as follows:
 		| Question                                                           | Answer   |
 		| What is your partner's age?                                        | 18 to 20 |
-		| On average, does your partner earn £174 a week or more before tax? | Yes      |
+		| On average, does your partner earn £173 a week or more before tax? | Yes      |
 		| Is your partner's adjusted net income more than £100,000 a year?   | No       |
 	Then the page header is "Check your answers"
 	And I should see a summary list for "Your partners details" with the following summary:
 		| Question                                                           | Answer   |
 		| What is your partner's age?                                        | 18 to 20 |
-		| On average, does your partner earn £174 a week or more before tax? | Yes      |
+		| On average, does your partner earn £173 a week or more before tax? | Yes      |
 		| Is your partner's adjusted net income more than £100,000 a year?   | No       |
 
 Scenario: Change my weekly earnings
