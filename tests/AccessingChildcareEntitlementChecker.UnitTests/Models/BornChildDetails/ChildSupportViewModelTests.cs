@@ -60,7 +60,7 @@ public class ChildSupportViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("You may not select 'no, none of these apply' with other options", validationResults[0].ErrorMessage);
+        Assert.Equal("Select any support Jack gets, or select 'No, none of these apply'", validationResults[0].ErrorMessage);
     }
 
     [Fact]

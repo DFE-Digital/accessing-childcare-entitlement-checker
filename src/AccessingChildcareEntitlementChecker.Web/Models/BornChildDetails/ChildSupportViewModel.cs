@@ -40,7 +40,9 @@ public class ChildSupportViewModel : IValidatableObject
         var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(ChildSupportViewModel));
-        if (ChildSupportOptions.Count == 0)
+        var isEmpty = ChildSupportOptions.Count == 0;
+        var selectedAndNone = ChildSupportOptions.Contains(ChildSupport.NoneOfTheseApply) && ChildSupportOptions.Count > 1;
+        if (isEmpty || selectedAndNone)
         {
             if (!journeyState!.Children.TryGetValue(ChildId, out var child))
             {
@@ -48,11 +50,6 @@ public class ChildSupportViewModel : IValidatableObject
             }
 
             yield return new ValidationResult(localizer["Select any support {0} gets, or select 'No, none of these apply'", child.Name], [nameof(ChildSupportOptions)]);
-        }
-
-        if (ChildSupportOptions.Contains(ChildSupport.NoneOfTheseApply) && ChildSupportOptions.Count > 1)
-        {
-            yield return new ValidationResult(localizer["You may not select 'no, none of these apply' with other options"], [nameof(ChildSupportOptions)]);
         }
     }
 }
