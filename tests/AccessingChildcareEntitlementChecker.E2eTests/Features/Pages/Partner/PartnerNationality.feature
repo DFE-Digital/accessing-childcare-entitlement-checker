@@ -5,13 +5,13 @@ Background:
 	And I start the journey, filling in Aydin's and Sara's details
 	And I check my children's details and click on Continue
 	And I answer questions as follows:
-		| Question                                          | Answer                                         |
-		| What is your age?                                 | Under 18                                       |
-		| What is your nationality?                         | Citizen of a different country                 |
-		| Are you in paid work?                             | No, I am not in work                           |
-		| Does your household receive universal credit?     | Yes                                            |
-		| Do you get any of these benefits?                 | Carer's Allowance                              |
-		| Do you already get any of this childcare support? | No, I do not get any of this childcare support |
+		| Question                                                   | Answer                         |
+		| What is your age?                                          | Under 18                       |
+		| What is your nationality?                                  | Citizen of a different country |
+		| Are you in paid work?                                      | No, I am not in work           |
+		| Does your household receive universal credit?              | Yes                            |
+		| Do you get any of these benefits?                          | Carer's Allowance              |
+		| Do you already get any of these to help pay for childcare? | No, I do not get any of these  |
 	And I answer questions as follows:
 		| Question                    | Answer     |
 		| Do you live with a partner? | Yes        |

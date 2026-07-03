@@ -12,8 +12,8 @@ Background:
 
 Scenario: Page load
 	When the page header is "How would you describe your work status?"
-	Then I should see 3 checkboxes with the following options:
-		| Checkbox        |
+	Then I should see the following checkboxes:
+		| Name            |
 		| Paid employment |
 		| Self-employed   |
 		| Apprentice      |

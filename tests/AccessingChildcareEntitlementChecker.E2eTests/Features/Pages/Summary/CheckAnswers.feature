@@ -29,16 +29,16 @@ Scenario: Page Load
 		| Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                         |
 		| Does your household receive universal credit?                                             | Yes                        |
 		| Do you get any of these benefits?                                                         | Carer's Allowance          |
-		| Do you already get any of this childcare support?                                         | Childcare vouchers         |
+		| Do you already get any of these to help pay for childcare?                                | Childcare vouchers         |
 		| How do you receive your childcare vouchers?                                               | A workplace nursery scheme |
 		| Do you live with a partner?                                                               | Yes                        |
 	And I should see a summary list for "Your partners details" with the following summary:
-		| Question                                                     | Answer                     |
-		| What is your partner's age?                                  | 21 or over                 |
-		| Is your partner in paid work?                                | No, they are not in work   |
-		| Does your partner get any of these benefits?                 | Carer's Allowance          |
-		| Does your partner already get any of this childcare support? | Childcare vouchers         |
-		| How does your partner receive childcare vouchers?            | A workplace nursery scheme |
+		| Question                                                              | Answer                     |
+		| What is your partner's age?                                           | 21 or over                 |
+		| Is your partner in paid work?                                         | No, they are not in work   |
+		| Does your partner get any of these benefits?                          | Carer's Allowance          |
+		| Does your partner already get any of these to help pay for childcare? | Childcare vouchers         |
+		| How does your partner receive childcare vouchers?                     | A workplace nursery scheme |
 
 Scenario: Change Aydin's due date
 	When I click the Change link in the "Aydin" card for "What is this child's due date"
@@ -126,14 +126,14 @@ Scenario: Self employed details are not shown when I change my answer
 	Then the page header is "Check your answers"
 	And I do not see a summary row "Have you been self-employed for less than 12 months"
 
-Scenario: Back navigation to Does your partner already get any of this childcare support?
-	When I click the Change link in the "Your partners details" summary list for "Does your partner already get any of this childcare support?"
+Scenario: Back navigation to Does your partner already get any of these to help pay for childcare?
+	When I click the Change link in the "Your partners details" summary list for "Does your partner already get any of these to help pay for childcare?"
 	And I deselect the "Childcare vouchers" checkbox
-	And I select the "No, they do not get any of this childcare support" checkbox
+	And I select the "No, they do not get any of these" checkbox
 	And I click on Continue
 	And the page header is "Check your answers"
 	When I click the back link
-	Then the page header is "Does your partner already get any of this childcare support?"
+	Then the page header is "Does your partner already get any of these to help pay for childcare?"
 
 Scenario: Back navigation to Do you live with a partner?
 	When I click the Change link in the "Your details" summary list for "Do you live with a partner?"

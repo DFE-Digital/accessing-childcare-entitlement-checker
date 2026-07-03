@@ -27,7 +27,7 @@ internal class Scenario5 : IUseCase
             .SetSelfEmployedDuration("Yes")
             .SetUniversalCredit("No")
             .SetBenefits("No, I do not get any of these benefits")
-            .SetChildcareSupport("No, I do not get any of this childcare support")
+            .SetChildcareSupport("No, I do not get any of these")
             .SetHasPartner("No")
 
             .Build();

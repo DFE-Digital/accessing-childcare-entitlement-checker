@@ -5,14 +5,14 @@ Scenario: Results details does not show a public funds warning if i'm a British 
 	And I start the journey, filling in Aydin's and Sara's details
 	And I check my children's details and click on Continue
 	And I answer questions as follows:
-		| Question                                          | Answer                                         |
-		| What is your age?                                 | Under 18                                       |
-		| What is your nationality?                         | British or Irish citizen                       |
-		| Are you in paid work?                             | No, I am not in work                           |
-		| Does your household receive universal credit?     | No                                             |
-		| Do you get any of these benefits?                 | No, I do not get any of these benefits         |
-		| Do you already get any of this childcare support? | No, I do not get any of this childcare support |
-		| Do you live with a partner?                       | No                                             |
+		| Question                                                   | Answer                                 |
+		| What is your age?                                          | Under 18                               |
+		| What is your nationality?                                  | British or Irish citizen               |
+		| Are you in paid work?                                      | No, I am not in work                   |
+		| Does your household receive universal credit?              | No                                     |
+		| Do you get any of these benefits?                          | No, I do not get any of these benefits |
+		| Do you already get any of these to help pay for childcare? | No, I do not get any of these          |
+		| Do you live with a partner?                                | No                                     |
 	When I click on Continue
 	And I click the details link for "Sara"
 	Then the page header is "Sara's childcare support"
@@ -23,14 +23,14 @@ Scenario: Results details shows a public funds warning if i'm from a different c
 	And I start the journey, filling in Aydin's and Sara's details
 	And I check my children's details and click on Continue
 	And I answer questions as follows:
-		| Question                                          | Answer                                         |
-		| What is your age?                                 | Under 18                                       |
-		| What is your nationality?                         | Citizen of a different country                 |
-		| Are you in paid work?                             | No, I am not in work                           |
-		| Does your household receive universal credit?     | No                                             |
-		| Do you get any of these benefits?                 | No, I do not get any of these benefits         |
-		| Do you already get any of this childcare support? | No, I do not get any of this childcare support |
-		| Do you live with a partner?                       | No                                             |
+		| Question                                                   | Answer                                 |
+		| What is your age?                                          | Under 18                               |
+		| What is your nationality?                                  | Citizen of a different country         |
+		| Are you in paid work?                                      | No, I am not in work                   |
+		| Does your household receive universal credit?              | No                                     |
+		| Do you get any of these benefits?                          | No, I do not get any of these benefits |
+		| Do you already get any of these to help pay for childcare? | No, I do not get any of these          |
+		| Do you live with a partner?                                | No                                     |
 	When I click on Continue
 	And I click the details link for "Sara"
 	Then the page header is "Sara's childcare support"
@@ -48,7 +48,7 @@ Scenario Outline: Results details may show a public funds warning if i'm from th
 		| Are you in paid work?                                                     | No, I am not in work                                 |
 		| Does your household receive universal credit?                             | No                                                   |
 		| Do you get any of these benefits?                                         | No, I do not get any of these benefits               |
-		| Do you already get any of this childcare support?                         | No, I do not get any of this childcare support       |
+		| Do you already get any of these to help pay for childcare?                | No, I do not get any of these                        |
 		| Do you live with a partner?                                               | No                                                   |
 	When I click on Continue
 	And I click the details link for "Sara"

@@ -34,29 +34,35 @@ internal class CheckboxSteps(IPage page)
         await Expect(checkedCheckboxes).ToHaveCountAsync(0);
     }
 
-    [Then(@"I should see (\d+) checkboxes with the following options:")]
-    public async Task ThenIShouldSeeDCheckboxesWithTheFollowingOptions(int expectedCount, DataTable dataTable)
+    [Then(@"I should see the following checkboxes:")]
+    public async Task ThenIShouldSeeTheFollowingCheckboxes(DataTable dataTable)
     {
-        var expectedOptions = dataTable.Rows.Select(r => r[0]).ToArray();
-
-        if (expectedOptions.Length != expectedCount)
+        var expectedOptions = dataTable.Rows.Select(r => new
         {
-            throw new Exception($"Step says {expectedCount} options but table has {expectedOptions.Length}");
-        }
-
+            Name = r[0],
+            Description = r.Count > 1 ? r[1] : null
+        }).ToArray();
         await Expect(page.GetByRole(AriaRole.Checkbox))
-            .ToHaveCountAsync(expectedCount);
+            .ToHaveCountAsync(expectedOptions.Length);
 
         foreach (var option in expectedOptions)
         {
-            await Expect(page.GetByRole(AriaRole.Checkbox, new PageGetByRoleOptions { Name = option, Exact = true }))
+            var checkbox = page.GetByRole(AriaRole.Checkbox, new PageGetByRoleOptions { Name = option.Name, Exact = true });
+            await Expect(checkbox)
                 .ToBeVisibleAsync();
+            if (!string.IsNullOrEmpty(option.Description))
+            {
+                await Expect(checkbox)
+                    .ToHaveAccessibleDescriptionAsync(option.Description);
+            }
         }
     }
 
     [Then("the following checkboxes should be selected:")]
     public async Task ThenTheFollowingCheckboxesShouldBeSelected(DataTable dataTable)
     {
+        var selected = page.GetByRole(AriaRole.Checkbox, new PageGetByRoleOptions { Checked = true });
+        await Expect(selected).ToHaveCountAsync(dataTable.Rows.Count);
         foreach (var row in dataTable.Rows)
         {
             var label = row[0];

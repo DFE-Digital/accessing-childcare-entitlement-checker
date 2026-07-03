@@ -12,8 +12,8 @@ Background:
 
 Scenario: Page load
 	When the page header is "Which child are you on leave for?"
-	Then I should see 3 checkboxes with the following options:
-		| Option                 |
+	Then I should see the following checkboxes:
+		| Name                   |
 		| Sara                   |
 		| Aydin                  |
 		| None of these children |
