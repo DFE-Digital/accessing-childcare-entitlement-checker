@@ -41,7 +41,7 @@ public class PartnerChildcareSupportViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("Select any of this childcare support your partner already gets, or select 'No, I do not get any of this childcare support'", validationResults[0].ErrorMessage);
+        Assert.Equal("Select any of this childcare support your partner already gets, or select 'No, they do not get any of these'", validationResults[0].ErrorMessage);
     }
 
 
@@ -59,6 +59,6 @@ public class PartnerChildcareSupportViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("Select any of this childcare support your partner already gets, or select 'No, they do not get any of this childcare support'", validationResults[0].ErrorMessage);
+        Assert.Equal("Select any of this childcare support your partner already gets, or select 'No, they do not get any of these'", validationResults[0].ErrorMessage);
     }
 }

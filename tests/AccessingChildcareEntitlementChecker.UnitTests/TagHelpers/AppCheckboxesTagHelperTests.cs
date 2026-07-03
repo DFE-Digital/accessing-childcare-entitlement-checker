@@ -20,7 +20,7 @@ public class AppCheckboxesTagHelperTests
     private readonly IModelMetadataProvider _metadataProvider;
     private readonly IComponentGenerator _componentGenerator;
     private readonly ViewContext _viewContext;
-    private readonly BenefitsViewModel _benefitsViewModel;
+    private readonly ChildcareSupportViewModel _childcareSupportViewModel;
     private readonly ModelMetadata _modelMetadata;
     private CheckboxesOptions? _generatedOptions;
 
@@ -57,22 +57,24 @@ public class AppCheckboxesTagHelperTests
             attributes: [],
             getChildContentAsync: (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
 
-        _benefitsViewModel = new BenefitsViewModel
+        _childcareSupportViewModel = new ChildcareSupportViewModel
         {
-            Benefits = [],
+            ChildcareSupport = [],
         };
 
-        _modelMetadata = _metadataProvider.GetMetadataForProperty(typeof(BenefitsViewModel), nameof(BenefitsViewModel.Benefits));
+        _modelMetadata = _metadataProvider.GetMetadataForProperty(
+            typeof(ChildcareSupportViewModel),
+            nameof(ChildcareSupportViewModel.ChildcareSupport));
     }
 
     [Fact]
     public async Task ProcessAsync_With_Enum_Collection_Generates_Default()
     {
         var modelExpression = new ModelExpression(
-            nameof(BenefitsViewModel.Benefits),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             ViewContext = _viewContext
@@ -82,44 +84,49 @@ public class AppCheckboxesTagHelperTests
 
         Assert.NotNull(_generatedOptions?.Fieldset?.Legend?.Text);
         var actual = _generatedOptions.Fieldset.Legend.Text.ToHtmlString();
-        Assert.Equal("Do you get any of these benefits?", actual);
+        Assert.Equal("Do you already get any of these to help pay for childcare?", actual);
 
         Assert.NotNull(_generatedOptions?.Items);
-        Assert.Equal(9, _generatedOptions.Items.Count);
+        Assert.Equal(3, _generatedOptions.Items.Count);
 
         var first = _generatedOptions.Items.First();
         Assert.NotNull(first?.Value);
         Assert.NotNull(first?.Text);
         Assert.Equal("0", first.Value.ToHtmlString());
-        Assert.Equal("Carer&#x27;s Allowance", first.Text.ToHtmlString());
+        Assert.Equal("Childcare vouchers", first.Text.ToHtmlString());
+        Assert.NotNull(first?.Hint?.Text);
+        Assert.Equal(
+            "A scheme that lets you pay for childcare from your salary before tax, which closed to new applicants in October 2018",
+            first.Hint.Text.ToHtmlString());
+
 
         var last = _generatedOptions.Items.Last();
         Assert.NotNull(last?.Value);
         Assert.NotNull(last?.Text);
-        Assert.Equal("8", last.Value.ToHtmlString());
-        Assert.Equal("No, I do not get any of these benefits", last.Text.ToHtmlString());
+        Assert.Equal("2", last.Value.ToHtmlString());
+        Assert.Equal("No, I do not get any of these", last.Text.ToHtmlString());
     }
 
     [Fact]
     public async Task ProcessAsync_With_Enum_Collection_And_Exclusive_Generates_Exclusive()
     {
         var modelExpression = new ModelExpression(
-            nameof(BenefitsViewModel.Benefits),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
-            ExclusiveValue = BenefitsOption.None,
+            ExclusiveValue = ChildcareSupportOption.None,
             ViewContext = _viewContext
         };
 
         await helper.ProcessAsync(_tagHelperContext, _tagHelperOutput);
 
         Assert.NotNull(_generatedOptions?.Items);
-        Assert.Equal(10, _generatedOptions.Items.Count);
+        Assert.Equal(4, _generatedOptions.Items.Count);
 
-        var separator = _generatedOptions.Items.Skip(8).First();
+        var separator = _generatedOptions.Items.Skip(2).First();
         Assert.NotNull(separator?.Divider);
         Assert.Equal("or", separator.Divider.ToHtmlString());
 
@@ -132,10 +139,10 @@ public class AppCheckboxesTagHelperTests
     public async Task ProcessAsync_With_Enum_Collection_And_Hint_Generates_Hint()
     {
         var modelExpression = new ModelExpression(
-            nameof(BenefitsViewModel.Benefits),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             Hint = "Select all that apply",
@@ -153,10 +160,10 @@ public class AppCheckboxesTagHelperTests
     public async Task ProcessAsync_With_Enum_Collection_And_Legend_Generates_Legend()
     {
         var modelExpression = new ModelExpression(
-            nameof(BenefitsViewModel.Benefits),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             Legend = new HtmlString("Custom Legend"),
@@ -173,13 +180,15 @@ public class AppCheckboxesTagHelperTests
     [Fact]
     public async Task ProcessAsync_With_Enum_Collection_Adds_Error()
     {
-        _viewContext.ModelState.AddModelError(nameof(BenefitsViewModel.Benefits), "ERROR");
+        _viewContext.ModelState.AddModelError(
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            "ERROR");
 
         var modelExpression = new ModelExpression(
-            nameof(BenefitsViewModel.Benefits),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             ViewContext = _viewContext
@@ -195,13 +204,13 @@ public class AppCheckboxesTagHelperTests
     [Fact]
     public async Task ProcessAsync_With_Enum_Collection_Selects_Checkboxes_From_Model()
     {
-        _benefitsViewModel.Benefits = [BenefitsOption.CarersAllowance];
+        _childcareSupportViewModel.ChildcareSupport = [ChildcareSupportOption.ChildcareVouchers];
 
         var modelExpression = new ModelExpression(
-            nameof(BenefitsViewModel.Benefits),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             ViewContext = _viewContext
@@ -217,12 +226,12 @@ public class AppCheckboxesTagHelperTests
     [Fact]
     public async Task ProcessAsync_With_Enum_Collection_Selects_Checkboxes_From_ModelState()
     {
-        _viewContext.ModelState.SetModelValue("Benefits", "0", "0");
+        _viewContext.ModelState.SetModelValue("ChildcareSupport", "0", "0");
         var modelExpression = new ModelExpression(
-            nameof(BenefitsViewModel.Benefits),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _benefitsViewModel.Benefits));
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
 
-        var helper = new AppCheckboxesTagHelper(_componentGenerator, _metadataProvider)
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
             ViewContext = _viewContext

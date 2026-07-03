@@ -15,7 +15,7 @@ internal static class PageNames
     public const string YearlyEarnings = "Do you expect your adjusted net income to be more than £100,000 for the current tax year?";
     public const string UniversalCredit = "Does your household receive universal credit?";
     public const string Benefits = "Do you get any of these benefits?";
-    public const string ChildcareSupport = "Do you already get any of this childcare support?";
+    public const string ChildcareSupport = "Do you already get any of these to help pay for childcare?";
     public const string ChildcareVoucherReceipt = "How do you receive your childcare vouchers?";
     public const string UserSettledStatus = "Do you have settled or pre-settled status under the EU Settlement Scheme?";
     public const string TypeOfLeave = "Which child are you on leave for?";
@@ -32,7 +32,7 @@ internal static class PageNames
     public const string PartnerNationality = "Which of these best describes your partners nationality?";
     public const string PartnerSettledStatus = "Does your partner have settled or pre-settled status under the EU Settlement Scheme?";
     public const string PartnerBenefits = "Does your partner get any of these benefits?";
-    public const string PartnerChildcareSupport = "Does your partner already get any of this childcare support?";
+    public const string PartnerChildcareSupport = "Does your partner already get any of these to help pay for childcare?";
     public const string PartnerChildcareVoucherReceipt = "How does your partner receive childcare vouchers?";
     public const string PartnerLeaveType = "Which child is your partner on leave for?";
     public const string PartnerLeaveWeeklyEarnings = "On average, will your partner earn £__PLACEHOLDER__ a week or more before tax when their parental leave ends?";

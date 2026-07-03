@@ -11,17 +11,17 @@ Scenario: Scenario 01 - Single parent earning below the threshold, household rec
     Then the page header is "Check your answers"
     And I should see 3 summary cards
     And I should see a summary list for "Your details" with the following summary:
-        | Question                                                            | Answer                                         |
-        | Where do you live?                                                  | England                                        |
-        | What is your age?                                                   | 21 or over                                     |
-        | What is your nationality?                                           | British or Irish citizen                       |
-        | Are you in paid work?                                               | Yes                                            |
-        | How would you describe your work status?                            | Paid employment                                |
-        | Does your household receive universal credit?                       | Yes                                            |
-        | Do you get any of these benefits?                                   | No, I do not get any of these benefits         |
-        | Do you already get any of this childcare support?                   | No, I do not get any of this childcare support |
-        | Do you live with a partner?                                         | No                                             |
-        | On average, do you earn £__PLACEHOLDER__ a week or more before tax? | No                                             |
+        | Question                                                            | Answer                                 |
+        | Where do you live?                                                  | England                                |
+        | What is your age?                                                   | 21 or over                             |
+        | What is your nationality?                                           | British or Irish citizen               |
+        | Are you in paid work?                                               | Yes                                    |
+        | How would you describe your work status?                            | Paid employment                        |
+        | Does your household receive universal credit?                       | Yes                                    |
+        | Do you get any of these benefits?                                   | No, I do not get any of these benefits |
+        | Do you already get any of these to help pay for childcare?          | No, I do not get any of these          |
+        | Do you live with a partner?                                         | No                                     |
+        | On average, do you earn £__PLACEHOLDER__ a week or more before tax? | No                                     |
     When I click on Continue
     Then the page header is "Childcare support you could get"    
 
@@ -30,24 +30,24 @@ Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
     Then the page header is "Check your answers"
     And I should see 2 summary cards
     And I should see a summary list for "Your details" with the following summary:
-        | Question                                          | Answer                                         |
-        | Where do you live?                                | England                                        |
-        | What is your age?                                 | 21 or over                                     |
-        | What is your nationality?                         | British or Irish citizen                       |
-        | Are you in paid work?                             | No, I am not in work                           |
-        | Does your household receive universal credit?     | No                                             |
-        | Do you get any of these benefits?                 | Carer's Allowance                              |
-        | Do you already get any of this childcare support? | No, I do not get any of this childcare support |
-        | Do you live with a partner?                       | Yes                                            |
+        | Question                                                   | Answer                        |
+        | Where do you live?                                         | England                       |
+        | What is your age?                                          | 21 or over                    |
+        | What is your nationality?                                  | British or Irish citizen      |
+        | Are you in paid work?                                      | No, I am not in work          |
+        | Does your household receive universal credit?              | No                            |
+        | Do you get any of these benefits?                          | Carer's Allowance             |
+        | Do you already get any of these to help pay for childcare? | No, I do not get any of these |
+        | Do you live with a partner?                                | Yes                           |
     And I should see a summary list for "Your partners details" with the following summary:
-        | Question                                                                       | Answer                                            |
-        | What is your partner's age?                                                    | 21 or over                                        |
-        | Is your partner in paid work?                                                  | Yes                                               |
-        | How would you describe your partner's work status?                             | Paid employment                                   |
-        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?              | No                                                |
-        | Does your partner get any of these benefits?                                   | No, they do not get any of these benefits         |
-        | Does your partner already get any of this childcare support?                   | No, they do not get any of this childcare support |
-        | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax? | Yes                                               |
+        | Question                                                                                              | Answer                                    |
+        | What is your partner's age?                                                                           | 21 or over                                |
+        | Is your partner in paid work?                                                                         | Yes                                       |
+        | How would you describe your partner's work status?                                                    | Paid employment                           |
+        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
+        | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
+        | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
+        | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax?                        | Yes                                       |
     When I click on Continue
     Then the page header is "Childcare support you could get"          
     
@@ -56,26 +56,26 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
     Then the page header is "Check your answers"
     And I should see 1 summary cards
     And I should see a summary list for "Your details" with the following summary:
-        | Question                                                            | Answer                                         |
-        | Where do you live?                                                  | England                                        |
-        | What is your age?                                                   | 21 or over                                     |
-        | What is your nationality?                                           | British or Irish citizen                       |
-        | Are you in paid work?                                               | Yes                                            |
-        | How would you describe your work status?                            | Paid employment                                |
-        | Does your household receive universal credit?                       | Yes                                            |
-        | Do you get any of these benefits?                                   | No, I do not get any of these benefits         |
-        | Do you already get any of this childcare support?                   | No, I do not get any of this childcare support |
-        | Do you live with a partner?                                         | Yes                                            |
-        | On average, do you earn £__PLACEHOLDER__ a week or more before tax? | No                                             |
+        | Question                                                            | Answer                                 |
+        | Where do you live?                                                  | England                                |
+        | What is your age?                                                   | 21 or over                             |
+        | What is your nationality?                                           | British or Irish citizen               |
+        | Are you in paid work?                                               | Yes                                    |
+        | How would you describe your work status?                            | Paid employment                        |
+        | Does your household receive universal credit?                       | Yes                                    |
+        | Do you get any of these benefits?                                   | No, I do not get any of these benefits |
+        | Do you already get any of these to help pay for childcare?          | No, I do not get any of these          |
+        | Do you live with a partner?                                         | Yes                                    |
+        | On average, do you earn £__PLACEHOLDER__ a week or more before tax? | No                                     |
     And I should see a summary list for "Your partners details" with the following summary:
-        | Question                                                                       | Answer                                            |
-        | What is your partner's age?                                                    | 21 or over                                        |
-        | Is your partner in paid work?                                                  | Yes                                               |
-        | How would you describe your partner's work status?                             | Paid employment                                   |
-        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?              | No                                                |
-        | Does your partner get any of these benefits?                                   | No, they do not get any of these benefits         |
-        | Does your partner already get any of this childcare support?                   | No, they do not get any of this childcare support |
-        | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax? | Yes                                               |
+        | Question                                                                                              | Answer                                    |
+        | What is your partner's age?                                                                           | 21 or over                                |
+        | Is your partner in paid work?                                                                         | Yes                                       |
+        | How would you describe your partner's work status?                                                    | Paid employment                           |
+        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
+        | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
+        | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
+        | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax?                        | Yes                                       |
     When I click on Continue
     Then the page header is "Childcare support you could get"     
 
@@ -84,27 +84,27 @@ Scenario: Scenario 04 - One parent aged 18-20, child not yet born
     Then the page header is "Check your answers"
     And I should see 2 summary cards
     And I should see a summary list for "Your details" with the following summary:
-        | Question                                                            | Answer                                         |
-        | Where do you live?                                                  | England                                        |
-        | What is your age?                                                   | 18 to 20                                       |
-        | What is your nationality?                                           | British or Irish citizen                       |
-        | Are you in paid work?                                               | Yes                                            |
-        | How would you describe your work status?                            | Paid employment                                |
-        | Do you expect your adjusted net income to be more than £100,000 for the current tax year?              | No                                             |
-        | Does your household receive universal credit?                       | No                                             |
-        | Do you get any of these benefits?                                   | No, I do not get any of these benefits         |
-        | Do you already get any of this childcare support?                   | No, I do not get any of this childcare support |
-        | Do you live with a partner?                                         | Yes                                            |
-        | On average, do you earn £__PLACEHOLDER__ a week or more before tax? | Yes                                            |
+        | Question                                                                                  | Answer                                 |
+        | Where do you live?                                                                        | England                                |
+        | What is your age?                                                                         | 18 to 20                               |
+        | What is your nationality?                                                                 | British or Irish citizen               |
+        | Are you in paid work?                                                                     | Yes                                    |
+        | How would you describe your work status?                                                  | Paid employment                        |
+        | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
+        | Does your household receive universal credit?                                             | No                                     |
+        | Do you get any of these benefits?                                                         | No, I do not get any of these benefits |
+        | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
+        | Do you live with a partner?                                                               | Yes                                    |
+        | On average, do you earn £__PLACEHOLDER__ a week or more before tax?                       | Yes                                    |
     And I should see a summary list for "Your partners details" with the following summary:
-        | Question                                                                       | Answer                                            |
-        | What is your partner's age?                                                    | 21 or over                                        |
-        | Is your partner in paid work?                                                  | Yes                                               |
-        | How would you describe your partner's work status?                             | Paid employment                                   |
-        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?              | No                                                |
-        | Does your partner get any of these benefits?                                   | No, they do not get any of these benefits         |
-        | Does your partner already get any of this childcare support?                   | No, they do not get any of this childcare support |
-        | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax? | Yes                                               |
+        | Question                                                                                              | Answer                                    |
+        | What is your partner's age?                                                                           | 21 or over                                |
+        | Is your partner in paid work?                                                                         | Yes                                       |
+        | How would you describe your partner's work status?                                                    | Paid employment                           |
+        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
+        | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
+        | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
+        | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax?                        | Yes                                       |
     When I click on Continue
     Then the page header is "Childcare support you could get"    
 
@@ -113,17 +113,17 @@ Scenario: Scenario 05 - Single parent who is self employed, child is not born ye
     Then the page header is "Check your answers"
     And I should see 1 summary cards
     And I should see a summary list for "Your details" with the following summary:
-        | Question                                             | Answer                                         |
-        | Where do you live?                                   | England                                        |
-        | What is your age?                                    | 21 or over                                     |
-        | What is your nationality?                            | British or Irish citizen                       |
-        | Are you in paid work?                                | Yes                                            |
-        | How would you describe your work status?             | Self-employed                                  |
-        | Have you been self-employed for less than 12 months? | Yes                                            |
-        | Does your household receive universal credit?        | No                                             |
-        | Do you get any of these benefits?                    | No, I do not get any of these benefits         |
-        | Do you already get any of this childcare support?    | No, I do not get any of this childcare support |
-        | Do you live with a partner?                          | No                                             |
+        | Question                                                   | Answer                                 |
+        | Where do you live?                                         | England                                |
+        | What is your age?                                          | 21 or over                             |
+        | What is your nationality?                                  | British or Irish citizen               |
+        | Are you in paid work?                                      | Yes                                    |
+        | How would you describe your work status?                   | Self-employed                          |
+        | Have you been self-employed for less than 12 months?       | Yes                                    |
+        | Does your household receive universal credit?              | No                                     |
+        | Do you get any of these benefits?                          | No, I do not get any of these benefits |
+        | Do you already get any of these to help pay for childcare? | No, I do not get any of these          |
+        | Do you live with a partner?                                | No                                     |
     When I click on Continue
     Then the page header is "Childcare support you could get"    
         
@@ -132,26 +132,26 @@ Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one par
     Then the page header is "Check your answers"
     And I should see 1 summary cards
     And I should see a summary list for "Your details" with the following summary:
-        | Question                                                            | Answer                                         |
-        | Where do you live?                                                  | England                                        |
-        | What is your age?                                                   | Under 18                                       |
-        | What is your nationality?                                           | British or Irish citizen                       |
-        | Are you in paid work?                                               | Yes                                            |
-        | How would you describe your work status?                            | Apprentice                                     |
-        | Do you expect your adjusted net income to be more than £100,000 for the current tax year?              | No                                             |
-        | Does your household receive universal credit?                       | No                                             |
-        | Do you get any of these benefits?                                   | No, I do not get any of these benefits         |
-        | Do you already get any of this childcare support?                   | No, I do not get any of this childcare support |
-        | Do you live with a partner?                                         | Yes                                            |
-        | On average, do you earn £__PLACEHOLDER__ a week or more before tax? | Yes                                            |
+        | Question                                                                                  | Answer                                 |
+        | Where do you live?                                                                        | England                                |
+        | What is your age?                                                                         | Under 18                               |
+        | What is your nationality?                                                                 | British or Irish citizen               |
+        | Are you in paid work?                                                                     | Yes                                    |
+        | How would you describe your work status?                                                  | Apprentice                             |
+        | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
+        | Does your household receive universal credit?                                             | No                                     |
+        | Do you get any of these benefits?                                                         | No, I do not get any of these benefits |
+        | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
+        | Do you live with a partner?                                                               | Yes                                    |
+        | On average, do you earn £__PLACEHOLDER__ a week or more before tax?                       | Yes                                    |
     And I should see a summary list for "Your partners details" with the following summary:
-        | Question                                                                       | Answer                                            |
-        | What is your partner's age?                                                    | Under 18                                          |
-        | Is your partner in paid work?                                                  | Yes                                               |
-        | How would you describe your partner's work status?                             | Paid employment                                   |
-        | Does your partner get any of these benefits?                                   | No, they do not get any of these benefits         |
-        | Does your partner already get any of this childcare support?                   | No, they do not get any of this childcare support |
-        | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax? | No                                                |
+        | Question                                                                       | Answer                                    |
+        | What is your partner's age?                                                    | Under 18                                  |
+        | Is your partner in paid work?                                                  | Yes                                       |
+        | How would you describe your partner's work status?                             | Paid employment                           |
+        | Does your partner get any of these benefits?                                   | No, they do not get any of these benefits |
+        | Does your partner already get any of these to help pay for childcare?          | No, they do not get any of these          |
+        | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax? | No                                        |
     When I click on Continue
     Then the page header is "Childcare support you could get"
 
@@ -169,19 +169,19 @@ Scenario: Scenario 07 - One parent on parental leave
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year?              | No                                             |
         | Does your household receive universal credit?                       | No                                             |
         | Do you get any of these benefits?                                   | No, I do not get any of these benefits         |
-        | Do you already get any of this childcare support?                   | No, I do not get any of this childcare support |
+        | Do you already get any of these to help pay for childcare?          | No, I do not get any of these          |
         | Do you live with a partner?                                         | Yes                                            |
         | On average, do you earn £__PLACEHOLDER__ a week or more before tax? | Yes                                            |
     And I should see a summary list for "Your partners details" with the following summary:
-        | Question                                                                                                      | Answer                                            |
-        | What is your partner's age?                                                                                   | 21 or over                                        |
-        | Is your partner in paid work?                                                                                 | Yes, but they are on parental leave               |
-        | Which child is your partner on leave for?                                                                     | Paula                                             |
-        | How would you describe your partner's work status?                                                            | Paid employment                                   |
-        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?                                             | No                                                |
-        | Does your partner get any of these benefits?                                                                  | No, they do not get any of these benefits         |
-        | Does your partner already get any of this childcare support?                                                  | No, they do not get any of this childcare support |
-        | On average, will your partner earn £__PLACEHOLDER__ a week or more before tax when their parental leave ends? | Yes                                               |
+        | Question                                                                                                      | Answer                                    |
+        | What is your partner's age?                                                                                   | 21 or over                                |
+        | Is your partner in paid work?                                                                                 | Yes, but they are on parental leave       |
+        | Which child is your partner on leave for?                                                                     | Paula                                     |
+        | How would you describe your partner's work status?                                                            | Paid employment                           |
+        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?         | No                                        |
+        | Does your partner get any of these benefits?                                                                  | No, they do not get any of these benefits |
+        | Does your partner already get any of these to help pay for childcare?                                         | No, they do not get any of these          |
+        | On average, will your partner earn £__PLACEHOLDER__ a week or more before tax when their parental leave ends? | Yes                                       |
     When I click on Continue
     #TODO: Pending leave results page updates
     #Then the page header is "Childcare support you could get"
@@ -191,17 +191,17 @@ Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a di
     Then the page header is "Check your answers"
     And I should see 1 summary cards
     And I should see a summary list for "Your details" with the following summary:
-        | Question                                               | Answer                                         |
-        | Where do you live?                                     | England                                        |
-        | What is your age?                                      | 21 or over                                     |
-        | What is your nationality?                              | Citizen of a different country                 |
-        | Are you in paid work?                                  | Yes, but I am on sick leave                    |
-        | How would you describe your work status?               | Paid employment                                |
-        | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                             |
-        | Does your household receive universal credit?          | Yes                                            |
-        | Do you get any of these benefits?                      | No, I do not get any of these benefits         |
-        | Do you already get any of this childcare support?      | No, I do not get any of this childcare support |
-        | Do you live with a partner?                            | No                                             |
+        | Question                                                                                  | Answer                                 |
+        | Where do you live?                                                                        | England                                |
+        | What is your age?                                                                         | 21 or over                             |
+        | What is your nationality?                                                                 | Citizen of a different country         |
+        | Are you in paid work?                                                                     | Yes, but I am on sick leave            |
+        | How would you describe your work status?                                                  | Paid employment                        |
+        | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
+        | Does your household receive universal credit?                                             | Yes                                    |
+        | Do you get any of these benefits?                                                         | No, I do not get any of these benefits |
+        | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
+        | Do you live with a partner?                                                               | No                                     |
     When I click on Continue
     #TODO: Pending leave results page updates
     #Then the page header is "Childcare support you could get"
@@ -211,24 +211,24 @@ Scenario: Scenario 09 - One parent not working, one parent receiving ESA
     Then the page header is "Check your answers"
     And I should see 2 summary cards
     And I should see a summary list for "Your details" with the following summary:
-        | Question                                          | Answer                                              |
-        | Where do you live?                                | England                                             |
-        | What is your age?                                 | 21 or over                                          |
-        | What is your nationality?                         | British or Irish citizen                            |
-        | Are you in paid work?                             | No, I am not in work                                |
-        | Does your household receive universal credit?     | Yes                                                 |
-        | Do you get any of these benefits?                 | Contribution-based Employment and Support Allowance |
-        | Do you already get any of this childcare support? | No, I do not get any of this childcare support      |
-        | Do you live with a partner?                       | Yes                                                 |
+        | Question                                                   | Answer                                              |
+        | Where do you live?                                         | England                                             |
+        | What is your age?                                          | 21 or over                                          |
+        | What is your nationality?                                  | British or Irish citizen                            |
+        | Are you in paid work?                                      | No, I am not in work                                |
+        | Does your household receive universal credit?              | Yes                                                 |
+        | Do you get any of these benefits?                          | Contribution-based Employment and Support Allowance |
+        | Do you already get any of these to help pay for childcare? | No, I do not get any of these                       |
+        | Do you live with a partner?                                | Yes                                                 |
     And I should see a summary list for "Your partners details" with the following summary:
-        | Question                                                                       | Answer                                            |
-        | What is your partner's age?                                                    | 21 or over                                        |
-        | Is your partner in paid work?                                                  | Yes                                               |
-        | How would you describe your partner's work status?                             | Paid employment                                   |
-        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?              | No                                                |
-        | Does your partner get any of these benefits?                                   | No, they do not get any of these benefits         |
-        | Does your partner already get any of this childcare support?                   | No, they do not get any of this childcare support |
-        | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax? | Yes                                               |
+        | Question                                                                                              | Answer                                    |
+        | What is your partner's age?                                                                           | 21 or over                                |
+        | Is your partner in paid work?                                                                         | Yes                                       |
+        | How would you describe your partner's work status?                                                    | Paid employment                           |
+        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
+        | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
+        | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
+        | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax?                        | Yes                                       |
     When I click on Continue
     Then the page header is "Childcare support you could get"
 
@@ -237,19 +237,19 @@ Scenario: Scenario 10 - Parent is a non-UK national without pre-settled or settl
     Then the page header is "Check your answers"
     And I should see 2 summary cards
     And I should see a summary list for "Your details" with the following summary:
-        | Question                                                                  | Answer                                               |
-        | Where do you live?                                                        | England                                              |
-        | What is your age?                                                         | 21 or over                                           |
-        | What is your nationality?                                                 | Citizen of an EU country, EEA country or Switzerland |
-        | Do you have settled or pre-settled status under the EU Settlement Scheme? | No                                                   |
-        | Are you in paid work?                                                     | Yes                                                  |
-        | How would you describe your work status?                                  | Paid employment                                      |
-        | Do you expect your adjusted net income to be more than £100,000 for the current tax year?                    | No                                                   |
-        | Does your household receive universal credit?                             | No                                                   |
-        | Do you get any of these benefits?                                         | No, I do not get any of these benefits               |
-        | Do you already get any of this childcare support?                         | No, I do not get any of this childcare support       |
-        | Do you live with a partner?                                               | No                                                   |
-        | On average, do you earn £__PLACEHOLDER__ a week or more before tax?       | Yes                                                  |
+        | Question                                                                                  | Answer                                               |
+        | Where do you live?                                                                        | England                                              |
+        | What is your age?                                                                         | 21 or over                                           |
+        | What is your nationality?                                                                 | Citizen of an EU country, EEA country or Switzerland |
+        | Do you have settled or pre-settled status under the EU Settlement Scheme?                 | No                                                   |
+        | Are you in paid work?                                                                     | Yes                                                  |
+        | How would you describe your work status?                                                  | Paid employment                                      |
+        | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                                   |
+        | Does your household receive universal credit?                                             | No                                                   |
+        | Do you get any of these benefits?                                                         | No, I do not get any of these benefits               |
+        | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these                        |
+        | Do you live with a partner?                                                               | No                                                   |
+        | On average, do you earn £__PLACEHOLDER__ a week or more before tax?                       | Yes                                                  |
     When I click on Continue
     Then the page header is "Childcare support you could get"
 
@@ -258,15 +258,15 @@ Scenario: Scenario 11 - Single parent not working, on carer's allowance
     Then the page header is "Check your answers"
     And I should see 1 summary cards
     And I should see a summary list for "Your details" with the following summary:
-        | Question                                          | Answer                                         |
-        | Where do you live?                                | England                                        |
-        | What is your age?                                 | 21 or over                                     |
-        | What is your nationality?                         | British or Irish citizen                       |
-        | Are you in paid work?                             | No, I am not in work                           |
-        | Does your household receive universal credit?     | Yes                                            |
-        | Do you get any of these benefits?                 | Carer's Allowance                              |
-        | Do you already get any of this childcare support? | No, I do not get any of this childcare support |
-        | Do you live with a partner?                       | No                                             |
+        | Question                                                   | Answer                        |
+        | Where do you live?                                         | England                       |
+        | What is your age?                                          | 21 or over                    |
+        | What is your nationality?                                  | British or Irish citizen      |
+        | Are you in paid work?                                      | No, I am not in work          |
+        | Does your household receive universal credit?              | Yes                           |
+        | Do you get any of these benefits?                          | Carer's Allowance             |
+        | Do you already get any of these to help pay for childcare? | No, I do not get any of these |
+        | Do you live with a partner?                                | No                            |
     When I click on Continue
     Then the page header is "Childcare support you could get"
     
