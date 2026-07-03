@@ -21,7 +21,7 @@
         <h1 class="govuk-heading-l">
             @question
         </h1>
-        if (@Model.IsOnParentalLeave) {
+        @if(Model.IsOnParentalLeave) {
             <p class="govuk-hint">
                 @Localizer["Think about what they will expect to earn over the next 3 months after their return from leave."]
             </p>
