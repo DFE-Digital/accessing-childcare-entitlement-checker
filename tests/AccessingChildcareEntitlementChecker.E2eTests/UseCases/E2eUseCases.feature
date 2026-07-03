@@ -44,7 +44,7 @@ Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
         | What is your partner's age?                                                    | 21 or over                                        |
         | Is your partner in paid work?                                                  | Yes                                               |
         | How would you describe your partner's work status?                             | Paid employment                                   |
-        | Is your partner's adjusted net income more than £100,000 a year?               | No                                                |
+        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?              | No                                                |
         | Does your partner get any of these benefits?                                   | No, they do not get any of these benefits         |
         | Does your partner already get any of this childcare support?                   | No, they do not get any of this childcare support |
         | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax? | Yes                                               |
@@ -72,7 +72,7 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
         | What is your partner's age?                                                    | 21 or over                                        |
         | Is your partner in paid work?                                                  | Yes                                               |
         | How would you describe your partner's work status?                             | Paid employment                                   |
-        | Is your partner's adjusted net income more than £100,000 a year?               | No                                                |
+        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?              | No                                                |
         | Does your partner get any of these benefits?                                   | No, they do not get any of these benefits         |
         | Does your partner already get any of this childcare support?                   | No, they do not get any of this childcare support |
         | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax? | Yes                                               |
@@ -90,7 +90,7 @@ Scenario: Scenario 04 - One parent aged 18-20, child not yet born
         | What is your nationality?                                           | British or Irish citizen                       |
         | Are you in paid work?                                               | Yes                                            |
         | How would you describe your work status?                            | Paid employment                                |
-        | Is your adjusted net income more than £100,000 a year?              | No                                             |
+        | Do you expect your adjusted net income to be more than £100,000 for the current tax year?              | No                                             |
         | Does your household receive universal credit?                       | No                                             |
         | Do you get any of these benefits?                                   | No, I do not get any of these benefits         |
         | Do you already get any of this childcare support?                   | No, I do not get any of this childcare support |
@@ -101,7 +101,7 @@ Scenario: Scenario 04 - One parent aged 18-20, child not yet born
         | What is your partner's age?                                                    | 21 or over                                        |
         | Is your partner in paid work?                                                  | Yes                                               |
         | How would you describe your partner's work status?                             | Paid employment                                   |
-        | Is your partner's adjusted net income more than £100,000 a year?               | No                                                |
+        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?              | No                                                |
         | Does your partner get any of these benefits?                                   | No, they do not get any of these benefits         |
         | Does your partner already get any of this childcare support?                   | No, they do not get any of this childcare support |
         | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax? | Yes                                               |
@@ -138,7 +138,7 @@ Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one par
         | What is your nationality?                                           | British or Irish citizen                       |
         | Are you in paid work?                                               | Yes                                            |
         | How would you describe your work status?                            | Apprentice                                     |
-        | Is your adjusted net income more than £100,000 a year?              | No                                             |
+        | Do you expect your adjusted net income to be more than £100,000 for the current tax year?              | No                                             |
         | Does your household receive universal credit?                       | No                                             |
         | Do you get any of these benefits?                                   | No, I do not get any of these benefits         |
         | Do you already get any of this childcare support?                   | No, I do not get any of this childcare support |
@@ -166,7 +166,7 @@ Scenario: Scenario 07 - One parent on parental leave
         | What is your nationality?                                           | British or Irish citizen                       |
         | Are you in paid work?                                               | Yes                                            |
         | How would you describe your work status?                            | Paid employment                                |
-        | Is your adjusted net income more than £100,000 a year?              | No                                             |
+        | Do you expect your adjusted net income to be more than £100,000 for the current tax year?              | No                                             |
         | Does your household receive universal credit?                       | No                                             |
         | Do you get any of these benefits?                                   | No, I do not get any of these benefits         |
         | Do you already get any of this childcare support?                   | No, I do not get any of this childcare support |
@@ -178,7 +178,7 @@ Scenario: Scenario 07 - One parent on parental leave
         | Is your partner in paid work?                                                                                 | Yes, but they are on parental leave               |
         | Which child is your partner on leave for?                                                                     | Paula                                             |
         | How would you describe your partner's work status?                                                            | Paid employment                                   |
-        | Is your partner's adjusted net income more than £100,000 a year?                                              | No                                                |
+        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?                                             | No                                                |
         | Does your partner get any of these benefits?                                                                  | No, they do not get any of these benefits         |
         | Does your partner already get any of this childcare support?                                                  | No, they do not get any of this childcare support |
         | On average, will your partner earn £__PLACEHOLDER__ a week or more before tax when their parental leave ends? | Yes                                               |
@@ -197,7 +197,7 @@ Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a di
         | What is your nationality?                              | Citizen of a different country                 |
         | Are you in paid work?                                  | Yes, but I am on sick leave                    |
         | How would you describe your work status?               | Paid employment                                |
-        | Is your adjusted net income more than £100,000 a year? | No                                             |
+        | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                             |
         | Does your household receive universal credit?          | Yes                                            |
         | Do you get any of these benefits?                      | No, I do not get any of these benefits         |
         | Do you already get any of this childcare support?      | No, I do not get any of this childcare support |
@@ -225,7 +225,7 @@ Scenario: Scenario 09 - One parent not working, one parent receiving ESA
         | What is your partner's age?                                                    | 21 or over                                        |
         | Is your partner in paid work?                                                  | Yes                                               |
         | How would you describe your partner's work status?                             | Paid employment                                   |
-        | Is your partner's adjusted net income more than £100,000 a year?               | No                                                |
+        | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?              | No                                                |
         | Does your partner get any of these benefits?                                   | No, they do not get any of these benefits         |
         | Does your partner already get any of this childcare support?                   | No, they do not get any of this childcare support |
         | On average, does your partner earn £__PLACEHOLDER__ a week or more before tax? | Yes                                               |
@@ -244,7 +244,7 @@ Scenario: Scenario 10 - Parent is a non-UK national without pre-settled or settl
         | Do you have settled or pre-settled status under the EU Settlement Scheme? | No                                                   |
         | Are you in paid work?                                                     | Yes                                                  |
         | How would you describe your work status?                                  | Paid employment                                      |
-        | Is your adjusted net income more than £100,000 a year?                    | No                                                   |
+        | Do you expect your adjusted net income to be more than £100,000 for the current tax year?                    | No                                                   |
         | Does your household receive universal credit?                             | No                                                   |
         | Do you get any of these benefits?                                         | No, I do not get any of these benefits               |
         | Do you already get any of this childcare support?                         | No, I do not get any of this childcare support       |

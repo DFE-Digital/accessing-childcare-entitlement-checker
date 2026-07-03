@@ -23,7 +23,7 @@ public class YearlyEarningsViewModel
 
     public string? ReturnTo { get; set; }
 
-    [Display(Name = "Is your adjusted net income more than £100,000 a year?", Description = "Adjusted net income is your total income before tax, minus certain tax reliefs.")]
-    [Required(ErrorMessage = "Select if your adjusted net income is more than £100,000 a year")]
+    [Display(Name = "Do you expect your adjusted net income to be more than £100,000 for the current tax year?", Description = "Adjusted net income is your total income before tax, minus certain tax reliefs.")]
+    [Required(ErrorMessage = "Select if you expect your adjusted net income to be more than £100,000 for the current tax year")]
     public YearlyEarningsOption? YearlyEarnings { get; set; }
 }
