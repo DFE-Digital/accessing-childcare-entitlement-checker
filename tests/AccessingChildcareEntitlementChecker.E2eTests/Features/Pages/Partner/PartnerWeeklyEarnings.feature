@@ -104,7 +104,7 @@ Scenario: Continue with Yes
 		| How would you describe your partner's work status? | Paid employment |
 	When I select the "Yes" radio button
 	And I click on Continue
-	Then the page header is "Is your partner's adjusted net income more than £100,000 a year?"
+	Then the page header is "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?"
 
 Scenario: Continue with No
 	Given I answer questions as follows:

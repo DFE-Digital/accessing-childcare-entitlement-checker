@@ -23,7 +23,7 @@ public class PartnerYearlyEarningsViewModel
 
     public string? ReturnTo { get; set; }
 
-    [Display(Name = "Is your partner's adjusted net income more than £100,000 a year?", Description = "Adjusted net income is your total income before tax, minus certain tax reliefs.")]
-    [Required(ErrorMessage = "Select if your partner's adjusted net income is more than £100,000 a year")]
+    [Display(Name = "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?", Description = "Adjusted net income is your total income before tax, minus certain tax reliefs.")]
+    [Required(ErrorMessage = "Select if your partner expects their adjusted net income to be more than £100,000 for the current tax year")]
     public YearlyEarningsOption? PartnerYearlyEarnings { get; set; }
 }

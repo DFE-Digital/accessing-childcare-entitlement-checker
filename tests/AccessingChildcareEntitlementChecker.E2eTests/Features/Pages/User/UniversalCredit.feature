@@ -57,10 +57,10 @@ Scenario: Back navigation from On average, do you expect to earn £203 a week or
 	When I click the back link
 	Then the page header is "On average, do you expect to earn £128 a week or more before tax?"
 
-Scenario: Back navigation from Is your adjusted net income more than £100,000 a year?
+Scenario: Back navigation from Do you expect your adjusted net income to be more than £100,000 for the current tax year?
 	Given I answer "Are you in paid work?" as "Yes"
 	And I answer "How would you describe your work status?" as "Paid employment"
 	And I answer "On average, do you expect to earn £128 a week or more before tax?" as "Yes"
-	And I answer "Is your adjusted net income more than £100,000 a year?" as "No"
+	And I answer "Do you expect your adjusted net income to be more than £100,000 for the current tax year?" as "No"
 	When I click the back link
-	Then the page header is "Is your adjusted net income more than £100,000 a year?"
+	Then the page header is "Do you expect your adjusted net income to be more than £100,000 for the current tax year?"

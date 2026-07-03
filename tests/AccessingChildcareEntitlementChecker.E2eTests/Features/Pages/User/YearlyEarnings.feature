@@ -1,4 +1,4 @@
-Feature: Is your adjusted net income more than £100,000 a year?
+Feature: Do you expect your adjusted net income to be more than £100,000 for the current tax year?
 
 Background:
 	Given I am on the childcare entitlement checker website
@@ -13,7 +13,7 @@ Background:
 		| On average, do you expect to earn £203 a week or more before tax? | Yes                      |
 
 Scenario: Page load
-	When the page header is "Is your adjusted net income more than £100,000 a year?"
+	When the page header is "Do you expect your adjusted net income to be more than £100,000 for the current tax year?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
 		| Yes    |
@@ -30,7 +30,7 @@ Scenario: Continue without selection
 	When I do not select a radio button
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
-	And the error summary and inline validation should be "Select if your adjusted net income is more than £100,000 a year"
+	And the error summary and inline validation should be "Select if you expect your adjusted net income to be more than £100,000 for the current tax year"
 
 Scenario: Continue with Yes
 	When I select the "Yes" radio button
