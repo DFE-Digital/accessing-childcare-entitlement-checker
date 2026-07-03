@@ -1,4 +1,4 @@
-Feature: On average, do you earn x a week or more before tax?
+Feature: On average, do you expect to earn x a week or more before tax?
 
 Background:
 	Given I am on the childcare entitlement checker website
