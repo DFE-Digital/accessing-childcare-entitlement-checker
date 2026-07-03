@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Reflection;
 using System.Text.Encodings.Web;
 
 namespace AccessingChildcareEntitlementChecker.Web.TagHelpers;
@@ -89,14 +91,19 @@ public class AppCheckboxesTagHelper(
     private List<CheckboxesOptionsItem> BuildCheckboxItems(string fieldName, Type modelType)
     {
         var enumType = modelType.GetGenericArguments()[0];
-        var enumMetadata = metadataProvider.GetMetadataForType(enumType);
-        var model = ((IEnumerable)For.Model).Cast<Enum>();
-        var selectedValues = GetSelectedValues(fieldName, model);
+        var selected = GetSelectedValues(fieldName, ((IEnumerable)For.Model).Cast<Enum>());
+        var exclusiveValueText = ExclusiveValue is null
+            ? null
+            : Convert.ToUInt64(ExclusiveValue).ToString();
+
         var items = new List<CheckboxesOptionsItem>();
-        var exclusiveValueText = ExclusiveValue is null ? null : Convert.ToUInt64(ExclusiveValue).ToString();
-        foreach (var (groupAndName, valueText) in enumMetadata.EnumGroupedDisplayNamesAndValues!)
+
+        foreach (Enum value in Enum.GetValues(enumType))
         {
+            var valueText = Convert.ToUInt64(value).ToString();
+            var display = enumType.GetField(value.ToString())?.GetCustomAttribute<DisplayAttribute>();
             var isExclusive = valueText == exclusiveValueText;
+            var hint = display?.GetDescription();
 
             if (isExclusive)
             {
@@ -105,9 +112,10 @@ public class AppCheckboxesTagHelper(
 
             items.Add(new CheckboxesOptionsItem
             {
-                Text = groupAndName.Name,
+                Text = display?.GetName() ?? value.ToString(),
                 Value = valueText,
-                Checked = selectedValues.Contains(valueText),
+                Checked = selected.Contains(valueText),
+                Hint = hint is null ? null : new HintOptions { Text = hint },
                 Behaviour = isExclusive ? "exclusive" : null,
                 Label = new LabelOptions()
             });
