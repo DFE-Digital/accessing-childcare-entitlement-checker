@@ -17,9 +17,7 @@
     <div class="govuk-grid-column-two-thirds">
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
-
-            <cec-enum-checkboxes for="PartnerBenefits"
-                                 exclusive-value="PartnerBenefitsOption.None" />
+            <app-checkboxes for="PartnerBenefits" exclusive-value="PartnerBenefitsOption.None" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]

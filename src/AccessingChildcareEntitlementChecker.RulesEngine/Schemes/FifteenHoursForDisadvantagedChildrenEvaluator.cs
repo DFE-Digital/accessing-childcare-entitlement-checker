@@ -12,25 +12,29 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
 
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
+        var livesInEngland =
+            context.Household.CountryOfResidence ==
+            CountryOfResidence.England;
+
+        var meetsEligibilityCriteria =
+            ChildMeetsAutomaticEligibilityCriteria(child)
+            || HouseholdMeetsBenefitEligibility(context);
+
         var eligibleNow =
-            context.Household.CountryOfResidence == CountryOfResidence.England &&
+            livesInEngland &&
             child.IsBorn &&
             child.AgeInYears == MaximumEligibleAgeInYears &&
-            (
-                ChildMeetsAutomaticEligibilityCriteria(child)
-                || HouseholdMeetsBenefitEligibility(context)
-            );
+            meetsEligibilityCriteria;
 
 
         var eligibleInFuture =
-            context.Household.CountryOfResidence == CountryOfResidence.England &&
+            livesInEngland &&
             (
                 !child.IsBorn ||
-                child.AgeInYears is < MaximumEligibleAgeInYears
+                child.AgeInYears < MaximumEligibleAgeInYears
             )
             &&
-                HouseholdMeetsBenefitEligibility(context)
-            ;
+            meetsEligibilityCriteria;
 
         if (!eligibleNow && !eligibleInFuture)
         {
@@ -71,9 +75,7 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
                 ChildRelatedBenefit.DisabilityLivingAllowance)
 
             || child.ChildRelatedBenefits.Contains(
-                ChildRelatedBenefit.EducationHealthAndCarePlan)
-
-            || child.RelationshipToChild == RelationshipToChild.FosterParent;
+                ChildRelatedBenefit.EducationHealthAndCarePlan);
     }
 
     private static bool HouseholdMeetsBenefitEligibility(

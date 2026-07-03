@@ -1,6 +1,7 @@
 ﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
@@ -35,12 +36,12 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Theory]
-    [InlineData(null, null, $"/children/{ChildId}/relationship-to-child")]
-    [InlineData(ReturnTo.CheckAnswers, null, $"/children/{ChildId}/relationship-to-child")]
-    [InlineData(ReturnTo.CheckChildDetails, null, $"/children/{ChildId}/relationship-to-child")]
-    [InlineData(ReturnTo.CheckAnswers, Relationship.Parent, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckChildDetails, Relationship.Parent, "/children/check-childs-details")]
-    public async Task Post_Valid_Redirects(string? returnTo, Relationship? bornRelationship, string continueUrl)
+    [InlineData(null, null, $"/children/{ChildId}/child-benefits")]
+    [InlineData(ReturnTo.CheckAnswers, null, $"/children/{ChildId}/child-benefits")]
+    [InlineData(ReturnTo.CheckChildDetails, null, $"/children/{ChildId}/child-benefits")]
+    [InlineData(ReturnTo.CheckAnswers, ChildSupport.NoneOfTheseApply, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, ChildSupport.NoneOfTheseApply, "/children/check-childs-details")]
+    public async Task Post_Valid_Redirects(string? returnTo, ChildSupport? childSupport, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -50,7 +51,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
                         ChildId,
                         new Child(ChildId, "Sara")
                         {
-                            BornRelationship = bornRelationship
+                            ChildSupportOptions = childSupport == null ? [] : [childSupport.Value],
                         }
                     }
                 }

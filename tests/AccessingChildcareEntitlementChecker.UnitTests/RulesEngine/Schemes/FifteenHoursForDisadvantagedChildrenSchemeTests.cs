@@ -164,12 +164,12 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true
+                PaidWorkStatus = PaidWorkStatus.Yes
             },
 
             Partner = new PersonFacts
             {
-                IsInPaidWork = false,
+                PaidWorkStatus = PaidWorkStatus.No,
                 Benefits = [
                     PersonBenefit.GuaranteedElementOfPensionCredit
                 ]
@@ -201,12 +201,12 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.No
             },
 
             Partner = new PersonFacts
             {
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.No
             }
         };
 
@@ -244,12 +244,12 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.No
             },
 
             Partner = new PersonFacts
             {
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.No
             }
         };
 
@@ -262,48 +262,6 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
             ChildRelatedBenefits = [
                 ChildRelatedBenefit.DisabilityLivingAllowance
             ]
-        };
-
-        var result = evaluator.Evaluate(context, child);
-
-        Assert.NotNull(result);
-        Assert.Equal(SchemeCode.FifteenHoursForDisadvantagedChildren, result.SchemeCode);
-        Assert.True(result.EligibleNow);
-        Assert.False(result.EligibleInFuture);
-    }
-
-    [Fact]
-    public void Evaluate_WhenParentsHaveFosterChildAutomaticallyEligible_ReturnsSchemeResult()
-    {
-        var evaluator = CreateEvaluator();
-        var context = new DerivedContext
-        {
-            Household = new HouseholdFacts
-            {
-                HasPartner = true,
-                HasAccessToPublicFunds = true,
-                CountryOfResidence = CountryOfResidence.England
-            },
-
-            User = new PersonFacts
-            {
-                IsInPaidWork = true,
-                ExceedsAdjustedNetIncomeLimit = true
-            },
-
-            Partner = new PersonFacts
-            {
-                IsInPaidWork = false
-            }
-        };
-
-        var child = new ChildFacts
-        {
-            Name = "Jack",
-            IsBorn = true,
-            DateOfBirth = new DateOnly(2023, 1, 1),
-            AgeInYears = 2,
-            RelationshipToChild = RelationshipToChild.FosterParent
         };
 
         var result = evaluator.Evaluate(context, child);

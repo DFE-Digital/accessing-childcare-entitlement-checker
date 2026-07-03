@@ -4,81 +4,70 @@
 @inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = Localizer["Check what help you could get with childcare costs"];
+    var title = "Before you continue";
+    ViewData["Title"] = Localizer[title];
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl">
-            @Localizer["Check what help you could get with childcare costs"]
+            @Localizer[title]
         </h1>
 
-        <p class="govuk-body">
-            @Localizer["Use this checker to find out what help you could get from the following childcare schemes:"]
-        </p>
-
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@Localizer["Childcare for Working Parents"]</li>
-            <li>@Localizer["Education and childcare for 2 year olds if you get extra support"]</li>
-            <li>@Localizer["15 hours childcare for 3 and 4-year-olds"]</li>
-            <li>@Localizer["Tax-Free Childcare"]</li>
-            <li>@Localizer["Universal Credit childcare support"]</li>
-        </ul>
-
         <govuk-inset-text>
-            @Localizer["This is only a quick eligibility checker and gives an estimate of what you may qualify for. It is not an application, and your results will not be saved or shared"]
+            @Localizer["You are now using a new service to check childcare support."]
         </govuk-inset-text>
 
         <p class="govuk-body">
-            @Localizer["This usually takes around 5 minutes."]
-        </p>
-
-        <h2 class="govuk-heading-m">
-            @Localizer["What you will be asked about"]
-        </h2>
-
-        <p class="govuk-body">
-            @Localizer["You will be asked some questions about:"]
+            @Localizer["This new service:"]
         </p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>@Localizer["your children, or children you're expecting"]</li>
-            <li>@Localizer["you and your partner (if you have one), including work and income"]</li>
+            <li>@Localizer["checks more types of childcare support"]</li>
+            <li>@Localizer["gives more detail about the childcare support you may be eligible for, including how this could change over time"]</li>
+        </ul>
+
+        <p class="govuk-body">
+            @Localizer["If you prefer, you can"]
+            <a class="govuk-link" href="https://www.tax.service.gov.uk/childcare-calc/">
+                @Localizer["go back to the childcare calculator you were using before."]
+            </a>
+        </p>
+
+        <h2 class="govuk-heading-m">
+            @Localizer["What you will need"]
+        </h2>
+
+        <p class="govuk-body">
+            @Localizer["You will need information about you and your partner (if you have one), so you can answer questions about:"]
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@Localizer["your children, or any you are expecting"]</li>
+            <li>@Localizer["your work and income"]</li>
+            <li>@Localizer["your nationality"]</li> 
             <li>@Localizer["any benefits you get"]</li>
         </ul>
 
-        <p class="govuk-body">
-            @Localizer["You do not need exact figures, you can use typical or estimated amounts."]
-        </p>
-
         <h2 class="govuk-heading-m">
-            @Localizer["Who this checker is not suitable for"]
+            @Localizer["Who cannot use this service"]
         </h2>
 
         <p class="govuk-body">
-            @Localizer["This checker may not cover every child or situation."]
-        </p>
-
-        <p class="govuk-body">
-            @Localizer["For example, It may not give accurate results for a child who:"]
+            @Localizer["This service will not give you accurate results if your child:"]
         </p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>@Localizer["is in local authority care, foster care or kinship care"]</li>
-            <li>@Localizer["does not live with you most of the time"]</li>
-            <li>@Localizer["lives outside England"]</li>
+            <li>@Localizer["is in local authority or foster care"]</li> 
+            <li>@Localizer["does not live with you more than half of the time"]</li>
         </ul>
 
         <p class="govuk-body">
-            @Localizer["You can still use this checker for other children in your household."]
-        </p>
-
-        <p class="govuk-body">
-            @Localizer["For children or situations not covered,"]
+            @Localizer["If any of these apply to you,"]
             <a class="govuk-link" href="https://www.gov.uk/find-local-council">
-                @Localizer["your local council"]
+                @Localizer["contact your local council"]
             </a>
-            @Localizer["can usually give advice about childcare support and next steps."]
+            @Localizer["to get advice about childcare support and what to do next."]
         </p>
 
         <form method="post" novalidate>
@@ -86,7 +75,7 @@
                class="govuk-button govuk-button--start"
                data-module="govuk-button">
 
-                @Localizer["Start now"]
+                @Localizer["Continue"]
 
                 <svg class="govuk-button__start-icon"
                      xmlns="http://www.w3.org/2000/svg"

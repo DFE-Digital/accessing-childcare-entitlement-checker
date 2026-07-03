@@ -1,6 +1,7 @@
 using Microsoft.Playwright;
 using Reqnroll;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using AccessingChildcareEntitlementChecker.E2eTests.Helpers;
 using static Microsoft.Playwright.Assertions;
 
@@ -162,13 +163,25 @@ internal class SummarySteps(IPage page)
             var question = row["Question"];
             var answer = row["Answer"];
 
-            var summaryRow = summaryList.Locator(".govuk-summary-list__row")
-                .Filter(new LocatorFilterOptions { HasTextString = question });
+            ILocator summaryRow;
+            if (question.Contains("__PLACEHOLDER__"))
+            {
+                var regexPattern = Regex.Escape(question).Replace("__PLACEHOLDER__", "(.*?)");
+                var regex = new Regex(regexPattern);
+                summaryRow = summaryList.Locator(".govuk-summary-list__row")
+                    .Filter(new LocatorFilterOptions { HasTextRegex = regex });
 
-            await Expect(summaryRow).ToBeVisibleAsync();
+                await Expect(summaryRow).ToBeVisibleAsync();
+                await Expect(summaryRow.Locator(".govuk-summary-list__key")).ToHaveTextAsync(regex);
+            }
+            else
+            {
+                summaryRow = summaryList.Locator(".govuk-summary-list__row")
+                    .Filter(new LocatorFilterOptions { HasTextString = question });
 
-            await Expect(summaryRow.Locator(".govuk-summary-list__key"))
-                .ToHaveTextAsync(question);
+                await Expect(summaryRow).ToBeVisibleAsync();
+                await Expect(summaryRow.Locator(".govuk-summary-list__key")).ToHaveTextAsync(question);
+            }
 
             await Expect(summaryRow.Locator(".govuk-summary-list__value"))
                 .ToHaveTextAsync(answer);

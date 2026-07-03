@@ -2,7 +2,7 @@ Feature: Has this child been born yet?
 
 Background:
 	Given I am on the childcare entitlement checker website
-	And I click the Start now link
+	And I click the link to start the journey
 	And I answer "Where do you live?" as "England"
 	And I answer questions for "Sara" as follows:
 		| Question                        | Answer |
@@ -14,6 +14,7 @@ Scenario: Page load
 		| Option |
 		| Yes    |
 		| No     |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	When I select the "Yes" radio button

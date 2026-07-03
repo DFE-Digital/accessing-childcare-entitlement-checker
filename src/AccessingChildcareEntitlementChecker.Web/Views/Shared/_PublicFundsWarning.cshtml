@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<govuk-inset-text class="app-inset-text--warning">
+    <p class="govuk-body">
+        <strong>
+            @Localizer["You need to check if you can access public funds"]
+        </strong>
+    </p>
+
+    <p class="govuk-body">
+        @Localizer["You can only get some childcare support if your immigration status allows you to access public funds."]
+    </p>
+
+    <p class="govuk-body">
+        @Localizer["You should check the guidance for each scheme to see if you can apply."]
+    </p>
+
+    <p class="govuk-body">
+        @Localizer["You can also"]
+        <a class="govuk-link"
+            href="https://www.citizensadvice.org.uk/immigration/benefits-services-and-your-immigration-status/check-if-your-immigration-status-lets-you-get-benefits-and-help-with-housing/"
+            target=" _blank"
+            rel="noopener noreferrer">
+            @Localizer["check if your immigration status lets you claim public funds (opens in new tab)."]
+        </a>
+    </p>
+
+    <p class="govuk-body">
+        @Localizer["Access to public funds does not affect eligibility for 15 hours free childcare for 3 and 4-year-olds."]
+    </p>
+</govuk-inset-text>

@@ -14,7 +14,6 @@ Scenario: Forward navigation after adding another child
 		| Add details about your children               | Ringo         |
 		| Has this child been born yet?                 | No            |
 		| What is this child's due date?                | Tomorrow      |
-		| What will your relationship be to this child? | Foster parent |
 	Then the page header is "Check your answers"
 
 Scenario: Back navigation after adding another child
@@ -28,9 +27,8 @@ Scenario: Back navigation after adding another child
 		| Add details about your children               | Ringo         |
 		| Has this child been born yet?                 | No            |
 		| What is this child's due date?                | Tomorrow      |
-		| What will your relationship be to this child? | Foster parent |
 	When I click the back link
-	# Should potentially be "Then the page header is "What will your relationship be to this child?"
+	# Should potentially be "Then the page header is "What is this child's due date?"
 	Then the page header is "How does your partner receive childcare vouchers?"
 
 Scenario: Partner journey is shown when I change my answer to say I have a partner

@@ -16,6 +16,7 @@ internal class RadioButtonSteps(IPage page)
     }
 
     [When("I do not select a radio button")]
+    [Then("no radio buttons are selected")]
     public async Task WhenIDoNotSelectARadioButton()
     {
         var checkedRadios = page

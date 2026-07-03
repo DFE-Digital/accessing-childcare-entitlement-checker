@@ -2,7 +2,7 @@ Feature: Location
 
 Background:
 	Given I am on the childcare entitlement checker website
-	And I click the Start now link
+	And I click the link to start the journey
 
 Scenario: Page load
 	When the page header is "Where do you live?"
@@ -12,6 +12,7 @@ Scenario: Page load
 		| Scotland         |
 		| Wales            |
 		| Northern Ireland |
+	And no radio buttons are selected
 
 Scenario: Radio button selection
 	When I select the "Scotland" radio button
@@ -32,4 +33,4 @@ Scenario: Continue with selection
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "Check what help you could get with childcare costs"
+	Then the page header is "Before you continue"

@@ -1,4 +1,4 @@
-using GovUk.Frontend.AspNetCore;
+﻿using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ComponentGeneration;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -11,8 +11,8 @@ using System.Text.Encodings.Web;
 
 namespace AccessingChildcareEntitlementChecker.Web.TagHelpers;
 
-[HtmlTargetElement("cec-enum-checkboxes", TagStructure = TagStructure.WithoutEndTag)]
-public class CecEnumCheckboxesTagHelper(
+[HtmlTargetElement("app-checkboxes", TagStructure = TagStructure.WithoutEndTag)]
+public class AppCheckboxesTagHelper(
     IComponentGenerator componentGenerator,
     IModelMetadataProvider metadataProvider) : TagHelper
 {
@@ -50,6 +50,8 @@ public class CecEnumCheckboxesTagHelper(
         var legendHtml = BuildLegendHtml();
         var items = BuildCheckboxItems(fieldName, modelType);
         var errorMessageOptions = BuildError(fieldName, idPrefix);
+        var text = For.Metadata.DisplayName ?? For.Name;
+        var hint = Hint is null ? null : new HintOptions { Text = Hint };
         var component = await componentGenerator.GenerateCheckboxesAsync(new CheckboxesOptions
         {
             IdPrefix = idPrefix,
@@ -58,13 +60,13 @@ public class CecEnumCheckboxesTagHelper(
             {
                 Legend = new FieldsetOptionsLegend
                 {
-                    Text = For.Metadata.DisplayName ?? For.Name,
+                    Text = text,
                     Html = legendHtml,
                     Classes = "govuk-fieldset__legend--l",
                     IsPageHeading = true
                 },
             },
-            Hint = Hint is null ? null : new HintOptions { Text = Hint },
+            Hint = hint,
             ErrorMessage = errorMessageOptions,
             Items = items
         });
@@ -91,9 +93,10 @@ public class CecEnumCheckboxesTagHelper(
         var model = ((IEnumerable)For.Model).Cast<Enum>();
         var selectedValues = GetSelectedValues(fieldName, model);
         var items = new List<CheckboxesOptionsItem>();
+        var exclusiveValueText = ExclusiveValue is null ? null : Convert.ToUInt64(ExclusiveValue).ToString();
         foreach (var (groupAndName, valueText) in enumMetadata.EnumGroupedDisplayNamesAndValues!)
         {
-            var isExclusive = valueText == ExclusiveValue?.ToString();
+            var isExclusive = valueText == exclusiveValueText;
 
             if (isExclusive)
             {
@@ -139,7 +142,7 @@ public class CecEnumCheckboxesTagHelper(
         }
 
         return model
-            .Select(v => v.ToString())
+            .Select(v => Convert.ToUInt64(v).ToString())
             .ToHashSet(StringComparer.Ordinal);
     }
 }

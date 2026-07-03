@@ -13,13 +13,9 @@ public class Child
 
     public DateOnly? BirthDate { get; set; }
 
-    public Relationship? BornRelationship { get; set; }
-
     public List<ChildSupport> ChildSupportOptions { get; set; } = [];
 
     public DateOnly? DueDate { get; set; }
-
-    public Relationship? ExpectedRelationship { get; set; }
 
     public Child(string childId, string name)
     {

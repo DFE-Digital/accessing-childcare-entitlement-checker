@@ -64,13 +64,12 @@ public class ExpectedChildDetailsControllerTests
         Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
         Assert.Equal(new DateOnly(2020, 1, 15), child.DueDate);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(ExpectedChildDetailsController.ExpectedChildRelationship), redirect.ActionName);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
     }
 
     [Fact]
     public void ChildDueDate_Post_ValidSelection_SavesState_AndReturnsTo()
     {
-        _journeyState.Children[ChildId].ExpectedRelationship = Relationship.Parent;
         var model = new ChildDueDateViewModel
         {
             ChildId = ChildId,
@@ -117,80 +116,6 @@ public class ExpectedChildDetailsControllerTests
         };
 
         var result = _controller.ChildDueDate(model);
-        Assert.IsType<NotFoundResult>(result);
-    }
-
-    [Fact]
-    public void ExpectedChildRelationship_ReturnsView()
-    {
-        var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(ChildId));
-        Assert.Null(result.Model<ExpectedChildRelationshipViewModel>().ExpectedChildRelationship);
-    }
-
-    [Fact]
-    public void ExpectedChildRelationship_IfChildDoesNotExistReturnsNotFound()
-    {
-        var result = Assert.IsType<NotFoundResult>(_controller.ExpectedChildRelationship("DOES-NOT-EXIST"));
-    }
-
-    [Fact]
-    public void ExpectedChildRelationship_Get_PopulatesModel_FromState()
-    {
-        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
-        child.ExpectedRelationship = Relationship.Parent;
-        var result = Assert.IsType<ViewResult>(_controller.ExpectedChildRelationship(ChildId));
-        Assert.Equal(Relationship.Parent, result.Model<ExpectedChildRelationshipViewModel>().ExpectedChildRelationship);
-    }
-
-    [Theory]
-    [InlineData(ReturnTo.CheckChildDetails, nameof(SummaryController.CheckChildDetails))]
-    [InlineData(ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
-    public void ExpectedChildRelationship_Post_ValidSelection_SavesState_AndRedirects(string? returnTo, string actionName)
-    {
-        var model = new ExpectedChildRelationshipViewModel
-        {
-            ChildId = ChildId,
-            ExpectedChildRelationship = Relationship.Parent,
-            ReturnTo = returnTo,
-        };
-
-        var result = _controller.ExpectedChildRelationship(model);
-
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
-        Assert.Equal(Relationship.Parent, child.ExpectedRelationship);
-        Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(actionName, redirect.ActionName);
-        Assert.Equal("Summary", redirect.ControllerName);
-    }
-
-    [Fact]
-    public void ExpectedChildRelationship_Post_InvalidSelection_ReturnsViewWithError()
-    {
-        var model = new ExpectedChildRelationshipViewModel
-        {
-            ChildId = "child-a",
-            ExpectedChildRelationship = null
-        };
-
-        _controller.ModelState.AddModelError(nameof(model.ExpectedChildRelationship), "Faked Model Binding Error");
-        var result = _controller.ExpectedChildRelationship(model);
-        Assert.IsType<ViewResult>(result);
-        Assert.False(_controller.ModelState.IsValid);
-        Assert.True(_controller.ModelState.ContainsKey(nameof(model.ExpectedChildRelationship)));
-        _journeySession.DidNotReceive().Set(_journeyState);
-    }
-
-    [Fact]
-    public void ExpectedChildRelationship_Post_NotFound()
-    {
-        var model = new ExpectedChildRelationshipViewModel
-        {
-            ChildId = "child-b",
-        };
-
-        var result = _controller.ExpectedChildRelationship(model);
         Assert.IsType<NotFoundResult>(result);
     }
 }

@@ -10,7 +10,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
 
     [Theory]
-    [InlineData(null, $"/children/{ChildId}/relationship-to-child")]
+    [InlineData(null, $"/children/{ChildId}/childs-date-of-birth")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
@@ -67,7 +67,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
     }
 
     [Theory]
-    [InlineData(null, $"/children/{ChildId}/relationship-to-child")]
+    [InlineData(null, $"/children/{ChildId}/childs-date-of-birth")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Post_With_Tomorrows_Date_Fails_Validation_And_Preserves_Childs_Name_With_BackLink(string? returnTo, string backLinkUrl)

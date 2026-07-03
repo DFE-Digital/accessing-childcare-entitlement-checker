@@ -128,7 +128,6 @@ public class IntroductionControllerTests
         Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
         Assert.Equal(BirthStatus.Born, child.BirthStatus);
         Assert.Null(child.DueDate);
-        Assert.Null(child.ExpectedRelationship);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildBirthDate), redirect.ActionName);
         Assert.Equal("BornChildDetails", redirect.ControllerName);
@@ -150,7 +149,6 @@ public class IntroductionControllerTests
         Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
         Assert.Equal(BirthStatus.Due, child.BirthStatus);
         Assert.Null(child.BirthDate);
-        Assert.Null(child.BornRelationship);
         Assert.Empty(child.ChildSupportOptions);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(ExpectedChildDetailsController.ChildDueDate), redirect.ActionName);

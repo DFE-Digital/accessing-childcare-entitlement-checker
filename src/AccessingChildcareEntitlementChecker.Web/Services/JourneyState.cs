@@ -104,12 +104,10 @@ public class JourneyState
         if (child.BirthStatus == BirthStatus.Born)
         {
             child.DueDate = null;
-            child.ExpectedRelationship = null;
         }
         else
         {
             child.BirthDate = null;
-            child.BornRelationship = null;
             child.ChildSupportOptions = [];
         }
     }
@@ -126,22 +124,10 @@ public class JourneyState
         child.DueDate = model.ChildDueDate;
     }
 
-    public void Apply(ChildRelationshipViewModel model)
-    {
-        var child = Children[model.ChildId];
-        child.BornRelationship = model.Relationship;
-    }
-
     public void Apply(ChildSupportViewModel model)
     {
         var child = Children[model.ChildId];
         child.ChildSupportOptions = model.ChildSupportOptions;
-    }
-
-    public void Apply(ExpectedChildRelationshipViewModel model)
-    {
-        var child = Children[model.ChildId];
-        child.ExpectedRelationship = model.ExpectedChildRelationship;
     }
 
     public void Apply(UserAgeViewModel model)

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses;
 using AccessingChildcareEntitlementChecker.RulesEngine.Types;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
@@ -25,6 +26,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
         return new ResultsSummaryViewModel()
         {
             Children = response.ChildResults.Select(MapChildResults).ToList(),
+            HasAccessToPublicFunds = response.HasAccessToPublicFunds,
         };
 
     }
@@ -66,14 +68,14 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
     {
         var now = _localizer["WhenToApply_Now"];
 
+        if (schemeResult.SchemeCode == SchemeCode.TaxFreeChildcare)
+        {
+            return GetTaxFreeChildcareWhenToApply(schemeResult, childResult);
+        }
+
         if (schemeResult.SchemeCode == SchemeCode.FifteenHoursUniversal)
         {
             return _localizer["WhenToApply_AskProviderOrCouncil"];
-        }
-
-        if (schemeResult.SchemeCode == SchemeCode.TaxFreeChildcare)
-        {
-            return schemeResult.EligibleNow ? now : _localizer["WhenToApply_WhenBorn"];
         }
 
         if (schemeResult.SchemeCode == SchemeCode.UniversalCreditChildcare)
@@ -88,22 +90,65 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
 
         if (schemeResult.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies)
         {
-            if (!childResult.IsBorn)
-            {
-                return _localizer["WhenToApply_WhenTwentyThreeWeeksOld"];
-            }
-
-            var today = DateOnly.FromDateTime(DateTime.Today);
-
-            if (schemeResult.ApplyFromDate!.Value <= today)
-            {
-                return now;
-            }
-
-            return _localizer["WhenToApply_FromDate", schemeResult.ApplyFromDate.Value];
+            return GetThirtyHoursWhenToApply(schemeResult, childResult);
         }
 
-        throw new InvalidOperationException($"{UnknownSchemeCodeMessage}: {schemeResult.SchemeCode}");
+        throw new InvalidOperationException($"Unknown scheme code while mapping GetWhenToApply(): {schemeResult.SchemeCode}");
+    }
+
+    private string GetTaxFreeChildcareWhenToApply(SchemeResultDto schemeResult, ChildResultDto child)
+    {
+        return schemeResult.ApplyAndStartAffectedByParentalLeave switch
+        {
+            ParentalLeaveParty.User => _localizer["WhenToApply_TaxFreeChildcare_UserParentalLeave"],
+
+            ParentalLeaveParty.Partner => _localizer["WhenToApply_TaxFreeChildcare_PartnerParentalLeave"],
+
+            ParentalLeaveParty.UserAndPartner => _localizer["WhenToApply_TaxFreeChildcare_UserAndPartnerParentalLeave"],
+
+            null => child.IsBorn
+                ? _localizer["WhenToApply_Now"]
+                : _localizer["WhenToApply_WhenBorn"],
+
+            _ => throw new UnreachableException(
+                $"Unsupported parental leave party while mapping GetTaxFreeChildcareWhenToApply(): " +
+                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
+        };
+    }
+
+    private string GetThirtyHoursWhenToApply(SchemeResultDto schemeResult, ChildResultDto child)
+    {
+        return schemeResult.ApplyAndStartAffectedByParentalLeave switch
+        {
+            ParentalLeaveParty.User => _localizer["WhenToApply_ThirtyHours_UserParentalLeave"],
+
+            ParentalLeaveParty.Partner => _localizer["WhenToApply_ThirtyHours_PartnerParentalLeave"],
+
+            ParentalLeaveParty.UserAndPartner => _localizer["WhenToApply_ThirtyHours_UserAndPartnerParentalLeave"],
+
+            null => GetStandardThirtyHoursWhenToApply(schemeResult, child),
+
+            _ => throw new UnreachableException(
+                $"Unsupported parental leave party while mapping GetThirtyHoursWhenToApply(): " +
+                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
+        };
+    }
+
+    private string GetStandardThirtyHoursWhenToApply(SchemeResultDto schemeResult, ChildResultDto child)
+    {
+        if (!child.IsBorn)
+        {
+            return _localizer["WhenToApply_WhenTwentyThreeWeeksOld"];
+        }
+
+        var today = DateOnly.FromDateTime(DateTime.Today);
+
+        if (schemeResult.ApplyFromDate!.Value <= today)
+        {
+            return _localizer["WhenToApply_Now"];
+        }
+
+        return _localizer["WhenToApply_FromDate", schemeResult.ApplyFromDate.Value];
     }
 
     private static bool GetThirtyHourWarning(ChildResultDto childResult)
@@ -181,5 +226,4 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             nameof(schemeCode),
             schemeCode,
             UnknownSchemeCodeMessage);
-
 }

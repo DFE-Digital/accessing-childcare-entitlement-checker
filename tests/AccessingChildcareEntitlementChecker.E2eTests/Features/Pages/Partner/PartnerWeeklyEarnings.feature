@@ -20,6 +20,7 @@ Scenario Outline: Page load for different age groups and employment statuses
 		| Option |
 		| Yes    |
 		| No     |
+	And no radio buttons are selected
 
 Examples:
 	| Age        | Work Status     | Earnings |
@@ -42,6 +43,7 @@ Scenario Outline: Page load for different age groups on parental leave
 		| Option |
 		| Yes    |
 		| No     |
+	And no radio buttons are selected
 
 Examples:
 	| Age        | Work Status     | Earnings |

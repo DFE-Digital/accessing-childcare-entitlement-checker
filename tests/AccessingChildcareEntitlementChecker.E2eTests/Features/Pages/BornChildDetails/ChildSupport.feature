@@ -2,14 +2,13 @@
 
 Background:
 	Given I am on the childcare entitlement checker website
-	And I click the Start now link
+	And I click the link to start the journey
 	And I answer "Where do you live?" as "England"
 	And I answer questions for "Sara" as follows:
 		| Question                           | Answer    |
 		| Add details about your children    | Sara      |
 		| Has this child been born yet?      | Yes       |
 		| What is Sara's date of birth?      | Yesterday |
-		| What is your relationship to Sara? | Parent    |
 
 Scenario: Page load
 	When the page header is "Does Sara get any of the following support?"
@@ -21,6 +20,7 @@ Scenario: Page load
 		| Education, health and care (EHC) plan |
 		| Personal Independence Payment (PIP)   |
 		| No, none of these apply               |
+	And no checkboxes are selected
 
 Scenario: Checkbox selection
 	When I select the "Armed Forces Independence Payment" checkbox
@@ -59,4 +59,4 @@ Scenario: Continue with none applicable
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "What is your relationship to Sara?"
+	Then the page header is "What is Sara's date of birth?"

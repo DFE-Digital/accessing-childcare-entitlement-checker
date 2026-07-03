@@ -17,9 +17,7 @@
     <div class="govuk-grid-column-two-thirds">
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
-
-            <cec-enum-checkboxes for="ChildcareSupport"
-                                 exclusive-value="ChildcareSupportOption.None" />
+            <app-checkboxes for="ChildcareSupport" exclusive-value="ChildcareSupportOption.None" />
 
             <govuk-details>
                 <govuk-details-summary>

@@ -5,6 +5,8 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.Results;
 public class ResultsSummaryViewModel
 {
     public List<ChildResultsViewModel> Children { get; set; } = [];
+
+    public bool HasAccessToPublicFunds { get; set; }
 }
 
 public class ChildResultsViewModel

@@ -27,7 +27,7 @@ public class UniversalCreditChildcareSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true
+                PaidWorkStatus = PaidWorkStatus.Yes
             }
         };
     }
@@ -101,7 +101,7 @@ public class UniversalCreditChildcareSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
                 Benefits = [
                     PersonBenefit.ContributionBasedEmploymentAndSupportAllowance
                 ]
@@ -132,7 +132,7 @@ public class UniversalCreditChildcareSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = false
+                PaidWorkStatus = PaidWorkStatus.No
             }
         };
 
@@ -160,12 +160,12 @@ public class UniversalCreditChildcareSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
             },
 
             Partner = new PersonFacts
             {
-                IsInPaidWork = false,
+                PaidWorkStatus = PaidWorkStatus.No,
                 Benefits = [
                     PersonBenefit.IncapacityBenefit
                 ]
@@ -201,12 +201,12 @@ public class UniversalCreditChildcareSchemeTests
 
             User = new PersonFacts
             {
-                IsInPaidWork = true,
+                PaidWorkStatus = PaidWorkStatus.Yes,
             },
 
             Partner = new PersonFacts
             {
-                IsInPaidWork = false,
+                PaidWorkStatus = PaidWorkStatus.No,
                 Benefits = [
                     PersonBenefit.ContributionBasedEmploymentAndSupportAllowance
                 ]

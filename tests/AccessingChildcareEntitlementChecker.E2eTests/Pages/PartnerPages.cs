@@ -99,3 +99,10 @@ internal class PartnerLeaveTypePage(IPage page) : BasePage(page)
     public override string PageTitle => PageNames.PartnerLeaveType;
     public override async Task AnswerAsync(string answer) => await SelectRadioAsync(answer);
 }
+
+[PagePattern(PageNames.PartnerLeaveWeeklyEarnings)]
+internal class PartnerLeaveWeeklyEarnings(IPage page) : BasePage(page)
+{
+    public override string PageTitle => PageNames.PartnerLeaveWeeklyEarnings;
+    public override async Task AnswerAsync(string answer) => await SelectRadioAsync(answer);
+}

@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.CodeAnalysis;
-using AccessingChildcareEntitlementChecker.RulesEngine.Services;
+﻿using AccessingChildcareEntitlementChecker.RulesEngine.Services;
 using AccessingChildcareEntitlementChecker.Web.Mappers;
-using AccessingChildcareEntitlementChecker.Web.Models.Results;
 using AccessingChildcareEntitlementChecker.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
@@ -41,9 +40,9 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
 
             var response = _rulesEngine.Evaluate(request, DateOnly.FromDateTime(DateTime.Today));
 
-            var resultsSummaryViewModel = _resultsSummaryMapper.Map(response);
-
-            return View(resultsSummaryViewModel);
+            return response.ChildResults.SelectMany(c => c.Schemes).Any()
+                ? View(_resultsSummaryMapper.Map(response))
+                : View("ResultsNotEligible");
         }
 
         [HttpGet]
@@ -58,7 +57,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Controllers
                 return BadRequest();
             }
 
-            var resultsDetailsViewModel = _resultsDetailsModelMapper.Map(child);
+            var resultsDetailsViewModel = _resultsDetailsModelMapper.Map(child, response.HasAccessToPublicFunds);
             return View(resultsDetailsViewModel);
         }
     }

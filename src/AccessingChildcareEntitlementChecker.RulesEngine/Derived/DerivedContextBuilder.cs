@@ -52,7 +52,7 @@ public static class DerivedContextBuilder
     {
         return new PersonFacts
         {
-            IsInPaidWork = person.IsInPaidWork == true,
+            PaidWorkStatus = person.PaidWorkStatus,
             SelfEmployedLessThan12Months = person.SelfEmployedLessThan12Months == true,
             EarnsAboveThreshold = person.EarnsAboveThreshold == true,
             ExceedsAdjustedNetIncomeLimit = person.ExceedsAdjustedNetIncomeLimit == true,
@@ -84,7 +84,8 @@ public static class DerivedContextBuilder
             AgeInYears = ageInYears,
             AgeInMonths = ageInMonths,
             ChildRelatedBenefits = child.ChildRelatedBenefits.ToList(),
-            RelationshipToChild = child.RelationshipToChild
+            UserIsOnParentalLeaveForChild = child.UserIsOnParentalLeaveForChild,
+            PartnerIsOnParentalLeaveForChild = child.PartnerIsOnParentalLeaveForChild,
         };
     }
 
