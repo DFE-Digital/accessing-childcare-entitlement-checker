@@ -34,15 +34,15 @@
         <value>There is a problem</value>
     </data>
   <data name="WeeklyEarnings_Question" xml:space="preserve">
-        <value>On average, do you earn £{0} a week or more before tax?</value>
+        <value>On average, do you expect to earn £{0} a week or more before tax?</value>
   </data>
   <data name="WeeklyEarnings_ParentalLeave_Question" xml:space="preserve">
-        <value>On average, will you earn £{0} a week or more before tax when your parental leave ends?</value>
+        <value>On average, will you expect to earn £{0} a week or more before tax when your parental leave ends?</value>
   </data>
   <data name="PartnerWeeklyEarnings_Question" xml:space="preserve">
-        <value>On average, does your partner earn £{0} a week or more before tax?</value>
+        <value>On average, does your partner expect to earn £{0} a week or more before tax?</value>
   </data>
   <data name="PartnerWeeklyEarnings_ParentalLeave_Question" xml:space="preserve">
-        <value>On average, will your partner earn £{0} a week or more before tax when their parental leave ends?</value>
+        <value>On average, will your partner expect to earn £{0} a week or more before tax when their parental leave ends?</value>
   </data>
 </root>

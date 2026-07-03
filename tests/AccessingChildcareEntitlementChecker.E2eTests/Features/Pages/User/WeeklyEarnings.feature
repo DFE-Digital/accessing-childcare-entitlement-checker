@@ -1,4 +1,4 @@
-Feature: On average, do you earn x a week or more before tax?
+Feature: On average, do you expect to earn x a week or more before tax?
 
 Background:
 	Given I am on the childcare entitlement checker website
@@ -12,7 +12,7 @@ Scenario Outline: Page load for different age groups and employment statuses
 		| What is your nationality?                | British or Irish citizen |
 		| Are you in paid work?                    | Yes                      |
 		| How would you describe your work status? | <Work Status>            |
-	When the page header is "On average, do you earn £<Earnings> a week or more before tax?"
+	When the page header is "On average, do you expect to earn £<Earnings> a week or more before tax?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
 		| Yes    |
@@ -22,7 +22,7 @@ Scenario Outline: Page load for different age groups and employment statuses
 Examples:
 	| Age        | Work Status     | Earnings |
 	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      174 |
+	| 18 to 20   | Paid employment |      173 |
 	| 21 or over | Paid employment |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |
@@ -36,7 +36,7 @@ Scenario Outline: Page load for different age groups on parental leave
 		| Are you in paid work?                    | Yes, but I am on parental leave |
 		| Which child are you on leave for?        | Sara                            |
 		| How would you describe your work status? | <Work Status>                   |
-	When the page header is "On average, will you earn £<Earnings> a week or more before tax when your parental leave ends?"
+	When the page header is "On average, will you expect to earn £<Earnings> a week or more before tax when your parental leave ends?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
 		| Yes    |
@@ -46,7 +46,7 @@ Scenario Outline: Page load for different age groups on parental leave
 Examples:
 	| Age        | Work Status     | Earnings |
 	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      174 |
+	| 18 to 20   | Paid employment |      173 |
 	| 21 or over | Paid employment |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |
@@ -67,7 +67,7 @@ Scenario Outline: Continue without selection for different age groups and employ
 Examples:
 	| Age        | Work Status     | Earnings |
 	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      174 |
+	| 18 to 20   | Paid employment |      173 |
 	| 21 or over | Paid employment |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |

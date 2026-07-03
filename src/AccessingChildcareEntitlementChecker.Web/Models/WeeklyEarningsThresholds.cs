@@ -5,7 +5,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Models;
 public record WeeklyEarningsThresholds(string PerWeek, string PerMonth, string PerYear)
 {
     public static readonly WeeklyEarningsThresholds Under18OrApprentice = new("128", "554", "6,656");
-    public static readonly WeeklyEarningsThresholds EighteenToTwenty = new("174", "752", "9,027");
+    public static readonly WeeklyEarningsThresholds EighteenToTwenty = new("173", "752", "9,027");
     public static readonly WeeklyEarningsThresholds TwentyOneOrOver = new("203", "879", "10,574");
 
     public static WeeklyEarningsThresholds Create(AgeRange? age, List<WorkStatusOption> workStatus)

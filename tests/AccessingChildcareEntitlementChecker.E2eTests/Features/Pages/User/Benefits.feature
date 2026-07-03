@@ -62,7 +62,7 @@ Scenario: Continue with Carer's Allowance
 Scenario: Back navigation from Do you expect your adjusted net income to be more than £100,000 for the current tax year?
 	Given I answer "Are you in paid work?" as "Yes"
 	And I answer "How would you describe your work status?" as "Paid employment"
-	And I answer "On average, do you earn £203 a week or more before tax?" as "Yes"
+	And I answer "On average, do you expect to earn £203 a week or more before tax?" as "Yes"
 	And I answer "Do you expect your adjusted net income to be more than £100,000 for the current tax year?" as "Yes"
 	When I click the back link
 	Then the page header is "Do you expect your adjusted net income to be more than £100,000 for the current tax year?"

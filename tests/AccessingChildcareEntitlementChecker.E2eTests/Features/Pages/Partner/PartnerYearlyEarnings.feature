@@ -6,12 +6,12 @@ Background:
 	And I check my children's details and click on Continue
 	And I fill in my own details
 	And I answer questions as follows:
-		| Question                                                           | Answer                   |
-		| Do you live with a partner?                                        | Yes                      |
-		| What is your partner's age?                                        | 21 or over               |
-		| Is your partner in paid work?                                      | Yes                      |
-		| How would you describe your partner's work status?                 | Paid employment          |
-		| On average, does your partner earn £203 a week or more before tax? | Yes                      |
+		| Question                                                                     | Answer          |
+		| Do you live with a partner?                                                  | Yes             |
+		| What is your partner's age?                                                  | 21 or over      |
+		| Is your partner in paid work?                                                | Yes             |
+		| How would you describe your partner's work status?                           | Paid employment |
+		| On average, does your partner expect to earn £203 a week or more before tax? | Yes             |
 
 Scenario: Page load
 	When the page header is "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?"
@@ -45,4 +45,4 @@ Scenario: Continue with No
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "On average, does your partner earn £203 a week or more before tax?"
+	Then the page header is "On average, does your partner expect to earn £203 a week or more before tax?"
