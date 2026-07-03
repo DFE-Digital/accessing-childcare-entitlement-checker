@@ -35,7 +35,7 @@ internal static class PageNames
     public const string PartnerChildcareSupport = "Does your partner already get any of this childcare support?";
     public const string PartnerChildcareVoucherReceipt = "How does your partner receive childcare vouchers?";
     public const string PartnerLeaveType = "Which child is your partner on leave for?";
-    public const string PartnerLeaveWeeklyEarnings = "On average, will your partner earn £__PLACEHOLDER__ a week or more before tax when their parental leave ends?";
+    public const string PartnerLeaveWeeklyEarnings = "On average, will your partner expect to earn £__PLACEHOLDER__ a week or more before tax when their parental leave ends?";
 
     // Child Pages
     public const string ChildName = "Add details about your children";

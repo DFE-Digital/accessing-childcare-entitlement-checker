@@ -12,7 +12,7 @@ Scenario Outline: Page load for different age groups and employment statuses
 		| What is your nationality?                | British or Irish citizen |
 		| Are you in paid work?                    | Yes                      |
 		| How would you describe your work status? | <Work Status>            |
-	When the page header is "On average, do you earn £<Earnings> a week or more before tax?"
+	When the page header is "On average, do you expect to earn £<Earnings> a week or more before tax?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
 		| Yes    |
@@ -36,7 +36,7 @@ Scenario Outline: Page load for different age groups on parental leave
 		| Are you in paid work?                    | Yes, but I am on parental leave |
 		| Which child are you on leave for?        | Sara                            |
 		| How would you describe your work status? | <Work Status>                   |
-	When the page header is "On average, will you earn £<Earnings> a week or more before tax when your parental leave ends?"
+	When the page header is "On average, will you expect to earn £<Earnings> a week or more before tax when your parental leave ends?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
 		| Yes    |

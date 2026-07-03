@@ -40,7 +40,7 @@ Scenario: Continue with Yes
 Scenario: Continue with No
 	When I select the "No" radio button
 	And I click on Continue
-	Then the page header is "On average, does your partner earn £203 a week or more before tax?"
+	Then the page header is "On average, does your partner expect to earn £203 a week or more before tax?"
 
 Scenario: Back navigation
 	When I click the back link

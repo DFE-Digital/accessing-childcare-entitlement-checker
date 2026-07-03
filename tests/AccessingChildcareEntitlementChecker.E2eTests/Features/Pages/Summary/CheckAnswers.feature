@@ -96,7 +96,7 @@ Scenario: Change my partner's employment status and age to trigger a different t
 	And I should see a summary list for "Your partners details" with the following summary:
 		| Question                                                                                              | Answer   |
 		| What is your partner's age?                                                                           | 18 to 20 |
-		| On average, does your partner expect to earn £174 a week or more before tax?                          | Yes      |
+		| On average, does your partner expect to earn £173 a week or more before tax?                          | Yes      |
 		| Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No       |
 
 Scenario: Change my weekly earnings
