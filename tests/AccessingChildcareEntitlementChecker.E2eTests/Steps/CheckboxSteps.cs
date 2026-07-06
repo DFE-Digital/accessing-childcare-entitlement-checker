@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.E2eTests.Extensions;
 using Microsoft.Playwright;
 using Reqnroll;
 using static Microsoft.Playwright.Assertions;
@@ -5,11 +6,17 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class CheckboxSteps(IPage page)
+internal class CheckboxSteps(ScenarioContext scenarioContext, IPage page)
 {
     [When("I select the {string} checkbox")]
     public async Task WhenISelectTheStringCheckbox(string label)
     {
+        if (scenarioContext.IsWithJavascript())
+        {
+            await Expect(page.Locator("[data-module='govuk-checkboxes']"))
+                .ToHaveAttributeAsync("data-govuk-checkboxes-init", "");
+        }
+
         await page
             .GetByLabel(label, new PageGetByLabelOptions { Exact = true })
             .CheckAsync();

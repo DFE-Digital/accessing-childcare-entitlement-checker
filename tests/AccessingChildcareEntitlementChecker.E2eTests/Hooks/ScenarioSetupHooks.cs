@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.E2eTests.Extensions;
 using Microsoft.Playwright;
 using Reqnroll;
 using Reqnroll.BoDi;
@@ -16,13 +17,11 @@ internal class ScenarioSetupHooks(
     {
         var settings = objectContainer.Resolve<TestSettings>();
         var browser = objectContainer.Resolve<IBrowser>();
-
-        var withJavascript = scenarioContext.ScenarioInfo.Tags.Contains("withJavascript");
         var contextOptions = BrowserNewContextOptions(
             settings,
             featureContext.FeatureInfo.Title,
             scenarioContext.ScenarioInfo.Title,
-            withJavascript);
+            scenarioContext.IsWithJavascript());
 
         var browserContext = await browser.NewContextAsync(contextOptions);
         var page = await browserContext.NewPageAsync();
