@@ -51,6 +51,7 @@ internal class ScenarioSetupHooks(
     {
         return new BrowserNewContextOptions
         {
+            JavaScriptEnabled = false,
             UserAgent = $"{settings.UserAgent}, {featureTitle}, {scenarioTitle}",
             BaseURL = settings.TestUrl,
             ExtraHTTPHeaders = ExtraHttpHeaders(settings)
