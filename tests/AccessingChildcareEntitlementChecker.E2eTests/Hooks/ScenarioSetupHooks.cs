@@ -17,12 +17,10 @@ internal class ScenarioSetupHooks(
         var settings = objectContainer.Resolve<TestSettings>();
         var browser = objectContainer.Resolve<IBrowser>();
 
-        var withJavascript = scenarioContext.ScenarioInfo.Tags.Contains("withJavascript");
         var contextOptions = BrowserNewContextOptions(
             settings,
             featureContext.FeatureInfo.Title,
-            scenarioContext.ScenarioInfo.Title,
-            withJavascript);
+            scenarioContext.ScenarioInfo.Title);
 
         var browserContext = await browser.NewContextAsync(contextOptions);
         var page = await browserContext.NewPageAsync();
@@ -49,12 +47,11 @@ internal class ScenarioSetupHooks(
     private static BrowserNewContextOptions BrowserNewContextOptions(
         TestSettings settings,
         string featureTitle,
-        string scenarioTitle,
-        bool withJavascript)
+        string scenarioTitle)
     {
         return new BrowserNewContextOptions
         {
-            JavaScriptEnabled = withJavascript,
+            JavaScriptEnabled = false,
             UserAgent = $"{settings.UserAgent}, {featureTitle}, {scenarioTitle}",
             BaseURL = settings.TestUrl,
             ExtraHTTPHeaders = ExtraHttpHeaders(settings)
