@@ -28,7 +28,7 @@ order: 99
 | --- | --- | --- |
 | Re-examine Cache-control Directives | Informational | Systemic |
 | User Agent Fuzzer | Informational | Systemic |
-| Modern Web Application | 				False Positives: | 4 |
+| Modern Web Application | 				False Positives: | 5 |
 | Private IP Disclosure | 				False Positives: | 1 |
 | Session Management Response Identified | 				False Positives: | 2 |
 | Timestamp Disclosure - Unix | 				False Positives: | 1 |
@@ -57,7 +57,7 @@ The cache-control header has not been set properly or is missing, allowing the b
   * Attack: ``
   * Evidence: `no-cache, no-store`
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json%3Fv=6.0.0
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json%3Fv=6.1.0
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json (v)`
   * Method: `GET`
   * Parameter: `cache-control`
@@ -132,9 +132,9 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets`
-  * Method: `GET`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/ ()(__RequestVerificationToken)`
+  * Method: `POST`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
@@ -173,6 +173,13 @@ The application appears to be a modern web application. If you need to explore i
   * Attack: ``
   * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details`
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<a class="govuk-link" href="#">give your feedback (opens in new tab)</a>`
+  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
 * URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
   * Method: `GET`
@@ -196,7 +203,7 @@ The application appears to be a modern web application. If you need to explore i
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
 
 
-Instances: 4
+Instances: 5
 
 ### Solution
 
@@ -219,7 +226,7 @@ This is an informational alert and so no changes are required.
 
 A private IP (such as 10.x.x.x, 172.x.x.x, 192.168.x.x) or an Amazon EC2 private hostname (for example, ip-10-0-56-78) has been found in the HTTP response body. This information might be helpful for further attacks targeting internal systems.
 
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/favicon.svg%3Fv=6.0.0
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/favicon.svg%3Fv=6.1.0
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/favicon.svg (v)`
   * Method: `GET`
   * Parameter: ``
@@ -299,7 +306,7 @@ This is an informational alert rather than a vulnerability and so there is nothi
 
 A timestamp was disclosed by the application/web server. - Unix
 
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/govuk-frontend.min.css%3Fv=6.0.0
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/govuk-frontend.min.css%3Fv=6.1.0
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/govuk-frontend.min.css (v)`
   * Method: `GET`
   * Parameter: ``
