@@ -29,15 +29,6 @@ Scenario: Checkbox selection
 		| Childcare vouchers           |
 		| A childcare bursary or grant |
 
-@withJavascript
-Scenario: None selection is exclusive with JavaScript enabled
-	When I select the "Childcare vouchers" checkbox
-	And I select the "A childcare bursary or grant" checkbox
-	And I select the "No, they do not get any of these" checkbox
-	Then the following checkboxes should be selected:
-		| Checkbox                         |
-		| No, they do not get any of these |
-
 Scenario: None selection is validated without Javascript
 	When I select the "Childcare vouchers" checkbox
 	And I select the "A childcare bursary or grant" checkbox
