@@ -1,7 +1,6 @@
 ﻿using AccessingChildcareEntitlementChecker.E2eTests.Helpers;
 using Microsoft.Playwright;
 using Reqnroll;
-using System.Xml.Linq;
 using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
