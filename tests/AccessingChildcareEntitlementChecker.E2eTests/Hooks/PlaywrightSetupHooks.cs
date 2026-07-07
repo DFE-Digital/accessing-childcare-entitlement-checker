@@ -15,9 +15,8 @@ internal class PlaywrightSetupHooks
     [BeforeTestRun]
     public static async Task BeforeTestRun()
     {
-        var basePath = Directory.GetCurrentDirectory();
         var configuration = new ConfigurationBuilder()
-            .SetBasePath(basePath)
+            .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.Local.json", optional: true)
             .AddEnvironmentVariables()
             .Build();

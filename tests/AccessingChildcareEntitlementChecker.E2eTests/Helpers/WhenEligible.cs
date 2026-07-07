@@ -3,16 +3,10 @@
 public enum WhenEligible
 {
     Now,
-
     Birth,
-
     WhenPartnerReturnsFromParentalLeave,
-
     NineMonthsOld,
-
     TwoYearsOld,
-
     ThreeYearsOld,
-
     InTheFuture,
 }
