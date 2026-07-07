@@ -75,7 +75,7 @@ public class ResultsSteps(IPage page)
                     Assert.Equal("Ask your childcare provider or local council", actual.Item2);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException($"Unexpected value: {expected.When}");
             }
         }
     }
