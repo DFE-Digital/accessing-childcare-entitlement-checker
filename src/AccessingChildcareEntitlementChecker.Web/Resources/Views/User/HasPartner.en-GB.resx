@@ -21,7 +21,10 @@
     <data name="Title" xml:space="preserve">
         <value>Do you live with a partner?</value>
     </data>
-    <data name="Caption" xml:space="preserve">
-        <value>Select "Yes" if your partner normally lives with you, but they are away because of work.</value>
+    <data name="Caption1" xml:space="preserve">
+        <value>This means you live together as a couple.</value>
+    </data>
+  <data name="Caption2" xml:space="preserve">
+        <value>It also includes if they are posted overseas as a Crown servant, member of the armed forces, a mariner or working offshore.</value>
     </data>
 </root>

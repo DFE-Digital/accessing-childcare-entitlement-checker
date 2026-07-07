@@ -14,32 +14,42 @@
     </govuk-back-link>
 }
 
-<form method="post" novalidate>
-    <input type="hidden" asp-for="ReturnTo" />
-    <govuk-radios for="HasPartner">
-        <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                @Localizer["Title"]
-            </govuk-radios-fieldset-legend>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+            <govuk-radios for="HasPartner">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                        @Localizer["Title"]
+                    </govuk-radios-fieldset-legend>
 
-            <govuk-radios-hint>
-                @Localizer["Caption"]
-            </govuk-radios-hint>
+                    <govuk-radios-hint>
+                        <p class="govuk-body">
+                            @Localizer["Caption1"]
+                        </p>
 
-            <govuk-radios-error-message />
+                        <p class="govuk-body">
+                            @Localizer["Caption2"]
+                        </p>
+                    </govuk-radios-hint>
 
-            <govuk-radios-item value="true">
-                @Shared["Option_Yes"]
-            </govuk-radios-item>
+                    <govuk-radios-error-message />
 
-            <govuk-radios-item value="false">
-                @Shared["Option_No"]
-            </govuk-radios-item>
+                    <govuk-radios-item value="true">
+                        @Shared["Option_Yes"]
+                    </govuk-radios-item>
 
-        </govuk-radios-fieldset>
-    </govuk-radios>
+                    <govuk-radios-item value="false">
+                        @Shared["Option_No"]
+                    </govuk-radios-item>
 
-    <govuk-button type="submit">
-        @Shared["Button_Continue"]
-    </govuk-button>
-</form>
+                </govuk-radios-fieldset>
+            </govuk-radios>
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>
