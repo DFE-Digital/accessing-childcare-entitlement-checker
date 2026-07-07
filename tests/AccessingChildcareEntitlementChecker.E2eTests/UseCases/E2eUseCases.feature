@@ -183,8 +183,7 @@ Scenario: Scenario 07 - One parent on parental leave
         | Does your partner already get any of these to help pay for childcare?                                                   | No, they do not get any of these          |
         | On average, will your partner expect to earn £__PLACEHOLDER__ a week or more before tax when their parental leave ends? | Yes                                       |
     When I click on Continue
-    #TODO: Pending leave results page updates
-    #Then the page header is "Childcare support you could get"
+    Then the page header is "Childcare support you could get"
 
 Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a different country
     Given I complete the journey for the use case "Single parent on sick leave, parent is a citizen of a different country"
@@ -203,8 +202,7 @@ Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a di
         | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
         | Do you live with a partner?                                                               | No                                     |
     When I click on Continue
-    #TODO: Pending leave results page updates
-    #Then the page header is "Childcare support you could get"
+    Then the page header is "Childcare support you could get"
 
 Scenario: Scenario 09 - One parent not working, one parent receiving ESA
     Given I complete the journey for the use case "One parent not working, one parent receiving ESA"
