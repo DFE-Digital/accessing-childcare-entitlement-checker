@@ -55,15 +55,7 @@ Consequently, HTTP caching headers are not a reliable or guaranteed mechanism to
 
 ### Client-side lifecycle handling
 
-Client-side scripts can detect some navigation events and attempt to refresh or invalidate state.
-
-However:
-
-* Browsers do not always re-execute JavaScript when restoring a page from BFCache.
-* Behaviour varies between browsers.
-* This introduces an additional client-side dependency for correctness.
-
-Therefore, client-side handling cannot provide a guaranteed solution.
+Client-side scripts can detect some navigation events and attempt to refresh or invalidate state. However, there is no fallback if JavaScript is disabled, therefore a dependency on JavaScript is not an option.
 
 ### Conclusion
 
