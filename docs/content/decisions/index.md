@@ -66,6 +66,11 @@ decisions:
     data:
       date: 2026-06-08
       title: Bootstrap Terraform state storage in Azure
+  - url: "/decisions/0012-bf-cache"
+    date: 2026-07-07
+    data:
+      date: 2026-07-08
+      title: Working with browser back/dorward Cache (BFCache) behaviour
 includeInBreadcrumbs: true
 ---
 We record all significant decisions made during the development of this service. These records, also known as Architectural Decision Records (ADRs), capture the context, options considered, and the final decision.
