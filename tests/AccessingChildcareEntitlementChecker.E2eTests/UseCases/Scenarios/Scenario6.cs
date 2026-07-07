@@ -15,7 +15,7 @@ internal class Scenario6 : IUseCase
             .AddChild(child => child
                 .WithName("Winston")
                 .IsBorn("Yes")
-                .WithBirthDate("10 JAN 2025") //TODO : need a better way to handle these dates. Test will become flaky over time
+                .WithBirthDate("03 JAN 2025") //TODO : need a better way to handle these dates. Test will become flaky over time
                 .WithSupport("No, none of these apply"))
 
             // Complete child details loop
@@ -27,7 +27,7 @@ internal class Scenario6 : IUseCase
             .SetWorkStatus("Apprentice")
             .SetWeeklyEarnings("Yes")
             .SetYearlyEarnings("No")
-            .SetUniversalCredit("No")
+            .SetUniversalCredit("Yes")
             .SetBenefits("No, I do not get any of these benefits")
             .SetChildcareSupport("No, I do not get any of these")
             .SetHasPartner("Yes")

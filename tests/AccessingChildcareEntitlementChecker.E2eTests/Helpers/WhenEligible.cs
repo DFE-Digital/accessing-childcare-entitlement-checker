@@ -6,6 +6,8 @@ public enum WhenEligible
 
     Birth,
 
+    WhenPartnerReturnsFromParentalLeave,
+
     NineMonthsOld,
 
     TwoYearsOld,

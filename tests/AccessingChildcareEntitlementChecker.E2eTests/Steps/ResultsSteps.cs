@@ -1,6 +1,7 @@
 ﻿using AccessingChildcareEntitlementChecker.E2eTests.Helpers;
 using Microsoft.Playwright;
 using Reqnroll;
+using System.Xml.Linq;
 using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
@@ -58,6 +59,9 @@ public class ResultsSteps(IPage page)
                 case WhenEligible.Birth:
                     Assert.Equal("When they are born", actual.Item2);
                     break;
+                case WhenEligible.WhenPartnerReturnsFromParentalLeave:
+                    Assert.StartsWith("The date your partner returns from parental leave", actual.Item2);
+                    break;
                 case WhenEligible.NineMonthsOld:
                     // TODO - 23 weeks is only 5 and a bit months?
                     Assert.Equal("When they are 23 weeks old", actual.Item2);
@@ -75,6 +79,20 @@ public class ResultsSteps(IPage page)
                     throw new ArgumentOutOfRangeException();
             }
         }
+    }
+
+    [Then("I can see that {string} is not eligible for any childcare entitlement schemes")]
+    public async Task ThenICanSeeThatIsNotEligibleForAnyChildcareEntitlementSchemes(string name)
+    {
+        var resultsSection = page.Locator(".app-results-section")
+           .Filter(new()
+           {
+               Has = page.GetByRole(AriaRole.Heading, new() { Name = name })
+           });
+
+        var textContents = await resultsSection.AllTextContentsAsync();
+        var text = string.Join(" ", textContents);
+        Assert.Contains($"You cannot currently get any of the childcare support this service checks for {name}.", text);
     }
 
     private async Task<IReadOnlyList<(string, string)>> GetEligibleSchemes(string name)
