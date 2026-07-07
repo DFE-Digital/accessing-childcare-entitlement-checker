@@ -44,7 +44,14 @@ The browser BFCache is controlled by the browser and cannot be reliably managed 
 
 ### HTTP cache control headers
 
-HTTP caching directives (for example `Cache-Control`) influence normal HTTP caching behaviour.  However, BFCache is a separate browser mechanism used for fast back/forward navigation and does not consistently respect these directives. Therefore, HTTP caching headers cannot be relied upon to prevent pages being restored from BFCache.
+HTTP caching directives (such as `Cache-Control: no-store` or `no-cache`) are often mistakenly assumed to prevent pages from being stored in or restored from the BFCache. This is a common misconception; BFCache is a separate, memory-based browser mechanism designed for instant back/forward navigation (preserving the live JavaScript heap and DOM state), and does not function like the standard HTTP disk/memory cache.
+
+Historically, some browsers treated `Cache-Control: no-store` (CCNS) as a signal to exclude a page from BFCache. However:
+* The HTML specification does not require `Cache-Control` headers to block BFCache.
+* Modern browsers have evolved to prioritise user experience and performance. In particular, Google Chrome has fully rolled out an optimisation (rolled out to 100% of users as of early 2025) that allows pages with `Cache-Control: no-store` to be stored in the BFCache, provided specific safety heuristics are met (e.g., no changes to cookies/authorisation, no active connections like `WebSocket`, `WebRTC`, or `WebTransport`, and no sensitive subresource fetches).
+* Other browsers may still handle CCNS differently or block BFCache entirely, leading to inconsistent behaviour across platforms.
+
+Consequently, HTTP caching headers are not a reliable or guaranteed mechanism to prevent pages from being restored from BFCache. Relying on them to force page reloads or manage state drift is an anti-pattern.
 
 ### Client-side lifecycle handling
 
