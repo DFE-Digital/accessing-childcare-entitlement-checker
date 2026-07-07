@@ -1,10 +1,11 @@
 @smoke_tests
 Feature: End to End Use Cases
 
+Note that "Funded hours for working parents" in the lucid = "Free Childcare for Working Parents"
+
 Background:
     Given I am on the childcare entitlement checker website
     And I click the link to start the journey
-
     
 Scenario: Scenario 01 - Single parent earning below the threshold, household receives Universal Credit, child is not born yet
     Given I complete the journey for the use case "Single parent earning below the threshold, household receives Universal Credit, child is not born yet"
@@ -26,10 +27,10 @@ Scenario: Scenario 01 - Single parent earning below the threshold, household rec
     Then the page header is "Childcare support you could get"
     And I can see that "Simon" is now eligible for "Universal Credit childcare"
     And I can see that "Baby" is eligible for:
-        | Scheme                                        | When          |
-        | Universal Credit childcare                    | in the future |
-        | Early learning for 2-year-olds                | in the future |
-        | 15 hours free childcare for 3 and 4-year-olds | in the future |
+        | Scheme                                        | When            |
+        | Universal Credit childcare                    | birth           |
+        | Early learning for 2-year-olds                | two years old   |
+        | 15 hours free childcare for 3 and 4-year-olds | three years old |
     And I can see that "Frankie" is eligible for:
         | Scheme                                        | When          |
         | Universal Credit childcare                    | now           |
@@ -63,7 +64,6 @@ Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
     When I click on Continue
     Then the page header is "Childcare support you could get"          
     And I can see that "Katherine" is now eligible for "Tax-Free Childcare"
-    # "Funded hours for working parents" in the lucid = "Free Childcare for Working Parents"?
     And I can see that "Tom" is eligible for:
         | Scheme                                        | When          |
         | Tax-Free Childcare                            | now           |
@@ -97,7 +97,12 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
         | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
         | On average, does your partner expect to earn £__PLACEHOLDER__ a week or more before tax?              | Yes                                       |
     When I click on Continue
-    Then the page header is "Childcare support you could get"     
+    Then the page header is "Childcare support you could get"
+    And I can see that "Rosa" is eligible for:
+        | Scheme                                        | When          |
+        | Universal Credit childcare                    | now           |
+        | Early learning for 2-year-olds                | now           | # TODO - IS IN APP BUT NOT LUCID
+        | 15 hours free childcare for 3 and 4-year-olds | in the future |
 
 Scenario: Scenario 04 - One parent aged 18-20, child not yet born
     Given I complete the journey for the use case "One parent aged 18-20, child not yet born"
@@ -126,7 +131,13 @@ Scenario: Scenario 04 - One parent aged 18-20, child not yet born
         | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
         | On average, does your partner expect to earn £__PLACEHOLDER__ a week or more before tax?              | Yes                                       |
     When I click on Continue
-    Then the page header is "Childcare support you could get"    
+    Then the page header is "Childcare support you could get"
+	And I can see that "Daphne" is now eligible for "Tax-Free Childcare"
+	And I can see that "Baby" is eligible for:
+        | Scheme                                        | When            |
+        | Tax-Free Childcare                            | birth           |
+        | Free Childcare for Working Parents            | nine months old |
+        | 15 hours free childcare for 3 and 4-year-olds | three years old |
 
 Scenario: Scenario 05 - Single parent who is self employed, child is not born yet
     Given I complete the journey for the use case "Single parent who is self employed, child is not born yet"
@@ -146,6 +157,11 @@ Scenario: Scenario 05 - Single parent who is self employed, child is not born ye
         | Do you live with a partner?                                | No                                     |
     When I click on Continue
     Then the page header is "Childcare support you could get"    
+    And I can see that "Baby" is eligible for:
+        | Scheme                                        | When            |
+        | Tax-Free Childcare                            | birth           |
+        | Free Childcare for Working Parents            | nine months old |
+        | 15 hours free childcare for 3 and 4-year-olds | three years old |
         
 Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one parent earning under the threshold
     Given I complete the journey for the use case "Both parents under 18, one parent an apprentice, one parent earning under the threshold"
@@ -174,6 +190,11 @@ Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one par
         | On average, does your partner expect to earn £__PLACEHOLDER__ a week or more before tax? | No                                        |
     When I click on Continue
     Then the page header is "Childcare support you could get"
+    And I can see that "Winston" is eligible for:
+        | Scheme                                        | When            |
+        | Universal Credit childcare                    | now             |
+        | Early learning for 2-year-olds                | in the future   |
+        | 15 hours free childcare for 3 and 4-year-olds | three years old |
 
 Scenario: Scenario 07 - One parent on parental leave
     Given I complete the journey for the use case "One parent on parental leave"

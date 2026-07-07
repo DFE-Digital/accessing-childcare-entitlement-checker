@@ -3,5 +3,14 @@
 public enum WhenEligible
 {
     Now,
-    InTheFuture
+
+    Birth,
+
+    NineMonthsOld,
+
+    TwoYearsOld,
+
+    ThreeYearsOld,
+
+    InTheFuture,
 }

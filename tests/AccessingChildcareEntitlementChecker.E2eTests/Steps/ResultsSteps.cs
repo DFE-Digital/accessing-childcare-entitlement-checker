@@ -1,7 +1,6 @@
 ﻿using AccessingChildcareEntitlementChecker.E2eTests.Helpers;
 using Microsoft.Playwright;
 using Reqnroll;
-using System.Xml.Linq;
 using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
@@ -37,19 +36,48 @@ public class ResultsSteps(IPage page)
     {
         var eligibleSchemes = await GetEligibleSchemes(name);
         var result = Assert.Single(eligibleSchemes);
-        Assert.Equal(scheme, result.Scheme);
-        Assert.Equal(WhenEligible.Now, result.When);
+        Assert.Equal(scheme, result.Item1);
+        Assert.Equal(WhenEligible.Now.ToString(), result.Item2);
     }
 
     [Then("I can see that {string} is eligible for:")]
     public async Task ThenICanSeeThatIsEligibleFor(string name, DataTable dataTable)
     {
-        var expected = dataTable.CreateSet<SchemeEligibilityResult>();
-        var actual = await GetEligibleSchemes(name);
-        Assert.Equal(expected, actual);
+        var expecteds = dataTable.CreateSet<SchemeEligibilityResult>().ToList();
+        var actuals = await GetEligibleSchemes(name);
+        Assert.Equal(expecteds.Count, actuals.Count);
+        foreach (var (actual, expected) in actuals.Zip(expecteds))
+        {
+            Assert.Equal(expected.Scheme, actual.Item1);
+
+            switch (expected.When)
+            {
+                case WhenEligible.Now:
+                    Assert.Equal("Now", actual.Item2);
+                    break;
+                case WhenEligible.Birth:
+                    Assert.Equal("When they are born", actual.Item2);
+                    break;
+                case WhenEligible.NineMonthsOld:
+                    // TODO - 23 weeks is only 5 and a bit months?
+                    Assert.Equal("When they are 23 weeks old", actual.Item2);
+                    break;
+                case WhenEligible.TwoYearsOld:
+                    Assert.StartsWith("From", actual.Item2);
+                    break;
+                case WhenEligible.ThreeYearsOld:
+                    Assert.Equal("Ask your childcare provider or local council", actual.Item2);
+                    break;
+                case WhenEligible.InTheFuture:
+                    Assert.Equal("Ask your childcare provider or local council", actual.Item2);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 
-    private async Task<IReadOnlyList<SchemeEligibilityResult>> GetEligibleSchemes(string name)
+    private async Task<IReadOnlyList<(string, string)>> GetEligibleSchemes(string name)
     {
         var resultsSection = page.Locator(".app-results-section")
            .Filter(new()
@@ -59,7 +87,7 @@ public class ResultsSteps(IPage page)
 
         var rows = resultsSection.Locator("tbody tr");
         var count = await rows.CountAsync();
-        var results = new List<SchemeEligibilityResult>(count);
+        var results = new List<(string, string)>(count);
         for (var i = 0; i < count; i++)
         {
             var cells = rows.Nth(i).Locator("td");
@@ -68,10 +96,7 @@ public class ResultsSteps(IPage page)
                 .Locator("a")
                 .EvaluateAsync<string>(@"a => a.childNodes[0].textContent");
             var whenToApply = await cells.Nth(2).InnerTextAsync();
-            var whenEligible = whenToApply.Trim() == "Now"
-                ? WhenEligible.Now
-                : WhenEligible.InTheFuture;
-            results.Add(new (scheme.Trim(), whenEligible));
+            results.Add((scheme.Trim(), whenToApply.Trim()));
         }
 
         return results;

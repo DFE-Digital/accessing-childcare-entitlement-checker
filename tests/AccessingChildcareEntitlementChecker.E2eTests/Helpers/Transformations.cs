@@ -16,6 +16,10 @@ public class Transformations
         return value switch
         {
             "now" => WhenEligible.Now,
+            "birth" => WhenEligible.Birth,
+            "9 months old" => WhenEligible.NineMonthsOld,
+            "2 years old" => WhenEligible.TwoYearsOld,
+            "3 years old" => WhenEligible.ThreeYearsOld,
             "in the future" => WhenEligible.InTheFuture,
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
         };
