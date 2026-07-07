@@ -23,7 +23,19 @@ Scenario: Scenario 01 - Single parent earning below the threshold, household rec
         | Do you live with a partner?                                                   | No                                     |
         | On average, do you expect to earn £__PLACEHOLDER__ a week or more before tax? | No                                     |
     When I click on Continue
-    Then the page header is "Childcare support you could get"    
+    Then the page header is "Childcare support you could get"
+    And I can see that "Simon" is now eligible for "Universal Credit childcare"
+    And I can see that "Baby" is eligible for:
+        | Scheme                                        | When          |
+        | Universal Credit childcare                    | in the future |
+        | Early learning for 2-year-olds                | in the future |
+        | 15 hours free childcare for 3 and 4-year-olds | in the future |
+    And I can see that "Frankie" is eligible for:
+        | Scheme                                        | When          |
+        | Universal Credit childcare                    | now           |
+        | Early learning for 2-year-olds                | now           |
+        | 15 hours free childcare for 3 and 4-year-olds | in the future |
+
 
 Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
     Given I complete the journey for the use case "One parent on carer's allowance, child receives DLA"
@@ -50,6 +62,14 @@ Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
         | On average, does your partner expect to earn £__PLACEHOLDER__ a week or more before tax?              | Yes                                       |
     When I click on Continue
     Then the page header is "Childcare support you could get"          
+    And I can see that "Katherine" is now eligible for "Tax-Free Childcare"
+    # "Funded hours for working parents" in the lucid = "Free Childcare for Working Parents"?
+    And I can see that "Tom" is eligible for:
+        | Scheme                                        | When          |
+        | Tax-Free Childcare                            | now           |
+        | Free Childcare for Working Parents            | now           | 
+        | Early learning for 2-year-olds                | now           |
+        | 15 hours free childcare for 3 and 4-year-olds | in the future |
     
 Scenario: Scenario 03 - One parent is earning under the threshold, household receives Universal Credit
     Given I complete the journey for the use case "One parent is earning under the threshold, household receives Universal Credit"
