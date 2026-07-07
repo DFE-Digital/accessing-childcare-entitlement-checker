@@ -120,5 +120,4 @@ public class ResultsSteps(IPage page)
     }
 
     private record SchemeEligibilityResult(string Scheme, WhenEligible When);
-
 }
