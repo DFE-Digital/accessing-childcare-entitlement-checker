@@ -23,7 +23,7 @@ public class SelfEmployedDurationViewModel
 
     public string? ReturnTo { get; set; }
 
-    [Display(Name = "Have you been self-employed for less than 12 months?", Description = "Think about when you first started doing self-employed work, even if there have been some breaks")]
+    [Display(Name = "Have you been self-employed for less than 12 months?", Description = "Think about when you first began working for yourself")]
     [Required(ErrorMessage = "Select if you have been self-employed for less than 12 months")]
     public SelfEmployedDurationOption? SelfEmployedDuration { get; set; }
 }
