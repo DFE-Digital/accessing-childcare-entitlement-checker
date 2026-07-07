@@ -30,8 +30,6 @@
 
         <h1 class="govuk-heading-l">@Localizer["Check your children's details"]</h1>
 
-        <h2 class="govuk-heading-m">@Localizer["Your children"]</h2>
-
         @if (!Model.HasChildren)
         {
             <p class="govuk-body">@Localizer["No children added."]</p>
@@ -39,6 +37,8 @@
         }
         else
         {
+            <h2 class="govuk-heading-m">@Localizer["Your children"]</h2>
+
             @foreach (var item in Model.Children)
             {
                 <partial name="_ChildSummaryCard" model="item" />
