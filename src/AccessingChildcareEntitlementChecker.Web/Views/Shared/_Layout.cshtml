@@ -1,18 +1,24 @@
-﻿@{
+﻿@using AccessingChildcareEntitlementChecker.Web.Controllers
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@{
     Layout = "_GovUkPageTemplate";
+    var serviceName = Shared["ServiceName"];
+    var serviceUrl = Url.Action(nameof(HomeController.Start), HomeController.Name);
 }
-
 
 @section BodyStart {
 }
 
 @section GovUkHeader {
     <govuk-header home-page-url="https://gov.uk/" />
+    <govuk-service-navigation service-name="@serviceName" service-url="@serviceUrl" />
 
     <govuk-phase-banner class="govuk-width-container">
         <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag>
         This is a new service. Help us improve it and 
-        <a class="govuk-link" href="#">give your feedback (opens in new tab)</a>.
+        <a class="govuk-link" href="https://dferesearch.eu.qualtrics.com/jfe/preview/previewId/a14e158a-6737-4936-b6cc-9b495f8a4dea/SV_8eotBOVwAQbdP8y?Q_CHL=preview&Q_SurveyVersionID=current">
+            give your feedback (opens in new tab)
+        </a>.
     </govuk-phase-banner>
 }
 

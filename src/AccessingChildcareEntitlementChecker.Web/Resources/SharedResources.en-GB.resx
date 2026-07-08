@@ -45,4 +45,7 @@
   <data name="PartnerWeeklyEarnings_ParentalLeave_Question" xml:space="preserve">
         <value>On average, will your partner expect to earn £{0} a week or more before tax when their parental leave ends?</value>
   </data>
+  <data name="ServiceName">
+    <value>Check if you are eligible for childcare funding</value>
+  </data>"
 </root>
