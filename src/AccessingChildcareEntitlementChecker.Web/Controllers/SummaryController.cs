@@ -1,4 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Filters;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Localization;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
+[ServiceFilter(typeof(RequireJourneySessionFilter))]
 public class SummaryController : Controller
 {
     private readonly JourneyState _journeyState;
