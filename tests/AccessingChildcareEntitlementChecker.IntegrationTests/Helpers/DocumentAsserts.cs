@@ -67,7 +67,7 @@ public static class DocumentAsserts
 
     public static IDocument AssertNavigationBar(this IDocument document)
     {
-        var nav = document.QuerySelector("section.govuk-service-navigation");
+        var nav = document.QuerySelector("header section.govuk-service-navigation");
         Assert.NotNull(nav);
 
         var serviceName = nav
@@ -82,7 +82,7 @@ public static class DocumentAsserts
 
     public static IDocument AssertBetaBanner(this IDocument document)
     {
-        var banner = document.QuerySelector(".govuk-phase-banner");
+        var banner = document.QuerySelector("header .govuk-phase-banner");
         Assert.NotNull(banner);
 
         var content = banner
@@ -94,6 +94,13 @@ public static class DocumentAsserts
 
         var text = tag.TextContent.Trim();
         Assert.Equal("Beta", text);
+
+        var surveyLink = banner.QuerySelector(".govuk-phase-banner__text a");
+        Assert.NotNull(surveyLink);
+
+        var href = surveyLink.GetAttribute("href");
+        const string ExpectedHref = "https://dferesearch.eu.qualtrics.com/jfe/preview/previewId/a14e158a-6737-4936-b6cc-9b495f8a4dea/SV_8eotBOVwAQbdP8y?Q_CHL=preview&Q_SurveyVersionID=current";
+        Assert.Equal(ExpectedHref, href);
 
         return document;
     }
