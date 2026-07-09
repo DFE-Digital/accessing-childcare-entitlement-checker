@@ -2,19 +2,19 @@ using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 
-public class LocationPageAccessibilityTests(ITestOutputHelper output) : PageBase(output)
+public class YearlyEarningsPageAccessibilityTests(ITestOutputHelper output) : PageBase(output)
 {
-    protected override string PageUrl => "/home/location";
+    protected override string PageUrl => "/earnings/adjusted-net-income";
 
     [Fact]
-    public async Task LocationPage_HasNoAccessibilityViolations()
+    public async Task WeeklyEarningsPage_HasNoAccessibilityViolations()
     {
         await GoToPage();
         await EvaluatePage();
     }
 
     [Fact]
-    public async Task LocationPage_WithValidationError_HasNoAccessibilityViolations()
+    public async Task WeeklyEarningsPage_WithValidationError_HasNoAccessibilityViolations()
     {
         await GoToPage();
         await Continue();

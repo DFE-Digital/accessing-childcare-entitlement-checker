@@ -1,8 +1,6 @@
 using System.Net;
-using Deque.AxeCore.Commons;
 using Deque.AxeCore.Playwright;
 using Microsoft.Playwright;
-using Xunit;
 
 namespace AccessingChildcareEntitlementChecker.A11yTests;
 
@@ -13,8 +11,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
     protected IPage Page { get; private set; } = null!;
 
-    protected static string ServiceUrl =>
-        Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252";
+    protected static string ServiceUrl => Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252";
 
     private static readonly string[] Impacts =
     [
@@ -22,7 +19,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         "serious"
     ];
 
-    protected abstract string PageUrl { get; }
+    protected virtual string? PageUrl => null;
 
     public async ValueTask InitializeAsync()
     {
@@ -65,6 +62,12 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
     protected async Task GoToPage(HttpStatusCode expectedStatusCode = HttpStatusCode.OK)
     {
+        if (string.IsNullOrWhiteSpace(PageUrl))
+        {
+            throw new InvalidOperationException(
+                $"{GetType().Name} does not define a PageUrl. " + "Either override PageUrl or navigate using a journey setup helper.");
+        }
+
         var fullUrl = $"{ServiceUrl.TrimEnd('/')}/{PageUrl.TrimStart('/')}";
 
         var response = await Page.GotoAsync(fullUrl);
@@ -93,10 +96,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
             }
         }
 
-        Assert.True(
-            violations.Length == 0,
-            string.Join(Environment.NewLine,
-                violations.Select(v => $"{v.Impact}: {v.Description}")));
+        Assert.True(violations.Length == 0, string.Join(Environment.NewLine, violations.Select(v => $"{v.Impact}: {v.Description}")));
     }
 
     public async ValueTask DisposeAsync()
@@ -110,4 +110,10 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
         GC.SuppressFinalize(this);
     }
+
+    protected async Task Continue()
+    {
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
+    }
+
 }
