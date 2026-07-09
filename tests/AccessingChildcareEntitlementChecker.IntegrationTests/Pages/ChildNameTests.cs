@@ -11,7 +11,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     [InlineData(null, "/where-do-you-live")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Get(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
@@ -20,7 +20,9 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertTextInput()
-            .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     /// <remarks>

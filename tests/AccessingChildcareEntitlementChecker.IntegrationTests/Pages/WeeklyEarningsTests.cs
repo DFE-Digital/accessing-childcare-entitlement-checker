@@ -14,7 +14,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(null, WorkStatusOption.Apprentice, null, "/work-status/work-status")]
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.PaidEmployment, null, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(
+    public async Task Get(
         string? returnTo,
         WorkStatusOption workStatus,
         SelfEmployedDurationOption? selfEmployedDuration,
@@ -32,7 +32,9 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(2)
-            .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

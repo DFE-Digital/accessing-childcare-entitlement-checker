@@ -16,7 +16,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "/nationality/settled-status")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(string? returnTo, NationalityOption? nationality, string backLinkUrl)
+    public async Task Get(string? returnTo, NationalityOption? nationality, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -28,7 +28,9 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(4)
-            .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

@@ -17,7 +17,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, null, "/age/partner-age")]
     [InlineData(ReturnTo.CheckAnswers, null, null, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, null, null, null, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(
+    public async Task Get(
         string? returnTo,
         NationalityOption? nationality,
         SettledStatusOption? settledStatus,
@@ -36,7 +36,9 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(4)
-            .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

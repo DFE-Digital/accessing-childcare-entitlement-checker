@@ -13,7 +13,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
     [InlineData(null, $"/children/{ChildId}/childs-date-of-birth")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Get(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -31,7 +31,9 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertCheckboxCount(6)
-            .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

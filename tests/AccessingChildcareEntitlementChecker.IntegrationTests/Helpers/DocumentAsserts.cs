@@ -64,4 +64,38 @@ public static class DocumentAsserts
         Assert.NotNull(resultsSection);
         return resultsSection;
     }
+
+    public static IDocument AssertNavigationBar(this IDocument document)
+    {
+        var nav = document.QuerySelector("section.govuk-service-navigation");
+        Assert.NotNull(nav);
+
+        var serviceName = nav!
+            .QuerySelector(".govuk-service-navigation__service-name a");
+        Assert.NotNull(serviceName);
+
+        var href = serviceName!.GetAttribute("href");
+        Assert.Equal("/", href);
+
+        return document;
+    }
+
+    public static IDocument AssertBetaBanner(this IDocument document)
+    {
+        var banner = document.QuerySelector(".govuk-phase-banner");
+        Assert.NotNull(banner);
+
+        var content = banner!
+            .QuerySelector(".govuk-phase-banner__content");
+        Assert.NotNull(content);
+
+        var tag = banner!
+            .QuerySelector(".govuk-tag");
+        Assert.NotNull(tag);
+
+        var text = tag.TextContent.Trim();
+        Assert.Equal("Beta", text);
+
+        return document;
+    }
 }

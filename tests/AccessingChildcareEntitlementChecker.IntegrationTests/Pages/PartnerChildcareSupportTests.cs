@@ -12,7 +12,7 @@ public class PartnerChildcareSupportTests(IntegrationTestFixture factory) : ICla
     [InlineData(null, "/Partner/PartnerBenefits")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Get(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClient();
 
@@ -21,7 +21,9 @@ public class PartnerChildcareSupportTests(IntegrationTestFixture factory) : ICla
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertCheckboxCount(3)
-            .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

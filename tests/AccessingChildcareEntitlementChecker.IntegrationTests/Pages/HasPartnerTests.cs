@@ -18,7 +18,9 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(2)
-            .AssertBackLink("/benefits/childcare-support");
+            .AssertBackLink("/benefits/childcare-support")
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Fact]
@@ -31,7 +33,9 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
         var response = await client.GetAsync("/partner", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertBackLink("/benefits/childcare-vouchers");
+        doc.AssertBackLink("/benefits/childcare-vouchers")
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

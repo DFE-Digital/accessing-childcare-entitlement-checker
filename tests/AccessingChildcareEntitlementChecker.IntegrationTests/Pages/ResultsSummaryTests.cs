@@ -23,6 +23,25 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
+    public async Task Get_Results_HasNavBarAndBetaBanner()
+    {
+        var state = new JourneyState();
+        state.CountryOfResidence = CountryOfResidence.England;
+        state.Children["child-1"] = new Child("child-1", "Jack")
+        {
+            BirthStatus = BirthStatus.Born,
+            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+        };
+        using var client = factory.CreateClientWithJourneyState(state);
+        var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+        var backLink = doc
+            .AssertNavigationBar()
+            .AssertBetaBanner();
+    }
+
+    [Fact]
     public async Task Get_Results_Has_Two_Print_Buttons()
     {
         var state = new JourneyState();
