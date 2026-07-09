@@ -30,6 +30,21 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
+    public async Task Get_ResultsDetails_HasNavBarAndBetaBanner()
+    {
+        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+        var backLink = doc
+            .AssertNavigationBar()
+            .AssertBetaBanner();
+    }
+
+    [Fact]
     public async Task Get_ResultsDetailed_Has_BackLink()
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());

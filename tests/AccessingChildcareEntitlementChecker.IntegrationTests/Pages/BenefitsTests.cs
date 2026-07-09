@@ -13,7 +13,7 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
     [InlineData(null, YearlyEarningsOption.BelowThreshold, "/benefits/universal-credit")]
     [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.AboveThreshold, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, YearlyEarningsOption.AboveThreshold, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(
+    public async Task Get(
         string? returnTo,
         YearlyEarningsOption? yearlyEarnings,
         string backLinkUrl)
@@ -28,7 +28,9 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertCheckboxCount(9)
-            .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

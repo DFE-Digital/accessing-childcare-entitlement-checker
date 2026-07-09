@@ -13,7 +13,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
     [InlineData(null, WorkStatusOption.SelfEmployed, "/work-status/self-employed-partner")]
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.PaidEmployment, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(
+    public async Task Get(
         string? returnTo,
         WorkStatusOption partnerWorkStatus,
         string backLinkUrl)
@@ -28,7 +28,9 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertBackLink(backLinkUrl);
+        doc.AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

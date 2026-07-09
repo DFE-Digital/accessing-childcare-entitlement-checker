@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
+using System.Reflection.PortableExecutable;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 
@@ -41,10 +42,10 @@ public static class DocumentAsserts
         return document;
     }
 
-    public static IDocument AssertHeader(this IDocument document, string expectedHeader)
+    public static IDocument AssertHeading(this IDocument document, string expectedHeading)
     {
-        var headerText = document.QuerySelector("h1")?.TextContent.Trim();
-        Assert.Equal(expectedHeader, headerText);
+        var headingText = document.QuerySelector("h1")?.TextContent.Trim();
+        Assert.Equal(expectedHeading, headingText);
         return document;
     }
 
@@ -63,5 +64,54 @@ public static class DocumentAsserts
 
         Assert.NotNull(resultsSection);
         return resultsSection;
+    }
+
+    public static IDocument AssertNavigationBar(this IDocument document)
+    {
+        var header = document.HeaderElement();
+        var nav = header.QuerySelector("section.govuk-service-navigation");
+        Assert.NotNull(nav);
+
+        var serviceName = nav
+            .QuerySelector(".govuk-service-navigation__service-name a");
+        Assert.NotNull(serviceName);
+
+        var href = serviceName.GetAttribute("href");
+        Assert.Equal("/", href);
+
+        return document;
+    }
+
+    public static IDocument AssertBetaBanner(this IDocument document)
+    {
+        var header = document.HeaderElement();
+        var banner = header.QuerySelector(".govuk-phase-banner");
+        Assert.NotNull(banner);
+
+        var content = banner
+            .QuerySelector(".govuk-phase-banner__content");
+        Assert.NotNull(content);
+
+        var tag = banner.QuerySelector(".govuk-tag");
+        Assert.NotNull(tag);
+
+        var text = tag.TextContent.Trim();
+        Assert.Equal("Beta", text);
+
+        var surveyLink = banner.QuerySelector(".govuk-phase-banner__text a");
+        Assert.NotNull(surveyLink);
+
+        var href = surveyLink.GetAttribute("href");
+        const string ExpectedHref = "https://dferesearch.eu.qualtrics.com/jfe/preview/previewId/a14e158a-6737-4936-b6cc-9b495f8a4dea/SV_8eotBOVwAQbdP8y?Q_CHL=preview&Q_SurveyVersionID=current";
+        Assert.Equal(ExpectedHref, href);
+
+        return document;
+    }
+
+    private static IElement HeaderElement(this IDocument document)
+    {
+        var header = document.QuerySelector("body > header");
+        Assert.NotNull(header);
+        return header;
     }
 }

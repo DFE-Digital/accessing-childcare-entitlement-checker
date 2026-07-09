@@ -11,7 +11,7 @@ public class PartnerChildcareVoucherReceiptTests(IntegrationTestFixture factory)
     [InlineData(null, "/benefits/childcare-support-partner")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Get(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClient();
 
@@ -21,7 +21,9 @@ public class PartnerChildcareVoucherReceiptTests(IntegrationTestFixture factory)
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc
             .AssertRadioButtonCount(3)
-            .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

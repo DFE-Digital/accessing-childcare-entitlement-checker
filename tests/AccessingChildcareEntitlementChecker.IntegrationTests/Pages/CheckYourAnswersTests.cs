@@ -11,7 +11,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
     [InlineData(false, null, "/partner")]
     [InlineData(true, null, "/benefits/childcare-support-partner")]
     [InlineData(true, PartnerChildcareSupportOption.ChildcareVouchers, "/benefits/childcare-vouchers-partner")]
-    public async Task Get_Has_BackLink(
+    public async Task Get(
         bool? hasPartner,
         PartnerChildcareSupportOption? partnerChildcareSupport,
         string backLinkUrl)
@@ -26,6 +26,8 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertBackLink(backLinkUrl);
+        doc.AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 }
