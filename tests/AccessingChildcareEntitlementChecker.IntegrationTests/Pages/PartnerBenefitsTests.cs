@@ -16,7 +16,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(null, PartnerPaidWorkOption.Yes, null, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/earnings/adjusted-net-income-partner")]
     [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.No, null, null, null, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, PartnerPaidWorkOption.No, null, null, null, null, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(
+    public async Task Get(
         string? returnTo,
         PartnerPaidWorkOption? partnerPaidWork,
         WorkStatusOption? partnerWorkStatus,
@@ -39,7 +39,9 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertCheckboxCount(9)
-            .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

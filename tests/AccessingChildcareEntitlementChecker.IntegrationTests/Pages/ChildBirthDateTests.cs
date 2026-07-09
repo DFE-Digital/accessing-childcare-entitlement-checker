@@ -14,7 +14,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(null, $"/children/{ChildId}/has-the-child-been-born")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Get(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -32,7 +32,9 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertDateInput()
-            .AssertBackLink(backLinkUrl);
+            .AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]
@@ -110,7 +112,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
             ],
             TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
-        postDocument.AssertHeader("What is Sara's date of birth?")
+        postDocument.AssertHeading("What is Sara's date of birth?")
                     .AssertValidationError()
                     .AssertBackLink(backLinkUrl);
     }

@@ -11,7 +11,7 @@ public class PartnerWorkStatusTests(IntegrationTestFixture factory) : IClassFixt
     [InlineData(null, "/work-status/work-partner")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Get_Has_Input_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Get(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClient();
 
@@ -19,7 +19,9 @@ public class PartnerWorkStatusTests(IntegrationTestFixture factory) : IClassFixt
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertBackLink(backLinkUrl);
+        doc.AssertBackLink(backLinkUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     [Theory]

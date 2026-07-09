@@ -20,7 +20,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     [Theory]
     [InlineData(BirthStatus.Due, $"/children/{OtherChildId}/expectant-childs-due-date")]
     [InlineData(BirthStatus.Born, $"/children/{OtherChildId}/child-benefits")]
-    public async Task Get_BackLink_Is_To_Last_Child(BirthStatus birthStatus, string expectedUrl)
+    public async Task Get(BirthStatus birthStatus, string expectedUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -48,7 +48,9 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertBackLink(expectedUrl);
+        doc.AssertBackLink(expectedUrl)
+            .AssertNavigationBar()
+            .AssertBetaBanner();
     }
 
     /// <summary>
