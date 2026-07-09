@@ -226,7 +226,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GetByRole(AriaRole.Link, new() { NameRegex = new Regex("See the full details for") }).ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(@"/Results/ResultsDetailed\?childId=[0-9a-f-]+$"));
     }
-    
+
     protected async Task CheckLabel(string label)
     {
         var locator = Page.GetByLabel(label);
