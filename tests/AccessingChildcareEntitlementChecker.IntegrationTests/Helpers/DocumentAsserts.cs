@@ -70,11 +70,11 @@ public static class DocumentAsserts
         var nav = document.QuerySelector("section.govuk-service-navigation");
         Assert.NotNull(nav);
 
-        var serviceName = nav!
+        var serviceName = nav
             .QuerySelector(".govuk-service-navigation__service-name a");
         Assert.NotNull(serviceName);
 
-        var href = serviceName!.GetAttribute("href");
+        var href = serviceName.GetAttribute("href");
         Assert.Equal("/", href);
 
         return document;
@@ -85,12 +85,11 @@ public static class DocumentAsserts
         var banner = document.QuerySelector(".govuk-phase-banner");
         Assert.NotNull(banner);
 
-        var content = banner!
+        var content = banner
             .QuerySelector(".govuk-phase-banner__content");
         Assert.NotNull(content);
 
-        var tag = banner!
-            .QuerySelector(".govuk-tag");
+        var tag = banner.QuerySelector(".govuk-tag");
         Assert.NotNull(tag);
 
         var text = tag.TextContent.Trim();
