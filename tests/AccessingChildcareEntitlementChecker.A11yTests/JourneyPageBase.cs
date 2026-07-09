@@ -8,7 +8,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
 {
     protected async Task AnswerLocation(string location = "England")
     {
-        await Page.GotoAsync($"{ServiceUrl}/where-do-you-live");
+        await Page.GotoAsync(BuildUrl("where-do-you-live"));
         await Page.GetByLabel(location).CheckAsync();
         await Continue();
         await Expect(Page).ToHaveURLAsync(new Regex(@"/children/add-child-details$"));
@@ -16,7 +16,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
 
     protected async Task<Guid> AddChild(string childName = "Jack")
     {
-        await Page.GotoAsync($"{ServiceUrl}/children/add-child-details");
+        await Page.GotoAsync(BuildUrl("/children/add-child-details"));
         await Page.GetByLabel("What name should we use for this child?").FillAsync(childName);
         await Continue();
         await Expect(Page).ToHaveURLAsync(new Regex(@"/children/(?<childId>[0-9a-f-]+)/has-the-child-been-born$"));
