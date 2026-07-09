@@ -60,11 +60,46 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         Page = await context.NewPageAsync();
     }
 
+    protected async Task GoToPath(
+        string path,
+        HttpStatusCode expectedStatusCode = HttpStatusCode.OK)
+    {
+        var response = await Page.GotoAsync(BuildUrl(path));
+
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+        if (response?.Status != (int)expectedStatusCode)
+        {
+            await WritePageDiagnostics($"Unexpected status code when navigating to {path}");
+        }
+
+        Assert.Equal((int)expectedStatusCode, response?.Status);
+    }
+
     protected static string BuildUrl(string path)
     {
         return $"{ServiceUrl.TrimEnd('/')}/{path.TrimStart('/')}";
     }
 
+    protected async Task WritePageDiagnostics(string reason)
+    {
+        output.WriteLine($"--- Page diagnostics: {reason} ---");
+        output.WriteLine($"URL: {Page.Url}");
+        output.WriteLine($"Title: {await Page.TitleAsync()}");
+
+        var headings = await Page.GetByRole(AriaRole.Heading).AllInnerTextsAsync();
+
+        output.WriteLine("Headings:");
+        foreach (var heading in headings)
+        {
+            output.WriteLine($"- {heading}");
+        }
+
+        output.WriteLine("Body:");
+        output.WriteLine(await Page.Locator("body").InnerTextAsync());
+
+        output.WriteLine("--- End page diagnostics ---");
+    }
     protected async Task GoToPage(HttpStatusCode expectedStatusCode = HttpStatusCode.OK)
     {
         if (string.IsNullOrWhiteSpace(PageUrl))
