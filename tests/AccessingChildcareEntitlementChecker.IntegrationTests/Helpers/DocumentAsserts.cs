@@ -68,7 +68,7 @@ public static class DocumentAsserts
 
     public static IDocument AssertNavigationBar(this IDocument document)
     {
-        var header = document.AssertHeader();
+        var header = document.HeaderElement();
         var nav = header.QuerySelector("section.govuk-service-navigation");
         Assert.NotNull(nav);
 
@@ -84,7 +84,7 @@ public static class DocumentAsserts
 
     public static IDocument AssertBetaBanner(this IDocument document)
     {
-        var header = document.AssertHeader();
+        var header = document.HeaderElement();
         var banner = header.QuerySelector(".govuk-phase-banner");
         Assert.NotNull(banner);
 
@@ -108,7 +108,7 @@ public static class DocumentAsserts
         return document;
     }
 
-    private static IElement AssertHeader(this IDocument document)
+    private static IElement HeaderElement(this IDocument document)
     {
         var header = document.QuerySelector("body > header");
         Assert.NotNull(header);
