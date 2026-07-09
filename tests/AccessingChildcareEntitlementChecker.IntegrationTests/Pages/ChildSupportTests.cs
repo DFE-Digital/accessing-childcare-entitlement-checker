@@ -101,7 +101,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
             ],
            TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
-        postDocument.AssertHeader("Does Sara get any of the following support?")
+        postDocument.AssertHeading("Does Sara get any of the following support?")
                     .AssertValidationError()
                     .AssertBackLink(backLinkUrl);
     }

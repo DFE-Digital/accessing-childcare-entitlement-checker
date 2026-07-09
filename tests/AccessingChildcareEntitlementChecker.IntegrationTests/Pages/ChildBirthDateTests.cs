@@ -112,7 +112,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
             ],
             TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
-        postDocument.AssertHeader("What is Sara's date of birth?")
+        postDocument.AssertHeading("What is Sara's date of birth?")
                     .AssertValidationError()
                     .AssertBackLink(backLinkUrl);
     }

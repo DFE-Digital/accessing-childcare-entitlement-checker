@@ -106,7 +106,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
             ],
             TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
-        postDocument.AssertHeader("What is this child's due date?")
+        postDocument.AssertHeading("What is this child's due date?")
                     .AssertValidationError()
                     .AssertBackLink(backLinkUrl);
     }

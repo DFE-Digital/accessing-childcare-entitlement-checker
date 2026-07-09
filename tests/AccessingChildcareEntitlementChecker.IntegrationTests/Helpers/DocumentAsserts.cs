@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
+using System.Reflection.PortableExecutable;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 
@@ -41,10 +42,10 @@ public static class DocumentAsserts
         return document;
     }
 
-    public static IDocument AssertHeader(this IDocument document, string expectedHeader)
+    public static IDocument AssertHeading(this IDocument document, string expectedHeading)
     {
-        var headerText = document.QuerySelector("h1")?.TextContent.Trim();
-        Assert.Equal(expectedHeader, headerText);
+        var headingText = document.QuerySelector("h1")?.TextContent.Trim();
+        Assert.Equal(expectedHeading, headingText);
         return document;
     }
 
@@ -67,7 +68,8 @@ public static class DocumentAsserts
 
     public static IDocument AssertNavigationBar(this IDocument document)
     {
-        var nav = document.QuerySelector("header section.govuk-service-navigation");
+        var header = document.AssertHeader();
+        var nav = header.QuerySelector("section.govuk-service-navigation");
         Assert.NotNull(nav);
 
         var serviceName = nav
@@ -82,7 +84,8 @@ public static class DocumentAsserts
 
     public static IDocument AssertBetaBanner(this IDocument document)
     {
-        var banner = document.QuerySelector("header .govuk-phase-banner");
+        var header = document.AssertHeader();
+        var banner = header.QuerySelector(".govuk-phase-banner");
         Assert.NotNull(banner);
 
         var content = banner
@@ -103,5 +106,12 @@ public static class DocumentAsserts
         Assert.Equal(ExpectedHref, href);
 
         return document;
+    }
+
+    private static IElement AssertHeader(this IDocument document)
+    {
+        var header = document.QuerySelector("body > header");
+        Assert.NotNull(header);
+        return header;
     }
 }
