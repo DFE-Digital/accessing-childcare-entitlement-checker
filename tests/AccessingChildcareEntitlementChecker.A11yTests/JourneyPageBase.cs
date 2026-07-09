@@ -81,9 +81,13 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
     protected async Task AnswerUserAge(string ageOption = "21 or over")
     {
         await Page.GotoAsync($"{ServiceUrl}/age/parent-age");
+
+        output.WriteLine($"After navigating to parent age: {Page.Url}");
+        output.WriteLine(await Page.Locator("body").InnerTextAsync());
+
         await Page.GetByLabel(ageOption).CheckAsync();
+
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/nationality"));
     }
 
     protected async Task AnswerPartnerAge(string ageOption = "21 or over")

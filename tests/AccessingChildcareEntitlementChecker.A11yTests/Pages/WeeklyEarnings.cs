@@ -4,8 +4,6 @@ namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 
 public class WeeklyEarningsPageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
-    protected override string PageUrl => "/earnings/wage";
-
     [Fact]
     public async Task WeeklyEarningsPage_HasNoAccessibilityViolations()
     {
