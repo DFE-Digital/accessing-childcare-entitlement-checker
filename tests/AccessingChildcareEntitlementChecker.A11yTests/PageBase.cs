@@ -60,6 +60,11 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         Page = await context.NewPageAsync();
     }
 
+    protected static string BuildUrl(string path)
+    {
+        return $"{ServiceUrl.TrimEnd('/')}/{path.TrimStart('/')}";
+    }
+
     protected async Task GoToPage(HttpStatusCode expectedStatusCode = HttpStatusCode.OK)
     {
         if (string.IsNullOrWhiteSpace(PageUrl))
@@ -68,9 +73,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
                 $"{GetType().Name} does not define a PageUrl. " + "Either override PageUrl or navigate using a journey setup helper.");
         }
 
-        var fullUrl = $"{ServiceUrl.TrimEnd('/')}/{PageUrl.TrimStart('/')}";
-
-        var response = await Page.GotoAsync(fullUrl);
+        var response = await Page.GotoAsync(BuildUrl(PageUrl));
 
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
