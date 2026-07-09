@@ -1,5 +1,4 @@
 using AccessingChildcareEntitlementChecker.Web.Extensions;
-using AccessingChildcareEntitlementChecker.Web.Filters;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
