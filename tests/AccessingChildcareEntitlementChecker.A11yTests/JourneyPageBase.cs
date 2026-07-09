@@ -8,20 +8,16 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
 {
     protected async Task AnswerLocation(string location = "England")
     {
-        //await Page.GotoAsync($"{ServiceUrl}/where-do-you-live");
-        await GoToPath("/where-do-you-live");
-        //await Page.GetByLabel(location).CheckAsync();
-        await CheckLabel(location);
+        await Page.GotoAsync($"{ServiceUrl}/where-do-you-live");
+        await Page.GetByLabel(location).CheckAsync();
         await Continue();
         await Expect(Page).ToHaveURLAsync(new Regex(@"/children/add-child-details$"));
     }
 
     protected async Task<Guid> AddChild(string childName = "Jack")
     {
-        //await Page.GotoAsync($"{ServiceUrl}/children/add-child-details");
-        await GoToPath("/children/add-child-details");
-        //await Page.GetByLabel("What name should we use for this child?").FillAsync(childName);
-        await FillLabel("What name should we use for this child?", childName);
+        await Page.GotoAsync($"{ServiceUrl}/children/add-child-details");
+        await Page.GetByLabel("What name should we use for this child?").FillAsync(childName);
         await Continue();
         await Expect(Page).ToHaveURLAsync(new Regex(@"/children/(?<childId>[0-9a-f-]+)/has-the-child-been-born$"));
 
@@ -225,36 +221,6 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await CompleteJourneyToResults();
         await Page.GetByRole(AriaRole.Link, new() { NameRegex = new Regex("See the full details for") }).ClickAsync();
         await Expect(Page).ToHaveURLAsync(new Regex(@"/Results/ResultsDetailed\?childId=[0-9a-f-]+$"));
-    }
-
-    protected async Task CheckLabel(string label)
-    {
-        var locator = Page.GetByLabel(label);
-
-        try
-        {
-            await locator.CheckAsync();
-        }
-        catch
-        {
-            await WritePageDiagnostics($"Could not check label: {label}");
-            throw;
-        }
-    }
-
-    protected async Task FillLabel(string label, string value)
-    {
-        var locator = Page.GetByLabel(label);
-
-        try
-        {
-            await locator.FillAsync(value);
-        }
-        catch
-        {
-            await WritePageDiagnostics($"Could not fill label: {label}");
-            throw;
-        }
     }
 
 }
