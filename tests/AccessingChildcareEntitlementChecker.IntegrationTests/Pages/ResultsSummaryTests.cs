@@ -149,7 +149,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
         Assert.Contains("Jack", doc.Body?.TextContent ?? string.Empty);
-        Assert.Contains("You can only get 30 hours of childcare a week in total, even if you use more than one scheme.",
+        Assert.Contains("You can only get up to 30 hours of funded childcare per child each week, even if you use more than one scheme.",
             doc.Body?.TextContent);
     }
 

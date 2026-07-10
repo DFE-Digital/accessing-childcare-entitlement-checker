@@ -27,11 +27,11 @@
         @if (Model.Children.Count > 0)
         {
             <p class="govuk-body">
-                @Localizer["Based on the answers you gave us, this is the childcare support we think you might be able to get."]
+                @Localizer["Based on your answers, this is the support you can get now or in the future."]
             </p>
     
             <p class="govuk-body">
-                @Localizer["You should re-check if your circumstances change as this may change the support you can get"]
+                @Localizer["You should re-check if your circumstances change as this may change the support you can get."]
             </p>   
         }
 
@@ -69,14 +69,6 @@
                 
                 <p class="govuk-body">
                     @Localizer["This is a summary of {0}'s childcare support.", child.Name]
-                </p>  
-                
-                <p class="govuk-body">
-                    <a asp-action="ResultsDetailed"
-                       asp-route-childId="@child.ChildId"
-                       class="govuk-link">
-                        @Localizer["See the full details for {0},", child.Name]</a>
-                    @Localizer["including when each scheme starts, ends and where to apply"]
                 </p>
 
                 <table class="govuk-table app-results-table">
@@ -111,17 +103,32 @@
                     </tbody>
                 </table>
             </div>
-            
+
+            <h3 class="govuk-heading-m">
+                @Localizer["More about {0}'s support,", child.Name]
+            </h3>
+
+            <p class="govuk-body">
+                @Localizer["Find out when each scheme starts, ends and where to apply."]
+            </p>
+
+            <p class="govuk-body">
+                <a asp-action="ResultsDetailed"
+                   asp-route-childId="@child.ChildId"
+                   class="govuk-link">
+                    @Localizer["View detailed information about {0}'s childcare support", child.Name]
+                </a>.
+            </p>
+
             @if (child.ShowThirtyHourWarning)
             {
                 <div class="govuk-inset-text">
-                    <p>@Localizer["You can only get 30 hours of childcare a week in total, even if you use more than one scheme."]</p>
+                    <p>@Localizer["You can only get up to 30 hours of funded childcare per child each week, even if you use more than one scheme."]</p>
                     <p>@Localizer["You will need to pay for any hours over this."]</p>
                 </div>
             }
-            
-            
         }
+
         <div class="app-getHelp">
             <h2 class="govuk-heading-l">
                 @Localizer["Get help and advice about childcare support"]
@@ -143,7 +150,9 @@
                 @Localizer["Get help and advice at a family hub"]
             </h3>
 
-            <p class="govuk-body">@Localizer["Family hubs offer local support for parents and carers. They can help explain childcare options and find support in your area."]</p>
+            <p class="govuk-body">
+                @Localizer["Family hubs offer local support for parents and carers. They can help explain childcare options and find support in your area."]
+            </p>
 
             <p class="govuk-body">
                 <a class="govuk-link"
