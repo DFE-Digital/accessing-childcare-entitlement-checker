@@ -2,13 +2,14 @@ using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
-using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class PartnerYearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/earnings/adjusted-net-income-partner";
+
     [Theory]
     [InlineData(null, "/earnings/wage-partner")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
@@ -17,7 +18,7 @@ public class PartnerYearlyEarningsTests(IntegrationTestFixture factory) : IClass
     {
         using var client = factory.CreateClient();
 
-        var url = $"/earnings/adjusted-net-income-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -40,7 +41,7 @@ public class PartnerYearlyEarningsTests(IntegrationTestFixture factory) : IClass
             PartnerYearlyEarnings = partnerYearlyEarnings,
             PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
         });
-        var url = $"/earnings/adjusted-net-income-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -64,7 +65,7 @@ public class PartnerYearlyEarningsTests(IntegrationTestFixture factory) : IClass
     {
         using var client = factory.CreateClient();
 
-        var url = $"/earnings/adjusted-net-income-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

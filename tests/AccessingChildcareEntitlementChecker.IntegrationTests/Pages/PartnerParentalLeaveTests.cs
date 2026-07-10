@@ -7,6 +7,7 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/leave/parental-leave-partner";
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
 
     [Theory]
@@ -26,7 +27,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
                 },
         });
 
-        var url = $"/leave/parental-leave-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -58,7 +59,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
             PartnerWorkStatus = workStatus == null ? [] : [workStatus!.Value],
         });
 
-        var url = $"/leave/parental-leave-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -81,7 +82,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
     {
         using var client = factory.CreateClient();
 
-        var url = $"/leave/parental-leave-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -112,7 +113,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
                 },
         });
 
-        var url = $"/leave/parental-leave-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

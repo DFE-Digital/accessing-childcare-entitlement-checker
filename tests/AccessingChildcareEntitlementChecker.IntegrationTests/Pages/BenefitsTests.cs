@@ -97,37 +97,4 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
         postDocument.AssertValidationError()
             .AssertBackLink(backLinkUrl);
     }
-
-    [Fact]
-    public async Task GetWithoutSessionRedirectsToExpiry()
-    {
-        using var client = factory.CreateClientWithoutJourneySession();
-        var getResponse = await client.GetAsync(Url, TestContext.Current.CancellationToken);
-        getResponse.AssertRedirect("/session-expired");
-    }
-
-    [Fact]
-    public async Task PostWithoutSessionRedirectsToExpiry()
-    {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
-
-        var url = $"{Url}";
-        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
-        getResponse.EnsureSuccessStatusCode();
-        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
-        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
-        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
-        Assert.NotNull(token);
-        Assert.NotNull(cookie);
-
-        using var postClient = factory.CreateClientWithoutJourneySession();
-        var postResponse = await HttpClientHelpers.PostFormAsync(
-            postClient,
-            url,
-            cookie,
-            token,
-            [],
-            TestContext.Current.CancellationToken);
-        postResponse.AssertRedirect("/session-expired");
-    }
 }

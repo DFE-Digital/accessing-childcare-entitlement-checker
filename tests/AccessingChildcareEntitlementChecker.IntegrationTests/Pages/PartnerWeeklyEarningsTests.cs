@@ -8,6 +8,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/earnings/wage-partner";
+
     [Theory]
     [InlineData(null, WorkStatusOption.PaidEmployment, "/work-status/work-status-partner")]
     [InlineData(null, WorkStatusOption.SelfEmployed, "/work-status/self-employed-partner")]
@@ -24,7 +26,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
             PartnerWorkStatus = [partnerWorkStatus],
         });
 
-        var url = $"/earnings/wage-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -50,7 +52,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
             PartnerYearlyEarnings = partnerYearlyEarnings,
             PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
         });
-        var url = $"/earnings/wage-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -82,7 +84,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
             PartnerWorkStatus = [partnerWorkStatus],
         });
 
-        var url = $"/earnings/wage-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

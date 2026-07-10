@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AccessingChildcareEntitlementChecker.Web.Filters;
 
-public class RequireJourneySessionFilter : IAsyncActionFilter
+public class RequireJourneySessionFilter : IAsyncResourceFilter
 {
     private readonly IJourneySession _journeySession;
 
@@ -14,9 +14,9 @@ public class RequireJourneySessionFilter : IAsyncActionFilter
         _journeySession = journeySession;
     }
 
-    public async Task OnActionExecutionAsync(
-        ActionExecutingContext context,
-        ActionExecutionDelegate next)
+    public Task OnResourceExecutionAsync(
+        ResourceExecutingContext context,
+        ResourceExecutionDelegate next)
     {
         if (!_journeySession.HasSession)
         {
@@ -25,9 +25,9 @@ public class RequireJourneySessionFilter : IAsyncActionFilter
                 HomeController.Name,
                 null);
 
-            return;
+            return Task.CompletedTask;
         }
 
-        await next();
+        return next();
     }
 }

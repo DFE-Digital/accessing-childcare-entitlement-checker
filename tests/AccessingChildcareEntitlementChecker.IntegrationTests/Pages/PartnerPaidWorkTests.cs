@@ -8,6 +8,7 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/work-status/work-partner";
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
 
     [Theory]
@@ -31,7 +32,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerNationality = partnerNationality,
         });
 
-        var url = $"/work-status/work-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -76,7 +77,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerWorkStatus = partnerWorkStatus is null ? new() : [partnerWorkStatus.Value],
             PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
         });
-        var url = $"/work-status/work-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -113,7 +114,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerNationality = partnerNationality,
         });
 
-        var url = $"/work-status/work-partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

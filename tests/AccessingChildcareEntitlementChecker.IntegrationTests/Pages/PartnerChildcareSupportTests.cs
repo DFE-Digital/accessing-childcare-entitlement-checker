@@ -8,7 +8,7 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class PartnerChildcareSupportTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/benefits/childcare-support-partner";;
+    private const string Url = "/benefits/childcare-support-partner";
 
     [Theory]
     [InlineData(null, "/Partner/PartnerBenefits")]

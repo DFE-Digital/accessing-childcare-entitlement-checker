@@ -8,6 +8,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class SelfEmployedDurationTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/work-status/self-employed";
+
     [Theory]
     [InlineData(null, "/work-status/work-status")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
@@ -16,7 +18,7 @@ public class SelfEmployedDurationTests(IntegrationTestFixture factory) : IClassF
     {
         using var client = factory.CreateClient();
 
-        var url = $"/work-status/self-employed?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -41,7 +43,7 @@ public class SelfEmployedDurationTests(IntegrationTestFixture factory) : IClassF
             UniversalCredit = universalCredit,
             WeeklyEarnings = weeklyEarnings,
         });
-        var url = $"/work-status/self-employed?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -65,7 +67,7 @@ public class SelfEmployedDurationTests(IntegrationTestFixture factory) : IClassF
     {
         using var client = factory.CreateClient();
 
-        var url = $"/work-status/self-employed?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

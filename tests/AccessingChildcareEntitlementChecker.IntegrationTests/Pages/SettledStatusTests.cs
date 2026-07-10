@@ -8,6 +8,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/nationality/settled-status";
+
     [Theory]
     [InlineData(null, "/nationality")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
@@ -16,7 +18,7 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
     {
         using var client = factory.CreateClient();
 
-        var url = $"/nationality/settled-status?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -44,7 +46,7 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
             SettledStatus = settledStatus,
             PaidWork = paidWork,
         });
-        var url = $"/nationality/settled-status?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -68,7 +70,7 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
     {
         using var client = factory.CreateClient();
 
-        var url = $"/nationality/settled-status?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
