@@ -1,6 +1,7 @@
 using System.Net;
 using Deque.AxeCore.Playwright;
 using Microsoft.Playwright;
+using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.A11yTests;
 
@@ -117,6 +118,15 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
     protected async Task Continue()
     {
         await Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
+    }
+
+    protected async Task ExpectPathAndQuery(string expectedPathAndQuery)
+    {
+        await Expect(Page).ToHaveURLAsync(BuildUrl(expectedPathAndQuery));
+
+        var actualPathAndQuery = new Uri(Page.Url).PathAndQuery;
+
+        Assert.Equal(expectedPathAndQuery, actualPathAndQuery);
     }
 
 }

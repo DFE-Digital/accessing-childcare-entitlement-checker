@@ -11,15 +11,19 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("where-do-you-live"));
         await Page.GetByLabel(location).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex(@"/children/add-child-details$"));
+        await ExpectPathAndQuery("/children/add-child-details");
     }
 
     protected async Task<Guid> AddChild(string childName = "Jack")
     {
-        await Page.GotoAsync(BuildUrl("/children/add-child-details"));
+        await Page.GotoAsync(BuildUrl("children/add-child-details"));
         await Page.GetByLabel("What name should we use for this child?").FillAsync(childName);
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex(@"/children/(?<childId>[0-9a-f-]+)/has-the-child-been-born$"));
+
+        var uri = new Uri(Page.Url);
+
+        Assert.StartsWith("/children/", uri.AbsolutePath);
+        Assert.EndsWith("/has-the-child-been-born", uri.AbsolutePath);
 
         return ExtractChildIdFromCurrentUrl();
     }
@@ -30,14 +34,14 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         {
             await Page.GetByLabel("Yes").CheckAsync();
             await Continue();
-            await Expect(Page).ToHaveURLAsync(new Regex($@"/children/{childId}/childs-date-of-birth$"));
+            await ExpectPathAndQuery($"/children/{childId}/childs-date-of-birth");
+
             return;
         }
 
         await Page.GetByLabel("No").CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex($@"/children/{childId}/expectant-childs-due-date$"));
-
+        await ExpectPathAndQuery($"/children/{childId}/expectant-childs-due-date");
     }
 
     protected async Task EnterChildDateOfBirth(Guid childId, string day = "1", string month = "1", string year = "2024")
@@ -46,14 +50,14 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GetByLabel("Month").FillAsync(month);
         await Page.GetByLabel("Year").FillAsync(year);
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex($@"/children/{childId}/child-benefits$"));
+        await ExpectPathAndQuery($"/children/{childId}/child-benefits");
     }
 
     protected async Task SelectChildSupportOptions(Guid childId)
     {
         await Page.GetByLabel("No, none of these apply").CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex($@"/children/check-childs-details\?childId={childId}$"));
+        await ExpectPathAndQuery($@"/children/check-childs-details?childId={childId}");
     }
 
     protected async Task<Guid> CompleteBornChildToSummary(string childName = "Jack")
@@ -102,7 +106,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/nationality"));
         await Page.GetByLabel(nationalityOption).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/work-status/work"));
+        await ExpectPathAndQuery($"/work-status/work");
     }
 
     protected async Task AnswerUserNationalityCitizenOfEU(string nationalityOption = "Citizen of an EU country, EEA country or Switzerland")
@@ -110,7 +114,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/nationality"));
         await Page.GetByLabel(nationalityOption).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/nationality/settled-status"));
+        await ExpectPathAndQuery($"/nationality/settled-status");
     }
 
     protected async Task AnswerUserPaidWorkStatus(string paidWorkStatus = "Yes")
@@ -118,7 +122,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/work-status/work"));
         await Page.GetByLabel(paidWorkStatus, new() { Exact = true }).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/work-status/work-status"));
+        await ExpectPathAndQuery($"/work-status/work-status");
 
     }
 
@@ -127,7 +131,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/work-status/work"));
         await Page.GetByLabel(paidWorkStatus).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/leave/parental-leave"));
+        await ExpectPathAndQuery($"/leave/parental-leave");
     }
 
     protected async Task AnswerUserWorkStatus(string workStatus = "Paid employment")
@@ -135,7 +139,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/work-status/work-status"));
         await Page.GetByLabel(workStatus).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/earnings/wage"));
+        await ExpectPathAndQuery($"/earnings/wage");
     }
 
     protected async Task AnswerUserWorkStatusSelfEmployed(string workStatus = "Self-employed")
@@ -143,7 +147,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/work-status/work-status"));
         await Page.GetByLabel(workStatus).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/work-status/self-employed"));
+        await ExpectPathAndQuery($"/work-status/self-employed");
     }
 
     protected async Task AnswerUserWeeklyEarnings(string weeklyEarnings = "Yes")
@@ -151,7 +155,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/earnings/wage"));
         await Page.GetByLabel(weeklyEarnings).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/earnings/adjusted-net-income"));
+        await ExpectPathAndQuery($"/earnings/adjusted-net-income");
     }
 
     protected async Task AnswerUserYearlyEarnings(string yearlyEarnings = "No")
@@ -159,7 +163,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/earnings/adjusted-net-income"));
         await Page.GetByLabel(yearlyEarnings).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/benefits/universal-credit"));
+        await ExpectPathAndQuery($"/benefits/universal-credit");
     }
 
     protected async Task AnswerUserUniversalCredit(string universalCredit = "No")
@@ -167,7 +171,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/benefits/universal-credit"));
         await Page.GetByLabel(universalCredit).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/benefits/benefits"));
+        await ExpectPathAndQuery($"/benefits/benefits");
     }
 
     protected async Task AnswerUserBenefits(string benefits = "No")
@@ -175,7 +179,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/benefits/benefits"));
         await Page.GetByLabel(benefits).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/benefits/childcare-support"));
+        await ExpectPathAndQuery($"/benefits/childcare-support");
     }
 
     protected async Task AnswerUserChildcareSupport(string childcareSupport = "No")
@@ -183,7 +187,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Page.GotoAsync(BuildUrl("/benefits/childcare-support"));
         await Page.GetByLabel(childcareSupport).CheckAsync();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex("/partner"));
+        await ExpectPathAndQuery($"/partner");
     }
 
     protected async Task AnswerUserHasPartner(bool hasPartner)
@@ -193,10 +197,10 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await Continue();
     }
 
-    protected async Task CompleteJourneyToCheckYourAnswers()
+    protected async Task<Guid> CompleteJourneyToCheckYourAnswers()
     {
         await AnswerLocation();
-        await CompleteBornChildToSummary();
+        var childId = await CompleteBornChildToSummary();
         await AnswerUserAge();
         await AnswerUserNationality();
         await AnswerUserPaidWorkStatus();
@@ -207,20 +211,24 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await AnswerUserBenefits();
         await AnswerUserChildcareSupport();
         await AnswerUserHasPartner(false);
+
+        return childId;
     }
 
-    protected async Task CompleteJourneyToResults()
+    protected async Task<Guid> CompleteJourneyToResults()
     {
-        await CompleteJourneyToCheckYourAnswers();
+        var childId = await CompleteJourneyToCheckYourAnswers();
         await Continue();
-        await Expect(Page).ToHaveURLAsync(new Regex(@"/results$"));
+        await ExpectPathAndQuery($"/results");
+
+        return childId;
     }
 
     protected async Task CompleteJourneyToResultsDetailed()
     {
-        await CompleteJourneyToResults();
+        var childId = await CompleteJourneyToResults();
         await Page.GetByRole(AriaRole.Link, new() { NameRegex = new Regex("See the full details for") }).ClickAsync();
-        await Expect(Page).ToHaveURLAsync(new Regex(@"/Results/ResultsDetailed\?childId=[0-9a-f-]+$"));
+        await ExpectPathAndQuery($"/Results/ResultsDetailed?childId={childId}");
     }
 
 }
