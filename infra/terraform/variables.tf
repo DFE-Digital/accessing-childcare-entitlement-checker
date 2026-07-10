@@ -109,6 +109,11 @@ variable "log_analytics_daily_quota_gb" {
   type        = number
 }
 
+variable "log_analytics_retention_in_days" {
+  description = "The retention period in days for the Log Analytics workspace"
+  type        = number
+}
+
 variable "enable_load_testing" {
   description = "Enable Azure Load Testing"
   type        = bool
