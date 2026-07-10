@@ -84,6 +84,8 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alert_email_address"></a> [alert\_email\_address](#input\_alert\_email\_address) | The email address to send alert notifications to | `string` | `""` | no |
+| <a name="input_application_insights_daily_data_cap_in_gb"></a> [application\_insights\_daily\_data\_cap\_in\_gb](#input\_application\_insights\_daily\_data\_cap\_in\_gb) | The daily data cap in GB for Application Insights | `number` | n/a | yes |
+| <a name="input_application_insights_sampling_percentage"></a> [application\_insights\_sampling\_percentage](#input\_application\_insights\_sampling\_percentage) | The sampling percentage for Application Insights | `number` | n/a | yes |
 | <a name="input_aspnetcore_environment"></a> [aspnetcore\_environment](#input\_aspnetcore\_environment) | ASP.NET Core environment | `string` | n/a | yes |
 | <a name="input_azure_frontdoor_sku"></a> [azure\_frontdoor\_sku](#input\_azure\_frontdoor\_sku) | Azure Front Door SKU | `string` | `"Standard"` | no |
 | <a name="input_budget_alert_threshold_actual"></a> [budget\_alert\_threshold\_actual](#input\_budget\_alert\_threshold\_actual) | The threshold percentage for actual budget alerts | `number` | `100` | no |
