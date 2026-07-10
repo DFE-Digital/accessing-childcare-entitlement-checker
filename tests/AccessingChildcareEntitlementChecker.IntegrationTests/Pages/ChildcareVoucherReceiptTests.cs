@@ -7,6 +7,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = $"/benefits/childcare-vouchers";
+
     [Theory]
     [InlineData(null, "/benefits/childcare-support")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
@@ -15,7 +17,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
     {
         using var client = factory.CreateClient();
 
-        var url = $"/benefits/childcare-vouchers?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -43,7 +45,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
             ChildcareVoucherReceipt = childcareVoucherReceipt,
             HasPartner = hasPartner,
         });
-        var url = $"/benefits/childcare-vouchers?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -67,7 +69,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
     {
         using var client = factory.CreateClient();
 
-        var url = $"/benefits/childcare-vouchers?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

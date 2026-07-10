@@ -196,6 +196,7 @@ internal class JourneySteps(IPage page)
     public async Task WhenThePageHeaderIs(string expectedHeader)
     {
         await Expect(page.GetByRole(AriaRole.Heading, new PageGetByRoleOptions { Level = 1 })).ToHaveTextAsync(expectedHeader);
+        await page.PauseAsync();
     }
 
     [When("I click on Continue")]

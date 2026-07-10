@@ -3,7 +3,6 @@ using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
-using AngleSharp.Dom;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
@@ -110,8 +109,25 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
     [Fact]
     public async Task PostWithoutSessionRedirectsToExpiry()
     {
-        using var client = factory.CreateClientWithoutJourneySession();
-        var postResponse = await client.PostAsync(Url, null, TestContext.Current.CancellationToken);
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+
+        var url = $"{Url}";
+        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        getResponse.EnsureSuccessStatusCode();
+        var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+        var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+        var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+        Assert.NotNull(token);
+        Assert.NotNull(cookie);
+
+        using var postClient = factory.CreateClientWithoutJourneySession();
+        var postResponse = await HttpClientHelpers.PostFormAsync(
+            postClient,
+            url,
+            cookie,
+            token,
+            [],
+            TestContext.Current.CancellationToken);
         postResponse.AssertRedirect("/session-expired");
     }
 }

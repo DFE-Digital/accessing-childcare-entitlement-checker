@@ -8,6 +8,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = $"/benefits/childcare-support";
+
     [Theory]
     [InlineData(null, "/benefits/benefits")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
@@ -16,7 +18,7 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
     {
         using var client = factory.CreateClient();
 
-        var url = $"/benefits/childcare-support?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -41,7 +43,7 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
             ChildcareVoucherReceipt = childcareVoucherReceipt,
             HasPartner = hasPartner,
         });
-        var url = $"/benefits/childcare-support?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -65,7 +67,7 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
     {
         using var client = factory.CreateClient();
 
-        var url = $"/benefits/childcare-support?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

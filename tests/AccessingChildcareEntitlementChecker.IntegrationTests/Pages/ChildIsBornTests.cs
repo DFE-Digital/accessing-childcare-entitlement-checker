@@ -9,6 +9,7 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+    private const string Url = $"/children/{ChildId}/has-the-child-been-born";
     private static readonly DateOnly Tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
     private static readonly DateOnly Yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
 
@@ -29,7 +30,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
                 }
         });
 
-        var url = $"/children/{ChildId}/has-the-child-been-born?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -73,7 +74,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
                 }
         });
 
-        var url = $"/children/{ChildId}/has-the-child-been-born?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -106,7 +107,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
                 }
         });
 
-        var url = $"/children/{ChildId}/has-the-child-been-born?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -126,7 +127,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     public async Task Returns_Not_Found_For_Nonexistant_Child()
     {
         using var client = factory.CreateClient();
-        var url = $"/children/{ChildId}/has-the-child-been-born";
+        var url = Url;
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }

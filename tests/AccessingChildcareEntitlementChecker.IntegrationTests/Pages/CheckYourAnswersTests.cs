@@ -7,6 +7,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/check-your-answers";
+
     [Theory]
     [InlineData(false, null, "/partner")]
     [InlineData(true, null, "/benefits/childcare-support-partner")]
@@ -22,8 +24,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
             PartnerChildcareSupport = partnerChildcareSupport.HasValue ? [partnerChildcareSupport.Value] : [],
         });
 
-        var url = $"/check-your-answers";
-        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink(backLinkUrl)

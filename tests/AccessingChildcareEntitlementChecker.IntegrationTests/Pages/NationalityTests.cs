@@ -9,6 +9,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/nationality";
+
     [Theory]
     [InlineData(null, "/age/parent-age")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
@@ -17,7 +19,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     {
         using var client = factory.CreateClient();
 
-        var url = $"/nationality?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -49,7 +51,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
             PaidWork = paidWork
         });
 
-        var url = $"/nationality?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -70,8 +72,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     {
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
-        var url = "/nationality";
-        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        var getResponse = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
@@ -79,7 +80,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
                 new KeyValuePair<string,string>("Nationality", "CitizenOfAnEUCountryEEACountryOrSwitzerland")
             ],
             TestContext.Current.CancellationToken);
@@ -94,7 +95,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     {
         using var client = factory.CreateClient();
 
-        var url = $"/nationality?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
