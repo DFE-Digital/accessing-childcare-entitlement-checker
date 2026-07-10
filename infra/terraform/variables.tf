@@ -119,3 +119,25 @@ variable "enable_load_testing" {
   type        = bool
   default     = false
 }
+
+variable "budget_amount_web" {
+  description = "The budget amount for the web resource group"
+  type        = number
+}
+
+variable "budget_amount_load_test" {
+  description = "The budget amount for the load test resource group"
+  type        = number
+}
+
+variable "budget_alert_threshold_forecast" {
+  description = "The threshold percentage for forecasted budget alerts"
+  type        = number
+  default     = 90
+}
+
+variable "budget_alert_threshold_actual" {
+  description = "The threshold percentage for actual budget alerts"
+  type        = number
+  default     = 100
+}
