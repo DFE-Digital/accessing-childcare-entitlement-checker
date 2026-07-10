@@ -1,15 +1,14 @@
-using AccessingChildcareEntitlementChecker.RulesEngine.Extensions;
-using AccessingChildcareEntitlementChecker.Web;
-using AccessingChildcareEntitlementChecker.Web.Filters;
-using AccessingChildcareEntitlementChecker.Web.Mappers;
-using Azure.Monitor.OpenTelemetry.AspNetCore;
-using GovUk.Frontend.AspNetCore;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using AccessingChildcareEntitlementChecker.Web;
+using GovUk.Frontend.AspNetCore;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using AccessingChildcareEntitlementChecker.RulesEngine.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Mappers;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.AspNetCore.HttpOverrides;
 
 // Prevent Redis timeouts under bursty load (e.g. E2E tests, traffic spikes)
 // by explicitly setting a higher minimum for the ThreadPool.
@@ -36,7 +35,6 @@ services
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = securePolicy;
         options.Cookie.SameSite = SameSiteMode.Lax;
-        options.IdleTimeout = TimeSpan.FromSeconds(10);
     })
     .AddAntiforgery(options =>
     {
