@@ -4,12 +4,13 @@ namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 
 public class PartnerWeeklyEarningsPageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
-    protected override string PageUrl => "/earnings/wage";
-
     [Fact]
     public async Task PartnerWeeklyEarningsPage_HasNoAccessibilityViolations()
     {
         await AnswerPartnerAge();
+        await AnswerPartnerPaidWorkStatus();
+        await AnswerPartnerWorkStatus();
+        await ExpectPathAndQuery($"/earnings/wage-partner");
         await EvaluatePage();
     }
 
@@ -17,6 +18,9 @@ public class PartnerWeeklyEarningsPageAccessibilityTests(ITestOutputHelper outpu
     public async Task PartnerWeeklyEarningsPage_WithValidationError_HasNoAccessibilityViolations()
     {
         await AnswerPartnerAge();
+        await AnswerPartnerPaidWorkStatus();
+        await AnswerPartnerWorkStatus();
+        await ExpectPathAndQuery($"/earnings/wage-partner");
         await Continue();
         await Expect(Page.Locator(".govuk-error-summary")).ToBeVisibleAsync();
         await EvaluatePage();

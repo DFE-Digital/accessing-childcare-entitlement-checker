@@ -10,15 +10,16 @@ public class ChildIsBornPageAccessibilityTests(ITestOutputHelper output) : Journ
     public async Task HasChildBeenBornPage_HasNoAccessibilityViolations()
     {
         var childId = await AddChild();
-        await AnswerChildHasBeenBorn(childId);
+        await ExpectPathAndQuery($"/children/{childId}/has-the-child-been-born");
         await EvaluatePage();
     }
 
     [Fact]
     public async Task HasChildBeenBornPage_WithValidationError_HasNoAccessibilityViolations()
     {
-        await AddChild();
+        var childId = await AddChild();
         await Continue();
+        await ExpectPathAndQuery($"/children/{childId}/has-the-child-been-born");
         await Expect(Page.Locator(".govuk-error-summary")).ToBeVisibleAsync();
         await EvaluatePage();
     }

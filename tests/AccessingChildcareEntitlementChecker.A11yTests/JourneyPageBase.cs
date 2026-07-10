@@ -111,7 +111,7 @@ public abstract class JourneyPageBase : PageBase
         await Continue();
         await ExpectPathAndQuery($"/work-status/work");
     }
-
+    
     protected async Task AnswerUserNationalityCitizenOfEU(string nationalityOption = "Citizen of an EU country, EEA country or Switzerland")
     {
         await Page.GotoAsync(BuildUrl("/nationality"));
@@ -126,7 +126,14 @@ public abstract class JourneyPageBase : PageBase
         await Page.GetByLabel(paidWorkStatus, new() { Exact = true }).CheckAsync();
         await Continue();
         await ExpectPathAndQuery($"/work-status/work-status");
-
+    }
+    
+    protected async Task AnswerPartnerPaidWorkStatus(string paidWorkStatus = "Yes")
+    {
+        await Page.GotoAsync(BuildUrl("/work-status/work-partner"));
+        await Page.GetByLabel(paidWorkStatus, new() { Exact = true }).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery($"/work-status/work-status-partner");
     }
 
     protected async Task AnswerUserIsOnParentalLeave(string paidWorkStatus = "Yes, but I am on parental leave")
@@ -143,6 +150,14 @@ public abstract class JourneyPageBase : PageBase
         await Page.GetByLabel(workStatus).CheckAsync();
         await Continue();
         await ExpectPathAndQuery($"/earnings/wage");
+    }
+    
+    protected async Task AnswerPartnerWorkStatus(string workStatus = "Paid employment")
+    {
+        await Page.GotoAsync(BuildUrl("/work-status/work-status-partner"));
+        await Page.GetByLabel(workStatus).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery($"/earnings/wage-partner");
     }
 
     protected async Task AnswerUserWorkStatusSelfEmployed(string workStatus = "Self-employed")
@@ -227,11 +242,13 @@ public abstract class JourneyPageBase : PageBase
         return childId;
     }
 
-    protected async Task CompleteJourneyToResultsDetailed()
+    protected async Task<Guid> CompleteJourneyToResultsDetailed()
     {
         var childId = await CompleteJourneyToResults();
         await Page.GetByRole(AriaRole.Link, new() { Name = $"See the full details for {DefaultChildName}" }).ClickAsync();
         await ExpectPathAndQuery($"/Results/ResultsDetailed?childId={childId}");
+        
+        return childId;
     }
 
 }

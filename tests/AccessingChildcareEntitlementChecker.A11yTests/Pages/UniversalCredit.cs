@@ -2,14 +2,14 @@ using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 
-public class UniversalCreditPageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
+public class UniversalCreditPageAccessibilityTests(ITestOutputHelper output) : PageBase(output)
 {
     protected override string PageUrl => "/benefits/universal-credit";
 
     [Fact]
     public async Task UniversalCreditPage_HasNoAccessibilityViolations()
     {
-        await AnswerUserAge();
+        await GoToPage();
         await EvaluatePage();
     }
 

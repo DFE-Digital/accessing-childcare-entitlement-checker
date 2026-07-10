@@ -11,6 +11,7 @@ public class ChildBirthDatePageAccessibilityTests(ITestOutputHelper output) : Jo
         var childId = await AddChild();
         await AnswerChildHasBeenBorn(childId);
         await Continue();
+        await ExpectPathAndQuery($"/children/{childId}/childs-date-of-birth");
         await EvaluatePage();
     }
 
@@ -20,6 +21,7 @@ public class ChildBirthDatePageAccessibilityTests(ITestOutputHelper output) : Jo
         var childId = await AddChild();
         await AnswerChildHasBeenBorn(childId);
         await Continue();
+        await ExpectPathAndQuery($"/children/{childId}/childs-date-of-birth");
         await Expect(Page.Locator(".govuk-error-summary")).ToBeVisibleAsync();
         await EvaluatePage();
     }

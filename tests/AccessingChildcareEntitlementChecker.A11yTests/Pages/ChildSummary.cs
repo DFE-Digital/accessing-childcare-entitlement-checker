@@ -7,7 +7,8 @@ public class ChildSummaryPageAccessibilityTests(ITestOutputHelper output) : Jour
     [Fact]
     public async Task ChildSummaryPage_HasNoAccessibilityViolations()
     {
-        await CompleteBornChildToSummary();
+        var childId = await CompleteBornChildToSummary();
+        await ExpectPathAndQuery($@"/children/check-childs-details?childId={childId}");
         await EvaluatePage();
     }
 }

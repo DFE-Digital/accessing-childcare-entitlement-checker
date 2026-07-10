@@ -5,7 +5,8 @@ public class ResultsDetailedPageAccessibilityTests(ITestOutputHelper output) : J
     [Fact]
     public async Task ResultsDetailedPage_HasNoAccessibilityViolations()
     {
-        await CompleteJourneyToResultsDetailed();
+        var childId = await CompleteJourneyToResultsDetailed();
+        await ExpectPathAndQuery($"/Results/ResultsDetailed?childId={childId}");
         await EvaluatePage();
     }
 }

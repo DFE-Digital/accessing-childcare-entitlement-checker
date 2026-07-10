@@ -10,6 +10,7 @@ public class ChildDueDatePageAccessibilityTests(ITestOutputHelper output) : Jour
         var childId = await AddChild();
         await AnswerChildHasBeenBorn(childId, false);
         await Continue();
+        await ExpectPathAndQuery($"/children/{childId}/expectant-childs-due-date");
         await EvaluatePage();
     }
 
@@ -19,6 +20,7 @@ public class ChildDueDatePageAccessibilityTests(ITestOutputHelper output) : Jour
         var childId = await AddChild();
         await AnswerChildHasBeenBorn(childId, false);
         await Continue();
+        await ExpectPathAndQuery($"/children/{childId}/expectant-childs-due-date");
         await Expect(Page.Locator(".govuk-error-summary")).ToBeVisibleAsync();
         await EvaluatePage();
     }
