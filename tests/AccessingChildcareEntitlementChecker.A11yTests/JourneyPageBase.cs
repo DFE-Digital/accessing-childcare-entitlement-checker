@@ -245,7 +245,7 @@ public abstract class JourneyPageBase : PageBase
     protected async Task<Guid> CompleteJourneyToResultsDetailed()
     {
         var childId = await CompleteJourneyToResults();
-        await Page.GetByRole(AriaRole.Link, new() { Name = $"See the full details for {DefaultChildName}" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = $"View detailed information about {DefaultChildName}'s childcare support" }).ClickAsync();
         await ExpectPathAndQuery($"/Results/ResultsDetailed?childId={childId}");
 
         return childId;
