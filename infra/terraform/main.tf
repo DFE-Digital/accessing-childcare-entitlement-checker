@@ -12,7 +12,13 @@ resource "azurerm_consumption_budget_resource_group" "web_rg_budget" {
   time_grain = "Monthly"
 
   time_period {
-    start_date = "2024-01-01T00:00:00Z"
+    start_date = formatdate("YYYY-MM-01'T'00:00:00'Z'", timestamp())
+  }
+
+  lifecycle {
+    ignore_changes = [
+      time_period,
+    ]
   }
 
   notification {
