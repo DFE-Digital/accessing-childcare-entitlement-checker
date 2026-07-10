@@ -4,8 +4,11 @@ using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.A11yTests;
 
-public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(output)
+public abstract class JourneyPageBase : PageBase
 {
+    protected JourneyPageBase(ITestOutputHelper output) : base(output) { }
+
+    private const string DefaultChildName = "Jack";
     protected async Task AnswerLocation(string location = "England")
     {
         await Page.GotoAsync(BuildUrl("where-do-you-live"));
@@ -14,7 +17,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await ExpectPathAndQuery("/children/add-child-details");
     }
 
-    protected async Task<Guid> AddChild(string childName = "Jack")
+    protected async Task<Guid> AddChild(string childName = DefaultChildName)
     {
         await Page.GotoAsync(BuildUrl("children/add-child-details"));
         await Page.GetByLabel("What name should we use for this child?").FillAsync(childName);
@@ -60,7 +63,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await ExpectPathAndQuery($@"/children/check-childs-details?childId={childId}");
     }
 
-    protected async Task<Guid> CompleteBornChildToSummary(string childName = "Jack")
+    protected async Task<Guid> CompleteBornChildToSummary(string childName = DefaultChildName)
     {
         var childId = await AddChild(childName);
         await AnswerChildHasBeenBorn(childId);
@@ -72,25 +75,25 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
 
     protected Guid ExtractChildIdFromCurrentUrl()
     {
-        var match = Regex.Match(Page.Url, @"/children/(?<childId>[0-9a-f-]+)");
+        var segments = new Uri(Page.Url).AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
 
-        if (!match.Success)
+        if (segments.Length < 2 || !string.Equals(segments[0], "children", StringComparison.OrdinalIgnoreCase))
         {
             throw new InvalidOperationException($"Could not extract child ID from current URL: {Page.Url}");
         }
 
-        return Guid.Parse(match.Groups["childId"].Value);
+        if (!Guid.TryParse(segments[1], out var childId))
+        {
+            throw new InvalidOperationException($"Could not parse child ID from current URL: {Page.Url}");
+        }
+
+        return childId;
     }
 
     protected async Task AnswerUserAge(string ageOption = "21 or over")
     {
         await Page.GotoAsync(BuildUrl("/age/parent-age"));
-
-        output.WriteLine($"After navigating to parent age: {Page.Url}");
-        output.WriteLine(await Page.Locator("body").InnerTextAsync());
-
         await Page.GetByLabel(ageOption).CheckAsync();
-
         await Continue();
     }
 
@@ -227,7 +230,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
     protected async Task CompleteJourneyToResultsDetailed()
     {
         var childId = await CompleteJourneyToResults();
-        await Page.GetByRole(AriaRole.Link, new() { NameRegex = new Regex("See the full details for") }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = $"See the full details for {DefaultChildName}" }).ClickAsync();
         await ExpectPathAndQuery($"/Results/ResultsDetailed?childId={childId}");
     }
 
