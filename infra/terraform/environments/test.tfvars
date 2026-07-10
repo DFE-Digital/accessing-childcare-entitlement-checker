@@ -18,3 +18,7 @@ redis_sku_name                  = "Balanced_B0"
 log_analytics_daily_quota_gb    = 1
 log_analytics_retention_in_days = 30
 enable_load_testing             = true
+budget_amount_web               = 100
+budget_amount_load_test         = 10
+budget_alert_threshold_forecast = 90
+budget_alert_threshold_actual   = 100

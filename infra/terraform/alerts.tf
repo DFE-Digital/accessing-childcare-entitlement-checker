@@ -1,5 +1,4 @@
 resource "azurerm_monitor_action_group" "email_action_group" {
-  count               = var.enable_alerts ? 1 : 0
   name                = "${local.service_prefix}-email-action-group"
   resource_group_name = azurerm_resource_group.web-rg.name
   short_name          = "email-alerts"
@@ -12,8 +11,8 @@ resource "azurerm_monitor_action_group" "email_action_group" {
 
   lifecycle {
     precondition {
-      condition     = var.enable_alerts ? var.alert_email_address != "" : true
-      error_message = "The 'alert_email_address' variable must be provided when 'enable_alerts' is set to true."
+      condition     = var.alert_email_address != ""
+      error_message = "The 'alert_email_address' variable must be provided."
     }
   }
 
@@ -38,7 +37,7 @@ resource "azurerm_monitor_metric_alert" "web_test_alert" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+    action_group_id = azurerm_monitor_action_group.email_action_group.id
   }
 
   tags = local.common_tags
@@ -62,7 +61,7 @@ resource "azurerm_monitor_metric_alert" "high_response_time" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+    action_group_id = azurerm_monitor_action_group.email_action_group.id
   }
 
   tags = local.common_tags
@@ -86,7 +85,7 @@ resource "azurerm_monitor_metric_alert" "high_exception_rate" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+    action_group_id = azurerm_monitor_action_group.email_action_group.id
   }
 
   tags = local.common_tags
@@ -110,7 +109,7 @@ resource "azurerm_monitor_metric_alert" "app_service_5xx_errors" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+    action_group_id = azurerm_monitor_action_group.email_action_group.id
   }
 
   tags = local.common_tags
@@ -134,7 +133,7 @@ resource "azurerm_monitor_metric_alert" "app_service_plan_cpu" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+    action_group_id = azurerm_monitor_action_group.email_action_group.id
   }
 
   tags = local.common_tags
@@ -158,7 +157,7 @@ resource "azurerm_monitor_metric_alert" "app_service_plan_memory" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+    action_group_id = azurerm_monitor_action_group.email_action_group.id
   }
 
   tags = local.common_tags
@@ -188,7 +187,7 @@ resource "azurerm_monitor_metric_alert" "waf_blocked_requests" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+    action_group_id = azurerm_monitor_action_group.email_action_group.id
   }
 
   tags = local.common_tags
@@ -212,7 +211,7 @@ resource "azurerm_monitor_metric_alert" "redis_high_cpu" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+    action_group_id = azurerm_monitor_action_group.email_action_group.id
   }
 
   tags = local.common_tags
@@ -236,7 +235,7 @@ resource "azurerm_monitor_metric_alert" "redis_high_memory" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+    action_group_id = azurerm_monitor_action_group.email_action_group.id
   }
 
   tags = local.common_tags
@@ -260,7 +259,7 @@ resource "azurerm_monitor_metric_alert" "redis_high_connections" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email_action_group[0].id
+    action_group_id = azurerm_monitor_action_group.email_action_group.id
   }
 
   tags = local.common_tags
@@ -290,7 +289,7 @@ resource "azurerm_monitor_metric_alert" "redis_high_connections" {
 #   }
 #
 #   action {
-#     action_groups = [azurerm_monitor_action_group.email_action_group[0].id]
+#     action_groups = [azurerm_monitor_action_group.email_action_group.id]
 #   }
 #
 #   tags = local.common_tags
