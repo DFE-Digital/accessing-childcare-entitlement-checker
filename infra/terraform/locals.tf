@@ -8,6 +8,7 @@ locals {
   prefix         = "${local.project_id}${var.environment_prefix}"
   service_prefix = "${local.prefix}-${var.location_short_code}-${local.project_short_code}"
   rg_prefix      = "${local.prefix}rg-${var.location_short_code}-${local.project_short_code}"
+  storage_prefix = "${local.prefix}${var.location_short_code}${local.project_short_code}"
 
   host_name = var.custom_domain == "" ? azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.host_name : var.custom_domain
 
