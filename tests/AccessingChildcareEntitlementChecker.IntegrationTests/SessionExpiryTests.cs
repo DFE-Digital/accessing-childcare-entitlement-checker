@@ -97,7 +97,7 @@ public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClass
             .Where(route => route != null)
             .Select(route => "/" + route!.TrimStart('/'))
             .Except(publicRoutes, StringComparer.OrdinalIgnoreCase)
-            .Select(route => Regex.Replace(route, @"\{[^}]+\}", "1"))
+            .Select(MaterializeRoute)
             .Distinct();
     }
 
