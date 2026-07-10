@@ -21,7 +21,7 @@ public partial class RequireJourneySessionFilter(
             return next();
         }
 
-        LogRedirectingSessionLessRequest(_logger, context.HttpContext.Request.Path);
+        LogRedirectingSessionLessRequest(context.HttpContext.Request.Path);
         context.Result = new RedirectToActionResult(
             nameof(HomeController.SessionExpired),
             HomeController.Name,
@@ -34,5 +34,5 @@ public partial class RequireJourneySessionFilter(
         EventId = 1,
         Level = LogLevel.Information,
         Message = "Redirecting session-less request for {Path} to SessionExpired.")]
-    private static partial void LogRedirectingSessionLessRequest(ILogger logger, PathString path);
+    private partial void LogRedirectingSessionLessRequest(PathString path);
 }
