@@ -100,7 +100,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     [Fact]
     public async Task Get_BackLink_Is_To_Name()
     {
-        using var client = factory.CreateClient();
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
         var url = $"{Url}?childId={ChildId}"; // Should not matter what is passed here.
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();

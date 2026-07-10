@@ -80,7 +80,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClient();
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

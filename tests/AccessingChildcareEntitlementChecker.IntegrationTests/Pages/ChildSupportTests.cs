@@ -110,7 +110,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
     [Fact]
     public async Task Returns_Not_Found_For_Nonexistant_Child()
     {
-        using var client = factory.CreateClient();
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }
