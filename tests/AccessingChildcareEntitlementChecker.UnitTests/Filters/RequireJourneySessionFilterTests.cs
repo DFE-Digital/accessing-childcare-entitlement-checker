@@ -22,6 +22,7 @@ public class RequireJourneySessionFilterTests
     public RequireJourneySessionFilterTests()
     {
         _mockLogger = Substitute.For<ILogger<RequireJourneySessionFilter>>();
+        _mockLogger.IsEnabled(LogLevel.Information).Returns(true);
         _mockJourneySession = Substitute.For<IJourneySession>();
 
         var httpContext = new DefaultHttpContext();
@@ -44,14 +45,10 @@ public class RequireJourneySessionFilterTests
         await _sut.OnResourceExecutionAsync(_context, _next);
         Assert.IsType<RedirectToActionResult>(_context.Result);
 
-        _mockLogger.Received(1).Log(
+        AssertLogged(
+            _mockLogger,
             LogLevel.Information,
-            Arg.Any<EventId>(),
-            Arg.Is<object>(o =>
-                o.ToString() ==
-                "Redirecting session-less request for /foo to SessionExpired."),
-            Arg.Any<Exception?>(),
-            Arg.Any<Func<object, Exception?, string>>());
+            "Redirecting session-less request for /foo to SessionExpired.");
     }
 
     [Fact]
@@ -60,12 +57,20 @@ public class RequireJourneySessionFilterTests
         _mockJourneySession.HasSession.Returns(true);
         await _sut.OnResourceExecutionAsync(_context, _next);
         Assert.Null(_context.Result);
+        Assert.False(_mockLogger.ReceivedCalls().Any());
+    }
 
-        _mockLogger.DidNotReceive().Log(
-            Arg.Any<LogLevel>(),
-            Arg.Any<EventId>(),
-            Arg.Any<object>(),
-            Arg.Any<Exception?>(),
-            Arg.Any<Func<object, Exception?, string>>());
+    private static void AssertLogged(
+        ILogger logger,
+        LogLevel level,
+        string expectedMessage)
+    {
+        var matchingCalls = logger.ReceivedCalls()
+            .Where(call => call.GetMethodInfo().Name == nameof(ILogger.Log))
+            .Where(call => (LogLevel)call.GetArguments()[0]! == level)
+            .Where(call => call.GetArguments()[2]?.ToString() == expectedMessage)
+            .ToList();
+
+        Assert.Single(matchingCalls);
     }
 }

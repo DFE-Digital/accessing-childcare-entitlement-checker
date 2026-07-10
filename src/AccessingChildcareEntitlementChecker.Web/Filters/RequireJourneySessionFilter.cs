@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AccessingChildcareEntitlementChecker.Web.Filters;
 
-public class RequireJourneySessionFilter(
+public partial class RequireJourneySessionFilter(
     ILogger<RequireJourneySessionFilter> logger,
     IJourneySession journeySession) : IAsyncResourceFilter
 {
@@ -21,9 +21,7 @@ public class RequireJourneySessionFilter(
             return next();
         }
 
-        _logger.LogInformation(
-            "Redirecting session-less request for {Path} to SessionExpired.",
-            context.HttpContext.Request.Path);
+        LogRedirectingSessionLessRequest(_logger, context.HttpContext.Request.Path);
         context.Result = new RedirectToActionResult(
             nameof(HomeController.SessionExpired),
             HomeController.Name,
@@ -31,4 +29,10 @@ public class RequireJourneySessionFilter(
 
         return Task.CompletedTask;
     }
+
+    [LoggerMessage(
+        EventId = 1,
+        Level = LogLevel.Information,
+        Message = "Redirecting session-less request for {Path} to SessionExpired.")]
+    private static partial void LogRedirectingSessionLessRequest(ILogger logger, PathString path);
 }
