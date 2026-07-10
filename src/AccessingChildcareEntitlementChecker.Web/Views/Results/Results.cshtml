@@ -31,7 +31,7 @@
             </p>
     
             <p class="govuk-body">
-                @Localizer["You should re-check if your circumstances change as this may change the support you can get"]
+                @Localizer["You should re-check if your circumstances change as this may change the support you can get."]
             </p>   
         }
 
@@ -117,7 +117,7 @@
                    asp-route-childId="@child.ChildId"
                    class="govuk-link">
                     @Localizer["View detailed information about {0}'s childcare support", child.Name]
-                </a>
+                </a>.
             </p>
 
             @if (child.ShowThirtyHourWarning)
