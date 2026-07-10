@@ -141,3 +141,13 @@ variable "budget_alert_threshold_actual" {
   type        = number
   default     = 100
 }
+
+variable "application_insights_daily_data_cap_in_gb" {
+  description = "The daily data cap in GB for Application Insights"
+  type        = number
+}
+
+variable "application_insights_sampling_percentage" {
+  description = "The sampling percentage for Application Insights"
+  type        = number
+}

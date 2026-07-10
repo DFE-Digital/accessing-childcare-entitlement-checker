@@ -8,12 +8,15 @@ resource "azurerm_log_analytics_workspace" "log-analytics-workspace" {
 }
 
 resource "azurerm_application_insights" "application-insights" {
-  name                = "${local.service_prefix}-app-insights"
-  location            = azurerm_resource_group.web-rg.location
-  resource_group_name = azurerm_resource_group.web-rg.name
-  application_type    = "web"
-  workspace_id        = azurerm_log_analytics_workspace.log-analytics-workspace.id
-  tags                = local.common_tags
+  name                                  = "${local.service_prefix}-app-insights"
+  location                              = azurerm_resource_group.web-rg.location
+  resource_group_name                   = azurerm_resource_group.web-rg.name
+  application_type                      = "web"
+  workspace_id                          = azurerm_log_analytics_workspace.log-analytics-workspace.id
+  daily_data_cap_in_gb                  = var.application_insights_daily_data_cap_in_gb
+  daily_data_cap_notifications_disabled = false
+  sampling_percentage                   = var.application_insights_sampling_percentage
+  tags                                  = local.common_tags
 }
 
 resource "azurerm_application_insights_standard_web_test" "web-app-test" {
