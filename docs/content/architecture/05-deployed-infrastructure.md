@@ -46,6 +46,8 @@ No modules.
 | [azurerm_cdn_frontdoor_rule.thanks_txt_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
 | [azurerm_cdn_frontdoor_rule_set.security_redirects](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule_set) | resource |
 | [azurerm_cdn_frontdoor_security_policy.frontdoor-web-security-policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_security_policy) | resource |
+| [azurerm_consumption_budget_resource_group.load_test_rg_budget](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/consumption_budget_resource_group) | resource |
+| [azurerm_consumption_budget_resource_group.web_rg_budget](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/consumption_budget_resource_group) | resource |
 | [azurerm_linux_web_app.web-app-service](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app) | resource |
 | [azurerm_linux_web_app_slot.staging](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app_slot) | resource |
 | [azurerm_load_test.load_test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/load_test) | resource |
@@ -81,6 +83,10 @@ No modules.
 | <a name="input_alert_email_address"></a> [alert\_email\_address](#input\_alert\_email\_address) | The email address to send alert notifications to | `string` | `""` | no |
 | <a name="input_aspnetcore_environment"></a> [aspnetcore\_environment](#input\_aspnetcore\_environment) | ASP.NET Core environment | `string` | n/a | yes |
 | <a name="input_azure_frontdoor_sku"></a> [azure\_frontdoor\_sku](#input\_azure\_frontdoor\_sku) | Azure Front Door SKU | `string` | `"Standard"` | no |
+| <a name="input_budget_alert_threshold_actual"></a> [budget\_alert\_threshold\_actual](#input\_budget\_alert\_threshold\_actual) | The threshold percentage for actual budget alerts | `number` | `100` | no |
+| <a name="input_budget_alert_threshold_forecast"></a> [budget\_alert\_threshold\_forecast](#input\_budget\_alert\_threshold\_forecast) | The threshold percentage for forecasted budget alerts | `number` | `90` | no |
+| <a name="input_budget_amount_load_test"></a> [budget\_amount\_load\_test](#input\_budget\_amount\_load\_test) | The budget amount for the load test resource group | `number` | n/a | yes |
+| <a name="input_budget_amount_web"></a> [budget\_amount\_web](#input\_budget\_amount\_web) | The budget amount for the web resource group | `number` | n/a | yes |
 | <a name="input_custom_domain"></a> [custom\_domain](#input\_custom\_domain) | Custom front-door domain | `string` | `""` | no |
 | <a name="input_development_basic_auth_password"></a> [development\_basic\_auth\_password](#input\_development\_basic\_auth\_password) | Shared password for development-only basic auth | `string` | `""` | no |
 | <a name="input_elz_environment"></a> [elz\_environment](#input\_elz\_environment) | The ELZ environment to match subscription (e.g. Dev) | `string` | n/a | yes |
@@ -91,6 +97,7 @@ No modules.
 | <a name="input_location"></a> [location](#input\_location) | The Azure region to deploy resources into | `string` | `"uksouth"` | no |
 | <a name="input_location_short_code"></a> [location\_short\_code](#input\_location\_short\_code) | The short code for the Azure region (e.g. uks) | `string` | `"uks"` | no |
 | <a name="input_log_analytics_daily_quota_gb"></a> [log\_analytics\_daily\_quota\_gb](#input\_log\_analytics\_daily\_quota\_gb) | The daily quota in GB for the Log Analytics workspace | `number` | n/a | yes |
+| <a name="input_log_analytics_retention_in_days"></a> [log\_analytics\_retention\_in\_days](#input\_log\_analytics\_retention\_in\_days) | The retention period in days for the Log Analytics workspace | `number` | n/a | yes |
 | <a name="input_redis_sku_name"></a> [redis\_sku\_name](#input\_redis\_sku\_name) | The SKU of the Managed Redis instance | `string` | `"Balanced_B1"` | no |
 | <a name="input_waf_enable_managed_rules"></a> [waf\_enable\_managed\_rules](#input\_waf\_enable\_managed\_rules) | Enable managed rule sets in WAF | `bool` | `false` | no |
 | <a name="input_waf_mode"></a> [waf\_mode](#input\_waf\_mode) | The mode the WAF should be deployed in (Prevention or Detection) | `string` | `"Prevention"` | no |
