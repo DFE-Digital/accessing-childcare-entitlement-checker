@@ -12,7 +12,7 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
     {
         builder.UseEnvironment("Development");
         return base.CreateHost(builder);
-    }    
+    }
 
     public HttpClient CreateClientWithJourneyState(JourneyState state)
     {
