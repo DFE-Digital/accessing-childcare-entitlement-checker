@@ -3,6 +3,7 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using Azure.Identity;
 using StackExchange.Redis;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
+using AccessingChildcareEntitlementChecker.Web.Filters;
 
 namespace AccessingChildcareEntitlementChecker.Web;
 
@@ -54,6 +55,7 @@ public static class ServiceCollectionExtensions
             var journeySession = sp.GetRequiredService<IJourneySession>();
             return journeySession.Get();
         });
+        services.AddScoped<RequireJourneySessionFilter>();
 
         return services;
     }

@@ -1,4 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Filters;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
+[ServiceFilter(typeof(RequireJourneySessionFilter))]
 public class ExpectedChildDetailsController : Controller
 {
     private readonly JourneyState _journeyState;

@@ -8,6 +8,7 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+    private const string Url = $"/children/{ChildId}/expectant-childs-due-date";
 
     [Theory]
     [InlineData(null, $"/children/{ChildId}/has-the-child-been-born")]
@@ -26,7 +27,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
         });
 
-        var url = $"/children/{ChildId}/expectant-childs-due-date?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -53,7 +54,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
         });
 
-        var url = $"/children/{ChildId}/expectant-childs-due-date?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -89,7 +90,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
         });
 
-        var url = $"/children/{ChildId}/expectant-childs-due-date?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -114,8 +115,8 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
     [Fact]
     public async Task Returns_Not_Found_For_Nonexistant_Child()
     {
-        using var client = factory.CreateClient();
-        var url = $"/children/{ChildId}/expectant-childs-due-date";
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        var url = Url;
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }

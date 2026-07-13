@@ -19,13 +19,16 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="Title" xml:space="preserve">
-        <value>Your session has expired</value>
+        <value>Your answers have been deleted</value>
     </data>
     <data name="Info" xml:space="preserve">
-        <value>For security reasons, we do not store your answers for long periods of time.</value>
+        <value>To protect your information, your answers have been deleted.</value>
     </data>
     <data name="Info2" xml:space="preserve">
-        <value>You need to start the checker again.</value>
+        <value>This happened because you did not do anything for 30 minutes.</value>
+    </data>
+    <data name="Info3" xml:space="preserve">
+        <value>You will need to start again.</value>
     </data>
     <data name="Button_StartAgain" xml:space="preserve">
         <value>Start again</value>

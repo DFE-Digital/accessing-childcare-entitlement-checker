@@ -7,15 +7,17 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = $"/benefits/childcare-vouchers";
+
     [Theory]
     [InlineData(null, "/benefits/childcare-support")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClient();
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var url = $"/benefits/childcare-vouchers?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -43,7 +45,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
             ChildcareVoucherReceipt = childcareVoucherReceipt,
             HasPartner = hasPartner,
         });
-        var url = $"/benefits/childcare-vouchers?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -65,9 +67,9 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClient();
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var url = $"/benefits/childcare-vouchers?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

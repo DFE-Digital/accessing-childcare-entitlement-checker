@@ -8,8 +8,9 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/children/check-childs-details";
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
-    const string OtherChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1f";
+    private const string OtherChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1f";
 
     /// <summary>
     /// When the user has arrived at the summary and no child is specified
@@ -44,8 +45,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
             }
         });
 
-        var url = $"/children/check-childs-details";
-        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink(expectedUrl)
@@ -85,7 +85,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
             }
         });
 
-        var url = $"/children/check-childs-details?childId={arrivedFromChildId}";
+        var url = $"{Url}?childId={arrivedFromChildId}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -100,8 +100,8 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     [Fact]
     public async Task Get_BackLink_Is_To_Name()
     {
-        using var client = factory.CreateClient();
-        var url = $"/children/check-childs-details?childId={ChildId}"; // Should not matter what is passed here.
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        var url = $"{Url}?childId={ChildId}"; // Should not matter what is passed here.
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);

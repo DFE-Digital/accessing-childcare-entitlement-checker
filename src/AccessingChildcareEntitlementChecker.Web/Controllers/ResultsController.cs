@@ -1,4 +1,5 @@
 ﻿using AccessingChildcareEntitlementChecker.RulesEngine.Services;
+using AccessingChildcareEntitlementChecker.Web.Filters;
 using AccessingChildcareEntitlementChecker.Web.Mappers;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace AccessingChildcareEntitlementChecker.Web.Controllers
 {
     [ExcludeFromCodeCoverage]
+    [ServiceFilter(typeof(RequireJourneySessionFilter))]
     public class ResultsController : Controller
     {
 

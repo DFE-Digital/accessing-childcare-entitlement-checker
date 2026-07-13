@@ -9,6 +9,7 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+    private const string Url = "/work-status/work";
 
     [Theory]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, "/nationality")]
@@ -23,7 +24,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
             Nationality = nationality,
         });
 
-        var url = $"/work-status/work?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -69,7 +70,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
             UniversalCredit = universalCredit,
         });
 
-        var url = $"/work-status/work?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -98,7 +99,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
             Nationality = nationality,
         });
 
-        var url = $"/work-status/work?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

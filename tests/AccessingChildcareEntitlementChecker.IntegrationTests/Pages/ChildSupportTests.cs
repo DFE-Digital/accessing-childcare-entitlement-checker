@@ -8,6 +8,7 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+    private const string Url = $"/children/{ChildId}/child-benefits";
 
     [Theory]
     [InlineData(null, $"/children/{ChildId}/childs-date-of-birth")]
@@ -26,7 +27,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
         });
 
-        var url = $"/children/{ChildId}/child-benefits?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -53,7 +54,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
         });
 
-        var url = $"/children/{ChildId}/child-benefits?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -85,7 +86,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
         });
 
-        var url = $"/children/{ChildId}/child-benefits?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -109,9 +110,8 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
     [Fact]
     public async Task Returns_Not_Found_For_Nonexistant_Child()
     {
-        using var client = factory.CreateClient();
-        var url = $"/children/{ChildId}/child-benefits";
-        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }
 }

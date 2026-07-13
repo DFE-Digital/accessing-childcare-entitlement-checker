@@ -8,15 +8,17 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class YearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/earnings/adjusted-net-income";
+
     [Theory]
     [InlineData(null, "/earnings/wage")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClient();
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var url = $"/earnings/adjusted-net-income?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -42,7 +44,7 @@ public class YearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture
             UniversalCredit = universalCredit,
         });
 
-        var url = $"/earnings/adjusted-net-income?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -66,9 +68,9 @@ public class YearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture
         string? returnTo,
         string backLinkUrl)
     {
-        using var client = factory.CreateClient();
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var url = $"/earnings/adjusted-net-income?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

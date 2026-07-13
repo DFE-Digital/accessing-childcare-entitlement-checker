@@ -8,6 +8,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/Partner/PartnerBenefits";
+
     [Theory]
     [InlineData(null, PartnerPaidWorkOption.No, null, null, null, null, "/work-status/work-partner")]
     [InlineData(null, PartnerPaidWorkOption.Yes, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, null, "/work-status/self-employed-partner")]
@@ -34,7 +36,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerYearlyEarnings = partnerYearlyEarnings,
         });
 
-        var url = $"/Partner/PartnerBenefits?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -55,7 +57,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerBenefits = [partnerBenefits],
             PartnerChildcareSupport = partnerChildcareSupport is null ? new() : [partnerChildcareSupport.Value],
         });
-        var url = $"/Partner/PartnerBenefits?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -97,7 +99,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerYearlyEarnings = partnerYearlyEarnings,
         });
 
-        var url = $"/Partner/PartnerBenefits?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

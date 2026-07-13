@@ -1,14 +1,14 @@
 using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Filters;
 using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
+[ServiceFilter(typeof(RequireJourneySessionFilter))]
 public class UserController : Controller
 {
     private readonly JourneyState _journeyState;
