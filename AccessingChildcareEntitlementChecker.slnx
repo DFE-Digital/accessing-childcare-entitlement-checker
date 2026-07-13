@@ -12,7 +12,7 @@
 
   <Folder Name="/.github/">
     <File Path=".github/pull_request_template.md" />
-    <File Path=".github\dependabot.yml" />
+    <File Path=".github/dependabot.yml" />
   </Folder>
   <Folder Name="/.github/ISSUE_TEMPLATE/">
     <File Path=".github/ISSUE_TEMPLATE/bug_report.md" />
@@ -31,12 +31,15 @@
     <File Path=".github/workflows/workflow-tf-docs.yml" />
     <File Path=".github/workflows/workflow-zap-scan.yml" />
     <File Path=".github/workflows/run-a11y-tests.yml" />
+    <File Path=".github/workflows/workflow-cross-browser.yml" />
   </Folder>
 
   <Folder Name="/docs/">
     <File Path="docs/eleventy.config.js" />
     <File Path="docs/package-lock.json" />
     <File Path="docs/package.json" />
+    <File Path="docs/generate-sass-prefix.js" />
+    <File Path="docs/path-prefix.js" />
   </Folder>
 
   <Folder Name="/src/">
@@ -50,12 +53,13 @@
     <Project Path="tests/AccessingChildcareEntitlementChecker.IntegrationTests/AccessingChildcareEntitlementChecker.IntegrationTests.csproj" />
     <Project Path="tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj" />
   </Folder>
-  <Folder Name="/docs/assets/">
-    <File Path="docs/assets/department-for-education_white.png" />
-    <File Path="docs/assets/mermaid.js" />
-  </Folder>
   <Folder Name="/docs/content/">
     <File Path="docs/content/index.md" />
+    <File Path="docs/content/assets/images/department-for-education_black.png" />
+    <File Path="docs/content/assets/images/department-for-education_white.png" />
+    <File Path="docs/content/assets/js/mermaid.js" />
+    <File Path="docs/content/assets/styles.scss" />
+    <File Path="docs/content/assets/_generated-path-prefix.scss" />
   </Folder>
   <Folder Name="/docs/content/architecture/">
     <File Path="docs/content/architecture/01-application-architecture.md" />
@@ -68,6 +72,17 @@
     <File Path="docs/content/architecture/08-technical-review-checklist.md" />
     <File Path="docs/content/architecture/09-path-tol-live.md" />
     <File Path="docs/content/architecture/index.md" />
+  </Folder>
+  <Folder Name="/docs/content/assets/">
+    <File Path="docs/content/assets/styles.scss" />
+    <File Path="docs/content/assets/_generated-path-prefix.scss" />
+  </Folder>
+  <Folder Name="/docs/content/assets/images/">
+    <File Path="docs/content/assets/images/department-for-education_black.png" />
+    <File Path="docs/content/assets/images/department-for-education_white.png" />
+  </Folder>
+  <Folder Name="/docs/content/assets/js/">
+    <File Path="docs/content/assets/js/mermaid.js" />
   </Folder>
   <Folder Name="/docs/content/decisions/">
     <File Path="docs/content/decisions/0000-use-madr-docs.md" />
@@ -138,6 +153,7 @@
     <File Path="infra/bicep/environments/development.params.json" />
     <File Path="infra/bicep/environments/staging.params.json" />
     <File Path="infra/bicep/environments/test.params.json" />
+    <File Path="infra/bicep/environments/production.params.json" />
   </Folder>
   <Folder Name="/infra/scripts/">
     <File Path="infra/scripts/manage-storage-access.sh" />
@@ -150,16 +166,19 @@
     <File Path="infra/terraform/law.tf" />
     <File Path="infra/terraform/storage.tf" />
     <File Path="infra/terraform/vnet.tf" />
-    <File Path="infra\terraform\data.tf" />
-    <File Path="infra\terraform\locals.tf" />
-    <File Path="infra\terraform\main.tf" />
-    <File Path="infra\terraform\outputs.tf" />
-    <File Path="infra\terraform\provider.tf" />
-    <File Path="infra\terraform\variables.tf" />
-    <File Path="infra\terraform\web.tf" />
+    <File Path="infra/terraform/alerts.tf" />
+    <File Path="infra/terraform/data.tf" />
+    <File Path="infra/terraform/loadtest.tf" />
+    <File Path="infra/terraform/locals.tf" />
+    <File Path="infra/terraform/main.tf" />
+    <File Path="infra/terraform/outputs.tf" />
+    <File Path="infra/terraform/provider.tf" />
+    <File Path="infra/terraform/redis.tf" />
+    <File Path="infra/terraform/variables.tf" />
+    <File Path="infra/terraform/web.tf" />
   </Folder>
   <Folder Name="/.config/">
-    <File Path=".config\dotnet-tools.json" />
+    <File Path=".config/dotnet-tools.json" />
   </Folder>
   <Folder Name="/infra/terraform/environments/">
     <File Path="infra/terraform/environments/development.tfvars" />
@@ -177,6 +196,7 @@
     <File Path="Directory.Packages.props" />
     <File Path="global.json" />
     <File Path="LICENCE" />
+    <File Path="Makefile" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/zap/">
