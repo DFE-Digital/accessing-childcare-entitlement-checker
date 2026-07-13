@@ -32,10 +32,7 @@ resource "azurerm_application_insights_standard_web_test" "web-app-test" {
   enabled                 = true
   retry_enabled           = true
   geo_locations           = ["emea-se-sto-edge", "emea-ru-msa-edge"]
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags                    = local.common_tags
 
   request {
     url = "https://${local.host_name}"
