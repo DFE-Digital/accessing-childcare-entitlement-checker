@@ -1,21 +1,23 @@
 ﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
-using Microsoft.AspNetCore.Mvc.Testing;
+using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/children/add-child-details";
+
     [Theory]
     [InlineData(null, "/where-do-you-live")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var url = $"/children/add-child-details?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -35,9 +37,9 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     [Fact]
     public async Task Post_Valid_Redirects()
     {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var url = $"/children/add-child-details";
+        var url = Url;
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -59,8 +61,8 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Post_With_Long_Name_Shows_Validation_Error_And_BackLink(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClient();
-        var url = $"/children/add-child-details?returnTo={returnTo}";
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

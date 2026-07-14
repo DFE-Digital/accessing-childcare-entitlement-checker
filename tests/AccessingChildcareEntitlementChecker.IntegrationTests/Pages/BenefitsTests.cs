@@ -8,6 +8,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/benefits/benefits";
+
     [Theory]
     [InlineData(null, YearlyEarningsOption.AboveThreshold, "/earnings/adjusted-net-income")]
     [InlineData(null, YearlyEarningsOption.BelowThreshold, "/benefits/universal-credit")]
@@ -23,7 +25,7 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
             YearlyEarnings = yearlyEarnings,
         });
 
-        var url = $"/benefits/benefits?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -44,7 +46,7 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
             Benefits = [benefits],
             ChildcareSupport = childcareSupport is null ? new() : [childcareSupport.Value],
         });
-        var url = $"/benefits/benefits?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -75,7 +77,7 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
             YearlyEarnings = yearlyEarnings,
         });
 
-        var url = $"/benefits/benefits?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

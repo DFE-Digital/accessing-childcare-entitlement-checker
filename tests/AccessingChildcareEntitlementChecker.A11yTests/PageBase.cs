@@ -1,8 +1,7 @@
 using System.Net;
-using Deque.AxeCore.Commons;
 using Deque.AxeCore.Playwright;
 using Microsoft.Playwright;
-using Xunit;
+using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.A11yTests;
 
@@ -13,8 +12,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
     protected IPage Page { get; private set; } = null!;
 
-    protected static string ServiceUrl =>
-        Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252";
+    protected static string ServiceUrl => Environment.GetEnvironmentVariable("TEST_URL") ?? "http://localhost:5252";
 
     private static readonly string[] Impacts =
     [
@@ -22,7 +20,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         "serious"
     ];
 
-    protected abstract string PageUrl { get; }
+    protected virtual string? PageUrl => null;
 
     public async ValueTask InitializeAsync()
     {
@@ -63,11 +61,20 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         Page = await context.NewPageAsync();
     }
 
+    protected static string BuildUrl(string path)
+    {
+        return $"{ServiceUrl.TrimEnd('/')}/{path.TrimStart('/')}";
+    }
+
     protected async Task GoToPage(HttpStatusCode expectedStatusCode = HttpStatusCode.OK)
     {
-        var fullUrl = $"{ServiceUrl.TrimEnd('/')}/{PageUrl.TrimStart('/')}";
+        if (string.IsNullOrWhiteSpace(PageUrl))
+        {
+            throw new InvalidOperationException(
+                $"{GetType().Name} does not define a PageUrl. " + "Either override PageUrl or navigate using a journey setup helper.");
+        }
 
-        var response = await Page.GotoAsync(fullUrl);
+        var response = await Page.GotoAsync(BuildUrl(PageUrl));
 
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
@@ -93,10 +100,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
             }
         }
 
-        Assert.True(
-            violations.Length == 0,
-            string.Join(Environment.NewLine,
-                violations.Select(v => $"{v.Impact}: {v.Description}")));
+        Assert.True(violations.Length == 0, string.Join(Environment.NewLine, violations.Select(v => $"{v.Impact}: {v.Description}")));
     }
 
     public async ValueTask DisposeAsync()
@@ -110,4 +114,19 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
         GC.SuppressFinalize(this);
     }
+
+    protected async Task Continue()
+    {
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
+    }
+
+    protected async Task ExpectPathAndQuery(string expectedPathAndQuery)
+    {
+        await Expect(Page).ToHaveURLAsync(BuildUrl(expectedPathAndQuery));
+
+        var actualPathAndQuery = new Uri(Page.Url).PathAndQuery;
+
+        Assert.Equal(expectedPathAndQuery, actualPathAndQuery);
+    }
+
 }

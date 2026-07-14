@@ -2,12 +2,13 @@ using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class LocationTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/where-do-you-live";
+
     [Theory]
     [InlineData(null, "/")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
@@ -16,7 +17,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     {
         using var client = factory.CreateClient();
 
-        var url = $"/where-do-you-live?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -39,7 +40,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
                 : new Dictionary<string, Child>()
         });
 
-        var url = $"/where-do-you-live?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -62,7 +63,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClient();
-        var url = $"/where-do-you-live?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

@@ -8,6 +8,7 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/benefits/universal-credit";
 
     /// <remarks>
     /// N.b. Skips type of leave - design is pending.
@@ -37,7 +38,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
             YearlyEarnings = yearlyEarnings,
         });
 
-        var url = $"/benefits/universal-credit?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -61,7 +62,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
             UniversalCredit = universalCredit,
             Benefits = benefits is null ? new() : [benefits.Value],
         });
-        var url = $"/benefits/universal-credit?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -102,7 +103,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
             YearlyEarnings = yearlyEarnings,
         });
 
-        var url = $"/benefits/universal-credit?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

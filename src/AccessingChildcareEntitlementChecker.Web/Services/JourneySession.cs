@@ -1,5 +1,3 @@
-using AccessingChildcareEntitlementChecker.Web.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text.Json;
 
 namespace AccessingChildcareEntitlementChecker.Web.Services;
@@ -13,6 +11,10 @@ public class JourneySession : IJourneySession
     {
         _httpContextAccessor = accessor;
     }
+
+    public bool HasSession => _httpContextAccessor.HttpContext?
+        .Session
+        .TryGetValue(Key, out _) ?? false;
 
     public JourneyState Get()
     {

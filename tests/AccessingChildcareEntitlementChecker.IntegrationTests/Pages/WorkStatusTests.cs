@@ -8,15 +8,17 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/work-status/work-status";
+
     [Theory]
     [InlineData(null, "/work-status/work")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClient();
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var url = $"/work-status/work-status?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -42,7 +44,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
             WeeklyEarnings = weeklyEarnings,
         });
 
-        var url = $"/work-status/work-status?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -64,9 +66,9 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClient();
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var url = $"/work-status/work-status?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -84,10 +86,9 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     [Fact]
     public async Task Post_Selection_Redirects_To_SelfEmployed()
     {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var url = "/work-status/work-status";
-        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+        var getResponse = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
@@ -95,7 +96,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
                 new("WorkStatus", "SelfEmployed"),
             ],
             TestContext.Current.CancellationToken);

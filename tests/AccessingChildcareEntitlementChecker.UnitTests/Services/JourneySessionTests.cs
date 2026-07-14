@@ -118,4 +118,35 @@ public class JourneySessionTests
         Assert.Null(result.HasPartner);
         Assert.Null(result.PartnerAge);
     }
+
+    [Fact]
+    public void HasSession_ReturnsFalse_IfHttpContextIsNull()
+    {
+        _httpContextAccessor.HttpContext.ReturnsNull();
+
+        Assert.False(_journeySession.HasSession);
+    }
+
+    [Fact]
+    public void HasSession_ReturnsTrue_WhenNoSession()
+    {
+        _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
+        {
+            x[1] = Encoding.UTF8.GetBytes("A");
+            return true;
+        });
+
+        Assert.True(_journeySession.HasSession);
+    }
+
+    [Fact]
+    public void HasSession_ReturnsFalse_WhenNoSession()
+    {
+        _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
+        {
+            return false;
+        });
+
+        Assert.False(_journeySession.HasSession);
+    }
 }

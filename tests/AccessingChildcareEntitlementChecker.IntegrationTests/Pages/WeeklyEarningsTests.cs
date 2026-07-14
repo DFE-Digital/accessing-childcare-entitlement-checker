@@ -8,6 +8,8 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/earnings/wage";
+
     [Theory]
     [InlineData(null, WorkStatusOption.PaidEmployment, null, "/work-status/work-status")]
     [InlineData(null, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.NotLessThan12Months, "/work-status/self-employed")]
@@ -27,7 +29,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
             SelfEmployedDuration = selfEmployedDuration,
         });
 
-        var url = $"/earnings/wage?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -55,7 +57,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
             UniversalCredit = universalCredit,
         });
 
-        var url = $"/earnings/wage?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -90,7 +92,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
             SelfEmployedDuration = selfEmployedDuration,
         });
 
-        var url = $"/earnings/wage?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

@@ -9,12 +9,14 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
+    private const string Url = "/partner";
+
     [Fact]
     public async Task Get_HasPartner_Has_Radios_And_BackLink_Defaults_To_ChildcareSupport_Back()
     {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var response = await client.GetAsync("/partner", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(2)
@@ -30,7 +32,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
         state.ChildcareSupport.Add(ChildcareSupportOption.ChildcareVouchers);
         using var client = factory.CreateClientWithJourneyState(state);
 
-        var response = await client.GetAsync("/partner", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink("/benefits/childcare-vouchers")
@@ -51,7 +53,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
             HasPartner = hasPartner,
             PartnerAge = partnerAge,
         });
-        var url = $"/partner?returnTo={returnTo}";
+        var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

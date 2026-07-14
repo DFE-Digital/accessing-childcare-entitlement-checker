@@ -1,4 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Extensions;
+using AccessingChildcareEntitlementChecker.Web.Filters;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using AccessingChildcareEntitlementChecker.Web.Services;
@@ -8,6 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
+[ServiceFilter(typeof(RequireJourneySessionFilter))]
 public class PartnerController : Controller
 {
     private readonly JourneyState _journeyState;
