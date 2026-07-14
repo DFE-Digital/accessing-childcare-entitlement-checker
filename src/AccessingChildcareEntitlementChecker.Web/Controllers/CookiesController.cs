@@ -41,6 +41,11 @@ public class CookiesController : Controller
     [HttpPost]
     public IActionResult BannerConsent(bool analyticsEnabled, string returnUrl)
     {
+        if (!ModelState.IsValid)
+        {
+            BadRequest();
+        }
+
         _cookiePolicyService.IsAnalyticsEnabled = analyticsEnabled;
         return LocalRedirect(returnUrl);
     }
