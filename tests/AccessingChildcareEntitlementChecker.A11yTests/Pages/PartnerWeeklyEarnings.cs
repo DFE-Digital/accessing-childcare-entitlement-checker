@@ -7,21 +7,16 @@ public class PartnerWeeklyEarningsPageAccessibilityTests(ITestOutputHelper outpu
     [Fact]
     public async Task PartnerWeeklyEarningsPage_HasNoAccessibilityViolations()
     {
-        await AnswerPartnerAge();
-        await AnswerPartnerPaidWorkStatus();
-        await AnswerPartnerWorkStatus();
-        await ExpectPathAndQuery($"/earnings/wage-partner");
+        await GoToPartnerWeeklyEarningsPage();
         await EvaluatePage();
     }
 
     [Fact]
     public async Task PartnerWeeklyEarningsPage_WithValidationError_HasNoAccessibilityViolations()
     {
-        await AnswerPartnerAge();
-        await AnswerPartnerPaidWorkStatus();
-        await AnswerPartnerWorkStatus();
-        await ExpectPathAndQuery($"/earnings/wage-partner");
+        await GoToPartnerWeeklyEarningsPage();
         await Continue();
+        await ExpectPathAndQuery("/earnings/wage-partner");
         await Expect(Page.Locator(".govuk-error-summary")).ToBeVisibleAsync();
         await EvaluatePage();
     }

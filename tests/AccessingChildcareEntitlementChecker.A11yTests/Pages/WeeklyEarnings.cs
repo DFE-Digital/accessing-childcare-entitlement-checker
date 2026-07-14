@@ -7,23 +7,16 @@ public class WeeklyEarningsPageAccessibilityTests(ITestOutputHelper output) : Jo
     [Fact]
     public async Task WeeklyEarningsPage_HasNoAccessibilityViolations()
     {
-        await AnswerUserAge();
-        await AnswerUserNationality();
-        await AnswerUserPaidWorkStatus();
-        await AnswerUserWorkStatus();
-        await ExpectPathAndQuery($"/earnings/wage");
+        await GoToUserWeeklyEarningsPage();
         await EvaluatePage();
     }
 
     [Fact]
     public async Task WeeklyEarningsPage_WithValidationError_HasNoAccessibilityViolations()
     {
-        await AnswerUserAge();
-        await AnswerUserNationality();
-        await AnswerUserPaidWorkStatus();
-        await AnswerUserWorkStatus();
-        await ExpectPathAndQuery($"/earnings/wage");
+        await GoToUserWeeklyEarningsPage();
         await Continue();
+        await ExpectPathAndQuery("/earnings/wage");
         await Expect(Page.Locator(".govuk-error-summary")).ToBeVisibleAsync();
         await EvaluatePage();
     }
