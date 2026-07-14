@@ -58,7 +58,7 @@ public class CookiePolicyService(
                     Expires = DateTimeOffset.UtcNow.AddYears(1)
                 });
         }
-        
+
     }
 
     private HttpContext GetContextOrThrow() => httpContextAccessor.HttpContext ?? throw new InvalidOperationException("No active HTTP context.");
