@@ -2,6 +2,6 @@
 
 public interface ICookiePolicyService
 {
-    CookiePolicy Get();
-    void Set(CookiePolicy policy);
+    bool HasConsented { get; }
+    bool IsAnalyticsEnabled { get; set; }
 }

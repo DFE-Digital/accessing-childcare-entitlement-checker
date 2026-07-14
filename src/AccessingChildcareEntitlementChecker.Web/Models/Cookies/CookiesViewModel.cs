@@ -2,5 +2,4 @@
 
 public record CookiesViewModel(
     bool HasSetCookies,
-    string ReturnUrl,
-    bool IsAnalyticsEnabled);
+    bool AnalyticsCookiesEnabled);

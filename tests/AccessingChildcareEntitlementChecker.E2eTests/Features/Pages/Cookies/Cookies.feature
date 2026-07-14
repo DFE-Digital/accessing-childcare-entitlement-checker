@@ -28,18 +28,3 @@ Scenario: Cookies screen lets me change my preferences
 	Then the page header is "Cookies"
 	And I should see a success banner that says "You've set your cookie preferences."
 	And the "Yes" radio button should be selected
-
-Scenario: Cookies screen lets me return from whence I came
-	When I click the link to change my cookie preferences
-	And I select the "Yes" radio button
-	And I click on Continue
-	And I click the Go back to the page you were looking at link
-	Then the page header is "Where do you live?"
-
-Scenario: Cookies screen lets me return from whence I came again
-	Given I answer "Where do you live?" as "England"
-	When I click the link to change my cookie preferences
-	And I select the "Yes" radio button
-	And I click on Continue
-	And I click the Go back to the page you were looking at link
-	Then the page header is "Add details about your children"

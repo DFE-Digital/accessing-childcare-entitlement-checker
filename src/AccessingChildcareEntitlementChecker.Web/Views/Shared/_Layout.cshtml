@@ -6,16 +6,15 @@
     Layout = "_GovUkPageTemplate";
     var serviceName = Shared["ServiceName"];
     var serviceUrl = Url.Action(nameof(HomeController.Start), HomeController.Name);
-    var cookiePolicy = CookiePolicyService.Get();
 }
 
 @section BodyStart {
-    @if (cookiePolicy is null)
+    @if (!CookiePolicyService.HasConsented)
     {
         <partial name="_CookieBanner" />
     }
 
-    @if (cookiePolicy?.Analytics == true)
+    @if (CookiePolicyService.IsAnalyticsEnabled)
     {
         <partial name="_Analytics" />
     }

@@ -16,14 +16,12 @@ public class CookiesController : Controller
     }
 
     [HttpGet]
-    public ViewResult Cookies(bool? hasSetCookies, string? returnUrl)
+    public ViewResult Cookies(bool? hasSetCookies)
     {
-        var cookiesCookie = _cookiePolicyService.Get();
-        returnUrl = returnUrl ?? Url.ActionOrThrow(nameof(HomeController.Start), HomeController.Name);
+        var analyticsEnabled = _cookiePolicyService.IsAnalyticsEnabled;
         var cookiesViewModel = new CookiesViewModel(
             hasSetCookies ?? false,
-            returnUrl,
-            cookiesCookie.Analytics);
+            analyticsEnabled);
         return View(cookiesViewModel);
     }
 
@@ -35,18 +33,15 @@ public class CookiesController : Controller
             return View(model);
         }
 
-        _cookiePolicyService.Set(new CookiePolicy
-        {
-            Analytics = model.IsAnalyticsEnabled,
-        });
+        _cookiePolicyService.IsAnalyticsEnabled = model.AnalyticsCookiesEnabled;
 
-        return RedirectToAction(nameof(Cookies), Name, new { hasSetCookies = true, model.ReturnUrl });
+        return RedirectToAction(nameof(Cookies), Name, new { hasSetCookies = true });
     }
 
     [HttpPost]
-    public IActionResult BannerConsent(bool analytics, string returnUrl)
+    public IActionResult BannerConsent(bool analyticsEnabled, string returnUrl)
     {
-        _cookiePolicyService.Set(new CookiePolicy(analytics));
+        _cookiePolicyService.IsAnalyticsEnabled = analyticsEnabled;
         return LocalRedirect(returnUrl);
     }
 }

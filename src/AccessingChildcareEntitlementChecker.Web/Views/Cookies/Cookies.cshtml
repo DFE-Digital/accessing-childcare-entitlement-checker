@@ -21,9 +21,6 @@
             <govuk-notification-banner type="NotificationBannerType.Success">
                 <p class="govuk-notification-banner__heading">
                     @Localizer["You've set your cookie preferences."]
-                    <a class="govuk-notification-banner__link" href="@Model.ReturnUrl">
-                        @Localizer["Go back to the page you were looking at."]
-                    </a>
                 </p>
             </govuk-notification-banner>
         }
@@ -98,15 +95,12 @@
             </tbody>
         </table>
 
-        <h2 class="govuk-heading-l">
+        <h2 class="govuk-heading-m">
             @Localizer["Change your cookie settings"]
         </h2>
 
         <form method="post" novalidate>
-            <input type="hidden"
-                   name="returnUrl"
-                   value="@Model.ReturnUrl" />
-            <govuk-radios for="IsAnalyticsEnabled">
+            <govuk-radios for="AnalyticsCookiesEnabled">
                 <govuk-radios-fieldset>
                     <govuk-radios-fieldset-legend class="govuk-fieldset__legend--s">
                         @Localizer["Do you want to accept analytics cookies?"]

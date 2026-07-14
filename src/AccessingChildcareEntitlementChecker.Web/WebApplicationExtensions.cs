@@ -70,6 +70,7 @@ public static class WebApplicationExtensions
 
         app.MapControllerRoute(name: "Error", pattern: "Error", defaults: new { controller = Error, action = nameof(ErrorController.InternalServerError) });
         app.MapControllerRoute(name: "Error-statusCode-int", pattern: "Error/{statusCode:int}", defaults: new { controller = Error, action = nameof(ErrorController.StatusCodePage) });
+        app.MapControllerRoute(name: "Cookies", pattern: "cookies", defaults: new { controller = CookiesController.Name, action = nameof(CookiesController.Cookies) });
 
         app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Start}/{id?}", defaults: new { });
 
