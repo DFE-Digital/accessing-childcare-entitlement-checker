@@ -2,10 +2,6 @@ using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
-using AngleSharp.Dom;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using System.Text.RegularExpressions;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests;
 
@@ -75,8 +71,6 @@ public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClass
 
     private IEnumerable<string> GetSessionRequiredEndpoints(string verb)
     {
-        var endpointDataSource = factory.Services.GetRequiredService<EndpointDataSource>();
-        var endpoints = endpointDataSource.Endpoints.OfType<RouteEndpoint>();
         var publicRoutes = new[]
         {
             "/",
@@ -91,26 +85,6 @@ public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClass
             "/where-do-you-live"
         };
 
-        return endpoints
-            .Where(e => e.Metadata.OfType<HttpMethodMetadata>().Any(m => m.HttpMethods.Contains(verb)))
-            .Select(e => e.RoutePattern.RawText)
-            .Where(route => route != null)
-            .Select(route => "/" + route!.TrimStart('/'))
-            .Except(publicRoutes, StringComparer.OrdinalIgnoreCase)
-            .Select(MaterializeRoute)
-            .Distinct();
+        return RouteHelper.GetEndpointsExcept(factory, verb, publicRoutes);
     }
-
-    /// <summary>
-    /// Converts a route pattern with parameters into a concrete route by replacing parameters with a placeholder value.
-    /// </summary>
-    /// <param name="routePattern">The route pattern to convert.</param>
-    /// <returns>A concrete route with placeholder values.</returns>
-    private static string MaterializeRoute(string routePattern)
-    {
-        return RouteParameterRegex().Replace(routePattern, "1");
-    }
-
-    [GeneratedRegex(@"\{[^}]+\}")]
-    private static partial Regex RouteParameterRegex();
 }

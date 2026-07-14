@@ -407,13 +407,6 @@ public class PartnerController : Controller
     }
 
     [HttpGet]
-    [ExcludeFromCodeCoverage(Justification = "This page is a stub for a future page")]
-    public IActionResult PartnerTypeOfLeave()
-    {
-        return Content("<h1>What type of leave is your partner on?</h1>", "text/html");
-    }
-
-    [HttpGet]
     public IActionResult PartnerChildcareVoucherReceipt(string? returnTo = null)
     {
         var backLink = GetPartnerChildcareVoucherReceiptBackLink(returnTo);

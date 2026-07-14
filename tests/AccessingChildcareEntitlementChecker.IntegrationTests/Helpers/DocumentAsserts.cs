@@ -108,6 +108,20 @@ public static class DocumentAsserts
         return document;
     }
 
+    public static IDocument AssertCookieBanner(this IDocument document)
+    {
+        var cookieBanner = document.QuerySelector(".govuk-cookie-banner");
+        Assert.NotNull(cookieBanner);
+        return document;
+    }
+
+    public static IDocument AssertNoCookieBanner(this IDocument document)
+    {
+        var cookieBanner = document.QuerySelector(".govuk-cookie-banner");
+        Assert.Null(cookieBanner);
+        return document;
+    }
+
     private static IElement HeaderElement(this IDocument document)
     {
         var header = document.QuerySelector("body > header");

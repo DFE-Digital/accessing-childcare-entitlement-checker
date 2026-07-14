@@ -9,11 +9,13 @@ Scenario: Banner is shown
 
 Scenario: Banner is shown then hidden after accept
 	When I click the Accept button
-	Then the cookie banner is not shown
+	Then the page header is "Where do you live?"
+	And the cookie banner is not shown
 
 Scenario: Banner is shown then hidden after reject
 	When I click the Reject button
-	Then the cookie banner is not shown
+	Then the page header is "Where do you live?"
+	And the cookie banner is not shown
 
 Scenario: Banner is hidden on the next page
 	When I click the Accept button
