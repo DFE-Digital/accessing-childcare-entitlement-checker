@@ -55,6 +55,7 @@ public static class ServiceCollectionExtensions
             return journeySession.Get();
         });
 
+        services.AddScoped<ICookiePolicyService, CookiePolicyService>();
         return services;
     }
 }

@@ -23,6 +23,7 @@ internal class JourneySteps(IPage page)
     }
 
     [Given("I answer {string} as {string}")]
+    [When("I answer {string} as {string}")]
     public async Task GivenIAnswerStringAsString(string question, string answer)
     {
         var factory = new PageFactory(page);
