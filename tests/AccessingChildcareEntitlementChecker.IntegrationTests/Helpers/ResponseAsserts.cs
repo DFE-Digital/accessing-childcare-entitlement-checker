@@ -11,9 +11,9 @@ public static class ResponseAsserts
         return response;
     }
 
-    public static HttpResponseMessage AssertOk(this HttpResponseMessage response)
+    public static HttpResponseMessage AssertNoContent(this HttpResponseMessage response)
     {
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         return response;
     }
 
@@ -22,6 +22,12 @@ public static class ResponseAsserts
         var cookie = $"{key}={value};";
         var cookieHeaders = response.Headers.GetValues("Set-Cookie");
         Assert.Contains(cookieHeaders, c => c.StartsWith(cookie, StringComparison.OrdinalIgnoreCase));
+        return response;
+    }
+
+    public static HttpResponseMessage AssertBadRequest(this HttpResponseMessage response)
+    {
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         return response;
     }
 }
