@@ -2,22 +2,21 @@ using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 
-public class PartnerChildcareSupportPageAccessibilityTests(ITestOutputHelper output) : PageBase(output)
+public class PartnerChildcareSupportPageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
-    protected override string PageUrl => "/benefits/childcare-support-partner";
-
     [Fact]
     public async Task PartnerChildcareSupportPage_HasNoAccessibilityViolations()
     {
-        await GoToPage();
+        await GoToPartnerChildcareSupportPage();
         await EvaluatePage();
     }
 
     [Fact]
     public async Task PartnerChildcareSupportPage_WithValidationError_HasNoAccessibilityViolations()
     {
-        await GoToPage();
+        await GoToPartnerChildcareSupportPage();
         await Continue();
+        await ExpectPathAndQuery("/benefits/childcare-support-partner");
         await Expect(Page.Locator(".govuk-error-summary")).ToBeVisibleAsync();
         await EvaluatePage();
     }

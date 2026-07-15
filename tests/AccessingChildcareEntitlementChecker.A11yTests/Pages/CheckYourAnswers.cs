@@ -6,7 +6,7 @@ public class CheckYourAnswersPageAccessibilityTests(ITestOutputHelper output) : 
     public async Task CheckYourAnswersPage_HasNoAccessibilityViolations()
     {
         await CompleteJourneyToCheckYourAnswers();
-        await ExpectPathAndQuery($"/check-your-answers");
+        await ExpectPathAndQuery("/check-your-answers");
         await EvaluatePage();
     }
 }
