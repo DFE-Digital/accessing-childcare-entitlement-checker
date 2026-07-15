@@ -86,7 +86,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
         return sections;
     }
-    
+
     private static int GetSchemeOrder(SchemeCode schemeCode)
     {
         return schemeCode switch
