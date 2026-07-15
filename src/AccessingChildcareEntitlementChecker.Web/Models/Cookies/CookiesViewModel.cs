@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace AccessingChildcareEntitlementChecker.Web.Models.Cookies;
 
 public record CookiesViewModel(
-    [property: BindNever]
+    [BindNever]
     bool HasSetCookies,
-    [property: Required()]
+    [Required]
     bool? AnalyticsCookiesEnabled);

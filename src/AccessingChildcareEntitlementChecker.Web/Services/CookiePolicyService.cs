@@ -1,8 +1,6 @@
 ﻿namespace AccessingChildcareEntitlementChecker.Web.Services;
 
-public class CookiePolicyService(
-    IHttpContextAccessor httpContextAccessor,
-    IWebHostEnvironment environment) : ICookiePolicyService
+public class CookiePolicyService(IHttpContextAccessor httpContextAccessor) : ICookiePolicyService
 {
     public const string CookieName = "cookie_policy";
 

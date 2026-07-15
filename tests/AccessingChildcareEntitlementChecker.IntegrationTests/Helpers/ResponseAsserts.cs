@@ -10,4 +10,18 @@ public static class ResponseAsserts
         Assert.Contains(expectedLink, response.Headers.Location?.ToString() ?? string.Empty);
         return response;
     }
+
+    public static HttpResponseMessage AssertOk(this HttpResponseMessage response)
+    {
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        return response;
+    }
+
+    public static HttpResponseMessage AssertCookie(this HttpResponseMessage response, string key, string value)
+    {
+        var cookie = $"{key}={value};";
+        var cookieHeaders = response.Headers.GetValues("Set-Cookie");
+        Assert.Contains(cookieHeaders, c => c.StartsWith(cookie, StringComparison.OrdinalIgnoreCase));
+        return response;
+    }
 }

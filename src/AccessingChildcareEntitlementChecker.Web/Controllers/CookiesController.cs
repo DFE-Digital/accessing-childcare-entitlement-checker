@@ -45,7 +45,7 @@ public class CookiesController(ICookiePolicyService cookiePolicyService) : Contr
             return BadRequest();
         }
 
-        _cookiePolicyService.IsAnalyticsEnabled = model.AnalyticsCookiesEnabled;
+        _cookiePolicyService.IsAnalyticsEnabled = model.AnalyticsCookiesEnabled ?? false;
         return NoContent();
     }
 }
