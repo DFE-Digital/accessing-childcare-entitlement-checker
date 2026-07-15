@@ -11,7 +11,7 @@ public class CookiesController(ICookiePolicyService cookiePolicyService) : Contr
     public const string Name = "Cookies";
 
     [HttpGet]
-    public IActionResult Cookies(bool hasSetCookies = false)
+    public IActionResult Cookies(bool? hasSetCookies)
     {
         if (!ModelState.IsValid)
         {
@@ -20,7 +20,7 @@ public class CookiesController(ICookiePolicyService cookiePolicyService) : Contr
 
         var analyticsEnabled = _cookiePolicyService.IsAnalyticsEnabled;
         var cookiesViewModel = new CookiesViewModel(
-            hasSetCookies,
+            hasSetCookies ?? false,
             analyticsEnabled);
         return View(cookiesViewModel);
     }
@@ -33,7 +33,7 @@ public class CookiesController(ICookiePolicyService cookiePolicyService) : Contr
             return View(model);
         }
 
-        _cookiePolicyService.IsAnalyticsEnabled = model.AnalyticsCookiesEnabled;
+        _cookiePolicyService.IsAnalyticsEnabled = model.AnalyticsCookiesEnabled ?? false;
         return RedirectToAction(nameof(Cookies), Name, new { hasSetCookies = true });
     }
 

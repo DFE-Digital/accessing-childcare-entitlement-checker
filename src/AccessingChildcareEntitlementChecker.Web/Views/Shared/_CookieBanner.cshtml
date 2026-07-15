@@ -9,16 +9,10 @@
 @{
     var antiforgeryToken = Antiforgery.GetAndStoreTokens(Context).RequestToken
         ?? throw new InvalidOperationException("Could not generate antiforgery token.");
-
     var consentUrl = Url.Action(
         nameof(CookiesController.BannerConsent),
         CookiesController.Name);
-
     var heading = Localizer["Cookies on Check if you are eligible for childcare funding"];
-    /*var hiddenAttrs = new Dictionary<string, string>
-    {
-        ["hidden"] = "hidden"
-    };*/
 }
 
 <govuk-cookie-banner aria-label="@heading.Value" id="cookies-banner" hidden="true">

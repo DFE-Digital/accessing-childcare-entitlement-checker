@@ -52,7 +52,7 @@ public class CookiePolicyService(
                 {
                     Path = "/",
                     HttpOnly = true,
-                    Secure = !environment.IsDevelopment(),
+                    Secure = true,
                     SameSite = SameSiteMode.Lax,
                     IsEssential = true,
                     Expires = DateTimeOffset.UtcNow.AddYears(1)

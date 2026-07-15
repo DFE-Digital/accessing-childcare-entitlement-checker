@@ -1,5 +1,10 @@
-﻿namespace AccessingChildcareEntitlementChecker.Web.Models.Cookies;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+namespace AccessingChildcareEntitlementChecker.Web.Models.Cookies;
 
 public record CookiesViewModel(
+    [property: BindNever]
     bool HasSetCookies,
-    bool AnalyticsCookiesEnabled);
+    [property: Required()]
+    bool? AnalyticsCookiesEnabled);
