@@ -5,6 +5,6 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.Cookies;
 
 public record CookiesViewModel(
     [BindNever]
-    bool HasSetCookies,
+    bool? HasSetCookies,
     [Required]
     bool? AnalyticsCookiesEnabled);

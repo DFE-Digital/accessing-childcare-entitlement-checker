@@ -12,7 +12,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        @if (Model.HasSetCookies)
+        @if (Model.HasSetCookies ?? false)
         {
             <govuk-notification-banner type="NotificationBannerType.Success">
                 <p class="govuk-notification-banner__heading">
