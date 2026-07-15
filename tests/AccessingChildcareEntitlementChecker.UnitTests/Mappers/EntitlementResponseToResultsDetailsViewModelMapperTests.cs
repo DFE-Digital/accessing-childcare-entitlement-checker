@@ -839,6 +839,22 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
         Assert.Contains(SchemeCode.ThirtyHoursForWorkingFamilies, scheme.CanBeUsedWith);
         Assert.Contains(SchemeCode.TaxFreeChildcare, scheme.CanBeUsedWith);
     }
+    
+    [Fact]
+    public void Map_OrdersSchemesInExpectedOrder()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"), false);
+
+        var schemes = result.Sections.SelectMany(x => x.Schemes).ToList();
+
+        Assert.Collection(
+            schemes,
+            s => Assert.Equal(SchemeCode.TaxFreeChildcare, s.SchemeCode),
+            s => Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, s.SchemeCode),
+            s => Assert.Equal(SchemeCode.FifteenHoursUniversal, s.SchemeCode));
+    }
 
     [Theory]
     [InlineData(ParentalLeaveParty.User, "WhenToApply_TaxFreeChildcare_UserParentalLeave", "Starts_TaxFreeChildcare_UserParentalLeave", "Ends_TaxFreeChildcare_UserParentalLeave")]

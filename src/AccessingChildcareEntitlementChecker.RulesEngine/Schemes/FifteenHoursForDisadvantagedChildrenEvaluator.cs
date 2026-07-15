@@ -105,7 +105,6 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
 
     private static readonly List<PersonBenefit> QualifyingBenefits =
     [
-        PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
         PersonBenefit.GuaranteedElementOfPensionCredit
     ];
 

@@ -51,6 +51,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
                 SectionType = SchemeSectionType.HelpWithChildcareCosts,
                 ShowThirtyHourWarning = false,
                 Schemes = helpWithCosts
+                    .OrderBy(s => GetSchemeOrder(s.SchemeCode))
                     .Select(x => MapSchemeResult(x, child))
                     .ToList()
             });
@@ -84,6 +85,20 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
         }
 
         return sections;
+    }
+    
+    private static int GetSchemeOrder(SchemeCode schemeCode)
+    {
+        return schemeCode switch
+        {
+            SchemeCode.TaxFreeChildcare => 1,
+            SchemeCode.UniversalCreditChildcare => 2,
+            SchemeCode.ThirtyHoursForWorkingFamilies => 3,
+            SchemeCode.FifteenHoursForDisadvantagedChildren => 4,
+            SchemeCode.FifteenHoursUniversal => 5,
+
+            _ => 999
+        };
     }
 
     private SchemeDetailsViewModel MapSchemeResult(
