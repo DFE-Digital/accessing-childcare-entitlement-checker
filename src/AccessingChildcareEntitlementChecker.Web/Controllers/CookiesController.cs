@@ -4,23 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
-public class CookiesController : Controller
+public class CookiesController(ICookiePolicyService cookiePolicyService) : Controller
 {
-    private readonly ICookiePolicyService _cookiePolicyService;
+    private readonly ICookiePolicyService _cookiePolicyService = cookiePolicyService;
 
     public const string Name = "Cookies";
 
-    public CookiesController(ICookiePolicyService cookiePolicyService)
-    {
-        _cookiePolicyService = cookiePolicyService;
-    }
-
     [HttpGet]
-    public ViewResult Cookies(bool? hasSetCookies)
+    public IActionResult Cookies(bool hasSetCookies = false)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
         var analyticsEnabled = _cookiePolicyService.IsAnalyticsEnabled;
         var cookiesViewModel = new CookiesViewModel(
-            hasSetCookies ?? false,
+            hasSetCookies,
             analyticsEnabled);
         return View(cookiesViewModel);
     }
@@ -34,19 +34,18 @@ public class CookiesController : Controller
         }
 
         _cookiePolicyService.IsAnalyticsEnabled = model.AnalyticsCookiesEnabled;
-
         return RedirectToAction(nameof(Cookies), Name, new { hasSetCookies = true });
     }
 
     [HttpPost]
-    public IActionResult BannerConsent(bool analyticsEnabled, string returnUrl)
+    public IActionResult BannerConsent(CookiesViewModel model)
     {
         if (!ModelState.IsValid)
         {
-            BadRequest();
+            return BadRequest();
         }
 
-        _cookiePolicyService.IsAnalyticsEnabled = analyticsEnabled;
-        return LocalRedirect(returnUrl);
+        _cookiePolicyService.IsAnalyticsEnabled = model.AnalyticsCookiesEnabled;
+        return NoContent();
     }
 }
