@@ -66,6 +66,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
         var alfieDob = today.AddYears(-1);
         var oliverDob = today.AddMonths(-1);
         var tomDob = today.AddYears(-3);
+        var timDob = today.AddYears(-3);
 
         var useFromDate = TermDateCalculator.GetNextTermStartDate(
             today.AddMonths(-6));
@@ -258,6 +259,47 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
                             SchemeCode = SchemeCode.FifteenHoursUniversal,
                             EligibleNow = true,
                             UseFromDate = GetFifteenHoursUniversalUseFrom(tomDob)
+                        }
+                    ]
+                },
+                // Child 9 - synthetic result containing every scheme to test display ordering
+                new ChildResultDto
+                {
+                    ChildId = "child-9",
+                    ChildName = "Tim",
+                    IsBorn = true,
+                    AgeInYears = 3,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursUniversal,
+                            EligibleNow = true,
+                            UseFromDate = GetFifteenHoursUniversalUseFrom(timDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursForDisadvantagedChildren,
+                            EligibleNow = true,
+                            ApplyFromDate = timDob.AddYears(2),
+                            UseFromDate = GetDisadvantagedTwoYearOldUseFrom(timDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
+                            EligibleNow = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(timDob),
+                            UseFromDate = GetThirtyHoursUseFrom(timDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.TaxFreeChildcare,
+                            EligibleNow = true
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.UniversalCreditChildcare,
+                            EligibleNow = true
                         }
                     ]
                 }
@@ -841,20 +883,30 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_OrdersSchemesInExpectedOrder()
+    public void Map_OrdersFundedHoursSchemesInExpectedOrder()
     {
         var response = CreateTestEntitlementResponse();
 
-        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-1"), false);
+        var child = response.ChildResults.Single(x => x.ChildId == "child-9");
 
-        var schemes = result.Sections.SelectMany(x => x.Schemes).ToList();
+        var result = _mapper.Map(child, false);
+
+        var fundedHoursSection = result.Sections.Single(
+            x => x.SectionType == SchemeSectionType.FundedChildCareHours);
 
         Assert.Collection(
-            schemes,
-            s => Assert.Equal(SchemeCode.TaxFreeChildcare, s.SchemeCode),
-            s => Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, s.SchemeCode),
-            s => Assert.Equal(SchemeCode.FifteenHoursUniversal, s.SchemeCode));
+            fundedHoursSection.Schemes,
+            scheme => Assert.Equal(
+                SchemeCode.ThirtyHoursForWorkingFamilies,
+                scheme.SchemeCode),
+            scheme => Assert.Equal(
+                SchemeCode.FifteenHoursForDisadvantagedChildren,
+                scheme.SchemeCode),
+            scheme => Assert.Equal(
+                SchemeCode.FifteenHoursUniversal,
+                scheme.SchemeCode));
     }
+
 
     [Theory]
     [InlineData(ParentalLeaveParty.User, "WhenToApply_TaxFreeChildcare_UserParentalLeave", "Starts_TaxFreeChildcare_UserParentalLeave", "Ends_TaxFreeChildcare_UserParentalLeave")]

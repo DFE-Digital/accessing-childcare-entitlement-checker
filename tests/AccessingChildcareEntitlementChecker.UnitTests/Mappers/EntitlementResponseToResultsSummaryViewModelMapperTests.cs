@@ -361,17 +361,14 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
 
         var result = _mapper.Map(response);
 
-        var child = result.Children.Single(x => x.Name == "Tim");
+        var child = result.Children.Single(x => x.ChildId == "child-9");
 
-        var schemes = child.Schemes;
-
-        Assert.Collection(
-            schemes,
-            s => Assert.Equal(SchemeCode.TaxFreeChildcare, s.SchemeCode),
-            s => Assert.Equal(SchemeCode.UniversalCreditChildcare, s.SchemeCode),
-            s => Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, s.SchemeCode),
-            s => Assert.Equal(SchemeCode.FifteenHoursForDisadvantagedChildren, s.SchemeCode),
-            s => Assert.Equal(SchemeCode.FifteenHoursUniversal, s.SchemeCode));
+        Assert.Collection(child.Schemes,
+            scheme => Assert.Equal(SchemeCode.TaxFreeChildcare, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.UniversalCreditChildcare, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.FifteenHoursForDisadvantagedChildren, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.FifteenHoursUniversal, scheme.SchemeCode));
     }
 
     [Fact]

@@ -79,6 +79,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
                 SectionType = SchemeSectionType.FundedChildCareHours,
                 ShowThirtyHourWarning = showWarning,
                 Schemes = fundedHours
+                    .OrderBy(s => GetSchemeOrder(s.SchemeCode))
                     .Select(x => MapSchemeResult(x, child))
                     .ToList()
             });
