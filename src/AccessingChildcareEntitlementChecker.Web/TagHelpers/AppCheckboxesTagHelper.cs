@@ -49,7 +49,7 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
         var errorMessageOptions = BuildError(fieldName, idPrefix);
         var text = For.Metadata.DisplayName ?? For.Name;
         var resolvedHintText = For.Metadata.Description;
-        var hint = string.IsNullOrEmpty(resolvedHintText) ? null : new HintOptions { Text = resolvedHintText };
+        var hint = string.IsNullOrWhiteSpace(resolvedHintText) ? null : new HintOptions { Text = resolvedHintText };
         var component = await componentGenerator.GenerateCheckboxesAsync(new CheckboxesOptions
         {
             IdPrefix = idPrefix,
