@@ -279,6 +279,6 @@ public class AppCheckboxesTagHelperTests
 
     public class FakeViewModel
     {
-        public List<ChildcareSupportOption> ChildcareSupport { get; set; } = new();
+        public List<ChildcareSupportOption> ChildcareSupport { get; set; } = [];
     }
 }
