@@ -18,7 +18,7 @@ public class CookiesController(ICookiePolicyService cookiePolicyService) : Contr
             return BadRequest();
         }
 
-        var analyticsEnabled = _cookiePolicyService.IsAnalyticsEnabled;
+        var analyticsEnabled = _cookiePolicyService.HasConsented;
         var cookiesViewModel = new CookiesViewModel(
             hasSetCookies ?? false,
             analyticsEnabled);
@@ -33,7 +33,7 @@ public class CookiesController(ICookiePolicyService cookiePolicyService) : Contr
             return View(model);
         }
 
-        _cookiePolicyService.IsAnalyticsEnabled = model.AnalyticsCookiesEnabled ?? false;
+        _cookiePolicyService.SetConsentStatus(model.AnalyticsCookiesEnabled ?? false);
         return RedirectToAction(nameof(Cookies), Name, new { hasSetCookies = true });
     }
 
@@ -45,7 +45,7 @@ public class CookiesController(ICookiePolicyService cookiePolicyService) : Contr
             return BadRequest();
         }
 
-        _cookiePolicyService.IsAnalyticsEnabled = model.AnalyticsCookiesEnabled ?? false;
+        _cookiePolicyService.SetConsentStatus(model.AnalyticsCookiesEnabled ?? false);
         return NoContent();
     }
 }

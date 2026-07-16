@@ -9,12 +9,12 @@
 }
 
 @section BodyStart {
-    @if (!CookiePolicyService.HasConsented)
+    @if (!CookiePolicyService.HasUserPreference)
     {
         <partial name="_CookieBanner" />
     }
 
-    @if (CookiePolicyService.IsAnalyticsEnabled)
+    @if (CookiePolicyService.HasConsented)
     {
         <partial name="_Analytics" />
     }

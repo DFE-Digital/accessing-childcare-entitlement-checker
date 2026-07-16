@@ -12,26 +12,12 @@ public class CookiePolicyService(IHttpContextAccessor httpContextAccessor) : ICo
     {
         get
         {
-            var context = GetContextOrThrow();
-            if (!context.Request.Cookies.TryGetValue(CookieName, out var value))
+            var context = httpContextAccessor.HttpContext;
+            if (context == null)
             {
                 return false;
             }
 
-            if (value != Enabled && value != Disabled)
-            {
-                return false;
-            }
-
-            return true;
-        }
-    }
-
-    public bool IsAnalyticsEnabled
-    {
-        get
-        {
-            var context = GetContextOrThrow();
             if (!context.Request.Cookies.TryGetValue(CookieName, out var value))
             {
                 return false;
@@ -39,25 +25,47 @@ public class CookiePolicyService(IHttpContextAccessor httpContextAccessor) : ICo
 
             return value == Enabled;
         }
-        set
-        {
-            var context = GetContextOrThrow();
-            var serialisedValue = value ? Enabled : Disabled;
-            context.Response.Cookies.Append(
-                CookieName,
-                serialisedValue,
-                new CookieOptions
-                {
-                    Path = "/",
-                    HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.Lax,
-                    IsEssential = true,
-                    Expires = DateTimeOffset.UtcNow.AddYears(1)
-                });
-        }
-
     }
 
-    private HttpContext GetContextOrThrow() => httpContextAccessor.HttpContext ?? throw new InvalidOperationException("No active HTTP context.");
+    public bool HasUserPreference
+    {
+        get
+        {
+            var context = httpContextAccessor.HttpContext;
+            if (context == null)
+            {
+                return false;
+            }
+
+            if (!context.Request.Cookies.TryGetValue(CookieName, out var value))
+            {
+                return false;
+            }
+
+            return value == Enabled || value == Disabled;
+        }
+    }
+
+    public void SetConsentStatus(bool consented)
+    {
+        var context = httpContextAccessor.HttpContext;
+        if (context == null)
+        {
+            return;
+        }
+
+        var serialisedValue = consented ? Enabled : Disabled;
+        context.Response.Cookies.Append(
+            CookieName,
+            serialisedValue,
+            new CookieOptions
+            {
+                Path = "/",
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Lax,
+                IsEssential = true,
+                Expires = DateTimeOffset.UtcNow.AddYears(1)
+            });
+    }
 }

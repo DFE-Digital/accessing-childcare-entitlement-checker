@@ -3,5 +3,6 @@
 public interface ICookiePolicyService
 {
     bool HasConsented { get; }
-    bool IsAnalyticsEnabled { get; set; }
+    bool HasUserPreference { get; }
+    void SetConsentStatus(bool consented);
 }
