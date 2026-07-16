@@ -8,15 +8,19 @@
     var serviceUrl = Url.Action(nameof(HomeController.Start), HomeController.Name);
 }
 
+@section Head {
+    @if (CookiePolicyService.HasConsented)
+    {
+        <partial name="_Analytics" />
+    }
+
+    @Html.GovUkFrontendStyleImports()
+}
+
 @section BodyStart {
     @if (!CookiePolicyService.HasUserPreference)
     {
         <partial name="_CookieBanner" />
-    }
-
-    @if (CookiePolicyService.HasConsented)
-    {
-        <partial name="_Analytics" />
     }
 }
 
