@@ -6,7 +6,7 @@ public class ResultsPageAccessibilityTests(ITestOutputHelper output) : JourneyPa
     public async Task ResultsPage_HasNoAccessibilityViolations()
     {
         await CompleteJourneyToResults();
-        await ExpectPathAndQuery($"/results");
+        await ExpectPathAndQuery("/results");
         await EvaluatePage();
     }
 }

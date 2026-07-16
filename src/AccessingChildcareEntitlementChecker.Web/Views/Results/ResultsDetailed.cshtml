@@ -134,21 +134,24 @@
                                 </dd>
                             </div>
                             
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">
-                                    @Localizer["Can be used with"]
-                                </dt>
-                                <dd class="govuk-summary-list__value">
-                                    <ul class="govuk-list govuk-list--bullet">
-                                        @foreach (var compatibleScheme in scheme.CanBeUsedWith)
-                                        {
-                                            <li>
-                                                @Localizer[$"{compatibleScheme}_Name"]
-                                            </li>
-                                        }
-                                    </ul>
-                                </dd>
-                            </div>
+                            @if (scheme.CanBeUsedWith.Count > 0)
+                            {
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        @Localizer["Can be used with"]
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul class="govuk-list govuk-list--bullet">
+                                            @foreach (var compatibleScheme in scheme.CanBeUsedWith)
+                                            {
+                                                <li>
+                                                    @Localizer[$"{compatibleScheme}_Name"]
+                                                </li>
+                                            }
+                                        </ul>
+                                    </dd>
+                                </div>
+                            }
                             
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">

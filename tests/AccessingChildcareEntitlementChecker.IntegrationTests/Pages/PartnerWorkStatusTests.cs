@@ -23,7 +23,9 @@ public class PartnerWorkStatusTests(IntegrationTestFixture factory) : IClassFixt
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink(backLinkUrl)
             .AssertNavigationBar()
-            .AssertBetaBanner();
+            .AssertBetaBanner()
+            .AssertCheckboxCount(3)
+            .AssertGroupHint("Select all that apply");
     }
 
     [Theory]

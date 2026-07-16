@@ -24,7 +24,7 @@ public class PartnerWorkStatusViewModel : IValidatableObject
 
     public string? ReturnTo { get; set; }
 
-    [Display(Name = "How would you describe your partner's work status?", Description = "Select all that apply.")]
+    [Display(Name = "How would you describe your partner's work status?", Description = "Select all that apply")]
     public List<WorkStatusOption> PartnerWorkStatus { get; set; } = [];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

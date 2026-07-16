@@ -1,6 +1,4 @@
-using System.Text.RegularExpressions;
 using Microsoft.Playwright;
-using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.A11yTests;
 
@@ -9,9 +7,18 @@ public abstract class JourneyPageBase : PageBase
     protected JourneyPageBase(ITestOutputHelper output) : base(output) { }
 
     private const string DefaultChildName = "Jack";
+
+    protected async Task StartJourney()
+    {
+        await Page.GotoAsync(BuildUrl("/"));
+        await ExpectPathAndQuery("/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Continue" }).ClickAsync();
+        await ExpectPathAndQuery("/where-do-you-live");
+    }
+
     protected async Task AnswerLocation(string location = "England")
     {
-        await Page.GotoAsync(BuildUrl("where-do-you-live"));
+        await ExpectPathAndQuery("/where-do-you-live");
         await Page.GetByLabel(location).CheckAsync();
         await Continue();
         await ExpectPathAndQuery("/children/add-child-details");
@@ -19,20 +26,19 @@ public abstract class JourneyPageBase : PageBase
 
     protected async Task<Guid> AddChild(string childName = DefaultChildName)
     {
-        await Page.GotoAsync(BuildUrl("children/add-child-details"));
+        await ExpectPathAndQuery("/children/add-child-details");
         await Page.GetByLabel("What name should we use for this child?").FillAsync(childName);
         await Continue();
+        var childId = ExtractChildIdFromCurrentUrl();
+        await ExpectPathAndQuery($"/children/{childId}/has-the-child-been-born");
 
-        var uri = new Uri(Page.Url);
-
-        Assert.StartsWith("/children/", uri.AbsolutePath);
-        Assert.EndsWith("/has-the-child-been-born", uri.AbsolutePath);
-
-        return ExtractChildIdFromCurrentUrl();
+        return childId;
     }
 
     protected async Task AnswerChildHasBeenBorn(Guid childId, bool hasBeenBorn = true)
     {
+        await ExpectPathAndQuery($"/children/{childId}/has-the-child-been-born");
+
         if (hasBeenBorn)
         {
             await Page.GetByLabel("Yes").CheckAsync();
@@ -49,6 +55,17 @@ public abstract class JourneyPageBase : PageBase
 
     protected async Task EnterChildDateOfBirth(Guid childId, string day = "1", string month = "1", string year = "2024")
     {
+        await ExpectPathAndQuery($"/children/{childId}/childs-date-of-birth");
+        await Page.GetByLabel("Day").FillAsync(day);
+        await Page.GetByLabel("Month").FillAsync(month);
+        await Page.GetByLabel("Year").FillAsync(year);
+        await Continue();
+        await ExpectPathAndQuery($"/children/{childId}/child-benefits");
+    }
+
+    protected async Task EnterExpectedChildDueDate(Guid childId, string day = "1", string month = "1", string year = "2027")
+    {
+        await ExpectPathAndQuery($"/children/{childId}/expectant-childs-due-date");
         await Page.GetByLabel("Day").FillAsync(day);
         await Page.GetByLabel("Month").FillAsync(month);
         await Page.GetByLabel("Year").FillAsync(year);
@@ -58,19 +75,171 @@ public abstract class JourneyPageBase : PageBase
 
     protected async Task SelectChildSupportOptions(Guid childId)
     {
+        await ExpectPathAndQuery($"/children/{childId}/child-benefits");
         await Page.GetByLabel("No, none of these apply").CheckAsync();
         await Continue();
-        await ExpectPathAndQuery($@"/children/check-childs-details?childId={childId}");
+        await ExpectPathAndQuery($"/children/check-childs-details?childId={childId}");
     }
 
-    protected async Task<Guid> CompleteBornChildToSummary(string childName = DefaultChildName)
+    protected async Task AnswerUserAge(string ageOption = "21 or over")
     {
-        var childId = await AddChild(childName);
-        await AnswerChildHasBeenBorn(childId);
-        await EnterChildDateOfBirth(childId);
-        await SelectChildSupportOptions(childId);
+        await ExpectPathAndQuery("/age/parent-age");
+        await Page.GetByLabel(ageOption).CheckAsync();
+        await Continue();
 
-        return childId;
+        await ExpectPathAndQuery("/nationality");
+    }
+
+    protected async Task AnswerPartnerAge(string ageOption = "21 or over")
+    {
+        await ExpectPathAndQuery("/age/partner-age");
+        await Page.GetByLabel(ageOption).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/work-status/work-partner");
+    }
+
+    protected async Task AnswerUserNationality(string nationalityOption = "British or Irish citizen")
+    {
+        await ExpectPathAndQuery("/nationality");
+        await Page.GetByLabel(nationalityOption).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/work-status/work");
+    }
+
+    protected async Task AnswerPartnerNationality(string nationalityOption = "British or Irish citizen")
+    {
+        await ExpectPathAndQuery("/nationality/nationality-partner");
+        await Page.GetByLabel(nationalityOption).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/work-status/work-partner");
+    }
+
+    protected async Task AnswerUserNationalityCitizenOfEU(string nationalityOption = "Citizen of an EU country, EEA country or Switzerland")
+    {
+        await ExpectPathAndQuery("/nationality");
+        await Page.GetByLabel(nationalityOption).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/nationality/settled-status");
+    }
+
+    protected async Task AnswerUserPaidWorkStatus(string paidWorkStatus = "Yes")
+    {
+        await ExpectPathAndQuery("/work-status/work");
+        await Page.GetByLabel(paidWorkStatus, new() { Exact = true }).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/work-status/work-status");
+    }
+
+    protected async Task AnswerPartnerPaidWorkStatus(string paidWorkStatus = "Yes")
+    {
+        await ExpectPathAndQuery("/work-status/work-partner");
+        await Page.GetByLabel(paidWorkStatus, new() { Exact = true }).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/work-status/work-status-partner");
+    }
+
+    protected async Task AnswerUserIsOnParentalLeave(string paidWorkStatus = "Yes, but I am on parental leave")
+    {
+        await ExpectPathAndQuery("/work-status/work");
+        await Page.GetByLabel(paidWorkStatus).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/leave/parental-leave");
+    }
+
+    protected async Task AnswerUserWorkStatus(string workStatus = "Paid employment")
+    {
+        await ExpectPathAndQuery("/work-status/work-status");
+        await Page.GetByLabel(workStatus).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/earnings/wage");
+    }
+
+    protected async Task AnswerPartnerWorkStatus(string workStatus = "Paid employment")
+    {
+        await ExpectPathAndQuery("/work-status/work-status-partner");
+        await Page.GetByLabel(workStatus).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/earnings/wage-partner");
+    }
+
+    protected async Task AnswerUserWorkStatusSelfEmployed(string workStatus = "Self-employed")
+    {
+        await ExpectPathAndQuery("/work-status/work-status");
+        await Page.GetByLabel(workStatus).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/work-status/self-employed");
+    }
+
+    protected async Task AnswerUserWeeklyEarnings(string weeklyEarnings = "Yes")
+    {
+        await ExpectPathAndQuery("/earnings/wage");
+        await Page.GetByLabel(weeklyEarnings).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/earnings/adjusted-net-income");
+    }
+
+    protected async Task AnswerPartnerWeeklyEarnings(string weeklyEarnings = "Yes")
+    {
+        await ExpectPathAndQuery("/earnings/wage-partner");
+        await Page.GetByLabel(weeklyEarnings).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/earnings/adjusted-net-income-partner");
+    }
+
+    protected async Task AnswerUserYearlyEarnings(string yearlyEarnings = "No")
+    {
+        await ExpectPathAndQuery("/earnings/adjusted-net-income");
+        await Page.GetByLabel(yearlyEarnings).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/benefits/universal-credit");
+    }
+
+    protected async Task AnswerPartnerYearlyEarnings(string yearlyEarnings = "No")
+    {
+        await ExpectPathAndQuery("/earnings/adjusted-net-income-partner");
+        await Page.GetByLabel(yearlyEarnings).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/Partner/PartnerBenefits");
+    }
+
+    protected async Task AnswerUserUniversalCredit(string universalCredit = "No")
+    {
+        await ExpectPathAndQuery("/benefits/universal-credit");
+        await Page.GetByLabel(universalCredit).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/benefits/benefits");
+    }
+
+    protected async Task AnswerUserBenefits(string benefits = "No")
+    {
+        await ExpectPathAndQuery("/benefits/benefits");
+        await Page.GetByLabel(benefits).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/benefits/childcare-support");
+    }
+
+    protected async Task AnswerPartnerBenefits(string benefits = "No")
+    {
+        await ExpectPathAndQuery("/Partner/PartnerBenefits");
+        await Page.GetByLabel(benefits).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/benefits/childcare-support-partner");
+    }
+
+    protected async Task AnswerUserChildcareSupport(string childcareSupport = "No")
+    {
+        await ExpectPathAndQuery("/benefits/childcare-support");
+        await Page.GetByLabel(childcareSupport).CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/partner");
+    }
+
+    protected async Task AnswerUserHasPartner(bool hasPartner)
+    {
+        await ExpectPathAndQuery("/partner");
+        await Page.GetByLabel(hasPartner ? "Yes" : "No").CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery(hasPartner ? "/age/partner-age" : "/check-your-answers");
     }
 
     protected Guid ExtractChildIdFromCurrentUrl()
@@ -90,145 +259,260 @@ public abstract class JourneyPageBase : PageBase
         return childId;
     }
 
-    protected async Task AnswerUserAge(string ageOption = "21 or over")
+    protected async Task<Guid> GoToHasChildBeenBornPage(string childName = DefaultChildName)
     {
-        await Page.GotoAsync(BuildUrl("/age/parent-age"));
-        await Page.GetByLabel(ageOption).CheckAsync();
-        await Continue();
+        await StartJourney();
+        await AnswerLocation();
+
+        var childId = await AddChild(childName);
+
+        await ExpectPathAndQuery($"/children/{childId}/has-the-child-been-born");
+
+        return childId;
     }
 
-    protected async Task AnswerPartnerAge(string ageOption = "21 or over")
+    protected async Task<Guid> GoToChildDateOfBirthPage(string childName = DefaultChildName)
     {
-        await Page.GotoAsync(BuildUrl("/age/partner-age"));
-        await Page.GetByLabel(ageOption).CheckAsync();
-        await Continue();
+        var childId = await GoToHasChildBeenBornPage(childName);
+
+        await AnswerChildHasBeenBorn(childId);
+
+        await ExpectPathAndQuery($"/children/{childId}/childs-date-of-birth");
+
+        return childId;
     }
 
-    protected async Task AnswerUserNationality(string nationalityOption = "British or Irish citizen")
+    protected async Task<Guid> GoToExpectedChildDueDatePage(string childName = DefaultChildName)
     {
-        await Page.GotoAsync(BuildUrl("/nationality"));
-        await Page.GetByLabel(nationalityOption).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/work-status/work");
+        var childId = await GoToHasChildBeenBornPage(childName);
+
+        await AnswerChildHasBeenBorn(childId, false);
+
+        await ExpectPathAndQuery($"/children/{childId}/expectant-childs-due-date");
+
+        return childId;
     }
 
-    protected async Task AnswerUserNationalityCitizenOfEU(string nationalityOption = "Citizen of an EU country, EEA country or Switzerland")
+    protected async Task<Guid> CompleteBornChildToSummary(string childName = DefaultChildName)
     {
-        await Page.GotoAsync(BuildUrl("/nationality"));
-        await Page.GetByLabel(nationalityOption).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/nationality/settled-status");
+        var childId = await GoToChildDateOfBirthPage(childName);
+
+        await EnterChildDateOfBirth(childId);
+        await SelectChildSupportOptions(childId);
+
+        return childId;
     }
 
-    protected async Task AnswerUserPaidWorkStatus(string paidWorkStatus = "Yes")
+    protected async Task<Guid> GoToUserAgePage()
     {
-        await Page.GotoAsync(BuildUrl("/work-status/work"));
-        await Page.GetByLabel(paidWorkStatus, new() { Exact = true }).CheckAsync();
+        var childId = await CompleteBornChildToSummary();
+        await ExpectPathAndQuery($"/children/check-childs-details?childId={childId}");
         await Continue();
-        await ExpectPathAndQuery($"/work-status/work-status");
+        await ExpectPathAndQuery("/age/parent-age");
+
+        return childId;
     }
 
-    protected async Task AnswerPartnerPaidWorkStatus(string paidWorkStatus = "Yes")
+    protected async Task<Guid> GoToUserNationalityPage()
     {
-        await Page.GotoAsync(BuildUrl("/work-status/work-partner"));
-        await Page.GetByLabel(paidWorkStatus, new() { Exact = true }).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/work-status/work-status-partner");
+        var childId = await GoToUserAgePage();
+
+        await AnswerUserAge();
+        await ExpectPathAndQuery("/nationality");
+
+        return childId;
     }
 
-    protected async Task AnswerUserIsOnParentalLeave(string paidWorkStatus = "Yes, but I am on parental leave")
+    protected async Task<Guid> GoToUserSettledStatusPage()
     {
-        await Page.GotoAsync(BuildUrl("/work-status/work"));
-        await Page.GetByLabel(paidWorkStatus).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/leave/parental-leave");
+        var childId = await GoToUserNationalityPage();
+        await AnswerUserNationalityCitizenOfEU();
+        await ExpectPathAndQuery("/nationality/settled-status");
+        return childId;
     }
 
-    protected async Task AnswerUserWorkStatus(string workStatus = "Paid employment")
+    protected async Task<Guid> GoToUserPaidWorkPage()
     {
-        await Page.GotoAsync(BuildUrl("/work-status/work-status"));
-        await Page.GetByLabel(workStatus).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/earnings/wage");
+        var childId = await GoToUserNationalityPage();
+
+        await AnswerUserNationality();
+        await ExpectPathAndQuery("/work-status/work");
+
+        return childId;
     }
 
-    protected async Task AnswerPartnerWorkStatus(string workStatus = "Paid employment")
+    protected async Task<Guid> GoToUserParentalLeavePage()
     {
-        await Page.GotoAsync(BuildUrl("/work-status/work-status-partner"));
-        await Page.GetByLabel(workStatus).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/earnings/wage-partner");
+        var childId = await GoToUserPaidWorkPage();
+
+        await AnswerUserIsOnParentalLeave();
+        await ExpectPathAndQuery("/leave/parental-leave");
+
+        return childId;
     }
 
-    protected async Task AnswerUserWorkStatusSelfEmployed(string workStatus = "Self-employed")
+    protected async Task<Guid> GoToUserWorkStatusPage()
     {
-        await Page.GotoAsync(BuildUrl("/work-status/work-status"));
-        await Page.GetByLabel(workStatus).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/work-status/self-employed");
+        var childId = await GoToUserPaidWorkPage();
+
+        await AnswerUserPaidWorkStatus();
+        await ExpectPathAndQuery("/work-status/work-status");
+
+        return childId;
     }
 
-    protected async Task AnswerUserWeeklyEarnings(string weeklyEarnings = "Yes")
+    protected async Task<Guid> GoToUserSelfEmployedDurationPage()
     {
-        await Page.GotoAsync(BuildUrl("/earnings/wage"));
-        await Page.GetByLabel(weeklyEarnings).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/earnings/adjusted-net-income");
+        var childId = await GoToUserWorkStatusPage();
+        await AnswerUserWorkStatusSelfEmployed();
+        await ExpectPathAndQuery("/work-status/self-employed");
+        return childId;
     }
 
-    protected async Task AnswerUserYearlyEarnings(string yearlyEarnings = "No")
+    protected async Task<Guid> GoToUserWeeklyEarningsPage()
     {
-        await Page.GotoAsync(BuildUrl("/earnings/adjusted-net-income"));
-        await Page.GetByLabel(yearlyEarnings).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/benefits/universal-credit");
+        var childId = await GoToUserWorkStatusPage();
+
+        await AnswerUserWorkStatus();
+        await ExpectPathAndQuery("/earnings/wage");
+
+        return childId;
     }
 
-    protected async Task AnswerUserUniversalCredit(string universalCredit = "No")
+    protected async Task<Guid> GoToUserYearlyEarningsPage()
     {
-        await Page.GotoAsync(BuildUrl("/benefits/universal-credit"));
-        await Page.GetByLabel(universalCredit).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/benefits/benefits");
+        var childId = await GoToUserWeeklyEarningsPage();
+
+        await AnswerUserWeeklyEarnings();
+        await ExpectPathAndQuery("/earnings/adjusted-net-income");
+
+        return childId;
     }
 
-    protected async Task AnswerUserBenefits(string benefits = "No")
+    protected async Task<Guid> GoToUserUniversalCreditPage()
     {
-        await Page.GotoAsync(BuildUrl("/benefits/benefits"));
-        await Page.GetByLabel(benefits).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/benefits/childcare-support");
+        var childId = await GoToUserYearlyEarningsPage();
+
+        await AnswerUserYearlyEarnings();
+        await ExpectPathAndQuery("/benefits/universal-credit");
+
+        return childId;
     }
 
-    protected async Task AnswerUserChildcareSupport(string childcareSupport = "No")
+    protected async Task<Guid> GoToUserBenefitsPage()
     {
-        await Page.GotoAsync(BuildUrl("/benefits/childcare-support"));
-        await Page.GetByLabel(childcareSupport).CheckAsync();
-        await Continue();
-        await ExpectPathAndQuery($"/partner");
+        var childId = await GoToUserUniversalCreditPage();
+
+        await AnswerUserUniversalCredit();
+        await ExpectPathAndQuery("/benefits/benefits");
+
+        return childId;
     }
 
-    protected async Task AnswerUserHasPartner(bool hasPartner)
+    protected async Task<Guid> GoToUserChildcareSupportPage()
     {
-        await Page.GotoAsync(BuildUrl("/partner"));
-        await Page.GetByLabel(hasPartner ? "Yes" : "No").CheckAsync();
-        await Continue();
+        var childId = await GoToUserBenefitsPage();
+
+        await AnswerUserBenefits();
+        await ExpectPathAndQuery("/benefits/childcare-support");
+
+        return childId;
     }
+
+    protected async Task<Guid> GoToUserChildcareVouchersPage()
+    {
+        var childId = await GoToUserChildcareSupportPage();
+        await Page.GetByLabel("Childcare vouchers").CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/benefits/childcare-vouchers");
+        return childId;
+    }
+
+    protected async Task<Guid> GoToHasPartnerPage()
+    {
+        var childId = await GoToUserChildcareSupportPage();
+
+        await AnswerUserChildcareSupport();
+        await ExpectPathAndQuery("/partner");
+
+        return childId;
+    }
+
+    protected async Task<Guid> GoToPartnerAgePage()
+    {
+        var childId = await GoToHasPartnerPage();
+
+        await AnswerUserHasPartner(true);
+        await ExpectPathAndQuery("/age/partner-age");
+
+        return childId;
+    }
+    protected async Task<Guid> GoToPartnerPaidWorkStatusPage()
+    {
+        var childId = await GoToPartnerAgePage();
+        await AnswerPartnerAge();
+        await ExpectPathAndQuery("/work-status/work-partner");
+
+        return childId;
+    }
+
+    protected async Task<Guid> GoToPartnerWorkStatusPage()
+    {
+        var childId = await GoToPartnerPaidWorkStatusPage();
+        await AnswerPartnerPaidWorkStatus();
+        await ExpectPathAndQuery("/work-status/work-status-partner");
+        return childId;
+    }
+
+    protected async Task<Guid> GoToPartnerWeeklyEarningsPage()
+    {
+        var childId = await GoToPartnerPaidWorkStatusPage();
+        await AnswerPartnerPaidWorkStatus();
+        await AnswerPartnerWorkStatus();
+        await ExpectPathAndQuery("/earnings/wage-partner");
+        return childId;
+    }
+
+    protected async Task<Guid> GoToPartnerYearlyEarningsPage()
+    {
+        var childId = await GoToPartnerWeeklyEarningsPage();
+        await AnswerPartnerWeeklyEarnings();
+        await ExpectPathAndQuery("/earnings/adjusted-net-income-partner");
+        return childId;
+    }
+
+    protected async Task<Guid> GoToPartnerBenefitsPage()
+    {
+        var childId = await GoToPartnerYearlyEarningsPage();
+        await AnswerPartnerYearlyEarnings();
+        await ExpectPathAndQuery("/Partner/PartnerBenefits");
+        return childId;
+    }
+
+    protected async Task<Guid> GoToPartnerChildcareSupportPage()
+    {
+        var childId = await GoToPartnerBenefitsPage();
+        await AnswerPartnerBenefits();
+        await ExpectPathAndQuery("/benefits/childcare-support-partner");
+        return childId;
+    }
+
+    protected async Task<Guid> GoToPartnerChildcareVouchersPage()
+    {
+        var childId = await GoToPartnerChildcareSupportPage();
+        await Page.GetByLabel("Childcare vouchers").CheckAsync();
+        await Continue();
+        await ExpectPathAndQuery("/benefits/childcare-vouchers-partner");
+        return childId;
+    }
+
 
     protected async Task<Guid> CompleteJourneyToCheckYourAnswers()
     {
-        await AnswerLocation();
-        var childId = await CompleteBornChildToSummary();
-        await AnswerUserAge();
-        await AnswerUserNationality();
-        await AnswerUserPaidWorkStatus();
-        await AnswerUserWorkStatus();
-        await AnswerUserWeeklyEarnings();
-        await AnswerUserYearlyEarnings();
-        await AnswerUserUniversalCredit();
-        await AnswerUserBenefits();
-        await AnswerUserChildcareSupport();
+        var childId = await GoToHasPartnerPage();
+
         await AnswerUserHasPartner(false);
+        await ExpectPathAndQuery("/check-your-answers");
 
         return childId;
     }
@@ -236,8 +520,9 @@ public abstract class JourneyPageBase : PageBase
     protected async Task<Guid> CompleteJourneyToResults()
     {
         var childId = await CompleteJourneyToCheckYourAnswers();
+
         await Continue();
-        await ExpectPathAndQuery($"/results");
+        await ExpectPathAndQuery("/results");
 
         return childId;
     }
@@ -245,10 +530,14 @@ public abstract class JourneyPageBase : PageBase
     protected async Task<Guid> CompleteJourneyToResultsDetailed()
     {
         var childId = await CompleteJourneyToResults();
-        await Page.GetByRole(AriaRole.Link, new() { Name = $"View detailed information about {DefaultChildName}'s childcare support" }).ClickAsync();
+
+        await Page.GetByRole(
+                AriaRole.Link,
+                new() { Name = $"View detailed information about {DefaultChildName}'s childcare support" })
+            .ClickAsync();
+
         await ExpectPathAndQuery($"/Results/ResultsDetailed?childId={childId}");
 
         return childId;
     }
-
 }

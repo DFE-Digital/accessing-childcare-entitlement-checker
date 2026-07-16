@@ -34,7 +34,8 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
         doc.AssertCheckboxCount(6)
             .AssertBackLink(backLinkUrl)
             .AssertNavigationBar()
-            .AssertBetaBanner();
+            .AssertBetaBanner()
+            .AssertGroupHint("Select all that apply");
     }
 
     [Theory]

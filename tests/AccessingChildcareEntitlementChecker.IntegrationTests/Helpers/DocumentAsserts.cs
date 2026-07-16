@@ -1,6 +1,5 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using System.Reflection.PortableExecutable;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 
@@ -119,6 +118,14 @@ public static class DocumentAsserts
     {
         var cookieBanner = document.QuerySelector(".govuk-cookie-banner");
         Assert.Null(cookieBanner);
+        return document;
+    }
+
+    public static IDocument AssertGroupHint(this IDocument document, string expectedHint)
+    {
+        var hint = document.QuerySelector(".govuk-fieldset > .govuk-hint");
+        Assert.NotNull(hint);
+        Assert.Equal(expectedHint, hint.TextContent?.Trim());
         return document;
     }
 

@@ -62,9 +62,9 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
         var jackDob = today.AddMonths(-6);
         var emilyDob = today.AddYears(-1);
         var miaDob = today.AddYears(-2);
-        var alfieDob = today.AddYears(-1);
         var oliverDob = today.AddMonths(-1);
         var tomDob = today.AddYears(-3);
+        var timDob = today.AddYears(-3);
 
         var useFromDate = TermDateCalculator.GetNextTermStartDate(
             today.AddMonths(-6));
@@ -254,6 +254,47 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
                             UseFromDate = GetFifteenHoursUniversalUseFrom(tomDob)
                         }
                     ]
+                },
+                // Child 9 - synthetic result containing every scheme to test display ordering
+                new ChildResultDto
+                {
+                    ChildId = "child-9",
+                    ChildName = "Tim",
+                    IsBorn = true,
+                    AgeInYears = 3,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursUniversal,
+                            EligibleNow = true,
+                            UseFromDate = GetFifteenHoursUniversalUseFrom(timDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursForDisadvantagedChildren,
+                            EligibleNow = true,
+                            ApplyFromDate = timDob.AddYears(2),
+                            UseFromDate = GetDisadvantagedTwoYearOldUseFrom(timDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
+                            EligibleNow = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(timDob),
+                            UseFromDate = GetThirtyHoursUseFrom(timDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.TaxFreeChildcare,
+                            EligibleNow = true
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.UniversalCreditChildcare,
+                            EligibleNow = true
+                        }
+                    ]
                 }
             ]
         };
@@ -320,15 +361,15 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
 
         var result = _mapper.Map(response);
 
-        var schemes = result.Children[0].Schemes;
+        var child = result.Children.Single(x => x.ChildId == "child-9");
 
-        Assert.Collection(
-            schemes,
-            s => Assert.Equal(SchemeCode.TaxFreeChildcare, s.SchemeCode),
-            s => Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, s.SchemeCode),
-            s => Assert.Equal(SchemeCode.FifteenHoursUniversal, s.SchemeCode));
+        Assert.Collection(child.Schemes,
+            scheme => Assert.Equal(SchemeCode.TaxFreeChildcare, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.UniversalCreditChildcare, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.FifteenHoursForDisadvantagedChildren, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.FifteenHoursUniversal, scheme.SchemeCode));
     }
-
 
     [Fact]
     public void Map_ShowsThirtyHourWarning_WhenThirtyHoursAndFifteenHoursUniversalPresent()
