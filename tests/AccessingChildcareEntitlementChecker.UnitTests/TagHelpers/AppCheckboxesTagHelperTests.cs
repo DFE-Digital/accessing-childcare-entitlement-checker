@@ -156,6 +156,33 @@ public class AppCheckboxesTagHelperTests
     }
 
     [Fact]
+    public async Task ProcessAsync_With_Enum_Collection_And_No_Hint_Does_Not_Generate_Hint()
+    {
+        var fakeViewModel = new FakeViewModel
+        {
+            ChildcareSupport = []
+        };
+
+        var modelMetadata = _metadataProvider.GetMetadataForProperty(
+            typeof(FakeViewModel),
+            nameof(FakeViewModel.ChildcareSupport));
+
+        var modelExpression = new ModelExpression(
+            nameof(FakeViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, modelMetadata, fakeViewModel.ChildcareSupport));
+
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
+        {
+            For = modelExpression,
+            ViewContext = _viewContext
+        };
+
+        await helper.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+
+        Assert.Null(_generatedOptions?.Hint);
+    }
+
+    [Fact]
     public async Task ProcessAsync_With_Enum_Collection_And_Legend_Generates_Legend()
     {
         var modelExpression = new ModelExpression(
@@ -248,5 +275,10 @@ public class AppCheckboxesTagHelperTests
         public override IHtmlContent GetContent() => HtmlString.Empty;
 
         public override void ApplyToTagHelper(TagHelperOutput output) => output.SuppressOutput();
+    }
+
+    public class FakeViewModel
+    {
+        public List<ChildcareSupportOption> ChildcareSupport { get; set; } = new();
     }
 }
