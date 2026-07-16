@@ -1,6 +1,5 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using System.Reflection.PortableExecutable;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 
@@ -105,6 +104,14 @@ public static class DocumentAsserts
         const string ExpectedHref = "https://dferesearch.eu.qualtrics.com/jfe/preview/previewId/a14e158a-6737-4936-b6cc-9b495f8a4dea/SV_8eotBOVwAQbdP8y?Q_CHL=preview&Q_SurveyVersionID=current";
         Assert.Equal(ExpectedHref, href);
 
+        return document;
+    }
+
+    public static IDocument AssertGroupHint(this IDocument document, string expectedHint)
+    {
+        var hint = document.QuerySelector(".govuk-fieldset > .govuk-hint");
+        Assert.NotNull(hint);
+        Assert.Equal(expectedHint, hint.TextContent?.Trim());
         return document;
     }
 

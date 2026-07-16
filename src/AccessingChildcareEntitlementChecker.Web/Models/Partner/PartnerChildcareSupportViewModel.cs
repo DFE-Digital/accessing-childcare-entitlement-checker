@@ -24,7 +24,7 @@ public class PartnerChildcareSupportViewModel : IValidatableObject
 
     public string? ReturnTo { get; set; }
 
-    [Display(Name = "Does your partner already get any of these to help pay for childcare?", Description = "Select all that apply.")]
+    [Display(Name = "Does your partner already get any of these to help pay for childcare?", Description = "Select all that apply")]
     public List<PartnerChildcareSupportOption> PartnerChildcareSupport { get; set; } = [];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

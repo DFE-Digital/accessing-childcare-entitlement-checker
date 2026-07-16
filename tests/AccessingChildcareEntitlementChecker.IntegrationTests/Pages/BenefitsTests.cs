@@ -32,7 +32,8 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
         doc.AssertCheckboxCount(9)
             .AssertBackLink(backLinkUrl)
             .AssertNavigationBar()
-            .AssertBetaBanner();
+            .AssertBetaBanner()
+            .AssertGroupHint("Select all that apply");
     }
 
     [Theory]

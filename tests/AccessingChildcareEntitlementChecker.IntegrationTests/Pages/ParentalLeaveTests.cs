@@ -34,7 +34,8 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
         doc.AssertCheckboxCount(2)
             .AssertBackLink(backLinkUrl)
             .AssertNavigationBar()
-            .AssertBetaBanner();
+            .AssertBetaBanner()
+            .AssertGroupHint("Select all that apply");
     }
 
     [Theory]

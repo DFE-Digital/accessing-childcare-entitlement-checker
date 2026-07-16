@@ -45,18 +45,4 @@ public static class HtmlHelperExtensions
             .GetCustomAttribute<DisplayAttribute>()?
             .GetDescription();
     }
-
-    public static string? GetDescriptionFor<TModel, TValue>(
-        this IHtmlHelper<TModel> html,
-        Expression<Func<TModel, TValue>> expression)
-    {
-        var provider = html.ViewContext.HttpContext.RequestServices
-            .GetRequiredService<IModelExpressionProvider>();
-
-        var modelExpression = provider.CreateModelExpression(
-            html.ViewData,
-            expression);
-
-        return modelExpression.Metadata.Description;
-    }
 }

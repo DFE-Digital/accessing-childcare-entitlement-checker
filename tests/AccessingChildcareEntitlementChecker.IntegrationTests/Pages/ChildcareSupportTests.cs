@@ -25,7 +25,8 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
         doc.AssertCheckboxCount(3)
             .AssertBackLink(backLinkUrl)
             .AssertNavigationBar()
-            .AssertBetaBanner();
+            .AssertBetaBanner()
+            .AssertGroupHint("Select all that apply");
     }
 
     [Theory]
