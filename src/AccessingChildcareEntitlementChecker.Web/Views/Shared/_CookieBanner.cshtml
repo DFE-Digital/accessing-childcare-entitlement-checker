@@ -1,17 +1,9 @@
-﻿@using System.Text.Json
-@using AccessingChildcareEntitlementChecker.Web.Controllers
-@using Microsoft.AspNetCore.Antiforgery
+﻿@using AccessingChildcareEntitlementChecker.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
-@inject IAntiforgery Antiforgery
 
 @{
-    var antiforgeryToken = Antiforgery.GetAndStoreTokens(Context).RequestToken
-        ?? throw new InvalidOperationException("Could not generate antiforgery token.");
-    var consentUrl = Url.Action(
-        nameof(CookiesController.BannerConsent),
-        CookiesController.Name);
     var heading = Localizer["Cookies on Check if you are eligible for childcare funding"];
 }
 
@@ -74,57 +66,3 @@
         </govuk-cookie-banner-message-actions>
     </govuk-cookie-banner-message>
 </govuk-cookie-banner>
-
-<script type="text/javascript" add-nonce="true">
-    const antiforgeryToken = @Html.Raw(JsonSerializer.Serialize(antiforgeryToken));
-    const consentUrl = @Html.Raw(JsonSerializer.Serialize(consentUrl));
-
-    async function saveCookiePreference(enabled) {
-        const body = new URLSearchParams({
-            AnalyticsCookiesEnabled: enabled.toString(),
-            __RequestVerificationToken: antiforgeryToken
-        });
-
-        const response = await fetch(consentUrl, {
-            method: "POST",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body
-        });
-
-        if (!response.ok) {
-            throw new Error(
-                `Saving cookie preference failed with status ${response.status}.`);
-        }
-    }
-
-    async function acceptOrRejectClick(enabled) {
-        await saveCookiePreference(enabled);
-
-        document
-            .getElementById("unselected-cookies-banner")
-            .setAttribute("hidden", "hidden");
-
-        document
-            .getElementById(enabled ? "accepted-cookies-banner" : "rejected-cookies-banner")
-            .removeAttribute("hidden");
-    }
-
-    var cookiesBanner = document.getElementById("cookies-banner");
-    if (cookiesBanner !== null) {
-        cookiesBanner.removeAttribute("hidden");
-
-        var acceptButton = document.getElementById("accept-cookies");
-        acceptButton.addEventListener("click", (e) => { e.preventDefault(); acceptOrRejectClick(true); });
-
-        var rejectButton = document.getElementById("reject-cookies");
-        rejectButton.addEventListener("click", (e) => { e.preventDefault(); acceptOrRejectClick(false); });
-
-        var hideCookiesButtons = document.getElementsByClassName("hide-cookies");
-        for (var i = 0; i < hideCookiesButtons.length; i++) {
-            hideCookiesButtons[i].addEventListener("click", () => cookiesBanner.setAttribute("hidden", "hidden"));
-        }
-    }
-</script>
