@@ -1,7 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ComponentGeneration;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -25,9 +24,6 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
 
     [HtmlAttributeName("legend")]
     public IHtmlContent? Legend { get; set; }
-
-    //[HtmlAttributeName("hint")]
-    //public string? Hint { get; set; }
 
     [ViewContext]
     [HtmlAttributeNotBound]
