@@ -26,8 +26,8 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
     [HtmlAttributeName("legend")]
     public IHtmlContent? Legend { get; set; }
 
-    [HtmlAttributeName("hint")]
-    public string? Hint { get; set; }
+    //[HtmlAttributeName("hint")]
+    //public string? Hint { get; set; }
 
     [ViewContext]
     [HtmlAttributeNotBound]
@@ -52,7 +52,8 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
         var items = BuildCheckboxItems(fieldName, modelType);
         var errorMessageOptions = BuildError(fieldName, idPrefix);
         var text = For.Metadata.DisplayName ?? For.Name;
-        var hint = Hint is null ? null : new HintOptions { Text = Hint };
+        var resolvedHintText = For.Metadata.Description;
+        var hint = string.IsNullOrEmpty(resolvedHintText) ? null : new HintOptions { Text = resolvedHintText };
         var component = await componentGenerator.GenerateCheckboxesAsync(new CheckboxesOptions
         {
             IdPrefix = idPrefix,

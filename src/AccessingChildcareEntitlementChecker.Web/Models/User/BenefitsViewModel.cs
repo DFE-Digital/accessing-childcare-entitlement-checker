@@ -24,7 +24,7 @@ public class BenefitsViewModel : IValidatableObject
 
     public string? ReturnTo { get; set; }
 
-    [Display(Name = "Do you get any of these benefits?", Description = "Select all that apply.")]
+    [Display(Name = "Do you get any of these benefits?", Description = "Select all that apply")]
     public List<BenefitsOption> Benefits { get; set; } = [];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

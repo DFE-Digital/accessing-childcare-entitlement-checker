@@ -20,7 +20,6 @@
             <input type="hidden" asp-for="ReturnTo" />
             <app-checkboxes for="ChildSupportOptions"
                                  legend="@Localizer["Does {0} get any of the following support?", Model.ChildName]"
-                                 hint="@Html.GetDescriptionFor(m => m.ChildSupportOptions)"
                                  exclusive-value="ChildSupport.NoneOfTheseApply" />
 
             <govuk-button type="submit">

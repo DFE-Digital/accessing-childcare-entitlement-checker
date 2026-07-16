@@ -145,7 +145,6 @@ public class AppCheckboxesTagHelperTests
         var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
             For = modelExpression,
-            Hint = "Select all that apply",
             ViewContext = _viewContext
         };
 

@@ -30,7 +30,7 @@ public class PartnerParentalLeaveViewModel : IValidatableObject
     [BindNever]
     public List<Child> Children { get; set; } = [];
 
-    [Display(Name = "Which child is your partner on leave for?", Description = "Select all that apply.")]
+    [Display(Name = "Which child is your partner on leave for?", Description = "Select all that apply")]
     public List<string> PartnerParentalLeaveChildrenIds { get; set; } = [];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
