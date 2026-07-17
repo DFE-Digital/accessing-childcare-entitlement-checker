@@ -3,7 +3,6 @@ using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 

@@ -1,4 +1,3 @@
-using AccessingChildcareEntitlementChecker.Web.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models.Summary;
