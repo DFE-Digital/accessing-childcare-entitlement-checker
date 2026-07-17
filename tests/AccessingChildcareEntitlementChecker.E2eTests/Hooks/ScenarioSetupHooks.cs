@@ -44,14 +44,18 @@ internal class ScenarioSetupHooks(
         }
     }
 
-    private static BrowserNewContextOptions BrowserNewContextOptions(
+    private BrowserNewContextOptions BrowserNewContextOptions(
         TestSettings settings,
         string featureTitle,
         string scenarioTitle)
     {
+        var javascriptEnabled = scenarioContext
+            .ScenarioInfo
+            .Tags
+            .Contains("javascript-enabled") ? true : false;
         return new BrowserNewContextOptions
         {
-            JavaScriptEnabled = false,
+            JavaScriptEnabled = javascriptEnabled,
             UserAgent = $"{settings.UserAgent}, {featureTitle}, {scenarioTitle}",
             BaseURL = settings.TestUrl,
             ExtraHTTPHeaders = ExtraHttpHeaders(settings)

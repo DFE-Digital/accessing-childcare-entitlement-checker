@@ -1,12 +1,27 @@
 ﻿@using AccessingChildcareEntitlementChecker.Web.Controllers
+@using AccessingChildcareEntitlementChecker.Web.Services
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject ICookiePolicyService CookiePolicyService
 @{
     Layout = "_GovUkPageTemplate";
     var serviceName = Shared["ServiceName"];
     var serviceUrl = Url.Action(nameof(HomeController.Start), HomeController.Name);
 }
 
+@section Head {
+    @if (CookiePolicyService.HasConsented)
+    {
+        <partial name="_Analytics" />
+    }
+
+    @Html.GovUkFrontendStyleImports()
+}
+
 @section BodyStart {
+    @if (!CookiePolicyService.HasUserPreference)
+    {
+        <partial name="_CookieBanner" />
+    }
 }
 
 @section GovUkHeader {
@@ -28,17 +43,25 @@
 
 @RenderBody()
 
-
 @section GovUkFooter {
     <govuk-footer>
         <govuk-footer-meta>
             <govuk-footer-meta-items>
                 <govuk-footer-meta-item href="#">Item 1</govuk-footer-meta-item>
                 <govuk-footer-meta-item href="#">Item 2</govuk-footer-meta-item>
-                <govuk-footer-meta-item href="#">Item 3</govuk-footer-meta-item>
+                <govuk-footer-meta-item asp-action="@nameof(CookiesController.Cookies)" asp-controller="@CookiesController.Name">
+                    @Shared["Cookies"]
+                </govuk-footer-meta-item>
             </govuk-footer-meta-items>
         </govuk-footer-meta>
         <govuk-footer-content-licence />
         <govuk-footer-copyright />
     </govuk-footer>
+}
+
+@section BodyEnd {
+    @if (!CookiePolicyService.HasUserPreference)
+    {
+        <partial name="_CookieBannerScript" />
+    }
 }

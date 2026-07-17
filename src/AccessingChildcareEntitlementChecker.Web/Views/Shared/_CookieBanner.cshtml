@@ -1,0 +1,68 @@
+﻿@using AccessingChildcareEntitlementChecker.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+
+@{
+    var heading = Localizer["Cookies on Check if you are eligible for childcare funding"];
+}
+
+<govuk-cookie-banner aria-label="@heading.Value" id="cookies-banner" hidden="true">
+    <govuk-cookie-banner-message id="unselected-cookies-banner">
+        <govuk-cookie-banner-message-heading>@heading</govuk-cookie-banner-message-heading>
+        <govuk-cookie-banner-message-content>
+            <p class="govuk-body">
+                @Localizer["We use some essential cookies to make this service work."]
+            </p>
+
+            <p class="govuk-body">
+                @Localizer["We’d also like to use analytics cookies so we can understand how you use the service and make improvements."]
+            </p>
+        </govuk-cookie-banner-message-content>
+        <govuk-cookie-banner-message-actions>
+            <govuk-cookie-banner-message-action name="analyticsEnabled"
+                                                id="accept-cookies"
+                                                text="@Localizer["Accept analytics cookies"].Value"
+                                                type="submit"
+                                                value="True" />
+            <govuk-cookie-banner-message-action name="analyticsEnabled"
+                                                id="reject-cookies"
+                                                text="@Localizer["Reject analytics cookies"].Value"
+                                                type="submit"
+                                                value="False" />
+            <govuk-cookie-banner-message-action-link text="@Localizer["View cookies"].Value"
+                                                     asp-action="@nameof(CookiesController.Cookies)"
+                                                     asp-controller="@CookiesController.Name" />
+        </govuk-cookie-banner-message-actions>
+    </govuk-cookie-banner-message>
+
+    <govuk-cookie-banner-message role="alert" id="accepted-cookies-banner" hidden="true">
+        <govuk-cookie-banner-message-content>
+            <p class="govuk-body">
+                @Localizer["You've accepted analytics cookies. You can"]
+                <a class="govuk-link" href="@Url.Action(nameof(CookiesController.Cookies), CookiesController.Name)">
+                    @Localizer["change your cookie settings"]
+                </a>
+                @Localizer["at any time."]
+            </p>
+        </govuk-cookie-banner-message-content>
+        <govuk-cookie-banner-message-actions>
+            <govuk-cookie-banner-message-action class="hide-cookies" text="@Localizer["Hide cookie message"].Value" />
+        </govuk-cookie-banner-message-actions>
+    </govuk-cookie-banner-message>
+
+    <govuk-cookie-banner-message role="alert" id="rejected-cookies-banner" hidden="true">
+        <govuk-cookie-banner-message-content>
+            <p class="govuk-body">
+                @Localizer["You've rejected analytics cookies. You can"]
+                <a class="govuk-link" href="@Url.Action(nameof(CookiesController.Cookies), CookiesController.Name)">
+                    @Localizer["change your cookie settings"]
+                </a>
+                @Localizer["at any time."]
+            </p>
+        </govuk-cookie-banner-message-content>
+        <govuk-cookie-banner-message-actions>
+            <govuk-cookie-banner-message-action class="hide-cookies" text="@Localizer["Hide cookie message"].Value" />
+        </govuk-cookie-banner-message-actions>
+    </govuk-cookie-banner-message>
+</govuk-cookie-banner>

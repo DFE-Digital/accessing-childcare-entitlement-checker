@@ -80,7 +80,10 @@ public class ComponentTests
     public async Task GetRobotsTxtReturnsNotFoundOutsideDevelopment()
     {
         var factory = CreateFactory("Production");
-        var client = factory.CreateClient();
+        var client = factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            BaseAddress = new Uri("https://localhost")
+        });
 
         var response = await client.GetAsync("/robots.txt", TestContext.Current.CancellationToken);
 

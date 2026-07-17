@@ -61,7 +61,6 @@ public static class WebApplicationExtensions
         app.MapControllerRoute(name: "earnings-wage-partner", pattern: "earnings/wage-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerWeeklyEarnings) });
         app.MapControllerRoute(name: "earnings-adjusted-net-income-partner", pattern: "earnings/adjusted-net-income-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerYearlyEarnings) });
         app.MapControllerRoute(name: "benefits-childcare-support-partner", pattern: "benefits/childcare-support-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerChildcareSupport) });
-        app.MapControllerRoute(name: "leave-type-of-leave-partner", pattern: "leave/type-of-leave-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerTypeOfLeave) });
         app.MapControllerRoute(name: "benefits-childcare-vouchers-partner", pattern: "benefits/childcare-vouchers-partner", defaults: new { controller = Partner, action = nameof(PartnerController.PartnerChildcareVoucherReceipt) });
 
         app.MapControllerRoute(name: "check-your-answers", pattern: "check-your-answers", defaults: new { controller = Summary, action = nameof(SummaryController.CheckAnswers) });
@@ -70,6 +69,7 @@ public static class WebApplicationExtensions
 
         app.MapControllerRoute(name: "Error", pattern: "Error", defaults: new { controller = Error, action = nameof(ErrorController.InternalServerError) });
         app.MapControllerRoute(name: "Error-statusCode-int", pattern: "Error/{statusCode:int}", defaults: new { controller = Error, action = nameof(ErrorController.StatusCodePage) });
+        app.MapControllerRoute(name: "Cookies", pattern: "cookies", defaults: new { controller = CookiesController.Name, action = nameof(CookiesController.Cookies) });
 
         app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Start}/{id?}", defaults: new { });
 

@@ -107,6 +107,20 @@ public static class DocumentAsserts
         return document;
     }
 
+    public static IDocument AssertCookieBanner(this IDocument document)
+    {
+        var cookieBanner = document.QuerySelector(".govuk-cookie-banner");
+        Assert.NotNull(cookieBanner);
+        return document;
+    }
+
+    public static IDocument AssertNoCookieBanner(this IDocument document)
+    {
+        var cookieBanner = document.QuerySelector(".govuk-cookie-banner");
+        Assert.Null(cookieBanner);
+        return document;
+    }
+
     public static IDocument AssertGroupHint(this IDocument document, string expectedHint)
     {
         var hint = document.QuerySelector(".govuk-fieldset > .govuk-hint");

@@ -136,15 +136,6 @@ internal class SummarySteps(IPage page)
             .Not.ToBeVisibleAsync();
     }
 
-    [Then("I should see a success banner that says {string}")]
-    public async Task ThenIShouldSeeASuccessBannerThatSaysString(string p0)
-    {
-        var banner = page.Locator(".govuk-notification-banner--success");
-        await Expect(banner).ToBeVisibleAsync();
-        await Expect(banner.GetByRole(AriaRole.Heading, new LocatorGetByRoleOptions { Name = "Success" })).ToHaveTextAsync("Success");
-        await Expect(banner.Locator(".govuk-notification-banner__content")).ToContainTextAsync(p0);
-    }
-
     [Then("I should see a summary list for {string} with the following summary:")]
     public async Task ThenIShouldSeeASummaryListForStringWithTheFollowingSummary(string title, DataTable dataTable)
     {

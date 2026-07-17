@@ -57,6 +57,7 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped<RequireJourneySessionFilter>();
 
+        services.AddScoped<ICookiePolicyService, CookiePolicyService>();
         return services;
     }
 }
