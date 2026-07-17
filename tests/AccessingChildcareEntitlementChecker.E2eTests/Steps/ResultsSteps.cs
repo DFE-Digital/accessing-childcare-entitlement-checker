@@ -62,8 +62,14 @@ public class ResultsSteps(IPage page)
                     Assert.StartsWith("The date your partner returns from parental leave", actual.Item2);
                     break;
                 case WhenEligible.NineMonthsOld:
-                    // TODO - 23 weeks is only 5 and a bit months?
-                    Assert.Equal("When they are 23 weeks old", actual.Item2);
+                    if (expected.IsBorn == true)
+                    {
+                        Assert.StartsWith("From", actual.Item2);
+                    }
+                    else
+                    {
+                        Assert.Equal("When they are 23 weeks old", actual.Item2);
+                    }
                     break;
                 case WhenEligible.TwoYearsOld:
                     Assert.StartsWith("From", actual.Item2);
@@ -119,5 +125,5 @@ public class ResultsSteps(IPage page)
         return results;
     }
 
-    private record SchemeEligibilityResult(string Scheme, WhenEligible When);
+    private record SchemeEligibilityResult(string Scheme, WhenEligible When, bool? IsBorn = null);
 }
