@@ -19,5 +19,12 @@
         <p class="govuk-body">
             @Localizer["Body_PastedAddress"]
         </p>
+
+        <p class="govuk-body">
+            @Localizer["Body_Return"]
+            <a class="govuk-link" href="@Url.Action(nameof(HomeController.Start), HomeController.Name)">
+                @Localizer["Body_Link"]
+            </a>.
+        </p>
     </div>
 </div>
