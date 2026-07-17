@@ -101,7 +101,7 @@ public static class DocumentAsserts
         Assert.NotNull(surveyLink);
 
         var href = surveyLink.GetAttribute("href");
-        const string ExpectedHref = "https://dferesearch.eu.qualtrics.com/jfe/preview/previewId/a14e158a-6737-4936-b6cc-9b495f8a4dea/SV_8eotBOVwAQbdP8y?Q_CHL=preview&Q_SurveyVersionID=current";
+        const string ExpectedHref = "https://dferesearch.fra1.qualtrics.com/jfe/form/SV_8eotBOVwAQbdP8y";
         Assert.Equal(ExpectedHref, href);
 
         return document;
