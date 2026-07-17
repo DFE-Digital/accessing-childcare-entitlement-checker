@@ -5,7 +5,6 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using NSubstitute;
-using System.Diagnostics;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
