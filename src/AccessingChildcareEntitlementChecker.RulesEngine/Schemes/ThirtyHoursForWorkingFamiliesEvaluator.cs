@@ -18,8 +18,9 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
         var parentalLeaveAssessment = AssessParentalLeave(context, child);
 
         var meetsHouseholdRequirements =
+            //HasAccessToPublicFunds will be making it's return to this scheme logic once we include the question "Do you have access to public funds" in our service
+            //context.Household.HasAccessToPublicFunds &&
             context.Household.CountryOfResidence == CountryOfResidence.England &&
-            context.Household.HasAccessToPublicFunds &&
             MeetsWorkRequirements(context, parentalLeaveAssessment);
 
         var eligibleNow =

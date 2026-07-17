@@ -363,7 +363,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_HouseholdHasNoAccessToPublicFunds_ReturnsNull()
+    public void Evaluate_HouseholdHasNoAccessToPublicFunds_ReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext
@@ -385,7 +385,11 @@ public class TaxFreeChildcareSchemeTests
 
         var result = evaluator.Evaluate(context, child);
 
-        Assert.Null(result);
+        Assert.NotNull(result);
+        Assert.True(result.EligibleNow);
+        Assert.False(result.EligibleInFuture);
+        Assert.Null(result.ApplyAndStartAffectedByParentalLeave);
+        Assert.Null(result.EligibilityEndsWithParentalLeaveFor);
     }
 
     [Fact]

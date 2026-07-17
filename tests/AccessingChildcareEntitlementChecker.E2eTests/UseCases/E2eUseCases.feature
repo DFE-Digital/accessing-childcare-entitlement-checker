@@ -338,14 +338,12 @@ Scenario: Scenario 10 - Parent is a non-UK national without pre-settled or settl
     When I click on Continue
     Then the page header is "Childcare support you could get"
     # Lucid says Tom for the last item, but it's a typo.
-    # EXPECTED FROM LUCID: seems to be missing two schemes.
-         #| Scheme                                        | When          |
-         #| Tax Free childcare                            | now           |
-         #| Free Childcare for Working Parents            | now           |
-         #| 15 hours free childcare for 3 and 4-year-olds | in the future | 
     And I can see that "Louise" is eligible for:
-        | Scheme                                        | When          |
-        | 15 hours free childcare for 3 and 4-year-olds | in the future | 
+        | Scheme                                        | When                       | IsBorn |
+        | Tax-Free Childcare                            | now                        | true   |
+        | Free Childcare for Working Parents            | nine months old            | true   |
+        | 15 hours free childcare for 3 and 4-year-olds | in the future              | true   |
+        
     And I can see that "Jeremy" is not eligible for any childcare entitlement schemes
 
 Scenario: Scenario 11 - Single parent not working, on carer's allowance
