@@ -1,0 +1,6 @@
+root = true
+
+[*.{cs,cshtml,razor}]
+# Remove unused usings
+dotnet_diagnostic.IDE0005.severity = error 
+end_of_line = lf
