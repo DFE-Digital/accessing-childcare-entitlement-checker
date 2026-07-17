@@ -44,7 +44,7 @@ internal class StartSteps(IPage page)
         await Expect(link).ToBeVisibleAsync();
         await Expect(link).ToHaveAttributeAsync(
             "href",
-            "https://dferesearch.eu.qualtrics.com/jfe/preview/previewId/a14e158a-6737-4936-b6cc-9b495f8a4dea/SV_8eotBOVwAQbdP8y?Q_CHL=preview&Q_SurveyVersionID=current"
+            "https://dferesearch.fra1.qualtrics.com/jfe/form/SV_8eotBOVwAQbdP8y"
         );
     }
 }
