@@ -24,4 +24,13 @@
     <data name="Body" xml:space="preserve">
         <value>Try again later.</value>
     </data>
+    <data name="Body2" xml:space="preserve">
+        <value>Your answers will be deleted after 20 minutes.</value>
+    </data>
+    <data name="Body3a" xml:space="preserve">
+        <value>If the problem continues you can</value>
+    </data>
+    <data name="Body3b" xml:space="preserve">
+        <value>read guidance on getting childcare support</value>
+    </data>
 </root>

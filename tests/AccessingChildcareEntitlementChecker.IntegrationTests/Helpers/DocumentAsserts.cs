@@ -129,6 +129,13 @@ public static class DocumentAsserts
         return document;
     }
 
+    public static IDocument AssertMainContainsLink(this IDocument document, string expectedLink)
+    {
+        var hint = document.QuerySelector($"main a[href='{expectedLink}']");
+        Assert.NotNull(hint);
+        return document;
+    }
+
     private static IElement HeaderElement(this IDocument document)
     {
         var header = document.QuerySelector("body > header");
