@@ -69,12 +69,12 @@
             </a>
             @Localizer["to get advice about childcare support and what to do next."]
         </p>
-
-        <form method="post" novalidate>
+        
             <a asp-controller="Home" asp-action="@nameof(HomeController.Location)"
                class="govuk-button govuk-button--start"
-               data-module="govuk-button">
-
+               data-module="govuk-button"
+               role="button">
+                
                 @Localizer["Continue"]
 
                 <svg class="govuk-button__start-icon"
@@ -85,9 +85,8 @@
                      aria-hidden="true"
                      focusable="false">
                     <path fill="currentColor"
-                          d="M0 0h13l20 20-20 20H0l20-20z" />
+                          d="M0 0h13l20 20-20 20H0l20-20z"/>
                 </svg>
             </a>
-        </form>
     </div>
 </div>
