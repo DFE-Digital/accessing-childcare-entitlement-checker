@@ -6,7 +6,7 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 
 public class NotFoundTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/notfound";
+    private const string Url = "/this-page-does-not-exist";
 
     [Fact]
     public async Task Get()
@@ -17,6 +17,7 @@ public class NotFoundTests(IntegrationTestFixture factory) : IClassFixture<Integ
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertNavigationBar()
             .AssertBetaBanner()
-            .AssertMainContainsLink("/");
+            .AssertMainContainsLink("/")
+            .AssertHeading("Page not found");
     }
 }
