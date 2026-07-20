@@ -27,4 +27,10 @@
 	<data name="Body_PastedAddress" xml:space="preserve">
         <value>If you pasted the web address, check you copied the entire address. </value>
     </data>
+    <data name="Body_Return" xml:space="preserve">
+        <value>You can either return to the previous page you were on or</value>
+    </data>
+    <data name="Body_Link" xml:space="preserve">
+        <value>go to the start of the service</value>
+    </data>
 </root>
