@@ -4,6 +4,10 @@
     "count": 5
   },
   {
+    "ruleId": "10031",
+    "count": 1
+  },
+  {
     "ruleId": "10096",
     "count": 1
   },
@@ -13,11 +17,11 @@
   },
   {
     "ruleId": "10109",
-    "count": 4
+    "count": 5
   },
   {
     "ruleId": "10112",
-    "count": 2
+    "count": 3
   },
   {
     "ruleId": "2",

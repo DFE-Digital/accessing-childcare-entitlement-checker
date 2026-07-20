@@ -15,7 +15,7 @@ order: 99
 | High | 0 |
 | Medium | 0 |
 | Low | 0 |
-| Informational | 2 |
+| Informational | 3 |
 
 
 
@@ -28,9 +28,10 @@ order: 99
 | --- | --- | --- |
 | Re-examine Cache-control Directives | Informational | Systemic |
 | User Agent Fuzzer | Informational | Systemic |
-| Modern Web Application | 				False Positives: | 4 |
+| User Controllable HTML Element Attribute (Potential XSS) | Informational | 1 |
+| Modern Web Application | 				False Positives: | 5 |
 | Private IP Disclosure | 				False Positives: | 1 |
-| Session Management Response Identified | 				False Positives: | 2 |
+| Session Management Response Identified | 				False Positives: | 3 |
 | Timestamp Disclosure - Unix | 				False Positives: | 1 |
 
 
@@ -64,8 +65,8 @@ The cache-control header has not been set properly or is missing, allowing the b
   * Attack: ``
   * Evidence: `cache-control: public, max-age=31536000, immutable`
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
@@ -156,6 +157,55 @@ Instances: Systemic
 
 #### Source ID: 1
 
+### [ User Controllable HTML Element Attribute (Potential XSS) ](https://www.zaproxy.org/docs/alerts/10031/)
+
+
+
+##### Informational (Low)
+
+### Description
+
+This check looks at user-supplied input in query string parameters and POST data to identify where certain HTML attribute values might be controlled. This provides hot-spot detection for XSS (cross-site scripting) that will require further review by a security analyst to determine exploitability.
+
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies%3FhasSetCookies=True
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies (hasSetCookies)`
+  * Method: `GET`
+  * Parameter: `hasSetCookies`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `User-controlled HTML attribute values were found. Try injecting special characters to see if XSS might be possible. The page at the following URL:
+
+https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies?hasSetCookies=True
+
+appears to include user input in:
+a(n) [input] tag [value] attribute
+
+The user input found was:
+hasSetCookies=True
+
+The user-controlled value was:
+true`
+
+
+Instances: 1
+
+### Solution
+
+Validate all input and sanitize output it before writing to any HTML attributes.
+
+### Reference
+
+
+* [ https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html ](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html)
+
+
+#### CWE Id: [ 20 ](https://cwe.mitre.org/data/definitions/20.html)
+
+
+#### WASC Id: 20
+
+#### Source ID: 3
+
 ### [ Modern Web Application ](https://www.zaproxy.org/docs/alerts/10109/)
 
 
@@ -173,8 +223,15 @@ The application appears to be a modern web application. If you need to explore i
   * Attack: ``
   * Evidence: `<a class="govuk-footer__link" href="#">Item 1</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<a class="govuk-footer__link" href="#">Item 1</a>`
+  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies%3FhasSetCookies=True
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies (hasSetCookies)`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -196,7 +253,7 @@ The application appears to be a modern web application. If you need to explore i
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
 
 
-Instances: 4
+Instances: 5
 
 ### Solution
 
@@ -265,6 +322,13 @@ The given response has been identified as containing a session management token.
   * Attack: ``
   * Evidence: `.AspNetCore.Antiforgery.RtGCWVXC8-4`
   * Other Info: `cookie:.AspNetCore.Antiforgery.RtGCWVXC8-4`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
+  * Method: `GET`
+  * Parameter: `.AspNetCore.Antiforgery.RtGCWVXC8-4`
+  * Attack: ``
+  * Evidence: `.AspNetCore.Antiforgery.RtGCWVXC8-4`
+  * Other Info: `cookie:.AspNetCore.Antiforgery.RtGCWVXC8-4`
 * URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live ()(Country,ReturnTo,__RequestVerificationToken)`
   * Method: `POST`
@@ -274,7 +338,7 @@ The given response has been identified as containing a session management token.
   * Other Info: `cookie:.AspNetCore.Session`
 
 
-Instances: 2
+Instances: 3
 
 ### Solution
 
