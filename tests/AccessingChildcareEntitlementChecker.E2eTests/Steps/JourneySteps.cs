@@ -167,14 +167,9 @@ internal class JourneySteps(IPage page)
         }
     }
 
-    [Given("I click the Add another child button on the 'Check your children's details' page")]
-    public async Task GivenIClickTheAddAnotherChildButtonOnTheSDetailsPage()
-    {
-        await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
-    }
-
-    [When("I click the Add another child button on the 'Check your answers' page")]
-    public async Task WhenIClickTheAddAnotherChildButtonOnThePage()
+    [Given("I click the Add another child button")]
+    [When("I click the Add another child button")]
+    public async Task GivenIClickTheAddAnotherChildButton()
     {
         await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
     }

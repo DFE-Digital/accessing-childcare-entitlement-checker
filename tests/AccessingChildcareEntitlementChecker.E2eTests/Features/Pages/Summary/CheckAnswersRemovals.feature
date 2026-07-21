@@ -54,7 +54,7 @@ Scenario: Remove both children
 Scenario: Remove both children and add another one
 	Given I remove "Aydin"
 	And I remove "Sara"
-	When I click the Add another child button on the 'Check your answers' page
+	When I click the Add another child button
 	And I answer questions for "Ringo" as follows:
 		| Question                                      | Answer        |
 		| Add details about your children               | Ringo         |
