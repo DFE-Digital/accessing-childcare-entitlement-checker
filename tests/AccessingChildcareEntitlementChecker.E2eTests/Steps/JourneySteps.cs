@@ -48,6 +48,7 @@ internal class JourneySteps(IPage page)
     }
 
     [Given(@"I answer questions for ""(.*)"" as follows:")]
+    [When(@"I answer questions for ""(.*)"" as follows:")]
     [Given(@"I answers the following questions about my child ""(.*)""")]
     public async Task GivenIAnswersTheFollowingQuestionsAboutMyChild(string childName, DataTable answers)
     {
