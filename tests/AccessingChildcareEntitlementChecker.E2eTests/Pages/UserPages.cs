@@ -11,7 +11,7 @@ internal class StartPage(IPage page) : BasePage(page)
 
     public override async Task ContinueAsync()
     {
-        await Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
     }
 }
 
