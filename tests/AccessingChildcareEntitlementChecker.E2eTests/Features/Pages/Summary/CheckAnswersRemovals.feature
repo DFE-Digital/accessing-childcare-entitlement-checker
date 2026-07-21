@@ -63,4 +63,4 @@ Scenario: Remove both children and add another one
 	Then I should see one summary card
 	And I should see a summary card with the title "Ringo" and the following summary:
 		| Question                       | Answer   |
-		| What is Ringo's date of birth? | Tomorrow |
+		| What is this child's due date? | Tomorrow |
