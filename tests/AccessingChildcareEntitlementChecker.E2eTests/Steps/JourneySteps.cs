@@ -34,22 +34,8 @@ internal class JourneySteps(IPage page)
     }
 
     [Given("I answer questions as follows:")]
-    [Given("I answer the following pages:")]
+    [When("I answer questions as follows:")]
     public async Task GivenIAnswerQuestionsAsFollows(DataTable answers)
-    {
-        var factory = new PageFactory(page);
-        foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
-        {
-            var pageObj = factory.GetPage(pageName);
-            await pageObj.AssertHeaderAsync();
-            await pageObj.AnswerAsync(answer);
-            await pageObj.ContinueAsync();
-        }
-    }
-
-    [Given(@"I answer questions for ""(.*)"" as follows:")]
-    [Given(@"I answers the following questions about my child ""(.*)""")]
-    public async Task GivenIAnswersTheFollowingQuestionsAboutMyChild(string childName, DataTable answers)
     {
         var factory = new PageFactory(page);
         foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
@@ -173,8 +159,8 @@ internal class JourneySteps(IPage page)
         await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
     }
 
-    [Given("I click the Add another child button on the 'Check your answers' page")]
-    public async Task GivenIClickTheAddAnotherChildButtonOnThePage()
+    [When("I click the Add another child button on the 'Check your answers' page")]
+    public async Task WhenIClickTheAddAnotherChildButtonOnThePage()
     {
         await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
     }

@@ -50,3 +50,17 @@ Scenario: Remove both children
 	And the page header is "Check your answers"
 	Then I should see some text saying "You must add a child to continue."
 	And I should not see a Continue button
+
+Scenario: Remove both children and add another one
+	Given I remove "Aydin"
+	And I remove "Sara"
+	When I click the Add another child button on the 'Check your answers' page
+	And I answer questions for "Ringo" as follows:
+		| Question                                      | Answer        |
+		| Add details about your children               | Ringo         |
+		| Has this child been born yet?                 | No            |
+		| What is this child's due date?                | Tomorrow      |
+	Then I should see one summary card
+	And I should see a summary card with the title "Ringo" and the following summary:
+		| Question                       | Answer   |
+		| What is Ringo's date of birth? | Tomorrow |

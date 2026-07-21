@@ -38,6 +38,12 @@
         {
             <p class="govuk-body">@Localizer["No children added."]</p>
             <p class="govuk-body">@Localizer["You must add a child to continue."]</p>
+
+            <div class="govuk-!-margin-bottom-4">
+                <govuk-button-link class="govuk-button--secondary" asp-controller="Introduction" asp-action="ChildName" asp-route-returnTo="@ReturnTo.CheckAnswers">
+                    @Localizer["Add another child"]
+                </govuk-button-link>
+            </div>
         }
         else
         {

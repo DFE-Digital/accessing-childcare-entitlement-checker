@@ -82,8 +82,8 @@ Scenario: Back navigation
 	Then the page header is "What is your partner's age?"
 
 Scenario: Back navigation from Does your partner have settled or pre-settled status under the EU Settlement Scheme?
-	Given I answer the following pages:
-		| Page                                                                                 | Answer                                               |
+	Given I answer questions as follows:
+		| Question                                                                             | Answer                                               |
 		| What is your age?                                                                    | Under 18                                             |
 		| What is your nationality?                                                            | Citizen of a different country                       |
 		| Are you in paid work?                                                                | No, I am not in work                                 |

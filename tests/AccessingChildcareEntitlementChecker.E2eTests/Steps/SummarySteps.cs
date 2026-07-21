@@ -44,6 +44,7 @@ internal class SummarySteps(IPage page)
         await panel.GetByRole(AriaRole.Link, new LocatorGetByRoleOptions { Name = "Remove" }).ClickAsync();
     }
 
+    [Given("I remove {string}")]
     [When("I remove {string}")]
     public async Task WhenIRemoveString(string name)
     {
@@ -75,6 +76,8 @@ internal class SummarySteps(IPage page)
 
         await summaryRow.GetByRole(AriaRole.Link, new LocatorGetByRoleOptions { Name = "Change" }).ClickAsync();
     }
+
+
 
     [Then("I should see one summary card")]
     public async Task ThenIShouldSeeOneSummaryCard()
