@@ -47,6 +47,20 @@ internal class JourneySteps(IPage page)
         }
     }
 
+    [Given(@"I answer questions for ""(.*)"" as follows:")]
+    [Given(@"I answers the following questions about my child ""(.*)""")]
+    public async Task GivenIAnswersTheFollowingQuestionsAboutMyChild(string childName, DataTable answers)
+    {
+        var factory = new PageFactory(page);
+        foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
+        {
+            var pageObj = factory.GetPage(pageName);
+            await pageObj.AssertHeaderAsync();
+            await pageObj.AnswerAsync(answer);
+            await pageObj.ContinueAsync();
+        }
+    }
+
     [Given("I start the journey, filling in Aydin's and Sara's details")]
     public async Task GivenIStartTheJourneyFillingInAydinsDetails()
     {
