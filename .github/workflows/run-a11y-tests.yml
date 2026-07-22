@@ -114,7 +114,8 @@ jobs:
         run: |
           dotnet test ./a11y-tests/AccessingChildcareEntitlementChecker.A11yTests.dll \
             --logger "trx;LogFileName=test-results.trx" \
-            --results-directory ./TestResults
+            --results-directory ./TestResults \
+            -- RunConfiguration.MaxCpuCount=2
 
       - name: Stop app
         if: always() && env.APP_STARTED == 'true'
