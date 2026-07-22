@@ -1,6 +1,8 @@
 ﻿namespace AccessingChildcareEntitlementChecker.Web.Services;
 
-public class CookiePolicyService(IHttpContextAccessor httpContextAccessor) : ICookiePolicyService
+public class CookiePolicyService(
+    IHttpContextAccessor httpContextAccessor,
+    IWebHostEnvironment environment) : ICookiePolicyService
 {
     public const string CookieName = "cookie_policy";
 
@@ -62,7 +64,12 @@ public class CookiePolicyService(IHttpContextAccessor httpContextAccessor) : ICo
             {
                 Path = "/",
                 HttpOnly = true,
-                Secure = true,
+                // Match the app's cookie convention (see securePolicy in Program.cs):
+                // Always Secure in production, but SameAsRequest in Development so the
+                // cookie isn't marked Secure over http. WebKit refuses to store a Secure
+                // cookie received over an insecure connection (unlike Chromium/Firefox,
+                // which treat localhost as trustworthy), which breaks consent on http.
+                Secure = !environment.IsDevelopment() || context.Request.IsHttps,
                 SameSite = SameSiteMode.Lax,
                 IsEssential = true,
                 Expires = DateTimeOffset.UtcNow.AddYears(1)

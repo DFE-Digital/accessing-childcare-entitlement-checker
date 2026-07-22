@@ -28,7 +28,17 @@ public class ResultsSteps(IPage page)
     public async Task WhenIClickTheDetailsLinkForString(string childName)
     {
         var text = $"View detailed information about {childName}'s childcare support";
-        await page.GetByText(text).ClickAsync();
+        var link = page.GetByRole(AriaRole.Link, new() { Name = text, Exact = true });
+
+        // On WebKit this link can sit near the bottom of a long results page. Clicking
+        // before the scroll has settled can drop the navigation, leaving us on the summary
+        // page. Scroll it into view, wait until it's actually in the viewport, then click
+        // and wait for the navigation to commit so a lost click fails here, not later.
+        await link.ScrollIntoViewIfNeededAsync();
+        await Expect(link).ToBeInViewportAsync();
+
+        await link.ClickAsync();
+        await page.WaitForURLAsync("**/Results/ResultsDetailed**");
     }
 
     [Then("I can see that {string} is now eligible for {string}")]
