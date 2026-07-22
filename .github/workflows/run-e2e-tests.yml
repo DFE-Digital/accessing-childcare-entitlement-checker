@@ -118,8 +118,7 @@ jobs:
           dotnet test ./e2e-tests/AccessingChildcareEntitlementChecker.E2eTests.dll \
             --logger "trx;LogFileName=test-results.trx" \
             --results-directory ./TestResults \
-            --verbosity normal \
-            -- RunConfiguration.MaxCpuCount=1
+            --verbosity normal
 
       - name: Stop app
         if: always() && env.APP_STARTED == 'true'

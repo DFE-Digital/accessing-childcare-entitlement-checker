@@ -21,8 +21,6 @@ var securePolicy = builder.Environment.IsDevelopment()
     ? CookieSecurePolicy.SameAsRequest
     : CookieSecurePolicy.Always;
 
-// Single source of truth for the cookie Secure policy, shared with cookies that
-// are appended manually (e.g. the consent cookie in CookiePolicyService).
 services.AddSingleton(typeof(CookieSecurePolicy), securePolicy);
 
 var appInsightsConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
