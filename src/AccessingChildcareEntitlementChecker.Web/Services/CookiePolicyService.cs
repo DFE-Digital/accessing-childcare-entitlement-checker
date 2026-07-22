@@ -57,22 +57,16 @@ public class CookiePolicyService(
         }
 
         var serialisedValue = consented ? Enabled : Disabled;
-        context.Response.Cookies.Append(
-            CookieName,
-            serialisedValue,
-            new CookieOptions
-            {
-                Path = "/",
-                HttpOnly = true,
-                Secure = securePolicy switch
-                {
-                    CookieSecurePolicy.Always => true,
-                    CookieSecurePolicy.None => false,
-                    _ => context.Request.IsHttps,
-                },
-                SameSite = SameSiteMode.Lax,
-                IsEssential = true,
-                Expires = DateTimeOffset.UtcNow.AddYears(1)
-            });
+        var cookieOptions = new CookieBuilder
+        {
+            Path = "/",
+            HttpOnly = true,
+            SecurePolicy = securePolicy,
+            SameSite = SameSiteMode.Lax,
+            IsEssential = true,
+            Expiration = TimeSpan.FromDays(365),
+        }.Build(context, DateTimeOffset.UtcNow);
+
+        context.Response.Cookies.Append(CookieName, serialisedValue, cookieOptions);
     }
 }
