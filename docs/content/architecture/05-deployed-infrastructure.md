@@ -15,7 +15,7 @@ This page is generated automatically from the Terraform configuration.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.10.0 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.11.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.52 |
 
 ## Providers
