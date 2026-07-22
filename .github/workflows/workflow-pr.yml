@@ -20,11 +20,15 @@ jobs:
     name: E2E Tests
     needs: validate-dotnet
     uses: ./.github/workflows/run-e2e-tests.yml
+    with:
+      browser: webkit
 
   a11y-tests:
     name: A11y Tests
     needs: validate-dotnet
     uses: ./.github/workflows/run-a11y-tests.yml
+    with:
+      browser: webkit
 
   validate-infra:
     name: Validate Infrastructure
