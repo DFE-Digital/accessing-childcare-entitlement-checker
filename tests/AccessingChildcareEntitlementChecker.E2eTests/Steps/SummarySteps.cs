@@ -48,10 +48,7 @@ internal class SummarySteps(IPage page)
     [When("I remove {string}")]
     public async Task WhenIRemoveString(string name)
     {
-        var panel = page.Locator(".govuk-summary-card")
-                .Filter(new LocatorFilterOptions { HasTextString = name });
-
-        await panel.GetByRole(AriaRole.Link, new LocatorGetByRoleOptions { Name = "Remove" }).ClickAsync();
+        await WhenIClickTheRemoveLinkInTheStringCard(name);
         await Expect(page.GetByRole(AriaRole.Heading, new PageGetByRoleOptions { Name = $"Are you sure you want to remove {name}?" }))
             .ToBeVisibleAsync();
         await page.GetByRole(AriaRole.Radio, new PageGetByRoleOptions { Name = "Yes" }).CheckAsync();

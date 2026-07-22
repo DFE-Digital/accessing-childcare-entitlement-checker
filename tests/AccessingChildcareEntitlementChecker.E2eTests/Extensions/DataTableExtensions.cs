@@ -8,8 +8,16 @@ internal static class DataTableExtensions
     {
         return dataTable.Rows.Select(row =>
         {
-            var pageName = row.TryGetValue("Page", out var value) ? value : row["Question"];
-            var answer = row["Answer"];
+            if (!row.TryGetValue("Page", out var pageName) && !row.TryGetValue("Question", out pageName))
+            {
+                throw new InvalidOperationException("DataTable row must contain either 'Page' or 'Question' column.");
+            }
+
+            if (!row.TryGetValue("Answer", out var answer))
+            {
+                throw new InvalidOperationException("DataTable row must contain 'Answer' column.");
+            }
+
             return (PageName: pageName, Answer: answer);
         });
     }

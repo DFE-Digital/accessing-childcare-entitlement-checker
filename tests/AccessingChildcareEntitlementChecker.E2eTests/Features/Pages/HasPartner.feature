@@ -41,7 +41,7 @@ Scenario: Back navigation from How do you receive your childcare vouchers?
 
 Scenario: Back navigation from Do you already get any of these to help pay for childcare?
 	Given I answer questions as follows:
-		| Page                                                                                      | Answer                        |
+		| Question                                                                                  | Answer                        |
 		| What is your age?                                                                         | Under 18                      |
 		| What is your nationality?                                                                 | British or Irish citizen      |
 		| Are you in paid work?                                                                     | Yes                           |

@@ -9,7 +9,7 @@ Scenario: Forward navigation after adding another child
 	And I fill in my own details
 	And I fill in my partner's details
 	And I click the Add another child button
-	And I answer questions for "Ringo" as follows:
+	And I answer questions as follows:
 		| Question                                      | Answer        |
 		| Add details about your children               | Ringo         |
 		| Has this child been born yet?                 | No            |
@@ -22,7 +22,7 @@ Scenario: Back navigation after adding another child
 	And I fill in my own details
 	And I fill in my partner's details
 	And I click the Add another child button
-	And I answer questions for "Ringo" as follows:
+	And I answer questions as follows:
 		| Question                                      | Answer        |
 		| Add details about your children               | Ringo         |
 		| Has this child been born yet?                 | No            |
