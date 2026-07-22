@@ -44,6 +44,7 @@ internal class SummarySteps(IPage page)
         await panel.GetByRole(AriaRole.Link, new LocatorGetByRoleOptions { Name = "Remove" }).ClickAsync();
     }
 
+    [Given("I remove {string}")]
     [When("I remove {string}")]
     public async Task WhenIRemoveString(string name)
     {

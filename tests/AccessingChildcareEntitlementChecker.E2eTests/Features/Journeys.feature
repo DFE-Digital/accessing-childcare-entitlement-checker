@@ -8,7 +8,7 @@ Scenario: Forward navigation after adding another child
 	And I check my children's details and click on Continue
 	And I fill in my own details
 	And I fill in my partner's details
-	And I click the Add another child button on the 'Check your answers' page
+	And I click the Add another child button
 	And I answer questions for "Ringo" as follows:
 		| Question                                      | Answer        |
 		| Add details about your children               | Ringo         |
@@ -21,7 +21,7 @@ Scenario: Back navigation after adding another child
 	And I check my children's details and click on Continue
 	And I fill in my own details
 	And I fill in my partner's details
-	And I click the Add another child button on the 'Check your answers' page
+	And I click the Add another child button
 	And I answer questions for "Ringo" as follows:
 		| Question                                      | Answer        |
 		| Add details about your children               | Ringo         |

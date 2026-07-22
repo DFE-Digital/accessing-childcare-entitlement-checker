@@ -34,7 +34,7 @@ internal class JourneySteps(IPage page)
     }
 
     [Given("I answer questions as follows:")]
-    [Given("I answer the following pages:")]
+    [When("I answer questions as follows:")]
     public async Task GivenIAnswerQuestionsAsFollows(DataTable answers)
     {
         var factory = new PageFactory(page);
@@ -48,6 +48,7 @@ internal class JourneySteps(IPage page)
     }
 
     [Given(@"I answer questions for ""(.*)"" as follows:")]
+    [When(@"I answer questions for ""(.*)"" as follows:")]
     [Given(@"I answers the following questions about my child ""(.*)""")]
     public async Task GivenIAnswersTheFollowingQuestionsAboutMyChild(string childName, DataTable answers)
     {
@@ -167,14 +168,9 @@ internal class JourneySteps(IPage page)
         }
     }
 
-    [Given("I click the Add another child button on the 'Check your children's details' page")]
-    public async Task GivenIClickTheAddAnotherChildButtonOnTheSDetailsPage()
-    {
-        await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
-    }
-
-    [Given("I click the Add another child button on the 'Check your answers' page")]
-    public async Task GivenIClickTheAddAnotherChildButtonOnThePage()
+    [Given("I click the Add another child button")]
+    [When("I click the Add another child button")]
+    public async Task GivenIClickTheAddAnotherChildButton()
     {
         await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
     }

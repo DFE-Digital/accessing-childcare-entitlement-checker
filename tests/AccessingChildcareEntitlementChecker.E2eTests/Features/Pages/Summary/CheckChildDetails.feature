@@ -40,7 +40,7 @@ Scenario: Back navigation
 	Then the page header is "Does Sara get any of the following support?"
 
 Scenario: Back navigation to expected child
-	And I click the Add another child button on the 'Check your children's details' page
+	And I click the Add another child button
 	And I answer questions for "Ringo" as follows:
 		| Question                                      | Answer        |
 		| Add details about your children               | Ringo         |
