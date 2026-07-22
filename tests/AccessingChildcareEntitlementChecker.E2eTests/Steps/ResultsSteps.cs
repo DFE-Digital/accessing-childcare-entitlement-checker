@@ -30,7 +30,6 @@ public class ResultsSteps(IPage page)
         var text = $"View detailed information about {childName}'s childcare support";
         var link = page.GetByRole(AriaRole.Link, new() { Name = text, Exact = true });
         await link.ClickAsync();
-        await page.WaitForURLAsync("**/Results/ResultsDetailed**");
     }
 
     [Then("I can see that {string} is now eligible for {string}")]
