@@ -2,7 +2,7 @@
 
 public class CookiePolicyService(
     IHttpContextAccessor httpContextAccessor,
-    IWebHostEnvironment environment) : ICookiePolicyService
+    CookieSecurePolicy securePolicy) : ICookiePolicyService
 {
     public const string CookieName = "cookie_policy";
 
@@ -64,12 +64,12 @@ public class CookiePolicyService(
             {
                 Path = "/",
                 HttpOnly = true,
-                // Match the app's cookie convention (see securePolicy in Program.cs):
-                // Always Secure in production, but SameAsRequest in Development so the
-                // cookie isn't marked Secure over http. WebKit refuses to store a Secure
-                // cookie received over an insecure connection (unlike Chromium/Firefox,
-                // which treat localhost as trustworthy), which breaks consent on http.
-                Secure = !environment.IsDevelopment() || context.Request.IsHttps,
+                Secure = securePolicy switch
+                {
+                    CookieSecurePolicy.Always => true,
+                    CookieSecurePolicy.None => false,
+                    _ => context.Request.IsHttps,
+                },
                 SameSite = SameSiteMode.Lax,
                 IsEssential = true,
                 Expires = DateTimeOffset.UtcNow.AddYears(1)
