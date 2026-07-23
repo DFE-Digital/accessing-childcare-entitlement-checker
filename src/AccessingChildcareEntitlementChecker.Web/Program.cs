@@ -21,6 +21,8 @@ var securePolicy = builder.Environment.IsDevelopment()
     ? CookieSecurePolicy.SameAsRequest
     : CookieSecurePolicy.Always;
 
+services.AddSingleton(typeof(CookieSecurePolicy), securePolicy);
+
 var appInsightsConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
 if (!string.IsNullOrEmpty(appInsightsConnectionString))
 {

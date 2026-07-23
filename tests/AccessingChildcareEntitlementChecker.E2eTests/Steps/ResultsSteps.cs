@@ -28,7 +28,8 @@ public class ResultsSteps(IPage page)
     public async Task WhenIClickTheDetailsLinkForString(string childName)
     {
         var text = $"View detailed information about {childName}'s childcare support";
-        await page.GetByText(text).ClickAsync();
+        var link = page.GetByRole(AriaRole.Link, new() { Name = text, Exact = true });
+        await link.ClickAsync();
     }
 
     [Then("I can see that {string} is now eligible for {string}")]

@@ -1,6 +1,8 @@
 ﻿namespace AccessingChildcareEntitlementChecker.Web.Services;
 
-public class CookiePolicyService(IHttpContextAccessor httpContextAccessor) : ICookiePolicyService
+public class CookiePolicyService(
+    IHttpContextAccessor httpContextAccessor,
+    CookieSecurePolicy securePolicy) : ICookiePolicyService
 {
     public const string CookieName = "cookie_policy";
 
@@ -55,17 +57,16 @@ public class CookiePolicyService(IHttpContextAccessor httpContextAccessor) : ICo
         }
 
         var serialisedValue = consented ? Enabled : Disabled;
-        context.Response.Cookies.Append(
-            CookieName,
-            serialisedValue,
-            new CookieOptions
-            {
-                Path = "/",
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Lax,
-                IsEssential = true,
-                Expires = DateTimeOffset.UtcNow.AddYears(1)
-            });
+        var cookieOptions = new CookieBuilder
+        {
+            Path = "/",
+            HttpOnly = true,
+            SecurePolicy = securePolicy,
+            SameSite = SameSiteMode.Lax,
+            IsEssential = true,
+            Expiration = TimeSpan.FromDays(365),
+        }.Build(context, DateTimeOffset.UtcNow);
+
+        context.Response.Cookies.Append(CookieName, serialisedValue, cookieOptions);
     }
 }

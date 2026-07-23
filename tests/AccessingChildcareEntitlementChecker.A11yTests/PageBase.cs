@@ -75,9 +75,6 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         }
 
         var response = await Page.GotoAsync(BuildUrl(PageUrl));
-
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-
         Assert.Equal((int)expectedStatusCode, response?.Status);
     }
 

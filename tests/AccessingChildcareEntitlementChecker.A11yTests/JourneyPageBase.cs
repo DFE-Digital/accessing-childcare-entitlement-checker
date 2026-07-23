@@ -29,6 +29,13 @@ public abstract class JourneyPageBase : PageBase
         await ExpectPathAndQuery("/children/add-child-details");
         await Page.GetByLabel("What name should we use for this child?").FillAsync(childName);
         await Continue();
+
+        await Page.WaitForURLAsync(url =>
+            url.Contains("/children/", StringComparison.Ordinal) &&
+            url.EndsWith(
+                "/has-the-child-been-born",
+                StringComparison.Ordinal));
+
         var childId = ExtractChildIdFromCurrentUrl();
         await ExpectPathAndQuery($"/children/{childId}/has-the-child-been-born");
 
