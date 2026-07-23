@@ -41,7 +41,7 @@ Scenario: Back navigation
 
 Scenario: Back navigation to expected child
 	And I click the Add another child button
-	And I answer questions for "Ringo" as follows:
+	And I answer questions as follows:
 		| Question                                      | Answer        |
 		| Add details about your children               | Ringo         |
 		| Has this child been born yet?                 | No            |

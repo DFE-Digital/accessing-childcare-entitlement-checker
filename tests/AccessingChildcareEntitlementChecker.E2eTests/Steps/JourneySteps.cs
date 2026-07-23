@@ -34,23 +34,8 @@ internal class JourneySteps(IPage page)
     }
 
     [Given("I answer questions as follows:")]
-    [When("I answer questions as follows:")]
+    [When("I answer the questions as follows:")]
     public async Task GivenIAnswerQuestionsAsFollows(DataTable answers)
-    {
-        var factory = new PageFactory(page);
-        foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
-        {
-            var pageObj = factory.GetPage(pageName);
-            await pageObj.AssertHeaderAsync();
-            await pageObj.AnswerAsync(answer);
-            await pageObj.ContinueAsync();
-        }
-    }
-
-    [Given(@"I answer questions for ""(.*)"" as follows:")]
-    [When(@"I answer questions for ""(.*)"" as follows:")]
-    [Given(@"I answers the following questions about my child ""(.*)""")]
-    public async Task GivenIAnswersTheFollowingQuestionsAboutMyChild(string childName, DataTable answers)
     {
         var factory = new PageFactory(page);
         foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
@@ -173,19 +158,6 @@ internal class JourneySteps(IPage page)
     public async Task GivenIClickTheAddAnotherChildButton()
     {
         await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
-    }
-
-    [When("I answer the questions as follows:")]
-    public async Task WhenIAnswerTheQuestionsAsFollows(DataTable answers)
-    {
-        var factory = new PageFactory(page);
-        foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
-        {
-            var pageObj = factory.GetPage(pageName);
-            await pageObj.AssertHeaderAsync();
-            await pageObj.AnswerAsync(answer);
-            await pageObj.ContinueAsync();
-        }
     }
 
     [When(@"the page header is ""(.*)""")]
