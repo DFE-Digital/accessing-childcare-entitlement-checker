@@ -1,0 +1,25 @@
+@using AccessingChildcareEntitlementChecker.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h1 class="govuk-heading-l">@Localizer["Title"]</h1>
+
+<p class="govuk-body">
+    @Localizer["Info1"]
+</p>
+
+<p class="govuk-body">
+    @Localizer["Info2"]
+</p>
+
+<p class="govuk-body">
+    @Localizer["Info3"]
+</p>
+
+<govuk-button-link asp-controller="@HomeController.Name" asp-action="@nameof(HomeController.Start)">
+    @Localizer["Button_StartAgain"]
+</govuk-button-link>

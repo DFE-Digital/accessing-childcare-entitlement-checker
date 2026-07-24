@@ -1,4 +1,5 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
+using Microsoft.Extensions.Logging;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Summary;
 using AccessingChildcareEntitlementChecker.Web.Services;
@@ -37,8 +38,13 @@ public class SummaryControllerTests
             .BuildServiceProvider()
             .GetRequiredService<IModelMetadataProvider>();
 
-        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory);
-        _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
+        var logger = Substitute.For<ILogger<SummaryController>>();
+        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory, logger);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.TempData = new TempDataDictionary(_controller.HttpContext, Substitute.For<ITempDataProvider>());
         _controller.MetadataProvider = metadataProvider;
         _controller.Url = Substitute.For<IUrlHelper>();
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
@@ -76,11 +82,13 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckChildDetails_Post_RedirectsToCheckChildDetails_WhenCorrelationIdMismatches()
+    public void CheckChildDetails_Post_ReturnsStateMismatch_WhenCorrelationIdMismatches()
     {
         var model = new CheckChildDetailsSubmitModel(Guid.NewGuid());
-        var result = Assert.IsType<RedirectToActionResult>(_controller.CheckChildDetails(model));
-        Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
+        var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails(model));
+        Assert.Equal("StateMismatch", result.ViewName);
+        Assert.Equal(400, _controller.Response.StatusCode);
+        _journeySession.Received(1).Clear();
     }
 
     [Fact]
@@ -209,10 +217,12 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckAnswers_Post_RedirectsToCheckAnswers_WhenCorrelationIdMismatches()
+    public void CheckAnswers_Post_ReturnsStateMismatch_WhenCorrelationIdMismatches()
     {
         var model = new CheckAnswersSubmitModel(Guid.NewGuid());
-        var result = Assert.IsType<RedirectToActionResult>(_controller.CheckAnswers(model));
-        Assert.Equal(nameof(SummaryController.CheckAnswers), result.ActionName);
+        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers(model));
+        Assert.Equal("StateMismatch", result.ViewName);
+        Assert.Equal(400, _controller.Response.StatusCode);
+        _journeySession.Received(1).Clear();
     }
 }
