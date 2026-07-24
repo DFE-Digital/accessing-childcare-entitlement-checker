@@ -13,34 +13,14 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Filters;
 
 public class RequireJourneySessionFilterTests
 {
-    private readonly ILogger<RequireJourneySessionFilter> _mockLogger;
+    private readonly FakeLogger<RequireJourneySessionFilter> _mockLogger = new();
     private readonly IJourneySession _mockJourneySession;
     private readonly ResourceExecutingContext _context;
     private readonly ResourceExecutionDelegate _next;
     private readonly RequireJourneySessionFilter _sut;
-    private readonly List<string> _loggedMessages = [];
 
     public RequireJourneySessionFilterTests()
     {
-        _mockLogger = Substitute.For<ILogger<RequireJourneySessionFilter>>();
-        _mockLogger.IsEnabled(LogLevel.Information).Returns(true);
-
-        // Capture log messages synchronously during the Log invocation before State is disposed/cleared.
-        _mockLogger.When(x => x.Log(
-            Arg.Any<LogLevel>(),
-            Arg.Any<EventId>(),
-            Arg.Any<Arg.AnyType>(),
-            Arg.Any<Exception>(),
-            Arg.Any<Func<Arg.AnyType, Exception?, string>>()
-        )).Do(call =>
-        {
-            var state = call.Args()[2];
-            var exception = (Exception?)call.Args()[3];
-            var formatter = (Delegate)call.Args()[4]!;
-            var message = (string)formatter.DynamicInvoke(state, exception)!;
-            _loggedMessages.Add(message);
-        });
-
         _mockJourneySession = Substitute.For<IJourneySession>();
 
         var httpContext = new DefaultHttpContext();
@@ -72,11 +52,11 @@ public class RequireJourneySessionFilterTests
         _mockJourneySession.HasSession.Returns(true);
         await _sut.OnResourceExecutionAsync(_context, _next);
         Assert.Null(_context.Result);
-        Assert.False(_mockLogger.ReceivedCalls().Any());
+        Assert.Empty(_mockLogger.Messages);
     }
 
     private void AssertLogged(string expectedMessage)
     {
-        Assert.Contains(expectedMessage, _loggedMessages);
+        Assert.Contains(expectedMessage, _mockLogger.Messages);
     }
 }
