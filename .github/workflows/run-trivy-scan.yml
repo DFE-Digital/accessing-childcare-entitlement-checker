@@ -16,7 +16,27 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Run Trivy Vulnerability Scanner
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Install Docs Dependencies
+        run: npm ci --ignore-scripts
+        working-directory: docs
+
+      - name: Run Trivy (Console Table Output)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: 'fs'
+          scanners: 'vuln,secret,license'
+          severity: 'HIGH,CRITICAL'
+          format: 'table'
+          exit-code: '0'
+
+      - name: Run Trivy (SARIF Report & Build Failure)
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: 'fs'
