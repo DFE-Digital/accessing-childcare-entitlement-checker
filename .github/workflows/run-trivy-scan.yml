@@ -27,6 +27,16 @@ jobs:
         run: npm ci --ignore-scripts
         working-directory: docs
 
+      # Pass 0: Print a full audit log of all licenses detected in the codebase for visibility.
+      - name: Print All Detected Licenses (Audit Log)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: 'fs'
+          scanners: 'license'
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+          format: 'table'
+          exit-code: '0'
+
       # Pass 1: Run Trivy in table format and enforce build failures on HIGH/CRITICAL issues.
       # We do this here because in SARIF format (Pass 2), Trivy overrides the severity filter
       # to scan all levels for GitHub Security Tab management, which would cause exit-code: 1
