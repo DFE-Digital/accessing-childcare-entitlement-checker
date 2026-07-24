@@ -53,7 +53,7 @@ internal class ScenarioSetupHooks(
             .ScenarioInfo
             .Tags
             .Contains("javascript-enabled");
-        
+
         return new BrowserNewContextOptions
         {
             JavaScriptEnabled = javascriptEnabled,
