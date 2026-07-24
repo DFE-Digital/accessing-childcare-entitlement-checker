@@ -1,3 +1,3 @@
 namespace AccessingChildcareEntitlementChecker.Web.Models.Summary;
 
-public record CheckChildDetailsSubmitModel(Guid CorrelationId);
+public record CheckChildDetailsSubmitModel(Guid? CorrelationId);
