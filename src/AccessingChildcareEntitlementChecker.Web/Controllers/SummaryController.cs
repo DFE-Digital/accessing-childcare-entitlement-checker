@@ -21,7 +21,7 @@ public partial class SummaryController(
     : Controller
 {
     public const string Name = "Summary";
-    
+
     [HttpGet]
     public ViewResult CheckChildDetails(string? childId = null)
     {
@@ -39,7 +39,7 @@ public partial class SummaryController(
         {
             return RedirectToAction(nameof(UserController.UserAge), UserController.Name);
         }
-        
+
         journeySession.Clear();
         LogCorrelationIdMismatch();
         Response.StatusCode = 400;
@@ -99,7 +99,7 @@ public partial class SummaryController(
         {
             return RedirectToAction(nameof(ResultsController.Results), ResultsController.Name);
         }
-        
+
         journeySession.Clear();
         LogCorrelationIdMismatch();
         Response.StatusCode = 400;
@@ -149,7 +149,7 @@ public partial class SummaryController(
         Level = LogLevel.Warning,
         Message = "State mismatch detected. Correlation ID mismatch.")]
     private partial void LogCorrelationIdMismatch([TagName("microsoft.custom_event.name")] string customEventName = "StateMismatch");
-    
+
     private ChildSummaryViewModel ChildSummaryViewModelFactory(Child child, string returnTo)
     {
         var born = new SummaryRowFactory(MetadataProvider, "BornChildDetails", stringLocalizerFactory)
