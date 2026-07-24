@@ -9,17 +9,25 @@ using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
-public class SummaryController(
+public partial class SummaryController(
     JourneyState journeyState,
     IJourneySession journeySession,
-    IStringLocalizerFactory stringLocalizerFactory)
+    IStringLocalizerFactory stringLocalizerFactory,
+    ILogger<SummaryController> logger)
     : Controller
 {
     public const string Name = "Summary";
+
+    [LoggerMessage(
+        EventId = 2,
+        Level = LogLevel.Warning,
+        Message = "State mismatch detected. Correlation ID mismatch.")]
+    private partial void LogCorrelationIdMismatch();
 
     [HttpGet]
     public ViewResult CheckChildDetails(string? childId = null)
@@ -34,11 +42,13 @@ public class SummaryController(
     [HttpPost]
     public IActionResult CheckChildDetails(CheckChildDetailsSubmitModel model)
     {
-        // NOTE: Redirecting back to the GET action is a suggested approach to handle a mismatch,
-        // but has not been finalized as a formal requirement yet. It is used as a fallback.
+        // NOTE: Returning a custom 400 StateMismatch page on mismatch is a suggested fallback.
         if (model.CorrelationId != journeyState.CorrelationId)
         {
-            return RedirectToAction(nameof(CheckChildDetails));
+            journeySession.Clear();
+            LogCorrelationIdMismatch();
+            Response.StatusCode = 400;
+            return View("StateMismatch");
         }
 
         return RedirectToAction(nameof(UserController.UserAge), UserController.Name);
@@ -93,11 +103,13 @@ public class SummaryController(
     [HttpPost]
     public IActionResult CheckAnswers(CheckAnswersSubmitModel model)
     {
-        // NOTE: Redirecting back to the GET action is a suggested approach to handle a mismatch,
-        // but has not been finalized as a formal requirement yet. It is used as a fallback.
+        // NOTE: Returning a custom 400 StateMismatch page on mismatch is a suggested fallback.
         if (model.CorrelationId != journeyState.CorrelationId)
         {
-            return RedirectToAction(nameof(CheckAnswers));
+            journeySession.Clear();
+            LogCorrelationIdMismatch();
+            Response.StatusCode = 400;
+            return View("StateMismatch");
         }
 
         return RedirectToAction(nameof(ResultsController.Results), ResultsController.Name);
