@@ -154,6 +154,7 @@ public class SummaryControllerTests
         var result = Assert.IsType<ViewResult>(_controller.CheckAnswers());
         var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.True(checkAnswersViewModel.HasChildren);
+        Assert.Equal(_journeyState.CorrelationId, checkAnswersViewModel.CorrelationId);
         var child = Assert.Single(checkAnswersViewModel.Children);
         Assert.Equal("child-a", child.ChildId);
         Assert.Equal("Child A", child.Name);
@@ -179,6 +180,7 @@ public class SummaryControllerTests
         var result = Assert.IsType<ViewResult>(_controller.CheckAnswers(fromChildId: "child-a"));
         var model = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.Equal("child-a", model.LastEditedChild!.ChildId);
+        Assert.Equal(_journeyState.CorrelationId, model.CorrelationId);
     }
 
     [Fact]
@@ -188,11 +190,29 @@ public class SummaryControllerTests
         _journeyState.PartnerAge = AgeRange.TwentyOneOrOver;
         var result = Assert.IsType<ViewResult>(_controller.CheckAnswers());
         var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
+        Assert.Equal(_journeyState.CorrelationId, checkAnswersViewModel.CorrelationId);
 
         var partnerDetail = checkAnswersViewModel.PartnerDetails[0];
         Assert.Equal("Title", partnerDetail.Key);
         Assert.Equal("Option_21OrOver", partnerDetail.Value);
         Assert.Equal("PartnerAge", partnerDetail.ChangeAction);
         Assert.Equal("Partner", partnerDetail.ChangeController);
+    }
+
+    [Fact]
+    public void CheckAnswers_Post_Redirects_WhenCorrelationIdMatches()
+    {
+        var model = new CheckAnswersSubmitModel(_journeyState.CorrelationId);
+        var result = Assert.IsType<RedirectToActionResult>(_controller.CheckAnswers(model));
+        Assert.Equal(nameof(ResultsController.Results), result.ActionName);
+        Assert.Equal(ResultsController.Name, result.ControllerName);
+    }
+
+    [Fact]
+    public void CheckAnswers_Post_RedirectsToCheckAnswers_WhenCorrelationIdMismatches()
+    {
+        var model = new CheckAnswersSubmitModel(Guid.NewGuid());
+        var result = Assert.IsType<RedirectToActionResult>(_controller.CheckAnswers(model));
+        Assert.Equal(nameof(SummaryController.CheckAnswers), result.ActionName);
     }
 }

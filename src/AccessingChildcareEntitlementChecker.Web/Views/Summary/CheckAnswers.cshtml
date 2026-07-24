@@ -1,4 +1,3 @@
-@using AccessingChildcareEntitlementChecker.Web.Models.Partner
 @using AccessingChildcareEntitlementChecker.Web.Models.Summary
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
@@ -110,7 +109,10 @@
             </govuk-inset-text>
 
             <div class="govuk-!-margin-top-3">
-                <govuk-button-link type="submit" asp-controller="Results" asp-action="Results">@Shared["Button_Continue"]</govuk-button-link>
+                <form asp-controller="Summary" asp-action="CheckAnswers" method="post">
+                    <input type="hidden" asp-for="CorrelationId" />
+                    <govuk-button type="submit">@Shared["Button_Continue"]</govuk-button>
+                </form>
             </div>
         }
     </div>
