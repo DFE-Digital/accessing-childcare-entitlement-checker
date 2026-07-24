@@ -12,6 +12,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  trivy-scan:
+    name: Trivy Security Scan
+    uses: ./.github/workflows/run-trivy-scan.yml
+
   build-dotnet:
     name: Build Dotnet
     uses: ./.github/workflows/build-dotnet.yml
