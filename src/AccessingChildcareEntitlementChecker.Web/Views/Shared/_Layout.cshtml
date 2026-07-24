@@ -9,15 +9,14 @@
 }
 
 @section Head {
-    @if (CookiePolicyService.HasConsented)
-    {
-        <partial name="_Analytics" />
-    }
+    <partial name="_GoogleTagManagerHead" />
 
     @Html.GovUkFrontendStyleImports()
 }
 
 @section BodyStart {
+    <partial name="_GoogleTagManagerBody" />
+    
     @if (!CookiePolicyService.HasUserPreference)
     {
         <partial name="_CookieBanner" />

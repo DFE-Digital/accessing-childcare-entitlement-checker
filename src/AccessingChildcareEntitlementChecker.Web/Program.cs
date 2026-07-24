@@ -64,7 +64,7 @@ services.AddJourneyServices();
 services.AddSingleton<EntitlementResponseToResultsSummaryViewModelMapper>();
 services.AddSingleton<EntitlementResponseToResultsDetailsViewModelMapper>();
 services.AddSingleton<JourneyStateToEntitlementRequestMapper>();
-
+services.AddGoogleTagManager(builder.Configuration);
 services.AddRulesEngine();
 
 services.Configure<ForwardedHeadersOptions>(options =>
@@ -92,12 +92,18 @@ app.Use(async (context, next) =>
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
 
     var csp = new StringBuilder();
+
     csp.Append("default-src 'self'; ");
-    csp.Append($"script-src 'self' 'nonce-{context.Items["csp-nonce"]}'; ");
+    csp.Append($"script-src 'self' 'nonce-{context.Items["csp-nonce"]}' " + "https://www.googletagmanager.com; ");
     csp.Append("style-src 'self'; ");
     csp.Append("img-src 'self' data:; ");
     csp.Append("font-src 'self'; ");
-    csp.Append("connect-src 'self'; ");
+    csp.Append(
+        "connect-src 'self' " +
+        "https://www.google-analytics.com " +
+        "https://*.google-analytics.com " +
+        "https://www.googletagmanager.com; ");
+    csp.Append("frame-src https://www.googletagmanager.com; ");
     csp.Append("form-action 'self'; ");
     csp.Append("object-src 'none'; ");
     csp.Append("base-uri 'self'; ");
