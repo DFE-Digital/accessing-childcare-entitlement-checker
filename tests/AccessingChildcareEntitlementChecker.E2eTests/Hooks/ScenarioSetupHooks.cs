@@ -52,7 +52,8 @@ internal class ScenarioSetupHooks(
         var javascriptEnabled = scenarioContext
             .ScenarioInfo
             .Tags
-            .Contains("javascript-enabled") ? true : false;
+            .Contains("javascript-enabled");
+        
         return new BrowserNewContextOptions
         {
             JavaScriptEnabled = javascriptEnabled,
