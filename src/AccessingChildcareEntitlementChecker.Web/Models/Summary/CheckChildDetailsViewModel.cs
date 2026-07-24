@@ -6,4 +6,5 @@ public record CheckChildDetailsViewModel(
     IReadOnlyList<ChildSummaryViewModel> Children,
     bool HasChildren,
     Child? LastEditedChild,
-    string BackLink);
+    string BackLink,
+    Guid CorrelationId);
