@@ -19,8 +19,7 @@ public class SummaryControllerTests
     private readonly IJourneySession _journeySession;
     private readonly SummaryController _controller;
     private const string childId = "child-a";
-    private readonly List<string> _loggedMessages = [];
-    private readonly List<KeyValuePair<string, object>> _loggedProperties = [];
+    private readonly FakeLogger<SummaryController> _logger = new();
 
     public SummaryControllerTests()
     {
@@ -40,31 +39,7 @@ public class SummaryControllerTests
             .BuildServiceProvider()
             .GetRequiredService<IModelMetadataProvider>();
 
-        var logger = Substitute.For<ILogger<SummaryController>>();
-        logger.IsEnabled(LogLevel.Warning).Returns(true);
-
-        // Capture log messages and properties synchronously before state is cleared.
-        logger.When(x => x.Log(
-            Arg.Any<LogLevel>(),
-            Arg.Any<EventId>(),
-            Arg.Any<Arg.AnyType>(),
-            Arg.Any<Exception>(),
-            Arg.Any<Func<Arg.AnyType, Exception?, string>>()
-        )).Do(call =>
-        {
-            var state = call.Args()[2];
-            var exception = (Exception?)call.Args()[3];
-            var formatter = (Delegate)call.Args()[4]!;
-            var message = (string)formatter.DynamicInvoke(state, exception)!;
-            _loggedMessages.Add(message);
-
-            if (state is IEnumerable<KeyValuePair<string, object>> properties)
-            {
-                _loggedProperties.AddRange(properties);
-            }
-        });
-
-        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory, logger);
+        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory, _logger);
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
@@ -115,8 +90,8 @@ public class SummaryControllerTests
         Assert.Equal(400, _controller.Response.StatusCode);
         _journeySession.Received(1).Clear();
 
-        Assert.Contains("State mismatch detected. Correlation ID mismatch.", _loggedMessages);
-        var customEventProp = Assert.Single(_loggedProperties, p => p.Key == "microsoft.custom_event.name");
+        Assert.Contains("State mismatch detected. Correlation ID mismatch. Event: StateMismatch", _logger.Messages);
+        var customEventProp = Assert.Single(_logger.Properties, p => p.Key == "microsoft.custom_event.name");
         Assert.Equal("StateMismatch", customEventProp.Value);
     }
 
@@ -254,8 +229,8 @@ public class SummaryControllerTests
         Assert.Equal(400, _controller.Response.StatusCode);
         _journeySession.Received(1).Clear();
 
-        Assert.Contains("State mismatch detected. Correlation ID mismatch.", _loggedMessages);
-        var customEventProp = Assert.Single(_loggedProperties, p => p.Key == "microsoft.custom_event.name");
+        Assert.Contains("State mismatch detected. Correlation ID mismatch. Event: StateMismatch", _logger.Messages);
+        var customEventProp = Assert.Single(_logger.Properties, p => p.Key == "microsoft.custom_event.name");
         Assert.Equal("StateMismatch", customEventProp.Value);
     }
 }

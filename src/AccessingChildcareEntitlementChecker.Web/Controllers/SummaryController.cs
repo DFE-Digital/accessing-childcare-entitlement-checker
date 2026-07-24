@@ -147,7 +147,7 @@ public partial class SummaryController(
     [LoggerMessage(
         EventId = 2,
         Level = LogLevel.Warning,
-        Message = "State mismatch detected. Correlation ID mismatch.")]
+        Message = "State mismatch detected. Correlation ID mismatch. Event: {microsoft.custom_event.name}")]
     private partial void LogCorrelationIdMismatch([TagName("microsoft.custom_event.name")] string customEventName = "StateMismatch");
 
     private ChildSummaryViewModel ChildSummaryViewModelFactory(Child child, string returnTo)
