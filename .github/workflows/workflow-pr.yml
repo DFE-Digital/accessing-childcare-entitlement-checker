@@ -36,3 +36,7 @@ jobs:
     with:
       infra-directory: infra
 
+  trivy-scan:
+    name: Trivy Security Scan
+    uses: ./.github/workflows/run-trivy-scan.yml
+
