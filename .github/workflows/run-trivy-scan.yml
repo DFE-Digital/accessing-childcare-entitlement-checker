@@ -27,6 +27,10 @@ jobs:
         run: npm ci --ignore-scripts
         working-directory: docs
 
+      # Pass 1: Run Trivy in table format and enforce build failures on HIGH/CRITICAL issues.
+      # We do this here because in SARIF format (Pass 2), Trivy overrides the severity filter
+      # to scan all levels for GitHub Security Tab management, which would cause exit-code: 1
+      # to fail the build on any minor (LOW/MEDIUM) vulnerability.
       - name: Run Trivy (Console Table Output & Build Failure)
         uses: aquasecurity/trivy-action@v0.36.0
         with:
@@ -36,6 +40,9 @@ jobs:
           format: 'table'
           exit-code: '1'
 
+      # Pass 2: Generate the SARIF report of all findings for GitHub Code Scanning.
+      # This run is configured with exit-code: 0 and runs even if Pass 1 failed (if: always()),
+      # ensuring that full report data is always uploaded.
       - name: Run Trivy (SARIF Report)
         uses: aquasecurity/trivy-action@v0.36.0
         if: always()
