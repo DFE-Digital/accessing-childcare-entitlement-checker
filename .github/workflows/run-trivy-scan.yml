@@ -11,6 +11,8 @@ jobs:
       security-events: write
       actions: read
       contents: read
+    env:
+      TRIVY_SKIP_VERSION_CHECK: "true"
 
     steps:
       - name: Checkout Code
