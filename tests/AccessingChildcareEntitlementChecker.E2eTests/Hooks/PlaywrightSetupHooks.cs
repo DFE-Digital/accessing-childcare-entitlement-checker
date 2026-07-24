@@ -24,8 +24,6 @@ internal class PlaywrightSetupHooks
         _settings = new TestSettings();
         configuration.GetSection(nameof(TestSettings)).Bind(_settings);
 
-        _settings = SetWorkflowEnvironmentVariables(_settings);
-
         _playwrightInstance = await Playwright.CreateAsync();
 
         var launchOptions = BrowserTypeLaunchOptions();
@@ -64,20 +62,5 @@ internal class PlaywrightSetupHooks
             Headless = _settings.Headless,
             SlowMo = _settings.SlowMo
         };
-    }
-
-    private static TestSettings SetWorkflowEnvironmentVariables(TestSettings testSettings)
-    {
-        // TODO: Update workflows to align with test setting. This maintains compatibility with environment variables
-        var envUrl = Environment.GetEnvironmentVariable("TEST_URL");
-        if (!string.IsNullOrEmpty(envUrl)) testSettings.TestUrl = envUrl;
-
-        var envPass = Environment.GetEnvironmentVariable("TEST_BASIC_AUTH_PASSWORD");
-        if (!string.IsNullOrEmpty(envPass)) testSettings.BasicAuthPassword = envPass;
-
-        var envBrowser = Environment.GetEnvironmentVariable("PLAYWRIGHT_BROWSER");
-        if (!string.IsNullOrEmpty(envBrowser)) testSettings.Browser = envBrowser;
-
-        return testSettings;
     }
 }
