@@ -1,0 +1,22 @@
+@using AccessingChildcareEntitlementChecker.Web.Configuration
+@using AccessingChildcareEntitlementChecker.Web.Services
+@using Microsoft.Extensions.Options
+
+@inject IOptions<GoogleTagManagerOptions> GoogleTagManagerOptions
+@inject ICookiePolicyService CookiePolicyService
+
+@{
+    var options = GoogleTagManagerOptions.Value;
+}
+
+@if (options.Enabled && CookiePolicyService.HasConsented && !string.IsNullOrWhiteSpace(options.ContainerId))
+{
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=@options.ContainerId"
+                title="Google Tag Manager"
+                height="0"
+                width="0"
+                style="display:none;visibility:hidden">
+        </iframe>
+    </noscript>
+}
