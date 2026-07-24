@@ -9,7 +9,6 @@ using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -22,13 +21,7 @@ public partial class SummaryController(
     : Controller
 {
     public const string Name = "Summary";
-
-    [LoggerMessage(
-        EventId = 2,
-        Level = LogLevel.Warning,
-        Message = "State mismatch detected. Correlation ID mismatch.")]
-    private partial void LogCorrelationIdMismatch();
-
+    
     [HttpGet]
     public ViewResult CheckChildDetails(string? childId = null)
     {
@@ -42,16 +35,15 @@ public partial class SummaryController(
     [HttpPost]
     public IActionResult CheckChildDetails(CheckChildDetailsSubmitModel model)
     {
-        // NOTE: Returning a custom 400 StateMismatch page on mismatch is a suggested fallback.
-        if (model.CorrelationId != journeyState.CorrelationId)
+        if (model.CorrelationId == journeyState.CorrelationId)
         {
-            journeySession.Clear();
-            LogCorrelationIdMismatch();
-            Response.StatusCode = 400;
-            return View("StateMismatch");
+            return RedirectToAction(nameof(UserController.UserAge), UserController.Name);
         }
-
-        return RedirectToAction(nameof(UserController.UserAge), UserController.Name);
+        
+        journeySession.Clear();
+        LogCorrelationIdMismatch();
+        Response.StatusCode = 400;
+        return View("StateMismatch");
     }
 
     [HttpGet]
@@ -103,16 +95,15 @@ public partial class SummaryController(
     [HttpPost]
     public IActionResult CheckAnswers(CheckAnswersSubmitModel model)
     {
-        // NOTE: Returning a custom 400 StateMismatch page on mismatch is a suggested fallback.
-        if (model.CorrelationId != journeyState.CorrelationId)
+        if (model.CorrelationId == journeyState.CorrelationId)
         {
-            journeySession.Clear();
-            LogCorrelationIdMismatch();
-            Response.StatusCode = 400;
-            return View("StateMismatch");
+            return RedirectToAction(nameof(ResultsController.Results), ResultsController.Name);
         }
-
-        return RedirectToAction(nameof(ResultsController.Results), ResultsController.Name);
+        
+        journeySession.Clear();
+        LogCorrelationIdMismatch();
+        Response.StatusCode = 400;
+        return View("StateMismatch");
     }
 
     [HttpGet]
@@ -153,6 +144,12 @@ public partial class SummaryController(
         return this.RedirectToReturnTo(model.ReturnTo);
     }
 
+    [LoggerMessage(
+        EventId = 2,
+        Level = LogLevel.Warning,
+        Message = "State mismatch detected. Correlation ID mismatch.")]
+    private partial void LogCorrelationIdMismatch([TagName("microsoft.custom_event.name")] string customEventName = "StateMismatch");
+    
     private ChildSummaryViewModel ChildSummaryViewModelFactory(Child child, string returnTo)
     {
         var born = new SummaryRowFactory(MetadataProvider, "BornChildDetails", stringLocalizerFactory)

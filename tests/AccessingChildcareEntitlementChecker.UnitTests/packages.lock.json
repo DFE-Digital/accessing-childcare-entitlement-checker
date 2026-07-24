@@ -135,6 +135,15 @@
           "Microsoft.Extensions.Primitives": "10.0.10"
         }
       },
+      "Microsoft.Extensions.Compliance.Abstractions": {
+        "type": "Transitive",
+        "resolved": "10.1.0",
+        "contentHash": "M3JWrgZMkVzyEybZzNkTiC/e8U1ipXTi8xm8bj+PHHp4AcEmhmIEqnxRS0VHVCKZjLkOPt2hY2CIisUFQ6gqLA==",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.1",
+          "Microsoft.Extensions.ObjectPool": "10.0.1"
+        }
+      },
       "Microsoft.Extensions.Configuration.Abstractions": {
         "type": "Transitive",
         "resolved": "10.0.10",
@@ -357,6 +366,11 @@
           "Microsoft.Extensions.Options": "10.0.10",
           "Microsoft.Extensions.Primitives": "10.0.10"
         }
+      },
+      "Microsoft.Extensions.ObjectPool": {
+        "type": "Transitive",
+        "resolved": "10.0.1",
+        "contentHash": "HqAEbtoAhgvH53c54IV5e4vQ60PYvl7Z/WIHsbet+UGGE7n+7dwVNXw1mb9LZlWbsxnupCevvtgIne5P//ZKpQ=="
       },
       "Microsoft.Extensions.Options": {
         "type": "Transitive",
@@ -676,7 +690,8 @@
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.5.0, )",
           "GovUk.Frontend.AspNetCore": "[4.3.0, )",
           "Microsoft.Azure.StackExchangeRedis": "[3.3.1, )",
-          "Microsoft.Extensions.Caching.StackExchangeRedis": "[10.0.10, )"
+          "Microsoft.Extensions.Caching.StackExchangeRedis": "[10.0.10, )",
+          "Microsoft.Extensions.Telemetry.Abstractions": "[10.1.0, )"
         }
       },
       "Azure.Identity": {
@@ -780,6 +795,18 @@
         "requested": "[10.0.10, )",
         "resolved": "10.0.10",
         "contentHash": "z/2xXlFw2aLGjHyEm6E0tQ+In6VfzQzTrtArbQ2c0TQE16ZbyDCMGPvaUT9I0s8rgy9sRWlU2P9waW37qV04qA=="
+      },
+      "Microsoft.Extensions.Telemetry.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[10.1.0, )",
+        "resolved": "10.1.0",
+        "contentHash": "0jAF2b0YJ1LOtunmo3PzSoJOx/ThhcGH5Y5kaV0jeM0BUlyr9orjg+fH5YabqnPSmwcN/DSTj0iZ7UwDISn5ag==",
+        "dependencies": {
+          "Microsoft.Extensions.Compliance.Abstractions": "10.1.0",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.1",
+          "Microsoft.Extensions.ObjectPool": "10.0.1",
+          "Microsoft.Extensions.Options": "10.0.1"
+        }
       }
     }
   }

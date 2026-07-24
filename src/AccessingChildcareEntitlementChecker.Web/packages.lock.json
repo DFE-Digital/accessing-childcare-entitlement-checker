@@ -53,6 +53,15 @@
           "StackExchange.Redis": "2.7.27"
         }
       },
+      "Microsoft.Extensions.Telemetry.Abstractions": {
+        "type": "Direct",
+        "requested": "[10.1.0, )",
+        "resolved": "10.1.0",
+        "contentHash": "0jAF2b0YJ1LOtunmo3PzSoJOx/ThhcGH5Y5kaV0jeM0BUlyr9orjg+fH5YabqnPSmwcN/DSTj0iZ7UwDISn5ag==",
+        "dependencies": {
+          "Microsoft.Extensions.Compliance.Abstractions": "10.1.0"
+        }
+      },
       "Azure.Core": {
         "type": "Transitive",
         "resolved": "1.54.0",
@@ -88,6 +97,11 @@
           "Azure.Core": "1.50.0",
           "Azure.Identity": "1.17.1"
         }
+      },
+      "Microsoft.Extensions.Compliance.Abstractions": {
+        "type": "Transitive",
+        "resolved": "10.1.0",
+        "contentHash": "M3JWrgZMkVzyEybZzNkTiC/e8U1ipXTi8xm8bj+PHHp4AcEmhmIEqnxRS0VHVCKZjLkOPt2hY2CIisUFQ6gqLA=="
       },
       "Microsoft.Extensions.FileProviders.Embedded": {
         "type": "Transitive",
