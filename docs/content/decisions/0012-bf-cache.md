@@ -72,9 +72,11 @@ The minimum required change is:
 
 This ensures that navigation from these pages becomes a server-validated transition rather than a continuation based solely on potentially stale browser state.
 
+We have chosen **Option 3: State Mismatch Error and Restart** as our implementation approach. Upon detecting a token mismatch during a boundary POST, the session is cleared, the event is logged for telemetry, and a custom 400 page is returned requiring the user to start again.
+
 ## Options for Resolving State Drift
 
-Once a drift between browser state and backend state is detected, there are two possible approaches.
+Once a drift between browser state and backend state is detected, there are three possible approaches.
 
 ### Option 1: Last Write Wins
 
@@ -157,6 +159,43 @@ Result:
 * Users may be surprised by changes to values they are currently viewing.
 * Requires conflict detection and presentation logic.
 
+### Option 3: State Mismatch Error and Restart (Chosen)
+
+The backend state is considered authoritative, but rather than attempting to reconcile differences or automatically refresh the page (which might display confusing changes to the user), the drift is treated as a fatal session invalidation.
+
+If the browser state differs from the backend state (as detected by a mismatched `CorrelationId` token):
+
+* The session is cleared immediately to prevent further state pollution.
+* An explicit structured warning is logged for telemetry and alerting.
+* The user is navigated to a custom 400 bad request error page explaining that a session problem occurred.
+* The user is prompted with a "Start again" button link to restart the journey from the beginning.
+
+#### Behaviour
+
+Example:
+
+1. Backend state:
+    * Child name: "Alice"
+2. Browser BFCache restores an older page:
+    * Child name: "Alicia"
+3. User continues.
+
+Result:
+* The application detects the mismatched correlation token.
+* The session is cleared on the server.
+* The user is shown a 400 Bad Request page with the message "There is a problem with your session" and a "Start again" button.
+
+#### Advantages
+
+* Simpler and more robust backend state management—no complex conflict-handling logic required.
+* Maximises security and data integrity by explicitly wiping potentially corrupted state and starting fresh.
+* Fully predictable behaviour that eliminates subtle drift edge cases.
+* Easy telemetry integration (logs, counts) to measure how often BFCache drift actually happens.
+
+#### Considerations
+
+* Hard friction for users who encounter the issue, forcing them to start the form over (mitigated by BFCache drift being rare in normal paths).
+
 ## Consequences
 
 ### Positive
@@ -195,6 +234,7 @@ Rejected because state drift can result in inconsistent or unexpected user journ
 
     * Last Write Wins
     * State Wins
+    * **State Mismatch Error and Restart (Chosen)**
 
 2. Are there additional pages besides Children summary and Check your answers that represent state boundaries and require validation?
 
@@ -202,4 +242,4 @@ Rejected because state drift can result in inconsistent or unexpected user journ
 
     * Full state comparison
     * Page-specific fields only
-    * Version/token-based detection
+    * **Version/token-based detection (Chosen)**
