@@ -43,6 +43,7 @@ public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClass
                 WorkStatus = [WorkStatusOption.PaidEmployment],
                 PartnerAge = AgeRange.UnderEighteen,
                 PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
+                HasPartner = false,
             });
 
             var getResponse = await getClient.GetAsync(url, TestContext.Current.CancellationToken);

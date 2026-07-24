@@ -8,4 +8,5 @@ public record CheckAnswersViewModel(
     Child? LastEditedChild,
     IReadOnlyList<SummaryRowViewModel> UserDetails,
     IReadOnlyList<SummaryRowViewModel> PartnerDetails,
-    string BackLink);
+    string BackLink,
+    Guid CorrelationId);

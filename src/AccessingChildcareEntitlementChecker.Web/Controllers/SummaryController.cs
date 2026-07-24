@@ -87,7 +87,20 @@ public class SummaryController(
         var userDetails = homeBuilder.ViewModels.Concat(userBuilder.ViewModels).ToList().AsReadOnly();
         var partnerDetails = partnerBuilder.ViewModels;
         var backLink = GetCheckAnswersBackLink();
-        return View(new CheckAnswersViewModel(summaries, hasChildren, lastEditedChild, userDetails, partnerDetails, backLink));
+        return View(new CheckAnswersViewModel(summaries, hasChildren, lastEditedChild, userDetails, partnerDetails, backLink, journeyState.CorrelationId));
+    }
+
+    [HttpPost]
+    public IActionResult CheckAnswers(CheckAnswersSubmitModel model)
+    {
+        // NOTE: Redirecting back to the GET action is a suggested approach to handle a mismatch,
+        // but has not been finalized as a formal requirement yet. It is used as a fallback.
+        if (model.CorrelationId != journeyState.CorrelationId)
+        {
+            return RedirectToAction(nameof(CheckAnswers));
+        }
+
+        return RedirectToAction(nameof(ResultsController.Results), ResultsController.Name);
     }
 
     [HttpGet]
