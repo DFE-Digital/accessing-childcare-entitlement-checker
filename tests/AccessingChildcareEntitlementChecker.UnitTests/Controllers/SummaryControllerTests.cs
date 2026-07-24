@@ -50,6 +50,7 @@ public class SummaryControllerTests
         var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails());
         var checkChildDetailsViewModel = Assert.IsType<CheckChildDetailsViewModel>(result.Model);
         Assert.True(checkChildDetailsViewModel.HasChildren);
+        Assert.Equal(_journeyState.CorrelationId, checkChildDetailsViewModel.CorrelationId);
 
         var childSummaryViewModel = Assert.Single(checkChildDetailsViewModel.Children);
         Assert.Equal(childId, childSummaryViewModel.ChildId);
@@ -62,6 +63,24 @@ public class SummaryControllerTests
         var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails(childId: "child-a"));
         var model = Assert.IsType<CheckChildDetailsViewModel>(result.Model);
         Assert.Equal("child-a", model.LastEditedChild!.ChildId);
+        Assert.Equal(_journeyState.CorrelationId, model.CorrelationId);
+    }
+
+    [Fact]
+    public void CheckChildDetails_Post_Redirects_WhenCorrelationIdMatches()
+    {
+        var model = new CheckChildDetailsSubmitModel(_journeyState.CorrelationId);
+        var result = Assert.IsType<RedirectToActionResult>(_controller.CheckChildDetails(model));
+        Assert.Equal(nameof(UserController.UserAge), result.ActionName);
+        Assert.Equal(UserController.Name, result.ControllerName);
+    }
+
+    [Fact]
+    public void CheckChildDetails_Post_RedirectsToCheckChildDetails_WhenCorrelationIdMismatches()
+    {
+        var model = new CheckChildDetailsSubmitModel(Guid.NewGuid());
+        var result = Assert.IsType<RedirectToActionResult>(_controller.CheckChildDetails(model));
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
     }
 
     [Fact]

@@ -35,6 +35,8 @@ public class JourneySession : IJourneySession
         var httpContext = _httpContextAccessor.HttpContext
             ?? throw new InvalidOperationException("No HttpContext available");
 
+        journeyState.CorrelationId = Guid.NewGuid();
+
         var json = JsonSerializer.Serialize(journeyState);
         httpContext
             .Session
