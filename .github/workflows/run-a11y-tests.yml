@@ -107,10 +107,10 @@ jobs:
       - name: Run A11y tests
         id: test
         env:
-          TEST_URL: ${{ env.TARGET_URL }}
+          TestSettings__TestUrl: ${{ env.TARGET_URL }}
           PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
-          TEST_BASIC_AUTH_PASSWORD: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
-          PLAYWRIGHT_BROWSER: ${{ inputs.browser }}
+          TestSettings__BasicAuthPassword: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+          TestSettings__Browser: ${{ inputs.browser }}
         run: |
           dotnet test ./a11y-tests/AccessingChildcareEntitlementChecker.A11yTests.dll \
             --logger "trx;LogFileName=test-results.trx" \

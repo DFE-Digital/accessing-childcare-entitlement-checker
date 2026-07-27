@@ -10,7 +10,7 @@ public abstract class JourneyPageBase : PageBase
 
     protected async Task StartJourney()
     {
-        await Page.GotoAsync(BuildUrl("/"));
+        await Page.GotoAsync("/");
         await ExpectPathAndQuery("/");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
         await ExpectPathAndQuery("/where-do-you-live");

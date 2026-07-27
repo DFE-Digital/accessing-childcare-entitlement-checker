@@ -7,6 +7,10 @@
 
     <ItemGroup>
       <PackageReference Include="Deque.AxeCore.Playwright" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
       <PackageReference Include="Microsoft.NET.Test.Sdk" />
       <PackageReference Include="Microsoft.Playwright" />
         <PackageReference Include="xunit.v3" />
@@ -18,6 +22,12 @@
 
     <ItemGroup>
         <Using Include="Xunit" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="appsettings.Local.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>
