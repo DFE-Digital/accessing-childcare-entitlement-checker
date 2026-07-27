@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using AccessingChildcareEntitlementChecker.Web.Configuration;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Azure.Identity;
 using StackExchange.Redis;
@@ -62,26 +61,4 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddGoogleTagManager(this IServiceCollection services, IConfiguration configuration)
-    {
-        services
-            .AddOptions<GoogleTagManagerOptions>()
-            .Bind(configuration.GetSection(
-                GoogleTagManagerOptions.SectionName))
-            .Validate(
-                options =>
-                    !options.Enabled ||
-                    !string.IsNullOrWhiteSpace(options.ContainerId),
-                "A Google Tag Manager container ID is required when Google Tag Manager is enabled.")
-            .Validate(
-                options =>
-                    !options.Enabled ||
-                    options.ContainerId.StartsWith(
-                        "GTM-",
-                        StringComparison.Ordinal),
-                "The Google Tag Manager container ID must start with 'GTM-'.")
-            .ValidateOnStart();
-
-        return services;
-    }
 }

@@ -2,20 +2,33 @@
 @using AccessingChildcareEntitlementChecker.Web.Services
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject ICookiePolicyService CookiePolicyService
+@inject IConfiguration Configuration
 @{
     Layout = "_GovUkPageTemplate";
     var serviceName = Shared["ServiceName"];
     var serviceUrl = Url.Action(nameof(HomeController.Start), HomeController.Name);
+    
+    var googleTagManagerContainerId = Configuration["GoogleTagManager:ContainerId"];
+
+    var shouldLoadGoogleTagManager = CookiePolicyService.HasConsented && !string.IsNullOrWhiteSpace(googleTagManagerContainerId);
 }
 
+
+
 @section Head {
-    <partial name="_GoogleTagManagerHead" />
+    @if (shouldLoadGoogleTagManager)
+    {
+        <partial name="_GoogleTagManagerHead" model="googleTagManagerContainerId" />
+    }
 
     @Html.GovUkFrontendStyleImports()
 }
 
 @section BodyStart {
-    <partial name="_GoogleTagManagerBody" />
+    @if (shouldLoadGoogleTagManager)
+    {
+        <partial name="_GoogleTagManagerBody" model="googleTagManagerContainerId" />
+    }
     
     @if (!CookiePolicyService.HasUserPreference)
     {

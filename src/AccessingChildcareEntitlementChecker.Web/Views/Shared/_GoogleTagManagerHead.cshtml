@@ -1,16 +1,6 @@
-@using AccessingChildcareEntitlementChecker.Web.Configuration
-@using AccessingChildcareEntitlementChecker.Web.Services
-@using Microsoft.Extensions.Options
 
-@inject IOptions<GoogleTagManagerOptions> GoogleTagManagerOptions
-@inject ICookiePolicyService CookiePolicyService
+@model string
 
-@{
-    var options = GoogleTagManagerOptions.Value;
-}
-
-@if (options.Enabled && CookiePolicyService.HasConsented && !string.IsNullOrWhiteSpace(options.ContainerId))
-{
     <script add-nonce="true">
         (function(w,d,s,l,i){
             w[l]=w[l]||[];
@@ -21,11 +11,11 @@
 
             var f=d.getElementsByTagName(s)[0],
                 j=d.createElement(s),
-                dl=l!='dataLayer' ? '&l='+l : '';
+                dl=l!='dataLayer' ? '&l=' + l : '';
 
             j.async=true;
-            j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+            j.src='https://www.googletagmanager.com/gtm.js?id=' + i + dl;
             f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','@options.ContainerId');
+        })(window,document,'script','dataLayer','@Model');
     </script>
-}
+

@@ -64,7 +64,6 @@ services.AddJourneyServices();
 services.AddSingleton<EntitlementResponseToResultsSummaryViewModelMapper>();
 services.AddSingleton<EntitlementResponseToResultsDetailsViewModelMapper>();
 services.AddSingleton<JourneyStateToEntitlementRequestMapper>();
-services.AddGoogleTagManager(builder.Configuration);
 services.AddRulesEngine();
 
 services.Configure<ForwardedHeadersOptions>(options =>
