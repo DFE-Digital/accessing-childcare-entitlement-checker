@@ -54,6 +54,11 @@ public class HomeController : Controller
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
+        if (!nextAnswerMissing)
+        {
+            return RedirectToAction(nameof(SummaryController.CheckChildDetails), SummaryController.Name);
+        }
+
         return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name);
     }
 

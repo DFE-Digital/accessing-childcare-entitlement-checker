@@ -40,7 +40,6 @@ public partial class SummaryController(
             return RedirectToAction(nameof(UserController.UserAge), UserController.Name);
         }
 
-        journeySession.Clear();
         LogCorrelationIdMismatch();
         Response.StatusCode = 400;
         return View("StateMismatch");
@@ -100,7 +99,6 @@ public partial class SummaryController(
             return RedirectToAction(nameof(ResultsController.Results), ResultsController.Name);
         }
 
-        journeySession.Clear();
         LogCorrelationIdMismatch();
         Response.StatusCode = 400;
         return View("StateMismatch");

@@ -56,6 +56,25 @@ public class HomeControllerTests
     }
 
     [Fact]
+    public void Location_Post_ValidSelection_WithExistingChildren_RedirectsToCheckChildDetails()
+    {
+        _journeyState.Children["child1"] = new Child("child1", "Child 1");
+        var model = new LocationViewModel
+        {
+            Country = CountryOfResidence.England
+        };
+
+        var result = _controller.Location(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).Set(_journeyState);
+        Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
+        Assert.Equal(SummaryController.Name, redirect.ControllerName);
+    }
+
+    [Fact]
     public void Location_Post_InvalidSelection_ReturnsViewWithError()
     {
         var model = new LocationViewModel

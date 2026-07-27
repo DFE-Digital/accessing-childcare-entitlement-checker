@@ -165,7 +165,6 @@ The backend state is considered authoritative, but rather than attempting to rec
 
 If the browser state differs from the backend state (as detected by a mismatched `CorrelationId` token):
 
-* The session is cleared immediately to prevent further state pollution.
 * An explicit structured warning is logged for telemetry and alerting.
 * The user is navigated to a custom 400 bad request error page explaining that a session problem occurred.
 * The user is prompted with a "Start again" button link to restart the journey from the beginning.
@@ -182,13 +181,11 @@ Example:
 
 Result:
 * The application detects the mismatched correlation token.
-* The session is cleared on the server.
 * The user is shown a 400 Bad Request page with the message "There is a problem with your session" and a "Start again" button.
 
 #### Advantages
 
 * Simpler and more robust backend state management—no complex conflict-handling logic required.
-* Maximises security and data integrity by explicitly wiping potentially corrupted state and starting fresh.
 * Fully predictable behaviour that eliminates subtle drift edge cases.
 * Easy telemetry integration (logs, counts) to measure how often BFCache drift actually happens.
 
