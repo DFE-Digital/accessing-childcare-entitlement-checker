@@ -24,4 +24,3 @@ budget_alert_threshold_forecast           = 90
 budget_alert_threshold_actual             = 100
 application_insights_daily_data_cap_in_gb = 1
 application_insights_sampling_percentage  = 100
-google_tag_manager_container_id           = "GTM-WL23V6NM"
