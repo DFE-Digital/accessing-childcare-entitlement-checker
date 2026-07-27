@@ -29,7 +29,7 @@ order: 99
 | Re-examine Cache-control Directives | Informational | Systemic |
 | User Agent Fuzzer | Informational | Systemic |
 | User Controllable HTML Element Attribute (Potential XSS) | Informational | 1 |
-| Modern Web Application | 				False Positives: | 5 |
+| Modern Web Application | 				False Positives: | 4 |
 | Private IP Disclosure | 				False Positives: | 1 |
 | Session Management Response Identified | 				False Positives: | 3 |
 | Timestamp Disclosure - Unix | 				False Positives: | 1 |
@@ -58,15 +58,15 @@ The cache-control header has not been set properly or is missing, allowing the b
   * Attack: ``
   * Evidence: `no-cache, no-store`
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json%3Fv=6.1.0
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json (v)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
-  * Evidence: `cache-control: public, max-age=31536000, immutable`
+  * Evidence: `no-cache, no-store`
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies%3FhasSetCookies=True
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies (hasSetCookies)`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
@@ -244,16 +244,9 @@ The application appears to be a modern web application. If you need to explore i
   * Attack: ``
   * Evidence: `<a class="govuk-footer__link" href="#">Item 1</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-footer__link" href="#">Item 1</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
 
 
-Instances: 5
+Instances: 4
 
 ### Solution
 
