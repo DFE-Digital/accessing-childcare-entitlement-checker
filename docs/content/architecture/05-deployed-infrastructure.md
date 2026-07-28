@@ -99,6 +99,7 @@ No modules.
 | <a name="input_enable_load_testing"></a> [enable\_load\_testing](#input\_enable\_load\_testing) | Enable Azure Load Testing | `bool` | `false` | no |
 | <a name="input_enable_web_test"></a> [enable\_web\_test](#input\_enable\_web\_test) | Enable application insights web test | `bool` | `false` | no |
 | <a name="input_environment_prefix"></a> [environment\_prefix](#input\_environment\_prefix) | Environment prefix (e.g. d01) | `string` | n/a | yes |
+| <a name="input_google_tag_manager_container_id"></a> [google\_tag\_manager\_container\_id](#input\_google\_tag\_manager\_container\_id) | Google Tag Manager container ID | `string` | `""` | no |
 | <a name="input_location"></a> [location](#input\_location) | The Azure region to deploy resources into | `string` | `"uksouth"` | no |
 | <a name="input_location_short_code"></a> [location\_short\_code](#input\_location\_short\_code) | The short code for the Azure region (e.g. uks) | `string` | `"uks"` | no |
 | <a name="input_log_analytics_daily_quota_gb"></a> [log\_analytics\_daily\_quota\_gb](#input\_log\_analytics\_daily\_quota\_gb) | The daily quota in GB for the Log Analytics workspace | `number` | n/a | yes |
