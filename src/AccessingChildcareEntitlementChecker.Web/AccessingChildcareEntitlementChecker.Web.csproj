@@ -52,4 +52,8 @@
     <ProjectReference Include="..\AccessingChildcareEntitlementChecker.RulesEngine\AccessingChildcareEntitlementChecker.RulesEngine.csproj" />
   </ItemGroup>
   
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+  
 </Project>
