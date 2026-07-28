@@ -151,3 +151,9 @@ variable "application_insights_sampling_percentage" {
   description = "The sampling percentage for Application Insights"
   type        = number
 }
+
+variable "google_tag_manager_container_id" {
+  description = "Google Tag Manager container ID"
+  type        = string
+  default     = ""
+}

@@ -44,6 +44,7 @@ jobs:
       ARM_USE_OIDC: true
       DEPLOY_ZIP_PATH: "../../artifacts/webapp.zip"
       TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
+      TF_VAR_google_tag_manager_container_id: ${{ vars.GOOGLE_TAG_MANAGER_CONTAINER_ID }}
 
     steps:
     - name: Download Infra Metadata
