@@ -93,7 +93,9 @@ app.Use(async (context, next) =>
     var csp = new StringBuilder();
 
     csp.Append("default-src 'self'; ");
-    csp.Append($"script-src 'self' 'nonce-{context.Items["csp-nonce"]}' " + "https://www.googletagmanager.com; ");
+    csp.Append($"script-src 'self' 'nonce-{context.Items["csp-nonce"]}' " +
+               "https://www.googletagmanager.com " +
+               "https://*.clarity.ms; ");
     csp.Append("style-src 'self'; ");
     csp.Append("img-src 'self' data:; ");
     csp.Append("font-src 'self'; ");
@@ -101,7 +103,8 @@ app.Use(async (context, next) =>
         "connect-src 'self' " +
         "https://www.google-analytics.com " +
         "https://*.google-analytics.com " +
-        "https://www.googletagmanager.com; ");
+        "https://www.googletagmanager.com " +
+        "https://*.clarity.ms; ");
     csp.Append("frame-src https://www.googletagmanager.com; ");
     csp.Append("form-action 'self'; ");
     csp.Append("object-src 'none'; ");
