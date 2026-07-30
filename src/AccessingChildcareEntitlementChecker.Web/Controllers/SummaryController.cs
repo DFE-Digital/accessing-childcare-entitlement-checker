@@ -9,6 +9,8 @@ using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.FeatureManagement;
+using System.Threading.Tasks;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -18,17 +20,20 @@ public class SummaryController : Controller
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly IStringLocalizerFactory _stringLocalizerFactory;
+    private readonly IFeatureManager _featureManager;
 
     public const string Name = "Summary";
 
     public SummaryController(
         JourneyState journeyState,
         IJourneySession journeySession,
-        IStringLocalizerFactory stringLocalizerFactory)
+        IStringLocalizerFactory stringLocalizerFactory,
+        IFeatureManager featureManager)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
         _stringLocalizerFactory = stringLocalizerFactory;
+        _featureManager = featureManager;
     }
 
     [HttpGet]
@@ -42,15 +47,19 @@ public class SummaryController : Controller
     }
 
     [HttpGet]
-    public IActionResult CheckAnswers(string? fromChildId = null)
+    public async Task<IActionResult> CheckAnswers(string? fromChildId = null)
     {
         var summaries = _journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckAnswers)).ToList().AsReadOnly();
         var hasChildren = _journeyState.Children.Count > 0;
         var lastEditedChild = ResolveLastEditedChild(_journeyState, fromChildId);
         var state = _journeyState;
 
-        var homeBuilder = new SummaryRowFactory(MetadataProvider, "Home", _stringLocalizerFactory)
-            .AddLocation(_journeyState.CountryOfResidence);
+        var homeBuilder = new SummaryRowFactory(MetadataProvider, "Home", _stringLocalizerFactory);
+        
+        if (!await _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
+        {
+            homeBuilder.AddLocation(_journeyState.CountryOfResidence);
+        }
 
         var userBuilder = new SummaryRowFactory(MetadataProvider, "User", _stringLocalizerFactory)
             .AddUserAge(state.UserAge)

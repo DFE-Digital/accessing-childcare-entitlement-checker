@@ -1,7 +1,11 @@
 @using AccessingChildcareEntitlementChecker.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.FeatureManagement
+@using Microsoft.Extensions.Configuration
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject IViewLocalizer Localizer
+@inject IFeatureManager FeatureManager
+@inject IConfiguration Configuration
 
 @{
     var title = "Before you continue";
@@ -10,6 +14,11 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        @if (await FeatureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
+        {
+            var hmrcLink = Configuration["HmrcIntegration:BackLinkUrl"] ?? "#";
+            <govuk-back-link href="@hmrcLink">@Localizer["Back"]</govuk-back-link>
+        }
         <h1 class="govuk-heading-xl">
             @Localizer[title]
         </h1>

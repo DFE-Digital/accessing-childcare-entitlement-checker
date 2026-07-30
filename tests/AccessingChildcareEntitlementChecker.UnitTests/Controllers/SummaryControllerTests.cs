@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using Microsoft.FeatureManagement;
+using System.Threading.Tasks;
+using AccessingChildcareEntitlementChecker.Web;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -16,6 +19,7 @@ public class SummaryControllerTests
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private readonly IFeatureManager _featureManager;
     private readonly SummaryController _controller;
     private const string childId = "child-a";
 
@@ -25,6 +29,8 @@ public class SummaryControllerTests
         _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
         _journeyState.Children[childId] = new Child(childId, "Child A");
         _journeySession = Substitute.For<IJourneySession>();
+        _featureManager = Substitute.For<IFeatureManager>();
+        _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(false);
         var stringLocalizerFactory = AcecSubstitute.ForLocalizerFactory();
 
 
@@ -37,7 +43,7 @@ public class SummaryControllerTests
             .BuildServiceProvider()
             .GetRequiredService<IModelMetadataProvider>();
 
-        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory);
+        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory, _featureManager);
         _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
         _controller.MetadataProvider = metadataProvider;
         _controller.Url = Substitute.For<IUrlHelper>();
@@ -129,10 +135,10 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckAnswers_ReturnsView()
+    public async Task CheckAnswers_ReturnsView()
     {
         _journeyState.HasPartner = false;
-        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers());
+        var result = Assert.IsType<ViewResult>(await _controller.CheckAnswers());
         var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.True(checkAnswersViewModel.HasChildren);
         var child = Assert.Single(checkAnswersViewModel.Children);
@@ -154,20 +160,20 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckAnswers_ReturnsView_WithFromChild()
+    public async Task CheckAnswers_ReturnsView_WithFromChild()
     {
         _journeyState.HasPartner = false;
-        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers(fromChildId: "child-a"));
+        var result = Assert.IsType<ViewResult>(await _controller.CheckAnswers(fromChildId: "child-a"));
         var model = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.Equal("child-a", model.LastEditedChild!.ChildId);
     }
 
     [Fact]
-    public void CheckAnswers_ReturnsView_WithPartner()
+    public async Task CheckAnswers_ReturnsView_WithPartner()
     {
         _journeyState.HasPartner = true;
         _journeyState.PartnerAge = AgeRange.TwentyOneOrOver;
-        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers());
+        var result = Assert.IsType<ViewResult>(await _controller.CheckAnswers());
         var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
 
         var partnerDetail = checkAnswersViewModel.PartnerDetails[0];
@@ -175,5 +181,19 @@ public class SummaryControllerTests
         Assert.Equal("Option_21OrOver", partnerDetail.Value);
         Assert.Equal("PartnerAge", partnerDetail.ChangeAction);
         Assert.Equal("Partner", partnerDetail.ChangeController);
+    }
+
+    [Fact]
+    public async Task CheckAnswers_SuppressesLocationRow_WhenFeatureFlagEnabled()
+    {
+        _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(true);
+        _journeyState.HasPartner = false;
+        _journeyState.CountryOfResidence = CountryOfResidence.England;
+
+        var result = Assert.IsType<ViewResult>(await _controller.CheckAnswers());
+        var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
+
+        // Should not have any location detail in UserDetails
+        Assert.DoesNotContain(checkAnswersViewModel.UserDetails, x => x.Key == "Where do you live?");
     }
 }
