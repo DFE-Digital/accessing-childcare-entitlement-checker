@@ -57,7 +57,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
                         new Child(ChildId, "Sara")
                     }
                 },
-            WorkStatus = workStatus == null ? [] : [workStatus!.Value],
+            WorkStatus = workStatus == null ? [] : [workStatus.Value],
         });
 
         var url = $"{Url}?returnTo={returnTo}";

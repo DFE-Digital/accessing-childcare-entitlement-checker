@@ -60,7 +60,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result.SchemeCode);
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
@@ -76,7 +76,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result.SchemeCode);
         Assert.False(result.EligibleNow);
         Assert.True(result.EligibleInFuture);
     }
@@ -96,7 +96,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result.SchemeCode);
         Assert.False(result.EligibleNow);
         Assert.True(result.EligibleInFuture);
     }
@@ -229,7 +229,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result.SchemeCode);
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
@@ -271,7 +271,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result.SchemeCode);
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
@@ -309,7 +309,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result!.SchemeCode);
+        Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, result.SchemeCode);
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
@@ -384,7 +384,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
         Assert.Null(leaveChildResult);
         Assert.NotNull(otherChildResult);
-        Assert.True(otherChildResult!.EligibleNow);
+        Assert.True(otherChildResult.EligibleNow);
         Assert.False(otherChildResult.EligibleInFuture);
         Assert.Null(otherChildResult.ApplyAndStartAffectedByParentalLeave);
         Assert.Equal(ParentalLeaveParty.User, otherChildResult.EligibilityEndsWithParentalLeaveFor);
@@ -435,7 +435,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var partnerLeaveChildResult = scheme.Evaluate(context, partnerLeaveChild);
 
         Assert.NotNull(userLeaveChildResult);
-        Assert.True(userLeaveChildResult!.EligibleNow);
+        Assert.True(userLeaveChildResult.EligibleNow);
         Assert.Equal(ParentalLeaveParty.User, userLeaveChildResult.ApplyAndStartAffectedByParentalLeave);
         Assert.Equal(ParentalLeaveParty.Partner, userLeaveChildResult.EligibilityEndsWithParentalLeaveFor);
         Assert.Null(partnerLeaveChildResult);
@@ -496,7 +496,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         Assert.Null(userLeaveChildResult);
         Assert.Null(partnerLeaveChildResult);
         Assert.NotNull(otherChildResult);
-        Assert.True(otherChildResult!.EligibleNow);
+        Assert.True(otherChildResult.EligibleNow);
         Assert.False(otherChildResult.EligibleInFuture);
         Assert.Null(otherChildResult.ApplyAndStartAffectedByParentalLeave);
         Assert.Equal(ParentalLeaveParty.UserAndPartner, otherChildResult.EligibilityEndsWithParentalLeaveFor);
@@ -544,7 +544,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         var result = scheme.Evaluate(context, otherChild);
 
         Assert.NotNull(result);
-        Assert.True(result!.EligibleNow);
+        Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
         Assert.Null(result.ApplyAndStartAffectedByParentalLeave);
         Assert.Null(result.EligibilityEndsWithParentalLeaveFor);
