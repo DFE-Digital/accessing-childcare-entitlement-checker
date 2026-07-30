@@ -1,15 +1,18 @@
 ﻿@using AccessingChildcareEntitlementChecker.Web.Controllers
 @using AccessingChildcareEntitlementChecker.Web.Services
+@using GovUk.Frontend.AspNetCore.Views
+@using Microsoft.Extensions.Options
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject ICookiePolicyService CookiePolicyService
+@inject IOptions<GovUkFrontendOptions> OptionsAccessor
 @inject IConfiguration Configuration
 @{
     Layout = "_GovUkPageTemplate";
+    
     var serviceName = Shared["ServiceName"];
     var serviceUrl = Url.Action(nameof(HomeController.Start), HomeController.Name);
-    
     var googleTagManagerContainerId = Configuration["GoogleTagManager:ContainerId"];
-
+    var cspNonce = ViewData[GovUkPageTemplateConstants.ViewDataKeys.CspNonce] as string ?? OptionsAccessor.Value.GetCspNonceForRequest?.Invoke(ViewContext.HttpContext);
     var shouldLoadGoogleTagManager = CookiePolicyService.HasConsented && !string.IsNullOrWhiteSpace(googleTagManagerContainerId);
 }
 
@@ -76,4 +79,6 @@
     {
         <partial name="_CookieBannerScript" />
     }
+    
+    @Html.GovUkFrontendScriptImports(cspNonce)
 }
