@@ -1,5 +1,6 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
@@ -8,6 +9,25 @@ namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
 public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     private const string Url = "/check-your-answers";
+
+    [Fact]
+    public async Task Get_WhenFeatureFlagEnabled_SuppressesLocationRow()
+    {
+        using var client = factory.CreateClientWithJourneyStateAndFeatureFlags(new JourneyState
+        {
+            CountryOfResidence = CountryOfResidence.England,
+            HasPartner = false,
+        }, new()
+        {
+            { "FeatureManagement:hmrc-integration", "true" }
+        });
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+        
+        var content = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        Assert.DoesNotContain("Where do you live?", content);
+    }
 
     [Theory]
     [InlineData(false, null, "/partner")]

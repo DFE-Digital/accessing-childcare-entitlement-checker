@@ -9,6 +9,18 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
 {
     private const string Url = "/where-do-you-live";
 
+    [Fact]
+    public async Task Get_WhenFeatureFlagEnabled_RedirectsToChildName()
+    {
+        using var client = factory.CreateClientWithFeatureFlags(new()
+        {
+            { "FeatureManagement:hmrc-integration", "true" }
+        });
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        response.AssertRedirect("/children/add-child-details");
+    }
+
     [Theory]
     [InlineData(null, "/")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
