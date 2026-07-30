@@ -53,7 +53,7 @@ public class FifteenHoursUniversalSchemeTests
         var result = evaluator.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.True(result!.EligibleNow);
+        Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
         Assert.Equal(
             SchemeCode.FifteenHoursUniversal,
@@ -70,7 +70,7 @@ public class FifteenHoursUniversalSchemeTests
         var result = evaluator.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.False(result!.EligibleNow);
+        Assert.False(result.EligibleNow);
         Assert.True(result.EligibleInFuture);
     }
 

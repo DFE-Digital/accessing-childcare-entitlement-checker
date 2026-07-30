@@ -264,10 +264,10 @@ public class SummaryRowFactory
 
     private static string GetEnumDisplayName(Enum value)
     {
-        return value.GetType()!
-            .GetMember(value.ToString())![0]
-            .GetCustomAttributes(typeof(DisplayAttribute), inherit: false)!
-            .Cast<DisplayAttribute>()!
+        return value.GetType()
+            .GetMember(value.ToString())[0]
+            .GetCustomAttributes(typeof(DisplayAttribute), inherit: false)
+            .Cast<DisplayAttribute>()
             .First()
             .Name ?? value.ToString();
     }

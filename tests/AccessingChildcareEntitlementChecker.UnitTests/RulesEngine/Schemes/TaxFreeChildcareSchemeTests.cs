@@ -61,7 +61,7 @@ public class TaxFreeChildcareSchemeTests
 
         Assert.NotNull(result);
         Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
-        Assert.True(result!.EligibleNow);
+        Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
 
@@ -98,7 +98,7 @@ public class TaxFreeChildcareSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.True(result!.EligibleNow);
+        Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
 
@@ -192,7 +192,7 @@ public class TaxFreeChildcareSchemeTests
         var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(SchemeCode.TaxFreeChildcare, result!.SchemeCode);
+        Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
         Assert.False(result.EligibleNow);
         Assert.True(result.EligibleInFuture);
     }
@@ -217,7 +217,7 @@ public class TaxFreeChildcareSchemeTests
 
         Assert.NotNull(result);
         Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
-        Assert.True(result!.EligibleNow);
+        Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
 
@@ -316,7 +316,7 @@ public class TaxFreeChildcareSchemeTests
 
         Assert.NotNull(result);
         Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
-        Assert.True(result!.EligibleNow);
+        Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
 
