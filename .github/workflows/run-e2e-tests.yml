@@ -22,7 +22,7 @@ on:
         description: 'Whether the hmrc-integration feature flag is enabled'
         required: false
         type: string
-        default: 'false'
+        default: 'true'
     secrets:
       DEVELOPMENT_BASIC_AUTH_PASSWORD:
         required: false

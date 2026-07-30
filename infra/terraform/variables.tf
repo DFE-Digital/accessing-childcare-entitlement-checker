@@ -161,5 +161,7 @@ variable "google_tag_manager_container_id" {
 variable "feature_flags" {
   description = "A map of feature flags to enable/disable"
   type        = map(string)
-  default     = {}
+  default     = {
+    "hmrc-integration" = "true"
+  }
 }
