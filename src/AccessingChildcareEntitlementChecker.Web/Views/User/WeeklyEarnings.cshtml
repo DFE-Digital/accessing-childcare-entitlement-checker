@@ -2,11 +2,10 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer 
 @model WeeklyEarningsViewModel
-@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @{
-    var thresholds = Model.WeeklyEarningsThresholds!;
-    var question = Shared[Model.IsOnParentalLeave ? "WeeklyEarnings_ParentalLeave_Question" : "WeeklyEarnings_Question", thresholds.PerWeek];
+    var thresholds = Model.WeeklyEarningsThresholds;
+    var question = Shared[Model.IsOnParentalLeave ? "WeeklyEarnings_ParentalLeave_Question" : "WeeklyEarnings_Question", thresholds!.PerWeek];
     ViewData["Title"] = question;
 }
 
