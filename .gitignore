@@ -58,3 +58,8 @@ terraform.rc
 terraform.tfstate*
 .terraform.lock.hcl
 
+# GOV.UK Frontend generated assets
+**/wwwroot/assets/
+**/wwwroot/govuk-frontend.min.css
+**/wwwroot/govuk-frontend.min.js
+

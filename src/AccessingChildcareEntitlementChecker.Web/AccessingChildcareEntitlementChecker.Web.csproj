@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <EnableGovUkFrontendSupport>true</EnableGovUkFrontendSupport>
+    <RestoreGovUkFrontendAssets>true</RestoreGovUkFrontendAssets>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Models\ChildNameViewModel.en-GB.resx">
