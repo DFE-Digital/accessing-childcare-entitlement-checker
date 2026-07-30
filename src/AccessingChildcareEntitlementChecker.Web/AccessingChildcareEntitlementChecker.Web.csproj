@@ -2,43 +2,6 @@
   <PropertyGroup>
     <EnableGovUkFrontendSupport>true</EnableGovUkFrontendSupport>
   </PropertyGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Models\ChildNameViewModel.en-GB.resx">
-      <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\PartnerAgeViewModel.en-GB.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\ChildDetails\ChildBirthDate.en-GB.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\ChildDetails\ChildDueDate.en-GB.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Entitlement\SessionExpired.en-GB.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SessionExpired.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Error\NotFound.en-GB.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Error\InternalServerError.en-GB.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\User\HasPartner.en-GB.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>HasPartner.en-GB.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Results\Results.en-GB.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Results.en-GB.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Results\ResultsDetailed.en-GB.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResultsDetails.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="GovUk.Frontend.AspNetCore" />
