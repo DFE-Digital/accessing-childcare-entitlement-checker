@@ -24,3 +24,7 @@ budget_alert_threshold_forecast           = 90
 budget_alert_threshold_actual             = 100
 application_insights_daily_data_cap_in_gb = 1
 application_insights_sampling_percentage  = 100
+
+feature_flags = {
+  "hmrc-integration" = "true"
+}
