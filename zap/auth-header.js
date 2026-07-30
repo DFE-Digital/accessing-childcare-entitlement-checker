@@ -1,5 +1,5 @@
 function sendingRequest(msg, initiator, helper) {
-    var authHeader = java.lang.System.getenv("AUTH_HEADER");
+    const authHeader = java.lang.System.getenv("AUTH_HEADER");
     if (authHeader) {
         msg.getRequestHeader().setHeader("Authorization", authHeader);
     }
