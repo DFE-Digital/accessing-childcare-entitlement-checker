@@ -42,7 +42,7 @@ public class HomeControllerTests
         _journeyState.CountryOfResidence = CountryOfResidence.England;
         var result = await _controller.Location();
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsAssignableFrom<LocationViewModel>(viewResult.Model);
+        var model = Assert.IsType<LocationViewModel>(viewResult.Model);
         Assert.Equal(CountryOfResidence.England, model.Country);
     }
 
