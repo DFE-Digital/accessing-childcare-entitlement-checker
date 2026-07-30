@@ -24,7 +24,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
-        
+
         var content = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         Assert.DoesNotContain("Where do you live?", content);
     }

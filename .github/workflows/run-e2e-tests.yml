@@ -18,6 +18,11 @@ on:
         required: false
         type: string
         default: 'chromium'
+      hmrc_integration_enabled:
+        description: 'Whether the hmrc-integration feature flag is enabled'
+        required: false
+        type: string
+        default: 'false'
     secrets:
       DEVELOPMENT_BASIC_AUTH_PASSWORD:
         required: false
@@ -114,6 +119,7 @@ jobs:
           PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
           TestSettings__BasicAuthPassword: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
           TestSettings__Browser: ${{ inputs.browser }}
+          TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
           dotnet test ./e2e-tests/AccessingChildcareEntitlementChecker.E2eTests.dll \
             --logger "trx;LogFileName=test-results.trx" \

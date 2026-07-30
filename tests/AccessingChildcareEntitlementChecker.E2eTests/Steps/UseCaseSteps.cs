@@ -8,7 +8,7 @@ namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
 [Scope(Feature = "End to End Use Cases")]
-internal class UseCaseSteps(IPage page)
+internal class UseCaseSteps(IPage page, TestSettings settings)
 {
     [Given("I complete the journey for the use case {string}")]
     public async Task GivenICompleteTheJourneyForTheUseCaseString(string useCaseName)
@@ -24,6 +24,10 @@ internal class UseCaseSteps(IPage page)
                     await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = action.ActionName }).ClickAsync();
                     break;
                 case AnswerStep answer:
+                    if (answer.PageName == "Where do you live?" && settings.HmrcIntegrationEnabled)
+                    {
+                        break;
+                    }
                     var pageObj = factory.GetPage(answer.PageName);
                     await pageObj.AssertHeaderAsync();
                     await pageObj.AnswerAsync(answer.Answer);

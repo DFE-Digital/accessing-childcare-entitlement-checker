@@ -1,3 +1,4 @@
+@RequiresLocationPage
 Feature: Location
 
 Background:

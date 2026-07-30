@@ -7,7 +7,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class JourneySteps(IPage page)
+internal class JourneySteps(IPage page, TestSettings settings)
 {
     [Given("I am on the childcare entitlement checker website")]
     public async Task GivenIAmOnTheChildcareEntitlementCheckerWebsite()
@@ -26,6 +26,11 @@ internal class JourneySteps(IPage page)
     [When("I answer {string} as {string}")]
     public async Task GivenIAnswerStringAsString(string question, string answer)
     {
+        if (question == "Where do you live?" && settings.HmrcIntegrationEnabled)
+        {
+            return;
+        }
+
         var factory = new PageFactory(page);
         var pageObj = factory.GetPage(question);
         await pageObj.AssertHeaderAsync();
@@ -40,6 +45,10 @@ internal class JourneySteps(IPage page)
         var factory = new PageFactory(page);
         foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
         {
+            if (pageName == "Where do you live?" && settings.HmrcIntegrationEnabled)
+            {
+                continue;
+            }
             var pageObj = factory.GetPage(pageName);
             await pageObj.AssertHeaderAsync();
             await pageObj.AnswerAsync(answer);
@@ -52,10 +61,13 @@ internal class JourneySteps(IPage page)
     {
         await GivenIClickTheLinkToStartTheJourney();
 
-        var locationPage = new LocationPage(page);
-        await locationPage.AssertHeaderAsync();
-        await locationPage.AnswerAsync("England");
-        await locationPage.ContinueAsync();
+        if (!settings.HmrcIntegrationEnabled)
+        {
+            var locationPage = new LocationPage(page);
+            await locationPage.AssertHeaderAsync();
+            await locationPage.AnswerAsync("England");
+            await locationPage.ContinueAsync();
+        }
 
         // Aydin details
         var childName = new ChildNamePage(page);
@@ -164,6 +176,10 @@ internal class JourneySteps(IPage page)
     [Then(@"the page header is ""(.*)""")]
     public async Task WhenThePageHeaderIs(string expectedHeader)
     {
+        if (expectedHeader == "Where do you live?" && settings.HmrcIntegrationEnabled)
+        {
+            expectedHeader = "Add details about your children";
+        }
         await Expect(page.GetByRole(AriaRole.Heading, new PageGetByRoleOptions { Level = 1 })).ToHaveTextAsync(expectedHeader);
     }
 

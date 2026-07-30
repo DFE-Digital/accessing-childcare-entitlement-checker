@@ -52,7 +52,7 @@ public class HomeControllerTests
         _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(true);
         var result = await _controller.Location();
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-        
+
         Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(nameof(IntroductionController.ChildName), redirectResult.ActionName);

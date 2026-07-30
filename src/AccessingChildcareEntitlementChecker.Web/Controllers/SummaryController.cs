@@ -55,7 +55,7 @@ public class SummaryController : Controller
         var state = _journeyState;
 
         var homeBuilder = new SummaryRowFactory(MetadataProvider, "Home", _stringLocalizerFactory);
-        
+
         if (!await _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
         {
             homeBuilder.AddLocation(_journeyState.CountryOfResidence);
