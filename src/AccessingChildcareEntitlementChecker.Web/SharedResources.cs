@@ -1,3 +1,3 @@
 namespace AccessingChildcareEntitlementChecker.Web;
 
-public class SharedResources { }
+public interface SharedResources { }
