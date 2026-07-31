@@ -4,8 +4,8 @@
 @model WeeklyEarningsViewModel
 
 @{
-    var thresholds = Model.WeeklyEarningsThresholds;
-    var question = Shared[Model.IsOnParentalLeave ? "WeeklyEarnings_ParentalLeave_Question" : "WeeklyEarnings_Question", thresholds!.PerWeek];
+    var thresholds = Model.WeeklyEarningsThresholds ?? throw new InvalidOperationException("Model.WeeklyEarningsThresholds cannot be null.");
+    var question = Shared[Model.IsOnParentalLeave ? "WeeklyEarnings_ParentalLeave_Question" : "WeeklyEarnings_Question", thresholds.PerWeek];
     ViewData["Title"] = question;
 }
 
