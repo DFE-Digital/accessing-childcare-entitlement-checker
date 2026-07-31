@@ -21,4 +21,19 @@ public class LayoutTests(IntegrationTestFixture factory) : IClassFixture<Integra
 
         Assert.True(hasGovUkScript, "The layout should import GOV.UK Frontend script in BodyEnd.");
     }
+
+    [Fact]
+    public async Task LayoutFeedbackLinkOpensInNewTab()
+    {
+        using var client = factory.CreateClient();
+        var response = await client.GetAsync("/cookies", TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var feedbackLink = document.QuerySelector("a[href*='dferesearch.fra1.qualtrics.com']");
+        Assert.NotNull(feedbackLink);
+        Assert.Equal("_blank", feedbackLink.GetAttribute("target"));
+        Assert.Equal("noopener noreferrer", feedbackLink.GetAttribute("rel"));
+    }
 }
