@@ -1,4 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace AccessingChildcareEntitlementChecker.Web;
 
-// ReSharper disable once InconsistentNaming
-public interface SharedResources;
+[SuppressMessage("Sonar", "S2094", Justification = "Marker class for IStringLocalizer.")]
+public sealed class SharedResource;
