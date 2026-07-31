@@ -1,4 +1,8 @@
 using AccessingChildcareEntitlementChecker.Web.Controllers;
+using AccessingChildcareEntitlementChecker.Web.Validators;
+using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.Extensions.Logging;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Summary;
 using AccessingChildcareEntitlementChecker.Web.Services;
@@ -43,13 +47,12 @@ public class SummaryControllerTests
             .BuildServiceProvider()
             .GetRequiredService<IModelMetadataProvider>();
 
-        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory, _logger, _featureManager);
+        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory, new JourneyStateValidator(), _logger);
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
         };
         _controller.TempData = new TempDataDictionary(_controller.HttpContext, Substitute.For<ITempDataProvider>());
-
         _controller.MetadataProvider = metadataProvider;
         _controller.Url = Substitute.For<IUrlHelper>();
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
@@ -190,21 +193,21 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public async Task CheckAnswers_ReturnsView_WithFromChild()
+    public void CheckAnswers_ReturnsView_WithFromChild()
     {
         _journeyState.HasPartner = false;
-        var result = Assert.IsType<ViewResult>(await _controller.CheckAnswers(fromChildId: "child-a"));
+        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers(fromChildId: "child-a"));
         var model = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.Equal("child-a", model.LastEditedChild!.ChildId);
         Assert.Equal(_journeyState.CorrelationId, model.CorrelationId);
     }
 
     [Fact]
-    public async Task CheckAnswers_ReturnsView_WithPartner()
+    public void CheckAnswers_ReturnsView_WithPartner()
     {
         _journeyState.HasPartner = true;
         _journeyState.PartnerAge = AgeRange.TwentyOneOrOver;
-        var result = Assert.IsType<ViewResult>(await _controller.CheckAnswers());
+        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers());
         var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.Equal(_journeyState.CorrelationId, checkAnswersViewModel.CorrelationId);
 
@@ -250,5 +253,58 @@ public class SummaryControllerTests
         Assert.Contains("State mismatch detected. Correlation ID mismatch. Event: StateMismatch", _logger.Messages);
         var customEventProp = Assert.Single(_logger.Properties, p => p.Key == "microsoft.custom_event.name");
         Assert.Equal("StateMismatch", customEventProp.Value);
+    }
+
+    [Fact]
+    public void CheckChildDetails_Post_RedisplaysView_WhenValidationFails()
+    {
+        var mockValidator = Substitute.For<IValidator<JourneyState>>();
+        var validationResult = new ValidationResult(new[] { new ValidationFailure("Children", "Child validation error") });
+        mockValidator.Validate(Arg.Any<ValidationContext<JourneyState>>()).Returns(validationResult);
+
+        var localizerFactory = AcecSubstitute.ForLocalizerFactory();
+        var controller = new SummaryController(_journeyState, _journeySession, localizerFactory, mockValidator, _logger);
+        controller.ControllerContext = _controller.ControllerContext;
+        controller.MetadataProvider = _controller.MetadataProvider;
+        controller.Url = _controller.Url;
+
+        var model = new CheckChildDetailsSubmitModel(_journeyState.CorrelationId);
+        
+        var result = Assert.IsType<ViewResult>(controller.CheckChildDetails(model));
+        
+        Assert.False(controller.ModelState.IsValid);
+        Assert.True(controller.ModelState.ContainsKey("Children"));
+        var error = Assert.Single(controller.ModelState["Children"]!.Errors);
+        Assert.Equal("Child validation error", error.ErrorMessage);
+
+        var viewModel = Assert.IsType<CheckChildDetailsViewModel>(result.Model);
+        Assert.Equal(_journeyState.CorrelationId, viewModel.CorrelationId);
+    }
+
+    [Fact]
+    public void CheckAnswers_Post_RedisplaysView_WhenValidationFails()
+    {
+        _journeyState.HasPartner = false;
+        var mockValidator = Substitute.For<IValidator<JourneyState>>();
+        var validationResult = new ValidationResult(new[] { new ValidationFailure("WeeklyEarnings", "Earnings validation error") });
+        mockValidator.Validate(Arg.Any<ValidationContext<JourneyState>>()).Returns(validationResult);
+
+        var localizerFactory = AcecSubstitute.ForLocalizerFactory();
+        var controller = new SummaryController(_journeyState, _journeySession, localizerFactory, mockValidator, _logger);
+        controller.ControllerContext = _controller.ControllerContext;
+        controller.MetadataProvider = _controller.MetadataProvider;
+        controller.Url = _controller.Url;
+
+        var model = new CheckAnswersSubmitModel(_journeyState.CorrelationId);
+        
+        var result = Assert.IsType<ViewResult>(controller.CheckAnswers(model));
+        
+        Assert.False(controller.ModelState.IsValid);
+        Assert.True(controller.ModelState.ContainsKey("WeeklyEarnings"));
+        var error = Assert.Single(controller.ModelState["WeeklyEarnings"]!.Errors);
+        Assert.Equal("Earnings validation error", error.ErrorMessage);
+
+        var viewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
+        Assert.Equal(_journeyState.CorrelationId, viewModel.CorrelationId);
     }
 }
