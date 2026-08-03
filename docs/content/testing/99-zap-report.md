@@ -15,7 +15,7 @@ order: 99
 | High | 0 |
 | Medium | 0 |
 | Low | 0 |
-| Informational | 3 |
+| Informational | 2 |
 
 
 
@@ -28,7 +28,6 @@ order: 99
 | --- | --- | --- |
 | Re-examine Cache-control Directives | Informational | Systemic |
 | User Agent Fuzzer | Informational | Systemic |
-| User Controllable HTML Element Attribute (Potential XSS) | Informational | 1 |
 | Modern Web Application | 				False Positives: | 4 |
 | Private IP Disclosure | 				False Positives: | 1 |
 | Session Management Response Identified | 				False Positives: | 3 |
@@ -58,15 +57,15 @@ The cache-control header has not been set properly or is missing, allowing the b
   * Attack: ``
   * Evidence: `no-cache, no-store`
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json%3Fv=6.3.0
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json (v)`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
-  * Evidence: `no-cache, no-store`
+  * Evidence: `cache-control: public, max-age=31536000, immutable`
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies%3FhasSetCookies=True
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies (hasSetCookies)`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
@@ -133,9 +132,9 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets`
-  * Method: `GET`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details ()(ChildName,ReturnTo,__RequestVerificationToken)`
+  * Method: `POST`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
@@ -157,55 +156,6 @@ Instances: Systemic
 
 #### Source ID: 1
 
-### [ User Controllable HTML Element Attribute (Potential XSS) ](https://www.zaproxy.org/docs/alerts/10031/)
-
-
-
-##### Informational (Low)
-
-### Description
-
-This check looks at user-supplied input in query string parameters and POST data to identify where certain HTML attribute values might be controlled. This provides hot-spot detection for XSS (cross-site scripting) that will require further review by a security analyst to determine exploitability.
-
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies%3FhasSetCookies=True
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies (hasSetCookies)`
-  * Method: `GET`
-  * Parameter: `hasSetCookies`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `User-controlled HTML attribute values were found. Try injecting special characters to see if XSS might be possible. The page at the following URL:
-
-https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies?hasSetCookies=True
-
-appears to include user input in:
-a(n) [input] tag [value] attribute
-
-The user input found was:
-hasSetCookies=True
-
-The user-controlled value was:
-true`
-
-
-Instances: 1
-
-### Solution
-
-Validate all input and sanitize output it before writing to any HTML attributes.
-
-### Reference
-
-
-* [ https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html ](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html)
-
-
-#### CWE Id: [ 20 ](https://cwe.mitre.org/data/definitions/20.html)
-
-
-#### WASC Id: 20
-
-#### Source ID: 3
-
 ### [ Modern Web Application ](https://www.zaproxy.org/docs/alerts/10109/)
 
 
@@ -221,28 +171,28 @@ The application appears to be a modern web application. If you need to explore i
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<a class="govuk-footer__link" href="#">Item 1</a>`
+  * Evidence: `<a class="govuk-footer__link" href="#">Item 2</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
 * URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<a class="govuk-footer__link" href="#">Item 1</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies%3FhasSetCookies=True
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies (hasSetCookies)`
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-footer__link" href="#">Item 1</a>`
+  * Evidence: `<a class="govuk-footer__link" href="#">Item 2</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
 * URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<a class="govuk-footer__link" href="#">Item 1</a>`
+  * Evidence: `<a class="govuk-footer__link" href="#">Item 2</a>`
+  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<a class="govuk-footer__link" href="#">Item 2</a>`
   * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
 
 
@@ -269,7 +219,7 @@ This is an informational alert and so no changes are required.
 
 A private IP (such as 10.x.x.x, 172.x.x.x, 192.168.x.x) or an Amazon EC2 private hostname (for example, ip-10-0-56-78) has been found in the HTTP response body. This information might be helpful for further attacks targeting internal systems.
 
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/favicon.svg%3Fv=6.1.0
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/favicon.svg%3Fv=6.3.0
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images/favicon.svg (v)`
   * Method: `GET`
   * Parameter: ``
@@ -356,7 +306,7 @@ This is an informational alert rather than a vulnerability and so there is nothi
 
 A timestamp was disclosed by the application/web server. - Unix
 
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/govuk-frontend.min.css%3Fv=6.1.0
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/govuk-frontend.min.css%3Fv=6.3.0
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/govuk-frontend.min.css (v)`
   * Method: `GET`
   * Parameter: ``
