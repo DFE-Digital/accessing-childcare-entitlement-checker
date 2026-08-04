@@ -43,13 +43,12 @@ public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClass
                 WorkStatus = [WorkStatusOption.PaidEmployment],
                 PartnerAge = AgeRange.UnderEighteen,
                 PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
+                HasPartner = true
             });
 
             var getResponse = await getClient.GetAsync(url, TestContext.Current.CancellationToken);
             getResponse.EnsureSuccessStatusCode();
             var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
-            var title = getDocument.Title;
-            var content = getDocument.TextContent;
             var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
             var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
             Assert.NotNull(token);

@@ -29,6 +29,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
 
     [Theory]
     [InlineData(null, false, "/children/add-child-details")]
+    [InlineData(null, true, "/children/check-childs-details")]
     [InlineData(ReturnTo.CheckAnswers, false, "/children/add-child-details")]
     [InlineData(ReturnTo.CheckAnswers, true, "/check-your-answers")]
     public async Task Post_Valid_Redirects(string? returnTo, bool hasChild, string continueUrl)
