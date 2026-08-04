@@ -40,12 +40,12 @@ Scenario: Banner is hidden on the next page
 @javascript-enabled
 Scenario: Banner has a link to the cookies screen
 	When I click the link to change my cookie preferences
-	Then the page header is "Cookies"
+	Then the page header is "Cookie policy"
 
 Scenario: Cookies screen lets me change my preferences
 	When I click the Cookies link in the footer
 	And I select the "Yes" radio button
 	And I click on Continue
-	Then the page header is "Cookies"
+	Then the page header is "Cookie policy"
 	And I should see a success banner that says "You've set your cookie preferences."
 	And the "Yes" radio button should be selected

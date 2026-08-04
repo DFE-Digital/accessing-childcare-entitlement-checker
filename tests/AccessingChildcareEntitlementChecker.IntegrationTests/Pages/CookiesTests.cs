@@ -15,7 +15,7 @@ public class CookiesTests(IntegrationTestFixture factory) : IClassFixture<Integr
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertHeading("Cookies");
+        doc.AssertHeading("Cookie policy");
     }
 
     [Fact]
