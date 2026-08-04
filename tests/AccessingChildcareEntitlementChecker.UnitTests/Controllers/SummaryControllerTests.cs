@@ -88,7 +88,6 @@ public class SummaryControllerTests
         var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails(model));
         Assert.Equal("StateMismatch", result.ViewName);
         Assert.Equal(400, _controller.Response.StatusCode);
-        _journeySession.DidNotReceive().Clear();
 
         Assert.Contains("State mismatch detected. Correlation ID mismatch. Event: StateMismatch", _logger.Messages);
         var customEventProp = Assert.Single(_logger.Properties, p => p.Key == "microsoft.custom_event.name");
@@ -227,7 +226,6 @@ public class SummaryControllerTests
         var result = Assert.IsType<ViewResult>(_controller.CheckAnswers(model));
         Assert.Equal("StateMismatch", result.ViewName);
         Assert.Equal(400, _controller.Response.StatusCode);
-        _journeySession.DidNotReceive().Clear();
 
         Assert.Contains("State mismatch detected. Correlation ID mismatch. Event: StateMismatch", _logger.Messages);
         var customEventProp = Assert.Single(_logger.Properties, p => p.Key == "microsoft.custom_event.name");

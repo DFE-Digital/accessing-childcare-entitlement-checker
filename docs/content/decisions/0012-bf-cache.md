@@ -72,7 +72,7 @@ The minimum required change is:
 
 This ensures that navigation from these pages becomes a server-validated transition rather than a continuation based solely on potentially stale browser state.
 
-We have chosen **Option 3: State Mismatch Error and Restart** as our implementation approach. Upon detecting a token mismatch during a boundary POST, the session is cleared, the event is logged for telemetry, and a custom 400 page is returned requiring the user to start again.
+We have chosen **Option 3: State Mismatch Error and Restart** as our implementation approach. Upon detecting a token mismatch during a boundary POST, the event is logged for telemetry, and a custom 400 page is returned requiring the user to start again.
 
 ## Options for Resolving State Drift
 
@@ -161,7 +161,7 @@ Result:
 
 ### Option 3: State Mismatch Error and Restart (Chosen)
 
-The backend state is considered authoritative, but rather than attempting to reconcile differences or automatically refresh the page (which might display confusing changes to the user), the drift is treated as a fatal session invalidation.
+The backend state is considered authoritative, but rather than attempting to reconcile differences or automatically refresh the page (which might display confusing changes to the user), the drift is treated as invalidation.
 
 If the browser state differs from the backend state (as detected by a mismatched `CorrelationId` token):
 
