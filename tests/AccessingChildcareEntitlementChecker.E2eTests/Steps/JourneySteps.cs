@@ -178,7 +178,10 @@ internal class JourneySteps(IPage page, TestSettings settings)
     {
         if (expectedHeader == "Where do you live?" && settings.HmrcIntegrationEnabled)
         {
-            expectedHeader = "Add details about your children";
+            var uri = new System.Uri(page.Url);
+            expectedHeader = uri.AbsolutePath == "/" || string.IsNullOrEmpty(uri.AbsolutePath.Trim('/'))
+                ? "Before you continue"
+                : "Add details about your children";
         }
         await Expect(page.GetByRole(AriaRole.Heading, new PageGetByRoleOptions { Level = 1 })).ToHaveTextAsync(expectedHeader);
     }

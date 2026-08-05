@@ -12,13 +12,17 @@
     ViewData["Title"] = Localizer[title];
 }
 
+@section BeforeContent {
+    @if (await FeatureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
+    {
+        <govuk-back-link href="https://www.tax.service.gov.uk/childcare-calc/location">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        @if (await FeatureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
-        {
-            var hmrcLink = Configuration["HmrcIntegration:BackLinkUrl"] ?? "#";
-            <govuk-back-link href="@hmrcLink">@Localizer["Back"]</govuk-back-link>
-        }
         <h1 class="govuk-heading-xl">
             @Localizer[title]
         </h1>
