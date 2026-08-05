@@ -14,7 +14,7 @@ resource "azurerm_application_insights" "application-insights" {
   application_type                      = "web"
   workspace_id                          = azurerm_log_analytics_workspace.log-analytics-workspace.id
   daily_data_cap_in_gb                  = var.application_insights_daily_data_cap_in_gb
-  daily_data_cap_notifications_disabled = false
+  daily_data_cap_notifications_enabled  = true
   sampling_percentage                   = var.application_insights_sampling_percentage
   tags                                  = local.common_tags
 }
