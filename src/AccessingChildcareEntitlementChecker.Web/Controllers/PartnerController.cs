@@ -9,24 +9,15 @@ using System.Diagnostics;
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
-public class PartnerController : Controller
+public class PartnerController(JourneyState journeyState, IJourneySession journeySession) : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
-
     public const string Name = "Partner";
-
-    public PartnerController(JourneyState journeyState, IJourneySession journeySession)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-    }
 
     [HttpGet]
     public ViewResult PartnerAge(string? returnTo = null)
     {
-        var backLink = GetPartnerAgeBackLink(returnTo);
-        return View(new PartnerAgeViewModel(_journeyState, backLink, returnTo));
+        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(UserController.HasPartner), UserController.Name);
+        return View(new PartnerAgeViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -34,22 +25,22 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = GetPartnerAgeBackLink(model.ReturnTo);
+            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(UserController.HasPartner), UserController.Name);
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
 
         // Logic here a little complex because of the dependencies between questions
         // We need to walk forwards through the journey to find the next dependent,
         // unanswered question.
         // See also - UserController.UserAge
-        var requiresPartnerNationality = _journeyState.Nationality != NationalityOption.BritishOrIrishCitizen
-            && _journeyState.SettledStatus != SettledStatusOption.Yes;
-        var partnerNationalityMissing = requiresPartnerNationality && _journeyState.PartnerNationality == null;
-        var partnerPaidWorkMissing = _journeyState.PartnerPaidWork == null;
-        var partnerWeeklyEarningsMissing = _journeyState.PartnerPaidWork == PartnerPaidWorkOption.Yes && _journeyState.PartnerWeeklyEarnings == null;
+        var requiresPartnerNationality = journeyState.Nationality != NationalityOption.BritishOrIrishCitizen
+            && journeyState.SettledStatus != SettledStatusOption.Yes;
+        var partnerNationalityMissing = requiresPartnerNationality && journeyState.PartnerNationality == null;
+        var partnerPaidWorkMissing = journeyState.PartnerPaidWork == null;
+        var partnerWeeklyEarningsMissing = journeyState is { PartnerPaidWork: PartnerPaidWorkOption.Yes, PartnerWeeklyEarnings: null };
         var nextAnswerMissing = partnerNationalityMissing || partnerPaidWorkMissing || partnerWeeklyEarningsMissing;
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
@@ -68,16 +59,14 @@ public class PartnerController : Controller
             nextAction = nameof(PartnerNationality);
         }
 
-        return this.RedirectToAction(
-            nextAction,
-            new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerNationality(string? returnTo = null)
     {
-        var backLink = GetPartnerNationalityBackLink(returnTo);
-        return View(new PartnerNationalityViewModel(_journeyState, backLink, returnTo));
+        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(PartnerAge));
+        return View(new PartnerNationalityViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -85,18 +74,18 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = GetPartnerNationalityBackLink(model.ReturnTo);
+            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerAge));
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        var (nextAction, nextAnswerMissing) = _journeyState.PartnerNationality switch
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        var (nextAction, nextAnswerMissing) = journeyState.PartnerNationality switch
         {
-            NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => (nameof(PartnerSettledStatus), _journeyState.PartnerSettledStatus is null),
-            NationalityOption.BritishOrIrishCitizen => (nameof(PartnerPaidWork), _journeyState.PartnerPaidWork is null),
-            NationalityOption.CitizenOfADifferentCountry => (nameof(PartnerPaidWork), _journeyState.PartnerPaidWork is null),
-            _ => throw new UnreachableException($"Unexpected PartnerNationality: {_journeyState.PartnerNationality}"),
+            NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => (nameof(PartnerSettledStatus), journeyState.PartnerSettledStatus is null),
+            NationalityOption.BritishOrIrishCitizen => (nameof(PartnerPaidWork), journeyState.PartnerPaidWork is null),
+            NationalityOption.CitizenOfADifferentCountry => (nameof(PartnerPaidWork), journeyState.PartnerPaidWork is null),
+            _ => throw new UnreachableException($"Unexpected PartnerNationality: {journeyState.PartnerNationality}"),
         };
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
@@ -104,14 +93,14 @@ public class PartnerController : Controller
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerSettledStatus(string? returnTo = null)
     {
-        var backLink = GetPartnerSettledStatusBackLink(returnTo);
-        return View(new PartnerSettledStatusViewModel(_journeyState, backLink, returnTo));
+        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(PartnerNationality));
+        return View(new PartnerSettledStatusViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -119,26 +108,26 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = GetPartnerSettledStatusBackLink(model.ReturnTo);
+            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerNationality));
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        var nextAnswerMissing = _journeyState.PartnerPaidWork is null;
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        var nextAnswerMissing = journeyState.PartnerPaidWork is null;
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(nameof(PartnerPaidWork), new { returnTo = model.ReturnTo });
+        return RedirectToAction(nameof(PartnerPaidWork), new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerPaidWork(string? returnTo = null)
     {
         var backLink = GetPartnerPaidWorkBackLink(returnTo);
-        return View(new PartnerPaidWorkViewModel(_journeyState, backLink, returnTo));
+        return View(new PartnerPaidWorkViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -150,15 +139,15 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        var (nextAction, nextAnswerMissing) = _journeyState.PartnerPaidWork switch
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        var (nextAction, nextAnswerMissing) = journeyState.PartnerPaidWork switch
         {
-            PartnerPaidWorkOption.Yes => (nameof(PartnerWorkStatus), _journeyState.PartnerWorkStatus.Count == 0),
-            PartnerPaidWorkOption.ParentalLeave => (nameof(PartnerParentalLeave), _journeyState.PartnerParentalLeaveChildrenIds.Count == 0),
-            PartnerPaidWorkOption.SickLeave => (nameof(PartnerWorkStatus), _journeyState.PartnerWorkStatus.Count == 0),
-            PartnerPaidWorkOption.No => (nameof(PartnerBenefits), _journeyState.PartnerBenefits.Count == 0),
-            _ => throw new UnreachableException($"Unexpected PartnerPaidWork: {_journeyState.PartnerPaidWork}"),
+            PartnerPaidWorkOption.Yes => (nameof(PartnerWorkStatus), journeyState.PartnerWorkStatus.Count == 0),
+            PartnerPaidWorkOption.ParentalLeave => (nameof(PartnerParentalLeave), journeyState.PartnerParentalLeaveChildrenIds.Count == 0),
+            PartnerPaidWorkOption.SickLeave => (nameof(PartnerWorkStatus), journeyState.PartnerWorkStatus.Count == 0),
+            PartnerPaidWorkOption.No => (nameof(PartnerBenefits), journeyState.PartnerBenefits.Count == 0),
+            _ => throw new UnreachableException($"Unexpected PartnerPaidWork: {journeyState.PartnerPaidWork}"),
         };
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
@@ -166,14 +155,14 @@ public class PartnerController : Controller
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerParentalLeave(string? returnTo = null)
     {
-        var backLink = GetPartnerParentalLeaveBackLink(returnTo);
-        return View(new PartnerParentalLeaveViewModel(_journeyState, backLink, returnTo));
+        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(PartnerPaidWork));
+        return View(new PartnerParentalLeaveViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -181,31 +170,29 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = GetPartnerParentalLeaveBackLink(model.ReturnTo);
-            model.Children = _journeyState.Children.Values.ToList();
+            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerPaidWork));
+            model.Children = journeyState.Children.Values.ToList();
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
         var nextAction = nameof(PartnerWorkStatus);
-        var nextAnswerMissing = _journeyState.PartnerWorkStatus.Count == 0;
+        var nextAnswerMissing = journeyState.PartnerWorkStatus.Count == 0;
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(
-            nextAction,
-            new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerWorkStatus(string? returnTo = null)
     {
-        var backLink = GetPartnerWorkStatusBackLink(returnTo);
-        return View(new PartnerWorkStatusViewModel(_journeyState, backLink, returnTo));
+        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(PartnerPaidWork));
+        return View(new PartnerWorkStatusViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -213,23 +200,23 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = GetPartnerWorkStatusBackLink(model.ReturnTo);
+            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerPaidWork));
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
         var nextAction = nameof(PartnerWeeklyEarnings);
-        var nextAnswerMissing = _journeyState.PartnerWeeklyEarnings is null;
-        if (_journeyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
+        var nextAnswerMissing = journeyState.PartnerWeeklyEarnings is null;
+        if (journeyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
         {
             nextAction = nameof(PartnerSelfEmployedDuration);
-            nextAnswerMissing = _journeyState.PartnerSelfEmployedDuration is null;
+            nextAnswerMissing = journeyState.PartnerSelfEmployedDuration is null;
         }
-        else if (_journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
+        else if (journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
         {
             nextAction = nameof(PartnerYearlyEarnings);
-            nextAnswerMissing = _journeyState.PartnerYearlyEarnings is null;
+            nextAnswerMissing = journeyState.PartnerYearlyEarnings is null;
         }
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
@@ -237,14 +224,14 @@ public class PartnerController : Controller
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerBenefits(string? returnTo = null)
     {
         var backLink = GetPartnerBenefitsBackLink(returnTo);
-        return View(new PartnerBenefitsViewModel(_journeyState, backLink, returnTo));
+        return View(new PartnerBenefitsViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -256,22 +243,22 @@ public class PartnerController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        var nextAnswerMissing = _journeyState.PartnerChildcareSupport.Count == 0;
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        var nextAnswerMissing = journeyState.PartnerChildcareSupport.Count == 0;
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(nameof(PartnerChildcareSupport), new { returnTo = model.ReturnTo });
+        return RedirectToAction(nameof(PartnerChildcareSupport), new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerSelfEmployedDuration(string? returnTo = null)
     {
-        var backLink = GetPartnerSelfEmployedDurationBackLink(returnTo);
-        return View(new PartnerSelfEmployedDurationViewModel(_journeyState, backLink, returnTo));
+        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(PartnerWorkStatus));
+        return View(new PartnerSelfEmployedDurationViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -279,27 +266,27 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = GetPartnerSelfEmployedDurationBackLink(model.ReturnTo);
+            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerWorkStatus));
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
 
         // Complex logic for sick leave falls through
         var nextAction = nameof(PartnerWeeklyEarnings);
-        var nextAnswerMissing = _journeyState.PartnerWeeklyEarnings is null;
+        var nextAnswerMissing = journeyState.PartnerWeeklyEarnings is null;
 
-        if (_journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
+        if (journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
         {
             nextAction = nameof(PartnerYearlyEarnings);
-            nextAnswerMissing = _journeyState.PartnerYearlyEarnings is null;
+            nextAnswerMissing = journeyState.PartnerYearlyEarnings is null;
         }
 
-        if (_journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
+        if (journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
         {
             nextAction = nameof(PartnerBenefits);
-            nextAnswerMissing = _journeyState.PartnerBenefits.Count == 0;
+            nextAnswerMissing = journeyState.PartnerBenefits.Count == 0;
         }
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
@@ -307,16 +294,16 @@ public class PartnerController : Controller
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerWeeklyEarnings(string? returnTo = null)
     {
         var backLink = GetPartnerWeeklyEarningsBackLink(returnTo);
-        var weeklyEarningsThresholds = WeeklyEarningsThresholds.Create(_journeyState.PartnerAge, _journeyState.PartnerWorkStatus);
-        var isOnParentalLeave = _journeyState.PartnerPaidWork == PartnerPaidWorkOption.ParentalLeave;
-        return View(new PartnerWeeklyEarningsViewModel(_journeyState, weeklyEarningsThresholds, isOnParentalLeave, backLink, returnTo));
+        var weeklyEarningsThresholds = WeeklyEarningsThresholds.Create(journeyState.PartnerAge, journeyState.PartnerWorkStatus);
+        var isOnParentalLeave = journeyState.PartnerPaidWork == PartnerPaidWorkOption.ParentalLeave;
+        return View(new PartnerWeeklyEarningsViewModel(journeyState, weeklyEarningsThresholds, isOnParentalLeave, backLink, returnTo));
     }
 
     [HttpPost]
@@ -324,19 +311,19 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.WeeklyEarningsThresholds = WeeklyEarningsThresholds.Create(_journeyState.PartnerAge, _journeyState.PartnerWorkStatus);
-            model.IsOnParentalLeave = _journeyState.PartnerPaidWork == PartnerPaidWorkOption.ParentalLeave;
+            model.WeeklyEarningsThresholds = WeeklyEarningsThresholds.Create(journeyState.PartnerAge, journeyState.PartnerWorkStatus);
+            model.IsOnParentalLeave = journeyState.PartnerPaidWork == PartnerPaidWorkOption.ParentalLeave;
             model.BackLink = GetPartnerWeeklyEarningsBackLink(model.ReturnTo);
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        var (nextAction, nextAnswerMissing) = _journeyState.PartnerWeeklyEarnings switch
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        var (nextAction, nextAnswerMissing) = journeyState.PartnerWeeklyEarnings switch
         {
-            WeeklyEarningsOption.AboveThreshold => (nameof(PartnerYearlyEarnings), _journeyState.PartnerYearlyEarnings is null),
-            WeeklyEarningsOption.BelowThreshold => (nameof(PartnerBenefits), _journeyState.PartnerBenefits.Count == 0),
-            _ => throw new UnreachableException($"Unexpected PartnerWeeklyEarnings: {_journeyState.PartnerWeeklyEarnings}"),
+            WeeklyEarningsOption.AboveThreshold => (nameof(PartnerYearlyEarnings), journeyState.PartnerYearlyEarnings is null),
+            WeeklyEarningsOption.BelowThreshold => (nameof(PartnerBenefits), journeyState.PartnerBenefits.Count == 0),
+            _ => throw new UnreachableException($"Unexpected PartnerWeeklyEarnings: {journeyState.PartnerWeeklyEarnings}"),
         };
 
         if (model.ReturnTo is not null && !nextAnswerMissing)
@@ -344,14 +331,14 @@ public class PartnerController : Controller
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerYearlyEarnings(string? returnTo = null)
     {
-        var backLink = GetPartnerYearlyEarningsBackLink(returnTo);
-        return View(new PartnerYearlyEarningsViewModel(_journeyState, backLink, returnTo));
+        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(PartnerWeeklyEarnings));
+        return View(new PartnerYearlyEarningsViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -359,26 +346,26 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = GetPartnerYearlyEarningsBackLink(model.ReturnTo);
+            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerWeeklyEarnings));
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        var nextAnswerMissing = _journeyState.PartnerBenefits.Count == 0;
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        var nextAnswerMissing = journeyState.PartnerBenefits.Count == 0;
         if (model.ReturnTo is not null && !nextAnswerMissing)
         {
             return this.RedirectToReturnTo(model.ReturnTo);
         }
 
-        return this.RedirectToAction(nameof(PartnerBenefits), new { returnTo = model.ReturnTo });
+        return RedirectToAction(nameof(PartnerBenefits), new { returnTo = model.ReturnTo });
     }
 
     [HttpGet]
     public IActionResult PartnerChildcareSupport(string? returnTo = null)
     {
-        var backLink = GetPartnerChildcareSupportBackLink(returnTo);
-        return View(new PartnerChildcareSupportViewModel(_journeyState, backLink, returnTo));
+        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(PartnerBenefits));
+        return View(new PartnerChildcareSupportViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -386,30 +373,30 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = GetPartnerChildcareSupportBackLink(model.ReturnTo);
+            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerBenefits));
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        if (_journeyState.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        if (journeyState.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
         {
-            if (model.ReturnTo is not null && _journeyState.PartnerChildcareVoucherReceipt is not null)
+            if (model.ReturnTo is not null && journeyState.PartnerChildcareVoucherReceipt is not null)
             {
                 return this.RedirectToReturnTo(model.ReturnTo);
             }
 
-            return this.RedirectToAction(nameof(PartnerChildcareVoucherReceipt), new { returnTo = model.ReturnTo });
+            return RedirectToAction(nameof(PartnerChildcareVoucherReceipt), new { returnTo = model.ReturnTo });
         }
 
-        return this.RedirectToAction(nameof(SummaryController.CheckAnswers), SummaryController.Name);
+        return RedirectToAction(nameof(SummaryController.CheckAnswers), SummaryController.Name);
     }
 
     [HttpGet]
     public IActionResult PartnerChildcareVoucherReceipt(string? returnTo = null)
     {
-        var backLink = GetPartnerChildcareVoucherReceiptBackLink(returnTo);
-        return View(new PartnerChildcareVoucherReceiptViewModel(_journeyState, backLink, returnTo));
+        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(PartnerChildcareSupport));
+        return View(new PartnerChildcareVoucherReceiptViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -417,43 +404,13 @@ public class PartnerController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = GetPartnerChildcareVoucherReceiptBackLink(model.ReturnTo);
+            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerChildcareSupport));
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
-        return this.RedirectToAction(nameof(SummaryController.CheckAnswers), SummaryController.Name);
-    }
-
-    private string GetPartnerAgeBackLink(string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
-        {
-            return url;
-        }
-
-        return this.Url.ActionOrThrow(nameof(UserController.HasPartner), UserController.Name);
-    }
-
-    private string GetPartnerNationalityBackLink(string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
-        {
-            return url;
-        }
-
-        return this.Url.ActionOrThrow(nameof(PartnerAge));
-    }
-
-    private string GetPartnerSettledStatusBackLink(string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
-        {
-            return url;
-        }
-
-        return this.Url.ActionOrThrow(nameof(PartnerNationality));
+        journeyState.Apply(model);
+        journeySession.Set(journeyState);
+        return RedirectToAction(nameof(SummaryController.CheckAnswers), SummaryController.Name);
     }
 
     private string GetPartnerPaidWorkBackLink(string? returnTo)
@@ -463,53 +420,22 @@ public class PartnerController : Controller
             return url;
         }
 
-        if (_journeyState.Nationality == NationalityOption.BritishOrIrishCitizen)
+        if (journeyState.Nationality == NationalityOption.BritishOrIrishCitizen)
         {
             return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
-        if (_journeyState.Nationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland
-            && _journeyState.SettledStatus == SettledStatusOption.Yes)
+        if (journeyState is { Nationality: NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatus: SettledStatusOption.Yes })
         {
             return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
-        if (_journeyState.PartnerNationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+        if (journeyState.PartnerNationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
         {
             return Url.ActionOrThrow(nameof(PartnerSettledStatus));
         }
 
         return Url.ActionOrThrow(nameof(PartnerNationality));
-    }
-
-    private string GetPartnerParentalLeaveBackLink(string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
-        {
-            return url;
-        }
-
-        return Url.ActionOrThrow(nameof(PartnerPaidWork));
-    }
-
-    private string GetPartnerWorkStatusBackLink(string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
-        {
-            return url;
-        }
-
-        return this.Url.ActionOrThrow(nameof(PartnerPaidWork));
-    }
-
-    private string GetPartnerSelfEmployedDurationBackLink(string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
-        {
-            return url;
-        }
-
-        return this.Url.ActionOrThrow(nameof(PartnerWorkStatus));
     }
 
     private string GetPartnerWeeklyEarningsBackLink(string? returnTo)
@@ -519,22 +445,12 @@ public class PartnerController : Controller
             return url;
         }
 
-        if (_journeyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
+        if (journeyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
         {
             return Url.ActionOrThrow(nameof(PartnerSelfEmployedDuration));
         }
 
         return Url.ActionOrThrow(nameof(PartnerWorkStatus));
-    }
-
-    private string GetPartnerYearlyEarningsBackLink(string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
-        {
-            return url;
-        }
-
-        return this.Url.ActionOrThrow(nameof(PartnerWeeklyEarnings));
     }
 
     private string GetPartnerBenefitsBackLink(string? returnTo)
@@ -544,43 +460,26 @@ public class PartnerController : Controller
             return url;
         }
 
-        if (_journeyState.PartnerYearlyEarnings == YearlyEarningsOption.AboveThreshold)
+        if (journeyState.PartnerYearlyEarnings == YearlyEarningsOption.AboveThreshold)
         {
             return Url.ActionOrThrow(nameof(PartnerYearlyEarnings));
         }
-        else if (_journeyState.PartnerWeeklyEarnings == WeeklyEarningsOption.AboveThreshold)
+
+        if (journeyState.PartnerWeeklyEarnings == WeeklyEarningsOption.AboveThreshold)
         {
             return Url.ActionOrThrow(nameof(PartnerYearlyEarnings));
         }
-        else if (_journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
+
+        if (journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
         {
             return Url.ActionOrThrow(nameof(PartnerSelfEmployedDuration));
         }
-        else if (_journeyState.PartnerPaidWork == PartnerPaidWorkOption.No)
+
+        if (journeyState.PartnerPaidWork == PartnerPaidWorkOption.No)
         {
             return Url.ActionOrThrow(nameof(PartnerPaidWork));
         }
 
         return Url.ActionOrThrow(nameof(PartnerWeeklyEarnings));
-    }
-
-    private string GetPartnerChildcareSupportBackLink(string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
-        {
-            return url;
-        }
-
-        return this.Url.ActionOrThrow(nameof(PartnerBenefits));
-    }
-
-    private string GetPartnerChildcareVoucherReceiptBackLink(string? returnTo)
-    {
-        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
-        {
-            return url;
-        }
-
-        return this.Url.ActionOrThrow(nameof(PartnerChildcareSupport));
     }
 }

@@ -33,7 +33,7 @@ public class ChildSupportViewModel : IValidatableObject
     public string ChildName { get; set; } = string.Empty;
 
     [Display(Name = "Does {0} get any of the following support?", Description = "Select all that apply")]
-    public List<ChildSupport> ChildSupportOptions { get; set; } = new List<ChildSupport>();
+    public List<ChildSupport> ChildSupportOptions { get; set; } = [];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {

@@ -8,6 +8,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Services;
 
 public class JourneyState
 {
+    public Guid CorrelationId { get; set; } = Guid.NewGuid();
 
     public PaidWorkOption? PaidWork { get; set; }
 

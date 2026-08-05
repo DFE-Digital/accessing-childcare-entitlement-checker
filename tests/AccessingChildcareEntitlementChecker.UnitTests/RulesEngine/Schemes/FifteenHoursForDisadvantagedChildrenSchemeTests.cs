@@ -63,7 +63,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
 
         Assert.NotNull(result);
         Assert.Equal(SchemeCode.FifteenHoursForDisadvantagedChildren, result.SchemeCode);
-        Assert.True(result!.EligibleNow);
+        Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
 
@@ -78,7 +78,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
 
         Assert.NotNull(result);
         Assert.Equal(SchemeCode.FifteenHoursForDisadvantagedChildren, result.SchemeCode);
-        Assert.False(result!.EligibleNow);
+        Assert.False(result.EligibleNow);
         Assert.True(result.EligibleInFuture);
     }
 
@@ -98,7 +98,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
 
         Assert.NotNull(result);
         Assert.Equal(SchemeCode.FifteenHoursForDisadvantagedChildren, result.SchemeCode);
-        Assert.False(result!.EligibleNow);
+        Assert.False(result.EligibleNow);
         Assert.True(result.EligibleInFuture);
     }
 

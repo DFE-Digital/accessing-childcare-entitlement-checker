@@ -2,10 +2,9 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer 
 @model WeeklyEarningsViewModel
-@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @{
-    var thresholds = Model.WeeklyEarningsThresholds!;
+    var thresholds = Model.WeeklyEarningsThresholds ?? throw new InvalidOperationException("Model.WeeklyEarningsThresholds cannot be null.");
     var question = Shared[Model.IsOnParentalLeave ? "WeeklyEarnings_ParentalLeave_Question" : "WeeklyEarnings_Question", thresholds.PerWeek];
     ViewData["Title"] = question;
 }

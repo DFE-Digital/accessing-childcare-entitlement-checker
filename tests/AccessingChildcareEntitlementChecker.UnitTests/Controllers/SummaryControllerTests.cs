@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Microsoft.FeatureManagement;
-using System.Threading.Tasks;
 using AccessingChildcareEntitlementChecker.Web;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
@@ -22,6 +21,7 @@ public class SummaryControllerTests
     private readonly IFeatureManager _featureManager;
     private readonly SummaryController _controller;
     private const string childId = "child-a";
+    private readonly FakeLogger<SummaryController> _logger = new();
 
     public SummaryControllerTests()
     {
@@ -43,8 +43,13 @@ public class SummaryControllerTests
             .BuildServiceProvider()
             .GetRequiredService<IModelMetadataProvider>();
 
-        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory, _featureManager);
-        _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Substitute.For<ITempDataProvider>());
+        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory, _logger, _featureManager);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _controller.TempData = new TempDataDictionary(_controller.HttpContext, Substitute.For<ITempDataProvider>());
+
         _controller.MetadataProvider = metadataProvider;
         _controller.Url = Substitute.For<IUrlHelper>();
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
@@ -56,6 +61,7 @@ public class SummaryControllerTests
         var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails());
         var checkChildDetailsViewModel = Assert.IsType<CheckChildDetailsViewModel>(result.Model);
         Assert.True(checkChildDetailsViewModel.HasChildren);
+        Assert.Equal(_journeyState.CorrelationId, checkChildDetailsViewModel.CorrelationId);
 
         var childSummaryViewModel = Assert.Single(checkChildDetailsViewModel.Children);
         Assert.Equal(childId, childSummaryViewModel.ChildId);
@@ -68,6 +74,29 @@ public class SummaryControllerTests
         var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails(childId: "child-a"));
         var model = Assert.IsType<CheckChildDetailsViewModel>(result.Model);
         Assert.Equal("child-a", model.LastEditedChild!.ChildId);
+        Assert.Equal(_journeyState.CorrelationId, model.CorrelationId);
+    }
+
+    [Fact]
+    public void CheckChildDetails_Post_Redirects_WhenCorrelationIdMatches()
+    {
+        var model = new CheckChildDetailsSubmitModel(_journeyState.CorrelationId);
+        var result = Assert.IsType<RedirectToActionResult>(_controller.CheckChildDetails(model));
+        Assert.Equal(nameof(UserController.UserAge), result.ActionName);
+        Assert.Equal(UserController.Name, result.ControllerName);
+    }
+
+    [Fact]
+    public void CheckChildDetails_Post_ReturnsStateMismatch_WhenCorrelationIdMismatches()
+    {
+        var model = new CheckChildDetailsSubmitModel(Guid.NewGuid());
+        var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails(model));
+        Assert.Equal("StateMismatch", result.ViewName);
+        Assert.Equal(400, _controller.Response.StatusCode);
+
+        Assert.Contains("State mismatch detected. Correlation ID mismatch. Event: StateMismatch", _logger.Messages);
+        var customEventProp = Assert.Single(_logger.Properties, p => p.Key == "microsoft.custom_event.name");
+        Assert.Equal("StateMismatch", customEventProp.Value);
     }
 
     [Fact]
@@ -141,6 +170,7 @@ public class SummaryControllerTests
         var result = Assert.IsType<ViewResult>(await _controller.CheckAnswers());
         var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.True(checkAnswersViewModel.HasChildren);
+        Assert.Equal(_journeyState.CorrelationId, checkAnswersViewModel.CorrelationId);
         var child = Assert.Single(checkAnswersViewModel.Children);
         Assert.Equal("child-a", child.ChildId);
         Assert.Equal("Child A", child.Name);
@@ -166,6 +196,7 @@ public class SummaryControllerTests
         var result = Assert.IsType<ViewResult>(await _controller.CheckAnswers(fromChildId: "child-a"));
         var model = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.Equal("child-a", model.LastEditedChild!.ChildId);
+        Assert.Equal(_journeyState.CorrelationId, model.CorrelationId);
     }
 
     [Fact]
@@ -175,6 +206,7 @@ public class SummaryControllerTests
         _journeyState.PartnerAge = AgeRange.TwentyOneOrOver;
         var result = Assert.IsType<ViewResult>(await _controller.CheckAnswers());
         var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
+        Assert.Equal(_journeyState.CorrelationId, checkAnswersViewModel.CorrelationId);
 
         var partnerDetail = checkAnswersViewModel.PartnerDetails[0];
         Assert.Equal("Title", partnerDetail.Key);
@@ -184,6 +216,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
+
     public async Task CheckAnswers_SuppressesLocationRow_WhenFeatureFlagEnabled()
     {
         _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(true);
@@ -195,5 +228,27 @@ public class SummaryControllerTests
 
         // Should not have any location detail in UserDetails
         Assert.DoesNotContain(checkAnswersViewModel.UserDetails, x => x.Key == "Where do you live?");
+    }
+
+    [Fact]
+    public void CheckAnswers_Post_Redirects_WhenCorrelationIdMatches()
+    {
+        var model = new CheckAnswersSubmitModel(_journeyState.CorrelationId);
+        var result = Assert.IsType<RedirectToActionResult>(_controller.CheckAnswers(model));
+        Assert.Equal(nameof(ResultsController.Results), result.ActionName);
+        Assert.Equal(ResultsController.Name, result.ControllerName);
+    }
+
+    [Fact]
+    public void CheckAnswers_Post_ReturnsStateMismatch_WhenCorrelationIdMismatches()
+    {
+        var model = new CheckAnswersSubmitModel(Guid.NewGuid());
+        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers(model));
+        Assert.Equal("StateMismatch", result.ViewName);
+        Assert.Equal(400, _controller.Response.StatusCode);
+
+        Assert.Contains("State mismatch detected. Correlation ID mismatch. Event: StateMismatch", _logger.Messages);
+        var customEventProp = Assert.Single(_logger.Properties, p => p.Key == "microsoft.custom_event.name");
+        Assert.Equal("StateMismatch", customEventProp.Value);
     }
 }

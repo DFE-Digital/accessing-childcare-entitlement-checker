@@ -97,6 +97,7 @@
     <File Path="docs/content/decisions/0009-release-strategy.md" />
     <File Path="docs/content/decisions/0010-documentation-publication-strategy.md" />
     <File Path="docs/content/decisions/0011-bootstrap-tf.md" />
+    <File Path="docs/content/decisions/0012-bf-cache.md" />
     <File Path="docs/content/decisions/index.md" />
   </Folder>
   <Folder Name="/docs/content/developers/">

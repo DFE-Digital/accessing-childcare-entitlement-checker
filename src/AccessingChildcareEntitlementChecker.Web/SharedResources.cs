@@ -1,3 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace AccessingChildcareEntitlementChecker.Web;
 
-public class SharedResources { }
+[SuppressMessage("Sonar", "S2094", Justification = "Marker class for IStringLocalizer.")]
+public sealed class SharedResources;

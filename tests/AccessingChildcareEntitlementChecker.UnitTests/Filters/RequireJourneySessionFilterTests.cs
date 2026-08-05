@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Filters;
+using AccessingChildcareEntitlementChecker.Web.Filters;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 using Microsoft.AspNetCore.Http;
@@ -13,7 +13,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Filters;
 
 public class RequireJourneySessionFilterTests
 {
-    private readonly ILogger<RequireJourneySessionFilter> _mockLogger;
+    private readonly FakeLogger<RequireJourneySessionFilter> _mockLogger = new();
     private readonly IJourneySession _mockJourneySession;
     private readonly ResourceExecutingContext _context;
     private readonly ResourceExecutionDelegate _next;
@@ -21,8 +21,6 @@ public class RequireJourneySessionFilterTests
 
     public RequireJourneySessionFilterTests()
     {
-        _mockLogger = Substitute.For<ILogger<RequireJourneySessionFilter>>();
-        _mockLogger.IsEnabled(LogLevel.Information).Returns(true);
         _mockJourneySession = Substitute.For<IJourneySession>();
 
         var httpContext = new DefaultHttpContext();
@@ -45,10 +43,7 @@ public class RequireJourneySessionFilterTests
         await _sut.OnResourceExecutionAsync(_context, _next);
         Assert.IsType<RedirectToActionResult>(_context.Result);
 
-        AssertLogged(
-            _mockLogger,
-            LogLevel.Information,
-            "Redirecting session-less request for /foo to SessionExpired.");
+        AssertLogged("Redirecting session-less request for /foo to SessionExpired.");
     }
 
     [Fact]
@@ -57,20 +52,11 @@ public class RequireJourneySessionFilterTests
         _mockJourneySession.HasSession.Returns(true);
         await _sut.OnResourceExecutionAsync(_context, _next);
         Assert.Null(_context.Result);
-        Assert.False(_mockLogger.ReceivedCalls().Any());
+        Assert.Empty(_mockLogger.Messages);
     }
 
-    private static void AssertLogged(
-        ILogger logger,
-        LogLevel level,
-        string expectedMessage)
+    private void AssertLogged(string expectedMessage)
     {
-        var matchingCalls = logger.ReceivedCalls()
-            .Where(call => call.GetMethodInfo().Name == nameof(ILogger.Log))
-            .Where(call => (LogLevel)call.GetArguments()[0]! == level)
-            .Where(call => call.GetArguments()[2]?.ToString() == expectedMessage)
-            .ToList();
-
-        Assert.Single(matchingCalls);
+        Assert.Contains(expectedMessage, _mockLogger.Messages);
     }
 }

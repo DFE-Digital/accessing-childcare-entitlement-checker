@@ -1,15 +1,18 @@
 ﻿@using AccessingChildcareEntitlementChecker.Web.Controllers
 @using AccessingChildcareEntitlementChecker.Web.Services
+@using GovUk.Frontend.AspNetCore.Views
+@using Microsoft.Extensions.Options
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
 @inject ICookiePolicyService CookiePolicyService
+@inject IOptions<GovUkFrontendOptions> OptionsAccessor
 @inject IConfiguration Configuration
 @{
     Layout = "_GovUkPageTemplate";
+    
     var serviceName = Shared["ServiceName"];
     var serviceUrl = Url.Action(nameof(HomeController.Start), HomeController.Name);
-    
     var googleTagManagerContainerId = Configuration["GoogleTagManager:ContainerId"];
-
+    var cspNonce = ViewData[GovUkPageTemplateConstants.ViewDataKeys.CspNonce] as string ?? OptionsAccessor.Value.GetCspNonceForRequest?.Invoke(ViewContext.HttpContext);
     var shouldLoadGoogleTagManager = CookiePolicyService.HasConsented && !string.IsNullOrWhiteSpace(googleTagManagerContainerId);
 }
 
@@ -42,8 +45,8 @@
 
     <govuk-phase-banner class="govuk-width-container">
         <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag>
-        This is a new service. Help us improve it and 
-        <a class="govuk-link" href="https://dferesearch.fra1.qualtrics.com/jfe/form/SV_8eotBOVwAQbdP8y">
+        This is a new service. Help us improve it and
+        <a class="govuk-link" href="https://dferesearch.fra1.qualtrics.com/jfe/form/SV_8eotBOVwAQbdP8y" target="_blank" rel="noopener noreferrer">
             give your feedback (opens in new tab)
         </a>.
     </govuk-phase-banner>
@@ -59,7 +62,7 @@
     <govuk-footer>
         <govuk-footer-meta>
             <govuk-footer-meta-items>
-                <govuk-footer-meta-item href="#">Item 1</govuk-footer-meta-item>
+                <govuk-footer-meta-item href="https://www.gov.uk/government/publications/privacy-information-members-of-the-public/privacy-information-members-of-the-public" target="_blank">Privacy notice</govuk-footer-meta-item>
                 <govuk-footer-meta-item href="#">Item 2</govuk-footer-meta-item>
                 <govuk-footer-meta-item asp-action="@nameof(CookiesController.Cookies)" asp-controller="@CookiesController.Name">
                     @Shared["Cookies"]
@@ -76,4 +79,6 @@
     {
         <partial name="_CookieBannerScript" />
     }
+    
+    @Html.GovUkFrontendScriptImports(cspNonce)
 }

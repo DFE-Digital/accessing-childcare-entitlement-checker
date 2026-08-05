@@ -71,6 +71,7 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
         private JourneyState _state = state;
         public JourneyState Get() => _state;
         public void Set(JourneyState journeyState) => _state = journeyState;
+        public void Clear() => _state = new();
     }
 
     private class MissingJourneySession : IJourneySession
@@ -78,5 +79,6 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
         public bool HasSession => false;
         public JourneyState Get() => new();
         public void Set(JourneyState journeyState) { }
+        public void Clear() { }
     }
 }

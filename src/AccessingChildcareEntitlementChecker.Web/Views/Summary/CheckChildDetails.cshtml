@@ -54,7 +54,10 @@
         @if (Model.HasChildren)
         {
             <div class="govuk-!-margin-top-3">
-                <govuk-button-link type="submit" asp-controller="User" asp-action="UserAge">@Shared["Button_Continue"]</govuk-button-link>
+                <form asp-controller="Summary" asp-action="CheckChildDetails" method="post">
+                    <input type="hidden" asp-for="CorrelationId" />
+                    <govuk-button type="submit">@Shared["Button_Continue"]</govuk-button>
+                </form>
             </div>
         }
     </div>
