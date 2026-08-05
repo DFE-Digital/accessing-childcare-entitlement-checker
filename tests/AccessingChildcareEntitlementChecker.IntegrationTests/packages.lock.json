@@ -677,7 +677,7 @@
           "AccessingChildcareEntitlementChecker.RulesEngine": "[1.0.0, )",
           "Azure.Identity": "[1.21.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.6.0, )",
-          "GovUk.Frontend.AspNetCore": "[4.3.0, )",
+          "GovUk.Frontend.AspNetCore": "[4.4.0, )",
           "Microsoft.Azure.StackExchangeRedis": "[3.3.1, )",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[10.0.10, )",
           "Microsoft.Extensions.Telemetry.Abstractions": "[10.1.0, )"
@@ -707,9 +707,9 @@
       },
       "GovUk.Frontend.AspNetCore": {
         "type": "CentralTransitive",
-        "requested": "[4.3.0, )",
-        "resolved": "4.3.0",
-        "contentHash": "1taJUFwsB1/h3Tfjm0tNu4UOkm3adXcTlsdgYg/L+dMSAuxwk3AcZzVWC9OBaSl9XrNov5oUpf28O03t4lB9vw==",
+        "requested": "[4.4.0, )",
+        "resolved": "4.4.0",
+        "contentHash": "KJ/dnGQ04bna1DyXNz9z3U3uPUfMjHuAfnDRTgsZN4rsU4W22rfMh7Kydb17gOKjoUxArj585pOqhrVna7FraQ==",
         "dependencies": {
           "Microsoft.Extensions.FileProviders.Embedded": "10.0.10"
         }
