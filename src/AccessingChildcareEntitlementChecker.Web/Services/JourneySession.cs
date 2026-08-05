@@ -42,4 +42,9 @@ public class JourneySession : IJourneySession
             .Session
             .SetString(Key, json);
     }
+
+    public void Clear()
+    {
+        _httpContextAccessor.HttpContext?.Session.Remove(Key);
+    }
 }
