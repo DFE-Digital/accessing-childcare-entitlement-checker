@@ -22,7 +22,6 @@ public class SchemeResultsViewModel
 {
     public SchemeCode SchemeCode { get; set; }
     public string Name { get; set; } = string.Empty;
-    public string Url { get; set; } = string.Empty;
     public string WhatYouGet { get; set; } = string.Empty;
     public bool EligibleNow { get; set; }
     public bool EligibleInFuture { get; set; }

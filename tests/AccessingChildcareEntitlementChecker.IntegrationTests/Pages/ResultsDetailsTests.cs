@@ -102,8 +102,8 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        Assert.Contains("Help paying childcare costs for working families.", doc.Body?.TextContent);
-        Assert.Contains("You can get up to £500 every 3 months", doc.Body?.TextContent);
+        Assert.Contains("Working families can get help with childcare costs for children aged 0 to 11 (or 16 if they have a disability).", doc.Body?.TextContent);
+        Assert.Contains("You can get up to £2,000 a year towards these costs. If your child has a disability, this increases to £4,000 a year.", doc.Body?.TextContent);
     }
 
     [Fact]
@@ -117,8 +117,8 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        Assert.Contains("Funded childcare for children whose parents are working.", doc.Body?.TextContent);
-        Assert.Contains("You can get up to 30 hours of childcare each week", doc.Body?.TextContent);
+        Assert.Contains("Working parents can get up to 30 hours of funded childcare a week for children aged 9 months to 4 years old.", doc.Body?.TextContent);
+        Assert.Contains("You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme.", doc.Body?.TextContent);
     }
 
     [Fact]
@@ -161,7 +161,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        Assert.DoesNotContain("Universal Credit childcare", doc.Body?.TextContent);
+        Assert.DoesNotContain("Universal Credit and childcare", doc.Body?.TextContent);
     }
 
     [Fact]
@@ -175,7 +175,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        Assert.Contains("You can only get up to 30 hours of funded childcare per child each week, even if you use more than one scheme.", doc.Body?.TextContent);
+        Assert.Contains("You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme.", doc.Body?.TextContent);
     }
 
     [Theory]

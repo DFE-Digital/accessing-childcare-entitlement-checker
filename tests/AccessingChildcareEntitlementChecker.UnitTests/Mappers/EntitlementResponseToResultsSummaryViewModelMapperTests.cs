@@ -324,21 +324,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
 
         Assert.Equal("TaxFreeChildcare_Name", scheme.Name);
     }
-
-    [Fact]
-    public void Map_SchemeUrl()
-    {
-        var response = CreateTestEntitlementResponse();
-
-        var result = _mapper.Map(response);
-
-        var child = result.Children.Single(x => x.Name == "Katie");
-
-        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.TaxFreeChildcare);
-
-        Assert.Equal("https://www.gov.uk/tax-free-childcare", scheme.Url);
-    }
-
+    
     [Fact]
     public void Map_SchemeDescription()
     {

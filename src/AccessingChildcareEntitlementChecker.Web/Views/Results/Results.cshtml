@@ -31,7 +31,7 @@
             </p>
     
             <p class="govuk-body">
-                @Localizer["You should re-check if your circumstances change as this may change the support you can get."]
+                @Localizer["You should check again if your circumstances change as this may change the support you can get."]
             </p>   
         }
 
@@ -85,10 +85,7 @@
                     {
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell">
-                                <a class="govuk-link" href="@scheme.Url" target="_blank" rel="noopener noreferrer">
-                                    @scheme.Name
-                                    <span class="govuk-visually-hidden">@Localizer["(opens in new tab)"]</span>
-                                </a>
+                                @scheme.Name
                             </td>
 
                             <td class="govuk-table__cell">
@@ -105,26 +102,26 @@
             </div>
 
             <h3 class="govuk-heading-m">
-                @Localizer["More about {0}'s support", child.Name]
+                @Localizer["Full information about {0}'s childcare support", child.Name]
             </h3>
-
-            <p class="govuk-body">
-                @Localizer["Find out when each scheme starts, ends and where to apply."]
-            </p>
+            
 
             <p class="govuk-body">
                 <a asp-action="ResultsDetailed"
                    asp-route-childId="@child.ChildId"
                    class="govuk-link">
-                    @Localizer["View detailed information about {0}'s childcare support", child.Name]
-                </a>.
+                    @Localizer["View {0}'s full childcare support information", child.Name]
+                </a>
+            </p>
+            
+            <p class="govuk-body">
+                @Localizer["This includes more details about each scheme such as when support starts and ends."]
             </p>
 
             @if (child.ShowThirtyHourWarning)
             {
                 <div class="govuk-inset-text">
-                    <p>@Localizer["You can only get up to 30 hours of funded childcare per child each week, even if you use more than one scheme."]</p>
-                    <p>@Localizer["You will need to pay for any hours over this."]</p>
+                    <p>@Localizer["You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme."]</p>
                 </div>
             }
         }

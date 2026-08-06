@@ -53,7 +53,6 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
         {
             SchemeCode = schemeResult.SchemeCode,
             Name = GetSchemeName(schemeResult.SchemeCode),
-            Url = GetSchemeUrl(schemeResult.SchemeCode),
             WhatYouGet = GetSchemeDescription(schemeResult.SchemeCode),
             EligibleNow = schemeResult.EligibleNow,
             EligibleInFuture = schemeResult.EligibleInFuture,
@@ -188,20 +187,6 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             SchemeCode.FifteenHoursForDisadvantagedChildren => _localizer["FifteenHoursForDisadvantagedChildren_Name"],
             SchemeCode.UniversalCreditChildcare => _localizer["UniversalCreditChildcare_Name"],
             SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["ThirtyHoursForWorkingFamilies_Name"],
-
-            _ => throw UnknownSchemeCode(schemeCode)
-        };
-    }
-
-    private static string GetSchemeUrl(SchemeCode schemeCode)
-    {
-        return schemeCode switch
-        {
-            SchemeCode.TaxFreeChildcare => "https://www.gov.uk/tax-free-childcare",
-            SchemeCode.FifteenHoursUniversal => "https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-3-to-4-year-olds",
-            SchemeCode.FifteenHoursForDisadvantagedChildren => "https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-extra-support",
-            SchemeCode.UniversalCreditChildcare => "https://www.gov.uk/help-with-childcare-costs/universal-credit",
-            SchemeCode.ThirtyHoursForWorkingFamilies => "https://www.gov.uk/free-childcare-if-working",
 
             _ => throw UnknownSchemeCode(schemeCode)
         };

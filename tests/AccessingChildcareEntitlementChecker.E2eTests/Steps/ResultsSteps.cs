@@ -27,7 +27,7 @@ public class ResultsSteps(IPage page)
     [When("I click the details link for {string}")]
     public async Task WhenIClickTheDetailsLinkForString(string childName)
     {
-        var text = $"View detailed information about {childName}'s childcare support";
+        var text = $"View {childName}'s full childcare support information";
         var link = page.GetByRole(AriaRole.Link, new() { Name = text, Exact = true });
         await link.ClickAsync();
     }
@@ -115,10 +115,7 @@ public class ResultsSteps(IPage page)
         for (var i = 0; i < count; i++)
         {
             var cells = rows.Nth(i).Locator("td");
-            var scheme = await cells
-                .Nth(0)
-                .Locator("a")
-                .EvaluateAsync<string>(@"a => a.childNodes[0].textContent");
+            var scheme = await cells.Nth(0).InnerTextAsync();
             var whenToApply = await cells.Nth(2).InnerTextAsync();
             results.Add((scheme.Trim(), whenToApply.Trim()));
         }
