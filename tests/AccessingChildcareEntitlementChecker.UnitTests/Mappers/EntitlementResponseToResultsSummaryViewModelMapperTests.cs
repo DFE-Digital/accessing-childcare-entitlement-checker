@@ -324,7 +324,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
 
         Assert.Equal("TaxFreeChildcare_Name", scheme.Name);
     }
-    
+
     [Fact]
     public void Map_SchemeDescription()
     {
