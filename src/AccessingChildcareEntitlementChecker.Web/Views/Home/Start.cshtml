@@ -15,23 +15,11 @@
         </h1>
 
         <govuk-inset-text>
-            @Localizer["You are now using a new service to check childcare support."]
+            @Localizer["You are now using a new service for people living in England to check what childcare support they may be eligible for."]
         </govuk-inset-text>
 
         <p class="govuk-body">
-            @Localizer["This new service:"]
-        </p>
-
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@Localizer["checks more types of childcare support"]</li>
-            <li>@Localizer["gives more detail about the childcare support you may be eligible for, including how this could change over time"]</li>
-        </ul>
-
-        <p class="govuk-body">
-            @Localizer["If you prefer, you can"]
-            <a class="govuk-link" href="https://www.tax.service.gov.uk/childcare-calc/">
-                @Localizer["go back to the childcare calculator you were using before."]
-            </a>
+            @Localizer["This is not an application for childcare support and your answers will not be shared."]
         </p>
 
         <h2 class="govuk-heading-m">
@@ -39,44 +27,51 @@
         </h2>
 
         <p class="govuk-body">
-            @Localizer["You will need information about you and your partner (if you have one), so you can answer questions about:"]
+            @Localizer["You will need information about you and your partner, if you live with one, to answer questions about:"]
         </p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>@Localizer["your children, or any you are expecting"]</li>
-            <li>@Localizer["your work and income"]</li>
-            <li>@Localizer["your nationality"]</li> 
-            <li>@Localizer["any benefits you get"]</li>
+            <li>@Localizer["children, including any you are expecting"]</li>
+            <li>@Localizer["work and income"]</li>
+            <li>@Localizer["nationality"]</li> 
+            <li>@Localizer["benefits you get"]</li>
         </ul>
-
+        
         <h2 class="govuk-heading-m">
-            @Localizer["Who cannot use this service"]
+            @Localizer["Check if this service applies to you"]
         </h2>
-
+        
         <p class="govuk-body">
-            @Localizer["This service will not give you accurate results if your child:"]
+            @Localizer["This service will not give accurate results if:"]
         </p>
-
+        
         <ul class="govuk-list govuk-list--bullet">
-            <li>@Localizer["is in local authority or foster care"]</li> 
-            <li>@Localizer["does not live with you more than half of the time"]</li>
+            <li>@Localizer["you do not live in England"]</li>
+            <li>@Localizer["your child is in local authority or foster care"]</li>
+            <li>@Localizer["our child does not live with you more than half of the time"]</li> 
         </ul>
-
-        <p class="govuk-body">
-            @Localizer["If any of these apply to you,"]
-            <a class="govuk-link" href="https://www.gov.uk/find-local-council">
-                @Localizer["contact your local council"]
-            </a>
-            @Localizer["to get advice about childcare support and what to do next."]
-        </p>
         
         <govuk-button-link
             asp-controller="Home"
             asp-action="@nameof(HomeController.Location)"
-            is-start-button="true">
+            is-start-button="true"
+            class="govuk-!-margin-top-4 govuk-!-margin-bottom-6">
 
             @Localizer["Continue"]
 
         </govuk-button-link>
+        
+        
+        <h2 class="govuk-heading-m">
+            @Localizer["If you need more help understanding childcare support"]
+        </h2>
+
+        <p class="govuk-body">
+            @Localizer["If you need more help understanding what childcare support may be available to you, you can"]
+            <a class="govuk-link" href="https://www.gov.uk/find-local-council">
+                @Localizer["contact your local council."]
+            </a>
+        </p>
+        
     </div>
 </div>
