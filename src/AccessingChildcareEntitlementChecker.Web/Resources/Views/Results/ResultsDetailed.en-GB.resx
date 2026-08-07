@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
+
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -13,50 +14,34 @@
         <value>1.3</value>
     </resheader>
     <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
     </resheader>
     <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
     </resheader>
 
     <data name="TaxFreeChildcare_Name" xml:space="preserve">
         <value>Tax-Free Childcare</value>
     </data>
 
-    <data name="TaxFreeChildcare_Description" xml:space="preserve">
-        <value>Up to £2,000 a year towards childcare costs or £4,000 if your child is disabled</value>
-    </data>
-
     <data name="UniversalCreditChildcare_Name" xml:space="preserve">
-        <value>Universal Credit childcare</value>
-    </data>
-
-    <data name="UniversalCreditChildcare_Description" xml:space="preserve">
-        <value>Claim back up to £1,071 of childcare costs a month (or £1,836 for 2 or more children)</value>
+      <value>Universal Credit and childcare</value>
     </data>
 
     <data name="ThirtyHoursForWorkingFamilies_Name" xml:space="preserve">
-        <value>Free Childcare for Working Parents</value>
-    </data>
-
-    <data name="ThirtyHoursForWorkingFamilies_Description" xml:space="preserve">
-        <value>30 hours of childcare a week during term time (38 weeks)</value>
+          <value>Free Childcare for Working Parents</value>
     </data>
 
     <data name="FifteenHoursForDisadvantagedChildren_Name" xml:space="preserve">
         <value>Early learning for 2-year-olds</value>
     </data>
 
-    <data name="FifteenHoursForDisadvantagedChildren_Description" xml:space="preserve">
-        <value>15 hours of childcare a week during term time (38 weeks)</value>
-    </data>
-
     <data name="FifteenHoursUniversal_Name" xml:space="preserve">
         <value>15 hours free childcare for 3 and 4-year-olds</value>
-    </data>
-
-    <data name="FifteenHoursUniversal_Description" xml:space="preserve">
-        <value>15 hours of childcare a week during term time (38 weeks)</value>
     </data>
 
     <data name="WhenToApply_AskProviderOrCouncil" xml:space="preserve">
@@ -78,7 +63,7 @@
     <data name="WhenToApply_FromDate" xml:space="preserve">
       <value>From {0:dd MMM yyyy}</value>
     </data>
-    
+
     <data name="WhenToApply_ByDate" xml:space="preserve">
       <value>By {0:dd MMM yyyy}</value>
     </data>
@@ -106,13 +91,13 @@
     <data name="Starts_FifteenHoursUniversal_FromDate" xml:space="preserve">
         <value>You can get it from the term after your child's 3rd birthday, starting on {0:dd MMMM yyyy}</value>
     </data>
-    
+
     <data name="Starts_FifteenHoursUniversal_TermAfterTurnsThree" xml:space="preserve">
         <value>The term after {0} turns 3</value>
     </data>
-    
+
     <data name="Ends_TaxFreeChildcare" xml:space="preserve">
-      <value>When {0} turns 12 (or 17 if they have a disability)</value>
+      <value>1 September after {0}'s 11th birthday (or 16th birthday if they have a disability)</value>
     </data>
 
     <data name="Ends_UniversalCreditChildcare" xml:space="preserve">
@@ -132,59 +117,55 @@
     </data>
 
     <data name="TaxFreeChildcare_Paragraph1" xml:space="preserve">
-      <value>Help paying childcare costs for working families.</value>
+      <value>Working families can get help with childcare costs for children aged 0 to 11 (or 16 if they have a disability).</value>
     </data>
 
     <data name="TaxFreeChildcare_Paragraph2" xml:space="preserve">
-      <value>You can get up to £500 every 3 months (up to £2,000 a year) towards childcare costs.</value>
-    </data>
-
-    <data name="TaxFreeChildcare_Paragraph3" xml:space="preserve">
-      <value>If your child has a disability, this increases to £1,000 every 3 months (up to £4,000 a year).</value>
+      <value>You can get up to £2,000 a year towards these costs. If your child has a disability, this increases to £4,000 a year.</value>
     </data>
 
     <data name="UniversalCreditChildcare_Paragraph1" xml:space="preserve">
-      <value>Help paying for childcare if you are on Universal Credit.</value>
+      <value>If you're getting Universal Credit, you can get help with childcare costs for children aged 0 to 16.</value>
     </data>
 
     <data name="UniversalCreditChildcare_Paragraph2" xml:space="preserve">
-      <value>You can claim back up to £1,071 of childcare costs a month (or £1,836 for 2 or more children).</value>
+      <value>You can claim back up to £1,071 a month for one child, or £1,836 a month for 2 or more children.</value>
     </data>
 
     <data name="ThirtyHoursForWorkingFamilies_Paragraph1" xml:space="preserve">
-      <value>Funded childcare for children whose parents are working.</value>
+      <value>Working parents can get up to 30 hours of funded childcare a week for children aged 9 months to 4 years old.</value>
     </data>
 
     <data name="ThirtyHoursForWorkingFamilies_Paragraph2" xml:space="preserve">
-      <value>You can get up to 30 hours of childcare each week during term time (38 weeks a year). You may be able to spread these hours across the year if your provider offers this.</value>
+      <value>Working parents can get up to 30 hours of funded childcare a week for children aged 9 months to 4 years old.</value>
     </data>
 
     <data name="ThirtyHoursForWorkingFamilies_Paragraph3" xml:space="preserve">
-      <value>You may still need to pay for things like meals or activities.</value>
+      <value>You may still need to pay for things like meals, activities or additional hours.</value>
     </data>
 
     <data name="FifteenHoursForDisadvantagedChildren_Paragraph1" xml:space="preserve">
-      <value>Funded childcare for 2-year-olds if you or your child get some extra support.</value>
+      <value>Your 2 year old can get 15 hours a week of free childcare if you or your child get some extra support.</value>
     </data>
 
     <data name="FifteenHoursForDisadvantagedChildren_Paragraph2" xml:space="preserve">
-      <value>You can get 15 hours of childcare each week during term time (38 weeks a year). You may be able to spread these hours across the year if your provider offers this.</value>
+      <value>You can get these hours during term time (38 weeks a year). You may be able to take fewer hours over more weeks if your provider offers this.</value>
     </data>
 
     <data name="FifteenHoursForDisadvantagedChildren_Paragraph3" xml:space="preserve">
-      <value>You may still need to pay for things like meals or activities.</value>
+      <value>You may still need to pay for things like meals, activities or additional hours.</value>
     </data>
 
     <data name="FifteenHoursUniversal_Paragraph1" xml:space="preserve">
-      <value>All 3 and 4 year-olds in England can get funded childcare.</value>
+      <value>All 3 and 4-year-olds in England can get 15 hours of funded childcare each week.</value>
     </data>
 
     <data name="FifteenHoursUniversal_Paragraph2" xml:space="preserve">
-      <value>You can get 15 hours of childcare each week during term time (38 weeks a year). You may be able to spread these hours across the year if your provider offers this.</value>
+      <value>You can get these hours during term time (38 weeks a year). You may be able to take fewer hours over more weeks if your provider offers this.</value>
     </data>
 
     <data name="FifteenHoursUniversal_Paragraph3" xml:space="preserve">
-      <value>You may still need to pay for things like meals or activities.</value>
+      <value>You may still need to pay for things like meals, activities or additional hours.</value>
     </data>
 
     <data name="WhenToApply_TaxFreeChildcare_UserParentalLeave" xml:space="preserve">
@@ -258,5 +239,5 @@
     <data name="Ends_ThirtyHours_UserAndPartnerParentalLeave" xml:space="preserve">
       <value>When you and your partner return from parental leave</value>
     </data>
-    
+
 </root>

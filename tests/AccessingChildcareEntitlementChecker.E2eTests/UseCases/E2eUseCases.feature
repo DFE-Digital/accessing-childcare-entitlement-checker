@@ -25,15 +25,15 @@ Scenario: Scenario 01 - Single parent earning below the threshold, household rec
         | On average, do you expect to earn £__PLACEHOLDER__ a week or more before tax? | No                                     |
     When I click on Continue
     Then the page header is "Childcare support you could get"
-    And I can see that "Simon" is now eligible for "Universal Credit childcare"
+    And I can see that "Simon" is now eligible for "Universal Credit and childcare"
     And I can see that "Baby" is eligible for:
         | Scheme                                        | When            |
-        | Universal Credit childcare                    | birth           |
+        | Universal Credit and childcare                | birth           |
         | Early learning for 2-year-olds                | two years old   |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
     And I can see that "Frankie" is eligible for:
         | Scheme                                        | When          |
-        | Universal Credit childcare                    | now           |
+        | Universal Credit and childcare                    | now           |
         | Early learning for 2-year-olds                | now           |
         | 15 hours free childcare for 3 and 4-year-olds | in the future |
 
@@ -101,10 +101,10 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
     And I can see that "Rosa" is eligible for:
         # EXPECTED FROM LUCID: This one has an extra scheme
         #| Scheme                                        | When          |
-        #| Universal Credit childcare                    | now           |
+        #| Universal Credit and childcare                | now           |
         #| 15 hours free childcare for 3 and 4-year-olds | in the future |
         | Scheme                                        | When          |
-        | Universal Credit childcare                    | now           |
+        | Universal Credit and childcare                | now           |
         | Early learning for 2-year-olds                | now           |
         | 15 hours free childcare for 3 and 4-year-olds | in the future |
 
@@ -196,7 +196,7 @@ Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one par
     Then the page header is "Childcare support you could get"
     And I can see that "Winston" is eligible for:
         | Scheme                                        | When            |
-        | Universal Credit childcare                    | now             |
+        | Universal Credit and childcare                | now             |
         | Early learning for 2-year-olds                | two years old   |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
 
@@ -263,7 +263,7 @@ Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a di
     Then the page header is "Childcare support you could get"
     # EXPECTED FROM LUCID: Three additional schemes. I double checked the scenario setup and couldn't see any errors.
         #| Scheme                                        | When            |
-        #| Universal Credit childcare                    | now             |
+        #| Universal Credit and childcare                | now             |
         #| 30 hours for working parents                  | now             |
         #| Early learning for 2-year-olds                | two years old   |
         #| 15 hours free childcare for 3 and 4-year-olds | three years old |
@@ -298,7 +298,7 @@ Scenario: Scenario 09 - One parent not working, one parent receiving ESA
     Then the page header is "Childcare support you could get"
     # EXPECTED FROM LUCID:
         #| Scheme                                        | When          |
-        #| Universal Credit childcare                    | now           |
+        #| Universal Credit and childcare                | now           |
         #| Free Childcare for Working Parents            | now           |
         #| 15 hours free childcare for 3 and 4-year-olds | in the future |
     And I can see that "Isabel" is eligible for:
@@ -308,7 +308,7 @@ Scenario: Scenario 09 - One parent not working, one parent receiving ESA
         | 15 hours free childcare for 3 and 4-year-olds | in the future |
     # EXPECTED FROM LUCID:
         #| Scheme                                        | When            |
-        #| Universal Credit childcare                    | now             |
+        #| Universal Credit and childcare                | now             |
         #| Free Childcare for Working Parents            | nine months old |
         #| 15 hours free childcare for 3 and 4-year-olds | three years old |
     And I can see that "Mary" is eligible for:

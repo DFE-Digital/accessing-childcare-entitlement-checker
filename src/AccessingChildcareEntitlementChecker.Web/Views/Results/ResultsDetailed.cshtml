@@ -79,9 +79,9 @@
                 @if (section.ShowThirtyHourWarning)
                 {
                     <div class="govuk-inset-text">
-                        <p>@Localizer["You can only get up to 30 hours of funded childcare per child each week, even if you use more than one scheme."]</p>
-                        <p>@Localizer["For example, if you get 30 hours through Free Childcare for Working Parents, this will not change when your child is eligible for 15 hours free childcare for 3 and 4-year-olds."]</p>
-                        <p>@Localizer["You will need to pay for any hours over this."]</p>
+                        <p>@Localizer["You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme."]</p>
+                        <p>@Localizer["For example, your child can get 30 hours through Free Childcare for Working Parents."]</p>
+                        <p>@Localizer["This does not increase to 45 hours when they become eligible for 15 hours free childcare for 3 and 4-year-olds."]</p>
                     </div>
                 }
 
@@ -95,6 +95,7 @@
                         @switch (scheme.SchemeCode)
                         {
                             case SchemeCode.UniversalCreditChildcare:
+                            case SchemeCode.TaxFreeChildcare:
                                 <p class="govuk-body">@Localizer[$"{scheme.SchemeCode}_Paragraph1"]</p>
                                 <p class="govuk-body">@Localizer[$"{scheme.SchemeCode}_Paragraph2"]</p>
                                 break;
@@ -160,7 +161,7 @@
                                 </dt>
                                 <dd class="govuk-summary-list__value">
                                     <a class="govuk-link" href="@scheme.Url" target="_blank" rel="noopener noreferrer">
-                                        @Localizer["Find out more or apply for {0} (opens in new tab)", scheme.Name]
+                                        @Localizer["Find out more about {0} and how to apply (opens in new tab)", scheme.Name]
                                     </a>
                                 </dd>
                             </div>

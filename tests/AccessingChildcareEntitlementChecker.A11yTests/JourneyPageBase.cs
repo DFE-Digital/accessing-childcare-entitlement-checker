@@ -540,7 +540,7 @@ public abstract class JourneyPageBase : PageBase
 
         await Page.GetByRole(
                 AriaRole.Link,
-                new() { Name = $"View detailed information about {DefaultChildName}'s childcare support" })
+                new() { Name = $"View {DefaultChildName}'s full childcare support information" })
             .ClickAsync();
 
         await ExpectPathAndQuery($"/Results/ResultsDetailed?childId={childId}");

@@ -21,11 +21,11 @@
     </data>
 
     <data name="TaxFreeChildcare_Description" xml:space="preserve">
-        <value>Up to £2,000 a year towards childcare costs or £4,000 if your child is disabled</value>
+        <value>Up to £2,000 a year towards childcare costs or £4,000 if your child has a disability</value>
     </data>
 
     <data name="UniversalCreditChildcare_Name" xml:space="preserve">
-        <value>Universal Credit childcare</value>
+        <value>Universal Credit and childcare</value>
     </data>
 
     <data name="UniversalCreditChildcare_Description" xml:space="preserve">
