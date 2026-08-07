@@ -27,8 +27,10 @@ locals {
     "RedisConnection"                       = "${azurerm_managed_redis.redis.hostname}:10000,abortConnect=False,ssl=True"
     "AZURE_CLIENT_ID"                       = azurerm_user_assigned_identity.app_identity.client_id
     "GoogleTagManager__ContainerId"         = var.google_tag_manager_container_id
-    }, var.aspnetcore_environment != "Production" ? {
-    "DevelopmentBasicAuthPassword" = var.development_basic_auth_password
+    },
+    { for k, v in var.feature_flags : "FeatureManagement__${k}" => v },
+    var.aspnetcore_environment != "Production" ? {
+      "DevelopmentBasicAuthPassword" = var.development_basic_auth_password
   } : {})
 
   slot_supported_skus = ["P0V3", "P1V3"]

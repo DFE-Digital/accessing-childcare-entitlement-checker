@@ -7,6 +7,11 @@ public class LocationPageAccessibilityTests(ITestOutputHelper output) : JourneyP
     [Fact]
     public async Task LocationPage_HasNoAccessibilityViolations()
     {
+        if (Settings.HmrcIntegrationEnabled)
+        {
+            Assert.Skip("Location page is bypassed when HmrcIntegration is enabled.");
+        }
+
         await StartJourney();
         await ExpectPathAndQuery("/where-do-you-live");
         await EvaluatePage();
@@ -15,6 +20,11 @@ public class LocationPageAccessibilityTests(ITestOutputHelper output) : JourneyP
     [Fact]
     public async Task LocationPage_WithValidationError_HasNoAccessibilityViolations()
     {
+        if (Settings.HmrcIntegrationEnabled)
+        {
+            Assert.Skip("Location page is bypassed when HmrcIntegration is enabled.");
+        }
+
         await StartJourney();
         await ExpectPathAndQuery("/where-do-you-live");
         await Continue();

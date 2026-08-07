@@ -13,6 +13,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
     private TestSettings _settings = null!;
 
     protected IPage Page { get; private set; } = null!;
+    internal TestSettings Settings => _settings;
 
     protected virtual string? PageUrl => null;
 

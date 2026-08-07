@@ -13,11 +13,24 @@ public abstract class JourneyPageBase : PageBase
         await Page.GotoAsync("/");
         await ExpectPathAndQuery("/");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
-        await ExpectPathAndQuery("/where-do-you-live");
+
+        if (Settings.HmrcIntegrationEnabled)
+        {
+            await ExpectPathAndQuery("/children/add-child-details");
+        }
+        else
+        {
+            await ExpectPathAndQuery("/where-do-you-live");
+        }
     }
 
     protected async Task AnswerLocation(string location = "England")
     {
+        if (Settings.HmrcIntegrationEnabled)
+        {
+            return;
+        }
+
         await ExpectPathAndQuery("/where-do-you-live");
         await Page.GetByLabel(location).CheckAsync();
         await Continue();

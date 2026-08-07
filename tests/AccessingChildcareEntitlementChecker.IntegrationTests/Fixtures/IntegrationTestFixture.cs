@@ -2,6 +2,7 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 
@@ -14,10 +15,37 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
         return base.CreateHost(builder);
     }
 
+    public HttpClient CreateClientWithFeatureFlags(Dictionary<string, string?> featureFlags)
+    {
+        return WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddInMemoryCollection(featureFlags);
+            });
+        }).CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+    }
+
     public HttpClient CreateClientWithJourneyState(JourneyState state)
     {
         return WithWebHostBuilder(builder =>
         {
+            builder.ConfigureServices(services =>
+            {
+                services.AddScoped<IJourneySession>(_ => new TestJourneySession(state));
+                services.AddScoped(_ => state);
+            });
+        }).CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+    }
+
+    public HttpClient CreateClientWithJourneyStateAndFeatureFlags(JourneyState state, Dictionary<string, string?> featureFlags)
+    {
+        return WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddInMemoryCollection(featureFlags);
+            });
             builder.ConfigureServices(services =>
             {
                 services.AddScoped<IJourneySession>(_ => new TestJourneySession(state));

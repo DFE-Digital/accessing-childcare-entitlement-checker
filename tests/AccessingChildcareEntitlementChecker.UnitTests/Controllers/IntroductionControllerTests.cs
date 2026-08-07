@@ -3,6 +3,7 @@ using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.FeatureManagement;
 using NSubstitute;
 using System.Diagnostics;
 
@@ -12,6 +13,7 @@ public class IntroductionControllerTests
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private readonly IFeatureManager _featureManager;
     private readonly IntroductionController _controller;
     private const string childId = "child-a";
 
@@ -20,37 +22,38 @@ public class IntroductionControllerTests
         _journeyState = new JourneyState();
         _journeyState.Children[childId] = new Child(childId, "Child A");
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new IntroductionController(_journeyState, _journeySession);
+        _featureManager = Substitute.For<IFeatureManager>();
+        _controller = new IntroductionController(_journeyState, _journeySession, _featureManager);
         _controller.Url = Substitute.For<IUrlHelper>();
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 
     [Fact]
-    public void ChildName_ReturnsView()
+    public async Task ChildName_ReturnsView()
     {
-        var result = Assert.IsType<ViewResult>(_controller.ChildName());
+        var result = Assert.IsType<ViewResult>(await _controller.ChildName());
 
         Assert.Null(result.Model<ChildNameViewModel>().ChildName);
     }
 
     [Fact]
-    public void ChildName_IfChildDoesNotExistReturnsNotFound()
+    public async Task ChildName_IfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildName("DOES-NOT-EXIST"));
+        var result = Assert.IsType<NotFoundResult>(await _controller.ChildName("DOES-NOT-EXIST"));
     }
 
     [Fact]
-    public void ChildName_Get_PopulatesModel_FromState()
+    public async Task ChildName_Get_PopulatesModel_FromState()
     {
         Assert.True(_journeyState.Children.TryGetValue(childId, out var child));
         child.Name = "Example";
-        var result = Assert.IsType<ViewResult>(_controller.ChildName(childId));
+        var result = Assert.IsType<ViewResult>(await _controller.ChildName(childId));
 
         Assert.Equal("Example", result.Model<ChildNameViewModel>().ChildName);
     }
 
     [Fact]
-    public void ChildName_Post_ValidSelection_SavesState_AndRedirects()
+    public async Task ChildName_Post_ValidSelection_SavesState_AndRedirects()
     {
         var model = new ChildNameViewModel
         {
@@ -58,7 +61,7 @@ public class IntroductionControllerTests
             ChildName = "Example"
         };
 
-        var result = _controller.ChildName(model);
+        var result = await _controller.ChildName(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).Set(_journeyState);
@@ -70,7 +73,7 @@ public class IntroductionControllerTests
     }
 
     [Fact]
-    public void ChildName_Post_InvalidSelection_ReturnsViewWithError()
+    public async Task ChildName_Post_InvalidSelection_ReturnsViewWithError()
     {
         var model = new ChildNameViewModel
         {
@@ -80,7 +83,7 @@ public class IntroductionControllerTests
 
         _controller.ModelState.AddModelError(nameof(model.ChildName), "Faked Model Binding Error");
 
-        var result = _controller.ChildName(model);
+        var result = await _controller.ChildName(model);
 
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);

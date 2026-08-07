@@ -18,6 +18,11 @@ on:
         required: false
         type: string
         default: 'chromium'
+      hmrc_integration_enabled:
+        description: 'Whether the hmrc-integration feature flag is enabled'
+        required: false
+        type: string
+        default: 'true'
     secrets:
       DEVELOPMENT_BASIC_AUTH_PASSWORD:
         required: false
@@ -78,6 +83,7 @@ jobs:
         if: inputs.SUT == ''
         env:
           ASPNETCORE_ENVIRONMENT: Development
+          FeatureManagement__hmrc-integration: ${{ inputs.hmrc_integration_enabled }}
         run: |
           dotnet ./web-app/AccessingChildcareEntitlementChecker.Web.dll --urls http://127.0.0.1:5252 > app.log 2>&1 &
           echo $! > app.pid
@@ -111,6 +117,7 @@ jobs:
           PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
           TestSettings__BasicAuthPassword: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
           TestSettings__Browser: ${{ inputs.browser }}
+          TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
           dotnet test ./a11y-tests/AccessingChildcareEntitlementChecker.A11yTests.dll \
             --logger "trx;LogFileName=test-results.trx" \

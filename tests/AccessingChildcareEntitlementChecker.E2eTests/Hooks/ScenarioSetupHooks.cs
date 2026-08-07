@@ -1,6 +1,7 @@
 using Microsoft.Playwright;
 using Reqnroll;
 using Reqnroll.BoDi;
+using Xunit;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.Hooks;
 
@@ -11,6 +12,18 @@ internal class ScenarioSetupHooks(
     FeatureContext featureContext,
     ScenarioContext scenarioContext)
 {
+    [BeforeScenario(Order = 2)]
+    public void CheckLocationPage()
+    {
+        var settings = objectContainer.Resolve<TestSettings>();
+        var isLocationPage = scenarioContext.ScenarioInfo.Tags.Contains("RequiresLocationPage")
+            || featureContext.FeatureInfo.Tags.Contains("RequiresLocationPage");
+        if (settings.HmrcIntegrationEnabled && isLocationPage)
+        {
+            Assert.Skip("Location page is bypassed when HmrcIntegration is enabled.");
+        }
+    }
+
     [BeforeScenario(Order = 1)]
     public async Task BeforeScenario()
     {
