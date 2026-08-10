@@ -1,3 +1,4 @@
+using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using FluentValidation;
 
@@ -12,7 +13,35 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
     {
         RuleSet(CheckChildDetailsRuleSet, () =>
         {
-            // Boilerplate for child details rules
+             RuleForEach(x => x.Children.Values)
+                .ChildRules(child =>
+                {
+                    child.RuleFor(x => x.Name)
+                        .NotEmpty()
+                        .WithState(x => x.ChildId);
+
+                    child.RuleFor(x => x.BirthStatus)
+                        .NotNull()
+                        .WithState(x => x.ChildId);
+                    
+                    child.When(x => x.BirthStatus == BirthStatus.Born, () =>
+                    {
+                        child.RuleFor(x => x.BirthDate)
+                            .NotNull()
+                            .WithState(x => x.ChildId);
+
+                        child.RuleFor(x => x.ChildSupportOptions)
+                            .NotEmpty()
+                            .WithState(x => x.ChildId);
+                    });
+
+                    child.When(x => x.BirthStatus == BirthStatus.Due, () =>
+                    {
+                        child.RuleFor(x => x.DueDate)
+                            .NotNull()
+                            .WithState(x => x.ChildId);
+                    });
+                });
         });
 
         RuleSet(CheckAnswersRuleSet, () =>

@@ -16,6 +16,33 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        
+        @if (Model.RemovedChildNames.Count > 0)
+        {
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        @Localizer["Important"]
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <p class="govuk-notification-banner__heading">
+                        @Localizer["The following children have been removed because some information was missing:"]
+                    </p>
+                    
+                    @foreach (var child in Model.RemovedChildNames)
+                    {
+                        <p class="govuk-notification-banner__heading">
+                            @child
+                        </p>
+                    }
+                    <p class="govuk-body">
+                        @Localizer["You will need to add them again"]
+                    </p>
+                </div>
+            </div>
+        }
+
         @if (TempData["RemovedChildName"] is string removedChildName)
         {
             <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
@@ -41,7 +68,7 @@
 
             @foreach (var item in Model.Children)
             {
-                <partial name="_ChildSummaryCard" model="item" />
+                <partial name="_ChildSummaryCard" model="item"/>
             }
         }
 
@@ -55,7 +82,7 @@
         {
             <div class="govuk-!-margin-top-3">
                 <form asp-controller="Summary" asp-action="CheckChildDetails" method="post">
-                    <input type="hidden" asp-for="CorrelationId" />
+                    <input type="hidden" asp-for="CorrelationId"/>
                     <govuk-button type="submit">@Shared["Button_Continue"]</govuk-button>
                 </form>
             </div>

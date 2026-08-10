@@ -30,7 +30,9 @@ public partial class SummaryController(
     [HttpGet]
     public ViewResult CheckChildDetails(string? childId = null)
     {
-        return View(BuildCheckChildDetailsViewModel(childId));
+        var removedChildNames = CheckForIncompleteChildren();
+        
+        return View(BuildCheckChildDetailsViewModel(childId, removedChildNames));
     }
 
     [HttpPost]
@@ -56,7 +58,9 @@ public partial class SummaryController(
     [HttpGet]
     public async Task<IActionResult> CheckAnswers(string? fromChildId = null)
     {
-        return View(await BuildCheckAnswersViewModel(fromChildId));
+        var removedChildNames = CheckForIncompleteChildren();
+        
+        return View(await BuildCheckAnswersViewModel(fromChildId, removedChildNames));
     }
 
     [HttpPost]
@@ -117,16 +121,49 @@ public partial class SummaryController(
         return this.RedirectToReturnTo(model.ReturnTo);
     }
 
-    private CheckChildDetailsViewModel BuildCheckChildDetailsViewModel(string? childId = null)
+    private List<string> CheckForIncompleteChildren()
+    {
+        var removedChildNames = new List<string>();
+        
+        var result = journeyStateValidator.Validate(journeyState, options => options.IncludeRuleSets(JourneyStateValidator.CheckChildDetailsRuleSet));
+
+        if (!result.IsValid)
+        {
+            var invalidChildIds = result.Errors
+                .Select(error => error.CustomState)
+                .OfType<string>()
+                .Distinct()
+                .ToList();
+
+            var invalidChildren = journeyState.Children
+                .Where(x => invalidChildIds.Contains(x.Key))
+                .ToList();
+
+            removedChildNames = invalidChildren
+                .Select(x => x.Value.Name)
+                .ToList();
+
+            foreach (var child in invalidChildren)
+            {
+                journeyState.Children.Remove(child.Key);
+            }
+
+            journeySession.Set(journeyState);
+        }
+        
+        return removedChildNames;
+    }
+
+    private CheckChildDetailsViewModel BuildCheckChildDetailsViewModel(string? childId = null, IReadOnlyList<string>? removedChildNames = null)
     {
         var summaries = journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckChildDetails)).ToList().AsReadOnly();
         var hasChildren = journeyState.Children.Count > 0;
         var lastEditedChild = ResolveLastEditedChild(journeyState, childId);
         var backLink = GetCheckChildDetailsBackLink(lastEditedChild);
-        return new CheckChildDetailsViewModel(summaries, hasChildren, lastEditedChild, backLink, journeyState.CorrelationId);
+        return new CheckChildDetailsViewModel(summaries, hasChildren, lastEditedChild, backLink, journeyState.CorrelationId, removedChildNames ?? []);
     }
 
-    private async Task<CheckAnswersViewModel> BuildCheckAnswersViewModel(string? fromChildId = null)
+    private async Task<CheckAnswersViewModel> BuildCheckAnswersViewModel(string? fromChildId = null, IReadOnlyList<string>? removedChildNames = null)
     {
         var summaries = journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckAnswers)).ToList().AsReadOnly();
         var hasChildren = journeyState.Children.Count > 0;
@@ -175,7 +212,7 @@ public partial class SummaryController(
         var userDetails = homeBuilder.ViewModels.Concat(userBuilder.ViewModels).ToList().AsReadOnly();
         var partnerDetails = partnerBuilder.ViewModels;
         var backLink = GetCheckAnswersBackLink();
-        return new CheckAnswersViewModel(summaries, hasChildren, lastEditedChild, userDetails, partnerDetails, backLink, journeyState.CorrelationId);
+        return new CheckAnswersViewModel(summaries, hasChildren, lastEditedChild, userDetails, partnerDetails, backLink, journeyState.CorrelationId, removedChildNames ?? []);
     }
 
     [LoggerMessage(
