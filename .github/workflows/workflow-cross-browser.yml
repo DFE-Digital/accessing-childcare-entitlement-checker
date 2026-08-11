@@ -108,6 +108,9 @@ jobs:
 
   e2e-tests:
     name: E2E Tests
+    permissions:
+      contents: read
+      checks: write
     needs: setup-environment
     strategy:
       fail-fast: false
@@ -123,6 +126,9 @@ jobs:
 
   a11y-tests:
     name: A11y Tests
+    permissions:
+      contents: read
+      checks: write
     needs: setup-environment
     strategy:
       fail-fast: false

@@ -79,6 +79,10 @@ jobs:
 
   build-dotnet:
     name: Build Dotnet
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: read
     needs: version
     uses: ./.github/workflows/build-dotnet.yml
     with:
@@ -88,6 +92,10 @@ jobs:
 
   build-infra:
     name: Build Infrastructure
+    permissions:
+      contents: read
+      checks: write
+      actions: read
     needs: version
     uses: ./.github/workflows/build-infra.yml
     with:
@@ -96,6 +104,10 @@ jobs:
 
   deploy-stage:
     name: Deploy Staging
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
     needs: [version, build-dotnet, build-infra]
     uses: ./.github/workflows/deploy-environment.yml
     with:
@@ -108,6 +120,9 @@ jobs:
 
   e2e-tests:
     name: E2E Tests
+    permissions:
+      contents: read
+      checks: write
     needs: [deploy-stage]
     uses: ./.github/workflows/run-e2e-tests.yml
     with:
@@ -118,6 +133,9 @@ jobs:
 
   a11y-tests:
     name: A11y Tests
+    permissions:
+      contents: read
+      checks: write
     needs: [ deploy-stage ]
     uses: ./.github/workflows/run-a11y-tests.yml
     with:
@@ -128,6 +146,10 @@ jobs:
 
   deploy-prod:
     name: Deploy Production
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
     needs: [version, e2e-tests, a11y-tests]
     uses: ./.github/workflows/deploy-environment.yml
     with:
