@@ -9,6 +9,7 @@ using AccessingChildcareEntitlementChecker.RulesEngine.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Mappers;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.FeatureManagement;
 
 // Prevent Redis timeouts under bursty load (e.g. E2E tests, traffic spikes)
 // by explicitly setting a higher minimum for the ThreadPool.
@@ -50,6 +51,8 @@ services
         options.GetCspNonceForRequest = context => context.Items["csp-nonce"]?.ToString();
     })
     .AddHealthChecks();
+
+services.AddFeatureManagement();
 
 services
     .AddControllersWithViews(options =>

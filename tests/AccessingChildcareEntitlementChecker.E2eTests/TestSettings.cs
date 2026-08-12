@@ -8,4 +8,5 @@ internal class TestSettings
     public bool Headless { get; set; } = true;
     public int SlowMo { get; set; } = 0;
     public string UserAgent { get; set; } = "playwright-e2e";
+    public bool HmrcIntegrationEnabled { get; set; } = true;
 }

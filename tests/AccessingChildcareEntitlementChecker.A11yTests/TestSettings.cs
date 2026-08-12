@@ -9,4 +9,5 @@ internal class TestSettings
     public int SlowMo { get; set; } = 0;
     public string UserAgent { get; set; } = "playwright-a11y";
     public string[] Impacts { get; set; } = ["critical", "serious"];
+    public bool HmrcIntegrationEnabled { get; set; } = true;
 }

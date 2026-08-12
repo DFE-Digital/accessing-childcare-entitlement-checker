@@ -8,7 +8,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class SummarySteps(IPage page)
+internal class SummarySteps(IPage page, TestSettings settings)
 {
     [Given("I do not see a summary list for {string}")]
     [Then("I do not see a summary list for {string}")]
@@ -151,6 +151,11 @@ internal class SummarySteps(IPage page)
         {
             var question = row["Question"];
             var answer = row["Answer"];
+
+            if (question == "Where do you live?" && settings.HmrcIntegrationEnabled)
+            {
+                continue;
+            }
 
             ILocator summaryRow;
             if (question.Contains("__PLACEHOLDER__"))

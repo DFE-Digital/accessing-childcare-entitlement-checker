@@ -9,6 +9,7 @@ using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.FeatureManagement;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -17,9 +18,11 @@ public partial class SummaryController(
     JourneyState journeyState,
     IJourneySession journeySession,
     IStringLocalizerFactory stringLocalizerFactory,
-    ILogger<SummaryController> logger)
+    ILogger<SummaryController> logger,
+    IFeatureManager featureManager)
     : Controller
 {
+
     public const string Name = "Summary";
 
     [HttpGet]
@@ -46,14 +49,18 @@ public partial class SummaryController(
     }
 
     [HttpGet]
-    public IActionResult CheckAnswers(string? fromChildId = null)
+    public async Task<IActionResult> CheckAnswers(string? fromChildId = null)
     {
         var summaries = journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckAnswers)).ToList().AsReadOnly();
         var hasChildren = journeyState.Children.Count > 0;
         var lastEditedChild = ResolveLastEditedChild(journeyState, fromChildId);
 
-        var homeBuilder = new SummaryRowFactory(MetadataProvider, "Home", stringLocalizerFactory)
-            .AddLocation(journeyState.CountryOfResidence);
+        var homeBuilder = new SummaryRowFactory(MetadataProvider, "Home", stringLocalizerFactory);
+
+        if (!await featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
+        {
+            homeBuilder.AddLocation(journeyState.CountryOfResidence);
+        }
 
         var userBuilder = new SummaryRowFactory(MetadataProvider, "User", stringLocalizerFactory)
             .AddUserAge(journeyState.UserAge)

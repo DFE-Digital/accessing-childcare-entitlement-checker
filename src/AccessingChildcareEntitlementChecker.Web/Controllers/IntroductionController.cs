@@ -4,6 +4,7 @@ using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.FeatureManagement;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 
@@ -12,19 +13,21 @@ public class IntroductionController : Controller
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
+    private readonly IFeatureManager _featureManager;
 
     public const string Name = "Introduction";
 
-    public IntroductionController(JourneyState journeyState, IJourneySession journeySession)
+    public IntroductionController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager)
     {
         _journeyState = journeyState;
         _journeySession = journeySession;
+        _featureManager = featureManager;
     }
 
     [HttpGet]
-    public IActionResult ChildName(string? childId = null, string? returnTo = null)
+    public async Task<IActionResult> ChildName(string? childId = null, string? returnTo = null)
     {
-        var backLink = GetChildNameBackLink(childId, returnTo);
+        var backLink = await GetChildNameBackLink(childId, returnTo);
         if (childId == null)
         {
             var childNameViewModel = new ChildNameViewModel(null, backLink, returnTo);
@@ -40,11 +43,11 @@ public class IntroductionController : Controller
     }
 
     [HttpPost]
-    public IActionResult ChildName(ChildNameViewModel model)
+    public async Task<IActionResult> ChildName(ChildNameViewModel model)
     {
         if (!ModelState.IsValid)
         {
-            var backLink = GetChildNameBackLink(model.ChildId, model.ReturnTo);
+            var backLink = await GetChildNameBackLink(model.ChildId, model.ReturnTo);
             model.BackLink = backLink;
             return View(model);
         }
@@ -104,14 +107,16 @@ public class IntroductionController : Controller
             new { childId = model.ChildId, returnTo = model.ReturnTo });
     }
 
-    private string GetChildNameBackLink(string? childId, string? returnTo)
+    private async Task<string> GetChildNameBackLink(string? childId, string? returnTo)
     {
         if (ReturnTo.TryGetReturnToUrl(Url, returnTo, childId, out var url))
         {
             return url;
         }
 
-        return Url.ActionOrThrow(nameof(HomeController.Location), HomeController.Name);
+        return await _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration)
+                ? Url.ActionOrThrow(nameof(HomeController.Start), HomeController.Name)
+                : Url.ActionOrThrow(nameof(HomeController.Location), HomeController.Name);
     }
 
     private string GetIsChildBornBackLink(string childId, string? returnTo)
