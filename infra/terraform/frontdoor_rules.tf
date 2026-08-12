@@ -9,22 +9,22 @@ resource "azurerm_cdn_frontdoor_rule" "security_txt_rule" {
   name                      = "securityTxtRedirect"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security_redirects.id
   order                     = 0
-  behavior_on_match         = "Continue"
+  behaviour_on_match        = "Continue"
 
   conditions {
-    url_path_condition {
-      operator     = "BeginsWith"
-      match_values = [".well-known/security.txt", "security.txt"]
-      transforms   = ["Lowercase"]
+    request_path {
+      operator   = "BeginsWith"
+      values     = [".well-known/security.txt", "security.txt"]
+      transforms = ["Lowercase"]
     }
   }
 
   actions {
-    url_redirect_action {
-      redirect_type        = "PermanentRedirect"
-      redirect_protocol    = "Https"
-      destination_hostname = "vdp.security.education.gov.uk"
-      destination_path     = "/security.txt"
+    url_redirect {
+      redirect_type         = "PermanentRedirect"
+      redirect_protocol     = "Https"
+      destination_host_name = "vdp.security.education.gov.uk"
+      destination_path      = "/security.txt"
     }
   }
 }
@@ -35,22 +35,22 @@ resource "azurerm_cdn_frontdoor_rule" "thanks_txt_rule" {
   name                      = "thanksTxtRedirect"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security_redirects.id
   order                     = 1
-  behavior_on_match         = "Continue"
+  behaviour_on_match        = "Continue"
 
   conditions {
-    url_path_condition {
-      operator     = "BeginsWith"
-      match_values = [".well-known/thanks.txt", "thanks.txt"]
-      transforms   = ["Lowercase"]
+    request_path {
+      operator   = "BeginsWith"
+      values     = [".well-known/thanks.txt", "thanks.txt"]
+      transforms = ["Lowercase"]
     }
   }
 
   actions {
-    url_redirect_action {
-      redirect_type        = "PermanentRedirect"
-      redirect_protocol    = "Https"
-      destination_hostname = "vdp.security.education.gov.uk"
-      destination_path     = "/thanks.txt"
+    url_redirect {
+      redirect_type         = "PermanentRedirect"
+      redirect_protocol     = "Https"
+      destination_host_name = "vdp.security.education.gov.uk"
+      destination_path      = "/thanks.txt"
     }
   }
 }
