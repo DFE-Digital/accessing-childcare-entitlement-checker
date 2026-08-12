@@ -16,13 +16,13 @@ This page is generated automatically from the Terraform configuration.
 | Name | Version |
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.11.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.52 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.52 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 5.0 |
 
 ## Modules
 
@@ -99,6 +99,7 @@ No modules.
 | <a name="input_enable_load_testing"></a> [enable\_load\_testing](#input\_enable\_load\_testing) | Enable Azure Load Testing | `bool` | `false` | no |
 | <a name="input_enable_web_test"></a> [enable\_web\_test](#input\_enable\_web\_test) | Enable application insights web test | `bool` | `false` | no |
 | <a name="input_environment_prefix"></a> [environment\_prefix](#input\_environment\_prefix) | Environment prefix (e.g. d01) | `string` | n/a | yes |
+| <a name="input_feature_flags"></a> [feature\_flags](#input\_feature\_flags) | A map of feature flags to enable/disable | `map(string)` | `{}` | no |
 | <a name="input_google_tag_manager_container_id"></a> [google\_tag\_manager\_container\_id](#input\_google\_tag\_manager\_container\_id) | Google Tag Manager container ID | `string` | `""` | no |
 | <a name="input_location"></a> [location](#input\_location) | The Azure region to deploy resources into | `string` | `"uksouth"` | no |
 | <a name="input_location_short_code"></a> [location\_short\_code](#input\_location\_short\_code) | The short code for the Azure region (e.g. uks) | `string` | `"uks"` | no |
