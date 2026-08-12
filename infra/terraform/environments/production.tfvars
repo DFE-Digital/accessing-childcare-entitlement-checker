@@ -26,5 +26,5 @@ application_insights_daily_data_cap_in_gb = 2
 application_insights_sampling_percentage  = 100
 
 feature_flags = {
-  "hmrc-integration" = "true"
+  "HmrcIntegration" = "true"
 }

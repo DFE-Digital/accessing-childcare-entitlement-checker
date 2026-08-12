@@ -19,7 +19,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
             HasPartner = false,
         }, new()
         {
-            { "FeatureManagement:hmrc-integration", "true" }
+            { "FeatureManagement:HmrcIntegration", "true" }
         });
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
