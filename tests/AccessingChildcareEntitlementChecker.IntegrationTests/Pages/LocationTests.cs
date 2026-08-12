@@ -14,7 +14,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     {
         using var client = factory.CreateClientWithFeatureFlags(new()
         {
-            { "FeatureManagement:hmrc-integration", "true" }
+            { "FeatureManagement:HmrcIntegration", "true" }
         });
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
