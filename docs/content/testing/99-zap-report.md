@@ -15,7 +15,33 @@ order: 99
 | High | 0 |
 | Medium | 0 |
 | Low | 0 |
-| Informational | 2 |
+| Informational | 3 |
+
+
+
+
+## Insights
+
+| Level | Reason | Site | Description | Statistic |
+| --- | --- | --- | --- | --- |
+| Low | Warning |  | ZAP errors logged - see the zap.log file for details | 1    |
+| Low | Warning |  | ZAP warnings logged - see the zap.log file for details | 7    |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of responses with status code 2xx | 66 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of responses with status code 3xx | 1 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of responses with status code 4xx | 31 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type application/json | 5 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/png | 5 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/svg+xml | 10 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/x-icon | 5 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/css | 5 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/html | 40 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/javascript | 5 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/plain | 5 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with method GET | 80 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with method POST | 20 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Count of total endpoints | 20    |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of slow responses | 100 % |
+
 
 
 
@@ -28,6 +54,7 @@ order: 99
 | --- | --- | --- |
 | Re-examine Cache-control Directives | Informational | Systemic |
 | User Agent Fuzzer | Informational | Systemic |
+| User Controllable HTML Element Attribute (Potential XSS) | Informational | 1 |
 | Modern Web Application | 				False Positives: | 4 |
 | Private IP Disclosure | 				False Positives: | 1 |
 | Session Management Response Identified | 				False Positives: | 3 |
@@ -132,9 +159,9 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details ()(ChildName,ReturnTo,__RequestVerificationToken)`
-  * Method: `POST`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets`
+  * Method: `GET`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
@@ -156,6 +183,55 @@ Instances: Systemic
 
 #### Source ID: 1
 
+### [ User Controllable HTML Element Attribute (Potential XSS) ](https://www.zaproxy.org/docs/alerts/10031/)
+
+
+
+##### Informational (Low)
+
+### Description
+
+This check looks at user-supplied input in query string parameters and POST data to identify where certain HTML attribute values might be controlled. This provides hot-spot detection for XSS (cross-site scripting) that will require further review by a security analyst to determine exploitability.
+
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies%3FhasSetCookies=True
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies (hasSetCookies)`
+  * Method: `GET`
+  * Parameter: `hasSetCookies`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `User-controlled HTML attribute values were found. Try injecting special characters to see if XSS might be possible. The page at the following URL:
+
+https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies?hasSetCookies=True
+
+appears to include user input in:
+a(n) [input] tag [value] attribute
+
+The user input found was:
+hasSetCookies=True
+
+The user-controlled value was:
+true`
+
+
+Instances: 1
+
+### Solution
+
+Validate all input and sanitize output it before writing to any HTML attributes.
+
+### Reference
+
+
+* [ https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html ](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html)
+
+
+#### CWE Id: [ 20 ](https://cwe.mitre.org/data/definitions/20.html)
+
+
+#### WASC Id: 20
+
+#### Source ID: 3
+
 ### [ Modern Web Application ](https://www.zaproxy.org/docs/alerts/10109/)
 
 
@@ -164,7 +240,7 @@ Instances: Systemic
 
 ### Description
 
-The application appears to be a modern web application. If you need to explore it automatically then the Ajax Spider may well be more effective than the standard one.
+The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.
 
 * URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
