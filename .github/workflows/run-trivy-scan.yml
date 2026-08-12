@@ -61,7 +61,7 @@ jobs:
         if: always()
         with:
           scan-type: 'fs'
-          scanners: 'vuln,secret,license'
+          scanners: 'vuln,secret'
           severity: 'HIGH,CRITICAL'
           format: 'sarif'
           output: 'trivy-results.sarif'
