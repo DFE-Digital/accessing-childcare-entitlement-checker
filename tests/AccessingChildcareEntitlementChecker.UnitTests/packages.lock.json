@@ -717,6 +717,8 @@
           "AccessingChildcareEntitlementChecker.RulesEngine": "[1.0.0, )",
           "Azure.Identity": "[1.21.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.6.0, )",
+          "FluentValidation": "[11.11.0, )",
+          "FluentValidation.DependencyInjectionExtensions": "[11.11.0, )",
           "GovUk.Frontend.AspNetCore": "[4.3.0, )",
           "Microsoft.Azure.StackExchangeRedis": "[3.3.1, )",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[10.0.10, )",
