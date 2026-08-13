@@ -8,7 +8,6 @@ on:
 permissions:
   id-token: write
   contents: write
-  pull-requests: write
   security-events: write
 
 concurrency:
@@ -169,25 +168,15 @@ jobs:
             echo "should_create_pr=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create Pull Request
+      - name: Commit and Push Changes
         if: steps.noise-filter.outputs.should_create_pr == 'true'
-        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
-        with:
-          token: ${{ github.token }}
-          base: ${{ github.ref_name }}
-          branch: zap-findings-updates
-          delete-branch: true
-          title: "security: OWASP ZAP security findings updated"
-          labels: security
-          commit-message: "security: update ZAP findings snapshot"
-          body: |
-            Automated OWASP ZAP scan detected changes in security findings.
-            - **Target:** ${{ env.TARGET_URL }}
-            - **Run ID:** ${{ github.run_id }}
-            Please review the Security tab for details.
-          add-paths: |
-            zap/findings.json
-            docs/content/testing/99-zap-report.md
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -B chore/zap-findings-updates
+          git add zap/findings.json docs/content/testing/99-zap-report.md
+          git commit -m "security: update ZAP findings snapshot"
+          git push -f origin chore/zap-findings-updates
 
       - name: Generate Step Summary
         if: always()
