@@ -37,10 +37,10 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
     }
 
     [Theory]
-    [InlineData(null, BenefitsOption.CarersAllowance, null, "/benefits/childcare-support")]
-    [InlineData(ReturnTo.CheckAnswers, BenefitsOption.CarersAllowance, null, "/benefits/childcare-support")]
-    [InlineData(ReturnTo.CheckAnswers, BenefitsOption.CarersAllowance, ChildcareSupportOption.ChildcareVouchers, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, BenefitsOption benefits, ChildcareSupportOption? childcareSupport, string continueUrl)
+    [InlineData(null, BenefitsOption.CarersAllowance, null)]
+    [InlineData(ReturnTo.CheckAnswers, BenefitsOption.CarersAllowance, null)]
+    [InlineData(ReturnTo.CheckAnswers, BenefitsOption.CarersAllowance, ChildcareSupportOption.ChildcareVouchers)]
+    public async Task Post_Valid_Redirects(string? returnTo, BenefitsOption benefits, ChildcareSupportOption? childcareSupport)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -60,7 +60,7 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
             new KeyValuePair<string, string>("Benefits", benefits.ToString())
         ], TestContext.Current.CancellationToken);
 
-        postResponse.AssertRedirect(continueUrl);
+        postResponse.AssertRedirect("/benefits/childcare-support");
     }
 
     [Theory]

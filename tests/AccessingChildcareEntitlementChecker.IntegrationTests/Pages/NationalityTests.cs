@@ -32,10 +32,10 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work")]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, null, null, "/work-status/work")]
     [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, null, "/nationality/settled-status")]
-    [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, PaidWorkOption.Yes, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, PaidWorkOption.Yes, "/work-status/work")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, null, "/nationality/settled-status")]
-    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, PaidWorkOption.Yes, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, PaidWorkOption.Yes, "/nationality/settled-status")]
     public async Task Post_Valid_Redirects(
         string? returnTo,
         NationalityOption nationality,

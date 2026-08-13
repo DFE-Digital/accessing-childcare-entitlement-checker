@@ -1,4 +1,3 @@
-using AccessingChildcareEntitlementChecker.Web.Extensions;
 using AccessingChildcareEntitlementChecker.Web.Filters;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
@@ -32,34 +31,14 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         journeyState.Apply(model);
         journeySession.Set(journeyState);
 
-        // Logic here a little complex because of the dependencies between questions
-        // We need to walk forwards through the journey to find the next dependent,
-        // unanswered question.
-        // See also - UserController.UserAge
-        var requiresPartnerNationality = journeyState.Nationality != NationalityOption.BritishOrIrishCitizen
-            && journeyState.SettledStatus != SettledStatusOption.Yes;
-        var partnerNationalityMissing = requiresPartnerNationality && journeyState.PartnerNationality == null;
-        var partnerPaidWorkMissing = journeyState.PartnerPaidWork == null;
-        var partnerWeeklyEarningsMissing = journeyState is { PartnerPaidWork: PartnerPaidWorkOption.Yes, PartnerWeeklyEarnings: null };
-        var nextAnswerMissing = partnerNationalityMissing || partnerPaidWorkMissing || partnerWeeklyEarningsMissing;
-
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        // Now walk backwards from weekly earnings.
-        var nextAction = nameof(PartnerWeeklyEarnings);
-        if (partnerPaidWorkMissing)
-        {
-            nextAction = nameof(PartnerPaidWork);
-        }
-        if (partnerNationalityMissing)
+        var nextAction = nameof(PartnerPaidWork);
+        if (journeyState.Nationality != NationalityOption.BritishOrIrishCitizen
+            && journeyState.SettledStatus != SettledStatusOption.Yes)
         {
             nextAction = nameof(PartnerNationality);
         }
 
-        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction);
     }
 
     [HttpGet]
@@ -80,20 +59,15 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
 
         journeyState.Apply(model);
         journeySession.Set(journeyState);
-        var (nextAction, nextAnswerMissing) = journeyState.PartnerNationality switch
+        var nextAction = journeyState.PartnerNationality switch
         {
-            NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => (nameof(PartnerSettledStatus), journeyState.PartnerSettledStatus is null),
-            NationalityOption.BritishOrIrishCitizen => (nameof(PartnerPaidWork), journeyState.PartnerPaidWork is null),
-            NationalityOption.CitizenOfADifferentCountry => (nameof(PartnerPaidWork), journeyState.PartnerPaidWork is null),
+            NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => nameof(PartnerSettledStatus),
+            NationalityOption.BritishOrIrishCitizen => nameof(PartnerPaidWork),
+            NationalityOption.CitizenOfADifferentCountry => nameof(PartnerPaidWork),
             _ => throw new UnreachableException($"Unexpected PartnerNationality: {journeyState.PartnerNationality}"),
         };
 
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction);
     }
 
     [HttpGet]
@@ -114,13 +88,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
 
         journeyState.Apply(model);
         journeySession.Set(journeyState);
-        var nextAnswerMissing = journeyState.PartnerPaidWork is null;
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return RedirectToAction(nameof(PartnerPaidWork), new { returnTo = model.ReturnTo });
+        return RedirectToAction(nameof(PartnerPaidWork));
     }
 
     [HttpGet]
@@ -141,21 +109,16 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
 
         journeyState.Apply(model);
         journeySession.Set(journeyState);
-        var (nextAction, nextAnswerMissing) = journeyState.PartnerPaidWork switch
+        var nextAction = journeyState.PartnerPaidWork switch
         {
-            PartnerPaidWorkOption.Yes => (nameof(PartnerWorkStatus), journeyState.PartnerWorkStatus.Count == 0),
-            PartnerPaidWorkOption.ParentalLeave => (nameof(PartnerParentalLeave), journeyState.PartnerParentalLeaveChildrenIds.Count == 0),
-            PartnerPaidWorkOption.SickLeave => (nameof(PartnerWorkStatus), journeyState.PartnerWorkStatus.Count == 0),
-            PartnerPaidWorkOption.No => (nameof(PartnerBenefits), journeyState.PartnerBenefits.Count == 0),
+            PartnerPaidWorkOption.Yes => nameof(PartnerWorkStatus),
+            PartnerPaidWorkOption.ParentalLeave => nameof(PartnerParentalLeave),
+            PartnerPaidWorkOption.SickLeave => nameof(PartnerWorkStatus),
+            PartnerPaidWorkOption.No => nameof(PartnerBenefits),
             _ => throw new UnreachableException($"Unexpected PartnerPaidWork: {journeyState.PartnerPaidWork}"),
         };
 
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction);
     }
 
     [HttpGet]
@@ -177,15 +140,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
 
         journeyState.Apply(model);
         journeySession.Set(journeyState);
-        var nextAction = nameof(PartnerWorkStatus);
-        var nextAnswerMissing = journeyState.PartnerWorkStatus.Count == 0;
-
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nameof(PartnerWorkStatus));
     }
 
     [HttpGet]
@@ -207,24 +162,16 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         journeyState.Apply(model);
         journeySession.Set(journeyState);
         var nextAction = nameof(PartnerWeeklyEarnings);
-        var nextAnswerMissing = journeyState.PartnerWeeklyEarnings is null;
         if (journeyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
         {
             nextAction = nameof(PartnerSelfEmployedDuration);
-            nextAnswerMissing = journeyState.PartnerSelfEmployedDuration is null;
         }
         else if (journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
         {
             nextAction = nameof(PartnerYearlyEarnings);
-            nextAnswerMissing = journeyState.PartnerYearlyEarnings is null;
         }
 
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction);
     }
 
     [HttpGet]
@@ -245,13 +192,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
 
         journeyState.Apply(model);
         journeySession.Set(journeyState);
-        var nextAnswerMissing = journeyState.PartnerChildcareSupport.Count == 0;
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return RedirectToAction(nameof(PartnerChildcareSupport), new { returnTo = model.ReturnTo });
+        return RedirectToAction(nameof(PartnerChildcareSupport));
     }
 
     [HttpGet]
@@ -275,26 +216,17 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
 
         // Complex logic for sick leave falls through
         var nextAction = nameof(PartnerWeeklyEarnings);
-        var nextAnswerMissing = journeyState.PartnerWeeklyEarnings is null;
-
         if (journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
         {
             nextAction = nameof(PartnerYearlyEarnings);
-            nextAnswerMissing = journeyState.PartnerYearlyEarnings is null;
         }
 
         if (journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
         {
             nextAction = nameof(PartnerBenefits);
-            nextAnswerMissing = journeyState.PartnerBenefits.Count == 0;
         }
 
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction);
     }
 
     [HttpGet]
@@ -319,19 +251,14 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
 
         journeyState.Apply(model);
         journeySession.Set(journeyState);
-        var (nextAction, nextAnswerMissing) = journeyState.PartnerWeeklyEarnings switch
+        var nextAction = journeyState.PartnerWeeklyEarnings switch
         {
-            WeeklyEarningsOption.AboveThreshold => (nameof(PartnerYearlyEarnings), journeyState.PartnerYearlyEarnings is null),
-            WeeklyEarningsOption.BelowThreshold => (nameof(PartnerBenefits), journeyState.PartnerBenefits.Count == 0),
+            WeeklyEarningsOption.AboveThreshold => nameof(PartnerYearlyEarnings),
+            WeeklyEarningsOption.BelowThreshold => nameof(PartnerBenefits),
             _ => throw new UnreachableException($"Unexpected PartnerWeeklyEarnings: {journeyState.PartnerWeeklyEarnings}"),
         };
 
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return RedirectToAction(nextAction, new { returnTo = model.ReturnTo });
+        return RedirectToAction(nextAction);
     }
 
     [HttpGet]
@@ -352,13 +279,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
 
         journeyState.Apply(model);
         journeySession.Set(journeyState);
-        var nextAnswerMissing = journeyState.PartnerBenefits.Count == 0;
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
-
-        return RedirectToAction(nameof(PartnerBenefits), new { returnTo = model.ReturnTo });
+        return RedirectToAction(nameof(PartnerBenefits));
     }
 
     [HttpGet]
@@ -381,12 +302,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         journeySession.Set(journeyState);
         if (journeyState.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
         {
-            if (model.ReturnTo is not null && journeyState.PartnerChildcareVoucherReceipt is not null)
-            {
-                return this.RedirectToReturnTo(model.ReturnTo);
-            }
-
-            return RedirectToAction(nameof(PartnerChildcareVoucherReceipt), new { returnTo = model.ReturnTo });
+            return RedirectToAction(nameof(PartnerChildcareVoucherReceipt));
         }
 
         return RedirectToAction(nameof(SummaryController.CheckAnswers), SummaryController.Name);

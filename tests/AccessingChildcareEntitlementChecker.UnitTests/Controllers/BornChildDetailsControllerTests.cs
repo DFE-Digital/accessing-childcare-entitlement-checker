@@ -53,13 +53,16 @@ public class BornChildDetailsControllerTests
         Assert.Equal("Child A", result.Model<ChildBirthDateViewModel>().ChildName);
     }
 
-    [Fact]
-    public void ChildBirthDate_Post_ValidSelection_SavesState_AndRedirects()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void ChildBirthDate_Post_ValidSelection_SavesState_AndRedirects(bool hasReturnTo)
     {
         var model = new ChildBirthDateViewModel
         {
             ChildId = childId,
             ChildBirthDate = new DateOnly(2020, 1, 15),
+            ReturnTo = hasReturnTo ? ReturnTo.CheckChildDetails : null
         };
 
         var result = _controller.ChildBirthDate(model);
@@ -73,7 +76,7 @@ public class BornChildDetailsControllerTests
     }
 
     [Fact]
-    public void ChildBirthDate_Post_ValidSelection_SavesState_AndReturnsTo()
+    public void ChildBirthDate_Post_ValidSelection_SavesState_AndRedirects_With_ReturnTo()
     {
         _journeyState.Children[childId].ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment];
 
@@ -91,8 +94,9 @@ public class BornChildDetailsControllerTests
         Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
         Assert.Equal(new DateOnly(2020, 1, 15), child.BirthDate);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
-        Assert.Equal("Summary", redirect.ControllerName);
+
+        // We should navigate to child support regardless of returnTo
+        Assert.Equal(nameof(BornChildDetailsController.ChildSupport), redirect.ActionName);
     }
 
     [Fact]
@@ -154,7 +158,7 @@ public class BornChildDetailsControllerTests
 
     [Theory]
     [InlineData(ReturnTo.CheckChildDetails, nameof(SummaryController.CheckChildDetails))]
-    [InlineData(ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(ReturnTo.CheckAnswers, nameof(SummaryController.CheckChildDetails))]
     public void ChildSupport_Post_ValidSelection_SavesState_AndRedirects(string returnTo, string actionName)
     {
         var model = new ChildSupportViewModel

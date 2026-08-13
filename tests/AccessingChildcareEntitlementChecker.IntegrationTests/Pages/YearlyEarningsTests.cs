@@ -32,9 +32,9 @@ public class YearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(null, YearlyEarningsOption.AboveThreshold, null, null, "/benefits/benefits")]
     [InlineData(null, YearlyEarningsOption.BelowThreshold, null, null, "/benefits/universal-credit")]
     [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.AboveThreshold, null, null, "/benefits/benefits")]
-    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.AboveThreshold, BenefitsOption.CarersAllowance, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.AboveThreshold, BenefitsOption.CarersAllowance, null, "/benefits/benefits")]
     [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, null, null, "/benefits/universal-credit")]
-    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, null, UniversalCreditOption.Receives, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, null, UniversalCreditOption.Receives, "/benefits/universal-credit")]
     public async Task Post_Valid_Redirects(string? returnTo, YearlyEarningsOption yearlyEarnings, BenefitsOption? benefits, UniversalCreditOption? universalCredit, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState

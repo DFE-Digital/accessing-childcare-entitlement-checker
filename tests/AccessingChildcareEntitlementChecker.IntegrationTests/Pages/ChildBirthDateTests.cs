@@ -39,12 +39,12 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Theory]
-    [InlineData(null, null, $"/children/{ChildId}/child-benefits")]
-    [InlineData(ReturnTo.CheckAnswers, null, $"/children/{ChildId}/child-benefits")]
-    [InlineData(ReturnTo.CheckChildDetails, null, $"/children/{ChildId}/child-benefits")]
-    [InlineData(ReturnTo.CheckAnswers, ChildSupport.NoneOfTheseApply, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckChildDetails, ChildSupport.NoneOfTheseApply, "/children/check-childs-details")]
-    public async Task Post_Valid_Redirects(string? returnTo, ChildSupport? childSupport, string continueUrl)
+    [InlineData(null, null)]
+    [InlineData(ReturnTo.CheckAnswers, null)]
+    [InlineData(ReturnTo.CheckChildDetails, null)]
+    [InlineData(ReturnTo.CheckAnswers, ChildSupport.NoneOfTheseApply)]
+    [InlineData(ReturnTo.CheckChildDetails, ChildSupport.NoneOfTheseApply)]
+    public async Task Post_Valid_Redirects(string? returnTo, ChildSupport? childSupport)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -76,7 +76,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
                 new KeyValuePair<string, string>("ChildBirthDate.Year", yesterday.Year.ToString())
             ],
             TestContext.Current.CancellationToken);
-        postResponse.AssertRedirect(continueUrl);
+        postResponse.AssertRedirect($"/children/{ChildId}/child-benefits");
     }
 
     [Theory]

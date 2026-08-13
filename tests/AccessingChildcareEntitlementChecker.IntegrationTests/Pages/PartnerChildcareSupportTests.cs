@@ -33,9 +33,13 @@ public class PartnerChildcareSupportTests(IntegrationTestFixture factory) : ICla
     [InlineData(null, PartnerChildcareSupportOption.ChildcareVouchers, null, "/benefits/childcare-vouchers-partner")]
     [InlineData(null, PartnerChildcareSupportOption.ChildcareBursaryOrGrant, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckAnswers, PartnerChildcareSupportOption.ChildcareVouchers, null, "/benefits/childcare-vouchers-partner")]
-    [InlineData(ReturnTo.CheckAnswers, PartnerChildcareSupportOption.ChildcareVouchers, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerChildcareSupportOption.ChildcareVouchers, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, "/benefits/childcare-vouchers-partner")]
     [InlineData(ReturnTo.CheckAnswers, PartnerChildcareSupportOption.ChildcareBursaryOrGrant, null, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, PartnerChildcareSupportOption partnerChildcareSupport, ChildcareVoucherReceiptOption? partnerChildcareVoucherReceipt, string continueUrl)
+    public async Task Post_Valid_Redirects(
+        string? returnTo,
+        PartnerChildcareSupportOption partnerChildcareSupport,
+        ChildcareVoucherReceiptOption? partnerChildcareVoucherReceipt,
+        string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {

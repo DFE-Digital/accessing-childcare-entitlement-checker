@@ -77,7 +77,7 @@ public class HomeControllerTests
     }
 
     [Fact]
-    public void Location_Post_ValidSelection_WithExistingChildren_RedirectsToCheckChildDetails()
+    public void Location_Post_ValidSelection_WithExistingChildren_Redirects()
     {
         _journeyState.Children["child1"] = new Child("child1", "Child 1");
         var model = new LocationViewModel
@@ -91,8 +91,10 @@ public class HomeControllerTests
         _journeySession.Received(1).Set(_journeyState);
         Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
         Assert.True(_controller.ModelState.IsValid);
-        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
-        Assert.Equal(SummaryController.Name, redirect.ControllerName);
+
+        // We should navigate to the child name page regardless of whether the
+        // user already has children
+        Assert.Equal(nameof(IntroductionController.ChildName), redirect.ActionName);
     }
 
     [Fact]

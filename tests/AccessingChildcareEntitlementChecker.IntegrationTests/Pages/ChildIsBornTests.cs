@@ -42,13 +42,12 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [Theory]
     [InlineData(null, false, false, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
     [InlineData(null, false, false, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
-    [InlineData(ReturnTo.CheckAnswers, true, false, BirthStatus.Born, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, true, false, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
     [InlineData(ReturnTo.CheckAnswers, false, true, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
-    [InlineData(ReturnTo.CheckAnswers, false, true, BirthStatus.Due, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, true, false, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
-    [InlineData(ReturnTo.CheckChildDetails, true, false, BirthStatus.Born, "/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, false, true, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
+    [InlineData(ReturnTo.CheckChildDetails, true, false, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
     [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
-    [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Due, "/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
     [InlineData(ReturnTo.CheckChildDetails, true, false, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
     public async Task Post_Valid_Redirects(
         string? returnTo,

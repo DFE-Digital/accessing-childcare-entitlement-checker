@@ -39,14 +39,13 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
     }
 
     [Theory]
-    [InlineData(null, null, "/work-status/work-status-partner")]
-    [InlineData(null, WorkStatusOption.SelfEmployed, "/work-status/work-status-partner")]
-    [InlineData(ReturnTo.CheckAnswers, null, "/work-status/work-status-partner")]
-    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.SelfEmployed, "/check-your-answers")]
+    [InlineData(null, null)]
+    [InlineData(null, WorkStatusOption.SelfEmployed)]
+    [InlineData(ReturnTo.CheckAnswers, null)]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.SelfEmployed)]
     public async Task Post_Valid_Redirects(
         string? returnTo,
-        WorkStatusOption? workStatus,
-        string continueUrl)
+        WorkStatusOption? workStatus)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -73,7 +72,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
             new KeyValuePair<string, string>("PartnerParentalLeaveChildrenIds", ChildId),
         ], TestContext.Current.CancellationToken);
 
-        postResponse.AssertRedirect(continueUrl);
+        postResponse.AssertRedirect("/work-status/work-status-partner");
     }
 
     [Theory]

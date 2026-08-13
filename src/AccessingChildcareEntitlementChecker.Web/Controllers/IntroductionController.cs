@@ -57,7 +57,7 @@ public class IntroductionController : Controller
 
         return this.RedirectTo<IntroductionController>(
             nameof(IsChildBorn),
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
+            new { childId = model.ChildId });
     }
 
     [HttpGet]
@@ -89,22 +89,17 @@ public class IntroductionController : Controller
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
 
-        var (nextAction, nextController, nextAnswerMissing) = child.BirthStatus switch
+        var (nextAction, nextController) = child.BirthStatus switch
         {
-            BirthStatus.Born => (nameof(BornChildDetailsController.ChildBirthDate), BornChildDetailsController.Name, child.BirthDate is null),
-            BirthStatus.Due => (nameof(ExpectedChildDetailsController.ChildDueDate), ExpectedChildDetailsController.Name, child.DueDate is null),
+            BirthStatus.Born => (nameof(BornChildDetailsController.ChildBirthDate), BornChildDetailsController.Name),
+            BirthStatus.Due => (nameof(ExpectedChildDetailsController.ChildDueDate), ExpectedChildDetailsController.Name),
             _ => throw new UnreachableException($"Unexpected birth status: {child.BirthStatus}")
         };
-
-        if (model.ReturnTo is not null && !nextAnswerMissing)
-        {
-            return this.RedirectToReturnTo(model.ReturnTo);
-        }
 
         return this.RedirectToAction(
             nextAction,
             nextController,
-            new { childId = model.ChildId, returnTo = model.ReturnTo });
+            new { childId = model.ChildId });
     }
 
     private async Task<string> GetChildNameBackLink(string? childId, string? returnTo)

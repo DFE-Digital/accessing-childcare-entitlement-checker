@@ -203,7 +203,7 @@ public class UserControllerTests
     [InlineData(SettledStatusOption.Yes, null, nameof(UserController.PaidWork))]
     [InlineData(SettledStatusOption.No, null, nameof(UserController.PaidWork))]
     [InlineData(SettledStatusOption.StillWaiting, null, nameof(UserController.PaidWork))]
-    [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, nameof(UserController.PaidWork))]
     public void SettledStatus_Post_SavesState_AndRedirects(SettledStatusOption option, string? returnTo, string actionName)
     {
         _journeyState.PaidWork = PaidWorkOption.Yes;
@@ -261,7 +261,7 @@ public class UserControllerTests
     [InlineData(PaidWorkOption.No, null, nameof(UserController.UniversalCredit))]
     [InlineData(PaidWorkOption.ParentalLeave, null, nameof(UserController.ParentalLeave))]
     [InlineData(PaidWorkOption.Yes, null, nameof(UserController.WorkStatus))]
-    [InlineData(PaidWorkOption.Yes, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(PaidWorkOption.Yes, ReturnTo.CheckAnswers, nameof(UserController.WorkStatus))]
     public void PaidWork_Post_SavesState_AndRedirects(PaidWorkOption option, string? returnTo, string actionName)
     {
         _journeyState.WorkStatus = [WorkStatusOption.SelfEmployed];
@@ -330,7 +330,7 @@ public class UserControllerTests
     [InlineData(WorkStatusOption.PaidEmployment, null, nameof(UserController.WeeklyEarnings))]
     [InlineData(WorkStatusOption.SelfEmployed, null, nameof(UserController.SelfEmployedDuration))]
     [InlineData(WorkStatusOption.Apprentice, null, nameof(UserController.WeeklyEarnings))]
-    [InlineData(WorkStatusOption.Apprentice, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(WorkStatusOption.Apprentice, ReturnTo.CheckAnswers, nameof(UserController.WeeklyEarnings))]
     public void WorkStatus_Post_SavesState_AndRedirects(WorkStatusOption option, string? returnTo, string actionName)
     {
         _journeyState.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
@@ -377,7 +377,7 @@ public class UserControllerTests
     [Theory]
     [InlineData(SelfEmployedDurationOption.NotLessThan12Months, null, nameof(UserController.WeeklyEarnings))]
     [InlineData(SelfEmployedDurationOption.LessThan12Months, null, nameof(UserController.UniversalCredit))]
-    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, ReturnTo.CheckAnswers, nameof(UserController.WeeklyEarnings))]
     public void SelfEmployedDuration_Post_SavesState_AndRedirects(SelfEmployedDurationOption option, string? returnTo, string actionName)
     {
         _journeyState.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
@@ -424,7 +424,7 @@ public class UserControllerTests
     [Theory]
     [InlineData(YearlyEarningsOption.AboveThreshold, null, nameof(UserController.Benefits))]
     [InlineData(YearlyEarningsOption.BelowThreshold, null, nameof(UserController.UniversalCredit))]
-    [InlineData(YearlyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(YearlyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(UserController.Benefits))]
     public void YearlyEarnings_Post_SavesState_AndRedirects(YearlyEarningsOption option, string? returnTo, string actionName)
     {
         _journeyState.Benefits = [BenefitsOption.None];
@@ -481,7 +481,7 @@ public class UserControllerTests
     [Theory]
     [InlineData(WeeklyEarningsOption.AboveThreshold, null, nameof(UserController.YearlyEarnings))]
     [InlineData(WeeklyEarningsOption.BelowThreshold, null, nameof(UserController.UniversalCredit))]
-    [InlineData(WeeklyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(WeeklyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(UserController.YearlyEarnings))]
     public void WeeklyEarnings_Post_SavesState_AndRedirects(WeeklyEarningsOption option, string? returnTo, string actionName)
     {
         _journeyState.YearlyEarnings = YearlyEarningsOption.BelowThreshold;
@@ -545,7 +545,7 @@ public class UserControllerTests
     [Theory]
     [InlineData(UniversalCreditOption.Receives, null, nameof(UserController.Benefits))]
     [InlineData(UniversalCreditOption.DoesNotReceive, null, nameof(UserController.Benefits))]
-    [InlineData(UniversalCreditOption.Receives, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(UniversalCreditOption.Receives, ReturnTo.CheckAnswers, nameof(UserController.Benefits))]
     public void UniversalCredit_Post_SavesState_AndRedirects(UniversalCreditOption option, string? returnTo, string actionName)
     {
         _journeyState.Benefits = [BenefitsOption.None];
@@ -600,7 +600,7 @@ public class UserControllerTests
     [InlineData(BenefitsOption.LimitedCapabilityForWorkRelatedActivity, null, nameof(UserController.ChildcareSupport))]
     [InlineData(BenefitsOption.SevereDisablementAllowance, null, nameof(UserController.ChildcareSupport))]
     [InlineData(BenefitsOption.None, null, nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.None, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(BenefitsOption.None, ReturnTo.CheckAnswers, nameof(UserController.ChildcareSupport))]
     public void Benefits_Post_SavesState_AndRedirects(BenefitsOption option, string? returnTo, string actionName)
     {
         _journeyState.ChildcareSupport = [ChildcareSupportOption.None];
@@ -649,7 +649,7 @@ public class UserControllerTests
     [InlineData(ChildcareSupportOption.ChildcareVouchers, null, nameof(UserController.ChildcareVoucherReceipt))]
     [InlineData(ChildcareSupportOption.ChildcareBursaryOrGrant, null, nameof(UserController.HasPartner))]
     [InlineData(ChildcareSupportOption.None, null, nameof(UserController.HasPartner))]
-    [InlineData(ChildcareSupportOption.ChildcareVouchers, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(ChildcareSupportOption.ChildcareVouchers, ReturnTo.CheckAnswers, nameof(UserController.ChildcareVoucherReceipt))]
     public void ChildcareSupport_Post_SavesState_AndRedirects(ChildcareSupportOption option, string? returnTo, string actionName)
     {
         _journeyState.ChildcareVoucherReceipt = ChildcareVoucherReceiptOption.WorkplaceNurseryScheme;
@@ -698,7 +698,7 @@ public class UserControllerTests
     [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, null, nameof(UserController.HasPartner))]
     [InlineData(ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, null, nameof(UserController.HasPartner))]
     [InlineData(ChildcareVoucherReceiptOption.ThroughSalarySacrifice, null, nameof(UserController.HasPartner))]
-    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, ReturnTo.CheckAnswers, nameof(UserController.HasPartner))]
     public void ChildcareVoucherReceipt_Post_SavesState_AndRedirects(ChildcareVoucherReceiptOption option, string? returnTo, string actionName)
     {
         _journeyState.HasPartner = false;
