@@ -63,3 +63,6 @@ terraform.tfstate*
 **/wwwroot/govuk-frontend.min.css
 **/wwwroot/govuk-frontend.min.js
 
+# Notebook generated files
+notebook/
+

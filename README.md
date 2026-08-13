@@ -15,20 +15,20 @@ A digital service developed by the Department for Education (DfE) to help parent
 
 ## Technical documentation website
 
-Our comprehensive, [technical documentation](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/) is automatically published and hosted on GitHub Pages.
+The comprehensive [technical documentation](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/) is automatically published and hosted on GitHub Pages.
 
 The documentation site covers:
-- 🛠️ [Getting Started Guide](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/developers/01-getting-started/) — Detailed development setup, building, and running.
-- 🤝 [Ways of Working](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/developers/02-ways-of-working/) — Development standards, branching strategy, and automated release pipeline.
-- 📐 [Architecture](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/architecture/) — High-level system design, network topologies, and threat modelling (STRIDE).
-- 📝 [Decisions](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/decisions/) — Architectural Decision Records capturing framework choices, designs, and refactoring paths.
-- 🧪 [Testing Strategy](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/testing/) — Standard test plans, Playwright integration, and unit testing conventions.
-- 📖 [Operational Guides & Runbooks](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/runbooks/) — Response matrices, recovery guidelines, secrets rotation, and deployment procedures.
+- 🛠️ [Getting Started Guide](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/tutorials/getting-started/) — Detailed development setup, building, and running.
+- 🤝 [Ways of Working](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/explanation/ways-of-working/) — Development standards, branching strategy, and automated release pipeline.
+- 📐 [Architecture](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/reference/architecture/) — High-level system design, network topologies, and threat modelling (STRIDE).
+- 📝 [Decisions](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/reference/decisions/) — Architectural Decision Records capturing framework choices, designs, and refactoring paths.
+- 🧪 [Testing Strategy](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/explanation/test-strategy/) — Standard test plans, Playwright integration, and unit testing conventions.
+- 📖 [Runbooks](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/how-to/runbooks/) — Response matrices, recovery guidelines, secrets rotation, and deployment procedures.
 
 ## Contributing
 
-Contributions of all kinds are welcome! Please refer to [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed instructions on branches, pull request guidelines, and code of conduct.
+Contributions of all kinds are welcome. Refer to the [contributing guide](./CONTRIBUTING.md) for instructions on branches, pull requests, and the code of conduct.
 
-## License
+## Licence
 
-This project is licensed under the [MIT License](./LICENCE).
+This project holds an [MIT Licence](./LICENCE).
