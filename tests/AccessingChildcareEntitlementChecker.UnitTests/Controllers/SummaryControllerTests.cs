@@ -15,6 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Microsoft.FeatureManagement;
 using AccessingChildcareEntitlementChecker.Web;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
+
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
@@ -52,7 +55,14 @@ public class SummaryControllerTests
             .BuildServiceProvider()
             .GetRequiredService<IModelMetadataProvider>();
 
-        _controller = new SummaryController(_journeyState, _journeySession, stringLocalizerFactory, new JourneyStateValidator(), _logger);
+        _controller = new SummaryController(
+            _journeyState,
+            _journeySession,
+            stringLocalizerFactory,
+            new JourneyStateValidator(),
+            _logger,
+            _featureManager);
+
         _controller.ControllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
@@ -198,23 +208,33 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckAnswers_ReturnsView_WithFromChild()
+    public async Task CheckAnswers_ReturnsView_WithFromChild()
     {
         _journeyState.HasPartner = false;
-        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers(fromChildId: "child-a"));
+
+        var result = Assert.IsType<ViewResult>(
+            await _controller.CheckAnswers(fromChildId: "child-a"));
+
         var model = Assert.IsType<CheckAnswersViewModel>(result.Model);
         Assert.Equal("child-a", model.LastEditedChild!.ChildId);
         Assert.Equal(_journeyState.CorrelationId, model.CorrelationId);
     }
 
     [Fact]
-    public void CheckAnswers_ReturnsView_WithPartner()
+    public async Task CheckAnswers_ReturnsView_WithPartner()
     {
         _journeyState.HasPartner = true;
         _journeyState.PartnerAge = AgeRange.TwentyOneOrOver;
-        var result = Assert.IsType<ViewResult>(_controller.CheckAnswers());
-        var checkAnswersViewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
-        Assert.Equal(_journeyState.CorrelationId, checkAnswersViewModel.CorrelationId);
+
+        var result = Assert.IsType<ViewResult>(
+            await _controller.CheckAnswers());
+
+        var checkAnswersViewModel =
+            Assert.IsType<CheckAnswersViewModel>(result.Model);
+
+        Assert.Equal(
+            _journeyState.CorrelationId,
+            checkAnswersViewModel.CorrelationId);
 
         var partnerDetail = checkAnswersViewModel.PartnerDetails[0];
         Assert.Equal("Title", partnerDetail.Key);
@@ -282,7 +302,8 @@ public class SummaryControllerTests
             _journeySession,
             AcecSubstitute.ForLocalizerFactory(),
             validator,
-            _logger);
+            _logger,
+            _featureManager);
 
         controller.ControllerContext = _controller.ControllerContext;
         controller.MetadataProvider = _controller.MetadataProvider;
@@ -304,7 +325,13 @@ public class SummaryControllerTests
         mockValidator.Validate(Arg.Any<ValidationContext<JourneyState>>()).Returns(validationResult);
 
         var localizerFactory = AcecSubstitute.ForLocalizerFactory();
-        var controller = new SummaryController(_journeyState, _journeySession, localizerFactory, mockValidator, _logger);
+        var controller = new SummaryController(
+            _journeyState,
+            _journeySession,
+            AcecSubstitute.ForLocalizerFactory(),
+            mockValidator,
+            _logger,
+            _featureManager);
         controller.ControllerContext = _controller.ControllerContext;
         controller.MetadataProvider = _controller.MetadataProvider;
         controller.Url = _controller.Url;
@@ -341,14 +368,13 @@ public class SummaryControllerTests
             .Validate(Arg.Any<ValidationContext<JourneyState>>())
             .Returns(validationResult);
 
-        var localizerFactory = AcecSubstitute.ForLocalizerFactory();
-
         var controller = new SummaryController(
             _journeyState,
             _journeySession,
-            localizerFactory,
+            AcecSubstitute.ForLocalizerFactory(),
             mockValidator,
-            _logger);
+            _logger,
+            _featureManager);
 
         controller.ControllerContext = _controller.ControllerContext;
         controller.MetadataProvider = _controller.MetadataProvider;

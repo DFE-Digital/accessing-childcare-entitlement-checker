@@ -67,7 +67,7 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                 .NotNull();
 
             When(x =>
-                    x.PaidWork == PaidWorkOption.Yes || x.PaidWork == PaidWorkOption.SickLeave,
+                    x.PaidWork == PaidWorkOption.Yes,
                 () =>
                 {
                     RuleFor(x => x.WorkStatus)
@@ -86,20 +86,54 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                     });
 
                     When(x =>
-                        x.WorkStatus.Contains(WorkStatusOption.PaidEmployment) || x.WorkStatus.Contains(WorkStatusOption.Apprentice),
-                            () =>
+                            !x.WorkStatus.Contains(WorkStatusOption.SelfEmployed) &&
+                            (x.WorkStatus.Contains(WorkStatusOption.PaidEmployment) ||
+                             x.WorkStatus.Contains(WorkStatusOption.Apprentice)),
+                        () =>
+                        {
+                            RuleFor(x => x.WeeklyEarnings)
+                                .NotNull();
+
+                            When(x => x.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold, () =>
+                            {
+                                RuleFor(x => x.YearlyEarnings)
+                                    .NotNull();
+                            });
+                        });
+
+                });
+
+            When(x =>
+                    x.PaidWork == PaidWorkOption.SickLeave,
+                () =>
+                {
+                    RuleFor(x => x.WorkStatus)
+                        .NotEmpty();
+
+                    When(x => x.WorkStatus.Contains(WorkStatusOption.SelfEmployed), () =>
                     {
-                        RuleFor(x => x.WeeklyEarnings)
+                        RuleFor(x => x.SelfEmployedDuration)
                             .NotNull();
 
-                        When(x => x.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold, () =>
+                        When(x => x.SelfEmployedDuration == SelfEmployedDurationOption.NotLessThan12Months, () =>
                         {
                             RuleFor(x => x.YearlyEarnings)
                                 .NotNull();
                         });
                     });
 
+                    When(x =>
+                            !x.WorkStatus.Contains(WorkStatusOption.SelfEmployed) && 
+                            (x.WorkStatus.Contains(WorkStatusOption.PaidEmployment) || 
+                             x.WorkStatus.Contains(WorkStatusOption.Apprentice)),
+                        () =>
+                        {
+                            RuleFor(x => x.YearlyEarnings)
+                                .NotNull();
+                        });
+
                 });
+            
 
             RuleFor(x => x.UniversalCredit)
                 .NotNull();
@@ -132,7 +166,7 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                         .NotNull();
 
                     When(x =>
-                            x.PartnerPaidWork == PartnerPaidWorkOption.Yes || x.PartnerPaidWork == PartnerPaidWorkOption.SickLeave,
+                            x.PartnerPaidWork == PartnerPaidWorkOption.Yes,
                         () =>
                         {
                             RuleFor(x => x.PartnerWorkStatus)
@@ -151,7 +185,9 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                             });
 
                             When(x =>
-                                    x.PartnerWorkStatus.Contains(WorkStatusOption.PaidEmployment) || x.PartnerWorkStatus.Contains(WorkStatusOption.Apprentice),
+                                    !x.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed) &&
+                                    (x.PartnerWorkStatus.Contains(WorkStatusOption.PaidEmployment) ||
+                                     x.PartnerWorkStatus.Contains(WorkStatusOption.Apprentice)),
                                 () =>
                                 {
                                     RuleFor(x => x.PartnerWeeklyEarnings)
@@ -163,6 +199,37 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                                             .NotNull();
                                     });
                                 });
+                        });
+                    
+                    When(x =>
+                            x.PartnerPaidWork == PartnerPaidWorkOption.SickLeave,
+                        () =>
+                        {
+                            RuleFor(x => x.PartnerWorkStatus)
+                                .NotEmpty();
+
+                            When(x => x.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed), () =>
+                            {
+                                RuleFor(x => x.PartnerSelfEmployedDuration)
+                                    .NotNull();
+
+                                When(x => x.PartnerSelfEmployedDuration == SelfEmployedDurationOption.NotLessThan12Months, () =>
+                                {
+                                    RuleFor(x => x.PartnerYearlyEarnings)
+                                        .NotNull();
+                                });
+                            });
+
+                            When(x =>
+                                    !x.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed) && 
+                                    (x.PartnerWorkStatus.Contains(WorkStatusOption.PaidEmployment) || 
+                                     x.PartnerWorkStatus.Contains(WorkStatusOption.Apprentice)),
+                                () =>
+                                {
+                                    RuleFor(x => x.PartnerYearlyEarnings)
+                                        .NotNull();
+                                });
+
                         });
 
                     RuleFor(x => x.PartnerBenefits)

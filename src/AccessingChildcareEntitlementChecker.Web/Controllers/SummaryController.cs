@@ -31,7 +31,7 @@ public partial class SummaryController(
     public ViewResult CheckChildDetails(string? childId = null)
     {
         var removedChildNames = CheckForIncompleteChildren();
-        
+
         return View(BuildCheckChildDetailsViewModel(childId, removedChildNames));
     }
 
@@ -59,7 +59,7 @@ public partial class SummaryController(
     public async Task<IActionResult> CheckAnswers(string? fromChildId = null)
     {
         var removedChildNames = CheckForIncompleteChildren();
-        
+
         return View(await BuildCheckAnswersViewModel(fromChildId, removedChildNames));
     }
 
@@ -125,7 +125,7 @@ public partial class SummaryController(
     private List<string> CheckForIncompleteChildren()
     {
         var removedChildNames = new List<string>();
-        
+
         var result = journeyStateValidator.Validate(journeyState, options => options.IncludeRuleSets(JourneyStateValidator.CheckChildDetailsRuleSet));
 
         if (!result.IsValid)
@@ -151,7 +151,7 @@ public partial class SummaryController(
 
             journeySession.Set(journeyState);
         }
-        
+
         return removedChildNames;
     }
 
