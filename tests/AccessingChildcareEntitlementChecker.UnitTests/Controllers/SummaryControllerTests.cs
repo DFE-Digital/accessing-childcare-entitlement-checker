@@ -31,7 +31,12 @@ public class SummaryControllerTests
     {
         _journeyState = new JourneyState();
         _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
-        _journeyState.Children[childId] = new Child(childId, "Child A");
+        _journeyState.Children[childId] = new Child(childId, "Child A")
+        {
+            BirthStatus = BirthStatus.Born,
+            BirthDate = new DateOnly(2020, 1, 1),
+            ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
+        };
         _journeySession = Substitute.For<IJourneySession>();
         _featureManager = Substitute.For<IFeatureManager>();
         _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(false);
@@ -234,10 +239,22 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckAnswers_Post_Redirects_WhenCorrelationIdMatches()
+    public void CheckAnswers_Post_Redirects_WhenCorrelationIdMatchesAndValidationPasses()
     {
+        _journeyState.CountryOfResidence = CountryOfResidence.England;
+        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
+        _journeyState.UserAge = AgeRange.TwentyOneOrOver;
+        _journeyState.PaidWork = PaidWorkOption.No;
+        _journeyState.UniversalCredit = UniversalCreditOption.DoesNotReceive;
+        _journeyState.Benefits = [BenefitsOption.None];
+        _journeyState.ChildcareSupport = [ChildcareSupportOption.None];
+        _journeyState.HasPartner = false;
+
         var model = new CheckAnswersSubmitModel(_journeyState.CorrelationId);
-        var result = Assert.IsType<RedirectToActionResult>(_controller.CheckAnswers(model));
+
+        var result = Assert.IsType<RedirectToActionResult>(
+            _controller.CheckAnswers(model));
+
         Assert.Equal(nameof(ResultsController.Results), result.ActionName);
         Assert.Equal(ResultsController.Name, result.ControllerName);
     }
@@ -256,8 +273,32 @@ public class SummaryControllerTests
     }
 
     [Fact]
+    public void CheckAnswers_Post_DoesNotValidate_WhenCorrelationIdMismatches()
+    {
+        var validator = Substitute.For<IValidator<JourneyState>>();
+
+        var controller = new SummaryController(
+            _journeyState,
+            _journeySession,
+            AcecSubstitute.ForLocalizerFactory(),
+            validator,
+            _logger);
+
+        controller.ControllerContext = _controller.ControllerContext;
+        controller.MetadataProvider = _controller.MetadataProvider;
+        controller.Url = _controller.Url;
+
+        var model = new CheckAnswersSubmitModel(Guid.NewGuid());
+
+        controller.CheckAnswers(model);
+
+        validator.DidNotReceive().Validate(Arg.Any<ValidationContext<JourneyState>>());
+    }
+
+    [Fact]
     public void CheckChildDetails_Post_RedisplaysView_WhenValidationFails()
     {
+        // Arrange
         var mockValidator = Substitute.For<IValidator<JourneyState>>();
         var validationResult = new ValidationResult(new[] { new ValidationFailure("Children", "Child validation error") });
         mockValidator.Validate(Arg.Any<ValidationContext<JourneyState>>()).Returns(validationResult);
@@ -269,9 +310,11 @@ public class SummaryControllerTests
         controller.Url = _controller.Url;
 
         var model = new CheckChildDetailsSubmitModel(_journeyState.CorrelationId);
-        
+
+        // Act
         var result = Assert.IsType<ViewResult>(controller.CheckChildDetails(model));
-        
+
+        // Assert
         Assert.False(controller.ModelState.IsValid);
         Assert.True(controller.ModelState.ContainsKey("Children"));
         var error = Assert.Single(controller.ModelState["Children"]!.Errors);
@@ -282,29 +325,42 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckAnswers_Post_RedisplaysView_WhenValidationFails()
+    public void CheckAnswers_Post_ReturnsStateMismatch_WhenValidationFails()
     {
-        _journeyState.HasPartner = false;
         var mockValidator = Substitute.For<IValidator<JourneyState>>();
-        var validationResult = new ValidationResult(new[] { new ValidationFailure("WeeklyEarnings", "Earnings validation error") });
-        mockValidator.Validate(Arg.Any<ValidationContext<JourneyState>>()).Returns(validationResult);
+
+        var validationResult = new ValidationResult(
+            new[]
+            {
+                new ValidationFailure(
+                    "WeeklyEarnings",
+                    "Earnings validation error")
+            });
+
+        mockValidator
+            .Validate(Arg.Any<ValidationContext<JourneyState>>())
+            .Returns(validationResult);
 
         var localizerFactory = AcecSubstitute.ForLocalizerFactory();
-        var controller = new SummaryController(_journeyState, _journeySession, localizerFactory, mockValidator, _logger);
+
+        var controller = new SummaryController(
+            _journeyState,
+            _journeySession,
+            localizerFactory,
+            mockValidator,
+            _logger);
+
         controller.ControllerContext = _controller.ControllerContext;
         controller.MetadataProvider = _controller.MetadataProvider;
         controller.Url = _controller.Url;
 
-        var model = new CheckAnswersSubmitModel(_journeyState.CorrelationId);
-        
-        var result = Assert.IsType<ViewResult>(controller.CheckAnswers(model));
-        
-        Assert.False(controller.ModelState.IsValid);
-        Assert.True(controller.ModelState.ContainsKey("WeeklyEarnings"));
-        var error = Assert.Single(controller.ModelState["WeeklyEarnings"]!.Errors);
-        Assert.Equal("Earnings validation error", error.ErrorMessage);
+        var model = new CheckAnswersSubmitModel(
+            _journeyState.CorrelationId);
 
-        var viewModel = Assert.IsType<CheckAnswersViewModel>(result.Model);
-        Assert.Equal(_journeyState.CorrelationId, viewModel.CorrelationId);
+        var result = Assert.IsType<ViewResult>(
+            controller.CheckAnswers(model));
+
+        Assert.Equal("StateMismatch", result.ViewName);
+        Assert.Equal(400, controller.Response.StatusCode);
     }
 }

@@ -64,7 +64,7 @@ public partial class SummaryController(
     }
 
     [HttpPost]
-    public async Task<IActionResult> CheckAnswers(CheckAnswersSubmitModel model)
+    public IActionResult CheckAnswers(CheckAnswersSubmitModel model)
     {
         if (model.CorrelationId == journeyState.CorrelationId)
         {
@@ -74,8 +74,9 @@ public partial class SummaryController(
                 return RedirectToAction(nameof(ResultsController.Results), ResultsController.Name);
             }
 
-            ModelState.AddValidationErrors(result);
-            return View(await BuildCheckAnswersViewModel());
+            LogMissingAnswers();
+            Response.StatusCode = 400;
+            return View("StateMismatch");
         }
 
         LogCorrelationIdMismatch();
@@ -220,6 +221,12 @@ public partial class SummaryController(
         Level = LogLevel.Warning,
         Message = "State mismatch detected. Correlation ID mismatch. Event: {microsoft.custom_event.name}")]
     private partial void LogCorrelationIdMismatch([TagName("microsoft.custom_event.name")] string customEventName = "StateMismatch");
+
+    [LoggerMessage(
+        EventId = 3,
+        Level = LogLevel.Warning,
+        Message = "Missing answers detected. Missing answers. Event: {microsoft.custom_event.name}")]
+    private partial void LogMissingAnswers([TagName("microsoft.custom_event.name")] string customEventName = "MissingAnswers");
 
     private ChildSummaryViewModel ChildSummaryViewModelFactory(Child child, string returnTo)
     {
