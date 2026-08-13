@@ -123,8 +123,8 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                     });
 
                     When(x =>
-                            !x.WorkStatus.Contains(WorkStatusOption.SelfEmployed) && 
-                            (x.WorkStatus.Contains(WorkStatusOption.PaidEmployment) || 
+                            !x.WorkStatus.Contains(WorkStatusOption.SelfEmployed) &&
+                            (x.WorkStatus.Contains(WorkStatusOption.PaidEmployment) ||
                              x.WorkStatus.Contains(WorkStatusOption.Apprentice)),
                         () =>
                         {
@@ -133,7 +133,7 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                         });
 
                 });
-            
+
 
             RuleFor(x => x.UniversalCredit)
                 .NotNull();
@@ -200,7 +200,7 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                                     });
                                 });
                         });
-                    
+
                     When(x =>
                             x.PartnerPaidWork == PartnerPaidWorkOption.SickLeave,
                         () =>
@@ -221,8 +221,8 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                             });
 
                             When(x =>
-                                    !x.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed) && 
-                                    (x.PartnerWorkStatus.Contains(WorkStatusOption.PaidEmployment) || 
+                                    !x.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed) &&
+                                    (x.PartnerWorkStatus.Contains(WorkStatusOption.PaidEmployment) ||
                                      x.PartnerWorkStatus.Contains(WorkStatusOption.Apprentice)),
                                 () =>
                                 {
