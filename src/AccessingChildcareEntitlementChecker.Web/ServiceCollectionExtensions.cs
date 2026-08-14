@@ -4,6 +4,8 @@ using Azure.Identity;
 using StackExchange.Redis;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using AccessingChildcareEntitlementChecker.Web.Filters;
+using AccessingChildcareEntitlementChecker.Web.Validators;
+using FluentValidation;
 
 namespace AccessingChildcareEntitlementChecker.Web;
 
@@ -58,6 +60,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<RequireJourneySessionFilter>();
 
         services.AddScoped<ICookiePolicyService, CookiePolicyService>();
+        services.AddScoped<IValidator<JourneyState>, JourneyStateValidator>();
         return services;
     }
 

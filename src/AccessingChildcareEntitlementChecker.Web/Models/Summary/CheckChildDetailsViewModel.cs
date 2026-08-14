@@ -7,4 +7,5 @@ public record CheckChildDetailsViewModel(
     bool HasChildren,
     Child? LastEditedChild,
     string BackLink,
-    Guid CorrelationId);
+    Guid CorrelationId,
+    IReadOnlyList<string> RemovedChildNames);

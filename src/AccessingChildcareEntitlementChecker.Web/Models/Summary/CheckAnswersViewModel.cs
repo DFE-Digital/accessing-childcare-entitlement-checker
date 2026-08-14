@@ -9,4 +9,5 @@ public record CheckAnswersViewModel(
     IReadOnlyList<SummaryRowViewModel> UserDetails,
     IReadOnlyList<SummaryRowViewModel> PartnerDetails,
     string BackLink,
-    Guid CorrelationId);
+    Guid CorrelationId,
+    IReadOnlyList<string> RemovedChildNames);
