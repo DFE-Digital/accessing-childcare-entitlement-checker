@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
+using Microsoft.AspNetCore.Components.Routing;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 
@@ -104,6 +105,9 @@ public static class DocumentAsserts
         const string ExpectedHref = "https://dferesearch.fra1.qualtrics.com/jfe/form/SV_8eotBOVwAQbdP8y";
         Assert.Equal(ExpectedHref, href);
 
+        Assert.Equal("_blank", surveyLink.GetAttribute("target"));
+        Assert.Equal("noopener noreferrer", surveyLink.GetAttribute("rel"));
+
         return document;
     }
 
@@ -131,9 +135,24 @@ public static class DocumentAsserts
 
     public static IDocument AssertMainContainsLink(this IDocument document, string expectedLink)
     {
-        var hint = document.QuerySelector($"main a[href='{expectedLink}']");
-        Assert.NotNull(hint);
+        var link = document.QuerySelector($"main a[href='{expectedLink}']");
+        Assert.NotNull(link);
         return document;
+    }
+
+    public static IDocument AssertFooterContainsLink(this IDocument document, string expectedLink)
+    {
+        var footer = FooterElement(document);
+        var link = footer.QuerySelector($"a[href='{expectedLink}']");
+        Assert.NotNull(link);
+        return document;
+    }
+
+    private static IElement FooterElement(this IDocument document)
+    {
+        var footer = document.QuerySelector("body > footer");
+        Assert.NotNull(footer);
+        return footer;
     }
 
     private static IElement HeaderElement(this IDocument document)
