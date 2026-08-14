@@ -92,9 +92,8 @@ public class HomeControllerTests
         Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
         Assert.True(_controller.ModelState.IsValid);
 
-        // We should navigate to the child name page regardless of whether the
-        // user already has children
-        Assert.Equal(nameof(IntroductionController.ChildName), redirect.ActionName);
+        // We should navigate to the child details page if the user already has children
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
     }
 
     [Fact]
