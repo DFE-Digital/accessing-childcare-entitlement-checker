@@ -1,6 +1,7 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
+using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests;
@@ -16,6 +17,11 @@ public partial class CookieBannerShownTests(IntegrationTestFixture factory) : IC
                    {
                        "1",
                        new Child("1", "Child 1")
+                       {
+                           BirthStatus = BirthStatus.Born,
+                           BirthDate = new DateOnly(2020, 1, 1),
+                           ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
+                       }
                    }
                };
 
@@ -45,6 +51,11 @@ public partial class CookieBannerShownTests(IntegrationTestFixture factory) : IC
                    {
                        "1",
                        new Child("1", "Child 1")
+                       {
+                           BirthStatus = BirthStatus.Born,
+                           BirthDate = new DateOnly(2020, 1, 1),
+                           ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
+                       }
                    }
                };
 
