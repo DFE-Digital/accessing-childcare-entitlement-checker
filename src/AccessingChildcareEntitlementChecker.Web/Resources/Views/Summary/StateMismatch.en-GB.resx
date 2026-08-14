@@ -20,12 +20,15 @@
         <value>Your answers need to be checked again</value>
     </data>
     <data name="Info1" xml:space="preserve">
-        <value>The information shown no longer matches the answers you proveded.</value>
+        <value>Some answers are missing, or the information shown no longer matches the answers you provided.</value>
+    </data>
+    <data name="Info3" xml:space="preserve">
+        <value>and go back through the questions.</value>
+    </data>
+    <data name="Info3-link" xml:space="preserve">
+        <value>Return to the start of the service</value>
     </data>
     <data name="Info2" xml:space="preserve">
-        <value> and check each answer.</value>
-    </data>
-    <data name="Info2-link" xml:space="preserve">
-        <value>Return to the start of the service</value>
+        <value>This can happen if you use your browser's back button after changing an answer</value>
     </data>
 </root>

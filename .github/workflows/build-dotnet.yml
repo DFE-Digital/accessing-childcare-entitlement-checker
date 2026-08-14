@@ -185,7 +185,7 @@ jobs:
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
             /d:sonar.exclusions="**/docs/**,**/infra/**,**/.github/**,**/.devcontainer/**,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
             /d:sonar.coverage.exclusions="**/Program.cs" \
-            /d:sonar.cpd.exclusions="**/PartnerParentalLeave.cshtml" \
+            /d:sonar.cpd.exclusions="**/PartnerParentalLeave.cshtml,**/JourneyStateValidator.cs" \
             /d:sonar.issue.ignore.block=e1 \
             /d:sonar.issue.ignore.block.e1.beginBlockRegexp="sonarignore:start" \
             /d:sonar.issue.ignore.block.e1.endBlockRegexp="sonarignore:end" \

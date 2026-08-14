@@ -1,4 +1,6 @@
 using AccessingChildcareEntitlementChecker.Web.Services;
+using AccessingChildcareEntitlementChecker.Web.Validators;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,6 +36,7 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
             {
                 services.AddScoped<IJourneySession>(_ => new TestJourneySession(state));
                 services.AddScoped(_ => state);
+                services.AddScoped<IValidator<JourneyState>, JourneyStateValidator>();
             });
         }).CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
     }
@@ -61,6 +64,7 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
             builder.ConfigureServices(services =>
             {
                 services.AddScoped<IJourneySession, MissingJourneySession>();
+                services.AddScoped<IValidator<JourneyState>, JourneyStateValidator>();
             });
         }).CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
     }

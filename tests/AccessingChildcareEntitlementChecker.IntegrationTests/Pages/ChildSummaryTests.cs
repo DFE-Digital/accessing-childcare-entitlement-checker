@@ -17,7 +17,6 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     /// clicking back should return them to the last child in the ordered dict
     /// with the appropriate page.
     /// </summary>
-    /// <returns>Task representing the result.</returns>
     [Theory]
     [InlineData(BirthStatus.Due, $"/children/{OtherChildId}/expectant-childs-due-date")]
     [InlineData(BirthStatus.Born, $"/children/{OtherChildId}/child-benefits")]
@@ -26,28 +25,25 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
+            {
                 {
-                    {
-                        ChildId,
-                        new Child(ChildId, "Sara")
-                        {
-                            BirthStatus = BirthStatus.Born,
-                            ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
-                        }
-                    },
-                    {
-                        OtherChildId,
-                        new Child(OtherChildId, "Aydin")
-                        {
-                            BirthStatus = birthStatus,
-                        }
-                    }
+                    ChildId,
+                    CreateBornChild(ChildId, "Sara")
+                },
+                {
+                    OtherChildId,
+                    birthStatus == BirthStatus.Born
+                        ? CreateBornChild(OtherChildId, "Aydin")
+                        : CreateDueChild(OtherChildId, "Aydin")
+                }
             }
         });
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
+
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
         doc.AssertBackLink(expectedUrl)
             .AssertNavigationBar()
             .AssertBetaBanner();
@@ -55,40 +51,37 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
 
     /// <summary>
     /// When the user has arrived at the summary from a specific child
-    /// clicking back should return them to that child.,
+    /// clicking back should return them to that child.
     /// </summary>
-    /// <returns>Task representing the result.</returns>
     [Theory]
     [InlineData(OtherChildId, $"/children/{OtherChildId}/expectant-childs-due-date")]
     [InlineData(ChildId, $"/children/{ChildId}/child-benefits")]
-    public async Task Get_BackLink_Is_To_Specified_Child(string arrivedFromChildId, string expectedUrl)
+    public async Task Get_BackLink_Is_To_Specified_Child(
+        string arrivedFromChildId,
+        string expectedUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
+            {
                 {
-                    {
-                        ChildId,
-                        new Child(ChildId, "Sara")
-                        {
-                            BirthStatus = BirthStatus.Born,
-                            ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
-                        }
-                    },
-                    {
-                        OtherChildId,
-                        new Child(OtherChildId, "Aydin")
-                        {
-                            BirthStatus = BirthStatus.Due,
-                        }
-                    }
+                    ChildId,
+                    CreateBornChild(ChildId, "Sara")
+                },
+                {
+                    OtherChildId,
+                    CreateDueChild(OtherChildId, "Aydin")
+                }
             }
         });
 
         var url = $"{Url}?childId={arrivedFromChildId}";
+
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
+
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
         doc.AssertBackLink(expectedUrl);
     }
 
@@ -96,15 +89,37 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     /// When the user has arrived at the summary then removed all the children,
     /// clicking back should take them to the add child details page.
     /// </summary>
-    /// <returns>Task representing the result.</returns>
     [Fact]
     public async Task Get_BackLink_Is_To_Name()
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
-        var url = $"{Url}?childId={ChildId}"; // Should not matter what is passed here.
+
+        var url = $"{Url}?childId={ChildId}";
+
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
+
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertBackLink($"/children/add-child-details");
+
+        doc.AssertBackLink("/children/add-child-details");
+    }
+
+    private static Child CreateBornChild(string childId, string name)
+    {
+        return new Child(childId, name)
+        {
+            BirthStatus = BirthStatus.Born,
+            BirthDate = new DateOnly(2020, 1, 1),
+            ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
+        };
+    }
+
+    private static Child CreateDueChild(string childId, string name)
+    {
+        return new Child(childId, name)
+        {
+            BirthStatus = BirthStatus.Due,
+            DueDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(3))
+        };
     }
 }
