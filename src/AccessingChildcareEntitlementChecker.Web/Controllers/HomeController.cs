@@ -58,6 +58,11 @@ public class HomeController : Controller
 
         _journeyState.Apply(model);
         _journeySession.Set(_journeyState);
+        if (_journeyState.Children.Count > 0)
+        {
+            return RedirectToAction(nameof(SummaryController.CheckChildDetails), SummaryController.Name);
+        }
+
         return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name);
     }
 

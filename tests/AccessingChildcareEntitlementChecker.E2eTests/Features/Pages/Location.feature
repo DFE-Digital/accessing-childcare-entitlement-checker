@@ -32,6 +32,27 @@ Scenario: Continue with selection
 	And I click on Continue
 	Then the page header is "Add details about your children"
 
+Scenario: Continue to check child details when I already have children
+	Given I answer "Where do you live?" as "England"
+	And I answer questions as follows:
+		| Question                        | Answer   |
+		| Add details about your children | Aydin    |
+		| Has this child been born yet?   | No       |
+		| What is this child's due date?  | Tomorrow |
+	And I check my children's details and click on Continue
+	And I answer questions as follows:
+		| Question                                                   | Answer                        |
+		| What is your age?                                          | Under 18                      |
+		| What is your nationality?                                  | British or Irish citizen      |
+		| Are you in paid work?                                      | No, I am not in work          |
+		| Does your household receive universal credit?              | Yes                           |
+		| Do you get any of these benefits?                          | Carer's Allowance             |
+		| Do you already get any of these to help pay for childcare? | No, I do not get any of these |
+		| Do you live with a partner?                                | No                            |
+	When I click the Change link in the "Your details" summary list for "Where do you live?"
+	And I answer "Where do you live?" as "England"
+	Then the page header is "Check your children's details"
+
 Scenario: Back navigation
 	When I click the back link
 	Then the page header is "Before you continue"
