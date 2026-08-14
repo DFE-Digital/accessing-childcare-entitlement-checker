@@ -30,16 +30,16 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
     }
 
     [Theory]
-    [InlineData(null, SettledStatusOption.Yes, null, "/work-status/work")]
-    [InlineData(null, SettledStatusOption.No, null, "/work-status/work")]
-    [InlineData(null, SettledStatusOption.StillWaiting, null, "/work-status/work")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.Yes, null, "/work-status/work")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.Yes, PaidWorkOption.Yes, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, null, "/work-status/work")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, PaidWorkOption.Yes, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, null, "/work-status/work")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, PaidWorkOption.Yes, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, SettledStatusOption settledStatus, PaidWorkOption? paidWork, string continueUrl)
+    [InlineData(null, SettledStatusOption.Yes, null)]
+    [InlineData(null, SettledStatusOption.No, null)]
+    [InlineData(null, SettledStatusOption.StillWaiting, null)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.Yes, null)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.Yes, PaidWorkOption.Yes)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, null)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, PaidWorkOption.Yes)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, null)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, PaidWorkOption.Yes)]
+    public async Task Post_Valid_Redirects(string? returnTo, SettledStatusOption settledStatus, PaidWorkOption? paidWork)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -59,7 +59,7 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
             new KeyValuePair<string, string>("SettledStatus", settledStatus.ToString())
         ], TestContext.Current.CancellationToken);
 
-        postResponse.AssertRedirect(continueUrl);
+        postResponse.AssertRedirect("/work-status/work");
     }
 
     [Theory]

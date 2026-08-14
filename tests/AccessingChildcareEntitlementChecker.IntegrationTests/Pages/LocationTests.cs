@@ -43,7 +43,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     [InlineData(null, false, "/children/add-child-details")]
     [InlineData(null, true, "/children/check-childs-details")]
     [InlineData(ReturnTo.CheckAnswers, false, "/children/add-child-details")]
-    [InlineData(ReturnTo.CheckAnswers, true, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, true, "/children/check-childs-details")]
     public async Task Post_Valid_Redirects(string? returnTo, bool hasChild, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState

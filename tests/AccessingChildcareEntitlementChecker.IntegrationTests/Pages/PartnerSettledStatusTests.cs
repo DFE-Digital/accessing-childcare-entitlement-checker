@@ -28,16 +28,16 @@ public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassF
     }
 
     [Theory]
-    [InlineData(null, SettledStatusOption.Yes, null, "/work-status/work-partner")]
-    [InlineData(null, SettledStatusOption.No, null, "/work-status/work-partner")]
-    [InlineData(null, SettledStatusOption.StillWaiting, null, "/work-status/work-partner")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.Yes, null, "/work-status/work-partner")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.Yes, PartnerPaidWorkOption.Yes, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, null, "/work-status/work-partner")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, PartnerPaidWorkOption.Yes, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, null, "/work-status/work-partner")]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, PartnerPaidWorkOption.Yes, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, SettledStatusOption partnerSettledStatus, PartnerPaidWorkOption? partnerPaidWork, string continueUrl)
+    [InlineData(null, SettledStatusOption.Yes, null)]
+    [InlineData(null, SettledStatusOption.No, null)]
+    [InlineData(null, SettledStatusOption.StillWaiting, null)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.Yes, null)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.Yes, PartnerPaidWorkOption.Yes)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, null)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, PartnerPaidWorkOption.Yes)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, null)]
+    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, PartnerPaidWorkOption.Yes)]
+    public async Task Post_Valid_Redirects(string? returnTo, SettledStatusOption partnerSettledStatus, PartnerPaidWorkOption? partnerPaidWork)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -57,7 +57,7 @@ public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassF
             new KeyValuePair<string, string>("PartnerSettledStatus", partnerSettledStatus.ToString())
         ], TestContext.Current.CancellationToken);
 
-        postResponse.AssertRedirect(continueUrl);
+        postResponse.AssertRedirect("/work-status/work-partner");
     }
 
     [Theory]

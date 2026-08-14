@@ -31,9 +31,9 @@ public class PartnerSelfEmployedDurationTests(IntegrationTestFixture factory) : 
     [InlineData(null, SelfEmployedDurationOption.LessThan12Months, null, null, "/Partner/PartnerBenefits")]
     [InlineData(null, SelfEmployedDurationOption.NotLessThan12Months, null, null, "/earnings/wage-partner")]
     [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.LessThan12Months, null, null, "/Partner/PartnerBenefits")]
-    [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.LessThan12Months, PartnerBenefitsOption.CarersAllowance, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.LessThan12Months, PartnerBenefitsOption.CarersAllowance, null, "/Partner/PartnerBenefits")]
     [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.NotLessThan12Months, null, null, "/earnings/wage-partner")]
-    [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.NotLessThan12Months, null, WeeklyEarningsOption.AboveThreshold, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.NotLessThan12Months, null, WeeklyEarningsOption.AboveThreshold, "/earnings/wage-partner")]
     public async Task Post_Valid_Redirects(string? returnTo, SelfEmployedDurationOption partnerSelfEmployedDuration, PartnerBenefitsOption? partnerBenefits, WeeklyEarningsOption? partnerWeeklyEarnings, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState

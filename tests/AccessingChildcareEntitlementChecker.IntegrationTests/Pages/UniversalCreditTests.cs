@@ -49,13 +49,13 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     }
 
     [Theory]
-    [InlineData(null, UniversalCreditOption.Receives, null, "/benefits/benefits")]
-    [InlineData(null, UniversalCreditOption.DoesNotReceive, null, "/benefits/benefits")]
-    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.Receives, null, "/benefits/benefits")]
-    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.Receives, BenefitsOption.CarersAllowance, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.DoesNotReceive, null, "/benefits/benefits")]
-    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.DoesNotReceive, BenefitsOption.CarersAllowance, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, UniversalCreditOption universalCredit, BenefitsOption? benefits, string continueUrl)
+    [InlineData(null, UniversalCreditOption.Receives, null)]
+    [InlineData(null, UniversalCreditOption.DoesNotReceive, null)]
+    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.Receives, null)]
+    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.Receives, BenefitsOption.CarersAllowance)]
+    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.DoesNotReceive, null)]
+    [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.DoesNotReceive, BenefitsOption.CarersAllowance)]
+    public async Task Post_Valid_Redirects(string? returnTo, UniversalCreditOption universalCredit, BenefitsOption? benefits)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -75,7 +75,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
             new KeyValuePair<string, string>("UniversalCredit", universalCredit.ToString())
         ], TestContext.Current.CancellationToken);
 
-        postResponse.AssertRedirect(continueUrl);
+        postResponse.AssertRedirect("/benefits/benefits");
     }
 
     [Theory]

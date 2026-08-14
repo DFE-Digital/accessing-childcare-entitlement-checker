@@ -42,7 +42,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     [Theory]
     [InlineData(null, true, null, "/age/partner-age")]
     [InlineData(ReturnTo.CheckAnswers, true, null, "/age/partner-age")]
-    [InlineData(ReturnTo.CheckAnswers, true, AgeRange.UnderEighteen, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, true, AgeRange.UnderEighteen, "/age/partner-age")]
     [InlineData(null, false, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckAnswers, false, null, "/check-your-answers")]
     public async Task Post_Valid_Redirects(string? returnTo, bool hasPartner, AgeRange? partnerAge, string continueUrl)

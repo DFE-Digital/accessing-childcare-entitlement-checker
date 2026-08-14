@@ -33,9 +33,9 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
     [InlineData(null, ChildcareSupportOption.ChildcareVouchers, null, null, "/benefits/childcare-vouchers")]
     [InlineData(null, ChildcareSupportOption.ChildcareBursaryOrGrant, null, null, "/partner")]
     [InlineData(ReturnTo.CheckAnswers, ChildcareSupportOption.ChildcareVouchers, null, null, "/benefits/childcare-vouchers")]
-    [InlineData(ReturnTo.CheckAnswers, ChildcareSupportOption.ChildcareVouchers, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareSupportOption.ChildcareVouchers, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, null, "/benefits/childcare-vouchers")]
     [InlineData(ReturnTo.CheckAnswers, ChildcareSupportOption.ChildcareBursaryOrGrant, null, null, "/partner")]
-    [InlineData(ReturnTo.CheckAnswers, ChildcareSupportOption.ChildcareBursaryOrGrant, null, true, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareSupportOption.ChildcareBursaryOrGrant, null, true, "/partner")]
     public async Task Post_Valid_Redirects(string? returnTo, ChildcareSupportOption childcareSupport, ChildcareVoucherReceiptOption? childcareVoucherReceipt, bool? hasPartner, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState

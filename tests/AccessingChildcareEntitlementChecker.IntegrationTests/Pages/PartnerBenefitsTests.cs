@@ -48,10 +48,10 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
     }
 
     [Theory]
-    [InlineData(null, PartnerBenefitsOption.CarersAllowance, null, "/benefits/childcare-support-partner")]
-    [InlineData(ReturnTo.CheckAnswers, PartnerBenefitsOption.CarersAllowance, null, "/benefits/childcare-support-partner")]
-    [InlineData(ReturnTo.CheckAnswers, PartnerBenefitsOption.CarersAllowance, PartnerChildcareSupportOption.ChildcareVouchers, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, PartnerBenefitsOption partnerBenefits, PartnerChildcareSupportOption? partnerChildcareSupport, string continueUrl)
+    [InlineData(null, PartnerBenefitsOption.CarersAllowance, null)]
+    [InlineData(ReturnTo.CheckAnswers, PartnerBenefitsOption.CarersAllowance, null)]
+    [InlineData(ReturnTo.CheckAnswers, PartnerBenefitsOption.CarersAllowance, PartnerChildcareSupportOption.ChildcareVouchers)]
+    public async Task Post_Valid_Redirects(string? returnTo, PartnerBenefitsOption partnerBenefits, PartnerChildcareSupportOption? partnerChildcareSupport)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -71,7 +71,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
             new KeyValuePair<string, string>("PartnerBenefits", partnerBenefits.ToString())
         ], TestContext.Current.CancellationToken);
 
-        postResponse.AssertRedirect(continueUrl);
+        postResponse.AssertRedirect("/benefits/childcare-support-partner");
     }
 
     [Theory]

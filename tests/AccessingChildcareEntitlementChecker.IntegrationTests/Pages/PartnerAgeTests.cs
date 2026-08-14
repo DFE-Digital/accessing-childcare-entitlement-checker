@@ -1,7 +1,6 @@
 using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
-using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Pages;
@@ -29,33 +28,23 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
     }
 
     [Theory]
-    [InlineData(null, null, null, null, null, AgeRange.EighteenToTwenty, "/nationality-partner")]
-    [InlineData(ReturnTo.CheckAnswers, null, null, null, null, AgeRange.EighteenToTwenty, "/nationality-partner")]
-    [InlineData(ReturnTo.CheckAnswers, null, NationalityOption.BritishOrIrishCitizen, null, null, AgeRange.EighteenToTwenty, "/work-status/work-partner")]
-    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, null, null, AgeRange.EighteenToTwenty, "/work-status/work-partner")]
-    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, null, WeeklyEarningsOption.AboveThreshold, AgeRange.TwentyOneOrOver, "/work-status/work-partner")]
-    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, PartnerPaidWorkOption.Yes, null, AgeRange.EighteenToTwenty, "/earnings/wage-partner")]
-    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, PartnerPaidWorkOption.No, null, AgeRange.EighteenToTwenty, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, PartnerPaidWorkOption.Yes, WeeklyEarningsOption.AboveThreshold, AgeRange.TwentyOneOrOver, "/earnings/wage-partner")]
-    [InlineData(ReturnTo.CheckAnswers, AgeRange.EighteenToTwenty, NationalityOption.BritishOrIrishCitizen, PartnerPaidWorkOption.Yes, WeeklyEarningsOption.AboveThreshold, AgeRange.EighteenToTwenty, "/check-your-answers")]
+    [InlineData(NationalityOption.BritishOrIrishCitizen, null, "/work-status/work-partner")]
+    [InlineData(NationalityOption.CitizenOfADifferentCountry, null, "/nationality-partner")]
+    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, "/work-status/work-partner")]
+    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.StillWaiting, "/nationality-partner")]
+    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.No, "/nationality-partner")]
     public async Task Post_Valid_Redirects(
-        string? returnTo,
-        AgeRange? oldPartnerAge,
-        NationalityOption? partnerNationality,
-        PartnerPaidWorkOption? partnerPaidWorkOption,
-        WeeklyEarningsOption? partnerWeeklyEarnings,
-        AgeRange newPartnerAge,
+        NationalityOption userNationality,
+        SettledStatusOption? userSettledStatusOption,
         string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
-            PartnerAge = oldPartnerAge,
-            PartnerNationality = partnerNationality,
-            PartnerPaidWork = partnerPaidWorkOption,
-            PartnerWeeklyEarnings = partnerWeeklyEarnings,
+            Nationality = userNationality,
+            SettledStatus = userSettledStatusOption,
         });
-        var url = $"{Url}?returnTo={returnTo}";
-        var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+
+        var getResponse = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
@@ -63,8 +52,8 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
-            new KeyValuePair<string, string>("PartnerAge", newPartnerAge.ToString())
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
+            new KeyValuePair<string, string>("PartnerAge", AgeRange.EighteenToTwenty.ToString())
         ], TestContext.Current.CancellationToken);
 
         postResponse.AssertRedirect(continueUrl);

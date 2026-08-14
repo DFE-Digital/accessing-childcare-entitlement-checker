@@ -39,9 +39,9 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
     [InlineData(null, WeeklyEarningsOption.AboveThreshold, null, null, "/earnings/adjusted-net-income-partner")]
     [InlineData(null, WeeklyEarningsOption.BelowThreshold, null, null, "/Partner/PartnerBenefits")]
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.AboveThreshold, null, null, "/earnings/adjusted-net-income-partner")]
-    [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.AboveThreshold, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.AboveThreshold, null, "/earnings/adjusted-net-income-partner")]
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, null, "/Partner/PartnerBenefits")]
-    [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, PartnerBenefitsOption.CarersAllowance, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, PartnerBenefitsOption.CarersAllowance, "/Partner/PartnerBenefits")]
     public async Task Post_Valid_Redirects(string? returnTo, WeeklyEarningsOption partnerWeeklyEarnings, YearlyEarningsOption? partnerYearlyEarnings, PartnerBenefitsOption? partnerBenefits, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState

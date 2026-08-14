@@ -41,7 +41,9 @@ public class PartnerControllerTests
 
     [Theory]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, nameof(PartnerController.PartnerNationality))]
-    [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, nameof(SummaryController.CheckAnswers))]
+    [InlineData(null, NationalityOption.BritishOrIrishCitizen, nameof(PartnerController.PartnerPaidWork))]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, nameof(PartnerController.PartnerNationality))]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, nameof(PartnerController.PartnerPaidWork))]
     public void PartnerAge_Post_ValidSelection_SavesState_AndRedirects(string? returnTo, NationalityOption userNationality, string actionName)
     {
         _journeyState.PartnerAge = AgeRange.EighteenToTwenty;
@@ -84,9 +86,9 @@ public class PartnerControllerTests
     [InlineData(NationalityOption.BritishOrIrishCitizen, null, nameof(PartnerController.PartnerPaidWork))]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, nameof(PartnerController.PartnerSettledStatus))]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, null, nameof(PartnerController.PartnerPaidWork))]
-    [InlineData(NationalityOption.BritishOrIrishCitizen, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
-    [InlineData(NationalityOption.CitizenOfADifferentCountry, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(NationalityOption.BritishOrIrishCitizen, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
+    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerSettledStatus))]
+    [InlineData(NationalityOption.CitizenOfADifferentCountry, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
     public void PartnerNationality_Post_SavesState_AndRedirects(NationalityOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerNationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland;
@@ -148,7 +150,7 @@ public class PartnerControllerTests
     [InlineData(SettledStatusOption.Yes, null, nameof(PartnerController.PartnerPaidWork))]
     [InlineData(SettledStatusOption.No, null, nameof(PartnerController.PartnerPaidWork))]
     [InlineData(SettledStatusOption.StillWaiting, null, nameof(PartnerController.PartnerPaidWork))]
-    [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
     public void PartnerSettledStatus_Post_SavesState_AndRedirects(SettledStatusOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
@@ -196,7 +198,7 @@ public class PartnerControllerTests
     [InlineData(PartnerPaidWorkOption.Yes, null, nameof(PartnerController.PartnerWorkStatus))]
     [InlineData(PartnerPaidWorkOption.No, null, nameof(PartnerController.PartnerBenefits))]
     [InlineData(PartnerPaidWorkOption.ParentalLeave, null, nameof(PartnerController.PartnerParentalLeave))]
-    [InlineData(PartnerPaidWorkOption.Yes, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(PartnerPaidWorkOption.Yes, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerWorkStatus))]
     public void PartnerPaidWork_Post_SavesState_AndRedirects(PartnerPaidWorkOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
@@ -255,7 +257,7 @@ public class PartnerControllerTests
     [InlineData(WorkStatusOption.PaidEmployment, null, nameof(PartnerController.PartnerWeeklyEarnings))]
     [InlineData(WorkStatusOption.SelfEmployed, null, nameof(PartnerController.PartnerSelfEmployedDuration))]
     [InlineData(WorkStatusOption.Apprentice, null, nameof(PartnerController.PartnerWeeklyEarnings))]
-    [InlineData(WorkStatusOption.Apprentice, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(WorkStatusOption.Apprentice, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerWeeklyEarnings))]
     public void PartnerWorkStatus_Post_SavesState_AndRedirects(WorkStatusOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.BelowThreshold;
@@ -309,7 +311,7 @@ public class PartnerControllerTests
     [InlineData(PartnerBenefitsOption.LimitedCapabilityForWorkRelatedActivity, null, nameof(PartnerController.PartnerChildcareSupport))]
     [InlineData(PartnerBenefitsOption.SevereDisablementAllowance, null, nameof(PartnerController.PartnerChildcareSupport))]
     [InlineData(PartnerBenefitsOption.None, null, nameof(PartnerController.PartnerChildcareSupport))]
-    [InlineData(PartnerBenefitsOption.None, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(PartnerBenefitsOption.None, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerChildcareSupport))]
     public void PartnerBenefits_Post_SavesState_AndRedirects(PartnerBenefitsOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerChildcareSupport = [PartnerChildcareSupportOption.ChildcareVouchers];
@@ -357,7 +359,7 @@ public class PartnerControllerTests
     [Theory]
     [InlineData(SelfEmployedDurationOption.LessThan12Months, null, nameof(PartnerController.PartnerBenefits))]
     [InlineData(SelfEmployedDurationOption.NotLessThan12Months, null, nameof(PartnerController.PartnerWeeklyEarnings))]
-    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(SelfEmployedDurationOption.NotLessThan12Months, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerWeeklyEarnings))]
     public void PartnerSelfEmployedDuration_Post_SavesState_AndRedirects(SelfEmployedDurationOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.BelowThreshold;
@@ -405,7 +407,7 @@ public class PartnerControllerTests
     [Theory]
     [InlineData(WeeklyEarningsOption.AboveThreshold, null, nameof(PartnerController.PartnerYearlyEarnings))]
     [InlineData(WeeklyEarningsOption.BelowThreshold, null, nameof(PartnerController.PartnerBenefits))]
-    [InlineData(WeeklyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(WeeklyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerYearlyEarnings))]
     public void PartnerWeeklyEarnings_Post_SavesState_AndRedirects(WeeklyEarningsOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerYearlyEarnings = YearlyEarningsOption.BelowThreshold;
@@ -470,7 +472,7 @@ public class PartnerControllerTests
     [Theory]
     [InlineData(YearlyEarningsOption.AboveThreshold, null, nameof(PartnerController.PartnerBenefits))]
     [InlineData(YearlyEarningsOption.BelowThreshold, null, nameof(PartnerController.PartnerBenefits))]
-    [InlineData(YearlyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(YearlyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerBenefits))]
     public void PartnerYearlyEarnings_Post_SavesState_AndRedirects(YearlyEarningsOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerBenefits = [PartnerBenefitsOption.CarersAllowance];
@@ -518,7 +520,7 @@ public class PartnerControllerTests
     [InlineData(PartnerChildcareSupportOption.ChildcareVouchers, null, nameof(PartnerController.PartnerChildcareVoucherReceipt))]
     [InlineData(PartnerChildcareSupportOption.ChildcareBursaryOrGrant, null, nameof(SummaryController.CheckAnswers))]
     [InlineData(PartnerChildcareSupportOption.None, null, nameof(SummaryController.CheckAnswers))]
-    [InlineData(PartnerChildcareSupportOption.ChildcareVouchers, ReturnTo.CheckAnswers, nameof(SummaryController.CheckAnswers))]
+    [InlineData(PartnerChildcareSupportOption.ChildcareVouchers, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerChildcareVoucherReceipt))]
     public void PartnerChildcareSupport_Post_SavesState_AndRedirects(PartnerChildcareSupportOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerChildcareVoucherReceipt = ChildcareVoucherReceiptOption.WorkplaceNurseryScheme;

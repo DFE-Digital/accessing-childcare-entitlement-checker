@@ -28,13 +28,13 @@ public class PartnerYearlyEarningsTests(IntegrationTestFixture factory) : IClass
     }
 
     [Theory]
-    [InlineData(null, YearlyEarningsOption.AboveThreshold, null, "/Partner/PartnerBenefits")]
-    [InlineData(null, YearlyEarningsOption.BelowThreshold, null, "/Partner/PartnerBenefits")]
-    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.AboveThreshold, null, "/Partner/PartnerBenefits")]
-    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.AboveThreshold, PartnerBenefitsOption.CarersAllowance, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, null, "/Partner/PartnerBenefits")]
-    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, PartnerBenefitsOption.CarersAllowance, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, YearlyEarningsOption partnerYearlyEarnings, PartnerBenefitsOption? partnerBenefits, string continueUrl)
+    [InlineData(null, YearlyEarningsOption.AboveThreshold, null)]
+    [InlineData(null, YearlyEarningsOption.BelowThreshold, null)]
+    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.AboveThreshold, null)]
+    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.AboveThreshold, PartnerBenefitsOption.CarersAllowance)]
+    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, null)]
+    [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, PartnerBenefitsOption.CarersAllowance)]
+    public async Task Post_Valid_Redirects(string? returnTo, YearlyEarningsOption partnerYearlyEarnings, PartnerBenefitsOption? partnerBenefits)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -54,7 +54,7 @@ public class PartnerYearlyEarningsTests(IntegrationTestFixture factory) : IClass
             new KeyValuePair<string, string>("PartnerYearlyEarnings", partnerYearlyEarnings.ToString())
         ], TestContext.Current.CancellationToken);
 
-        postResponse.AssertRedirect(continueUrl);
+        postResponse.AssertRedirect("/Partner/PartnerBenefits");
     }
 
     [Theory]

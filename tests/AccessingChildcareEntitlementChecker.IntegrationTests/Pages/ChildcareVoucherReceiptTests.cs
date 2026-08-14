@@ -29,16 +29,16 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
     }
 
     [Theory]
-    [InlineData(null, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, null, "/partner")]
-    [InlineData(null, ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, null, "/partner")]
-    [InlineData(null, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, null, "/partner")]
-    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, null, "/partner")]
-    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, true, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, null, "/partner")]
-    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, true, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, null, "/partner")]
-    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, true, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, ChildcareVoucherReceiptOption childcareVoucherReceipt, bool? hasPartner, string continueUrl)
+    [InlineData(null, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, null)]
+    [InlineData(null, ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, null)]
+    [InlineData(null, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, null)]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, null)]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, true)]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, null)]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, true)]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, null)]
+    [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, true)]
+    public async Task Post_Valid_Redirects(string? returnTo, ChildcareVoucherReceiptOption childcareVoucherReceipt, bool? hasPartner)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -58,7 +58,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
             new KeyValuePair<string, string>("ChildcareVoucherReceipt", childcareVoucherReceipt.ToString())
         ], TestContext.Current.CancellationToken);
 
-        postResponse.AssertRedirect(continueUrl);
+        postResponse.AssertRedirect("/partner");
     }
 
     [Theory]
