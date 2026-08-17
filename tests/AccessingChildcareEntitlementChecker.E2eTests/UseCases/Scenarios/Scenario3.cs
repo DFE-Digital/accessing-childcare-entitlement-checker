@@ -15,7 +15,7 @@ internal class Scenario3 : IUseCase
             .AddChild(child => child
                 .WithName("Rosa")
                 .IsBorn("Yes")
-                .WithBirthDate("03 MAY 2024") //TODO : need a better way to handle these dates. Test will become flaky over time
+                .WithBirthDate(addYears: -2, addMonths: -3, addDays: -14)
                 .WithSupport("No, none of these apply"))
 
             // Complete child details loop

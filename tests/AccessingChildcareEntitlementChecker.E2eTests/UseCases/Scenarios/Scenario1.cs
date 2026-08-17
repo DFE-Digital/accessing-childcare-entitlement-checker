@@ -15,7 +15,7 @@ internal class Scenario1 : IUseCase
             .AddChild(child => child
                 .WithName("Simon")
                 .IsBorn("Yes")
-                .WithBirthDate("03 JAN 2013") //TODO : need a better way to handle these dates. Test will become flaky over time
+                .WithBirthDate(addYears: -13, addMonths: -7, addDays: -14)
                 .WithSupport("No, none of these apply"))
 
             // Action: Add another child
@@ -25,7 +25,7 @@ internal class Scenario1 : IUseCase
             .AddChild(child => child
                 .WithName("Frankie")
                 .IsBorn("Yes")
-                .WithBirthDate("18 SEP 2023") //TODO : need a better way to handle these dates. Test will become flaky over time
+                .WithBirthDate(addYears: -2, addMonths: -11, addDays: 1)
                 .WithSupport("No, none of these apply"))
 
             // Action: Add another child
@@ -35,7 +35,7 @@ internal class Scenario1 : IUseCase
             .AddChild(child => child
                 .WithName("Baby")
                 .IsBorn("No")
-                .WithDueDate("17 OCT 2026")) //TODO : need a better way to handle these dates. Test will become flaky over time
+                .WithDueDate(addMonths: 2))
 
             // Complete child details loop
             .Action("Continue")
