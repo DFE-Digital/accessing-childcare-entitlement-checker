@@ -15,7 +15,7 @@ internal class Scenario5 : IUseCase
             .AddChild(child => child
                 .WithName("Baby")
                 .IsBorn("No")
-                .WithDueDate("17 AUG 2026")) //TODO : need a better way to handle these dates. Test will become flaky over time
+                .WithDueDate(addMonths: 6))
 
             // Complete child details loop
             .Action("Continue")
