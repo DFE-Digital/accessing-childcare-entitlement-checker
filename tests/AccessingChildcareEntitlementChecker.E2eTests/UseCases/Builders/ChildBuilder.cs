@@ -1,3 +1,4 @@
+using System;
 using AccessingChildcareEntitlementChecker.E2eTests.Pages;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
@@ -18,15 +19,17 @@ internal class ChildBuilder
         return this;
     }
 
-    public ChildBuilder WithBirthDate(string birthDate)
+    public ChildBuilder WithBirthDate(int addYears = 0, int addMonths = 0, int addDays = 0)
     {
-        _steps.Add(new AnswerStep(PageNames.ChildBirthDate, birthDate));
+        var date = DateTime.Today.AddYears(addYears).AddMonths(addMonths).AddDays(addDays);
+        _steps.Add(new AnswerStep(PageNames.ChildBirthDate, date.ToString("dd MMM yyyy").ToUpper()));
         return this;
     }
 
-    public ChildBuilder WithDueDate(string dueDate)
+    public ChildBuilder WithDueDate(int addYears = 0, int addMonths = 0, int addDays = 0)
     {
-        _steps.Add(new AnswerStep(PageNames.ChildDueDate, dueDate));
+        var date = DateTime.Today.AddYears(addYears).AddMonths(addMonths).AddDays(addDays);
+        _steps.Add(new AnswerStep(PageNames.ChildDueDate, date.ToString("dd MMM yyyy").ToUpper()));
         return this;
     }
 
