@@ -58,3 +58,14 @@ jobs:
       contents: read
     uses: ./.github/workflows/run-trivy-scan.yml
 
+  infracost:
+    name: Infracost Estimate
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/run-infracost.yml
+    secrets:
+      INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+
+
+
