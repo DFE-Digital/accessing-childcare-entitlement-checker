@@ -15,7 +15,7 @@ internal class Scenario5 : IUseCase
             .AddChild(child => child
                 .WithName("Baby")
                 .IsBorn("No")
-                .WithDueDate(addMonths:6))
+                .WithDueDate(addMonths: 6))
 
             // Complete child details loop
             .Action("Continue")
