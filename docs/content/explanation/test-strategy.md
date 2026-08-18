@@ -6,7 +6,7 @@ includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Explanation
   key: Test strategy
-order: 5
+order: 10
 ---
 This guide shows the testing strategy for the Accessing Childcare Entitlement Checker. It shows the types of tests we run, the tools we use, and the test lifecycle within our CI/CD pipelines.
 
