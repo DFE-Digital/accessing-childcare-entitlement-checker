@@ -271,4 +271,61 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
+
+    [Fact]
+    public void Evaluate_AC_891()
+    {
+        var evaluator = CreateEvaluator();
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                CountryOfResidence = CountryOfResidence.England,
+                HasAccessToPublicFunds = true,
+                HasPartner = true,
+                LivesInGreatBritain = true,
+                ReceivesUniversalCredit = true,                
+            },
+
+            User = new PersonFacts
+            {
+                Benefits = [PersonBenefit.ContributionBasedEmploymentAndSupportAllowance],
+                ChildcareSupport = [],
+                EarnsAboveThreshold = false,
+                ExceedsAdjustedNetIncomeLimit = false,
+                PaidWorkStatus = PaidWorkStatus.No,
+                SelfEmployedLessThan12Months = false,
+                WorkStatuses = [],
+            },
+
+            Partner = new PersonFacts
+            {
+                Benefits = [],
+                ChildcareSupport = [],
+                EarnsAboveThreshold = true,
+                ExceedsAdjustedNetIncomeLimit = false,
+                PaidWorkStatus = PaidWorkStatus.Yes,
+                SelfEmployedLessThan12Months = false,
+                WorkStatuses = [WorkStatus.PaidEmployment],
+            }
+        };
+
+        var child = new ChildFacts
+        {
+            AgeInMonths = 29,
+            AgeInYears = 2,
+            ChildId = "1",
+            ChildRelatedBenefits = [],
+            DateOfBirth = new DateOnly(2024, 03, 01),
+            DueDate = null,
+            IsBorn = true,
+            Name = "Isabel",
+            PartnerIsOnParentalLeaveForChild = false,
+            UserIsOnParentalLeaveForChild = false,
+        };
+
+        var result = evaluator.Evaluate(context, child);
+
+        Assert.Null(result);
+    }
 }
