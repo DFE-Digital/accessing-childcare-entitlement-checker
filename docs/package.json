@@ -4,9 +4,10 @@
   "description": "Documentation for the Accessing Childcare Entitlement Checker",
   "type": "module",
   "scripts": {
+    "clean": "node clean.js",
     "prebuild:css": "node generate-sass-prefix.js",
-    "build": "npm run prebuild:css && eleventy",
-    "start": "npm run prebuild:css && eleventy --serve"
+    "build": "npm run clean && npm run prebuild:css && eleventy",
+    "start": "npm run clean && npm run prebuild:css && eleventy --serve"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
