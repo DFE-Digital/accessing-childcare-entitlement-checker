@@ -2,7 +2,7 @@
 title: State management
 layout: sub-navigation
 sectionKey: Explanation
-order: 6
+order: 8
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Explanation

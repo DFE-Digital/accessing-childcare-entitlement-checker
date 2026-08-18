@@ -2,7 +2,7 @@
 title: CI/CD pipelines
 layout: sub-navigation
 sectionKey: Explanation
-order: 8
+order: 11
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Explanation
