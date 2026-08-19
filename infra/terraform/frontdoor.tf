@@ -88,9 +88,8 @@ resource "azapi_update_resource" "shutter_origin_group_auth" {
       authentication = {
         type                   = "UserAssignedIdentity"
         scope                  = "https://storage.azure.com/.default"
-        tokenDestinationHeader = "Authorization"
+        tokenDestinationHeader = "Authorization" # checkov:skip=CKV_SECRET_6:Authorization is an HTTP header name, not a secret.
         userAssignedIdentity = {
-          # checkov:skip=CKV_SECRET_6: User Assigned Identity ID is a standard resource ID, not a secret.
           id = azurerm_user_assigned_identity.frontdoor_identity.id
         }
       }
