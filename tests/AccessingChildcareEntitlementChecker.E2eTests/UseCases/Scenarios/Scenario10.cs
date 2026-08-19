@@ -34,7 +34,7 @@ internal class Scenario10 : IUseCase
             .SetUserAge("21 or over")
             .SetNationality("Citizen of an EU country, EEA country or Switzerland")
             .SetSettledStatus("No")
-            .SetPaidWork("Yes")
+            .SetPaidWork("Yes, I am currently in work")
             .SetWorkStatus("Paid employment")
             .SetWeeklyEarnings("Yes")
             .SetYearlyEarnings("No")
