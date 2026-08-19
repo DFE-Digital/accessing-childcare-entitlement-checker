@@ -142,7 +142,7 @@ public abstract class JourneyPageBase : PageBase
         await ExpectPathAndQuery("/nationality/settled-status");
     }
 
-    protected async Task AnswerUserPaidWorkStatus(string paidWorkStatus = "Yes")
+    protected async Task AnswerUserPaidWorkStatus(string paidWorkStatus = "Yes, I am currently in work")
     {
         await ExpectPathAndQuery("/work-status/work");
         await Page.GetByLabel(paidWorkStatus, new() { Exact = true }).CheckAsync();
@@ -150,7 +150,7 @@ public abstract class JourneyPageBase : PageBase
         await ExpectPathAndQuery("/work-status/work-status");
     }
 
-    protected async Task AnswerPartnerPaidWorkStatus(string paidWorkStatus = "Yes")
+    protected async Task AnswerPartnerPaidWorkStatus(string paidWorkStatus = "Yes, they are currently in work")
     {
         await ExpectPathAndQuery("/work-status/work-partner");
         await Page.GetByLabel(paidWorkStatus, new() { Exact = true }).CheckAsync();

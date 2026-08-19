@@ -5,12 +5,12 @@ Background:
 	And I start the journey, filling in Aydin's and Sara's details
 	And I check my children's details and click on Continue
 	And I answer questions as follows:
-		| Question                                                          | Answer                   |
-		| What is your age?                                                 | Under 18                 |
-		| What is your nationality?                                         | British or Irish citizen |
-		| Are you in paid work?                                             | Yes                      |
-		| How would you describe your work status?                          | Paid employment          |
-		| On average, do you expect to earn £203 a week or more before tax? | Yes                      |
+		| Question                                                          | Answer                      |
+		| What is your age?                                                 | Under 18                    |
+		| What is your nationality?                                         | British or Irish citizen    |
+		| Are you in paid work?                                             | Yes, I am currently in work |
+		| How would you describe your work status?                          | Paid employment             |
+		| On average, do you expect to earn £203 a week or more before tax? | Yes                         |
 
 Scenario: Page load
 	When the page header is "Do you expect your adjusted net income to be more than £100,000 for the current tax year?"
