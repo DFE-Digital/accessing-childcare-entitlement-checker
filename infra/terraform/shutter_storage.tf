@@ -1,10 +1,10 @@
-# checkov:skip=CKV_AZURE_59: Public network access must be allowed so Front Door Standard can fetch assets over the public internet endpoint using Managed Identity authentication.
-# checkov:skip=CKV_AZURE_206: LRS replication is sufficient and cost-effective for static shutter content.
-# checkov:skip=CKV_AZURE_33: Queue service is not used by the shutter static site.
-# checkov:skip=CKV2_AZURE_1: Microsoft Managed Keys are sufficient for public non-sensitive static shutter assets.
-# checkov:skip=CKV2_AZURE_33: Front Door Standard SKU does not support Private Link to backend origins.
-# checkov:skip=CKV2_AZURE_21: Diagnostic settings and Front Door logs are used for monitoring instead of legacy storage logging.
 resource "azurerm_storage_account" "shutter" {
+  # checkov:skip=CKV_AZURE_59: Public network access must be allowed so Front Door Standard can fetch assets over the public internet endpoint using Managed Identity authentication.
+  # checkov:skip=CKV_AZURE_206: LRS replication is sufficient and cost-effective for static shutter content.
+  # checkov:skip=CKV_AZURE_33: Queue service is not used by the shutter static site.
+  # checkov:skip=CKV2_AZURE_1: Microsoft Managed Keys are sufficient for public non-sensitive static shutter assets.
+  # checkov:skip=CKV2_AZURE_33: Front Door Standard SKU does not support Private Link to backend origins.
+  # checkov:skip=CKV2_AZURE_21: Diagnostic settings and Front Door logs are used for monitoring instead of legacy storage logging.
   name                            = "${local.storage_prefix}shutter"
   resource_group_name             = azurerm_resource_group.web-rg.name
   location                        = azurerm_resource_group.web-rg.location
@@ -25,6 +25,7 @@ resource "azurerm_storage_account" "shutter" {
 }
 
 resource "azurerm_storage_container" "shutter_container" {
+  # checkov:skip=CKV2_AZURE_21: Logging is configured at the Front Door CDN and Diagnostic Settings level.
   name                  = "shutter"
   storage_account_id    = azurerm_storage_account.shutter.id
   container_access_type = "private"
