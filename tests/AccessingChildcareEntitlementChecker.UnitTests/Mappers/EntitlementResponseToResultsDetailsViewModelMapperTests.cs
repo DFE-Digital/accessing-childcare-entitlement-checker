@@ -242,6 +242,12 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
                             EligibleInFuture = true,
                             ApplyFromDate = GetThirtyHoursApplyFrom(oliverDob),
                             UseFromDate = GetThirtyHoursUseFrom(oliverDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursUniversal,
+                            EligibleInFuture = true,
+                            UseFromDate = GetFifteenHoursUniversalUseFrom(oliverDob)
                         }
                     ]
                 },
@@ -880,6 +886,22 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
         Assert.Equal(2, scheme.CanBeUsedWith.Count);
         Assert.Contains(SchemeCode.ThirtyHoursForWorkingFamilies, scheme.CanBeUsedWith);
         Assert.Contains(SchemeCode.TaxFreeChildcare, scheme.CanBeUsedWith);
+    }
+
+    [Fact]
+    public void Map_FifteenHoursUniversal_EligibleInFuture_StartsFromDate()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response.ChildResults.Single(x => x.ChildId == "child-7"), false);
+
+        var scheme = result
+            .Sections
+            .Single(x => x.SectionType == SchemeSectionType.FundedChildCareHours)
+            .Schemes
+            .Single(x => x.SchemeCode == SchemeCode.FifteenHoursUniversal);
+
+        Assert.Equal("Starts_FifteenHoursUniversal_FromDate", scheme.Starts);
     }
 
     [Fact]
