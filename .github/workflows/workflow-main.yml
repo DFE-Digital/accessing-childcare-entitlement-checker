@@ -43,13 +43,21 @@ jobs:
       infra-directory: infra
       publish: true
 
+  build-shutter:
+    name: Build Shutter
+    permissions:
+      contents: read
+    uses: ./.github/workflows/build-shutter.yml
+    with:
+      publish: true
+
   deploy-dev:
     name: Deploy Development
     permissions:
       id-token: write
       contents: read
       actions: read
-    needs: [build-dotnet, build-infra]
+    needs: [build-dotnet, build-infra, build-shutter]
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment: development
@@ -65,7 +73,7 @@ jobs:
       id-token: write
       contents: read
       actions: read
-    needs: [build-dotnet, build-infra]
+    needs: [build-dotnet, build-infra, build-shutter]
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment: test
