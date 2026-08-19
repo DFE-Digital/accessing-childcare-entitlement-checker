@@ -887,7 +887,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
         Assert.Contains(SchemeCode.ThirtyHoursForWorkingFamilies, scheme.CanBeUsedWith);
         Assert.Contains(SchemeCode.TaxFreeChildcare, scheme.CanBeUsedWith);
     }
-    
+
     [Fact]
     public void Map_FifteenHoursUniversal_EligibleInFuture_StartsFromDate()
     {
