@@ -7,11 +7,11 @@ Background:
 
 Scenario Outline: Page load for different age groups and employment statuses
 	Given I answer questions as follows:
-		| Question                                 | Answer                   |
-		| What is your age?                        | <Age>                    |
-		| What is your nationality?                | British or Irish citizen |
-		| Are you in paid work?                    | Yes                      |
-		| How would you describe your work status? | <Work Status>            |
+		| Question                                 | Answer                      |
+		| What is your age?                        | <Age>                       |
+		| What is your nationality?                | British or Irish citizen    |
+		| Are you in paid work?                    | Yes, I am currently in work |
+		| How would you describe your work status? | <Work Status>               |
 	When the page header is "On average, do you expect to earn £<Earnings> a week or more before tax?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
@@ -54,11 +54,11 @@ Examples:
 
 Scenario Outline: Continue without selection for different age groups and employment statuses
 	Given I answer questions as follows:
-		| Question                                 | Answer                   |
-		| What is your age?                        | <Age>                    |
-		| What is your nationality?                | British or Irish citizen |
-		| Are you in paid work?                    | Yes                      |
-		| How would you describe your work status? | <Work Status>            |
+		| Question                                 | Answer                      |
+		| What is your age?                        | <Age>                       |
+		| What is your nationality?                | British or Irish citizen    |
+		| Are you in paid work?                    | Yes, I am currently in work |
+		| How would you describe your work status? | <Work Status>               |
 	When I do not select a radio button
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
@@ -75,11 +75,11 @@ Examples:
 
 Scenario: Radio button selection
 	Given I answer questions as follows:
-		| Question                                 | Answer                   |
-		| What is your age?                        | Under 18                 |
-		| What is your nationality?                | British or Irish citizen |
-		| Are you in paid work?                    | Yes                      |
-		| How would you describe your work status? | Paid employment          |
+		| Question                                 | Answer                      |
+		| What is your age?                        | Under 18                    |
+		| What is your nationality?                | British or Irish citizen    |
+		| Are you in paid work?                    | Yes, I am currently in work |
+		| How would you describe your work status? | Paid employment             |
 	When I select the "Yes" radio button
 	And I select the "No" radio button
 	Then the "No" radio button should be selected
@@ -87,43 +87,43 @@ Scenario: Radio button selection
 
 Scenario: Continue with Yes
 	Given I answer questions as follows:
-		| Question                                 | Answer                   |
-		| What is your age?                        | Under 18                 |
-		| What is your nationality?                | British or Irish citizen |
-		| Are you in paid work?                    | Yes                      |
-		| How would you describe your work status? | Paid employment          |
+		| Question                                 | Answer                      |
+		| What is your age?                        | Under 18                    |
+		| What is your nationality?                | British or Irish citizen    |
+		| Are you in paid work?                    | Yes, I am currently in work |
+		| How would you describe your work status? | Paid employment             |
 	When I select the "Yes" radio button
 	And I click on Continue
 	Then the page header is "Do you expect your adjusted net income to be more than £100,000 for the current tax year?"
 
 Scenario: Continue with No
 	Given I answer questions as follows:
-		| Question                                 | Answer                   |
-		| What is your age?                        | Under 18                 |
-		| What is your nationality?                | British or Irish citizen |
-		| Are you in paid work?                    | Yes                      |
-		| How would you describe your work status? | Paid employment          |
+		| Question                                 | Answer                      |
+		| What is your age?                        | Under 18                    |
+		| What is your nationality?                | British or Irish citizen    |
+		| Are you in paid work?                    | Yes, I am currently in work |
+		| How would you describe your work status? | Paid employment             |
 	When I select the "No" radio button
 	And I click on Continue
 	Then the page header is "Does your household receive universal credit?"
 
 Scenario: Back navigation
 	Given I answer questions as follows:
-		| Question                                 | Answer                   |
-		| What is your age?                        | Under 18                 |
-		| What is your nationality?                | British or Irish citizen |
-		| Are you in paid work?                    | Yes                      |
-		| How would you describe your work status? | Paid employment          |
+		| Question                                 | Answer                      |
+		| What is your age?                        | Under 18                    |
+		| What is your nationality?                | British or Irish citizen    |
+		| Are you in paid work?                    | Yes, I am currently in work |
+		| How would you describe your work status? | Paid employment             |
 	When I click the back link
 	Then the page header is "How would you describe your work status?"
 
 Scenario: Back navigation from Have you been self-employed for less than 12 months?
 	Given I answer questions as follows:
-		| Question                                             | Answer                   |
-		| What is your age?                                    | Under 18                 |
-		| What is your nationality?                            | British or Irish citizen |
-		| Are you in paid work?                                | Yes                      |
-		| How would you describe your work status?             | Self-employed            |
-		| Have you been self-employed for less than 12 months? | No                       |
+		| Question                                             | Answer                      |
+		| What is your age?                                    | Under 18                    |
+		| What is your nationality?                            | British or Irish citizen    |
+		| Are you in paid work?                                | Yes, I am currently in work |
+		| How would you describe your work status?             | Self-employed               |
+		| Have you been self-employed for less than 12 months? | No                          |
 	When I click the back link
 	Then the page header is "Have you been self-employed for less than 12 months?"
