@@ -52,6 +52,7 @@ Run the script with the environment prefix and `shutter`:
 
 This script will:
 - Safely update the Front Door Route (`<prefix>-web-fd-route`) to forward traffic to the `shutter-origin-group`.
+- Set the route's **Origin path** to `/shutter` so assets are fetched from the correct container directory.
 - Associate both the `SecurityRules` and `ShutterRules` rule sets, ensuring that critical security redirects remain functional while the site is shuttered.
 
 #### To Disable the Shutter (Restore Service):
@@ -66,6 +67,7 @@ Run the script with the environment prefix and `restore`:
 This script will:
 
 - Revert the Front Door Route to point back to the main App Service `web-fd-origin-group`.
+- Clear the route's **Origin path** (sets it to empty).
 - Restore the route's association to use only the `SecurityRules` rule set.
 
 ## Manual Toggle via Azure Portal (ClickOps)
@@ -88,6 +90,7 @@ Use this method if you do not have access to Cloud Shell or prefer using the gra
 1. Click the **...** (three dots) button at the right-hand end of the route row and click **Edit route**.
 2. Scroll down to the **Routing details** section:
    - **Origin group**: Change the selection from the default web origin group (`<prefix>-web-fd-origin-group`) to the shutter origin group (`<prefix>-shutter-fd-origin-group`).
+   - **Origin path**: Type `/shutter`.
    - **Rules**: In the rules dropdown, ensure both `<prefix>SecurityRules` and `<prefix>ShutterRules` are selected. (Do not de-select `<prefix>SecurityRules` as it contains critical security.txt redirect paths).
 3. Click the **Update** button at the bottom of the page.
 4. Click **Save** on the Front Door manager page to commit and propagate the changes globally.
@@ -98,6 +101,7 @@ To restore normal operations and route traffic back to the main App Service:
 1. Go back to the **Front Door manager** and edit the route `<prefix>-web-fd-route`.
 2. Scroll to the **Routing details** section:
    - **Origin group**: Change back to `<prefix>-web-fd-origin-group`.
+   - **Origin path**: Delete the text `/shutter` so that the field is **blank/empty**.
    - **Rules**: De-select `<prefix>ShutterRules` so that only `<prefix>SecurityRules` remains selected.
 3. Click **Update** and then **Save** to apply the changes.
 

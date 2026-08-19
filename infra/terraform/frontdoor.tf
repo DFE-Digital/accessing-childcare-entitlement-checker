@@ -3,11 +3,6 @@ resource "azurerm_cdn_frontdoor_profile" "frontdoor-web-profile" {
   resource_group_name = azurerm_resource_group.web-rg.name
   sku_name            = "${var.azure_frontdoor_sku}_AzureFrontDoor"
   tags                = local.common_tags
-
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.frontdoor_identity.id]
-  }
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "frontdoor-origin-group" {
@@ -61,7 +56,8 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
     ignore_changes = [
       cdn_frontdoor_origin_group_id,
       cdn_frontdoor_origin_ids,
-      cdn_frontdoor_rule_set_ids
+      cdn_frontdoor_rule_set_ids,
+      cdn_frontdoor_origin_path
     ]
   }
 }
@@ -88,12 +84,6 @@ resource "azurerm_cdn_frontdoor_origin" "frontdoor-shutter-origin" {
   weight                         = 1
   name                           = "${local.prefix}-shutter-fd-origin"
   enabled                        = true
-  origin_path                    = "/shutter"
-
-  authentication {
-    type  = "ManagedIdentity"
-    scope = azurerm_storage_account.shutter.id
-  }
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy" {

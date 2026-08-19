@@ -23,6 +23,7 @@ if [ "$ACTION" = "shutter" ]; then
     ORIGIN_GROUP="${PREFIX}-shutter-fd-origin-group"
     RULE_SET_1="${ENV_PREFIX}SecurityRules"
     RULE_SET_2="${ENV_PREFIX}ShutterRules"
+    ORIGIN_PATH="/shutter"
     
     az afd route update \
         --resource-group "$RG" \
@@ -30,13 +31,15 @@ if [ "$ACTION" = "shutter" ]; then
         --endpoint-name "$ENDPOINT" \
         --route-name "$ROUTE" \
         --origin-group "$ORIGIN_GROUP" \
-        --rule-sets "$RULE_SET_1" "$RULE_SET_2"
+        --rule-sets "$RULE_SET_1" "$RULE_SET_2" \
+        --origin-path "$ORIGIN_PATH"
     echo "Shutter mode successfully enabled."
 
 elif [ "$ACTION" = "restore" ]; then
     echo "Restoring normal operation for environment $ENV_PREFIX..."
     ORIGIN_GROUP="${PREFIX}-web-fd-origin-group"
     RULE_SET_1="${ENV_PREFIX}SecurityRules"
+    ORIGIN_PATH=""
     
     az afd route update \
         --resource-group "$RG" \
@@ -44,7 +47,8 @@ elif [ "$ACTION" = "restore" ]; then
         --endpoint-name "$ENDPOINT" \
         --route-name "$ROUTE" \
         --origin-group "$ORIGIN_GROUP" \
-        --rule-sets "$RULE_SET_1"
+        --rule-sets "$RULE_SET_1" \
+        --origin-path "$ORIGIN_PATH"
     echo "Normal operation successfully restored."
 
 else
