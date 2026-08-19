@@ -3,6 +3,11 @@ resource "azurerm_cdn_frontdoor_profile" "frontdoor-web-profile" {
   resource_group_name = azurerm_resource_group.web-rg.name
   sku_name            = "${var.azure_frontdoor_sku}_AzureFrontDoor"
   tags                = local.common_tags
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.frontdoor_identity.id]
+  }
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "frontdoor-origin-group" {
@@ -71,6 +76,24 @@ resource "azurerm_cdn_frontdoor_origin_group" "shutter-origin-group" {
     sample_size                 = 4
     successful_samples_required = 2
   }
+}
+
+resource "azapi_update_resource" "shutter_origin_group_auth" {
+  type        = "Microsoft.Cdn/profiles/originGroups@2023-05-01"
+  resource_id = azurerm_cdn_frontdoor_origin_group.shutter-origin-group.id
+
+  body = jsonencode({
+    properties = {
+      authentication = {
+        type                   = "UserAssignedIdentity"
+        scope                  = "https://storage.azure.com/.default"
+        tokenDestinationHeader = "Authorization"
+        userAssignedIdentity = {
+          id = azurerm_user_assigned_identity.frontdoor_identity.id
+        }
+      }
+    }
+  })
 }
 
 resource "azurerm_cdn_frontdoor_origin" "frontdoor-shutter-origin" {
