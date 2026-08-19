@@ -40,7 +40,7 @@ internal class Scenario9 : IUseCase
             .SetHasPartner("Yes")
 
             .SetPartnerAge("21 or over")
-            .SetPartnerPaidWork("Yes")
+            .SetPartnerPaidWork("Yes, they are currently in work")
             .SetPartnerWorkStatus("Paid employment")
             .SetPartnerWeeklyEarnings("Yes")
             .SetPartnerYearlyEarnings("No")

@@ -11,10 +11,10 @@ Background:
 
 Scenario Outline: Page load for different age groups and employment statuses
 	Given I answer questions as follows:
-		| Question                                           | Answer                   |
-		| What is your partner's age?                        | <Age>                    |
-		| Is your partner in paid work?                      | Yes                      |
-		| How would you describe your partner's work status? | <Work Status>            |
+		| Question                                           | Answer                          |
+		| What is your partner's age?                        | <Age>                           |
+		| Is your partner in paid work?                      | Yes, they are currently in work |
+		| How would you describe your partner's work status? | <Work Status>                   |
 	When the page header is "On average, does your partner expect to earn £<Earnings> a week or more before tax?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
@@ -56,10 +56,10 @@ Examples:
 
 Scenario Outline: Continue without selection for different age groups and employment statuses
 	Given I answer questions as follows:
-		| Question                                           | Answer                   |
-		| What is your partner's age?                        | <Age>                    |
-		| Is your partner in paid work?                      | Yes                      |
-		| How would you describe your partner's work status? | <Work Status>            |
+		| Question                                           | Answer                          |
+		| What is your partner's age?                        | <Age>                           |
+		| Is your partner in paid work?                      | Yes, they are currently in work |
+		| How would you describe your partner's work status? | <Work Status>                   |
 	When I do not select a radio button
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
@@ -76,10 +76,10 @@ Examples:
 
 Scenario: Radio button selection
 	Given I answer questions as follows:
-		| Question                                           | Answer          |
-		| What is your partner's age?                        | 21 or over      |
-		| Is your partner in paid work?                      | Yes             |
-		| How would you describe your partner's work status? | Paid employment |
+		| Question                                           | Answer                          |
+		| What is your partner's age?                        | 21 or over                      |
+		| Is your partner in paid work?                      | Yes, they are currently in work |
+		| How would you describe your partner's work status? | Paid employment                 |
 	When I select the "Yes" radio button
 	And I select the "No" radio button
 	Then the "No" radio button should be selected
@@ -87,10 +87,10 @@ Scenario: Radio button selection
 
 Scenario: Continue without selection
 	Given I answer questions as follows:
-		| Question                                           | Answer          |
-		| What is your partner's age?                        | 21 or over      |
-		| Is your partner in paid work?                      | Yes             |
-		| How would you describe your partner's work status? | Paid employment |
+		| Question                                           | Answer                          |
+		| What is your partner's age?                        | 21 or over                      |
+		| Is your partner in paid work?                      | Yes, they are currently in work |
+		| How would you describe your partner's work status? | Paid employment                 |
 	When I do not select a radio button
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
@@ -98,39 +98,39 @@ Scenario: Continue without selection
 
 Scenario: Continue with Yes
 	Given I answer questions as follows:
-		| Question                                           | Answer          |
-		| What is your partner's age?                        | 21 or over      |
-		| Is your partner in paid work?                      | Yes             |
-		| How would you describe your partner's work status? | Paid employment |
+		| Question                                           | Answer                          |
+		| What is your partner's age?                        | 21 or over                      |
+		| Is your partner in paid work?                      | Yes, they are currently in work |
+		| How would you describe your partner's work status? | Paid employment                 |
 	When I select the "Yes" radio button
 	And I click on Continue
 	Then the page header is "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?"
 
 Scenario: Continue with No
 	Given I answer questions as follows:
-		| Question                                           | Answer          |
-		| What is your partner's age?                        | 21 or over      |
-		| Is your partner in paid work?                      | Yes             |
-		| How would you describe your partner's work status? | Paid employment |
+		| Question                                           | Answer                          |
+		| What is your partner's age?                        | 21 or over                      |
+		| Is your partner in paid work?                      | Yes, they are currently in work |
+		| How would you describe your partner's work status? | Paid employment                 |
 	When I select the "No" radio button
 	And I click on Continue
 	Then the page header is "Does your partner get any of these benefits?"
 
 Scenario: Back navigation
 	Given I answer questions as follows:
-		| Question                                           | Answer          |
-		| What is your partner's age?                        | 21 or over      |
-		| Is your partner in paid work?                      | Yes             |
-		| How would you describe your partner's work status? | Paid employment |
+		| Question                                           | Answer                          |
+		| What is your partner's age?                        | 21 or over                      |
+		| Is your partner in paid work?                      | Yes, they are currently in work |
+		| How would you describe your partner's work status? | Paid employment                 |
 	When I click the back link
 	Then the page header is "How would you describe your partner's work status?"
 
 Scenario: Back navigation from Has your partner been self-employed for less than 12 months?
 	Given I answer questions as follows:
-		| Question                                           | Answer        |
-		| What is your partner's age?                        | 21 or over    |
-		| Is your partner in paid work?                      | Yes           |
-		| How would you describe your partner's work status? | Self-employed |
+		| Question                                           | Answer                          |
+		| What is your partner's age?                        | 21 or over                      |
+		| Is your partner in paid work?                      | Yes, they are currently in work |
+		| How would you describe your partner's work status? | Self-employed                   |
 	And I answer "Has your partner been self-employed for less than 12 months?" as "No"
 	When I click the back link
 	Then the page header is "Has your partner been self-employed for less than 12 months?"

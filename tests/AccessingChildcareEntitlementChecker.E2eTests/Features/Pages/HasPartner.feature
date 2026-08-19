@@ -44,7 +44,7 @@ Scenario: Back navigation from Do you already get any of these to help pay for c
 		| Question                                                                                  | Answer                        |
 		| What is your age?                                                                         | Under 18                      |
 		| What is your nationality?                                                                 | British or Irish citizen      |
-		| Are you in paid work?                                                                     | Yes                           |
+		| Are you in paid work?                                                                     | Yes, I am currently in work   |
 		| How would you describe your work status?                                                  | Self-employed                 |
 		| Have you been self-employed for less than 12 months?                                      | No                            |
 		| On average, do you expect to earn £203 a week or more before tax?                         | Yes                           |

@@ -13,7 +13,7 @@ Scenario: Page load
 	When the page header is "Are you in paid work?"
 	Then I should see 4 radio buttons with the following options:
 		| Option                          |
-		| Yes                             |
+		| Yes, I am currently in work     |
 		| Yes, but I am on parental leave |
 		| Yes, but I am on sick leave     |
 		| No, I am not in work            |
@@ -21,7 +21,7 @@ Scenario: Page load
 
 Scenario: Radio button selection
 	Given I answer "What is your nationality?" as "British or Irish citizen"
-	When I select the "Yes" radio button
+	When I select the "Yes, I am currently in work" radio button
 	And I select the "No, I am not in work" radio button
 	Then the "No, I am not in work" radio button should be selected
 	And all other options should be deselected
@@ -35,7 +35,7 @@ Scenario: Continue without selection
 
 Scenario: Continue with Yes
 	Given I answer "What is your nationality?" as "British or Irish citizen"
-	When I select the "Yes" radio button
+	When I select the "Yes, I am currently in work" radio button
 	And I click on Continue
 	Then the page header is "How would you describe your work status?"
 

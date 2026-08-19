@@ -42,7 +42,7 @@ internal class Scenario1 : IUseCase
 
             .SetUserAge("21 or over")
             .SetNationality("British or Irish citizen")
-            .SetPaidWork("Yes")
+            .SetPaidWork("Yes, I am currently in work")
             .SetWorkStatus("Paid employment")
             .SetWeeklyEarnings("No")
             .SetUniversalCredit("Yes")

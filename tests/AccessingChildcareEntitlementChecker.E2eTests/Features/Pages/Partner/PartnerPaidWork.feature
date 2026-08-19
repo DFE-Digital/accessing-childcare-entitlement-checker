@@ -14,7 +14,7 @@ Scenario: Page load
 	When the page header is "Is your partner in paid work?"
 	Then I should see 4 radio buttons with the following options:
 		| Option                              |
-		| Yes                                 |
+		| Yes, they are currently in work         |
 		| Yes, but they are on parental leave |
 		| Yes, but they are on sick leave     |
 		| No, they are not in work            |
@@ -26,7 +26,7 @@ Scenario: Radio button selection
 		| Question                    | Answer     |
 		| Do you live with a partner? | Yes        |
 		| What is your partner's age? | 21 or over |
-	When I select the "Yes" radio button
+	When I select the "Yes, they are currently in work" radio button
 	And I select the "No, they are not in work" radio button
 	Then the "No, they are not in work" radio button should be selected
 	And all other options should be deselected
@@ -48,7 +48,7 @@ Scenario: Continue with Yes
 		| Question                    | Answer     |
 		| Do you live with a partner? | Yes        |
 		| What is your partner's age? | 21 or over |
-	When I select the "Yes" radio button
+	When I select the "Yes, they are currently in work" radio button
 	And I click on Continue
 	Then the page header is "How would you describe your partner's work status?"
 
