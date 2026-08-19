@@ -4,10 +4,10 @@ namespace AccessingChildcareEntitlementChecker.Web.Models.User;
 
 public enum PaidWorkOption
 {
-    [Display(Name = "Yes")]
+    [Display(Name = "Yes, I am currently in work")]
     Yes,
 
-    [Display(Name = "Yes, but I am on parental leave", Description = "Parental leave includes maternity, paternity, shared parental, adoption, neonatal care and bereaved partners leave")]
+    [Display(Name = "Yes, but I am on parental leave", Description = "Parental leave includes maternity, paternity, shared parental, adoption, neonatal care and bereaved partner's leave")]
     ParentalLeave,
 
     [Display(Name = "Yes, but I am on sick leave")]
