@@ -46,28 +46,28 @@ graph TD
         AFD -->|Shutter Route / failover.sh| ShutterStorage[Azure Storage Account]
     end
     
-    subgraph Secure Storage Access
-        ShutterStorage -->|Private Access| ShutterContainer[(shutter container)]
-        UAMI[User-Assigned Managed Identity] -.->|Storage Blob Data Reader| ShutterContainer
-        AFD -.->|Authenticates via UAMI| ShutterContainer
+    subgraph Storage Access
+        ShutterStorage -->|Public Read-Only| ShutterContainer[(shutter container)]
+        PipelineSP[Pipeline Service Principal] -.->|Storage Blob Data Contributor| ShutterContainer
+        AFD -.->|Fetches Assets| ShutterContainer
     end
 ```
 
 The service integrates three core components:
 
-### 1. Locked-down Azure Storage Account
+### 1. Azure Storage Account and container
 
-We provision an `azurerm_storage_account` and disable shared access keys (`shared_access_key_enabled = false`) and public anonymous access (`allow_nested_items_to_be_public = false`). The files are stored in a private container named `shutter`.
+We provision an `azurerm_storage_account` and a `shutter` blob container configured with public read-only access (`container_access_type = "blob"`). 
 
-### 2. User-Assigned Managed Identity
+Because the shutter page displays a generic, non-sensitive "Service Unavailable" message intended for the general public, public read-only access is secure and optimal. It allows the browser to natively load GDS Transport fonts and the crest image from `/assets/...` without CORS errors or complex authentication blocks.
 
-We assign a dedicated User-Assigned Managed Identity (`frontdoor_identity`) to the Azure Front Door Profile. We grant this identity the `Storage Blob Data Reader` role on our storage account. This ensures only Azure Front Door is authorized to read the shutter page content.
+To secure deployment, write access is strictly limited to the GitHub Actions workflow Service Principal using the `Storage Blob Data Contributor` RBAC role.
 
-### 3. Front Door routing and URL rewriting
+### 2. Front Door routing and URL rewriting
 
 - **Normal Operation**: Azure Front Door routes all traffic (`/*`) to the main Web App App Service using the `SecurityRules` rule set.
-- **Shutter Operation**: Using our `failover.sh` runbook script, we update the route to point to the `shutter-origin-group` and attach both `SecurityRules` and `ShutterRules` rule sets.
-- **Path Rewriting**: The `ShutterRules` rule set applies a `url_rewrite` rule. This rule rewrites any requested path (e.g. `/about` or `/help`) to `/index.html` before requesting the file from the blob origin. This ensures the user stays on their requested URL in their address bar but receives the "Service Unavailable" page, while still keeping critical security redirect paths (like `/security.txt` from `SecurityRules`) operational.
+- **Shutter Operation**: Using our `failover.sh` runbook script, we update the route's origin group to point to the `shutter-origin-group`, attach both `SecurityRules` and `ShutterRules` rule sets, and set the origin path to `/shutter`.
+- **Path Rewriting**: The `ShutterRules` rule set applies a `url_rewrite` rule. This rule rewrites any requested path (e.g. `/about` or `/help`) to `/index.html` before requesting the file from the blob origin, provided the path does not begin with `/assets/`. This ensures the user stays on their requested URL in their address bar but receives the "Service Unavailable" page, while still letting critical assets and security redirects (like `/security.txt` from `SecurityRules`) load successfully.
 
 ## Managing shutter content like code
 

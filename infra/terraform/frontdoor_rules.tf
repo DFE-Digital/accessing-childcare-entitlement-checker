@@ -68,18 +68,17 @@ resource "azurerm_cdn_frontdoor_rule" "shutter_rewrite_rule" {
 
   conditions {
     request_path {
-      operator         = "BeginsWith"
-      negate_condition = true
-      values           = ["/assets/"]
-      transforms       = ["Lowercase"]
+      operator   = "NotBeginsWith"
+      values     = ["assets/"]
+      transforms = ["Lowercase"]
     }
   }
 
   actions {
     url_rewrite {
-      source_pattern          = "/"
-      destination             = "/index.html"
-      preserve_unmatched_path = false
+      source_pattern                  = "/"
+      destination_path                = "/index.html"
+      preserve_unmatched_path_enabled = false
     }
   }
 
