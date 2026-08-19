@@ -394,7 +394,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
         if (schemeResult.EligibleInFuture)
         {
-            return _localizer["Starts_FifteenHoursUniversal_FromDate", schemeResult.UseFromDate!.Value];
+            return _localizer["Starts_FifteenHoursUniversal_FromDate", child.ChildName, schemeResult.UseFromDate!.Value];
         }
 
         throw new InvalidOperationException("Unexpected eligibility state for Fifteen Hours Universal.");
