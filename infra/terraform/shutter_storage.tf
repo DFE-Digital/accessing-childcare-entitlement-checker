@@ -1,3 +1,9 @@
+# checkov:skip=CKV_AZURE_59: Public network access must be allowed so Front Door Standard can fetch assets over the public internet endpoint using Managed Identity authentication.
+# checkov:skip=CKV_AZURE_206: LRS replication is sufficient and cost-effective for static shutter content.
+# checkov:skip=CKV_AZURE_33: Queue service is not used by the shutter static site.
+# checkov:skip=CKV2_AZURE_1: Microsoft Managed Keys are sufficient for public non-sensitive static shutter assets.
+# checkov:skip=CKV2_AZURE_33: Front Door Standard SKU does not support Private Link to backend origins.
+# checkov:skip=CKV2_AZURE_21: Diagnostic settings and Front Door logs are used for monitoring instead of legacy storage logging.
 resource "azurerm_storage_account" "shutter" {
   name                            = "${local.storage_prefix}shutter"
   resource_group_name             = azurerm_resource_group.web-rg.name
@@ -8,6 +14,12 @@ resource "azurerm_storage_account" "shutter" {
   shared_access_key_enabled       = false
   allow_nested_items_to_be_public = false
   min_tls_version                 = "TLS1_2"
+
+  blob_properties {
+    delete_retention_policy {
+      days = 7
+    }
+  }
 
   tags = local.common_tags
 }

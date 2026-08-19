@@ -78,6 +78,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "shutter-origin-group" {
   }
 }
 
+# checkov:skip=CKV_SECRET_6: User Assigned Identity ID is a standard resource ID, not a secret.
 resource "azapi_update_resource" "shutter_origin_group_auth" {
   type        = "Microsoft.Cdn/profiles/originGroups@2023-05-01"
   resource_id = azurerm_cdn_frontdoor_origin_group.shutter-origin-group.id
