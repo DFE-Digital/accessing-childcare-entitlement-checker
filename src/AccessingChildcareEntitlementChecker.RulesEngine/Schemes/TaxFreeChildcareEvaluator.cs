@@ -16,7 +16,7 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
 
         var meetsHouseholdRequirements =
             //HasAccessToPublicFunds will be making it's return to this scheme logic once we include the question "Do you have access to public funds" in our service
-            //context.Household.HasAccessToPublicFunds &&
+            //context.Household.HasAccessToPublicFunds 
             !context.Household.ReceivesUniversalCredit &&
             MeetsWorkRequirements(context, parentalLeaveAssessment);
 
