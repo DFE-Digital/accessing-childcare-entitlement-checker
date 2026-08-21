@@ -24,3 +24,8 @@ tf-f:
 
 tf-v:
 	terraform -chdir=infra/terraform validate
+
+# Documentation Targets
+# Flatten markdown documentation by folder into folder-specific notebooks
+flatten-docs:
+	pwsh ./scripts/flatten-docs.ps1

@@ -7,7 +7,7 @@ export default function(eleventyConfig) {
 
   eleventyConfig.addPlugin(govukEleventyPlugin, {
     stylesheets: ['/assets/styles.css'],
-    titleSuffix: 'Accessing Childcare',
+    titleSuffix: 'Accessing Childcare Entitlement Checker',
     templates: {
       sitemap: true,
       searchIndex: true
@@ -22,31 +22,23 @@ export default function(eleventyConfig) {
       }
     },
     serviceNavigation: {
-      serviceName: 'Accessing Childcare',
+      serviceName: 'Accessing Childcare Entitlement Checker',
       navigation: [
         {
-          text: 'Developers',
-          href: '/developers/'
+          text: 'Tutorials',
+          href: '/tutorials/'
         },
         {
-          text: 'Architecture',
-          href: '/architecture/'
+          text: 'How-to guides',
+          href: '/how-to/'
         },
         {
-          text: 'Testing',
-          href: '/testing/'
+          text: 'Reference',
+          href: '/reference/'
         },
         {
-          text: 'Decisions',
-          href: '/decisions/'
-        },
-        {
-          text: 'Operational',
-          href: '/operational/'
-        },
-        {
-          text: 'Runbooks',
-          href: '/runbooks/'
+          text: 'Explanation',
+          href: '/explanation/'
         },
       ]
     },
