@@ -2,7 +2,7 @@
 title: Infrastructure as code
 layout: sub-navigation
 sectionKey: Explanation
-order: 5
+order: 9
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Explanation
