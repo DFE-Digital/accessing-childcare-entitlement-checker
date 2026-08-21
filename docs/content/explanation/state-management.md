@@ -14,7 +14,7 @@ This guide explains the design and patterns of session state persistence in our 
 
 The application uses an ephemeral state philosophy. We do not use a persistent, relational database to store user data.
 
-- **Zero-PII Footprint**: We collect personal data, evaluate it, and discard it immediately. This removes the risks of long-term data storage and reduces the security footprint.
+- **No persistent personal data**: While personal data is temporarily held in the active session to facilitate the journey, we evaluate it and discard it upon completion or session expiry.
 - **Simplifying Recovery**: We do not have a master database. Therefore, we do not need replication, database failover procedures, or data reconciliation during cloud outages.
 - **Journey-Only State**: We only keep the active user journey (form fields that the user completes). If we lose a session due to an outage, the user must restart their journey.
 

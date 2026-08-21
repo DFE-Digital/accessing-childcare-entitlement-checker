@@ -18,9 +18,11 @@ The application uses an ephemeral Azure Cache for Redis and is functionally stat
 
 Checkout a hotfix branch locally and update the target region variables.
 
-1. **Navigate to your local repository** and checkout a new hotfix branch off the active deployment branch (e.g. `releases/vX.Y` or `main`):
+1. **Navigate to your local repository** and checkout a new hotfix branch off the active deployment branch (e.g. `releases/vX.Y`):
    ```bash
+   git fetch origin
    git checkout releases/v1.1
+   git pull
    git checkout -b hotfix/failover-to-ukwest
    ```
 2. **Update the Bicep bootstrap region:**

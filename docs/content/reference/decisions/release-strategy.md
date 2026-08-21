@@ -66,7 +66,7 @@ When preparing a release:
 * Naming convention:
 
 ```text
-release/vX.Y
+releases/vX.Y
 ```
 
 The release branch functions as:

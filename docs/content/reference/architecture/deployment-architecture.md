@@ -94,7 +94,7 @@ A Trunk-Based Development model with Release Branches is followed for higher env
 ### Environments
 
 * Development / Test: Automatically deployed from the `main` branch.
-* Staging / Production: Deployed from stable `release/vX.Y` branches.
+* Staging / Production: Deployed from stable `releases/vX.Y` branches.
 
 ### CI/CD pipeline (GitHub actions)
 

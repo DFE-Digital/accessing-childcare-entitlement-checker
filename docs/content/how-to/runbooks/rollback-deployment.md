@@ -45,8 +45,11 @@ Redeploy the last known successful release package if the target environment (su
 2. Identify the commit SHA of the last known successful release before the broken changes were merged.
 
 ### Step 2: Create a revert commit
-1. Create a new branch off your deployment branch (e.g. `releases/vX.Y` or `main`):
+1. Create a new branch off your deployment branch (e.g. `releases/vX.Y`:
    ```bash
+   git fetch origin
+   git checkout releases/v1.1
+   git pull
    git checkout -b hotfix/rollback-broken-change
    ```
 2. Revert the broken commit(s) using git revert. Pass the commit SHAs of the broken changes (newest first):

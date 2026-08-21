@@ -176,7 +176,7 @@ public static IServiceCollection AddRulesEngine(this IServiceCollection services
     services.AddScoped<ISchemeEvaluator, TaxFreeChildcareEvaluator>();
     services.AddScoped<ISchemeEvaluator, ThirtyHoursForWorkingFamiliesEvaluator>();
     services.AddScoped<ISchemeEvaluator, FifteenHoursForDisadvantagedChildrenEvaluator>();
-    services.AddScoped<ISchemeEvaluator, NewEntitlementSchemeEvaluator>(); // <-- Dynamic discovery of the new evaluator
+    services.AddScoped<ISchemeEvaluator, NewEntitlementSchemeEvaluator>(); // <-- Explicit registration of the new evaluator
 
     return services;
 }

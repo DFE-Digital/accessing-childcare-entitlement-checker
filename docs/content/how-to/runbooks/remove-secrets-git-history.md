@@ -21,7 +21,7 @@ Use `git-filter-repo` to erase files and strings from Git history. Do not use `g
 ### Option A: Remove a file containing the secret
 If the secret is contained within a specific configuration file that should not have been committed, run:
 ```bash
-git filter-repo --path path/to/secret-file.config --invert-paths
+git filter-repo --path path/to/secret-file.config --invert-paths --sensitive-data-removal
 ```
 
 ### Option B: Replace a specific secret string
@@ -32,7 +32,7 @@ If you need to replace a specific string (e.g., `MySuperSecretPassword`) with a 
    ```
 2. Execute the replace filter:
    ```bash
-   git filter-repo --replace-text expressions.txt
+   git filter-repo --replace-text expressions.txt --sensitive-data-removal
    ```
 
 ## Step 3: Force-push your changes to GitHub

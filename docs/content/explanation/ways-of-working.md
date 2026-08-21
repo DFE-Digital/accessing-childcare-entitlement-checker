@@ -37,7 +37,7 @@ We categorise branch names by prefix to show their purpose:
 * **Feature Development**: `feature/description`
 * **Defect Remediation**: `fix/description`
 * **Documentation updates**: `docs/description`
-* **Releases**: `release/vX.Y`
+* **Releases**: `releases/vX.Y`
 
 ### Semantic commit history
 To help maintain the codebase, commit your changes in small, complete units. Use the format `<type>: <description>` for commit messages. This makes the history easy to read and helps generate automatic logs:
@@ -54,13 +54,13 @@ To help maintain the codebase, commit your changes in small, complete units. Use
 
 ## The pull request lifecycle
 
-To merge code into the `main` or `release/*` branches, you must use a pull request (PR). Pull requests are spaces for team reviews and quality checks.
+To merge code into the `main` or `releases/*` branches, you must use a pull request (PR). Pull requests are spaces for team reviews and quality checks.
 
 ### Quality gates and requirements
 You must meet these conditions before you merge a PR:
 * **CI checks**: The automatic build and all unit and component tests must pass.
 * **Team review**: At least one maintainer must review and approve the PR.
-* **Test coverage**: You must write unit tests and E2E tests for all new features and changed logic.
+" **Test coverage**: All new features and changed logic must be verified by automated tests. The type of test should be proportionate to the change.
 * **Documentation**: You must update the documentation in `/docs/content/` when you change the architecture or workflows.
 
 ### Integration process
@@ -86,7 +86,7 @@ Each pull request starts the `workflow-pr.yml` pipeline. This pipeline compiles 
 
 ### Continuous delivery (CD) pipelines
 * **Continuous integration environments**: Merges into `main` trigger automatic deployments to the Development and Test environments.
-* **Pre-Production staging**: The system deploys release candidates from `release/*` branches to the Staging environment. We use this environment for user tests, accessibility audits, and E2E tests.
+* **Pre-Production staging**: The system deploys release candidates from `releases/*` branches to the Staging environment. We use this environment for user tests, accessibility audits, and E2E tests.
 * **Production**: We deploy to the Production environment only from a stable, tested release branch.
 
 ## Documentation as code

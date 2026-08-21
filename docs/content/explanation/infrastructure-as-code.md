@@ -18,7 +18,8 @@ We provision cloud resources on Azure using Terraform. Instead of combining all 
 The main infrastructure folders are:
 - `infra/terraform/`: This folder has core resource declarations. These include App Service, Azure Front Door, Redis, and Web Application Firewall.
 - `infra/terraform/environments/`: This folder has environment parameters. These cover Development, Staging, and Production.
-- `infra/bicep/`: This folder has alternative Bicep files for specific deployment layers or environments.
+- `infra/bicep/`: This folder contains Bicep files used exclusively for bootstrapping the initial Terraform state. For more details on when and how this is used, see the [Terraform bootstrap
+  guide](/how-to/terraform-bootstrap) and the [bootstrap decision record](/reference/decisions/bootstrap-tf).
 
 ### Core file responsibilities
 In the Terraform directory, each file covers a single conceptual layer:

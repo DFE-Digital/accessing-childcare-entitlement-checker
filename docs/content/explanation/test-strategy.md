@@ -23,17 +23,17 @@ We base the test strategy on core engineering principles. These principles make 
 
 The test ecosystem uses a pyramid with multiple layers. Each layer shows a validation boundary. This balances execution speed and isolation with integration depth and realistic user environments.
 
-| Testing Type            |   Visual Volume    |
-|:------------------------|:------------------:|
-| E2E / BDD User Journeys | `[      #      ]`  |
-| Accessibility Testing   | `[     ###     ]`  |
-| Performance Testing     | `[    #####    ]`  |
-| DAST Security Scans     | `[   #######   ]`  |
-| Integration Testing     | `[  =========  ]`  |
-| Component Testing       | `[ =========== ]`  |
-| Mutation Testing        | `[=============]`  |
-| Unit Testing            | `[=============]`  |
-| Infrastructure & IaC    | `[=============]`  |
+| Testing Type            |   Visual Volume   |
+|:------------------------|:-----------------:|
+| E2E / BDD User Journeys | `[      #      ]` |
+| Accessibility Testing   | `[     ###     ]` |
+| Performance Testing     | `[    #####    ]` |
+| DAST Security Scans     | `[   #######   ]` |
+| Integration Testing     | `[  #########  ]` |
+| Component Testing       | `[ ########### ]` |
+| Mutation Testing        | `[#############]` |
+| Unit Testing            | `[#############]` |
+| Infrastructure & IaC    | `[#############]` |
 
 ## Core validation layers
 

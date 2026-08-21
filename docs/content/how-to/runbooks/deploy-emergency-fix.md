@@ -16,9 +16,9 @@ Create a hotfix branch locally off the active release branch (e.g., `releases/vX
 
 Execute the following commands:
 ```bash
-git checkout main
-git pull
+git fetch origin
 git checkout releases/v1.1
+git pull
 git checkout -b hotfix/critical-issue-fix
 ```
 
