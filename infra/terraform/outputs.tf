@@ -14,3 +14,8 @@ output "staging_slot_in_use" {
   value       = var.webapp_enable_staging_slot
   description = "Indicates whether the staging slot is enabled for the web app."
 }
+
+output "shutter_storage_account_name" {
+  value       = azurerm_storage_account.shutter.name
+  description = "The name of the Storage Account used for the static shutter site."
+}

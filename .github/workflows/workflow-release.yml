@@ -102,13 +102,22 @@ jobs:
       infra-directory: infra
       publish: true
 
+  build-shutter:
+    name: Build Shutter
+    permissions:
+      contents: read
+    needs: version
+    uses: ./.github/workflows/build-shutter.yml
+    with:
+      publish: true
+
   deploy-stage:
     name: Deploy Staging
     permissions:
       id-token: write
       contents: read
       actions: read
-    needs: [version, build-dotnet, build-infra]
+    needs: [version, build-dotnet, build-infra, build-shutter]
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment: staging
@@ -177,10 +186,18 @@ jobs:
           cd ./artifacts/web-app
           zip -r ../../webapp.zip .
 
+      - name: Download shutter content artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: shutter-content
+          path: .
+
       - name: Create Release
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ needs.version.outputs.version }}
           name: Release ${{ needs.version.outputs.version }}
           body: Successfully deployed to production.
-          files: webapp.zip
+          files: |
+            webapp.zip
+            shutter-content.zip

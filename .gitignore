@@ -66,3 +66,7 @@ terraform.tfstate*
 # Notebook generated files
 notebook/
 
+# Shutter service generated files
+src/AccessingChildcareEntitlementChecker.Shutter/node_modules/
+src/AccessingChildcareEntitlementChecker.Shutter/assets/
+

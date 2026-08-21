@@ -147,6 +147,7 @@ jobs:
         echo "frontdoor_hostname=$FRONTDOOR_HOSTNAME" >> "$GITHUB_OUTPUT"
         echo "deploy_url=https://$FRONTDOOR_HOSTNAME" >> "$GITHUB_OUTPUT"
         echo "staging_slot_in_use=$(terraform output -raw staging_slot_in_use)" >> "$GITHUB_OUTPUT"
+        echo "shutter_storage_account_name=$(terraform output -raw shutter_storage_account_name)" >> "$GITHUB_OUTPUT"
 
     - name: Lock Terraform State
       if: ${{ always() }}
@@ -188,6 +189,27 @@ jobs:
           --name "$APP_NAME" \
           --slot staging \
           --target-slot production
+
+    - name: Download shutter content artifact
+      uses: actions/download-artifact@v8
+      with:
+        name: shutter-content
+        path: ./shutter
+
+    - name: Unzip shutter content
+      run: unzip -o shutter-content.zip -d extracted-content
+      working-directory: ./shutter
+
+    - name: Deploy shutter content to Azure Storage
+      env:
+        SHUTTER_ACC: ${{ steps.tf-outputs.outputs.shutter_storage_account_name }}
+      run: |
+        az storage blob upload-batch \
+          --account-name "$SHUTTER_ACC" \
+          --destination "shutter" \
+          --source "./shutter/extracted-content" \
+          --auth-mode login \
+          --overwrite true
 
     - name: Publish deployment summary
       env:

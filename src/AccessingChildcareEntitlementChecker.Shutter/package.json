@@ -1,0 +1,12 @@
+{
+  "name": "shutter-service",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node copy-assets.js",
+    "start": "npx http-server ."
+  },
+  "dependencies": {
+    "govuk-frontend": "^6.4.0"
+  }
+}
