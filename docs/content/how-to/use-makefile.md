@@ -76,6 +76,24 @@ To verify configurations and resource reference parameters:
 make tf-v
 ```
 
+### Clean documentation site
+To remove the generated `docs/_site` directory:
+```bash
+make docs-c
+```
+
+### Build documentation site
+To install dependencies and build the static site:
+```bash
+make docs-b
+```
+
+### Serve documentation site
+To start a local preview server for the documentation:
+```bash
+make docs-s
+```
+
 ### Flatten documentation files
 To compile all separate documentation files into folder-specific notebooks for LLM ingestion:
 ```bash

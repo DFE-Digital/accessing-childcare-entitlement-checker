@@ -15,9 +15,8 @@ This guide explains the technical design and publishing process for our document
 The documentation site uses [Eleventy](https://www.11ty.dev/) and the [X-GOVUK plugin](https://x-govuk.github.io/govuk-eleventy-plugin/). To support writing and updates, a local preview server compiles Markdown files into styled, DfE-branded HTML pages in real time.
 
 To preview changes:
-* Go to the `docs` directory.
-* Run `npm install` to install local packages during first setup.
-* Start the Eleventy development server using `npm start`.
+* Go to the repository root directory.
+* Start the Eleventy development server using `make docs-s`. This automatically handles installation and setup.
 * Open `http://localhost:8080/` in a local browser to see the site.
 
 *Friendly tip: To start this local server and create your first page step-by-step, read our [Writing documentation tutorial](/tutorials/writing-documentation/).*
