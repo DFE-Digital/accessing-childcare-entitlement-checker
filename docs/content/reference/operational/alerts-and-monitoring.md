@@ -38,7 +38,7 @@ The team conditionally deploys alerts in Azure using the following Terraform var
 
 ### Investigation Procedures
 1. Analyse performance using the Application Insights Performance blade to identify slow operations.
-2. Check external dependencies and database queries for potential latency.
+2. Check external dependencies, such as Redis, for potential latency.
 3. Review CPU and memory metrics of the App Service Plan to identify potential resource exhaustion.
 4. Inspect Application Insights Profiler traces, if enabled, to locate execution bottlenecks.
 
@@ -53,7 +53,7 @@ The team conditionally deploys alerts in Azure using the following Terraform var
 1. Inspect failure logs under the Application Insights Failures menu.
 2. Analyse error types by filtering exceptions. Examine the exception type, message, and call stack.
 3. Correlate exceptions with recent deployments or releases.
-4. Verify connectivity and pool utilisation if exceptions relate to database or external service access.
+4. Verify connectivity if exceptions relate to Redis or external service access.
 
 ## App Service 5xx Errors Alert
 

@@ -40,7 +40,7 @@ dotnet user-secrets set "DevelopmentBasicAuthPassword" "your_secure_password_her
 For other secret configuration keys (e.g., Redis connection strings):
 
 ```bash
-dotnet user-secrets set "ConnectionStrings:Redis" "your_redis_connection_string"
+dotnet user-secrets set "RedisConnection" "your_redis_connection_string"
 ```
 
 ## Verify configured secrets

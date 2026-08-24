@@ -29,7 +29,7 @@ This document categorises actors and components into distinct functional roles:
 ### Web application (App Service runtime)
 * Access Level: High trust within the execution container.
 * Authentication: System-assigned Managed Identity (passwordless) for accessing cloud platform services.
-* Permissions: Stores transient user answers in-memory using encrypted browser-side session cookies. Serves HTML/CSS/JS frontend to public users. Calls the in-process Rules Engine to perform entitlement calculations.
+* Permissions: Stores transient user answers in a distributed Redis cache. Uses encrypted session cookies to identify each user's session. Serves HTML/CSS/JS frontend to public users. Calls the in-process Rules Engine to perform entitlement calculations.
 * Security Scope: Isolated inside a virtual network (VNet). Communication with other resources is locked down via network security rules and Front Door service tags.
 
 ### Rules engine (In-process library)
@@ -138,10 +138,10 @@ Defensive controls are aligned against major attack vectors based on the applica
 
 The Information Security Profile defines data categorisation, protection, and governance.
 
-### No database / zero persistence strategy
-* Zero Storage of Personal Data: The application does not deploy a database (such as SQL Database, CosmosDB, or Redis). No citizen names, addresses, or financial records are stored anywhere in the hosting environment.
-* Transient Session State: All user progress is held strictly in memory inside the short-lived user session. Once the browser is closed or remains idle, the session is purged entirely.
-* No "Save and Resume" capability: This eliminates the risk of SQL injection or direct data breaches, drastically reducing the system's compliance and audit footprint.
+### No persistent database and zero persistence strategy
+* No persistent database: The application does not deploy a persistent database (such as SQL Database or CosmosDB). We do not store citizen names, addresses, or financial records permanently in the hosting environment.
+* Transient session state: We store the user’s journey and session state in a distributed Redis cache for the duration of their session. Once the browser is closed or the session expires, the session is purged.
+* No "save and resume" capability: This eliminates the risk of SQL injection or direct data breaches, drastically reducing the system's compliance and audit footprint.
 
 ### Cryptographic protections
 * In-Transit Encryption: 

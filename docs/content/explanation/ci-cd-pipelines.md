@@ -44,5 +44,5 @@ The Main Integration pipeline and the Release pipeline both call this single wor
 Automated gates protect deployments to production and other high-risk environments. For example, in the Release pipeline:
 - We deploy the application to Staging first.
 - We run automated Playwright E2E and accessibility tests against the Staging URL.
-- The pipeline proceeds to Production only if all tests pass.
+- We must manually approve the deployment to the Production environment. We can only approve this step after all tests pass on Staging.
 - After a successful deployment, we build the release package and upload it as a stable GitHub Release.

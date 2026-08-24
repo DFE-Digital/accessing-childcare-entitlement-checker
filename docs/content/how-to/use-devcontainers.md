@@ -8,7 +8,7 @@ eleventyNavigation:
   parent: How-to guides
   key: Use dev containers
 ---
-Utilise the pre-configured Dev Container (development container) to run a fully isolated development environment with all required SDKs, databases, and dependencies pre-installed.
+Use the pre-configured Dev Container (development container) to run a fully isolated development environment with all required SDKs and dependencies pre-installed.
 
 ## Install prerequisites
 
