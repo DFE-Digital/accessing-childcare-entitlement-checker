@@ -11,6 +11,9 @@ eleventyNavigation:
 
 This guide explains the user service flow for the Accessing Childcare Entitlement Checker. It provides business users with a conceptual overview of the paths that a user takes through the system to determine childcare eligibility.
 
+> [!NOTE]
+> **Implementation Reference**: This document serves as a technical reference of the user flow currently implemented in the codebase.
+
 ## Service flow overview
 
 The service evaluates a household's eligibility for different childcare entitlement schemes. To achieve this, the service collects data about:
@@ -148,7 +151,7 @@ The system gathers personal, employment, and financial data for the primary user
   - **Employed or established self-employed**: The system evaluates if their weekly earnings meet the national minimum wage threshold.
     - If weekly earnings are below the threshold, the system asks about Universal Credit.
     - If weekly earnings are above the threshold, the system checks yearly earnings to ensure they do not exceed maximum caps (for example, £100,000).
-- **Universal Credit and benefits**: Captures whether the user receives Universal Credit or other qualifying benefits (like Carer's Allowance).
+- **Universal Credit and benefits**: Captures whether the household receives Universal Credit, or if the individual user receives other qualifying benefits (like Carer's Allowance).
 - **Existing support**: Records if the user receives any existing support like childcare vouchers or workplace schemes.
 
 ### Partner details
