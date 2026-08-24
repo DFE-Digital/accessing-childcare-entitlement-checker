@@ -26,6 +26,15 @@ tf-v:
 	terraform -chdir=infra/terraform validate
 
 # Documentation Targets
+docs-c:
+	cd docs && npm run clean
+
+docs-b:
+	cd docs && npm install && npm run build
+
+docs-s:
+	cd docs && npm install && npm start
+
 # Flatten markdown documentation by folder into folder-specific notebooks
 flatten-docs:
 	pwsh ./scripts/flatten-docs.ps1
