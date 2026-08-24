@@ -2,7 +2,7 @@
 title: Decision process
 layout: sub-navigation
 sectionKey: Explanation
-order: 6
+order: 4
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Explanation

@@ -2,7 +2,7 @@
 title: Rules engine design and patterns
 layout: sub-navigation
 sectionKey: Explanation
-order: 4
+order: 6
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Explanation
