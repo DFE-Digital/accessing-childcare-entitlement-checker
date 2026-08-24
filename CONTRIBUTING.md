@@ -1,25 +1,25 @@
 # Contributing
 
-Thank you for your interest in contributing to the Childcare Entitlement Checker! We welcome contributions of all kinds, including bug reports, feature suggestions, documentation updates, and code contributions.
+Contributions to the Childcare Entitlement Checker are welcome. Accepted contributions include bug reports, feature suggestions, documentation updates, and code contributions.
 
-By participating in this project, you agree to abide by our standards of conduct.
+Participation in this project requires adherence to the standards of conduct.
 
 ## Code of conduct
 
-This project is governed by the DfE Code of Conduct. By participating, you are expected to uphold this code. Please ensure interactions remain professional, inclusive, and collaborative.
+This project is governed by the DfE Code of Conduct. Participants must uphold this code. Interactions must remain professional, inclusive, and collaborative.
 
 ## Technical documentation
 
-We maintain a comprehensive, [Technical Documentation Site](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/)
+The project maintains a comprehensive [technical documentation site](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/).
 
-Please refer to the live documentation for the most up-to-date and in-depth guides:
-- [Getting Started Guide](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/developers/01-getting-started/) – Detailed environment setup, building, and running.
-- [Ways of Working](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/developers/02-ways-of-working/) – Development standards, code quality, and deployment workflows.
-- [Branching Strategy](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/developers/03-branching-strategy/) – Details on our trunk-based development model.
+Refer to the live documentation for the most up-to-date and in-depth guides:
+- [Getting Started](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/tutorials/getting-started/) – Detailed environment setup, building, and running.
+- [Ways of Working](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/explanation/ways-of-working/) – Development standards, code quality, and deployment workflows.
+- [Branching Strategy](https://dfe-digital.github.io/accessing-childcare-entitlement-checker/explanation/branching-strategy/) – Details on the trunk-based development model.
 
 ## Quick getting started
 
-For a quick setup, ensure you have:
+A quick setup requires:
 - .NET SDK 10.0.3 (pinned via `global.json`)
 - PowerShell 7 (pwsh) (for running Playwright browser setup)
 
@@ -49,13 +49,13 @@ For a quick setup, ensure you have:
 
 ## Branching and commits
 
-We use trunk-based development. Please branch off `main` using the following prefixes:
+The project uses trunk-based development. Branch off `main` using the following prefixes:
 - `feature/description` for new features
 - `fix/description` for bug fixes
 - `docs/description` for documentation-only changes
 
 ### Commit messages
-We recommend using standard structured commit messages (`<type>: <description>`):
+Use standard structured commit messages (`<type>: <description>`):
 - `feat`: A new feature (e.g., `feat: add logic for 15 hours universal entitlement`)
 - `fix`: A bug fix
 - `docs`: Documentation-only changes
@@ -72,10 +72,10 @@ All code changes must be submitted via Pull Requests (PRs).
 2. Review: At least one approval from a maintainer is required.
 3. Tests: All new features or fixes must include unit tests and, where applicable, Reqnroll/Playwright E2E tests.
 4. Documentation: Update relevant documents under `/docs/content/` if the change impacts architecture, features, or workflows.
-5. Linear History: We use Squash and Merge on PR approval to maintain a linear git history.
+5. Linear History: The project uses Squash and Merge on PR approval to maintain a linear git history.
 
 ### Creating a PR
-1. Fork the repository and create your branch.
-2. Commit your changes with clear, descriptive commit messages.
-3. Push your branch to your fork and open a Pull Request against our `main` branch.
-4. Respond to feedback on the PR thread. Once approved and checks pass, the PR can be merged.
+1. Fork the repository and create a branch.
+2. Commit changes with clear, descriptive commit messages.
+3. Push the branch to the fork and open a Pull Request against the `main` branch.
+4. Respond to feedback on the PR thread. The PR is merged after approval and successful checks.

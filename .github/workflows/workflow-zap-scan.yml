@@ -90,9 +90,9 @@ jobs:
             echo "---" > zap/frontmatter.txt
             echo "title: ZAP Scanning Report" >> zap/frontmatter.txt
             echo "layout: sub-navigation" >> zap/frontmatter.txt
-            echo "sectionKey: Testing" >> zap/frontmatter.txt
+            echo "sectionKey: Reference" >> zap/frontmatter.txt
             echo "eleventyNavigation:" >> zap/frontmatter.txt
-            echo "  parent: Testing" >> zap/frontmatter.txt
+            echo "  parent: Reference" >> zap/frontmatter.txt
             echo "  key: Scanning Report" >> zap/frontmatter.txt
             echo "order: 99" >> zap/frontmatter.txt
             echo "---" >> zap/frontmatter.txt
@@ -164,7 +164,7 @@ jobs:
             echo "should_create_pr=false" >> $GITHUB_OUTPUT
           else
             echo "Meaningful changes detected. Preparing PR."
-            cp zap/zap-report.md docs/content/testing/99-zap-report.md
+            cp zap/zap-report.md docs/content/reference/testing/zap-report.md
             echo "should_create_pr=true" >> $GITHUB_OUTPUT
           fi
 
@@ -174,7 +174,7 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git checkout -B chore/zap-findings-updates
-          git add zap/findings.json docs/content/testing/99-zap-report.md
+          git add zap/findings.json docs/content/reference/testing/zap-report.md
           git commit -m "security: update ZAP findings snapshot"
           git push -f origin chore/zap-findings-updates
 
