@@ -3,6 +3,11 @@ resource "azurerm_cdn_frontdoor_profile" "frontdoor-web-profile" {
   resource_group_name = azurerm_resource_group.web-rg.name
   sku_name            = "${var.azure_frontdoor_sku}_AzureFrontDoor"
   tags                = local.common_tags
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.frontdoor_identity.id]
+  }
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "frontdoor-origin-group" {
@@ -40,7 +45,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.frontdoor-web-origin.id]
-  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.security_redirects.id]
+  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.security_rules.id]
   enabled                       = true
 
   forwarding_protocol    = "MatchRequest"
@@ -51,6 +56,58 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   cdn_frontdoor_custom_domain_ids = var.custom_domain == "" ? [] : [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id]
 
   link_to_default_domain = var.custom_domain == ""
+
+  lifecycle {
+    ignore_changes = [
+      cdn_frontdoor_origin_group_id,
+      cdn_frontdoor_origin_ids,
+      cdn_frontdoor_rule_set_ids,
+      cdn_frontdoor_origin_path
+    ]
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "shutter-origin-group" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
+  name                     = "${local.prefix}-shutter-fd-origin-group"
+  session_affinity_enabled = false
+
+  load_balancing {
+    sample_size                 = 4
+    successful_samples_required = 2
+  }
+}
+
+resource "azapi_update_resource" "shutter_origin_group_auth" {
+
+  type        = "Microsoft.Cdn/profiles/originGroups@2023-05-01"
+  resource_id = azurerm_cdn_frontdoor_origin_group.shutter-origin-group.id
+
+  body = jsonencode({
+    properties = {
+      authentication = {
+        type                   = "UserAssignedIdentity"
+        scope                  = "https://storage.azure.com/.default"
+        tokenDestinationHeader = "Authorization" # checkov:skip=CKV_SECRET_6:Authorization is an HTTP header name, not a secret.
+        userAssignedIdentity = {
+          id = azurerm_user_assigned_identity.frontdoor_identity.id
+        }
+      }
+    }
+  })
+}
+
+resource "azurerm_cdn_frontdoor_origin" "frontdoor-shutter-origin" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.shutter-origin-group.id
+  certificate_name_check_enabled = true
+  host_name                      = azurerm_storage_account.shutter.primary_blob_host
+  http_port                      = 80
+  https_port                     = 443
+  origin_host_header             = azurerm_storage_account.shutter.primary_blob_host
+  priority                       = 1
+  weight                         = 1
+  name                           = "${local.prefix}-shutter-fd-origin"
+  enabled                        = true
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy" {
