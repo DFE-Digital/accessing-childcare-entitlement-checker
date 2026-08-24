@@ -25,22 +25,22 @@ order: 99
 | Level | Reason | Site | Description | Statistic |
 | --- | --- | --- | --- | --- |
 | Low | Warning |  | ZAP errors logged - see the zap.log file for details | 1    |
-| Low | Warning |  | ZAP warnings logged - see the zap.log file for details | 7    |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of responses with status code 2xx | 66 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of responses with status code 3xx | 1 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of responses with status code 4xx | 31 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type application/json | 5 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/png | 5 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/svg+xml | 10 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/x-icon | 5 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/css | 5 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/html | 40 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/javascript | 5 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/plain | 5 % |
+| Low | Warning |  | ZAP warnings logged - see the zap.log file for details | 9    |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of responses with status code 2xx | 67 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of responses with status code 3xx | 2 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of responses with status code 4xx | 30 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type application/json | 4 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/png | 4 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/svg+xml | 9 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/x-icon | 4 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/css | 4 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/html | 38 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/javascript | 4 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/plain | 4 % |
 | Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with method GET | 80 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with method POST | 20 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Count of total endpoints | 20    |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of slow responses | 100 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with method POST | 19 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Count of total endpoints | 21    |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of slow responses | 62 % |
 
 
 
@@ -55,7 +55,6 @@ order: 99
 | Re-examine Cache-control Directives | Informational | Systemic |
 | User Agent Fuzzer | Informational | Systemic |
 | User Controllable HTML Element Attribute (Potential XSS) | Informational | 1 |
-| Modern Web Application | 				False Positives: | 4 |
 | Private IP Disclosure | 				False Positives: | 1 |
 | Session Management Response Identified | 				False Positives: | 3 |
 | Timestamp Disclosure - Unix | 				False Positives: | 1 |
@@ -91,22 +90,15 @@ The cache-control header has not been set properly or is missing, allowing the b
   * Attack: ``
   * Evidence: `cache-control: public, max-age=31536000, immutable`
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
   * Evidence: `no-cache, no-store`
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt`
-  * Method: `GET`
-  * Parameter: `cache-control`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
@@ -149,19 +141,19 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
   * Method: `GET`
   * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
   * Other Info: ``
 * URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets`
   * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details ()(ChildName,ReturnTo,__RequestVerificationToken)`
+  * Method: `POST`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
@@ -232,59 +224,6 @@ Validate all input and sanitize output it before writing to any HTML attributes.
 
 #### Source ID: 3
 
-### [ Modern Web Application ](https://www.zaproxy.org/docs/alerts/10109/)
-
-
-
-##### 				False Positives: (False Positive)
-
-### Description
-
-The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.
-
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-footer__link" href="#">Item 2</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-footer__link" href="#">Item 2</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/sitemap.xml`
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-footer__link" href="#">Item 2</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<a class="govuk-footer__link" href="#">Item 2</a>`
-  * Other Info: `Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.`
-
-
-Instances: 4
-
-### Solution
-
-This is an informational alert and so no changes are required.
-
-### Reference
-
-
-
-
-#### Source ID: 3
-
 ### [ Private IP Disclosure ](https://www.zaproxy.org/docs/alerts/2/)
 
 
@@ -349,8 +288,8 @@ The given response has been identified as containing a session management token.
   * Evidence: `.AspNetCore.Antiforgery.RtGCWVXC8-4`
   * Other Info: `cookie:.AspNetCore.Antiforgery.RtGCWVXC8-4`
 * URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live ()(Country,ReturnTo,__RequestVerificationToken)`
-  * Method: `POST`
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/where-do-you-live`
+  * Method: `GET`
   * Parameter: `.AspNetCore.Session`
   * Attack: ``
   * Evidence: `.AspNetCore.Session`
