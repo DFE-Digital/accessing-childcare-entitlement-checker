@@ -88,9 +88,9 @@
       <value>When you can get your hours will depend on when {0} turns 9 months old</value>
     </data>
 
-    <data name="Starts_FifteenHoursUniversal_FromDate" xml:space="preserve">
-        <value>You can get it from the term after your child's 3rd birthday, starting on {0:dd MMMM yyyy}</value>
-    </data>
+  <data name="Starts_FifteenHoursUniversal_FromDate" xml:space="preserve">
+    <value>The term after {0}'s 3rd birthday, starting {1:dd MMMM yyyy}</value>
+  </data>
 
     <data name="Starts_FifteenHoursUniversal_TermAfterTurnsThree" xml:space="preserve">
         <value>The term after {0} turns 3</value>
@@ -136,17 +136,17 @@
       <value>Working parents can get up to 30 hours of funded childcare a week for children aged 9 months to 4 years old.</value>
     </data>
 
-    <data name="ThirtyHoursForWorkingFamilies_Paragraph2" xml:space="preserve">
-      <value>Working parents can get up to 30 hours of funded childcare a week for children aged 9 months to 4 years old.</value>
-    </data>
+  <data name="ThirtyHoursForWorkingFamilies_Paragraph2" xml:space="preserve">
+    <value>You can get these hours during term time (38 weeks a year). You may be able to take fewer hours over more weeks if your provider offers this.</value>
+  </data>
 
     <data name="ThirtyHoursForWorkingFamilies_Paragraph3" xml:space="preserve">
       <value>You may still need to pay for things like meals, activities or additional hours.</value>
     </data>
 
-    <data name="FifteenHoursForDisadvantagedChildren_Paragraph1" xml:space="preserve">
-      <value>Your 2 year old can get 15 hours a week of free childcare if you or your child get some extra support.</value>
-    </data>
+  <data name="FifteenHoursForDisadvantagedChildren_Paragraph1" xml:space="preserve">
+    <value>Your 2 year old can get 15 hours a week of funded childcare if you or your child get some extra support.</value>
+  </data>
 
     <data name="FifteenHoursForDisadvantagedChildren_Paragraph2" xml:space="preserve">
       <value>You can get these hours during term time (38 weeks a year). You may be able to take fewer hours over more weeks if your provider offers this.</value>
