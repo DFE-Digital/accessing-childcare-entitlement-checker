@@ -60,7 +60,7 @@ Scenario: Continue with Carer's Allowance
 	Then the page header is "Do you already get any of these to help pay for childcare?"
 
 Scenario: Back navigation from Do you expect your adjusted net income to be more than £100,000 for the current tax year?
-	Given I answer "Are you in paid work?" as "Yes"
+	Given I answer "Are you in paid work?" as "Yes, I am currently in work"
 	And I answer "How would you describe your work status?" as "Paid employment"
 	And I answer "On average, do you expect to earn £203 a week or more before tax?" as "Yes"
 	And I answer "Do you expect your adjusted net income to be more than £100,000 for the current tax year?" as "Yes"

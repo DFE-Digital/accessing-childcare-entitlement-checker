@@ -32,7 +32,7 @@ internal class Scenario4 : IUseCase
 
             .SetUserAge("18 to 20")
             .SetNationality("British or Irish citizen")
-            .SetPaidWork("Yes")
+            .SetPaidWork("Yes, I am currently in work")
             .SetWorkStatus("Paid employment")
             .SetWeeklyEarnings("Yes")
             .SetYearlyEarnings("No")
@@ -42,7 +42,7 @@ internal class Scenario4 : IUseCase
             .SetHasPartner("Yes")
 
             .SetPartnerAge("21 or over")
-            .SetPartnerPaidWork("Yes")
+            .SetPartnerPaidWork("Yes, they are currently in work")
             .SetPartnerWorkStatus("Paid employment")
             .SetPartnerWeeklyEarnings("Yes")
             .SetPartnerYearlyEarnings("No")

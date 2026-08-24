@@ -44,21 +44,21 @@ Scenario: Back navigation
 	Then the page header is "Are you in paid work?"
 
 Scenario: Back navigation from Have you been self-employed for less than 12 months?
-	Given I answer "Are you in paid work?" as "Yes"
+	Given I answer "Are you in paid work?" as "Yes, I am currently in work"
 	And I answer "How would you describe your work status?" as "Self-employed"
 	And I answer "Have you been self-employed for less than 12 months?" as "Yes"
 	When I click the back link
 	Then the page header is "Have you been self-employed for less than 12 months?"
 
 Scenario: Back navigation from On average, do you expect to earn £203 a week or more before tax?
-	Given I answer "Are you in paid work?" as "Yes"
+	Given I answer "Are you in paid work?" as "Yes, I am currently in work"
 	And I answer "How would you describe your work status?" as "Paid employment"
 	And I answer "On average, do you expect to earn £128 a week or more before tax?" as "No"
 	When I click the back link
 	Then the page header is "On average, do you expect to earn £128 a week or more before tax?"
 
 Scenario: Back navigation from Do you expect your adjusted net income to be more than £100,000 for the current tax year?
-	Given I answer "Are you in paid work?" as "Yes"
+	Given I answer "Are you in paid work?" as "Yes, I am currently in work"
 	And I answer "How would you describe your work status?" as "Paid employment"
 	And I answer "On average, do you expect to earn £128 a week or more before tax?" as "Yes"
 	And I answer "Do you expect your adjusted net income to be more than £100,000 for the current tax year?" as "No"

@@ -16,7 +16,7 @@ Scenario: Scenario 01 - Single parent earning below the threshold, household rec
         | Where do you live?                                                            | England                                |
         | What is your age?                                                             | 21 or over                             |
         | What is your nationality?                                                     | British or Irish citizen               |
-        | Are you in paid work?                                                         | Yes                                    |
+        | Are you in paid work?                                                         | Yes, I am currently in work            |
         | How would you describe your work status?                                      | Paid employment                        |
         | Does your household receive universal credit?                                 | Yes                                    |
         | Do you get any of these benefits?                                             | No, I do not get any of these benefits |
@@ -33,7 +33,7 @@ Scenario: Scenario 01 - Single parent earning below the threshold, household rec
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
     And I can see that "Frankie" is eligible for:
         | Scheme                                        | When          |
-        | Universal Credit and childcare                    | now           |
+        | Universal Credit and childcare                | now           |
         | Early learning for 2-year-olds                | now           |
         | 15 hours free childcare for 3 and 4-year-olds | in the future |
 
@@ -55,7 +55,7 @@ Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
     And I should see a summary list for "Your partners details" with the following summary:
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
-        | Is your partner in paid work?                                                                         | Yes                                       |
+        | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
         | How would you describe your partner's work status?                                                    | Paid employment                           |
         | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
         | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
@@ -80,7 +80,7 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
         | Where do you live?                                                            | England                                |
         | What is your age?                                                             | 21 or over                             |
         | What is your nationality?                                                     | British or Irish citizen               |
-        | Are you in paid work?                                                         | Yes                                    |
+        | Are you in paid work?                                                         | Yes, I am currently in work            |
         | How would you describe your work status?                                      | Paid employment                        |
         | Does your household receive universal credit?                                 | Yes                                    |
         | Do you get any of these benefits?                                             | No, I do not get any of these benefits |
@@ -90,7 +90,7 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
     And I should see a summary list for "Your partners details" with the following summary:
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
-        | Is your partner in paid work?                                                                         | Yes                                       |
+        | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
         | How would you describe your partner's work status?                                                    | Paid employment                           |
         | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
         | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
@@ -117,7 +117,7 @@ Scenario: Scenario 04 - One parent aged 18-20, child not yet born
         | Where do you live?                                                                        | England                                |
         | What is your age?                                                                         | 18 to 20                               |
         | What is your nationality?                                                                 | British or Irish citizen               |
-        | Are you in paid work?                                                                     | Yes                                    |
+        | Are you in paid work?                                                                     | Yes, I am currently in work            |
         | How would you describe your work status?                                                  | Paid employment                        |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
         | Does your household receive universal credit?                                             | No                                     |
@@ -128,7 +128,7 @@ Scenario: Scenario 04 - One parent aged 18-20, child not yet born
     And I should see a summary list for "Your partners details" with the following summary:
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
-        | Is your partner in paid work?                                                                         | Yes                                       |
+        | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
         | How would you describe your partner's work status?                                                    | Paid employment                           |
         | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
         | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
@@ -152,7 +152,7 @@ Scenario: Scenario 05 - Single parent who is self employed, child is not born ye
         | Where do you live?                                         | England                                |
         | What is your age?                                          | 21 or over                             |
         | What is your nationality?                                  | British or Irish citizen               |
-        | Are you in paid work?                                      | Yes                                    |
+        | Are you in paid work?                                      | Yes, I am currently in work            |
         | How would you describe your work status?                   | Self-employed                          |
         | Have you been self-employed for less than 12 months?       | Yes                                    |
         | Does your household receive universal credit?              | No                                     |
@@ -176,7 +176,7 @@ Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one par
         | Where do you live?                                                                        | England                                |
         | What is your age?                                                                         | Under 18                               |
         | What is your nationality?                                                                 | British or Irish citizen               |
-        | Are you in paid work?                                                                     | Yes                                    |
+        | Are you in paid work?                                                                     | Yes, I am currently in work            |
         | How would you describe your work status?                                                  | Apprentice                             |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
         | Does your household receive universal credit?                                             | Yes                                    |
@@ -187,7 +187,7 @@ Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one par
     And I should see a summary list for "Your partners details" with the following summary:
         | Question                                                                                 | Answer                                    |
         | What is your partner's age?                                                              | Under 18                                  |
-        | Is your partner in paid work?                                                            | Yes                                       |
+        | Is your partner in paid work?                                                            | Yes, they are currently in work           |
         | How would you describe your partner's work status?                                       | Paid employment                           |
         | Does your partner get any of these benefits?                                             | No, they do not get any of these benefits |
         | Does your partner already get any of these to help pay for childcare?                    | No, they do not get any of these          |
@@ -209,7 +209,7 @@ Scenario: Scenario 07 - One parent on parental leave
         | Where do you live?                                                                        | England                                |
         | What is your age?                                                                         | 21 or over                             |
         | What is your nationality?                                                                 | British or Irish citizen               |
-        | Are you in paid work?                                                                     | Yes                                    |
+        | Are you in paid work?                                                                     | Yes, I am currently in work            |
         | How would you describe your work status?                                                  | Paid employment                        |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
         | Does your household receive universal credit?                                             | No                                     |
@@ -288,7 +288,7 @@ Scenario: Scenario 09 - One parent not working, one parent receiving ESA
     And I should see a summary list for "Your partners details" with the following summary:
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
-        | Is your partner in paid work?                                                                         | Yes                                       |
+        | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
         | How would you describe your partner's work status?                                                    | Paid employment                           |
         | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
         | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
@@ -327,7 +327,7 @@ Scenario: Scenario 10 - Parent is a non-UK national without pre-settled or settl
         | What is your age?                                                                         | 21 or over                                           |
         | What is your nationality?                                                                 | Citizen of an EU country, EEA country or Switzerland |
         | Do you have settled or pre-settled status under the EU Settlement Scheme?                 | No                                                   |
-        | Are you in paid work?                                                                     | Yes                                                  |
+        | Are you in paid work?                                                                     | Yes, I am currently in work                          |
         | How would you describe your work status?                                                  | Paid employment                                      |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                                   |
         | Does your household receive universal credit?                                             | No                                                   |
