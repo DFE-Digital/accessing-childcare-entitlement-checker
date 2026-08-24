@@ -10,6 +10,9 @@ on:
 permissions:
   contents: write
 
+env:
+  TERRAFORM_DOCS_OUTPUT_FILE: docs/content/reference/architecture/deployed-infrastructure.md
+
 jobs:
   generate:
     name: CI generate docs
@@ -25,14 +28,14 @@ jobs:
         with:
           working-dir: infra/terraform
           config-file: ${{ github.workspace }}/.terraform-docs.yml
-          output-file: ${{ github.workspace }}/docs/content/reference/architecture/deployed-infrastructure.md
+          output-file: ${{ github.workspace }}/${{ env.TERRAFORM_DOCS_OUTPUT_FILE }}
           output-method: inject
           git-push: "false"
 
       - name: Check for changes
         id: verify-changed-files
         run: |
-          if git diff --quiet -- "docs/content/reference/architecture/deployed-infrastructure.md"; then
+          if git diff --quiet -- "$TERRAFORM_DOCS_OUTPUT_FILE"; then
             echo "changed=false" >> $GITHUB_OUTPUT
             echo "No documentation changes detected"
           else
@@ -46,6 +49,6 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git checkout -B chore/update-tf-docs
-          git add docs/content/architecture/05-deployed-infrastructure.md
+          git add "$TERRAFORM_DOCS_OUTPUT_FILE"
           git commit -m "docs(terraform): update generated documentation"
           git push -f origin chore/update-tf-docs

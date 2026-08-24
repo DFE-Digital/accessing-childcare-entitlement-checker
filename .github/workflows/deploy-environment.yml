@@ -197,17 +197,18 @@ jobs:
         path: ./shutter
 
     - name: Unzip shutter content
-      run: unzip -o shutter-content.zip -d extracted-content
       working-directory: ./shutter
+      run: unzip -o shutter-content.zip -d extracted-content
 
     - name: Deploy shutter content to Azure Storage
+      working-directory: ./shutter
       env:
         SHUTTER_ACC: ${{ steps.tf-outputs.outputs.shutter_storage_account_name }}
       run: |
         az storage blob upload-batch \
           --account-name "$SHUTTER_ACC" \
           --destination "shutter" \
-          --source "./shutter/extracted-content" \
+          --source "extracted-content" \
           --auth-mode login \
           --overwrite true
 
