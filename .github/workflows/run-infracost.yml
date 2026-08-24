@@ -1,0 +1,46 @@
+name: Run Infracost
+
+on:
+  workflow_call:
+    secrets:
+      INFRACOST_API_KEY:
+        required: false
+        description: "The API key for Infracost"
+
+jobs:
+  infracost:
+    name: Infracost Estimate
+    runs-on: ubuntu-latest
+    env:
+      INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        if: ${{ env.INFRACOST_API_KEY != '' }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Infracost
+        if: ${{ env.INFRACOST_API_KEY != '' }}
+        uses: infracost/actions/setup@v3
+        with:
+          api-key: ${{ env.INFRACOST_API_KEY }}
+
+      - name: Generate Infracost cost estimate
+        if: ${{ env.INFRACOST_API_KEY != '' }}
+        run: |
+          infracost breakdown --path=infra/terraform \
+                              --format=json \
+                              --out-file=/tmp/infracost.json
+
+      - name: Post Infracost comment
+        if: ${{ env.INFRACOST_API_KEY != '' }}
+        run: |
+          infracost comment github --path=/tmp/infracost.json \
+                                   --repo=$GITHUB_REPOSITORY \
+                                   --github-token=${{ github.token }} \
+                                   --pull-request=${{ github.event.pull_request.number }} \
+                                   --behavior=update
