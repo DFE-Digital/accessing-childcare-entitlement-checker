@@ -100,7 +100,7 @@ app.Use(async (context, next) =>
                "https://www.googletagmanager.com " +
                "https://*.clarity.ms; ");
     csp.Append("style-src 'self'; ");
-    csp.Append("img-src 'self' data:; ");
+    csp.Append("img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; ");
     csp.Append("font-src 'self'; ");
     csp.Append(
         "connect-src 'self' " +
