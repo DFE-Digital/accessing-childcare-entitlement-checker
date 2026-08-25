@@ -67,5 +67,11 @@ jobs:
     secrets:
       INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
 
+  validate-tf-docs:
+    name: Validate Terraform Docs
+    permissions:
+      contents: read
+    uses: ./.github/workflows/validate-tf-docs.yml
+
 
 

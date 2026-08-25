@@ -1,4 +1,4 @@
-.PHONY: build test test-e2e test-a11y tf-f tf-v
+.PHONY: build test test-e2e test-a11y tf-f tf-v tf-docs
 
 # .NET Targets
 build:
@@ -24,6 +24,9 @@ tf-f:
 
 tf-v:
 	terraform -chdir=infra/terraform validate
+
+tf-docs:
+	terraform-docs -c .terraform-docs.yml --output-file ../../docs/content/reference/architecture/deployed-infrastructure.md --output-mode inject infra/terraform
 
 # Documentation Targets
 docs-c:

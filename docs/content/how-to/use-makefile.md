@@ -76,6 +76,12 @@ To verify configurations and resource reference parameters:
 make tf-v
 ```
 
+### Generate Terraform documentation
+To generate markdown documentation from the Terraform configurations:
+```bash
+make tf-docs
+```
+
 ### Clean documentation site
 To remove the generated `docs/_site` directory:
 ```bash
