@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
+using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
@@ -18,7 +18,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -28,6 +28,8 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
                     }
                 }
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -56,7 +58,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
         BirthStatus birthStatus,
         string continueUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -71,6 +73,8 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
                     }
                 }
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -94,7 +98,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Post_With_Invalid_Shows_Validation_Error_And_BackLink(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -104,6 +108,8 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
                     }
                 }
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -124,7 +130,9 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [Fact]
     public async Task Returns_Not_Found_For_Nonexistant_Child()
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        var client = host.CreateClient();
         var url = Url;
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);

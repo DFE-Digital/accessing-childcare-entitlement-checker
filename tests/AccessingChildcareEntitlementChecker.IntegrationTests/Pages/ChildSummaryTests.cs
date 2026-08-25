@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
+using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
@@ -22,7 +22,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     [InlineData(BirthStatus.Born, $"/children/{OtherChildId}/child-benefits")]
     public async Task Get(BirthStatus birthStatus, string expectedUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
             {
@@ -38,6 +38,8 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
             }
         });
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
@@ -60,7 +62,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
         string arrivedFromChildId,
         string expectedUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
             {
@@ -74,6 +76,8 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
                 }
             }
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?childId={arrivedFromChildId}";
 
@@ -92,7 +96,9 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     [Fact]
     public async Task Get_BackLink_Is_To_Name()
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?childId={ChildId}";
 

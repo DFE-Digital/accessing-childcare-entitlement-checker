@@ -16,7 +16,9 @@ public class YearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -37,12 +39,14 @@ public class YearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, null, UniversalCreditOption.Receives, "/benefits/universal-credit")]
     public async Task Post_Valid_Redirects(string? returnTo, YearlyEarningsOption yearlyEarnings, BenefitsOption? benefits, UniversalCreditOption? universalCredit, string continueUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             YearlyEarnings = yearlyEarnings,
             Benefits = benefits is null ? new() : [benefits.Value],
             UniversalCredit = universalCredit,
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -68,7 +72,9 @@ public class YearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture
         string? returnTo,
         string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

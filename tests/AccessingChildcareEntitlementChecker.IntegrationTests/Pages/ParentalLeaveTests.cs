@@ -16,7 +16,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -26,6 +26,8 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
                     }
                 },
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -47,7 +49,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
         string? returnTo,
         WorkStatusOption? workStatus)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -58,6 +60,8 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
                 },
             WorkStatus = workStatus == null ? [] : [workStatus.Value],
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -80,7 +84,9 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -102,7 +108,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     public async Task Post_Invalid_None_With_Selection_Shows_Validation_Error(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -112,6 +118,8 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
                     }
                 },
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

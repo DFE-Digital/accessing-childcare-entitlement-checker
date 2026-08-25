@@ -16,7 +16,9 @@ public class PartnerChildcareSupportTests(IntegrationTestFixture factory) : ICla
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -41,11 +43,13 @@ public class PartnerChildcareSupportTests(IntegrationTestFixture factory) : ICla
         ChildcareVoucherReceiptOption? partnerChildcareVoucherReceipt,
         string continueUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerChildcareSupport = [partnerChildcareSupport],
             PartnerChildcareVoucherReceipt = partnerChildcareVoucherReceipt,
         });
+
+        var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -68,7 +72,9 @@ public class PartnerChildcareSupportTests(IntegrationTestFixture factory) : ICla
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

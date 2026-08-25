@@ -15,7 +15,9 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -38,11 +40,13 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
         SettledStatusOption? userSettledStatusOption,
         string continueUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Nationality = userNationality,
             SettledStatus = userSettledStatusOption,
         });
+
+        var client = host.CreateClient();
 
         var getResponse = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -65,7 +69,9 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

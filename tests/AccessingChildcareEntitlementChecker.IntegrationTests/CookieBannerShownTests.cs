@@ -27,7 +27,7 @@ public partial class CookieBannerShownTests(IntegrationTestFixture factory) : IC
 
         foreach (var url in sessionRequiredEndpoints)
         {
-            using var getClient = factory.CreateClientWithJourneyState(new JourneyState
+            using var getHost = factory.CreateClientWithJourneyState(new JourneyState
             {
                 Children = children,
                 UserAge = AgeRange.UnderEighteen,
@@ -35,6 +35,8 @@ public partial class CookieBannerShownTests(IntegrationTestFixture factory) : IC
                 PartnerAge = AgeRange.UnderEighteen,
                 PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
             });
+
+            var getClient = getHost.CreateClient();
 
             var getResponse = await getClient.GetAsync(url, TestContext.Current.CancellationToken);
             var document = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -61,7 +63,7 @@ public partial class CookieBannerShownTests(IntegrationTestFixture factory) : IC
 
         foreach (var url in sessionRequiredEndpoints)
         {
-            using var getClient = factory.CreateClientWithJourneyState(new JourneyState
+            using var getHost = factory.CreateClientWithJourneyState(new JourneyState
             {
                 Children = children,
                 UserAge = AgeRange.UnderEighteen,
@@ -69,6 +71,8 @@ public partial class CookieBannerShownTests(IntegrationTestFixture factory) : IC
                 PartnerAge = AgeRange.UnderEighteen,
                 PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
             });
+
+            var getClient = getHost.CreateClient();
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Cookie", "cookie_policy=enabled");

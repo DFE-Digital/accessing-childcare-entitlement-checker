@@ -13,7 +13,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
     [Fact]
     public async Task Get_WhenFeatureFlagEnabled_SuppressesLocationRow()
     {
-        using var client = factory.CreateClientWithJourneyStateAndFeatureFlags(new JourneyState
+        using var host = factory.CreateClientWithJourneyStateAndFeatureFlags(new JourneyState
         {
             CountryOfResidence = CountryOfResidence.England,
             HasPartner = false,
@@ -21,6 +21,8 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
         {
             { "FeatureManagement:HmrcIntegration", "true" }
         });
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
@@ -38,11 +40,13 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
         PartnerChildcareSupportOption? partnerChildcareSupport,
         string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             HasPartner = hasPartner,
             PartnerChildcareSupport = partnerChildcareSupport.HasValue ? [partnerChildcareSupport.Value] : [],
         });
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();

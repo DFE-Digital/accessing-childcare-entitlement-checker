@@ -32,7 +32,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task Get_ResultsDetails_HasNavBarAndBetaBanner()
     {
-        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -47,7 +49,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task Get_ResultsDetailed_Has_BackLink()
     {
-        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -62,7 +66,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task Get_ResultsDetailed_Has_PrintButton()
     {
-        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -77,7 +83,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task Get_ResultsDetailed_ReturnsView()
     {
-        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -94,7 +102,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task Get_ResultsDetailed_DisplaysTaxFreeChildcareDescription()
     {
-        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -109,7 +119,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task Get_ResultsDetailed_DisplaysThirtyHoursDescription()
     {
-        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -124,7 +136,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task Get_ResultsDetailed_DisplaysCanBeUsedWithRow()
     {
-        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -138,7 +152,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task Get_ResultsDetailed_DisplaysCompatibleSchemes()
     {
-        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -153,7 +169,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task Get_ResultsDetailed_DoesNotDisplayIncompatibleSchemes()
     {
-        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -167,7 +185,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task Get_ResultsDetailed_DisplaysThirtyHourWarning()
     {
-        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -189,7 +209,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
         var state = CreateJourneyState();
         state.Nationality = nationality;
         state.SettledStatus = settledStatus;
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 

@@ -20,11 +20,13 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
         WorkStatusOption partnerWorkStatus,
         string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerAge = AgeRange.TwentyOneOrOver,
             PartnerWorkStatus = [partnerWorkStatus],
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -44,7 +46,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, PartnerBenefitsOption.CarersAllowance, "/Partner/PartnerBenefits")]
     public async Task Post_Valid_Redirects(string? returnTo, WeeklyEarningsOption partnerWeeklyEarnings, YearlyEarningsOption? partnerYearlyEarnings, PartnerBenefitsOption? partnerBenefits, string continueUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerAge = AgeRange.TwentyOneOrOver,
             PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
@@ -52,6 +54,8 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
             PartnerYearlyEarnings = partnerYearlyEarnings,
             PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
         });
+
+        var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -78,11 +82,13 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
         WorkStatusOption partnerWorkStatus,
         string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerAge = AgeRange.TwentyOneOrOver,
             PartnerWorkStatus = [partnerWorkStatus],
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

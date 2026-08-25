@@ -13,7 +13,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     public async Task Get_Results_Has_BackLink()
     {
         var state = new JourneyState();
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -32,7 +34,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
         };
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -51,7 +55,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
         };
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -71,7 +77,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
         };
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -91,7 +99,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             BirthStatus = BirthStatus.Born,
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
         };
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -116,7 +126,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
         };
 
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -143,7 +155,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
         };
 
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -173,7 +187,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         state.PaidWork = PaidWorkOption.No;
         state.HasPartner = false;
 
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -206,7 +222,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
         };
 
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -235,7 +253,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
         };
 
-        using var client = factory.CreateClientWithJourneyState(state);
+        using var host = factory.CreateClientWithJourneyState(state);
+
+        var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);

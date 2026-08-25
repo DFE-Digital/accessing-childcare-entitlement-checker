@@ -27,7 +27,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
         YearlyEarningsOption? partnerYearlyEarnings,
         string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerPaidWork = partnerPaidWork,
             PartnerWorkStatus = partnerWorkStatus.HasValue ? [partnerWorkStatus.Value] : [],
@@ -35,6 +35,8 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerWeeklyEarnings = partnerWeeklyEarnings,
             PartnerYearlyEarnings = partnerYearlyEarnings,
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -53,11 +55,13 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(ReturnTo.CheckAnswers, PartnerBenefitsOption.CarersAllowance, PartnerChildcareSupportOption.ChildcareVouchers)]
     public async Task Post_Valid_Redirects(string? returnTo, PartnerBenefitsOption partnerBenefits, PartnerChildcareSupportOption? partnerChildcareSupport)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerBenefits = [partnerBenefits],
             PartnerChildcareSupport = partnerChildcareSupport is null ? new() : [partnerChildcareSupport.Value],
         });
+
+        var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -91,7 +95,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
         YearlyEarningsOption? partnerYearlyEarnings,
         string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerPaidWork = partnerPaidWork,
             PartnerWorkStatus = partnerWorkStatus.HasValue ? [partnerWorkStatus.Value] : [],
@@ -99,6 +103,8 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerWeeklyEarnings = partnerWeeklyEarnings,
             PartnerYearlyEarnings = partnerYearlyEarnings,
         });
+
+        var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
