@@ -14,7 +14,7 @@ Let's get your local environment set up! In this guide, we'll walk you through s
 
 First things first, let's make sure you have the right tools installed on your machine before we get started:
 
-- **.NET SDK 10.0.3:** This project is pinned to this version. You can double-check this in our `global.json` file.
+- **.NET SDK 10.0.103:** This project is pinned to this version. You can double-check this in our `global.json` file.
 - **PowerShell 7 (pwsh):** We need this to run the Playwright browser installation scripts across different operating systems.
 - **Node.js (LTS version):** Required if you want to preview or build our documentation site locally.
 - **A handy IDE:** We highly recommend:
@@ -40,7 +40,7 @@ Let's get the repository set up and pull in the dependencies you need:
    *Using PowerShell:*
    ```powershell
    dotnet build
-   pwsh .\tests\AccessingChildcareEntitlementChecker.E2eTests\bin\Debug\net10.0\playwright.ps1 install
+   pwsh .\artifacts\bin\AccessingChildcareEntitlementChecker.E2eTests\debug\playwright.ps1 install --with-deps
    ```
 
 ## 2. Build the solution
