@@ -3,6 +3,7 @@
 	test \
 	test-e2e \
 	test-a11y \
+	playwright-i \
 	analyze \
 	analyse-d \
 	analyse-f \
@@ -96,6 +97,9 @@ test-a11y:
 	dotnet test tests/AccessingChildcareEntitlementChecker.A11yTests \
 		--no-build \
 		--logger:"console;verbosity=normal"
+
+playwright-i:
+	pwsh ./artifacts/bin/AccessingChildcareEntitlementChecker.E2eTests/debug/playwright.ps1 install --with-deps
 
 # ---------------------------------------------------------------------------
 # Terraform
