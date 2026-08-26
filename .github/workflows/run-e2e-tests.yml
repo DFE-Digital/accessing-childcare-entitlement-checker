@@ -122,7 +122,7 @@ jobs:
           TestSettings__Browser: ${{ inputs.browser }}
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          dotnet ./e2e-tests/AccessingChildcareEntitlementChecker.E2eTests.dll \
+          dotnet test ./e2e-tests/AccessingChildcareEntitlementChecker.E2eTests.dll -- \
             --report-xunit-trx \
             --report-xunit-trx-filename test-results.trx \
             --results-directory ./TestResults
