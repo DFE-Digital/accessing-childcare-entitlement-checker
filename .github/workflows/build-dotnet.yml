@@ -208,7 +208,8 @@ jobs:
             --report-trx \
             --report-trx-filename unit-test-results.trx \
             --coverlet \
-            --coverlet-output-format opencover
+            --coverlet-output-format opencover \
+            --coverlet-include "[AccessingChildcareEntitlementChecker.*]*"
           
           dotnet test ${{ env.INTEGRATION_TESTS }} \
             -c ${{ env.CONFIGURATION }} \
@@ -217,7 +218,8 @@ jobs:
             --report-trx \
             --report-trx-filename integration-test-results.trx \
             --coverlet \
-            --coverlet-output-format opencover
+            --coverlet-output-format opencover \
+            --coverlet-include "[AccessingChildcareEntitlementChecker.*]*"
 
       - name: Record test result
         if: always()
