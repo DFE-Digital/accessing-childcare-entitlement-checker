@@ -56,7 +56,7 @@ analyse-i:
 	dotnet tool run jb inspectcode $(SOLUTION) \
 		--output=$(ANALYSIS_RESULTS)/inspectcode.sarif \
 		--format=Sarif
-	@jq -r '.runs[0].results[]? | "[\(.level)] \(.ruleId): \(.message.text) - \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine)"' $(ANALYSIS_RESULTS)/inspectcode.sarif
+	@jq -r '[.runs[0].results[]?] | sort_by(.level) | .[] | "[\(.level)] \(.ruleId): \(.message.text) - \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine)"' $(ANALYSIS_RESULTS)/inspectcode.sarif
 
 # Run all static analysis.
 analyse: analyse-d analyse-f analyse-i
