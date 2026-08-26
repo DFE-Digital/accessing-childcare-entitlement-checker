@@ -182,7 +182,7 @@ jobs:
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.token="${SONAR_TOKEN}" \
             /d:sonar.cs.vstest.reportsPaths="TestResults/**/*.trx" \
-            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
+            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover*.xml" \
             /d:sonar.exclusions="**/AccessingChildcareEntitlementChecker.Shutter/**,**/scripts/**,**/docs/**,**/infra/**,**/.github/**,**/.devcontainer/**,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
             /d:sonar.coverage.exclusions="**/Program.cs" \
             /d:sonar.cpd.exclusions="**/PartnerParentalLeave.cshtml,**/JourneyStateValidator.cs" \
@@ -207,9 +207,8 @@ jobs:
             --results-directory ./TestResults/UnitTests \
             --report-trx \
             --report-trx-filename unit-test-results.trx \
-            /p:CollectCoverage=true \
-            /p:CoverletOutputFormat=opencover \
-            /p:CoverletOutput=TestResults/coverage/unit/
+            --coverlet \
+            --coverlet-output-format opencover
           
           dotnet test ${{ env.INTEGRATION_TESTS }} \
             -c ${{ env.CONFIGURATION }} \
@@ -217,9 +216,8 @@ jobs:
             --results-directory ./TestResults/IntegrationTests \
             --report-trx \
             --report-trx-filename integration-test-results.trx \
-            /p:CollectCoverage=true \
-            /p:CoverletOutputFormat=opencover \
-            /p:CoverletOutput=TestResults/coverage/integration/
+            --coverlet \
+            --coverlet-output-format opencover
 
       - name: Record test result
         if: always()
@@ -243,7 +241,7 @@ jobs:
         continue-on-error: true
         run: |
           dotnet tool run reportgenerator \
-            -reports:"**/coverage.opencover.xml"\
+            -reports:"**/coverage.opencover*.xml"\
             -targetdir:coverage-report \
             -reporttypes:"Html;TextSummary;MarkdownSummaryGithub"
 

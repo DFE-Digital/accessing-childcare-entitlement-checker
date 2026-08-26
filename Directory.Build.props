@@ -14,5 +14,7 @@
     <NuGetAuditLevel>high</NuGetAuditLevel>
     <BuildInParallel>true</BuildInParallel>
     <UseSharedCompilation>true</UseSharedCompilation>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
   </PropertyGroup>
 </Project>

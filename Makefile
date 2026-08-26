@@ -9,8 +9,8 @@ build:
 
 # Test Targets
 test:
-	dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests --no-build --results-directory ./test-results --report-trx /p:CollectCoverage=true
-	dotnet test tests/AccessingChildcareEntitlementChecker.IntegrationTests --no-build --results-directory ./test-results --report-trx /p:CollectCoverage=true
+	dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests --no-build
+	dotnet test tests/AccessingChildcareEntitlementChecker.IntegrationTests --no-build
 
 test-e2e:
 	dotnet test tests/AccessingChildcareEntitlementChecker.E2eTests --no-build
