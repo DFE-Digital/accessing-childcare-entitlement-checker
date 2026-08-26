@@ -75,7 +75,7 @@ We verify software quality using the layered tests shown in the [Test strategy](
 * **Continuous checks**: Unit and component tests run automatically on each pull request.
 * **E2E tests**: We run E2E tests to validate full user journeys.
 * **Accessibility (A11y)**: We integrate accessibility checks directly into our E2E tests.
-* **Security checks**: We run weekly OWASP ZAP scans against the Test environment. We run Checkov checks on pull requests to find infrastructure issues.
+* **Security checks**: We run weekly OWASP ZAP scans against the Test environment. We run Checkov checks on pull requests to find infrastructure issues, and JetBrains inspectcode in the CI pipeline to upload static analysis findings to GitHub Code Scanning.
 
 ## Deployment and delivery workflows
 
