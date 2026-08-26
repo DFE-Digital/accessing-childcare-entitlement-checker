@@ -17,7 +17,7 @@ Compile and flatten the Markdown files by folder, automatically removing YAML me
 1. **Navigate to the repository root** in your terminal.
 2. **Execute the generator target:**
    ```bash
-   make flatten-docs
+   make docs-n
    ```
 3. **Verify the output:**
    The script traverses the subfolders of `docs/content/` (ignoring the `assets` folder and any Markdown files in the root `content` directory itself) and outputs the compiled Markdown files directly into a local `.notebook/` folder.

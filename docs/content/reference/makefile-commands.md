@@ -52,4 +52,4 @@ These commands run development pipelines, verify code format, execute testing ta
 | `make docs-c` | Cleans the generated Eleventy static site output directory. |
 | `make docs-b` | Installs documentation dependencies and builds the static site locally. |
 | `make docs-s` | Starts a local Eleventy development preview server for reviewing documentation changes. |
-| `make flatten-docs` | Flattens markdown documentation files by directory into consolidated notebooks for LLM ingestion. |
+| `make docs-n` | Flattens markdown documentation files by directory into consolidated notebooks for LLM ingestion. |
