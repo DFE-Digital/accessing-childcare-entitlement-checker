@@ -36,7 +36,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        var backLink = doc
+        doc
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

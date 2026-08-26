@@ -63,13 +63,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
         var jackDob = today.AddMonths(-6);
         var emilyDob = today.AddYears(-1);
         var miaDob = today.AddYears(-2);
-        var alfieDob = today.AddYears(-1);
         var oliverDob = today.AddMonths(-1);
         var tomDob = today.AddYears(-3);
         var timDob = today.AddYears(-3);
-
-        var useFromDate = TermDateCalculator.GetNextTermStartDate(
-            today.AddMonths(-6));
 
         return new EntitlementResponse()
         {

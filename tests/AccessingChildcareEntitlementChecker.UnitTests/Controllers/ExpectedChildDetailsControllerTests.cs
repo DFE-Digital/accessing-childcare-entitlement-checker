@@ -35,7 +35,7 @@ public class ExpectedChildDetailsControllerTests : IDisposable
     [Fact]
     public void ChildDueDateIfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildDueDate("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(_controller.ChildDueDate("DOES-NOT-EXIST"));
     }
 
     [Fact]

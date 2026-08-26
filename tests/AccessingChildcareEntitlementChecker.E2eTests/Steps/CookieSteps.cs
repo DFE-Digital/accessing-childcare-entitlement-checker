@@ -11,7 +11,7 @@ internal sealed class CookieSteps(IPage page)
     public async Task WhenIClickTheCookiesLinkInTheFooter()
     {
         var footer = page.Locator("footer");
-        var cookiesLink = footer.GetByRole(AriaRole.Link, new()
+        await footer.GetByRole(AriaRole.Link, new()
         {
             Name = "Cookies"
         }).ClickAsync();
