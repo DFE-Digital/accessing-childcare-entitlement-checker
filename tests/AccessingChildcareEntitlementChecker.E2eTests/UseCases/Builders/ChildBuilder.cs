@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using AccessingChildcareEntitlementChecker.E2eTests.Pages;
 

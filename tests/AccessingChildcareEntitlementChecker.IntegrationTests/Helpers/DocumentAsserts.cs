@@ -1,6 +1,5 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using Microsoft.AspNetCore.Components.Routing;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 
