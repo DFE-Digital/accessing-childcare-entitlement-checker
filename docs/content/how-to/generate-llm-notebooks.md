@@ -20,11 +20,11 @@ Compile and flatten the Markdown files by folder, automatically removing YAML me
    make flatten-docs
    ```
 3. **Verify the output:**
-   The script traverses the subfolders of `docs/content/` (ignoring the `assets` folder and any Markdown files in the root `content` directory itself) and outputs the compiled Markdown files directly into a local `notebook/` folder.
+   The script traverses the subfolders of `docs/content/` (ignoring the `assets` folder and any Markdown files in the root `content` directory itself) and outputs the compiled Markdown files directly into a local `.notebook/` folder.
 
 ## Locate the generated notebook files
 
-The following compiled documents are generated in the `notebook/` directory for lookup:
+The following compiled documents are generated in the `.notebook/` directory for lookup:
 
 | Notebook File | Source Content | Purpose |
 | :--- | :--- | :--- |
@@ -45,7 +45,7 @@ Upload the generated files to provide a complete, clean mental model of the code
 1. Open your browser and navigate to **NotebookLM** or **Gemini Notebook**.
 2. Create a new notebook for the project.
 3. Click **Add Source** and select **Upload Files**.
-4. Drag and drop the specific `.md` files from your local `notebook/` directory (e.g. `reference-decisions.md` to feed it ADR history, or `explanation.md` to feed it architectural patterns).
+4. Drag and drop the specific `.md` files from your local `.notebook/` directory (e.g. `reference-decisions.md` to feed it ADR history, or `explanation.md` to feed it architectural patterns).
 
 ### Option B: Upload to Copilot Notebook
 1. Open your enterprise **Copilot** workspace.

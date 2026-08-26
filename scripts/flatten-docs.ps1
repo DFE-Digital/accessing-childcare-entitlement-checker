@@ -1,6 +1,6 @@
 param (
     [string]$SourceDir = "docs/content",
-    [string]$OutputDir = "notebook"
+    [string]$OutputDir = ".notebook"
 )
 
 # Ensure the output directory exists
