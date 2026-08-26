@@ -123,8 +123,8 @@ jobs:
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
           dotnet ./e2e-tests/AccessingChildcareEntitlementChecker.E2eTests.dll \
-            --report-trx \
-            --report-trx-filename test-results.trx \
+            --report-xunit-trx \
+            --report-xunit-trx-filename test-results.trx \
             --results-directory ./TestResults
 
       - name: Stop app
