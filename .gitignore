@@ -1,6 +1,7 @@
 # Build outputs
 /artifacts/
 /test-results/
+/analysis-results/
 docs/_site/
 docs/node_modules/
 *.feature.cs

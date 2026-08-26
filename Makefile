@@ -1,24 +1,106 @@
-.PHONY: build test test-e2e test-a11y tf-f tf-v tf-docs
+.PHONY: \
+	build \
+	test \
+	test-e2e \
+	test-a11y \
+	analyze \
+	analyse-d \
+	analyse-f \
+	analyse-i \
+	verify \
+	tf-f \
+	tf-v \
+	tf-docs \
+	docs-c \
+	docs-b \
+	docs-s \
+	flatten-docs
 
-# .NET Targets
+# ---------------------------------------------------------------------------
+# Configuration
+# ---------------------------------------------------------------------------
+
+SOLUTION := AccessingChildcareEntitlementChecker.slnx
+TEST_RESULTS := ./test-results
+ANALYSIS_RESULTS := ./analysis-results
+
+# ---------------------------------------------------------------------------
+# .NET - Build
+# ---------------------------------------------------------------------------
+
 build:
 	dotnet clean
 	dotnet restore --locked-mode
-	dotnet format
+	dotnet format --verify-no-changes
 	dotnet build --no-restore
 
-# Test Targets
+# ---------------------------------------------------------------------------
+# .NET - Static Analysis
+# ---------------------------------------------------------------------------
+
+# Fast analysis using the .NET SDK / Roslyn.
+analyse-d:
+	dotnet build \
+		--no-restore \
+		--nologo \
+		--verbosity minimal
+
+# Verify formatting without modifying files.
+analyse-f:
+	dotnet format \
+		--verify-no-changes \
+		--no-restore
+
+# Deep InspectCode analysis.
+analyse-i:
+	dotnet tool run jb inspectcode $(SOLUTION) \
+		--output=$(ANALYSIS_RESULTS)/inspectcode.sarif \
+		--format=Sarif
+	@jq -r '.runs[0].results[]? | "[\(.level)] \(.ruleId): \(.message.text) - \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine)"' $(ANALYSIS_RESULTS)/inspectcode.sarif
+
+# Run all static analysis.
+analyse: analyse-d analyse-f analyse-i
+
+# ---------------------------------------------------------------------------
+# Verification
+# ---------------------------------------------------------------------------
+
+# Full local verification.
+verify: build analyse test
+
+# ---------------------------------------------------------------------------
+# Tests
+# ---------------------------------------------------------------------------
+
 test:
-	dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests --no-build --results-directory ./test-results --logger "trx" /p:CollectCoverage=true /m:1
-	dotnet test tests/AccessingChildcareEntitlementChecker.IntegrationTests --no-build --results-directory ./test-results --logger "trx" /p:CollectCoverage=true /m:1
+	dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests \
+		--no-build \
+		--results-directory $(TEST_RESULTS) \
+		--logger "trx" \
+		/p:CollectCoverage=true \
+		/m:1
+
+	dotnet test tests/AccessingChildcareEntitlementChecker.IntegrationTests \
+		--no-build \
+		--results-directory $(TEST_RESULTS) \
+		--logger "trx" \
+		/p:CollectCoverage=true \
+		/m:1
 
 test-e2e:
-	dotnet test tests/AccessingChildcareEntitlementChecker.E2eTests --no-build --logger:"console;verbosity=normal"
+	dotnet test tests/AccessingChildcareEntitlementChecker.E2eTests \
+		--no-build \
+		--logger:"console;verbosity=normal"
 
 test-a11y:
-	dotnet test tests/AccessingChildcareEntitlementChecker.A11yTests --no-build --logger:"console;verbosity=normal"
+	dotnet test tests/AccessingChildcareEntitlementChecker.A11yTests \
+		--no-build \
+		--logger:"console;verbosity=normal"
 
-# Terraform Targets
+# ---------------------------------------------------------------------------
+# Terraform
+# ---------------------------------------------------------------------------
+
 tf-f:
 	terraform fmt -recursive infra/
 
@@ -26,9 +108,15 @@ tf-v:
 	terraform -chdir=infra/terraform validate
 
 tf-docs:
-	terraform-docs -c .terraform-docs.yml --output-file ../../docs/content/reference/architecture/deployed-infrastructure.md --output-mode inject infra/terraform
+	terraform-docs -c .terraform-docs.yml \
+		--output-file ../../docs/content/reference/architecture/deployed-infrastructure.md \
+		--output-mode inject \
+		infra/terraform
 
-# Documentation Targets
+# ---------------------------------------------------------------------------
+# Documentation
+# ---------------------------------------------------------------------------
+
 docs-c:
 	cd docs && npm run clean
 
