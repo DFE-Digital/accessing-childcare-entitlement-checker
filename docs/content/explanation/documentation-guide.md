@@ -25,12 +25,12 @@ To preview changes:
 
 We organise documents into logical directories. These directories match the **Diátaxis documentation framework**:
 
-| Category | Path | Tone | Purpose |
-| :--- | :--- | :--- | :--- |
-| **Tutorials** | `docs/content/tutorials/` | Friendly and conversational | Guided, hands-on learning for newcomers. We focus on setting up and starting with the project. |
-| **How-to Guides** | `docs/content/how-to/` | Action-driven and direct | Step-by-step instructions to solve specific, immediate tasks or runbooks. |
-| **Explanation** | `docs/content/explanation/` | Concept and context | Deep dives into architectural designs, philosophies, and branching strategies. We help you build a robust mental model. |
-| **Reference** | `docs/content/reference/` | Factual and objective | Technical specs, ADRs, network topologies, and alerts. We use objective, third-person phrasing without pronouns. |
+| Category | Path | Tone | Purpose | Key Guidelines |
+| :--- | :--- | :--- | :--- | :--- |
+| **Tutorials** | `docs/content/tutorials/` | Friendly and conversational | Guided, hands-on learning for newcomers. We focus on setting up and starting with the project. | Use inclusive language ("we", "you"). Focus on learning by doing. |
+| **How-to Guides** | `docs/content/how-to/` | Action-driven and direct | Step-by-step instructions to solve specific, immediate tasks or runbooks. | Strip away theory. Use imperative/command headers. |
+| **Explanation** | `docs/content/explanation/` | Concept and context | Deep dives into architectural designs, philosophies, and branching strategies. We help you build a robust mental model. | Focus on "why". Reframe steps into system lifecycle explanations. |
+| **Reference** | `docs/content/reference/` | Factual and objective | Technical specs, ADRs, network topologies, and alerts. We use objective, third-person phrasing without pronouns. | Neutral third-person (no pronouns). Organise data using tables and lists. |
 
 All future documentation and updates must follow these tone and style guidelines. This keeps the files clear, predictable, and easy to use.
 
