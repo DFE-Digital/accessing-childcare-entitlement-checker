@@ -205,7 +205,8 @@ jobs:
             -c ${{ env.CONFIGURATION }} \
             --no-build \
             --results-directory ./TestResults/UnitTests \
-            --logger "trx;LogFileName=unit-test-results.trx" \
+            --report-trx \
+            --report-trx-filename unit-test-results.trx \
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=opencover \
             /p:CoverletOutput=TestResults/coverage/unit/
@@ -214,7 +215,8 @@ jobs:
             -c ${{ env.CONFIGURATION }} \
             --no-build \
             --results-directory ./TestResults/IntegrationTests \
-            --logger "trx;LogFileName=integration-test-results.trx" \
+            --report-trx \
+            --report-trx-filename integration-test-results.trx \
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=opencover \
             /p:CoverletOutput=TestResults/coverage/integration/

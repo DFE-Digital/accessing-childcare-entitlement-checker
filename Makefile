@@ -9,14 +9,14 @@ build:
 
 # Test Targets
 test:
-	dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests --no-build --results-directory ./test-results --logger "trx" /p:CollectCoverage=true /m:1
-	dotnet test tests/AccessingChildcareEntitlementChecker.IntegrationTests --no-build --results-directory ./test-results --logger "trx" /p:CollectCoverage=true /m:1
+	dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests --no-build --results-directory ./test-results --report-trx /p:CollectCoverage=true
+	dotnet test tests/AccessingChildcareEntitlementChecker.IntegrationTests --no-build --results-directory ./test-results --report-trx /p:CollectCoverage=true
 
 test-e2e:
-	dotnet test tests/AccessingChildcareEntitlementChecker.E2eTests --no-build --logger:"console;verbosity=normal"
+	dotnet test tests/AccessingChildcareEntitlementChecker.E2eTests --no-build
 
 test-a11y:
-	dotnet test tests/AccessingChildcareEntitlementChecker.A11yTests --no-build --logger:"console;verbosity=normal"
+	dotnet test tests/AccessingChildcareEntitlementChecker.A11yTests --no-build
 
 # Terraform Targets
 tf-f:

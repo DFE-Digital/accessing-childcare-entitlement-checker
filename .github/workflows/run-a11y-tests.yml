@@ -120,7 +120,8 @@ jobs:
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
           dotnet test ./a11y-tests/AccessingChildcareEntitlementChecker.A11yTests.dll \
-            --logger "trx;LogFileName=test-results.trx" \
+            --report-trx \
+            --report-trx-filename test-results.trx \
             --results-directory ./TestResults
 
       - name: Stop app
