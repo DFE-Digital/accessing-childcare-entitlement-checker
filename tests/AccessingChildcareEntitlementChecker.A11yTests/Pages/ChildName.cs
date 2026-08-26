@@ -5,7 +5,7 @@ namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 public class ChildNamePageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
     [Fact]
-    public async Task ChildNamePage_HasNoAccessibilityViolations()
+    public async Task ChildNamePageHasNoAccessibilityViolations()
     {
         await StartJourney();
         await AnswerLocation();
@@ -14,7 +14,7 @@ public class ChildNamePageAccessibilityTests(ITestOutputHelper output) : Journey
     }
 
     [Fact]
-    public async Task ChildNamePage_WithValidationError_HasNoAccessibilityViolations()
+    public async Task ChildNamePageWithValidationErrorHasNoAccessibilityViolations()
     {
         await StartJourney();
         await AnswerLocation();

@@ -50,7 +50,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
 
 
     [Fact]
-    public void Evaluate_WhenChildIsEligibleNow_ReturnsSchemeResult()
+    public void EvaluateWhenChildIsEligibleNowReturnsSchemeResult()
     {
         var scheme = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -66,7 +66,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsBornAndEligibleInFuture_ReturnsFutureEligibility()
+    public void EvaluateWhenChildIsBornAndEligibleInFutureReturnsFutureEligibility()
     {
         var scheme = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -82,7 +82,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsNotBornAndEligibleInFuture_ReturnsFutureEligibility()
+    public void EvaluateWhenChildIsNotBornAndEligibleInFutureReturnsFutureEligibility()
     {
         var scheme = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -102,7 +102,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsNotEligibleDueToAge_ReturnsNull()
+    public void EvaluateWhenChildIsNotEligibleDueToAgeReturnsNull()
     {
         var scheme = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -115,7 +115,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsNotEligibleDueToLocation_ReturnsNull()
+    public void EvaluateWhenChildIsNotEligibleDueToLocationReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -144,7 +144,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenParentDoesNotMeetMinimumIncomeThreshold_ReturnsNull()
+    public void EvaluateWhenParentDoesNotMeetMinimumIncomeThresholdReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -173,7 +173,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenParentExceedsMaximumIncomeThreshold_ReturnsNull()
+    public void EvaluateWhenParentExceedsMaximumIncomeThresholdReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -202,7 +202,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenParentIsInSelfEmploymentGracePeriod_ReturnsSchemeResult()
+    public void EvaluateWhenParentIsInSelfEmploymentGracePeriodReturnsSchemeResult()
     {
         var scheme = CreateEvaluator();
 
@@ -235,7 +235,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_OneParentWorkingOtherParentReceivingQualifyingBenefit_ReturnsSchemeResult()
+    public void EvaluateOneParentWorkingOtherParentReceivingQualifyingBenefitReturnsSchemeResult()
     {
         var scheme = CreateEvaluator();
 
@@ -277,7 +277,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_BothParentsWorking_ReturnsSchemeResult()
+    public void EvaluateBothParentsWorkingReturnsSchemeResult()
     {
         var scheme = CreateEvaluator();
 
@@ -315,7 +315,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildEligibleInFuture_SetsApplyFromDate()
+    public void EvaluateWhenChildEligibleInFutureSetsApplyFromDate()
     {
         var scheme = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -328,7 +328,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildEligibleInFuture_SetsUseFromDate()
+    public void EvaluateWhenChildEligibleInFutureSetsUseFromDate()
     {
         var scheme = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -348,7 +348,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_SingleParentBelowIncome_LeaveChildIsIneligibleAndOtherChildIsTemporarilyEligible()
+    public void EvaluateSingleParentBelowIncomeLeaveChildIsIneligibleAndOtherChildIsTemporarilyEligible()
     {
         var scheme = CreateEvaluator();
 
@@ -391,7 +391,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_UserLeaveChildAndPartnerOnLeaveForAnotherChild_ReturnsDifferentApplyAndEndParties()
+    public void EvaluateUserLeaveChildAndPartnerOnLeaveForAnotherChildReturnsDifferentApplyAndEndParties()
     {
         var scheme = CreateEvaluator();
 
@@ -442,7 +442,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_BothParentsOnLeaveForDifferentChildrenAndBelowIncome_OnlyOtherChildIsEligible()
+    public void EvaluateBothParentsOnLeaveForDifferentChildrenAndBelowIncomeOnlyOtherChildIsEligible()
     {
         var scheme = CreateEvaluator();
 
@@ -503,7 +503,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     }
 
     [Fact]
-    public void Evaluate_TemporaryLeaveExemptionIsAvailableButBenefitRouteQualifies_ReturnsNoSpecialEndParty()
+    public void EvaluateTemporaryLeaveExemptionIsAvailableButBenefitRouteQualifiesReturnsNoSpecialEndParty()
     {
         var scheme = CreateEvaluator();
 

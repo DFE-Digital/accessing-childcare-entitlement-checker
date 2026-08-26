@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
+using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
@@ -35,7 +35,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     /// From here; you may only go forwards to "is child born".
     /// </remarks>
     [Fact]
-    public async Task Post_Valid_Redirects()
+    public async Task PostValidRedirects()
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
@@ -59,7 +59,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     [InlineData(null, "/where-do-you-live")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_With_Long_Name_Shows_Validation_Error_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task PostWithLongNameShowsValidationErrorAndBackLink(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
         var url = $"{Url}?returnTo={returnTo}";

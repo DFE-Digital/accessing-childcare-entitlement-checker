@@ -35,7 +35,7 @@ public class PartnerWorkStatusTests(IntegrationTestFixture factory) : IClassFixt
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, "/work-status/self-employed-partner")]
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, null, "/earnings/wage-partner")]
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, "/earnings/wage-partner")]
-    public async Task Post_Valid_Redirects(string? returnTo, WorkStatusOption partnerWorkStatus, SelfEmployedDurationOption? partnerSelfEmployedDuration, WeeklyEarningsOption? partnerWeeklyEarnings, string continueUrl)
+    public async Task PostValidRedirects(string? returnTo, WorkStatusOption partnerWorkStatus, SelfEmployedDurationOption? partnerSelfEmployedDuration, WeeklyEarningsOption? partnerWeeklyEarnings, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -63,7 +63,7 @@ public class PartnerWorkStatusTests(IntegrationTestFixture factory) : IClassFixt
     [InlineData(null, "/work-status/work-partner")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 

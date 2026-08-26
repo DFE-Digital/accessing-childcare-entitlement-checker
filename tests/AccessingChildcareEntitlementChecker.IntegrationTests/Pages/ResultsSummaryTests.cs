@@ -10,7 +10,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
 {
 
     [Fact]
-    public async Task Get_Results_Has_BackLink()
+    public async Task GetResultsHasBackLink()
     {
         var state = new JourneyState();
         using var client = factory.CreateClientWithJourneyState(state);
@@ -23,7 +23,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_Results_HasNavBarAndBetaBanner()
+    public async Task GetResultsHasNavBarAndBetaBanner()
     {
         var state = new JourneyState();
         state.CountryOfResidence = CountryOfResidence.England;
@@ -42,7 +42,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_Results_Has_Two_Print_Buttons()
+    public async Task GetResultsHasTwoPrintButtons()
     {
         var state = new JourneyState();
         state.CountryOfResidence = CountryOfResidence.England;
@@ -62,7 +62,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
 
 
     [Fact]
-    public async Task Get_Results_ReturnsView()
+    public async Task GetResultsReturnsView()
     {
         var state = new JourneyState();
         state.CountryOfResidence = CountryOfResidence.England;
@@ -82,7 +82,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_Results_Displays_FifteenHoursUniversal_For_EligibleChild()
+    public async Task GetResultsDisplaysFifteenHoursUniversalForEligibleChild()
     {
         var state = new JourneyState();
         state.CountryOfResidence = CountryOfResidence.England;
@@ -101,7 +101,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_Results_DisplaysFifteenHoursUniversalAndFCFWP()
+    public async Task GetResultsDisplaysFifteenHoursUniversalAndFCFWP()
     {
         var state = new JourneyState();
         state.CountryOfResidence = CountryOfResidence.England;
@@ -127,7 +127,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_Results_DisplaysThirtyHourWarning()
+    public async Task GetResultsDisplaysThirtyHourWarning()
     {
         var state = new JourneyState();
 
@@ -159,7 +159,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, false)]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.No, true)]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.StillWaiting, false)]
-    public async Task Get_Results_DisplaysPublicFundsWarning(NationalityOption nationality, SettledStatusOption? settledStatus, bool hasWarning)
+    public async Task GetResultsDisplaysPublicFundsWarning(NationalityOption nationality, SettledStatusOption? settledStatus, bool hasWarning)
     {
         var state = new JourneyState();
         state.CountryOfResidence = CountryOfResidence.England;
@@ -190,7 +190,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_Results_Displays_With_Mixed_Eligibility()
+    public async Task GetResultsDisplaysWithMixedEligibility()
     {
         var state = new JourneyState();
         state.CountryOfResidence = CountryOfResidence.England;
@@ -219,7 +219,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_Results_Displays_With_No_Eligibility()
+    public async Task GetResultsDisplaysWithNoEligibility()
     {
         var state = new JourneyState();
         state.CountryOfResidence = CountryOfResidence.England;

@@ -53,7 +53,7 @@ public class IntroductionController : Controller
         }
 
         _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
+        _journeySession.SetState(_journeyState);
 
         return this.RedirectTo<IntroductionController>(
             nameof(IsChildBorn),
@@ -87,7 +87,7 @@ public class IntroductionController : Controller
         }
 
         _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
+        _journeySession.SetState(_journeyState);
 
         var (nextAction, nextController) = child.BirthStatus switch
         {

@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
+using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
@@ -42,7 +42,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
     [InlineData(null, $"/children/check-childs-details")]
     [InlineData(ReturnTo.CheckAnswers, $"/children/check-childs-details")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_Valid_Redirects(string? returnTo, string continueUrl)
+    public async Task PostValidRedirects(string? returnTo, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -74,7 +74,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
     [InlineData(null, $"/children/{ChildId}/childs-date-of-birth")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_With_Tomorrows_Date_Fails_Validation_And_Preserves_Childs_Name_With_BackLink(string? returnTo, string backLinkUrl)
+    public async Task PostWithTomorrowsDateFailsValidationAndPreservesChildsNameWithBackLink(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -109,7 +109,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
     }
 
     [Fact]
-    public async Task Returns_Not_Found_For_Nonexistant_Child()
+    public async Task ReturnsNotFoundForNonexistantChild()
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);

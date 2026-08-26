@@ -66,7 +66,7 @@ public class JourneyStateToEntitlementRequestMapperTests
     }
 
     [Fact]
-    public void Map_WhenJourneyStateIsPopulated_MapsEntitlementRequest()
+    public void MapWhenJourneyStateIsPopulatedMapsEntitlementRequest()
     {
         var mapper = new JourneyStateToEntitlementRequestMapper();
 
@@ -110,7 +110,7 @@ public class JourneyStateToEntitlementRequestMapperTests
     }
 
     [Fact]
-    public void Map_WhenAlternativeValuesProvided_MapsEntitlementRequest()
+    public void MapWhenAlternativeValuesProvidedMapsEntitlementRequest()
     {
         var mapper = new JourneyStateToEntitlementRequestMapper();
 
@@ -180,7 +180,7 @@ public class JourneyStateToEntitlementRequestMapperTests
     }
 
     [Fact]
-    public void Map_WhenHasPartnerIsFalse_ReturnsNullPartner()
+    public void MapWhenHasPartnerIsFalseReturnsNullPartner()
     {
         var mapper = new JourneyStateToEntitlementRequestMapper();
 
@@ -193,7 +193,7 @@ public class JourneyStateToEntitlementRequestMapperTests
     }
 
     [Fact]
-    public void Map_WhenOptionalValuesAreNull_MapsNulls()
+    public void MapWhenOptionalValuesAreNullMapsNulls()
     {
         var mapper = new JourneyStateToEntitlementRequestMapper();
 

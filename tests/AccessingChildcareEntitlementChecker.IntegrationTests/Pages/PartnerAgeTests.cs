@@ -33,7 +33,7 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, "/work-status/work-partner")]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.StillWaiting, "/nationality-partner")]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.No, "/nationality-partner")]
-    public async Task Post_Valid_Redirects(
+    public async Task PostValidRedirects(
         NationalityOption userNationality,
         SettledStatusOption? userSettledStatusOption,
         string continueUrl)
@@ -63,7 +63,7 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
     [InlineData(null, "/partner")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 

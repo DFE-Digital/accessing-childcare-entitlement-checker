@@ -24,7 +24,7 @@ public class PartnerBenefitsViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
+    public void ValidateReturnsErrorWhenNoneSelectedWithOptions()
     {
         var model = new PartnerBenefitsViewModel
         {
@@ -45,7 +45,7 @@ public class PartnerBenefitsViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenOptionsAreEmpty()
+    public void ValidateReturnsErrorWhenOptionsAreEmpty()
     {
         var model = new PartnerBenefitsViewModel
         {

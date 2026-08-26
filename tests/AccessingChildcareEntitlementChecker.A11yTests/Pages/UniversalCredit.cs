@@ -5,14 +5,14 @@ namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 public class UniversalCreditPageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
     [Fact]
-    public async Task UniversalCreditPage_HasNoAccessibilityViolations()
+    public async Task UniversalCreditPageHasNoAccessibilityViolations()
     {
         await GoToUserUniversalCreditPage();
         await EvaluatePage();
     }
 
     [Fact]
-    public async Task UniversalCreditPage_WithValidationError_HasNoAccessibilityViolations()
+    public async Task UniversalCreditPageWithValidationErrorHasNoAccessibilityViolations()
     {
         await GoToUserUniversalCreditPage();
         await Continue();

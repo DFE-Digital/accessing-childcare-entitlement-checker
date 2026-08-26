@@ -117,7 +117,7 @@ public partial class SummaryController(
         if (journeyState.Children.Remove(model.ChildId, out var child))
         {
             TempData["RemovedChildName"] = child.Name;
-            journeySession.Set(journeyState);
+            journeySession.SetState(journeyState);
         }
 
         return this.RedirectToReturnTo(model.ReturnTo);
@@ -150,7 +150,7 @@ public partial class SummaryController(
                 journeyState.Children.Remove(child.Key);
             }
 
-            journeySession.Set(journeyState);
+            journeySession.SetState(journeyState);
         }
 
         return removedChildNames;

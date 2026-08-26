@@ -8,7 +8,7 @@ namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
 [Scope(Feature = "End to End Use Cases")]
-internal class UseCaseSteps(IPage page, TestSettings settings)
+internal sealed class UseCaseSteps(IPage page, TestSettings settings)
 {
     [Given("I complete the journey for the use case {string}")]
     public async Task GivenICompleteTheJourneyForTheUseCaseString(string useCaseName)

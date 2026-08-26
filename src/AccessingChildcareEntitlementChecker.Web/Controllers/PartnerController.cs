@@ -29,7 +29,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
 
         var nextAction = nameof(PartnerPaidWork);
         if (journeyState.Nationality != NationalityOption.BritishOrIrishCitizen
@@ -58,7 +58,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
         var nextAction = journeyState.PartnerNationality switch
         {
             NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => nameof(PartnerSettledStatus),
@@ -87,7 +87,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
         return RedirectToAction(nameof(PartnerPaidWork));
     }
 
@@ -108,7 +108,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
         var nextAction = journeyState.PartnerPaidWork switch
         {
             PartnerPaidWorkOption.Yes => nameof(PartnerWorkStatus),
@@ -139,7 +139,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
         return RedirectToAction(nameof(PartnerWorkStatus));
     }
 
@@ -160,7 +160,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
         var nextAction = nameof(PartnerWeeklyEarnings);
         if (journeyState.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed))
         {
@@ -191,7 +191,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
         return RedirectToAction(nameof(PartnerChildcareSupport));
     }
 
@@ -212,7 +212,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
 
         // Complex logic for sick leave falls through
         var nextAction = nameof(PartnerWeeklyEarnings);
@@ -250,7 +250,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
         var nextAction = journeyState.PartnerWeeklyEarnings switch
         {
             WeeklyEarningsOption.AboveThreshold => nameof(PartnerYearlyEarnings),
@@ -278,7 +278,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
         return RedirectToAction(nameof(PartnerBenefits));
     }
 
@@ -299,7 +299,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
         if (journeyState.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
         {
             return RedirectToAction(nameof(PartnerChildcareVoucherReceipt));
@@ -325,7 +325,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         }
 
         journeyState.Apply(model);
-        journeySession.Set(journeyState);
+        journeySession.SetState(journeyState);
         return RedirectToAction(nameof(SummaryController.CheckAnswers), SummaryController.Name);
     }
 

@@ -5,7 +5,7 @@ namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 public class LocationPageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
     [Fact]
-    public async Task LocationPage_HasNoAccessibilityViolations()
+    public async Task LocationPageHasNoAccessibilityViolations()
     {
         if (Settings.HmrcIntegrationEnabled)
         {
@@ -18,7 +18,7 @@ public class LocationPageAccessibilityTests(ITestOutputHelper output) : JourneyP
     }
 
     [Fact]
-    public async Task LocationPage_WithValidationError_HasNoAccessibilityViolations()
+    public async Task LocationPageWithValidationErrorHasNoAccessibilityViolations()
     {
         if (Settings.HmrcIntegrationEnabled)
         {

@@ -5,6 +5,7 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -82,7 +83,7 @@ public class SummaryRowFactory
             return this;
         }
 
-        var displayValue = value.Value.ToString("d MMMM yyyy");
+        var displayValue = value.Value.ToString("d MMMM yyyy", new CultureInfo("en-GB"));
         return Add(viewModelProperty, displayValue, controllerActionName);
     }
 

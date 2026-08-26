@@ -3,6 +3,6 @@ namespace AccessingChildcareEntitlementChecker.Web.Services;
 public interface IJourneySession
 {
     bool HasSession { get; }
-    JourneyState Get();
-    void Set(JourneyState journeyState);
+    JourneyState GetState();
+    void SetState(JourneyState journeyState);
 }

@@ -2,7 +2,7 @@ using AccessingChildcareEntitlementChecker.E2eTests.Pages;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
-internal class JourneyBuilder
+internal sealed class JourneyBuilder
 {
     private readonly List<JourneyStep> _journey = [];
 

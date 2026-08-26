@@ -26,7 +26,7 @@ public class PartnerWeeklyEarningsViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenNoneSelected()
+    public void ValidateReturnsErrorWhenNoneSelected()
     {
         _journeyState.PartnerAge = AgeRange.UnderEighteen;
         _journeyState.PartnerWorkStatus = [WorkStatusOption.Apprentice];
@@ -46,7 +46,7 @@ public class PartnerWeeklyEarningsViewModelTests
     }
 
     [Fact]
-    public void Validate_Coverage_ThrowsIfNoJourneyState()
+    public void ValidateCoverageThrowsIfNoJourneyState()
     {
         Func<Type, object> serviceProviderFunc = serviceType =>
         {

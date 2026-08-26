@@ -19,7 +19,7 @@ public class CookiesTests(IntegrationTestFixture factory) : IClassFixture<Integr
     }
 
     [Fact]
-    public async Task Get_With_Malformed_Parameter_Returns_Bad_Request()
+    public async Task GetWithMalformedParameterReturnsBadRequest()
     {
         using var client = factory.CreateClient();
         var response = await client.GetAsync($"{Url}?hasSetCookies=banana", TestContext.Current.CancellationToken);
@@ -29,7 +29,7 @@ public class CookiesTests(IntegrationTestFixture factory) : IClassFixture<Integr
     [Theory]
     [InlineData(true, "enabled")]
     [InlineData(false, "disabled")]
-    public async Task Post_Sets_Cookie(bool analyticsCookiesEnabled, string expectedCookieValue)
+    public async Task PostSetsCookie(bool analyticsCookiesEnabled, string expectedCookieValue)
     {
         using var client = factory.CreateClient(
             new WebApplicationFactoryClientOptions
@@ -57,7 +57,7 @@ public class CookiesTests(IntegrationTestFixture factory) : IClassFixture<Integr
     [Theory]
     [InlineData(true, "enabled")]
     [InlineData(false, "disabled")]
-    public async Task Banner_Consent_Sets_Cookie_Or_Returns_Bad_Request(bool analyticsCookiesEnabled, string expectedCookieValue)
+    public async Task BannerConsentSetsCookieOrReturnsBadRequest(bool analyticsCookiesEnabled, string expectedCookieValue)
     {
         using var client = factory.CreateClient(
             new WebApplicationFactoryClientOptions

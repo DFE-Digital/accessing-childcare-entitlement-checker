@@ -25,7 +25,7 @@ public class PartnerParentalLeaveViewModelTests
     }
 
     [Fact]
-    public void Constructor_InitializesPropertiesCorrectly()
+    public void ConstructorInitializesPropertiesCorrectly()
     {
         _journeyState.PartnerParentalLeaveChildrenIds = ["child1", "child2"];
         var backLink = "/previous-page";
@@ -38,7 +38,7 @@ public class PartnerParentalLeaveViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
+    public void ValidateReturnsErrorWhenNoneSelectedWithOptions()
     {
         var model = new PartnerParentalLeaveViewModel()
         {
@@ -59,7 +59,7 @@ public class PartnerParentalLeaveViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenOptionsAreEmpty()
+    public void ValidateReturnsErrorWhenOptionsAreEmpty()
     {
         var model = new PartnerParentalLeaveViewModel()
         {

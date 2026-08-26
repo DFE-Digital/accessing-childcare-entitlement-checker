@@ -5,7 +5,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class DateSteps(IPage page)
+internal sealed class DateSteps(IPage page)
 {
     [When("I enter the day {string} month {string} and year {string}")]
     public async Task WhenIEnterTheDayStringMonthStringAndYearString(string day, string month, string year)
@@ -61,7 +61,10 @@ internal class DateSteps(IPage page)
 
     private async Task EnterDate(DateTime date)
     {
-        await EnterDate(date.Day.ToString(), date.Month.ToString(), date.Year.ToString());
+        await EnterDate(
+            date.Day.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            date.Month.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            date.Year.ToString(System.Globalization.CultureInfo.InvariantCulture));
     }
 
     private async Task EnterDate(string day, string month, string year)

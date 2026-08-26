@@ -46,7 +46,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.AboveThreshold, null, "/earnings/adjusted-net-income")]
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, null, "/benefits/universal-credit")]
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, UniversalCreditOption.Receives, "/benefits/universal-credit")]
-    public async Task Post_Valid_Redirects(string? returnTo, WeeklyEarningsOption weeklyEarnings, YearlyEarningsOption? yearlyEarnings, UniversalCreditOption? universalCredit, string continueUrl)
+    public async Task PostValidRedirects(string? returnTo, WeeklyEarningsOption weeklyEarnings, YearlyEarningsOption? yearlyEarnings, UniversalCreditOption? universalCredit, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -79,7 +79,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(null, WorkStatusOption.Apprentice, null, "/work-status/work-status")]
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.PaidEmployment, null, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(
+    public async Task PostInvalidShowsValidationError(
         string? returnTo,
         WorkStatusOption workStatus,
         SelfEmployedDurationOption? selfEmployedDuration,

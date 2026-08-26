@@ -40,7 +40,7 @@ public class DevelopmentExtensionsTests
     }
 
     [Fact]
-    public void UseDevelopmentAuth_ReturnsApp_When_Password_Is_Null_Or_Empty()
+    public void UseDevelopmentAuthReturnsAppWhenPasswordIsNullOrEmpty()
     {
         _config["DevelopmentBasicAuthPassword"].Returns((string?)null);
         _env.EnvironmentName.Returns(Environments.Development);
@@ -52,7 +52,7 @@ public class DevelopmentExtensionsTests
     }
 
     [Fact]
-    public void UseDevelopmentAuth_ReturnsApp_When_Environment_Is_Production()
+    public void UseDevelopmentAuthReturnsAppWhenEnvironmentIsProduction()
     {
         _config["DevelopmentBasicAuthPassword"].Returns("password");
         _env.EnvironmentName.Returns(Environments.Production);
@@ -77,7 +77,7 @@ public class DevelopmentExtensionsTests
     [InlineData("/robots.txt")]
     [InlineData("/robots933456.txt")]
     [InlineData("/ROBOTS_TEST.TXT")]
-    public async Task UseDevelopmentAuth_Allows_Excluded_Paths_Without_Authentication(string path)
+    public async Task UseDevelopmentAuthAllowsExcludedPathsWithoutAuthentication(string path)
     {
         _config["DevelopmentBasicAuthPassword"].Returns("password");
         _env.EnvironmentName.Returns(Environments.Development);
@@ -104,7 +104,7 @@ public class DevelopmentExtensionsTests
     [Theory]
     [InlineData("AlwaysOn")]
     [InlineData("SiteWarmup")]
-    public async Task UseDevelopmentAuth_Allows_Azure_Probes_Without_Authentication(string userAgent)
+    public async Task UseDevelopmentAuthAllowsAzureProbesWithoutAuthentication(string userAgent)
     {
         _config["DevelopmentBasicAuthPassword"].Returns("password");
         _env.EnvironmentName.Returns(Environments.Development);
@@ -135,7 +135,7 @@ public class DevelopmentExtensionsTests
     [InlineData("/assets")] // Not ending with trailing slash, not considered asset folder path
     [InlineData("/robots")] // Not ending with .txt
     [InlineData("/robots.png")]
-    public async Task UseDevelopmentAuth_Blocks_Non_Excluded_Paths_Without_Authentication(string path)
+    public async Task UseDevelopmentAuthBlocksNonExcludedPathsWithoutAuthentication(string path)
     {
         _config["DevelopmentBasicAuthPassword"].Returns("password");
         _env.EnvironmentName.Returns(Environments.Development);
@@ -161,7 +161,7 @@ public class DevelopmentExtensionsTests
     }
 
     [Fact]
-    public async Task UseDevelopmentAuth_Allows_Correct_Credentials()
+    public async Task UseDevelopmentAuthAllowsCorrectCredentials()
     {
         _config["DevelopmentBasicAuthPassword"].Returns("password");
         _env.EnvironmentName.Returns(Environments.Development);
@@ -189,7 +189,7 @@ public class DevelopmentExtensionsTests
     }
 
     [Fact]
-    public async Task UseDevelopmentAuth_Blocks_Incorrect_Credentials()
+    public async Task UseDevelopmentAuthBlocksIncorrectCredentials()
     {
         _config["DevelopmentBasicAuthPassword"].Returns("password");
         _env.EnvironmentName.Returns(Environments.Development);

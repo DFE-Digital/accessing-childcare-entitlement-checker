@@ -1,3 +1,4 @@
+using System;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.Partner;
@@ -9,7 +10,7 @@ using System.Diagnostics;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
-public class PartnerControllerTests
+public class PartnerControllerTests : IDisposable
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
@@ -25,14 +26,14 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerAge_ReturnsView()
+    public void PartnerAgeReturnsView()
     {
         var result = _controller.PartnerAge();
         Assert.Null(result.Model<PartnerAgeViewModel>().PartnerAge);
     }
 
     [Fact]
-    public void PartnerAge_Get_PopulatesModel_FromState()
+    public void PartnerAgeGetPopulatesModelFromState()
     {
         _journeyState.PartnerAge = AgeRange.EighteenToTwenty;
         var result = _controller.PartnerAge();
@@ -44,7 +45,7 @@ public class PartnerControllerTests
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, nameof(PartnerController.PartnerPaidWork))]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, nameof(PartnerController.PartnerNationality))]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, nameof(PartnerController.PartnerPaidWork))]
-    public void PartnerAge_Post_ValidSelection_SavesState_AndRedirects(string? returnTo, NationalityOption userNationality, string actionName)
+    public void PartnerAgePostValidSelectionSavesStateAndRedirects(string? returnTo, NationalityOption userNationality, string actionName)
     {
         _journeyState.PartnerAge = AgeRange.EighteenToTwenty;
         _journeyState.Nationality = userNationality;
@@ -59,14 +60,14 @@ public class PartnerControllerTests
         var result = _controller.PartnerAge(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(AgeRange.EighteenToTwenty, _journeyState.PartnerAge);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
-    public void PartnerAge_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerAgePostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerAgeViewModel
         {
@@ -89,7 +90,7 @@ public class PartnerControllerTests
     [InlineData(NationalityOption.BritishOrIrishCitizen, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerSettledStatus))]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
-    public void PartnerNationality_Post_SavesState_AndRedirects(NationalityOption option, string? returnTo, string actionName)
+    public void PartnerNationalityPostSavesStateAndRedirects(NationalityOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerNationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland;
         _journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
@@ -102,14 +103,14 @@ public class PartnerControllerTests
 
         var result = _controller.PartnerNationality(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(option, _journeyState.PartnerNationality);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
-    public void PartnerNationality_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerNationalityPostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerNationalityViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerNationality), "Faked Model Binding Error");
@@ -117,11 +118,11 @@ public class PartnerControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerNationality)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void PartnerNationality_Get_PopulatesModel_FromState()
+    public void PartnerNationalityGetPopulatesModelFromState()
     {
         _journeyState.PartnerNationality = NationalityOption.BritishOrIrishCitizen;
         var result = Assert.IsType<ViewResult>(_controller.PartnerNationality());
@@ -129,14 +130,14 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerNationality_ReturnsView()
+    public void PartnerNationalityReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerNationality());
         Assert.NotNull(result.Model<PartnerNationalityViewModel>());
     }
 
     [Fact]
-    public void PartnerNationality_Post_Unreachable_Coverage()
+    public void PartnerNationalityPostUnreachableCoverage()
     {
         var model = new PartnerNationalityViewModel
         {
@@ -151,7 +152,7 @@ public class PartnerControllerTests
     [InlineData(SettledStatusOption.No, null, nameof(PartnerController.PartnerPaidWork))]
     [InlineData(SettledStatusOption.StillWaiting, null, nameof(PartnerController.PartnerPaidWork))]
     [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
-    public void PartnerSettledStatus_Post_SavesState_AndRedirects(SettledStatusOption option, string? returnTo, string actionName)
+    public void PartnerSettledStatusPostSavesStateAndRedirects(SettledStatusOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
         var model = new PartnerSettledStatusViewModel
@@ -161,14 +162,14 @@ public class PartnerControllerTests
         };
         var result = _controller.PartnerSettledStatus(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(option, _journeyState.PartnerSettledStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
-    public void PartnerSettledStatus_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerSettledStatusPostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerSettledStatusViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerSettledStatus), "Faked Model Binding Error");
@@ -176,11 +177,11 @@ public class PartnerControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerSettledStatus)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void PartnerSettledStatus_Get_PopulatesModel_FromState()
+    public void PartnerSettledStatusGetPopulatesModelFromState()
     {
         _journeyState.PartnerSettledStatus = SettledStatusOption.Yes;
         var result = Assert.IsType<ViewResult>(_controller.PartnerSettledStatus());
@@ -188,7 +189,7 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerSettledStatus_ReturnsView()
+    public void PartnerSettledStatusReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerSettledStatus());
         Assert.NotNull(result.Model<PartnerSettledStatusViewModel>());
@@ -199,7 +200,7 @@ public class PartnerControllerTests
     [InlineData(PartnerPaidWorkOption.No, null, nameof(PartnerController.PartnerBenefits))]
     [InlineData(PartnerPaidWorkOption.ParentalLeave, null, nameof(PartnerController.PartnerParentalLeave))]
     [InlineData(PartnerPaidWorkOption.Yes, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerWorkStatus))]
-    public void PartnerPaidWork_Post_SavesState_AndRedirects(PartnerPaidWorkOption option, string? returnTo, string actionName)
+    public void PartnerPaidWorkPostSavesStateAndRedirects(PartnerPaidWorkOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
         var model = new PartnerPaidWorkViewModel
@@ -209,14 +210,14 @@ public class PartnerControllerTests
         };
         var result = _controller.PartnerPaidWork(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(option, _journeyState.PartnerPaidWork);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
-    public void PartnerPaidWork_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerPaidWorkPostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerPaidWorkViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerPaidWork), "Faked Model Binding Error");
@@ -224,11 +225,11 @@ public class PartnerControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerPaidWork)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void PartnerPaidWork_Get_PopulatesModel_FromState()
+    public void PartnerPaidWorkGetPopulatesModelFromState()
     {
         _journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
         var result = Assert.IsType<ViewResult>(_controller.PartnerPaidWork());
@@ -236,14 +237,14 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerPaidWork_ReturnsView()
+    public void PartnerPaidWorkReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerPaidWork());
         Assert.NotNull(result.Model<PartnerPaidWorkViewModel>());
     }
 
     [Fact]
-    public void PartnerPaidWork_Post_Unreachable_Coverage()
+    public void PartnerPaidWorkPostUnreachableCoverage()
     {
         var model = new PartnerPaidWorkViewModel
         {
@@ -258,7 +259,7 @@ public class PartnerControllerTests
     [InlineData(WorkStatusOption.SelfEmployed, null, nameof(PartnerController.PartnerSelfEmployedDuration))]
     [InlineData(WorkStatusOption.Apprentice, null, nameof(PartnerController.PartnerWeeklyEarnings))]
     [InlineData(WorkStatusOption.Apprentice, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerWeeklyEarnings))]
-    public void PartnerWorkStatus_Post_SavesState_AndRedirects(WorkStatusOption option, string? returnTo, string actionName)
+    public void PartnerWorkStatusPostSavesStateAndRedirects(WorkStatusOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.BelowThreshold;
         var model = new PartnerWorkStatusViewModel
@@ -268,14 +269,14 @@ public class PartnerControllerTests
         };
         var result = _controller.PartnerWorkStatus(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal([option], _journeyState.PartnerWorkStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
-    public void PartnerWorkStatus_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerWorkStatusPostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerWorkStatusViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerWorkStatus), "Faked Model Binding Error");
@@ -283,11 +284,11 @@ public class PartnerControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerWorkStatus)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void PartnerWorkStatus_Get_PopulatesModel_FromState()
+    public void PartnerWorkStatusGetPopulatesModelFromState()
     {
         _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
         var result = Assert.IsType<ViewResult>(_controller.PartnerWorkStatus());
@@ -295,7 +296,7 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerWorkStatus_ReturnsView()
+    public void PartnerWorkStatusReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerWorkStatus());
         Assert.NotNull(result.Model<PartnerWorkStatusViewModel>());
@@ -312,7 +313,7 @@ public class PartnerControllerTests
     [InlineData(PartnerBenefitsOption.SevereDisablementAllowance, null, nameof(PartnerController.PartnerChildcareSupport))]
     [InlineData(PartnerBenefitsOption.None, null, nameof(PartnerController.PartnerChildcareSupport))]
     [InlineData(PartnerBenefitsOption.None, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerChildcareSupport))]
-    public void PartnerBenefits_Post_SavesState_AndRedirects(PartnerBenefitsOption option, string? returnTo, string actionName)
+    public void PartnerBenefitsPostSavesStateAndRedirects(PartnerBenefitsOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerChildcareSupport = [PartnerChildcareSupportOption.ChildcareVouchers];
         var model = new PartnerBenefitsViewModel
@@ -323,14 +324,14 @@ public class PartnerControllerTests
 
         var result = _controller.PartnerBenefits(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal([option], _journeyState.PartnerBenefits);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
-    public void PartnerBenefits_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerBenefitsPostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerBenefitsViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerBenefits), "Faked Model Binding Error");
@@ -338,11 +339,11 @@ public class PartnerControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerBenefits)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void PartnerBenefits_Get_PopulatesModel_FromState()
+    public void PartnerBenefitsGetPopulatesModelFromState()
     {
         _journeyState.PartnerBenefits = [PartnerBenefitsOption.CarersAllowance];
         var result = Assert.IsType<ViewResult>(_controller.PartnerBenefits());
@@ -350,7 +351,7 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerBenefits_ReturnsView()
+    public void PartnerBenefitsReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerBenefits());
         Assert.NotNull(result.Model<PartnerBenefitsViewModel>());
@@ -360,7 +361,7 @@ public class PartnerControllerTests
     [InlineData(SelfEmployedDurationOption.LessThan12Months, null, nameof(PartnerController.PartnerBenefits))]
     [InlineData(SelfEmployedDurationOption.NotLessThan12Months, null, nameof(PartnerController.PartnerWeeklyEarnings))]
     [InlineData(SelfEmployedDurationOption.NotLessThan12Months, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerWeeklyEarnings))]
-    public void PartnerSelfEmployedDuration_Post_SavesState_AndRedirects(SelfEmployedDurationOption option, string? returnTo, string actionName)
+    public void PartnerSelfEmployedDurationPostSavesStateAndRedirects(SelfEmployedDurationOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.BelowThreshold;
         var model = new PartnerSelfEmployedDurationViewModel
@@ -371,14 +372,14 @@ public class PartnerControllerTests
 
         var result = _controller.PartnerSelfEmployedDuration(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(option, _journeyState.PartnerSelfEmployedDuration);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
-    public void PartnerSelfEmployedDuration_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerSelfEmployedDurationPostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerSelfEmployedDurationViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerSelfEmployedDuration), "Faked Model Binding Error");
@@ -386,11 +387,11 @@ public class PartnerControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerSelfEmployedDuration)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void PartnerSelfEmployedDuration_Get_PopulatesModel_FromState()
+    public void PartnerSelfEmployedDurationGetPopulatesModelFromState()
     {
         _journeyState.PartnerSelfEmployedDuration = SelfEmployedDurationOption.LessThan12Months;
         var result = Assert.IsType<ViewResult>(_controller.PartnerSelfEmployedDuration());
@@ -398,7 +399,7 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerSelfEmployedDuration_ReturnsView()
+    public void PartnerSelfEmployedDurationReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerSelfEmployedDuration());
         Assert.NotNull(result.Model<PartnerSelfEmployedDurationViewModel>());
@@ -408,7 +409,7 @@ public class PartnerControllerTests
     [InlineData(WeeklyEarningsOption.AboveThreshold, null, nameof(PartnerController.PartnerYearlyEarnings))]
     [InlineData(WeeklyEarningsOption.BelowThreshold, null, nameof(PartnerController.PartnerBenefits))]
     [InlineData(WeeklyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerYearlyEarnings))]
-    public void PartnerWeeklyEarnings_Post_SavesState_AndRedirects(WeeklyEarningsOption option, string? returnTo, string actionName)
+    public void PartnerWeeklyEarningsPostSavesStateAndRedirects(WeeklyEarningsOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerYearlyEarnings = YearlyEarningsOption.BelowThreshold;
         var model = new PartnerWeeklyEarningsViewModel
@@ -418,14 +419,14 @@ public class PartnerControllerTests
         };
         var result = _controller.PartnerWeeklyEarnings(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(option, _journeyState.PartnerWeeklyEarnings);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
-    public void PartnerWeeklyEarnings_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerWeeklyEarningsPostInvalidSelectionReturnsViewWithError()
     {
         _journeyState.PartnerAge = AgeRange.UnderEighteen;
         _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
@@ -436,11 +437,11 @@ public class PartnerControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerWeeklyEarnings)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void PartnerWeeklyEarnings_Get_PopulatesModel_FromState()
+    public void PartnerWeeklyEarningsGetPopulatesModelFromState()
     {
         _journeyState.PartnerAge = AgeRange.UnderEighteen;
         _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
@@ -450,7 +451,7 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerWeeklyEarnings_ReturnsView()
+    public void PartnerWeeklyEarningsReturnsView()
     {
         _journeyState.PartnerAge = AgeRange.UnderEighteen;
         _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
@@ -459,7 +460,7 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerWeeklyEarnings_Post_Unreachable_Coverage()
+    public void PartnerWeeklyEarningsPostUnreachableCoverage()
     {
         var model = new PartnerWeeklyEarningsViewModel
         {
@@ -473,7 +474,7 @@ public class PartnerControllerTests
     [InlineData(YearlyEarningsOption.AboveThreshold, null, nameof(PartnerController.PartnerBenefits))]
     [InlineData(YearlyEarningsOption.BelowThreshold, null, nameof(PartnerController.PartnerBenefits))]
     [InlineData(YearlyEarningsOption.AboveThreshold, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerBenefits))]
-    public void PartnerYearlyEarnings_Post_SavesState_AndRedirects(YearlyEarningsOption option, string? returnTo, string actionName)
+    public void PartnerYearlyEarningsPostSavesStateAndRedirects(YearlyEarningsOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerBenefits = [PartnerBenefitsOption.CarersAllowance];
         var model = new PartnerYearlyEarningsViewModel
@@ -483,14 +484,14 @@ public class PartnerControllerTests
         };
         var result = _controller.PartnerYearlyEarnings(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(option, _journeyState.PartnerYearlyEarnings);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
-    public void PartnerYearlyEarnings_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerYearlyEarningsPostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerYearlyEarningsViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerYearlyEarnings), "Faked Model Binding Error");
@@ -498,11 +499,11 @@ public class PartnerControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerYearlyEarnings)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void PartnerYearlyEarnings_Get_PopulatesModel_FromState()
+    public void PartnerYearlyEarningsGetPopulatesModelFromState()
     {
         _journeyState.PartnerYearlyEarnings = YearlyEarningsOption.AboveThreshold;
         var result = Assert.IsType<ViewResult>(_controller.PartnerYearlyEarnings());
@@ -510,7 +511,7 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerYearlyEarnings_ReturnsView()
+    public void PartnerYearlyEarningsReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerYearlyEarnings());
         Assert.NotNull(result.Model<PartnerYearlyEarningsViewModel>());
@@ -521,7 +522,7 @@ public class PartnerControllerTests
     [InlineData(PartnerChildcareSupportOption.ChildcareBursaryOrGrant, null, nameof(SummaryController.CheckAnswers))]
     [InlineData(PartnerChildcareSupportOption.None, null, nameof(SummaryController.CheckAnswers))]
     [InlineData(PartnerChildcareSupportOption.ChildcareVouchers, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerChildcareVoucherReceipt))]
-    public void PartnerChildcareSupport_Post_SavesState_AndRedirects(PartnerChildcareSupportOption option, string? returnTo, string actionName)
+    public void PartnerChildcareSupportPostSavesStateAndRedirects(PartnerChildcareSupportOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerChildcareVoucherReceipt = ChildcareVoucherReceiptOption.WorkplaceNurseryScheme;
         var model = new PartnerChildcareSupportViewModel
@@ -531,14 +532,14 @@ public class PartnerControllerTests
         };
         var result = _controller.PartnerChildcareSupport(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal([option], _journeyState.PartnerChildcareSupport);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
 
     [Fact]
-    public void PartnerChildcareSupport_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerChildcareSupportPostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerChildcareSupportViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerChildcareSupport), "Faked Model Binding Error");
@@ -546,11 +547,11 @@ public class PartnerControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerChildcareSupport)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void PartnerChildcareSupport_Get_PopulatesModel_FromState()
+    public void PartnerChildcareSupportGetPopulatesModelFromState()
     {
         _journeyState.PartnerChildcareSupport = [PartnerChildcareSupportOption.ChildcareVouchers];
         var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareSupport());
@@ -558,7 +559,7 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerChildcareSupport_ReturnsView()
+    public void PartnerChildcareSupportReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareSupport());
         Assert.NotNull(result.Model<PartnerChildcareSupportViewModel>());
@@ -569,7 +570,7 @@ public class PartnerControllerTests
     [InlineData(ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, null, "Summary", nameof(SummaryController.CheckAnswers))]
     [InlineData(ChildcareVoucherReceiptOption.ThroughSalarySacrifice, null, "Summary", nameof(SummaryController.CheckAnswers))]
     [InlineData(ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, ReturnTo.CheckAnswers, "Summary", nameof(SummaryController.CheckAnswers))]
-    public void PartnerChildcareVoucherReceipt_Post_SavesState_AndRedirects(ChildcareVoucherReceiptOption option, string? returnTo, string controllerName, string actionName)
+    public void PartnerChildcareVoucherReceiptPostSavesStateAndRedirects(ChildcareVoucherReceiptOption option, string? returnTo, string controllerName, string actionName)
     {
         var model = new PartnerChildcareVoucherReceiptViewModel
         {
@@ -578,7 +579,7 @@ public class PartnerControllerTests
         };
         var result = _controller.PartnerChildcareVoucherReceipt(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(option, _journeyState.PartnerChildcareVoucherReceipt);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
@@ -586,7 +587,7 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerChildcareVoucherReceipt_Post_InvalidSelection_ReturnsViewWithError()
+    public void PartnerChildcareVoucherReceiptPostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerChildcareVoucherReceiptViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerChildcareVoucherReceipt), "Faked Model Binding Error");
@@ -594,11 +595,11 @@ public class PartnerControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerChildcareVoucherReceipt)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void PartnerChildcareVoucherReceipt_Get_PopulatesModel_FromState()
+    public void PartnerChildcareVoucherReceiptGetPopulatesModelFromState()
     {
         _journeyState.PartnerChildcareVoucherReceipt = ChildcareVoucherReceiptOption.WorkplaceNurseryScheme;
         var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareVoucherReceipt());
@@ -606,9 +607,11 @@ public class PartnerControllerTests
     }
 
     [Fact]
-    public void PartnerChildcareVoucherReceipt_ReturnsView()
+    public void PartnerChildcareVoucherReceiptReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareVoucherReceipt());
         Assert.NotNull(result.Model<PartnerChildcareVoucherReceiptViewModel>());
     }
+
+    public void Dispose() { _controller?.Dispose(); GC.SuppressFinalize(this); }
 }

@@ -48,9 +48,9 @@ internal abstract class BasePage(IPage page) : IPageObject
     protected async Task FillDateAsync(string dateText)
     {
         var date = RelativeDate.Parse(dateText);
-        await Page.GetByLabel("Day").FillAsync(date.Day.ToString());
-        await Page.GetByLabel("Month").FillAsync(date.Month.ToString());
-        await Page.GetByLabel("Year").FillAsync(date.Year.ToString());
+        await Page.GetByLabel("Day").FillAsync(date.Day.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        await Page.GetByLabel("Month").FillAsync(date.Month.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        await Page.GetByLabel("Year").FillAsync(date.Year.ToString(System.Globalization.CultureInfo.InvariantCulture));
     }
 
     protected async Task CheckCheckboxesAsync(string checkboxAnswers)

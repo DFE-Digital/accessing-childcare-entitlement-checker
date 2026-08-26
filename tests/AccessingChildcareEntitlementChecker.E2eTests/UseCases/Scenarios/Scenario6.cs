@@ -2,7 +2,7 @@ using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
-internal class Scenario6 : IUseCase
+internal sealed class Scenario6 : IUseCase
 {
     public string Name => "Both parents under 18, one parent an apprentice, one parent earning under the threshold";
 

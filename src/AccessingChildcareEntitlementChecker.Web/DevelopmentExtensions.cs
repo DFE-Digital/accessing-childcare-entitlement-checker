@@ -6,6 +6,24 @@ public static class DevelopmentExtensions
 {
     private const string DevelopmentBasicAuthPasswordSettingName = "DevelopmentBasicAuthPassword";
 
+    private static readonly Action<ILogger, string, string, string, Exception?> LogMissingOrInvalidAuthHeader =
+        LoggerMessage.Define<string, string, string>(
+            LogLevel.Warning,
+            new EventId(1, "MissingOrInvalidAuthHeader"),
+            "Development auth failed: Missing or invalid Authorization header format. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}");
+
+    private static readonly Action<ILogger, string, string, string, Exception?> LogIncorrectPassword =
+        LoggerMessage.Define<string, string, string>(
+            LogLevel.Warning,
+            new EventId(2, "IncorrectPassword"),
+            "Development auth failed: Incorrect password provided. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}");
+
+    private static readonly Action<ILogger, string, string, string, Exception?> LogMalformedCredentials =
+        LoggerMessage.Define<string, string, string>(
+            LogLevel.Warning,
+            new EventId(3, "MalformedCredentials"),
+            "Development auth failed: Malformed credentials format. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}");
+
     public static IApplicationBuilder UseDevelopmentAuth(this IApplicationBuilder app)
     {
         var logger = app.ApplicationServices.GetRequiredService<ILoggerFactory>()
@@ -35,9 +53,12 @@ public static class DevelopmentExtensions
 
             if (!authorizationHeader.StartsWith(basicPrefix, StringComparison.OrdinalIgnoreCase))
             {
-                logger.LogWarning(
-                    "Development auth failed: Missing or invalid Authorization header format. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}",
-                    context.Request.Method, context.Request.Path, context.Request.Headers.UserAgent);
+                LogMissingOrInvalidAuthHeader(
+                    logger,
+                    context.Request.Method,
+                    context.Request.Path.ToString(),
+                    context.Request.Headers.UserAgent.ToString(),
+                    null);
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                 return;
@@ -52,9 +73,12 @@ public static class DevelopmentExtensions
 
                 if (!string.Equals(password, developmentBasicAuthPassword, StringComparison.Ordinal))
                 {
-                    logger.LogWarning(
-                        "Development auth failed: Incorrect password provided. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}",
-                        context.Request.Method, context.Request.Path, context.Request.Headers.UserAgent);
+                    LogIncorrectPassword(
+                        logger,
+                        context.Request.Method,
+                        context.Request.Path.ToString(),
+                        context.Request.Headers.UserAgent.ToString(),
+                        null);
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                     return;
@@ -62,9 +86,12 @@ public static class DevelopmentExtensions
             }
             catch (FormatException ex)
             {
-                logger.LogWarning(ex,
-                    "Development auth failed: Malformed credentials format. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}",
-                    context.Request.Method, context.Request.Path, context.Request.Headers.UserAgent);
+                LogMalformedCredentials(
+                    logger,
+                    context.Request.Method,
+                    context.Request.Path.ToString(),
+                    context.Request.Headers.UserAgent.ToString(),
+                    ex);
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.Headers.WWWAuthenticate = "Basic realm=\"Development\"";
                 return;

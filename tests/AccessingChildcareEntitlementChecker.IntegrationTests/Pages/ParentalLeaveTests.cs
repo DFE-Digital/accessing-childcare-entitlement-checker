@@ -43,7 +43,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
     [InlineData(null, WorkStatusOption.SelfEmployed)]
     [InlineData(ReturnTo.CheckAnswers, null)]
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.SelfEmployed)]
-    public async Task Post_Valid_Redirects(
+    public async Task PostValidRedirects(
         string? returnTo,
         WorkStatusOption? workStatus)
     {
@@ -78,7 +78,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
     [Theory]
     [InlineData(null, "/work-status/work")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
-    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
@@ -100,7 +100,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
     [Theory]
     [InlineData(null, "/work-status/work")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
-    public async Task Post_Invalid_None_With_Selection_Shows_Validation_Error(string? returnTo, string backLinkUrl)
+    public async Task PostInvalidNoneWithSelectionShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {

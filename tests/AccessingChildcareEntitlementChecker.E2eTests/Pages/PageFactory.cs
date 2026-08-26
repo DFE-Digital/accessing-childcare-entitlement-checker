@@ -3,7 +3,7 @@ using Microsoft.Playwright;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.Pages;
 
-internal class PageFactory(IPage page)
+internal sealed class PageFactory(IPage page)
 {
     private static readonly List<(string Pattern, Type PageType)> PageRegistry;
 

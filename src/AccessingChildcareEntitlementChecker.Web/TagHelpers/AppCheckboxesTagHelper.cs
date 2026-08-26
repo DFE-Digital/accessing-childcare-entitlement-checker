@@ -90,13 +90,13 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
         var selected = GetSelectedValues(fieldName, ((IEnumerable)For.Model).Cast<Enum>());
         var exclusiveValueText = ExclusiveValue is null
             ? null
-            : Convert.ToUInt64(ExclusiveValue).ToString();
+            : Convert.ToUInt64(ExclusiveValue, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
 
         var items = new List<CheckboxesOptionsItem>();
 
         foreach (Enum value in Enum.GetValues(enumType))
         {
-            var valueText = Convert.ToUInt64(value).ToString();
+            var valueText = Convert.ToUInt64(value, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
             var display = enumType.GetField(value.ToString())?.GetCustomAttribute<DisplayAttribute>();
             var isExclusive = valueText == exclusiveValueText;
             var hint = display?.GetDescription();
@@ -146,7 +146,7 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
         }
 
         return model
-            .Select(v => Convert.ToUInt64(v).ToString())
+            .Select(v => Convert.ToUInt64(v, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture))
             .ToHashSet(StringComparer.Ordinal);
     }
 }

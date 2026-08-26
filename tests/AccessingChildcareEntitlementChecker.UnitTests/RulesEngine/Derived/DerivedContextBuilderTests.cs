@@ -7,7 +7,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.RulesEngine.Derived;
 public class DerivedContextBuilderTests
 {
     [Fact]
-    public void Build_WhenUserIsBritish_SetsHasAccessToPublicFundsTrue()
+    public void BuildWhenUserIsBritishSetsHasAccessToPublicFundsTrue()
     {
         var request = new EntitlementRequest
         {
@@ -34,7 +34,7 @@ public class DerivedContextBuilderTests
     }
 
     [Fact]
-    public void Build_WhenChildHasDateOfBirth_CalculatesAgeInYears()
+    public void BuildWhenChildHasDateOfBirthCalculatesAgeInYears()
     {
         var request = new EntitlementRequest
         {
@@ -56,7 +56,7 @@ public class DerivedContextBuilderTests
     }
 
     [Fact]
-    public void Build_WhenCountryIsWales_SetsLivesInGreatBritainTrue()
+    public void BuildWhenCountryIsWalesSetsLivesInGreatBritainTrue()
     {
         var request = new EntitlementRequest
         {

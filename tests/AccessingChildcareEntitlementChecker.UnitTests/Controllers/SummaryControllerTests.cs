@@ -1,3 +1,4 @@
+using System;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Validators;
 using FluentValidation;
@@ -21,7 +22,7 @@ using AccessingChildcareEntitlementChecker.Web.Models.User;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
-public class SummaryControllerTests
+public class SummaryControllerTests : IDisposable
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
@@ -74,7 +75,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckChildDetails_ReturnsView()
+    public void CheckChildDetailsReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails());
         var checkChildDetailsViewModel = Assert.IsType<CheckChildDetailsViewModel>(result.Model);
@@ -87,7 +88,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckChildDetails_ReturnsView_WithFromChild()
+    public void CheckChildDetailsReturnsViewWithFromChild()
     {
         var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails(childId: "child-a"));
         var model = Assert.IsType<CheckChildDetailsViewModel>(result.Model);
@@ -96,7 +97,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckChildDetails_Post_Redirects_WhenCorrelationIdMatches()
+    public void CheckChildDetailsPostRedirectsWhenCorrelationIdMatches()
     {
         var model = new CheckChildDetailsSubmitModel(_journeyState.CorrelationId);
         var result = Assert.IsType<RedirectToActionResult>(_controller.CheckChildDetails(model));
@@ -105,7 +106,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckChildDetails_Post_ReturnsStateMismatch_WhenCorrelationIdMismatches()
+    public void CheckChildDetailsPostReturnsStateMismatchWhenCorrelationIdMismatches()
     {
         var model = new CheckChildDetailsSubmitModel(Guid.NewGuid());
         var result = Assert.IsType<ViewResult>(_controller.CheckChildDetails(model));
@@ -118,7 +119,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void Remove_Get_ReturnsView_WhenChildExists()
+    public void RemoveGetReturnsViewWhenChildExists()
     {
         var result = Assert.IsType<ViewResult>(_controller.Remove(childId));
         Assert.IsType<RemoveChildViewModel>(result.Model);
@@ -126,21 +127,21 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void Remove_Get_Redirects_WhenChildDoesNotExist()
+    public void RemoveGetRedirectsWhenChildDoesNotExist()
     {
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove("DOES-NOT-EXIST"));
         Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
     }
 
     [Fact]
-    public void Remove_Get_Redirects_WhenChildIdNotPassed()
+    public void RemoveGetRedirectsWhenChildIdNotPassed()
     {
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove((string?)null));
         Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
     }
 
     [Fact]
-    public void Remove_Post_WhenNotValidReturns()
+    public void RemovePostWhenNotValidReturns()
     {
         var model = new RemoveChildViewModel { ChildId = childId, Name = "Child A", RemoveConfirmed = null, };
 
@@ -151,38 +152,38 @@ public class SummaryControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.RemoveConfirmed)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void Remove_Post_WhenNotConfirmed_Redirects()
+    public void RemovePostWhenNotConfirmedRedirects()
     {
         var model = new RemoveChildViewModel { ChildId = childId, Name = "Child A", RemoveConfirmed = false, };
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove(model));
         Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
-        _journeySession.Received(0).Set(_journeyState);
+        _journeySession.Received(0).SetState(_journeyState);
     }
 
     [Fact]
-    public void Remove_Post_WhenConfirmed_AndFound_Redirects()
+    public void RemovePostWhenConfirmedAndFoundRedirects()
     {
         var model = new RemoveChildViewModel { ChildId = childId, Name = "Child A", RemoveConfirmed = true, };
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove(model));
         Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
     }
 
     [Fact]
-    public void Remove_Post_WhenConfirmed_AndNotFound_Redirects()
+    public void RemovePostWhenConfirmedAndNotFoundRedirects()
     {
         var model = new RemoveChildViewModel { ChildId = "child-b", Name = "Child B", RemoveConfirmed = true, };
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove(model));
         Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
-        _journeySession.Received(0).Set(_journeyState);
+        _journeySession.Received(0).SetState(_journeyState);
     }
 
     [Fact]
-    public async Task CheckAnswers_ReturnsView()
+    public async Task CheckAnswersReturnsView()
     {
         _journeyState.HasPartner = false;
         var result = Assert.IsType<ViewResult>(await _controller.CheckAnswers());
@@ -208,7 +209,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public async Task CheckAnswers_ReturnsView_WithFromChild()
+    public async Task CheckAnswersReturnsViewWithFromChild()
     {
         _journeyState.HasPartner = false;
 
@@ -221,7 +222,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public async Task CheckAnswers_ReturnsView_WithPartner()
+    public async Task CheckAnswersReturnsViewWithPartner()
     {
         _journeyState.HasPartner = true;
         _journeyState.PartnerAge = AgeRange.TwentyOneOrOver;
@@ -245,7 +246,7 @@ public class SummaryControllerTests
 
     [Fact]
 
-    public async Task CheckAnswers_SuppressesLocationRow_WhenFeatureFlagEnabled()
+    public async Task CheckAnswersSuppressesLocationRowWhenFeatureFlagEnabled()
     {
         _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(true);
         _journeyState.HasPartner = false;
@@ -259,7 +260,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckAnswers_Post_Redirects_WhenCorrelationIdMatchesAndValidationPasses()
+    public void CheckAnswersPostRedirectsWhenCorrelationIdMatchesAndValidationPasses()
     {
         _journeyState.CountryOfResidence = CountryOfResidence.England;
         _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
@@ -280,7 +281,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckAnswers_Post_ReturnsStateMismatch_WhenCorrelationIdMismatches()
+    public void CheckAnswersPostReturnsStateMismatchWhenCorrelationIdMismatches()
     {
         var model = new CheckAnswersSubmitModel(Guid.NewGuid());
         var result = Assert.IsType<ViewResult>(_controller.CheckAnswers(model));
@@ -293,7 +294,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckAnswers_Post_DoesNotValidate_WhenCorrelationIdMismatches()
+    public void CheckAnswersPostDoesNotValidateWhenCorrelationIdMismatches()
     {
         var validator = Substitute.For<IValidator<JourneyState>>();
 
@@ -317,7 +318,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckChildDetails_Post_RedisplaysView_WhenValidationFails()
+    public void CheckChildDetailsPostRedisplaysViewWhenValidationFails()
     {
         // Arrange
         var mockValidator = Substitute.For<IValidator<JourneyState>>();
@@ -352,7 +353,7 @@ public class SummaryControllerTests
     }
 
     [Fact]
-    public void CheckAnswers_Post_ReturnsStateMismatch_WhenValidationFails()
+    public void CheckAnswersPostReturnsStateMismatchWhenValidationFails()
     {
         var mockValidator = Substitute.For<IValidator<JourneyState>>();
 
@@ -389,4 +390,6 @@ public class SummaryControllerTests
         Assert.Equal("StateMismatch", result.ViewName);
         Assert.Equal(400, controller.Response.StatusCode);
     }
+
+    public void Dispose() { _controller?.Dispose(); GC.SuppressFinalize(this); }
 }

@@ -51,7 +51,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(null, PartnerBenefitsOption.CarersAllowance, null)]
     [InlineData(ReturnTo.CheckAnswers, PartnerBenefitsOption.CarersAllowance, null)]
     [InlineData(ReturnTo.CheckAnswers, PartnerBenefitsOption.CarersAllowance, PartnerChildcareSupportOption.ChildcareVouchers)]
-    public async Task Post_Valid_Redirects(string? returnTo, PartnerBenefitsOption partnerBenefits, PartnerChildcareSupportOption? partnerChildcareSupport)
+    public async Task PostValidRedirects(string? returnTo, PartnerBenefitsOption partnerBenefits, PartnerChildcareSupportOption? partnerChildcareSupport)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -82,7 +82,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(null, PartnerPaidWorkOption.Yes, null, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/earnings/adjusted-net-income-partner")]
     [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.No, null, null, null, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, PartnerPaidWorkOption.No, null, null, null, null, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(
+    public async Task PostInvalidShowsValidationError(
         string? returnTo,
         PartnerPaidWorkOption? partnerPaidWork,
         WorkStatusOption? partnerWorkStatus,

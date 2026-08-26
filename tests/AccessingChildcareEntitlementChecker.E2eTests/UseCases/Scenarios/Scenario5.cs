@@ -2,7 +2,7 @@ using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
-internal class Scenario5 : IUseCase
+internal sealed class Scenario5 : IUseCase
 {
     public string Name => "Single parent who is self employed, child is not born yet";
 

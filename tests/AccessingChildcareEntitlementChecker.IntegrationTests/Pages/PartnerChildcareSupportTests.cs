@@ -35,7 +35,7 @@ public class PartnerChildcareSupportTests(IntegrationTestFixture factory) : ICla
     [InlineData(ReturnTo.CheckAnswers, PartnerChildcareSupportOption.ChildcareVouchers, null, "/benefits/childcare-vouchers-partner")]
     [InlineData(ReturnTo.CheckAnswers, PartnerChildcareSupportOption.ChildcareVouchers, ChildcareVoucherReceiptOption.WorkplaceNurseryScheme, "/benefits/childcare-vouchers-partner")]
     [InlineData(ReturnTo.CheckAnswers, PartnerChildcareSupportOption.ChildcareBursaryOrGrant, null, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(
+    public async Task PostValidRedirects(
         string? returnTo,
         PartnerChildcareSupportOption partnerChildcareSupport,
         ChildcareVoucherReceiptOption? partnerChildcareVoucherReceipt,
@@ -66,7 +66,7 @@ public class PartnerChildcareSupportTests(IntegrationTestFixture factory) : ICla
     [InlineData(null, "/Partner/PartnerBenefits")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 

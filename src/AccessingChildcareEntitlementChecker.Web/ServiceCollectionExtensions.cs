@@ -55,7 +55,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped(sp =>
         {
             var journeySession = sp.GetRequiredService<IJourneySession>();
-            return journeySession.Get();
+            return journeySession.GetState();
         });
         services.AddScoped<RequireJourneySessionFilter>();
 

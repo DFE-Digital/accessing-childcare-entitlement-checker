@@ -1,11 +1,11 @@
-﻿using Microsoft.Playwright;
+using Microsoft.Playwright;
 using Reqnroll;
 using static Microsoft.Playwright.Assertions;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class StartSteps(IPage page)
+internal sealed class StartSteps(IPage page)
 {
     [Then("I should see a navigation bar with the service name {string}")]
     public async Task ThenIShouldSeeANavigationBarWithTheServiceName(string expectedServiceName)

@@ -5,7 +5,7 @@ public class StartPageAccessibilityTests(ITestOutputHelper output) : PageBase(ou
     protected override string PageUrl => "/";
 
     [Fact]
-    public async Task StartPage_HasNoAccessibilityViolations()
+    public async Task StartPageHasNoAccessibilityViolations()
     {
         await GoToPage();
         await EvaluatePage();
