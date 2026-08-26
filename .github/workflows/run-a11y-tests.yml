@@ -119,7 +119,7 @@ jobs:
           TestSettings__Browser: ${{ inputs.browser }}
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          dotnet test ./a11y-tests/AccessingChildcareEntitlementChecker.A11yTests.dll \
+          dotnet ./a11y-tests/AccessingChildcareEntitlementChecker.A11yTests.dll \
             --report-trx \
             --report-trx-filename test-results.trx \
             --results-directory ./TestResults

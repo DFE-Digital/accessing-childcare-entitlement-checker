@@ -122,11 +122,10 @@ jobs:
           TestSettings__Browser: ${{ inputs.browser }}
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          dotnet test ./e2e-tests/AccessingChildcareEntitlementChecker.E2eTests.dll \
+          dotnet ./e2e-tests/AccessingChildcareEntitlementChecker.E2eTests.dll \
             --report-trx \
             --report-trx-filename test-results.trx \
-            --results-directory ./TestResults \
-            --verbosity normal
+            --results-directory ./TestResults
 
       - name: Stop app
         if: always() && env.APP_STARTED == 'true'
