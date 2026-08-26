@@ -6,7 +6,7 @@ using Reqnroll.BoDi;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Hooks;
 
 [Binding]
-internal class PlaywrightSetupHooks
+internal sealed class PlaywrightSetupHooks
 {
     private static TestSettings _settings = null!;
     private static IPlaywright _playwrightInstance = null!;

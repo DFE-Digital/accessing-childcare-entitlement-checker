@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Filters;
+using AccessingChildcareEntitlementChecker.Web.Filters;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 using Microsoft.AspNetCore.Http;
@@ -37,7 +37,7 @@ public class RequireJourneySessionFilterTests
     }
 
     [Fact]
-    public async Task OnActionExecuting_JourneySessionIsNull()
+    public async Task OnActionExecutingJourneySessionIsNull()
     {
         _mockJourneySession.HasSession.Returns(false);
         await _sut.OnResourceExecutionAsync(_context, _next);
@@ -47,7 +47,7 @@ public class RequireJourneySessionFilterTests
     }
 
     [Fact]
-    public async Task OnActionExecuting_JourneySessionIsNotNull()
+    public async Task OnActionExecutingJourneySessionIsNotNull()
     {
         _mockJourneySession.HasSession.Returns(true);
         await _sut.OnResourceExecutionAsync(_context, _next);

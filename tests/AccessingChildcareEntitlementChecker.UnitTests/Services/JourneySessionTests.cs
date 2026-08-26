@@ -27,7 +27,7 @@ public class JourneySessionTests
     }
 
     [Fact]
-    public void Set_SavesJourneyStateToSession()
+    public void SetSavesJourneyStateToSession()
     {
         var journeyState = new JourneyState
         {
@@ -35,20 +35,20 @@ public class JourneySessionTests
             HasPartner = true,
             PartnerAge = AgeRange.EighteenToTwenty
         };
-        _journeySession.Set(journeyState);
+        _journeySession.SetState(journeyState);
 
         _session.Received(1).Set("JourneyState", Arg.Any<byte[]>());
     }
 
     [Fact]
-    public void Set_ThrowsExceptionIfHttpContextIsNull()
+    public void SetThrowsExceptionIfHttpContextIsNull()
     {
         _httpContextAccessor.HttpContext.ReturnsNull();
-        Assert.Throws<InvalidOperationException>(() => _journeySession.Set(new JourneyState()));
+        Assert.Throws<InvalidOperationException>(() => _journeySession.SetState(new JourneyState()));
     }
 
     [Fact]
-    public void Get_RetrievesJourneyStateFromSession()
+    public void GetRetrievesJourneyStateFromSession()
     {
         var journeyState = new JourneyState
         {
@@ -64,7 +64,7 @@ public class JourneySessionTests
             return true;
         });
 
-        var result = _journeySession.Get();
+        var result = _journeySession.GetState();
 
         Assert.NotNull(result);
         Assert.Equal(CountryOfResidence.England, result.CountryOfResidence);
@@ -73,11 +73,11 @@ public class JourneySessionTests
     }
 
     [Fact]
-    public void Get_RetrievesNewJourneyStateIfHttpContextIsNull()
+    public void GetRetrievesNewJourneyStateIfHttpContextIsNull()
     {
         _httpContextAccessor.HttpContext.ReturnsNull();
 
-        var result = _journeySession.Get();
+        var result = _journeySession.GetState();
 
         Assert.NotNull(result);
         Assert.Null(result.CountryOfResidence);
@@ -86,7 +86,7 @@ public class JourneySessionTests
     }
 
     [Fact]
-    public void Get_RetrievesNewJourneyStateIfSessionStringIsNull()
+    public void GetRetrievesNewJourneyStateIfSessionStringIsNull()
     {
         _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
         {
@@ -94,7 +94,7 @@ public class JourneySessionTests
             return true;
         });
 
-        var result = _journeySession.Get();
+        var result = _journeySession.GetState();
 
         Assert.NotNull(result);
         Assert.Null(result.CountryOfResidence);
@@ -103,7 +103,7 @@ public class JourneySessionTests
     }
 
     [Fact]
-    public void Get_RetrievesNewJourneyStateIfSavedSessionEvaluatesToNull()
+    public void GetRetrievesNewJourneyStateIfSavedSessionEvaluatesToNull()
     {
         _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
         {
@@ -111,7 +111,7 @@ public class JourneySessionTests
             return true;
         });
 
-        var result = _journeySession.Get();
+        var result = _journeySession.GetState();
 
         Assert.NotNull(result);
         Assert.Null(result.CountryOfResidence);
@@ -120,7 +120,7 @@ public class JourneySessionTests
     }
 
     [Fact]
-    public void HasSession_ReturnsFalse_IfHttpContextIsNull()
+    public void HasSessionReturnsFalseIfHttpContextIsNull()
     {
         _httpContextAccessor.HttpContext.ReturnsNull();
 
@@ -128,7 +128,7 @@ public class JourneySessionTests
     }
 
     [Fact]
-    public void HasSession_ReturnsTrue_WhenNoSession()
+    public void HasSessionReturnsTrueWhenNoSession()
     {
         _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
         {
@@ -140,7 +140,7 @@ public class JourneySessionTests
     }
 
     [Fact]
-    public void HasSession_ReturnsFalse_WhenNoSession()
+    public void HasSessionReturnsFalseWhenNoSession()
     {
         _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
         {

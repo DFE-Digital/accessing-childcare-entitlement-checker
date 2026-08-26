@@ -71,7 +71,7 @@ public class SummaryRowFactoryTests
     [Fact]
     public void ItExtractsTheDisplayNamesForEnums()
     {
-        _summaryRowFactory.Add<TestViewModel, TestEnum>(m => m.TestProperty, TestEnum.One, "test-action-name");
+        _summaryRowFactory.Add<TestViewModel, TestSelection>(m => m.TestProperty, TestSelection.One, "test-action-name");
         var rows = _summaryRowFactory.ViewModels;
 
         var row = Assert.Single(rows);
@@ -83,11 +83,11 @@ public class SummaryRowFactoryTests
     }
 
     [Theory]
-    [InlineData(new TestEnum[] { TestEnum.One }, "Value One")]
-    [InlineData(new TestEnum[] { TestEnum.One, TestEnum.Two }, "Value One, Value Two")]
-    public void ItExtractsTheDisplayNamesForListOfEnums(IEnumerable<TestEnum> enumList, string expectedValue)
+    [InlineData(new TestSelection[] { TestSelection.One }, "Value One")]
+    [InlineData(new TestSelection[] { TestSelection.One, TestSelection.Two }, "Value One, Value Two")]
+    public void ItExtractsTheDisplayNamesForListOfEnums(IEnumerable<TestSelection> enumList, string expectedValue)
     {
-        _summaryRowFactory.Add<TestViewModel, List<TestEnum>, TestEnum>(
+        _summaryRowFactory.Add<TestViewModel, List<TestSelection>, TestSelection>(
             m => m.TestPropertyList,
             enumList.ToList(),
             "test-action-name");
@@ -178,7 +178,7 @@ public class SummaryRowFactoryTests
     }
 
     [Fact]
-    public void ParentalLeave_Returns_No_Summary_When_Not_Answered()
+    public void ParentalLeaveReturnsNoSummaryWhenNotAnswered()
     {
         var journeyState = new JourneyState();
         var value = new List<string>();
@@ -189,7 +189,7 @@ public class SummaryRowFactoryTests
     }
 
     [Fact]
-    public void ParentalLeave_Returns_No_Summary_When_None_Selected()
+    public void ParentalLeaveReturnsNoSummaryWhenNoneSelected()
     {
         var journeyState = new JourneyState();
         var value = new List<string>() { ParentalLeaveViewModel.NoneSelectedValue };
@@ -199,7 +199,7 @@ public class SummaryRowFactoryTests
     }
 
     [Fact]
-    public void ParentalLeave_Returns_No_Summary_When_Child_Does_Not_Exist()
+    public void ParentalLeaveReturnsNoSummaryWhenChildDoesNotExist()
     {
         var journeyState = new JourneyState();
         var value = new List<string>() { "1" };
@@ -209,7 +209,7 @@ public class SummaryRowFactoryTests
     }
 
     [Fact]
-    public void ParentalLeave_Returns_Child_Name_When_Selected()
+    public void ParentalLeaveReturnsChildNameWhenSelected()
     {
         var journeyState = new JourneyState
         {
@@ -231,7 +231,7 @@ public class SummaryRowFactoryTests
     }
 
     [Fact]
-    public void PartnerParentalLeave_Returns_No_Summary_When_Not_Answered()
+    public void PartnerParentalLeaveReturnsNoSummaryWhenNotAnswered()
     {
         var journeyState = new JourneyState();
         var value = new List<string>();
@@ -242,7 +242,7 @@ public class SummaryRowFactoryTests
     }
 
     [Fact]
-    public void PartnerParentalLeave_Returns_No_Summary_When_None_Selected()
+    public void PartnerParentalLeaveReturnsNoSummaryWhenNoneSelected()
     {
         var journeyState = new JourneyState();
         var value = new List<string>() { PartnerParentalLeaveViewModel.NoneSelectedValue };
@@ -252,7 +252,7 @@ public class SummaryRowFactoryTests
     }
 
     [Fact]
-    public void PartnerParentalLeave_Returns_No_Summary_When_Child_Does_Not_Exist()
+    public void PartnerParentalLeaveReturnsNoSummaryWhenChildDoesNotExist()
     {
         var journeyState = new JourneyState();
         var value = new List<string>() { "1" };
@@ -262,7 +262,7 @@ public class SummaryRowFactoryTests
     }
 
     [Fact]
-    public void PartnerParentalLeave_Returns_Child_Name_When_Selected()
+    public void PartnerParentalLeaveReturnsChildNameWhenSelected()
     {
         var journeyState = new JourneyState
         {
@@ -349,7 +349,7 @@ public class SummaryRowFactoryTests
         Assert.Empty(rows);
     }
 
-    public enum TestEnum
+    public enum TestSelection
     {
         [Display(Name = "Value One")]
         One,
@@ -361,10 +361,10 @@ public class SummaryRowFactoryTests
     public class TestViewModel
     {
         [Display(Name = "Test Enum Property Title")]
-        public TestEnum TestProperty { get; set; }
+        public TestSelection TestProperty { get; set; }
 
         [Display(Name = "Test List<Enum> Property Title")]
-        public List<TestEnum>? TestPropertyList { get; set; }
+        public List<TestSelection>? TestPropertyList { get; set; }
 
         [Display(Name = "Test DateOnly Property Title")]
         public DateOnly TestPropertyDateOnly { get; set; }

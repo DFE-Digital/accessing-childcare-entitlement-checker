@@ -24,7 +24,7 @@ public class PartnerChildcareSupportViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
+    public void ValidateReturnsErrorWhenNoneSelectedWithOptions()
     {
         var model = new PartnerChildcareSupportViewModel
         {
@@ -46,7 +46,7 @@ public class PartnerChildcareSupportViewModelTests
 
 
     [Fact]
-    public void Validate_ReturnsErrorWhenOptionsAreEmpty()
+    public void ValidateReturnsErrorWhenOptionsAreEmpty()
     {
         var model = new PartnerChildcareSupportViewModel
         {

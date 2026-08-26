@@ -7,7 +7,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class JourneySteps(IPage page, TestSettings settings)
+internal sealed class JourneySteps(IPage page, TestSettings settings)
 {
     [Given("I am on the childcare entitlement checker website")]
     public async Task GivenIAmOnTheChildcareEntitlementCheckerWebsite()

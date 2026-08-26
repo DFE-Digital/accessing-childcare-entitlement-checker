@@ -2,7 +2,7 @@ using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
-internal class Scenario10 : IUseCase
+internal sealed class Scenario10 : IUseCase
 {
     public string Name => "Parent is a non-UK national without pre-settled or settled status";
 

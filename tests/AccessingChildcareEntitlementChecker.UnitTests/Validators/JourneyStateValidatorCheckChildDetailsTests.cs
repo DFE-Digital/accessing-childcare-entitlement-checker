@@ -19,7 +19,7 @@ public class JourneyStateValidatorCheckChildDetailsTests
     }
 
     [Fact]
-    public void CheckChildDetails_WhenBornChildIsComplete_IsValid()
+    public void CheckChildDetailsWhenBornChildIsCompleteIsValid()
     {
         var child = new Child("child-1", "Jack")
         {
@@ -42,7 +42,7 @@ public class JourneyStateValidatorCheckChildDetailsTests
     }
 
     [Fact]
-    public void CheckChildDetails_WhenDueChildIsComplete_IsValid()
+    public void CheckChildDetailsWhenDueChildIsCompleteIsValid()
     {
         var child = new Child("child-1", "Jack")
         {
@@ -64,7 +64,7 @@ public class JourneyStateValidatorCheckChildDetailsTests
     }
 
     [Fact]
-    public void CheckChildDetails_WhenChildNameIsMissing_IsInvalid()
+    public void CheckChildDetailsWhenChildNameIsMissingIsInvalid()
     {
         var child = new Child("child-1", "")
         {
@@ -91,7 +91,7 @@ public class JourneyStateValidatorCheckChildDetailsTests
     }
 
     [Fact]
-    public void CheckChildDetails_WhenChildBornStatusIsMissing_IsInvalid()
+    public void CheckChildDetailsWhenChildBornStatusIsMissingIsInvalid()
     {
         var child = new Child("child-1", "Jack")
         {
@@ -117,7 +117,7 @@ public class JourneyStateValidatorCheckChildDetailsTests
     }
 
     [Fact]
-    public void CheckChildDetails_WhenChildIsBornAndMissingBirthdate_IsInvalid()
+    public void CheckChildDetailsWhenChildIsBornAndMissingBirthdateIsInvalid()
     {
         var child = new Child("child-1", "Jack")
         {
@@ -143,7 +143,7 @@ public class JourneyStateValidatorCheckChildDetailsTests
     }
 
     [Fact]
-    public void CheckChildDetails_WhenChildIsBornAndMissingSupportOptions_IsInvalid()
+    public void CheckChildDetailsWhenChildIsBornAndMissingSupportOptionsIsInvalid()
     {
         var child = new Child("child-1", "Jack")
         {
@@ -170,7 +170,7 @@ public class JourneyStateValidatorCheckChildDetailsTests
     }
 
     [Fact]
-    public void CheckChildDetails_WhenChildIsNotBornAndMissingDueDate_IsInvalid()
+    public void CheckChildDetailsWhenChildIsNotBornAndMissingDueDateIsInvalid()
     {
         var child = new Child("child-1", "Jack")
         {

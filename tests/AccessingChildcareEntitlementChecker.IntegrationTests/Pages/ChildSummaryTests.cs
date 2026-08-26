@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
+using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
@@ -56,7 +56,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     [Theory]
     [InlineData(OtherChildId, $"/children/{OtherChildId}/expectant-childs-due-date")]
     [InlineData(ChildId, $"/children/{ChildId}/child-benefits")]
-    public async Task Get_BackLink_Is_To_Specified_Child(
+    public async Task GetBackLinkIsToSpecifiedChild(
         string arrivedFromChildId,
         string expectedUrl)
     {
@@ -90,7 +90,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     /// clicking back should take them to the add child details page.
     /// </summary>
     [Fact]
-    public async Task Get_BackLink_Is_To_Name()
+    public async Task GetBackLinkIsToName()
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 

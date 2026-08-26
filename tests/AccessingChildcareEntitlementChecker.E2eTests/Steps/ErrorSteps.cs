@@ -5,7 +5,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class ErrorSteps(IPage page)
+internal sealed class ErrorSteps(IPage page)
 {
     private IResponse? _lastResponse;
 

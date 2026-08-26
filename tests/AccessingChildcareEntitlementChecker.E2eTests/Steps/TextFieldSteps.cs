@@ -5,7 +5,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class TextFieldSteps(IPage page)
+internal sealed class TextFieldSteps(IPage page)
 {
     [When("I enter the text {string} into {string}")]
     public async Task WhenIEnterTheTextStringIntoString(string text, string label)

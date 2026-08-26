@@ -5,7 +5,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.RulesEngine.Helpers;
 public class TermDateCalculatorTests
 {
     [Fact]
-    public void GetNextTermStartDate_WhenDateIsInSpringTerm_ReturnsAprilFirst()
+    public void GetNextTermStartDateWhenDateIsInSpringTermReturnsAprilFirst()
     {
         var date = new DateOnly(2025, 2, 15);
 
@@ -17,7 +17,7 @@ public class TermDateCalculatorTests
     }
 
     [Fact]
-    public void GetNextTermStartDate_WhenDateIsInSummerTerm_ReturnsSeptemberFirst()
+    public void GetNextTermStartDateWhenDateIsInSummerTermReturnsSeptemberFirst()
     {
         var date = new DateOnly(2025, 6, 15);
 
@@ -29,7 +29,7 @@ public class TermDateCalculatorTests
     }
 
     [Fact]
-    public void GetNextTermStartDate_WhenDateIsInAutumnTerm_ReturnsJanuaryFirstNextYear()
+    public void GetNextTermStartDateWhenDateIsInAutumnTermReturnsJanuaryFirstNextYear()
     {
         var date = new DateOnly(2025, 10, 15);
 

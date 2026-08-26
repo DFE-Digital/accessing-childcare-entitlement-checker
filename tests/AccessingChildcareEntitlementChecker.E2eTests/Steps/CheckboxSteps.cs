@@ -5,7 +5,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class CheckboxSteps(IPage page)
+internal sealed class CheckboxSteps(IPage page)
 {
     [When("I select the {string} checkbox")]
     public async Task WhenISelectTheStringCheckbox(string label)

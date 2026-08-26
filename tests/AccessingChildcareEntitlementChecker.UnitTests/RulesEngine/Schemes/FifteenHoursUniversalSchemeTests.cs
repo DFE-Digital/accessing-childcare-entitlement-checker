@@ -44,7 +44,7 @@ public class FifteenHoursUniversalSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsEligibleNow_ReturnsSchemeResult()
+    public void EvaluateWhenChildIsEligibleNowReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext();
@@ -61,7 +61,7 @@ public class FifteenHoursUniversalSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsEligibleInFuture_ReturnsFutureEligibility()
+    public void EvaluateWhenChildIsEligibleInFutureReturnsFutureEligibility()
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext();
@@ -75,7 +75,7 @@ public class FifteenHoursUniversalSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsOverFour_ReturnsNull()
+    public void EvaluateWhenChildIsOverFourReturnsNull()
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext();
@@ -87,7 +87,7 @@ public class FifteenHoursUniversalSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenLocationIsNotEngland_ReturnsNull()
+    public void EvaluateWhenLocationIsNotEnglandReturnsNull()
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext(CountryOfResidence.Wales);
@@ -99,7 +99,7 @@ public class FifteenHoursUniversalSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsEligibleInFuture_SetsUseFromDateToNextTerm()
+    public void EvaluateWhenChildIsEligibleInFutureSetsUseFromDateToNextTerm()
     {
         var evaluator = CreateEvaluator();
         var context = CreateContext();

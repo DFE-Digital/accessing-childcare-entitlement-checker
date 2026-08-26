@@ -11,7 +11,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     private const string Url = "/partner";
 
     [Fact]
-    public async Task Get_HasPartner_Has_Radios_And_BackLink_Defaults_To_ChildcareSupport_Back()
+    public async Task GetHasPartnerHasRadiosAndBackLinkDefaultsToChildcareSupportBack()
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
@@ -25,7 +25,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     }
 
     [Fact]
-    public async Task Get_HasPartner_BackLink_When_Vouchers_Points_To_ChildcareVoucherReceipt()
+    public async Task GetHasPartnerBackLinkWhenVouchersPointsToChildcareVoucherReceipt()
     {
         var state = new JourneyState();
         state.ChildcareSupport.Add(ChildcareSupportOption.ChildcareVouchers);
@@ -45,7 +45,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     [InlineData(ReturnTo.CheckAnswers, true, AgeRange.UnderEighteen, "/age/partner-age")]
     [InlineData(null, false, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckAnswers, false, null, "/check-your-answers")]
-    public async Task Post_Valid_Redirects(string? returnTo, bool hasPartner, AgeRange? partnerAge, string continueUrl)
+    public async Task PostValidRedirects(string? returnTo, bool hasPartner, AgeRange? partnerAge, string continueUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {

@@ -53,7 +53,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsBornAndEligibleNow_ReturnsSchemeResult()
+    public void EvaluateWhenChildIsBornAndEligibleNowReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -68,7 +68,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsBornAndEligibleInFuture_ReturnsSchemeResult()
+    public void EvaluateWhenChildIsBornAndEligibleInFutureReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -83,7 +83,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsDueAndEligibleInFuture_ReturnsSchemeResult()
+    public void EvaluateWhenChildIsDueAndEligibleInFutureReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -103,7 +103,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsBornAndExceedsAgeThreshold_ReturnsNull()
+    public void EvaluateWhenChildIsBornAndExceedsAgeThresholdReturnsNull()
     {
         var evaluator = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -120,7 +120,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsNotEligibleDueToLocation_ReturnsNull()
+    public void EvaluateWhenChildIsNotEligibleDueToLocationReturnsNull()
     {
         var evaluator = CreateEvaluator();
 
@@ -150,7 +150,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
     }
 
     [Fact]
-    public void Evaluate_OneParentWorkingOtherParentReceivingQualifyingBenefit_ReturnsSchemeResult()
+    public void EvaluateOneParentWorkingOtherParentReceivingQualifyingBenefitReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext
@@ -187,7 +187,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildRecievesEHCPAutomaticallyEligible_ReturnsSchemeResult()
+    public void EvaluateWhenChildRecievesEHCPAutomaticallyEligibleReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext
@@ -230,7 +230,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildRecievesDLAAutomaticallyEligible_ReturnsSchemeResult()
+    public void EvaluateWhenChildRecievesDLAAutomaticallyEligibleReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext

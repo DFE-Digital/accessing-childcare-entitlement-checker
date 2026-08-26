@@ -2,7 +2,7 @@ using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
-internal class Scenario2 : IUseCase
+internal sealed class Scenario2 : IUseCase
 {
     public string Name => "One parent on carer's allowance, child receives DLA";
 

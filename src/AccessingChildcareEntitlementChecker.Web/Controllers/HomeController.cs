@@ -39,7 +39,7 @@ public class HomeController : Controller
         if (await _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
         {
             _journeyState.CountryOfResidence = CountryOfResidence.England;
-            _journeySession.Set(_journeyState);
+            _journeySession.SetState(_journeyState);
             return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name);
         }
 
@@ -57,7 +57,7 @@ public class HomeController : Controller
         }
 
         _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
+        _journeySession.SetState(_journeyState);
         if (_journeyState.Children.Count > 0)
         {
             return RedirectToAction(nameof(SummaryController.CheckChildDetails), SummaryController.Name);

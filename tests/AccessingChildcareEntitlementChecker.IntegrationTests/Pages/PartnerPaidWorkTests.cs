@@ -55,7 +55,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.ParentalLeave, true, null, null, "/leave/parental-leave-partner")]
     [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.SickLeave, false, null, null, "/work-status/work-status-partner")]
     [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.SickLeave, false, WorkStatusOption.PaidEmployment, null, "/work-status/work-status-partner")]
-    public async Task Post_Valid_Redirects(
+    public async Task PostValidRedirects(
         string? returnTo,
         PartnerPaidWorkOption partnerPaidWork,
         bool hasAnsweredParentalLeaveChildren,
@@ -100,7 +100,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, null, "/age/partner-age")]
     [InlineData(ReturnTo.CheckAnswers, null, null, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, null, null, null, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(
+    public async Task PostInvalidShowsValidationError(
         string? returnTo,
         NationalityOption? nationality,
         SettledStatusOption? settledStatus,

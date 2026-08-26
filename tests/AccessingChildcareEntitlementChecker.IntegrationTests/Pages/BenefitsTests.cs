@@ -40,7 +40,7 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
     [InlineData(null, BenefitsOption.CarersAllowance, null)]
     [InlineData(ReturnTo.CheckAnswers, BenefitsOption.CarersAllowance, null)]
     [InlineData(ReturnTo.CheckAnswers, BenefitsOption.CarersAllowance, ChildcareSupportOption.ChildcareVouchers)]
-    public async Task Post_Valid_Redirects(string? returnTo, BenefitsOption benefits, ChildcareSupportOption? childcareSupport)
+    public async Task PostValidRedirects(string? returnTo, BenefitsOption benefits, ChildcareSupportOption? childcareSupport)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -68,7 +68,7 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
     [InlineData(null, YearlyEarningsOption.BelowThreshold, "/benefits/universal-credit")]
     [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.AboveThreshold, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, YearlyEarningsOption.AboveThreshold, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(
+    public async Task PostInvalidShowsValidationError(
         string? returnTo,
         YearlyEarningsOption? yearlyEarnings,
         string backLinkUrl)

@@ -39,7 +39,7 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
     [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, PaidWorkOption.Yes)]
     [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, null)]
     [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, PaidWorkOption.Yes)]
-    public async Task Post_Valid_Redirects(string? returnTo, SettledStatusOption settledStatus, PaidWorkOption? paidWork)
+    public async Task PostValidRedirects(string? returnTo, SettledStatusOption settledStatus, PaidWorkOption? paidWork)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -66,7 +66,7 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
     [InlineData(null, "/nationality")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 

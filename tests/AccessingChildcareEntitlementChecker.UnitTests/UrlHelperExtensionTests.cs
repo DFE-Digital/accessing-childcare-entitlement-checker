@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.Web;
+using AccessingChildcareEntitlementChecker.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using NSubstitute;
@@ -19,13 +19,13 @@ public class UrlHelperExtensionTests
     }
 
     [Fact]
-    public void When_Url_Does_Not_Exist_It_Will_Throw()
+    public void WhenUrlDoesNotExistItWillThrow()
     {
         Assert.Throws<InvalidOperationException>(() => _urlHelper.ActionOrThrow("NonExistentRoute"));
     }
 
     [Fact]
-    public void When_Url_Does_Not_Exist_With_Controller_It_Will_Throw()
+    public void WhenUrlDoesNotExistWithControllerItWillThrow()
     {
         Assert.Throws<InvalidOperationException>(() => _urlHelper.ActionOrThrow("NonExistentRoute", "NonExistentController"));
     }

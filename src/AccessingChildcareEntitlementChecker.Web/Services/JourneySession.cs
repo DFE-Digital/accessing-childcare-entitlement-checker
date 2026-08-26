@@ -16,7 +16,7 @@ public class JourneySession : IJourneySession
         .Session
         .TryGetValue(Key, out _) ?? false;
 
-    public JourneyState Get()
+    public JourneyState GetState()
     {
         var json = _httpContextAccessor.HttpContext?
             .Session
@@ -30,7 +30,7 @@ public class JourneySession : IJourneySession
         return JsonSerializer.Deserialize<JourneyState>(json) ?? new JourneyState();
     }
 
-    public void Set(JourneyState journeyState)
+    public void SetState(JourneyState journeyState)
     {
         var httpContext = _httpContextAccessor.HttpContext
             ?? throw new InvalidOperationException("No HttpContext available");

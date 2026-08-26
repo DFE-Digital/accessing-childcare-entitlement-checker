@@ -5,14 +5,14 @@ namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 public class PartnerWorkStatusPageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
     [Fact]
-    public async Task PartnerWorkStatusPage_HasNoAccessibilityViolations()
+    public async Task PartnerWorkStatusPageHasNoAccessibilityViolations()
     {
         await GoToPartnerWorkStatusPage();
         await EvaluatePage();
     }
 
     [Fact]
-    public async Task PartnerWorkStatusPage_WithValidationError_HasNoAccessibilityViolations()
+    public async Task PartnerWorkStatusPageWithValidationErrorHasNoAccessibilityViolations()
     {
         await GoToPartnerWorkStatusPage();
         await Continue();

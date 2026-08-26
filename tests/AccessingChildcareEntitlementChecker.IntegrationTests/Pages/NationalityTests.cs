@@ -36,7 +36,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, null, "/nationality/settled-status")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, PaidWorkOption.Yes, "/nationality/settled-status")]
-    public async Task Post_Valid_Redirects(
+    public async Task PostValidRedirects(
         string? returnTo,
         NationalityOption nationality,
         SettledStatusOption? settledStatus,
@@ -67,7 +67,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     }
 
     [Fact]
-    public async Task Post_EU_Redirects_To_SettledStatus()
+    public async Task PostEURedirectsToSettledStatus()
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
@@ -90,7 +90,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(null, "/age/parent-age")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 

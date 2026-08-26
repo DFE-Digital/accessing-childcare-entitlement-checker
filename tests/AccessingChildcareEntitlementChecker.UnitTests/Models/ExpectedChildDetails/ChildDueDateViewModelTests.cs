@@ -35,7 +35,7 @@ public class ChildDueDateViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorForPastDate()
+    public void ValidateReturnsErrorForPastDate()
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));

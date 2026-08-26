@@ -78,7 +78,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenUserOnlyJourneyIsComplete_IsValid()
+    public void CheckAnswersWhenUserOnlyJourneyIsCompleteIsValid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
 
@@ -88,7 +88,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenCountryOfResidenceIsMissing_IsInvalid()
+    public void CheckAnswersWhenCountryOfResidenceIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.CountryOfResidence = null;
@@ -102,7 +102,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenUserAgeIsMissing_IsInvalid()
+    public void CheckAnswersWhenUserAgeIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.UserAge = null;
@@ -116,7 +116,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenNationalityIsMissing_IsInvalid()
+    public void CheckAnswersWhenNationalityIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.Nationality = null;
@@ -130,7 +130,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPaidWorkIsMissing_IsInvalid()
+    public void CheckAnswersWhenPaidWorkIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.PaidWork = null;
@@ -144,7 +144,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenUniversalCreditIsMissing_IsInvalid()
+    public void CheckAnswersWhenUniversalCreditIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.UniversalCredit = null;
@@ -158,7 +158,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenBenefitsAreMissing_IsInvalid()
+    public void CheckAnswersWhenBenefitsAreMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.Benefits = [];
@@ -172,7 +172,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenChildcareSupportIsMissing_IsInvalid()
+    public void CheckAnswersWhenChildcareSupportIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.ChildcareSupport = [];
@@ -186,7 +186,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenHasPartnerIsMissing_IsInvalid()
+    public void CheckAnswersWhenHasPartnerIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.HasPartner = null;
@@ -200,7 +200,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenNationalityRequiresSettledStatusAndSettledStatusIsMissing_IsInvalid()
+    public void CheckAnswersWhenNationalityRequiresSettledStatusAndSettledStatusIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland;
@@ -214,7 +214,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPaidWorkRequiresWorkStatusAndWorkStatusIsMissing_IsInvalid()
+    public void CheckAnswersWhenPaidWorkRequiresWorkStatusAndWorkStatusIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.PaidWork = PaidWorkOption.Yes;
@@ -228,7 +228,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenSelfEmployedAndSelfEmployedDurationIsMissing_IsInvalid()
+    public void CheckAnswersWhenSelfEmployedAndSelfEmployedDurationIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.PaidWork = PaidWorkOption.Yes;
@@ -243,7 +243,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenSelfEmployedDurationRequiresYearlyEarningsAndYearlyEarningsIsMissing_IsInvalid()
+    public void CheckAnswersWhenSelfEmployedDurationRequiresYearlyEarningsAndYearlyEarningsIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.PaidWork = PaidWorkOption.Yes;
@@ -259,7 +259,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPaidEmploymentAndWeeklyEarningsIsMissing_IsInvalid()
+    public void CheckAnswersWhenPaidEmploymentAndWeeklyEarningsIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.PaidWork = PaidWorkOption.Yes;
@@ -274,7 +274,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenApprenticeAndWeeklyEarningsIsMissing_IsInvalid()
+    public void CheckAnswersWhenApprenticeAndWeeklyEarningsIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.PaidWork = PaidWorkOption.Yes;
@@ -289,7 +289,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenWeeklyEarningsAreAboveThresholdAndYearlyEarningsIsMissing_IsInvalid()
+    public void CheckAnswersWhenWeeklyEarningsAreAboveThresholdAndYearlyEarningsIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.PaidWork = PaidWorkOption.Yes;
@@ -305,7 +305,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenChildcareSupportIncludesVouchersAndVoucherReceiptIsMissing_IsInvalid()
+    public void CheckAnswersWhenChildcareSupportIncludesVouchersAndVoucherReceiptIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.ChildcareSupport = [ChildcareSupportOption.ChildcareVouchers];
@@ -319,7 +319,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenUserAndPartnerJourneyIsComplete_IsValid()
+    public void CheckAnswersWhenUserAndPartnerJourneyIsCompleteIsValid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
 
@@ -329,7 +329,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPartnerAgeIsMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerAgeIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerAge = null;
@@ -344,7 +344,7 @@ public class JourneyStateValidatorCheckAnswersTests
 
 
     [Fact]
-    public void CheckAnswers_WhenPartnerPaidWorkIsMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerPaidWorkIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerPaidWork = null;
@@ -358,7 +358,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPartnerBenefitsAreMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerBenefitsAreMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerBenefits = [];
@@ -372,7 +372,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPartnerChildcareSupportIsMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerChildcareSupportIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerChildcareSupport = [];
@@ -386,7 +386,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPartnerPaidWorkRequiresWorkStatusAndWorkStatusIsMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerPaidWorkRequiresWorkStatusAndWorkStatusIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
@@ -400,7 +400,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPartnerSelfEmployedAndSelfEmployedDurationIsMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerSelfEmployedAndSelfEmployedDurationIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
@@ -415,7 +415,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPartnerSelfEmployedDurationRequiresYearlyEarningsAndYearlyEarningsIsMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerSelfEmployedDurationRequiresYearlyEarningsAndYearlyEarningsIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
@@ -431,7 +431,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPartnerPaidEmploymentAndWeeklyEarningsIsMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerPaidEmploymentAndWeeklyEarningsIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
@@ -446,7 +446,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPartnerIsApprenticeAndWeeklyEarningsIsMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerIsApprenticeAndWeeklyEarningsIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
@@ -461,7 +461,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPartnerWeeklyEarningsAreAboveThresholdAndYearlyEarningsIsMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerWeeklyEarningsAreAboveThresholdAndYearlyEarningsIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
@@ -477,7 +477,7 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
-    public void CheckAnswers_WhenPartnerChildcareSupportIncludesVouchersAndVoucherReceiptIsMissing_IsInvalid()
+    public void CheckAnswersWhenPartnerChildcareSupportIncludesVouchersAndVoucherReceiptIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerChildcareSupport = [PartnerChildcareSupportOption.ChildcareVouchers];

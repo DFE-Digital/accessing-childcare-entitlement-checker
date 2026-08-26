@@ -5,7 +5,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class CookieSteps(IPage page)
+internal sealed class CookieSteps(IPage page)
 {
     [When("I click the Cookies link in the footer")]
     public async Task WhenIClickTheCookiesLinkInTheFooter()

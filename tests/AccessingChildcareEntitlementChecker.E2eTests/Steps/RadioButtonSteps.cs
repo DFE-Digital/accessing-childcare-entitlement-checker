@@ -5,7 +5,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class RadioButtonSteps(IPage page)
+internal sealed class RadioButtonSteps(IPage page)
 {
     [When("I select the {string} radio button")]
     public async Task WhenISelectTheStringRadioButton(string label)
@@ -34,7 +34,7 @@ internal class RadioButtonSteps(IPage page)
 
         if (expectedOptions.Length != expectedCount)
         {
-            throw new Exception($"Step says {expectedCount} options but table has {expectedOptions.Length}");
+            throw new InvalidOperationException($"Step says {expectedCount} options but table has {expectedOptions.Length}");
         }
 
         await Expect(page.GetByRole(AriaRole.Radio))

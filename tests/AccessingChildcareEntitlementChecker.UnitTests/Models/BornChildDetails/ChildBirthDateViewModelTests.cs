@@ -40,7 +40,7 @@ public class ChildBirthDateViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorForFutureDate()
+    public void ValidateReturnsErrorForFutureDate()
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));

@@ -5,7 +5,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class SharedSteps(IPage page)
+internal sealed class SharedSteps(IPage page)
 {
     [Then("I should see the hint text {string}")]
     public async Task ThenIShouldSeeTheHintTextString(string hintText)

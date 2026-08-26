@@ -51,7 +51,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsEligibleNow_ReturnsSchemeResult()
+    public void EvaluateWhenChildIsEligibleNowReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -66,7 +66,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenBothParentsWorking_ReturnsSchemeResult()
+    public void EvaluateWhenBothParentsWorkingReturnsSchemeResult()
     {
         var scheme = CreateEvaluator();
 
@@ -103,7 +103,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenNeitherParentWorking_ReturnsNull()
+    public void EvaluateWhenNeitherParentWorkingReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -142,7 +142,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenBothParentsWorkingAndHouseholdReceivesUniversalCredit_ReturnsNull()
+    public void EvaluateWhenBothParentsWorkingAndHouseholdReceivesUniversalCreditReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -178,7 +178,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsNotBornAndEligibleInFuture_ReturnsFutureEligibility()
+    public void EvaluateWhenChildIsNotBornAndEligibleInFutureReturnsFutureEligibility()
     {
         var scheme = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -198,7 +198,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_DisabledChildEligibleNowUnderExtendedAgeRange_ReturnsSchemeResult()
+    public void EvaluateDisabledChildEligibleNowUnderExtendedAgeRangeReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -222,7 +222,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_ChildNotEligibleDueToAge_ReturnsNull()
+    public void EvaluateChildNotEligibleDueToAgeReturnsNull()
     {
         var evaluator = CreateEvaluator();
         var context = CreateEligibleContext();
@@ -239,7 +239,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_ParentNotMeetingMinimumIncomeThreshold_ReturnsNull()
+    public void EvaluateParentNotMeetingMinimumIncomeThresholdReturnsNull()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext
@@ -265,7 +265,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_ParentExceedingAdjustedNetIncomeLimitThreshold_ReturnsNull()
+    public void EvaluateParentExceedingAdjustedNetIncomeLimitThresholdReturnsNull()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext
@@ -291,7 +291,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenParentIsInSelfEmploymentGracePeriod_ReturnsSchemeResult()
+    public void EvaluateWhenParentIsInSelfEmploymentGracePeriodReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext
@@ -321,7 +321,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_OneParentWorkingOtherParentReceivingQualifyingBenefit_ReturnsSchemeResult()
+    public void EvaluateOneParentWorkingOtherParentReceivingQualifyingBenefitReturnsSchemeResult()
     {
         var scheme = CreateEvaluator();
 
@@ -363,7 +363,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_HouseholdHasNoAccessToPublicFunds_ReturnsSchemeResult()
+    public void EvaluateHouseholdHasNoAccessToPublicFundsReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext
@@ -393,7 +393,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenBothParentsWorkingAndPartnerReceivesChildcareVouchers_ReturnsNull()
+    public void EvaluateWhenBothParentsWorkingAndPartnerReceivesChildcareVouchersReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -433,7 +433,7 @@ public class TaxFreeChildcareSchemeTests
 
 
     [Fact]
-    public void Evaluate_HouseholdReceivesChildcareBursary_ReturnsNull()
+    public void EvaluateHouseholdReceivesChildcareBursaryReturnsNull()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext
@@ -463,7 +463,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_SingleParentBelowIncome_LeaveChildIsIneligibleAndOtherChildIsTemporarilyEligible()
+    public void EvaluateSingleParentBelowIncomeLeaveChildIsIneligibleAndOtherChildIsTemporarilyEligible()
     {
         var evaluator = CreateEvaluator();
 
@@ -503,7 +503,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_UserLeaveChildAndPartnerOnLeaveForAnotherChild_ReturnsDifferentApplyAndEndParties()
+    public void EvaluateUserLeaveChildAndPartnerOnLeaveForAnotherChildReturnsDifferentApplyAndEndParties()
     {
         var evaluator = CreateEvaluator();
 
@@ -553,7 +553,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_BothParentsOnLeaveForDifferentChildrenAndBelowIncome_OnlyOtherChildIsEligible()
+    public void EvaluateBothParentsOnLeaveForDifferentChildrenAndBelowIncomeOnlyOtherChildIsEligible()
     {
         var evaluator = CreateEvaluator();
 
@@ -613,7 +613,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_TemporaryLeaveExemptionIsAvailableButBenefitRouteQualifies_ReturnsNoSpecialEndParty()
+    public void EvaluateTemporaryLeaveExemptionIsAvailableButBenefitRouteQualifiesReturnsNoSpecialEndParty()
     {
         var evaluator = CreateEvaluator();
 

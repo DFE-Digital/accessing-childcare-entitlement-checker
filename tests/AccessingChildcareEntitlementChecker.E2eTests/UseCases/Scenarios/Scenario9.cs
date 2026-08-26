@@ -2,7 +2,7 @@ using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
-internal class Scenario9 : IUseCase
+internal sealed class Scenario9 : IUseCase
 {
     public string Name => "One parent not working, one parent receiving ESA";
 

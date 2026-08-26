@@ -25,7 +25,7 @@ public class WorkStatusViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenOptionsAreEmpty()
+    public void ValidateReturnsErrorWhenOptionsAreEmpty()
     {
         var model = new WorkStatusViewModel()
         {

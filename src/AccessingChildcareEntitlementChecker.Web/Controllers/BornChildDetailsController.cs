@@ -49,7 +49,7 @@ public class BornChildDetailsController : Controller
         }
 
         _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
+        _journeySession.SetState(_journeyState);
 
         return this.RedirectToAction(
             nameof(ChildSupport),
@@ -84,7 +84,7 @@ public class BornChildDetailsController : Controller
         }
 
         _journeyState.Apply(model);
-        _journeySession.Set(_journeyState);
+        _journeySession.SetState(_journeyState);
 
         return this.RedirectToAction(
             nameof(SummaryController.CheckChildDetails),

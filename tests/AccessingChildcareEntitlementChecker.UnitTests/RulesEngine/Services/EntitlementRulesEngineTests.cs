@@ -10,7 +10,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.RulesEngine.Services;
 public class EntitlementRulesEngineTests
 {
     [Fact]
-    public void Evaluate_WhenSchemeReturnsResult_IncludesSchemeInResponse()
+    public void EvaluateWhenSchemeReturnsResultIncludesSchemeInResponse()
     {
         var evaluators = new List<ISchemeEvaluator>
         {
@@ -55,7 +55,7 @@ public class EntitlementRulesEngineTests
     }
 
     [Fact]
-    public void Evaluate_WhenSchemeReturnsNull_ExcludesSchemeFromResponse()
+    public void EvaluateWhenSchemeReturnsNullExcludesSchemeFromResponse()
     {
         var evaluators = new List<ISchemeEvaluator>
         {
@@ -97,7 +97,7 @@ public class EntitlementRulesEngineTests
     }
 
     [Fact]
-    public void Evaluate_WhenRequestContainsMultipleChildren_EvaluatesEachChild()
+    public void EvaluateWhenRequestContainsMultipleChildrenEvaluatesEachChild()
     {
         var evaluators = new List<ISchemeEvaluator>
         {
@@ -148,7 +148,7 @@ public class EntitlementRulesEngineTests
         Assert.Single(result.ChildResults[1].Schemes);
     }
 
-    private class FakeEligibleSchemeEvaluator : ISchemeEvaluator
+    private sealed class FakeEligibleSchemeEvaluator : ISchemeEvaluator
     {
         public SchemeResultDto? Evaluate(
             DerivedContext context,
@@ -163,7 +163,7 @@ public class EntitlementRulesEngineTests
         }
     }
 
-    private class FakeIneligibleSchemeEvaluator : ISchemeEvaluator
+    private sealed class FakeIneligibleSchemeEvaluator : ISchemeEvaluator
     {
         public SchemeResultDto? Evaluate(
             DerivedContext context,

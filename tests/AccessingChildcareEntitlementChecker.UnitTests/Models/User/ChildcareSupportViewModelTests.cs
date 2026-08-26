@@ -25,7 +25,7 @@ public class ChildcareSupportViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
+    public void ValidateReturnsErrorWhenNoneSelectedWithOptions()
     {
         var model = new ChildcareSupportViewModel()
         {
@@ -46,7 +46,7 @@ public class ChildcareSupportViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenOptionsAreEmpty()
+    public void ValidateReturnsErrorWhenOptionsAreEmpty()
     {
         var model = new ChildcareSupportViewModel()
         {

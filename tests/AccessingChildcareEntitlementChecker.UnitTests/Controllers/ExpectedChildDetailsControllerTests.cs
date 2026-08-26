@@ -1,3 +1,4 @@
+using System;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
@@ -8,7 +9,7 @@ using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
-public class ExpectedChildDetailsControllerTests
+public class ExpectedChildDetailsControllerTests : IDisposable
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
@@ -26,20 +27,20 @@ public class ExpectedChildDetailsControllerTests
     }
 
     [Fact]
-    public void ChildDueDate_ReturnsView()
+    public void ChildDueDateReturnsView()
     {
         var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(ChildId));
         Assert.Null(result.Model<ChildDueDateViewModel>().ChildDueDate);
     }
 
     [Fact]
-    public void ChildDueDate_IfChildDoesNotExistReturnsNotFound()
+    public void ChildDueDateIfChildDoesNotExistReturnsNotFound()
     {
         var result = Assert.IsType<NotFoundResult>(_controller.ChildDueDate("DOES-NOT-EXIST"));
     }
 
     [Fact]
-    public void ChildDueDate_Get_PopulatesModel_FromState()
+    public void ChildDueDateGetPopulatesModelFromState()
     {
         Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
         child.DueDate = new DateOnly(2020, 1, 15);
@@ -48,7 +49,7 @@ public class ExpectedChildDetailsControllerTests
     }
 
     [Fact]
-    public void ChildDueDate_Post_ValidSelection_SavesState_AndRedirects()
+    public void ChildDueDatePostValidSelectionSavesStateAndRedirects()
     {
         var model = new ChildDueDateViewModel
         {
@@ -59,7 +60,7 @@ public class ExpectedChildDetailsControllerTests
         var result = _controller.ChildDueDate(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
         Assert.Equal(new DateOnly(2020, 1, 15), child.DueDate);
         Assert.True(_controller.ModelState.IsValid);
@@ -67,7 +68,7 @@ public class ExpectedChildDetailsControllerTests
     }
 
     [Fact]
-    public void ChildDueDate_Post_ValidSelection_SavesState_AndReturnsTo()
+    public void ChildDueDatePostValidSelectionSavesStateAndReturnsTo()
     {
         var model = new ChildDueDateViewModel
         {
@@ -79,7 +80,7 @@ public class ExpectedChildDetailsControllerTests
         var result = _controller.ChildDueDate(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
         Assert.Equal(new DateOnly(2020, 1, 15), child.DueDate);
         Assert.True(_controller.ModelState.IsValid);
@@ -88,7 +89,7 @@ public class ExpectedChildDetailsControllerTests
     }
 
     [Fact]
-    public void ChildDueDate_Post_InvalidSelection_ReturnsViewWithError()
+    public void ChildDueDatePostInvalidSelectionReturnsViewWithError()
     {
         var model = new ChildDueDateViewModel
         {
@@ -103,11 +104,11 @@ public class ExpectedChildDetailsControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildDueDate)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void ChildDueDate_Post_NotFound()
+    public void ChildDueDatePostNotFound()
     {
         var model = new ChildDueDateViewModel
         {
@@ -117,4 +118,6 @@ public class ExpectedChildDetailsControllerTests
         var result = _controller.ChildDueDate(model);
         Assert.IsType<NotFoundResult>(result);
     }
+
+    public void Dispose() { _controller?.Dispose(); GC.SuppressFinalize(this); }
 }

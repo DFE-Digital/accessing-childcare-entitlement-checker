@@ -1,9 +1,10 @@
 using System;
+using System.Globalization;
 using AccessingChildcareEntitlementChecker.E2eTests.Pages;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
-internal class ChildBuilder
+internal sealed class ChildBuilder
 {
     private readonly List<JourneyStep> _steps = [];
 
@@ -22,14 +23,14 @@ internal class ChildBuilder
     public ChildBuilder WithBirthDate(int addYears = 0, int addMonths = 0, int addDays = 0)
     {
         var date = DateTime.Today.AddYears(addYears).AddMonths(addMonths).AddDays(addDays);
-        _steps.Add(new AnswerStep(PageNames.ChildBirthDate, date.ToString("dd MMM yyyy").ToUpper()));
+        _steps.Add(new AnswerStep(PageNames.ChildBirthDate, date.ToString("dd MMM yyyy", CultureInfo.InvariantCulture).ToUpper(CultureInfo.InvariantCulture)));
         return this;
     }
 
     public ChildBuilder WithDueDate(int addYears = 0, int addMonths = 0, int addDays = 0)
     {
         var date = DateTime.Today.AddYears(addYears).AddMonths(addMonths).AddDays(addDays);
-        _steps.Add(new AnswerStep(PageNames.ChildDueDate, date.ToString("dd MMM yyyy").ToUpper()));
+        _steps.Add(new AnswerStep(PageNames.ChildDueDate, date.ToString("dd MMM yyyy", CultureInfo.InvariantCulture).ToUpper(CultureInfo.InvariantCulture)));
         return this;
     }
 

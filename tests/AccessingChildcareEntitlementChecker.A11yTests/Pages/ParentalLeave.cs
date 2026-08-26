@@ -5,14 +5,14 @@ namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 public class ParentalLeavePageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
     [Fact]
-    public async Task ParentalLeavePage_HasNoAccessibilityViolations()
+    public async Task ParentalLeavePageHasNoAccessibilityViolations()
     {
         await GoToUserParentalLeavePage();
         await EvaluatePage();
     }
 
     [Fact]
-    public async Task ParentalLeavePage_WithValidationError_HasNoAccessibilityViolations()
+    public async Task ParentalLeavePageWithValidationErrorHasNoAccessibilityViolations()
     {
         await GoToUserParentalLeavePage();
         await Continue();

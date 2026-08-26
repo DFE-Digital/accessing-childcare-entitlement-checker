@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
+using AccessingChildcareEntitlementChecker.IntegrationTests.Fixtures;
 using AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
@@ -49,7 +49,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
     [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
     [InlineData(ReturnTo.CheckChildDetails, true, false, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
-    public async Task Post_Valid_Redirects(
+    public async Task PostValidRedirects(
         string? returnTo,
         bool hasBirthDate,
         bool hasDueDate,
@@ -92,7 +92,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(null, $"/children/add-child-details/{ChildId}")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_With_Invalid_Shows_Validation_Error_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task PostWithInvalidShowsValidationErrorAndBackLink(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -122,7 +122,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     }
 
     [Fact]
-    public async Task Returns_Not_Found_For_Nonexistant_Child()
+    public async Task ReturnsNotFoundForNonexistantChild()
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
         var url = Url;
