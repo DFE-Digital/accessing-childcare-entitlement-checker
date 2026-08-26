@@ -83,6 +83,7 @@ jobs:
       contents: read
       checks: write
       pull-requests: read
+      security-events: write
     needs: version
     uses: ./.github/workflows/build-dotnet.yml
     with:

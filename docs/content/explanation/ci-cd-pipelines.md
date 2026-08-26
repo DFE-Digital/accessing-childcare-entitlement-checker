@@ -46,3 +46,9 @@ Automated gates protect deployments to production and other high-risk environmen
 - We run automated Playwright E2E and accessibility tests against the Staging URL.
 - We must manually approve the deployment to the Production environment. We can only approve this step after all tests pass on Staging.
 - After a successful deployment, we build the release package and upload it as a stable GitHub Release.
+
+### 3. Static Code Analysis and Security Scanning
+We integrate static code analysis directly into our CI process using JetBrains inspectcode.
+- The `build-dotnet` workflow runs `inspectcode` against the solution.
+- The workflow generates a SARIF (Static Analysis Results Interchange Format) report.
+- The report is automatically uploaded to GitHub Code Scanning, providing visibility of warnings and issues directly within pull requests and the repository's security tab.

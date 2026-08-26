@@ -30,6 +30,7 @@ jobs:
       contents: read
       checks: write
       pull-requests: read
+      security-events: write
 
     steps:
       - name: Checkout
@@ -166,6 +167,16 @@ jobs:
           else
             echo "FORMAT=failed" >> $GITHUB_ENV
           fi
+
+      - name: Inspect code
+        run: dotnet tool run jb inspectcode ${{ env.SOLUTION }} --output=inspectcode.sarif --format=Sarif
+        continue-on-error: true
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v4.37.1
+        with:
+          sarif_file: inspectcode.sarif
+          category: inspectcode
 
       # Exclusions
       # - `Program.cs` - this is partially tested by an integration test; but awkward to test - 
