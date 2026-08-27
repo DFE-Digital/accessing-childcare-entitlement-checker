@@ -15,7 +15,7 @@
 	docs-c \
 	docs-b \
 	docs-s \
-	flatten-docs
+	docs-n
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -131,5 +131,5 @@ docs-s:
 	cd docs && npm install && npm start
 
 # Flatten markdown documentation by folder into folder-specific notebooks
-flatten-docs:
-	pwsh ./scripts/flatten-docs.ps1
+docs-n:
+	pwsh ./scripts/docs-notebook.ps1
