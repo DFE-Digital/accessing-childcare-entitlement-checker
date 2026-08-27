@@ -2,7 +2,6 @@ using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement;
-using System.Threading.Tasks;
 
 namespace AccessingChildcareEntitlementChecker.Web.Controllers;
 

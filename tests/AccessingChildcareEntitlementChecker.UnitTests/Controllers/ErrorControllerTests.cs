@@ -1,4 +1,3 @@
-using System;
 using AccessingChildcareEntitlementChecker.Web.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
