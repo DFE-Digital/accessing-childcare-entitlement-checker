@@ -35,6 +35,7 @@ These commands run development pipelines, verify code format, execute testing ta
 | `make test` | Executes all local unit, component, and integration tests, then outputs results to the test results directory. |
 | `make test-e2e` | Executes end-to-end browser user journey test scenarios using Playwright. Requires the web application to run first. |
 | `make test-a11y` | Executes accessibility tests using axe-core to verify WCAG compliance. Requires the web application to run first. |
+| `make playwright-i` | Installs Playwright browser binaries and system dependencies. |
 
 ## Terraform infrastructure commands
 
