@@ -40,7 +40,7 @@ Let's get the repository set up and pull in the dependencies you need:
    *Using PowerShell:*
    ```powershell
    dotnet build
-   pwsh .\artifacts\bin\AccessingChildcareEntitlementChecker.E2eTests\debug\playwright.ps1 install --with-deps
+   pwsh .\.artifacts\bin\AccessingChildcareEntitlementChecker.E2eTests\debug\playwright.ps1 install --with-deps
    ```
 
 ## 2. Build the solution
@@ -51,7 +51,7 @@ To compile and build the whole solution from the repository root, simply run:
 dotnet build
 ```
 
-*Friendly tip: This project uses `Directory.Build.props` configured with `<UseArtifactsOutput />`. This means all build artefacts are neatly placed under the `/artifacts` folder at the root, rather than cluttering up the individual project folders.*
+*Friendly tip: This project uses `Directory.Build.props` configured with `<UseArtifactsOutput />`. This means all build artefacts are neatly placed under the `/.artifacts` folder at the root, rather than cluttering up the individual project folders.*
 
 ## 3. Run the web application
 

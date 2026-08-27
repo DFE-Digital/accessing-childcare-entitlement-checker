@@ -22,8 +22,8 @@
 # ---------------------------------------------------------------------------
 
 SOLUTION := AccessingChildcareEntitlementChecker.slnx
-TEST_RESULTS := ./test-results
-ANALYSIS_RESULTS := ./analysis-results
+TEST_RESULTS := ./.test-results
+ANALYSIS_RESULTS := ./.analysis-results
 
 # ---------------------------------------------------------------------------
 # .NET - Build
@@ -99,7 +99,7 @@ test-a11y:
 		--logger:"console;verbosity=normal"
 
 playwright-i:
-	pwsh ./artifacts/bin/AccessingChildcareEntitlementChecker.E2eTests/debug/playwright.ps1 install --with-deps
+	pwsh ./.artifacts/bin/AccessingChildcareEntitlementChecker.E2eTests/debug/playwright.ps1 install --with-deps
 
 # ---------------------------------------------------------------------------
 # Terraform
