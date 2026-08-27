@@ -39,7 +39,7 @@ public class IntroductionControllerTests : IDisposable
     [Fact]
     public async Task ChildNameIfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(await _controller.ChildName("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(await _controller.ChildName("DOES-NOT-EXIST"));
     }
 
     [Fact]
@@ -102,7 +102,7 @@ public class IntroductionControllerTests : IDisposable
     [Fact]
     public void IsChildBornIfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.IsChildBorn("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(_controller.IsChildBorn("DOES-NOT-EXIST"));
     }
 
     [Fact]

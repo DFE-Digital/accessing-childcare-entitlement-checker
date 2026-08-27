@@ -107,7 +107,7 @@ public class HomeControllerTests : IDisposable
 
         var result = _controller.Location(model);
 
-        var view = Assert.IsType<ViewResult>(result);
+        Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.Country)));
     }

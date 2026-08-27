@@ -327,7 +327,7 @@ public class SummaryControllerTests : IDisposable
         var controller = new SummaryController(
             _journeyState,
             _journeySession,
-            AcecSubstitute.ForLocalizerFactory(),
+            localizerFactory,
             mockValidator,
             _logger,
             _featureManager);

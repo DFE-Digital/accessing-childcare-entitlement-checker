@@ -181,7 +181,6 @@ public class SummaryRowFactoryTests
     public void ParentalLeaveReturnsNoSummaryWhenNotAnswered()
     {
         var journeyState = new JourneyState();
-        var value = new List<string>();
         _summaryRowFactory.AddParentalLeave(journeyState);
 
         var rows = _summaryRowFactory.ViewModels;
@@ -192,7 +191,6 @@ public class SummaryRowFactoryTests
     public void ParentalLeaveReturnsNoSummaryWhenNoneSelected()
     {
         var journeyState = new JourneyState();
-        var value = new List<string>() { ParentalLeaveViewModel.NoneSelectedValue };
         _summaryRowFactory.AddParentalLeave(journeyState);
         var rows = _summaryRowFactory.ViewModels;
         Assert.Empty(rows);
@@ -202,7 +200,6 @@ public class SummaryRowFactoryTests
     public void ParentalLeaveReturnsNoSummaryWhenChildDoesNotExist()
     {
         var journeyState = new JourneyState();
-        var value = new List<string>() { "1" };
         _summaryRowFactory.AddParentalLeave(journeyState);
         var rows = _summaryRowFactory.ViewModels;
         Assert.Empty(rows);
@@ -234,7 +231,6 @@ public class SummaryRowFactoryTests
     public void PartnerParentalLeaveReturnsNoSummaryWhenNotAnswered()
     {
         var journeyState = new JourneyState();
-        var value = new List<string>();
         _summaryRowFactory.AddPartnerParentalLeave(journeyState);
 
         var rows = _summaryRowFactory.ViewModels;
@@ -245,7 +241,6 @@ public class SummaryRowFactoryTests
     public void PartnerParentalLeaveReturnsNoSummaryWhenNoneSelected()
     {
         var journeyState = new JourneyState();
-        var value = new List<string>() { PartnerParentalLeaveViewModel.NoneSelectedValue };
         _summaryRowFactory.AddPartnerParentalLeave(journeyState);
         var rows = _summaryRowFactory.ViewModels;
         Assert.Empty(rows);
@@ -255,7 +250,6 @@ public class SummaryRowFactoryTests
     public void PartnerParentalLeaveReturnsNoSummaryWhenChildDoesNotExist()
     {
         var journeyState = new JourneyState();
-        var value = new List<string>() { "1" };
         _summaryRowFactory.AddPartnerParentalLeave(journeyState);
         var rows = _summaryRowFactory.ViewModels;
         Assert.Empty(rows);

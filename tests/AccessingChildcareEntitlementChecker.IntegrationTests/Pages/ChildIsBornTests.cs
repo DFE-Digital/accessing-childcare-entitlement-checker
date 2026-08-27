@@ -114,7 +114,6 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [], TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
         postDocument.AssertValidationError()

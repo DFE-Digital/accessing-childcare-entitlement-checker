@@ -77,7 +77,7 @@ public class PartnerControllerTests : IDisposable
 
         var result = _controller.PartnerAge(model);
 
-        var view = Assert.IsType<ViewResult>(result);
+        Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerAge)));
     }

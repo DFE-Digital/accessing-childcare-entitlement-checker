@@ -24,7 +24,7 @@ public class ErrorControllerTests : IDisposable
     {
         var result = _errorController.InternalServerError();
 
-        var view = Assert.IsType<ViewResult>(result);
+        Assert.IsType<ViewResult>(result);
         Assert.Equal(500, _errorController.Response.StatusCode);
     }
 

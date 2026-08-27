@@ -32,7 +32,6 @@ public class ComponentTests
         });
 
         var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
-        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
         // Checking the status code is sufficient to know that the DI is all hooked up properly.
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

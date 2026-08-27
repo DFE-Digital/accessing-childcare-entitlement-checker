@@ -39,7 +39,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
         response.EnsureSuccessStatusCode();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        var backLink = doc
+        doc
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

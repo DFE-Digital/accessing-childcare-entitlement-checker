@@ -65,9 +65,6 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
         var tomDob = today.AddYears(-3);
         var timDob = today.AddYears(-3);
 
-        var useFromDate = TermDateCalculator.GetNextTermStartDate(
-            today.AddMonths(-6));
-
         return new EntitlementResponse()
         {
             ChildResults =

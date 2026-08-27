@@ -14,7 +14,7 @@ public class JourneyStateTests
     [Fact]
     public void GetChildReturnsNullIfChildDoesNotExist()
     {
-        Assert.False(_journeyState.Children.TryGetValue("non-existent-child-id", out var child));
+        Assert.False(_journeyState.Children.TryGetValue("non-existent-child-id", out _));
     }
 
     [Fact]

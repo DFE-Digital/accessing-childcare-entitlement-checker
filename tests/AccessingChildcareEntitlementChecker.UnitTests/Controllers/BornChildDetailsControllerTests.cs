@@ -40,7 +40,7 @@ public class BornChildDetailsControllerTests : IDisposable
     [Fact]
     public void ChildBirthDateIfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildBirthDate("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(_controller.ChildBirthDate("DOES-NOT-EXIST"));
     }
 
     [Fact]
@@ -142,7 +142,7 @@ public class BornChildDetailsControllerTests : IDisposable
     [Fact]
     public void ChildSupportIfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildSupport("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(_controller.ChildSupport("DOES-NOT-EXIST"));
     }
 
     [Fact]

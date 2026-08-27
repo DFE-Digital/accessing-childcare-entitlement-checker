@@ -96,7 +96,6 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
                new KeyValuePair<string, string>("ChildSupportOptions", "ArmedForcesIndependencePayment"),
                 new KeyValuePair<string, string>("ChildSupportOptions", "NoneOfTheseApply"),
