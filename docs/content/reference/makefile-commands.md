@@ -26,6 +26,8 @@ These commands run development pipelines, verify code format, execute testing ta
 | `make analyse-d` | Executes fast static analysis using the .NET SDK and Roslyn analyzers. |
 | `make analyse-f` | Verifies code formatting rules across the solution without modifying files. |
 | `make analyse-i` | Executes deep InspectCode analysis using JetBrains global tools. Outputs SARIF results to both a file and the console. |
+| `make analyse-i-summary` | Displays a summarized hierarchical list of InspectCode findings grouped by severity level and rule ID with counts. |
+| `make analyse-i-find rule=<RuleId>` | Displays all individual occurrences of a specific rule ID (e.g., `make analyse-i-find rule=InconsistentNaming`). |
 | `make analyse` | Runs all static analysis targets (`analyse-d`, `analyse-f`, and `analyse-i`). |
 
 ## Testing commands

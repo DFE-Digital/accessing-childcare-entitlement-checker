@@ -8,7 +8,6 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Models.BornChildDetails
 public class ChildSupportViewModelTests
 {
     private readonly JourneyState _journeyState;
-    private readonly IStringLocalizerFactory _localizerFactory;
     private readonly Func<Type, object> _serviceProviderFunc;
 
     public ChildSupportViewModelTests()
@@ -16,11 +15,11 @@ public class ChildSupportViewModelTests
         _journeyState = new JourneyState();
         _journeyState.Children["child-a"] = new Child("child-a", "Jack");
 
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
+        var localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType =>
         {
             if (serviceType == typeof(JourneyState)) return _journeyState;
-            if (serviceType == typeof(IStringLocalizerFactory)) return _localizerFactory;
+            if (serviceType == typeof(IStringLocalizerFactory)) return localizerFactory;
             return null!;
         };
     }

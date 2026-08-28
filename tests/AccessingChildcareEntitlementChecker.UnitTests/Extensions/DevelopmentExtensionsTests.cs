@@ -11,29 +11,26 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Extensions;
 public class DevelopmentExtensionsTests
 {
     private readonly IApplicationBuilder _app;
-    private readonly ILoggerFactory _loggerFactory;
-    private readonly ILogger _logger;
     private readonly IConfiguration _config;
     private readonly IHostEnvironment _env;
-    private readonly IServiceProvider _serviceProvider;
     private Func<RequestDelegate, RequestDelegate>? _registeredMiddleware;
 
     public DevelopmentExtensionsTests()
     {
         _app = Substitute.For<IApplicationBuilder>();
-        _loggerFactory = Substitute.For<ILoggerFactory>();
-        _logger = Substitute.For<ILogger>();
+        var loggerFactory = Substitute.For<ILoggerFactory>();
+        var logger = Substitute.For<ILogger>();
         _config = Substitute.For<IConfiguration>();
         _env = Substitute.For<IHostEnvironment>();
-        _serviceProvider = Substitute.For<IServiceProvider>();
+        var serviceProvider = Substitute.For<IServiceProvider>();
 
-        _loggerFactory.CreateLogger(Arg.Any<string>()).Returns(_logger);
+        loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
 
-        _serviceProvider.GetService(typeof(ILoggerFactory)).Returns(_loggerFactory);
-        _serviceProvider.GetService(typeof(IConfiguration)).Returns(_config);
-        _serviceProvider.GetService(typeof(IHostEnvironment)).Returns(_env);
+        serviceProvider.GetService(typeof(ILoggerFactory)).Returns(loggerFactory);
+        serviceProvider.GetService(typeof(IConfiguration)).Returns(_config);
+        serviceProvider.GetService(typeof(IHostEnvironment)).Returns(_env);
 
-        _app.ApplicationServices.Returns(_serviceProvider);
+        _app.ApplicationServices.Returns(serviceProvider);
 
         // Capture the middleware registered with Use
         _app.Use(Arg.Do<Func<RequestDelegate, RequestDelegate>>(m => _registeredMiddleware = m));
