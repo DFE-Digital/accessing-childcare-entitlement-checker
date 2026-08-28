@@ -13,7 +13,6 @@ public class IntroductionControllerTests : IDisposable
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
-    private readonly IFeatureManager _featureManager;
     private readonly IntroductionController _controller;
     private const string childId = "child-a";
 
@@ -22,8 +21,8 @@ public class IntroductionControllerTests : IDisposable
         _journeyState = new JourneyState();
         _journeyState.Children[childId] = new Child(childId, "Child A");
         _journeySession = Substitute.For<IJourneySession>();
-        _featureManager = Substitute.For<IFeatureManager>();
-        _controller = new IntroductionController(_journeyState, _journeySession, _featureManager);
+        var featureManager = Substitute.For<IFeatureManager>();
+        _controller = new IntroductionController(_journeyState, _journeySession, featureManager);
         _controller.Url = Substitute.For<IUrlHelper>();
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }

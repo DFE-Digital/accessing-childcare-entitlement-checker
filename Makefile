@@ -8,6 +8,8 @@
 	analyse-d \
 	analyse-f \
 	analyse-i \
+	analyse-i-summary \
+	analyse-i-find \
 	verify \
 	tf-f \
 	tf-v \
@@ -57,7 +59,14 @@ analyse-i:
 	dotnet tool run jb inspectcode $(SOLUTION) \
 		--output=$(ANALYSIS_RESULTS)/inspectcode.sarif \
 		--format=Sarif
-	@jq -r '[.runs[0].results[]?] | sort_by(.level) | .[] | "[\(.level)] \(.ruleId): \(.message.text) - \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine)"' $(ANALYSIS_RESULTS)/inspectcode.sarif
+
+analyse-i-summary:
+	jq -r '[.runs[0].results[]?] | group_by(.level) | .[] | "[\(.[0].level)]", (group_by(.ruleId) | .[] | "  \(.[0].ruleId): \(length)")' $(ANALYSIS_RESULTS)/inspectcode.sarif
+
+rule ?= $(ruleid)
+
+analyse-i-find:
+	jq -r --arg rule "$(rule)" 'if $$rule == "" then error("Please specify rule=VALUE, e.g. make analyse-i-find rule=InconsistentNaming") else . end | [.runs[0].results[]? | select(.ruleId == $$rule)] | .[] | "[\(.level)] \(.ruleId): \(.message.text) - \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine)"' $(ANALYSIS_RESULTS)/inspectcode.sarif
 
 # Run all static analysis.
 analyse: analyse-d analyse-f analyse-i

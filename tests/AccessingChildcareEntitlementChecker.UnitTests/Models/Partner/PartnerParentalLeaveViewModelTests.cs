@@ -8,17 +8,16 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Models.Partner;
 public class PartnerParentalLeaveViewModelTests
 {
     private readonly JourneyState _journeyState;
-    private readonly IStringLocalizerFactory _localizerFactory;
     private readonly Func<Type, object> _serviceProviderFunc;
 
     public PartnerParentalLeaveViewModelTests()
     {
         _journeyState = new JourneyState();
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
+        var localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType =>
         {
             if (serviceType == typeof(JourneyState)) return _journeyState;
-            if (serviceType == typeof(IStringLocalizerFactory)) return _localizerFactory;
+            if (serviceType == typeof(IStringLocalizerFactory)) return localizerFactory;
             return null!;
         };
     }
