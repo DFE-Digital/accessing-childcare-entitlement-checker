@@ -14,7 +14,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [Theory]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, "/nationality")]
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, "/nationality")]
-    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "/nationality/settled-status")]
+    [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, "/nationality/settled-status")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
     public async Task Get(string? returnTo, NationalityOption? nationality, string backLinkUrl)
@@ -49,7 +49,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.ParentalLeave, false, null, null, "/leave/parental-leave")]
     [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.SickLeave, false, null, null, "/work-status/work-status")]
     [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.SickLeave, false, WorkStatusOption.PaidEmployment, null, "/work-status/work-status")]
-    public async Task Post_Valid_Redirects(
+    public async Task PostValidRedirects(
         string? returnTo,
         PaidWorkOption paidWork,
         bool hasAnsweredParentalLeaveChildren,
@@ -93,10 +93,10 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [Theory]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, "/nationality")]
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, "/nationality")]
-    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "/nationality/settled-status")]
+    [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, "/nationality/settled-status")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, NationalityOption? nationality, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, NationalityOption? nationality, string backLinkUrl)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState
         {

@@ -10,20 +10,22 @@ public class ChildBirthDateViewModelTests
 {
     private readonly JourneyState _journeyState;
     private readonly ITodayFactory _dateTimeFactory;
-    private readonly IStringLocalizerFactory _localizerFactory;
     private readonly Func<Type, object> _serviceProviderFunc;
 
     public ChildBirthDateViewModelTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children["child-a"] = new Child("child-a", "Child A");
+        _journeyState = new JourneyState
+        {
+            Children = { ["child-a"] = new Child("child-a", "Child A") }
+        };
         _dateTimeFactory = Substitute.For<ITodayFactory>();
-        _localizerFactory = Substitute.For<IStringLocalizerFactory>();
+        var localizerFactory = Substitute.For<IStringLocalizerFactory>();
 
         var localizer = Substitute.For<IStringLocalizer<ChildBirthDateViewModel>>();
         var localizedString = new LocalizedString("Enter a date of birth in the past", "TEST");
         localizer["Enter a date of birth in the past"].Returns(localizedString);
-        _localizerFactory.Create(typeof(ChildBirthDateViewModel)).Returns(localizer);
+
+        localizerFactory.Create(typeof(ChildBirthDateViewModel)).Returns(localizer);
 
         _serviceProviderFunc = serviceType =>
         {
@@ -33,14 +35,14 @@ public class ChildBirthDateViewModelTests
             }
             if (serviceType == typeof(IStringLocalizerFactory))
             {
-                return _localizerFactory;
+                return localizerFactory;
             }
             return null!;
         };
     }
 
     [Fact]
-    public void Validate_ReturnsErrorForFutureDate()
+    public void ValidateReturnsErrorForFutureDate()
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));

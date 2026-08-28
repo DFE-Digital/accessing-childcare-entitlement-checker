@@ -2,7 +2,7 @@ using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
-internal class Scenario4 : IUseCase
+internal sealed class Scenario4 : IUseCase
 {
     public string Name => "One parent aged 18-20, child not yet born";
 

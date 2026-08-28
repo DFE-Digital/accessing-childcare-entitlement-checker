@@ -3,7 +3,7 @@ namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 public class ResultsPageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
     [Fact]
-    public async Task ResultsPage_HasNoAccessibilityViolations()
+    public async Task ResultsPageHasNoAccessibilityViolations()
     {
         await CompleteJourneyToResults();
         await ExpectPathAndQuery("/results");

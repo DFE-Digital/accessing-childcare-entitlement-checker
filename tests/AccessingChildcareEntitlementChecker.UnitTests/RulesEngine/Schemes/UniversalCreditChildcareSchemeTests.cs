@@ -52,7 +52,7 @@ public class UniversalCreditChildcareSchemeTests
 
 
     [Fact]
-    public void Evaluate_WhenChildIsEligibleNow_ReturnsSchemeResult()
+    public void EvaluateWhenChildIsEligibleNowReturnsSchemeResult()
     {
         var scheme = CreateEvaluator();
 
@@ -71,7 +71,7 @@ public class UniversalCreditChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsOver16_ReturnsNull()
+    public void EvaluateWhenChildIsOver16ReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -85,7 +85,7 @@ public class UniversalCreditChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenHouseholdDoesNotReceiveUniversalCredit_ReturnsNull()
+    public void EvaluateWhenHouseholdDoesNotReceiveUniversalCreditReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -116,7 +116,7 @@ public class UniversalCreditChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenSingleParentNotInPaidWork_ReturnsNull()
+    public void EvaluateWhenSingleParentNotInPaidWorkReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -144,7 +144,7 @@ public class UniversalCreditChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenCoupleHasOneWorkingParentAndOneExemptParent_ReturnsSchemeResult()
+    public void EvaluateWhenCoupleHasOneWorkingParentAndOneExemptParentReturnsSchemeResult()
     {
         var scheme = CreateEvaluator();
 
@@ -185,7 +185,7 @@ public class UniversalCreditChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenCoupleHasOneWorkingParentAndOneNonExemptParent_ReturnsNull()
+    public void EvaluateWhenCoupleHasOneWorkingParentAndOneNonExemptParentReturnsNull()
     {
         var scheme = CreateEvaluator();
 
@@ -221,7 +221,7 @@ public class UniversalCreditChildcareSchemeTests
     }
 
     [Fact]
-    public void Evaluate_WhenChildIsUnbornAndHouseholdMeetsRequirements_ReturnsFutureEligibility()
+    public void EvaluateWhenChildIsUnbornAndHouseholdMeetsRequirementsReturnsFutureEligibility()
     {
         var scheme = CreateEvaluator();
 

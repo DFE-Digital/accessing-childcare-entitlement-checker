@@ -7,25 +7,22 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Models.User;
 
 public class WorkStatusViewModelTests
 {
-    private readonly JourneyState _journeyState;
-    private readonly IStringLocalizerFactory _localizerFactory;
     private readonly Func<Type, object> _serviceProviderFunc;
 
     public WorkStatusViewModelTests()
     {
-        _journeyState = new JourneyState();
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
-        _serviceProviderFunc = serviceType => _localizerFactory;
+        var journeyState = new JourneyState();
+        var localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType =>
         {
-            if (serviceType == typeof(JourneyState)) return _journeyState;
-            if (serviceType == typeof(IStringLocalizerFactory)) return _localizerFactory;
+            if (serviceType == typeof(JourneyState)) return journeyState;
+            if (serviceType == typeof(IStringLocalizerFactory)) return localizerFactory;
             return null!;
         };
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenOptionsAreEmpty()
+    public void ValidateReturnsErrorWhenOptionsAreEmpty()
     {
         var model = new WorkStatusViewModel()
         {

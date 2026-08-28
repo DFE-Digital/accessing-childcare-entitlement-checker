@@ -8,7 +8,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.TagHelpers;
 public class NonceTagHelperTests
 {
     [Fact]
-    public void Process_WithAddNonceStringTrue_RemovesAddNonceAndAddsCspNonce()
+    public void ProcessWithAddNonceStringTrueRemovesAddNonceAndAddsCspNonce()
     {
         // Arrange
         var httpContext = new DefaultHttpContext();
@@ -48,7 +48,7 @@ public class NonceTagHelperTests
     }
 
     [Fact]
-    public void Process_WithAddNonceBoolTrue_RemovesAddNonceAndAddsCspNonce()
+    public void ProcessWithAddNonceBoolTrueRemovesAddNonceAndAddsCspNonce()
     {
         // Arrange
         var httpContext = new DefaultHttpContext();
@@ -88,7 +88,7 @@ public class NonceTagHelperTests
     }
 
     [Fact]
-    public void Process_WithAddNonceStringFalse_DoesNotRemoveAddNonceAndDoesNotAddCspNonce()
+    public void ProcessWithAddNonceStringFalseDoesNotRemoveAddNonceAndDoesNotAddCspNonce()
     {
         // Arrange
         var httpContext = new DefaultHttpContext
@@ -130,7 +130,7 @@ public class NonceTagHelperTests
     }
 
     [Fact]
-    public void Process_WithAddNonceBoolFalse_DoesNotRemoveAddNonceAndDoesNotAddCspNonce()
+    public void ProcessWithAddNonceBoolFalseDoesNotRemoveAddNonceAndDoesNotAddCspNonce()
     {
         // Arrange
         var httpContext = new DefaultHttpContext
@@ -172,7 +172,7 @@ public class NonceTagHelperTests
     }
 
     [Fact]
-    public void Process_WithAddNonceInvalid_DoesNotRemoveAddNonceAndDoesNotAddCspNonce()
+    public void ProcessWithAddNonceInvalidDoesNotRemoveAddNonceAndDoesNotAddCspNonce()
     {
         // Arrange
         var httpContext = new DefaultHttpContext
@@ -214,7 +214,7 @@ public class NonceTagHelperTests
     }
 
     [Fact]
-    public void Process_WithAddNonceTrueAndNullViewContext_RemovesAddNonceAndAddsNonceWithNullValue()
+    public void ProcessWithAddNonceTrueAndNullViewContextRemovesAddNonceAndAddsNonceWithNullValue()
     {
         // Arrange
         var tagHelper = new NonceTagHelper
@@ -232,7 +232,7 @@ public class NonceTagHelperTests
         var output = new TagHelperOutput(
             "script",
             [addNonceAttribute],
-            (useCachedResult, encoder) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+            (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
 
         // Act
         tagHelper.Process(context, output);
@@ -245,7 +245,7 @@ public class NonceTagHelperTests
     }
 
     [Fact]
-    public void Process_WithAddNonceTrueAndMissingCspNonce_RemovesAddNonceAndAddsNonceWithNullValue()
+    public void ProcessWithAddNonceTrueAndMissingCspNonceRemovesAddNonceAndAddsNonceWithNullValue()
     {
         // Arrange
         var httpContext = new DefaultHttpContext();

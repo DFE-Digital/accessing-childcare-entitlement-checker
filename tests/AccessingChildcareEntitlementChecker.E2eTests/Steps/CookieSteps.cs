@@ -5,13 +5,13 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-internal class CookieSteps(IPage page)
+internal sealed class CookieSteps(IPage page)
 {
     [When("I click the Cookies link in the footer")]
     public async Task WhenIClickTheCookiesLinkInTheFooter()
     {
         var footer = page.Locator("footer");
-        var cookiesLink = footer.GetByRole(AriaRole.Link, new()
+        await footer.GetByRole(AriaRole.Link, new()
         {
             Name = "Cookies"
         }).ClickAsync();

@@ -21,7 +21,7 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
     {
         var webHost = WithWebHostBuilder(builder =>
         {
-            builder.ConfigureAppConfiguration((context, config) =>
+            builder.ConfigureAppConfiguration((_, config) =>
             {
                 config.AddInMemoryCollection(featureFlags);
             });
@@ -49,7 +49,7 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
     {
         var webHost = WithWebHostBuilder(builder =>
         {
-            builder.ConfigureAppConfiguration((context, config) =>
+            builder.ConfigureAppConfiguration((_, config) =>
             {
                 config.AddInMemoryCollection(featureFlags);
             });
@@ -77,20 +77,18 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
         return webHost;
     }
 
-    private class TestJourneySession(JourneyState state) : IJourneySession
+    private sealed class TestJourneySession(JourneyState state) : IJourneySession
     {
         public bool HasSession => true;
         private JourneyState _state = state;
-        public JourneyState Get() => _state;
-        public void Set(JourneyState journeyState) => _state = journeyState;
-        public void Clear() => _state = new();
+        public JourneyState GetState() => _state;
+        public void SetState(JourneyState journeyState) => _state = journeyState;
     }
 
-    private class MissingJourneySession : IJourneySession
+    private sealed class MissingJourneySession : IJourneySession
     {
         public bool HasSession => false;
-        public JourneyState Get() => new();
-        public void Set(JourneyState journeyState) { }
-        public void Clear() { }
+        public JourneyState GetState() => new();
+        public void SetState(JourneyState journeyState) { }
     }
 }

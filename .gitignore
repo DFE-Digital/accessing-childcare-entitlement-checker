@@ -1,6 +1,7 @@
 # Build outputs
-/artifacts/
-/test-results/
+/.artifacts/
+/.test-results/
+/.analysis-results/
 docs/_site/
 docs/node_modules/
 *.feature.cs
@@ -64,7 +65,7 @@ terraform.tfstate*
 **/wwwroot/govuk-frontend.min.js
 
 # Notebook generated files
-notebook/
+.notebook/
 
 # Shutter service generated files
 src/AccessingChildcareEntitlementChecker.Shutter/node_modules/

@@ -11,7 +11,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
     private const string Url = "/check-your-answers";
 
     [Fact]
-    public async Task Get_WhenFeatureFlagEnabled_SuppressesLocationRow()
+    public async Task GetWhenFeatureFlagEnabledSuppressesLocationRow()
     {
         using var host = factory.CreateClientWithJourneyStateAndFeatureFlags(new JourneyState
         {

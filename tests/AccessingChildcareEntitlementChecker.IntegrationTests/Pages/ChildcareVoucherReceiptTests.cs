@@ -40,7 +40,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
     [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.EmployerArrangesWithProvider, true)]
     [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, null)]
     [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, true)]
-    public async Task Post_Valid_Redirects(string? returnTo, ChildcareVoucherReceiptOption childcareVoucherReceipt, bool? hasPartner)
+    public async Task PostValidRedirects(string? returnTo, ChildcareVoucherReceiptOption childcareVoucherReceipt, bool? hasPartner)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -69,7 +69,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
     [InlineData(null, "/benefits/childcare-support")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 

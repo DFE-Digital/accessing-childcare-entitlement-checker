@@ -8,24 +8,22 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Models.User;
 public class ParentalLeaveViewModelTests
 {
     private readonly JourneyState _journeyState;
-    private readonly IStringLocalizerFactory _localizerFactory;
     private readonly Func<Type, object> _serviceProviderFunc;
 
     public ParentalLeaveViewModelTests()
     {
         _journeyState = new JourneyState();
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
-        _serviceProviderFunc = serviceType => _localizerFactory;
+        var localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType =>
         {
             if (serviceType == typeof(JourneyState)) return _journeyState;
-            if (serviceType == typeof(IStringLocalizerFactory)) return _localizerFactory;
+            if (serviceType == typeof(IStringLocalizerFactory)) return localizerFactory;
             return null!;
         };
     }
 
     [Fact]
-    public void Constructor_InitializesPropertiesCorrectly()
+    public void ConstructorInitializesPropertiesCorrectly()
     {
         _journeyState.ParentalLeaveChildrenIds = ["child1", "child2"];
         var backLink = "/previous-page";
@@ -38,7 +36,7 @@ public class ParentalLeaveViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
+    public void ValidateReturnsErrorWhenNoneSelectedWithOptions()
     {
         var model = new ParentalLeaveViewModel()
         {
@@ -59,7 +57,7 @@ public class ParentalLeaveViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenOptionsAreEmpty()
+    public void ValidateReturnsErrorWhenOptionsAreEmpty()
     {
         var model = new ParentalLeaveViewModel()
         {

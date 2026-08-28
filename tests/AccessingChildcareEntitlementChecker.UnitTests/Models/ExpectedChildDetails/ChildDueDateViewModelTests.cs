@@ -10,15 +10,16 @@ public class ChildDueDateViewModelTests
 {
     private readonly JourneyState _journeyState;
     private readonly ITodayFactory _dateTimeFactory;
-    private readonly IStringLocalizerFactory _localizerFactory;
     private readonly Func<Type, object> _serviceProviderFunc;
 
     public ChildDueDateViewModelTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children["child-a"] = new Child("child-a", "Jack");
+        _journeyState = new JourneyState
+        {
+            Children = { ["child-a"] = new Child("child-a", "Jack") }
+        };
         _dateTimeFactory = Substitute.For<ITodayFactory>();
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
+        var localizerFactory = AcecSubstitute.ForLocalizerFactory();
 
         _serviceProviderFunc = serviceType =>
         {
@@ -28,14 +29,14 @@ public class ChildDueDateViewModelTests
             }
             if (serviceType == typeof(IStringLocalizerFactory))
             {
-                return _localizerFactory;
+                return localizerFactory;
             }
             return null!;
         };
     }
 
     [Fact]
-    public void Validate_ReturnsErrorForPastDate()
+    public void ValidateReturnsErrorForPastDate()
     {
         var now = DateTime.UtcNow;
         _dateTimeFactory.Today.Returns(DateOnly.FromDateTime(now));

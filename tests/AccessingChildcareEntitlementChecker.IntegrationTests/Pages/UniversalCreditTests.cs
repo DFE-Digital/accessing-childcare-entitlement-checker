@@ -57,7 +57,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.Receives, BenefitsOption.CarersAllowance)]
     [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.DoesNotReceive, null)]
     [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.DoesNotReceive, BenefitsOption.CarersAllowance)]
-    public async Task Post_Valid_Redirects(string? returnTo, UniversalCreditOption universalCredit, BenefitsOption? benefits)
+    public async Task PostValidRedirects(string? returnTo, UniversalCreditOption universalCredit, BenefitsOption? benefits)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -89,7 +89,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(null, PaidWorkOption.No, null, null, null, null, "/work-status/work")]
     [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(
+    public async Task PostInvalidShowsValidationError(
         string? returnTo,
         PaidWorkOption? paidWork,
         WorkStatusOption? workStatus,

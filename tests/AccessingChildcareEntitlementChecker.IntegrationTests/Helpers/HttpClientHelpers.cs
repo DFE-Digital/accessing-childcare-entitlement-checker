@@ -1,6 +1,4 @@
-﻿using AngleSharp.Dom;
-
-namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
+﻿namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 
 public class HttpClientHelpers
 {

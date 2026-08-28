@@ -8,7 +8,7 @@ public enum NationalityOption
     BritishOrIrishCitizen,
 
     [Display(Name = "Citizen of an EU country, EEA country or Switzerland")]
-    CitizenOfAnEUCountryEEACountryOrSwitzerland,
+    CitizenOfAnEuCountryEeaCountryOrSwitzerland,
 
     [Display(Name = "Citizen of a different country")]
     CitizenOfADifferentCountry,

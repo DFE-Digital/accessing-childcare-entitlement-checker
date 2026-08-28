@@ -1,9 +1,7 @@
 @using AccessingChildcareEntitlementChecker.Web.Models.User
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
-@inject IViewLocalizer Localizer
 @model SettledStatusViewModel
-@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @{
     ViewData["Title"] = Html.DisplayNameFor(model => model.SettledStatus);

@@ -5,7 +5,7 @@ namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 public class ChildSupportPageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
     [Fact]
-    public async Task ChildSupportPage_HasNoAccessibilityViolations()
+    public async Task ChildSupportPageHasNoAccessibilityViolations()
     {
         var childId = await GoToChildDateOfBirthPage();
         await EnterChildDateOfBirth(childId);
@@ -14,7 +14,7 @@ public class ChildSupportPageAccessibilityTests(ITestOutputHelper output) : Jour
     }
 
     [Fact]
-    public async Task ChildSupportPage_WithValidationError_HasNoAccessibilityViolations()
+    public async Task ChildSupportPageWithValidationErrorHasNoAccessibilityViolations()
     {
         var childId = await GoToChildDateOfBirthPage();
         await EnterChildDateOfBirth(childId);

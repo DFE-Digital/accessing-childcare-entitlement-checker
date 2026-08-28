@@ -8,47 +8,54 @@ using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
-public class BornChildDetailsControllerTests
+public class BornChildDetailsControllerTests : IDisposable
 {
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly BornChildDetailsController _controller;
-    private const string childId = "child-a";
+    private const string ChildId = "child-a";
 
     public BornChildDetailsControllerTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children[childId] = new Child(childId, "Child A")
+        _journeyState = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
+            Children =
+            {
+                [ChildId] = new Child(ChildId, "Child A")
+                {
+                    BirthStatus = BirthStatus.Born,
+                }
+            }
         };
 
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new BornChildDetailsController(_journeyState, _journeySession);
-        _controller.Url = Substitute.For<IUrlHelper>();
+        _controller = new BornChildDetailsController(_journeyState, _journeySession)
+        {
+            Url = Substitute.For<IUrlHelper>()
+        };
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 
     [Fact]
-    public void ChildBirthDate_ReturnsView()
+    public void ChildBirthDateReturnsView()
     {
-        var result = Assert.IsType<ViewResult>(_controller.ChildBirthDate(childId));
+        var result = Assert.IsType<ViewResult>(_controller.ChildBirthDate(ChildId));
         Assert.Null(result.Model<ChildBirthDateViewModel>().ChildBirthDate);
         Assert.Equal("Child A", result.Model<ChildBirthDateViewModel>().ChildName);
     }
 
     [Fact]
-    public void ChildBirthDate_IfChildDoesNotExistReturnsNotFound()
+    public void ChildBirthDateIfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildBirthDate("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(_controller.ChildBirthDate("DOES-NOT-EXIST"));
     }
 
     [Fact]
-    public void ChildBirthDate_Get_PopulatesModel_FromState()
+    public void ChildBirthDateGetPopulatesModelFromState()
     {
-        Assert.True(_journeyState.Children.TryGetValue(childId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
         child.BirthDate = new DateOnly(2020, 1, 15);
-        var result = Assert.IsType<ViewResult>(_controller.ChildBirthDate(childId));
+        var result = Assert.IsType<ViewResult>(_controller.ChildBirthDate(ChildId));
         Assert.Equal(new DateOnly(2020, 1, 15), result.Model<ChildBirthDateViewModel>().ChildBirthDate);
         Assert.Equal("Child A", result.Model<ChildBirthDateViewModel>().ChildName);
     }
@@ -56,11 +63,11 @@ public class BornChildDetailsControllerTests
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void ChildBirthDate_Post_ValidSelection_SavesState_AndRedirects(bool hasReturnTo)
+    public void ChildBirthDatePostValidSelectionSavesStateAndRedirects(bool hasReturnTo)
     {
         var model = new ChildBirthDateViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildBirthDate = new DateOnly(2020, 1, 15),
             ReturnTo = hasReturnTo ? ReturnTo.CheckChildDetails : null
         };
@@ -68,21 +75,21 @@ public class BornChildDetailsControllerTests
         var result = _controller.ChildBirthDate(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_journeyState.Children.TryGetValue(childId, out var child));
+        _journeySession.Received(1).SetState(_journeyState);
+        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
         Assert.Equal(new DateOnly(2020, 1, 15), child.BirthDate);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(BornChildDetailsController.ChildSupport), redirect.ActionName);
     }
 
     [Fact]
-    public void ChildBirthDate_Post_ValidSelection_SavesState_AndRedirects_With_ReturnTo()
+    public void ChildBirthDatePostValidSelectionSavesStateAndRedirectsWithReturnTo()
     {
-        _journeyState.Children[childId].ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment];
+        _journeyState.Children[ChildId].ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment];
 
         var model = new ChildBirthDateViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildBirthDate = new DateOnly(2020, 1, 15),
             ReturnTo = ReturnTo.CheckChildDetails
         };
@@ -90,7 +97,7 @@ public class BornChildDetailsControllerTests
         var result = _controller.ChildBirthDate(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.True(_journeyState.Children.TryGetValue(model.ChildId, out var child));
         Assert.Equal(new DateOnly(2020, 1, 15), child.BirthDate);
         Assert.True(_controller.ModelState.IsValid);
@@ -100,7 +107,7 @@ public class BornChildDetailsControllerTests
     }
 
     [Fact]
-    public void ChildBirthDate_Post_InvalidSelection_ReturnsViewWithError()
+    public void ChildBirthDatePostInvalidSelectionReturnsViewWithError()
     {
         var model = new ChildBirthDateViewModel
         {
@@ -115,11 +122,11 @@ public class BornChildDetailsControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildBirthDate)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void ChildBirthDate_Post_NotFound()
+    public void ChildBirthDatePostNotFound()
     {
         var model = new ChildBirthDateViewModel
         {
@@ -131,26 +138,26 @@ public class BornChildDetailsControllerTests
     }
 
     [Fact]
-    public void ChildSupport_ReturnsView()
+    public void ChildSupportReturnsView()
     {
-        var result = Assert.IsType<ViewResult>(_controller.ChildSupport(childId));
+        var result = Assert.IsType<ViewResult>(_controller.ChildSupport(ChildId));
 
         Assert.Equal(Array.Empty<ChildSupport>(), result.Model<ChildSupportViewModel>().ChildSupportOptions);
         Assert.Equal("Child A", result.Model<ChildSupportViewModel>().ChildName);
     }
 
     [Fact]
-    public void ChildSupport_IfChildDoesNotExistReturnsNotFound()
+    public void ChildSupportIfChildDoesNotExistReturnsNotFound()
     {
-        var result = Assert.IsType<NotFoundResult>(_controller.ChildSupport("DOES-NOT-EXIST"));
+        Assert.IsType<NotFoundResult>(_controller.ChildSupport("DOES-NOT-EXIST"));
     }
 
     [Fact]
-    public void ChildSupport_Get_PopulatesModel_FromState()
+    public void ChildSupportGetPopulatesModelFromState()
     {
-        Assert.True(_journeyState.Children.TryGetValue(childId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
         child.ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment];
-        var result = Assert.IsType<ViewResult>(_controller.ChildSupport(childId));
+        var result = Assert.IsType<ViewResult>(_controller.ChildSupport(ChildId));
 
         Assert.Equal(new[] { ChildSupport.ArmedForcesIndependencePayment }, result.Model<ChildSupportViewModel>().ChildSupportOptions);
         Assert.Equal("Child A", result.Model<ChildSupportViewModel>().ChildName);
@@ -159,11 +166,11 @@ public class BornChildDetailsControllerTests
     [Theory]
     [InlineData(ReturnTo.CheckChildDetails, nameof(SummaryController.CheckChildDetails))]
     [InlineData(ReturnTo.CheckAnswers, nameof(SummaryController.CheckChildDetails))]
-    public void ChildSupport_Post_ValidSelection_SavesState_AndRedirects(string returnTo, string actionName)
+    public void ChildSupportPostValidSelectionSavesStateAndRedirects(string returnTo, string actionName)
     {
         var model = new ChildSupportViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildSupportOptions = [ChildSupport.ArmedForcesIndependencePayment],
             ReturnTo = returnTo,
         };
@@ -171,8 +178,8 @@ public class BornChildDetailsControllerTests
         var result = _controller.ChildSupport(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
-        Assert.True(_journeyState.Children.TryGetValue(childId, out var child));
+        _journeySession.Received(1).SetState(_journeyState);
+        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
         Assert.Equal(new[] { ChildSupport.ArmedForcesIndependencePayment }, child.ChildSupportOptions);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
@@ -180,7 +187,7 @@ public class BornChildDetailsControllerTests
     }
 
     [Fact]
-    public void ChildSupport_Post_InvalidSelection_ReturnsViewWithError()
+    public void ChildSupportPostInvalidSelectionReturnsViewWithError()
     {
         var model = new ChildSupportViewModel
         {
@@ -195,11 +202,11 @@ public class BornChildDetailsControllerTests
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.ChildSupportOptions)));
-        _journeySession.DidNotReceive().Set(_journeyState);
+        _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
-    public void ChildSupport_Post_NotFound()
+    public void ChildSupportPostNotFound()
     {
         var model = new ChildSupportViewModel
         {
@@ -209,4 +216,6 @@ public class BornChildDetailsControllerTests
         var result = _controller.ChildSupport(model);
         Assert.IsType<NotFoundResult>(result);
     }
+
+    public void Dispose() { _controller?.Dispose(); GC.SuppressFinalize(this); }
 }

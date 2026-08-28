@@ -19,7 +19,7 @@ public static class AcecSubstitute
         {
             var key = callInfo.Arg<string>();
             var args = callInfo.Arg<object[]>();
-            var formattedValue = string.Format(key, args);
+            var formattedValue = string.Format(System.Globalization.CultureInfo.InvariantCulture, key, args);
             return new LocalizedString(key, formattedValue);
         });
 

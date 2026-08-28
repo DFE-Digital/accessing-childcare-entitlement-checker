@@ -8,26 +8,26 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Models.BornChildDetails
 public class ChildSupportViewModelTests
 {
     private readonly JourneyState _journeyState;
-    private readonly IStringLocalizerFactory _localizerFactory;
     private readonly Func<Type, object> _serviceProviderFunc;
 
     public ChildSupportViewModelTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children["child-a"] = new Child("child-a", "Jack");
+        _journeyState = new JourneyState
+        {
+            Children = { ["child-a"] = new Child("child-a", "Jack") }
+        };
 
-        _localizerFactory = AcecSubstitute.ForLocalizerFactory();
-        _serviceProviderFunc = serviceType => _localizerFactory;
+        var localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType =>
         {
             if (serviceType == typeof(JourneyState)) return _journeyState;
-            if (serviceType == typeof(IStringLocalizerFactory)) return _localizerFactory;
+            if (serviceType == typeof(IStringLocalizerFactory)) return localizerFactory;
             return null!;
         };
     }
 
     [Fact]
-    public void Validate_ThrowsWhenNoChild()
+    public void ValidateThrowsWhenNoChild()
     {
         var child = new Child("DOES-NOT-EXIST", "Child b");
         var model = new ChildSupportViewModel(child, "backLink")
@@ -42,7 +42,7 @@ public class ChildSupportViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenNoneSelectedWithOptions()
+    public void ValidateReturnsErrorWhenNoneSelectedWithOptions()
     {
         Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
         var model = new ChildSupportViewModel(child, "backLink")
@@ -64,7 +64,7 @@ public class ChildSupportViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenOptionsAreEmpty()
+    public void ValidateReturnsErrorWhenOptionsAreEmpty()
     {
         Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
         var model = new ChildSupportViewModel(child, "backLink")

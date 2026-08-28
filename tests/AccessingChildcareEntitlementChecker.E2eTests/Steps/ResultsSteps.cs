@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.E2eTests.Helpers;
+using AccessingChildcareEntitlementChecker.E2eTests.Helpers;
 using Microsoft.Playwright;
 using Reqnroll;
 using static Microsoft.Playwright.Assertions;
@@ -6,7 +6,7 @@ using static Microsoft.Playwright.Assertions;
 namespace AccessingChildcareEntitlementChecker.E2eTests.Steps;
 
 [Binding]
-public class ResultsSteps(IPage page)
+public sealed class ResultsSteps(IPage page)
 {
     [Then(@"I {word} see the public funds warning")]
     public async Task ThenICanOrCannotSeeThePublicFundsWarning(string canOrCannot)
@@ -123,5 +123,5 @@ public class ResultsSteps(IPage page)
         return results;
     }
 
-    private record SchemeEligibilityResult(string Scheme, WhenEligible When, bool? IsBorn = null);
+    private sealed record SchemeEligibilityResult(string Scheme, WhenEligible When, bool? IsBorn = null);
 }

@@ -2,7 +2,7 @@ using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
-internal class Scenario8 : IUseCase
+internal sealed class Scenario8 : IUseCase
 {
     public string Name => "Single parent on sick leave, parent is a citizen of a different country";
 

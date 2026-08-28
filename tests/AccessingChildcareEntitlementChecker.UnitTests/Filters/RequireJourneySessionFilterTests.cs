@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Filters;
+using AccessingChildcareEntitlementChecker.Web.Filters;
 using AccessingChildcareEntitlementChecker.Web.Services;
 
 using Microsoft.AspNetCore.Http;
@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Logging;
 using NSubstitute;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Filters;
@@ -23,8 +22,10 @@ public class RequireJourneySessionFilterTests
     {
         _mockJourneySession = Substitute.For<IJourneySession>();
 
-        var httpContext = new DefaultHttpContext();
-        httpContext.Request.Path = "/foo";
+        var httpContext = new DefaultHttpContext
+        {
+            Request = { Path = "/foo" }
+        };
         var actionContext = new ActionContext(
                httpContext,
                new RouteData(),
@@ -37,7 +38,7 @@ public class RequireJourneySessionFilterTests
     }
 
     [Fact]
-    public async Task OnActionExecuting_JourneySessionIsNull()
+    public async Task OnActionExecutingJourneySessionIsNull()
     {
         _mockJourneySession.HasSession.Returns(false);
         await _sut.OnResourceExecutionAsync(_context, _next);
@@ -47,7 +48,7 @@ public class RequireJourneySessionFilterTests
     }
 
     [Fact]
-    public async Task OnActionExecuting_JourneySessionIsNotNull()
+    public async Task OnActionExecutingJourneySessionIsNotNull()
     {
         _mockJourneySession.HasSession.Returns(true);
         await _sut.OnResourceExecutionAsync(_context, _next);

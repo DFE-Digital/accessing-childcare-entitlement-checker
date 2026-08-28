@@ -44,7 +44,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.AboveThreshold, null, "/earnings/adjusted-net-income-partner")]
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, null, "/Partner/PartnerBenefits")]
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, PartnerBenefitsOption.CarersAllowance, "/Partner/PartnerBenefits")]
-    public async Task Post_Valid_Redirects(string? returnTo, WeeklyEarningsOption partnerWeeklyEarnings, YearlyEarningsOption? partnerYearlyEarnings, PartnerBenefitsOption? partnerBenefits, string continueUrl)
+    public async Task PostValidRedirects(string? returnTo, WeeklyEarningsOption partnerWeeklyEarnings, YearlyEarningsOption? partnerYearlyEarnings, PartnerBenefitsOption? partnerBenefits, string continueUrl)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -77,7 +77,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
     [InlineData(null, WorkStatusOption.SelfEmployed, "/work-status/self-employed-partner")]
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.PaidEmployment, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(
+    public async Task PostInvalidShowsValidationError(
         string? returnTo,
         WorkStatusOption partnerWorkStatus,
         string backLinkUrl)

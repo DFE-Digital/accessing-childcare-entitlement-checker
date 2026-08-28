@@ -1,7 +1,5 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
-@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @model PartnerSettledStatusViewModel
-@inject AccessingChildcareEntitlementChecker.Web.Services.JourneyState JourneyState
 
 @{
     ViewData["Title"] = Html.DisplayNameFor(model => model.PartnerSettledStatus);

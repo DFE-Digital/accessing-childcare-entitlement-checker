@@ -33,12 +33,12 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     [Theory]
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work")]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, null, null, "/work-status/work")]
-    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, null, "/nationality/settled-status")]
+    [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, null, "/nationality/settled-status")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, PaidWorkOption.Yes, "/work-status/work")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work")]
-    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, null, "/nationality/settled-status")]
-    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, PaidWorkOption.Yes, "/nationality/settled-status")]
-    public async Task Post_Valid_Redirects(
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, null, "/nationality/settled-status")]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.Yes, PaidWorkOption.Yes, "/nationality/settled-status")]
+    public async Task PostValidRedirects(
         string? returnTo,
         NationalityOption nationality,
         SettledStatusOption? settledStatus,
@@ -71,7 +71,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     }
 
     [Fact]
-    public async Task Post_EU_Redirects_To_SettledStatus()
+    public async Task PostEuRedirectsToSettledStatus()
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
@@ -86,7 +86,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
         Assert.NotNull(cookie);
 
         var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
-                new KeyValuePair<string,string>("Nationality", "CitizenOfAnEUCountryEEACountryOrSwitzerland")
+                new KeyValuePair<string,string>("Nationality", "CitizenOfAnEuCountryEeaCountryOrSwitzerland")
             ],
             TestContext.Current.CancellationToken);
         postResponse.AssertRedirect("/nationality/settled-status");
@@ -96,7 +96,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(null, "/age/parent-age")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 

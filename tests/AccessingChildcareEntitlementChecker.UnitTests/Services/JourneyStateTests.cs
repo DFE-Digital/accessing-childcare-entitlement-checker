@@ -12,13 +12,13 @@ public class JourneyStateTests
     }
 
     [Fact]
-    public void GetChild_ReturnsNullIfChildDoesNotExist()
+    public void GetChildReturnsNullIfChildDoesNotExist()
     {
-        Assert.False(_journeyState.Children.TryGetValue("non-existent-child-id", out var child));
+        Assert.False(_journeyState.Children.TryGetValue("non-existent-child-id", out _));
     }
 
     [Fact]
-    public void Apply_ChildName_ThrowsIfNoChildName()
+    public void ApplyChildNameThrowsIfNoChildName()
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -27,7 +27,7 @@ public class JourneyStateTests
     }
 
     [Fact]
-    public void Apply_ChildName_SetsChildIdIfNull()
+    public void ApplyChildNameSetsChildIdIfNull()
     {
         var model = new ChildNameViewModel { ChildName = "Child A" };
         _journeyState.Apply(model);
@@ -36,7 +36,7 @@ public class JourneyStateTests
     }
 
     [Fact]
-    public void ApplyChildName_AddsChildIdIfNotExisting()
+    public void ApplyChildNameAddsChildIdIfNotExisting()
     {
         var model = new ChildNameViewModel { ChildName = "Child A" };
         _journeyState.Apply(model);

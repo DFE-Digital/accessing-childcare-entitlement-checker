@@ -1,4 +1,4 @@
-﻿using AccessingChildcareEntitlementChecker.Web.Models.User;
+using AccessingChildcareEntitlementChecker.Web.Models.User;
 using AccessingChildcareEntitlementChecker.Web.TagHelpers;
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ComponentGeneration;
@@ -68,7 +68,7 @@ public class AppCheckboxesTagHelperTests
     }
 
     [Fact]
-    public async Task ProcessAsync_With_Enum_Collection_Generates_Default()
+    public async Task ProcessAsyncWithEnumCollectionGeneratesDefault()
     {
         var modelExpression = new ModelExpression(
             nameof(ChildcareSupportViewModel.ChildcareSupport),
@@ -108,7 +108,7 @@ public class AppCheckboxesTagHelperTests
     }
 
     [Fact]
-    public async Task ProcessAsync_With_Enum_Collection_And_Exclusive_Generates_Exclusive()
+    public async Task ProcessAsyncWithEnumCollectionAndExclusiveGeneratesExclusive()
     {
         var modelExpression = new ModelExpression(
             nameof(ChildcareSupportViewModel.ChildcareSupport),
@@ -136,7 +136,7 @@ public class AppCheckboxesTagHelperTests
     }
 
     [Fact]
-    public async Task ProcessAsync_With_Enum_Collection_And_Hint_Generates_Hint()
+    public async Task ProcessAsyncWithEnumCollectionAndHintGeneratesHint()
     {
         var modelExpression = new ModelExpression(
             nameof(ChildcareSupportViewModel.ChildcareSupport),
@@ -156,7 +156,7 @@ public class AppCheckboxesTagHelperTests
     }
 
     [Fact]
-    public async Task ProcessAsync_With_Enum_Collection_And_No_Hint_Does_Not_Generate_Hint()
+    public async Task ProcessAsyncWithEnumCollectionAndNoHintDoesNotGenerateHint()
     {
         var fakeViewModel = new FakeViewModel
         {
@@ -183,7 +183,7 @@ public class AppCheckboxesTagHelperTests
     }
 
     [Fact]
-    public async Task ProcessAsync_With_Enum_Collection_And_Legend_Generates_Legend()
+    public async Task ProcessAsyncWithEnumCollectionAndLegendGeneratesLegend()
     {
         var modelExpression = new ModelExpression(
             nameof(ChildcareSupportViewModel.ChildcareSupport),
@@ -204,7 +204,7 @@ public class AppCheckboxesTagHelperTests
     }
 
     [Fact]
-    public async Task ProcessAsync_With_Enum_Collection_Adds_Error()
+    public async Task ProcessAsyncWithEnumCollectionAddsError()
     {
         _viewContext.ModelState.AddModelError(
             nameof(ChildcareSupportViewModel.ChildcareSupport),
@@ -228,7 +228,7 @@ public class AppCheckboxesTagHelperTests
     }
 
     [Fact]
-    public async Task ProcessAsync_With_Enum_Collection_Selects_Checkboxes_From_Model()
+    public async Task ProcessAsyncWithEnumCollectionSelectsCheckboxesFromModel()
     {
         _childcareSupportViewModel.ChildcareSupport = [ChildcareSupportOption.ChildcareVouchers];
 
@@ -250,7 +250,7 @@ public class AppCheckboxesTagHelperTests
     }
 
     [Fact]
-    public async Task ProcessAsync_With_Enum_Collection_Selects_Checkboxes_From_ModelState()
+    public async Task ProcessAsyncWithEnumCollectionSelectsCheckboxesFromModelState()
     {
         _viewContext.ModelState.SetModelValue("ChildcareSupport", "0", "0");
         var modelExpression = new ModelExpression(

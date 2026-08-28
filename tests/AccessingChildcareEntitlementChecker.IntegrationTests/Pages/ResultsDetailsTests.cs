@@ -11,26 +11,29 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
     private static JourneyState CreateJourneyState()
     {
-        var state = new JourneyState();
-
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
-        state.Nationality = NationalityOption.BritishOrIrishCitizen;
-        state.PaidWork = PaidWorkOption.Yes;
-        state.YearlyEarnings = YearlyEarningsOption.BelowThreshold;
-        state.HasPartner = false;
-
-        state.Children["child-1"] = new Child("child-1", "Jack")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            CountryOfResidence = CountryOfResidence.England,
+            WeeklyEarnings = WeeklyEarningsOption.AboveThreshold,
+            Nationality = NationalityOption.BritishOrIrishCitizen,
+            PaidWork = PaidWorkOption.Yes,
+            YearlyEarnings = YearlyEarningsOption.BelowThreshold,
+            HasPartner = false,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Jack")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                }
+            }
         };
 
         return state;
     }
 
     [Fact]
-    public async Task Get_ResultsDetails_HasNavBarAndBetaBanner()
+    public async Task GetResultsDetailsHasNavBarAndBetaBanner()
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
@@ -41,13 +44,13 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
         response.EnsureSuccessStatusCode();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        var backLink = doc
+        doc
             .AssertNavigationBar()
             .AssertBetaBanner();
     }
 
     [Fact]
-    public async Task Get_ResultsDetailed_Has_BackLink()
+    public async Task GetResultsDetailedHasBackLink()
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
@@ -64,7 +67,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_ResultsDetailed_Has_PrintButton()
+    public async Task GetResultsDetailedHasPrintButton()
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
@@ -81,7 +84,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_ResultsDetailed_ReturnsView()
+    public async Task GetResultsDetailedReturnsView()
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
@@ -100,7 +103,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
 
     [Fact]
-    public async Task Get_ResultsDetailed_DisplaysTaxFreeChildcareDescription()
+    public async Task GetResultsDetailedDisplaysTaxFreeChildcareDescription()
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
@@ -117,7 +120,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_ResultsDetailed_DisplaysThirtyHoursDescription()
+    public async Task GetResultsDetailedDisplaysThirtyHoursDescription()
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
@@ -134,7 +137,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_ResultsDetailed_DisplaysCanBeUsedWithRow()
+    public async Task GetResultsDetailedDisplaysCanBeUsedWithRow()
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
@@ -150,7 +153,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_ResultsDetailed_DisplaysCompatibleSchemes()
+    public async Task GetResultsDetailedDisplaysCompatibleSchemes()
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
@@ -167,7 +170,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_ResultsDetailed_DoesNotDisplayIncompatibleSchemes()
+    public async Task GetResultsDetailedDoesNotDisplayIncompatibleSchemes()
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
@@ -183,7 +186,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task Get_ResultsDetailed_DisplaysThirtyHourWarning()
+    public async Task GetResultsDetailedDisplaysThirtyHourWarning()
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
@@ -201,10 +204,10 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Theory]
     [InlineData(NationalityOption.BritishOrIrishCitizen, null, false)]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, null, true)]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, false)]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.No, true)]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.StillWaiting, false)]
-    public async Task Get_ResultsDetailed_DisplaysPublicFundsWarning(NationalityOption nationality, SettledStatusOption? settledStatus, bool hasWarning)
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.Yes, false)]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.No, true)]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.StillWaiting, false)]
+    public async Task GetResultsDetailedDisplaysPublicFundsWarning(NationalityOption nationality, SettledStatusOption? settledStatus, bool hasWarning)
     {
         var state = CreateJourneyState();
         state.Nationality = nationality;
@@ -219,14 +222,14 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        const string WarningText = "You need to check if you can access public funds";
+        const string warningText = "You need to check if you can access public funds";
         if (hasWarning)
         {
-            Assert.Contains(WarningText, doc.Body?.TextContent);
+            Assert.Contains(warningText, doc.Body?.TextContent);
         }
         else
         {
-            Assert.DoesNotContain(WarningText, doc.Body?.TextContent);
+            Assert.DoesNotContain(warningText, doc.Body?.TextContent);
         }
     }
 }

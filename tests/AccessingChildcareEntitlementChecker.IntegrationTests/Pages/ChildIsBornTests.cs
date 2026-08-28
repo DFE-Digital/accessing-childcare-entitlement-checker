@@ -51,7 +51,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
     [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
     [InlineData(ReturnTo.CheckChildDetails, true, false, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
-    public async Task Post_Valid_Redirects(
+    public async Task PostValidRedirects(
         string? returnTo,
         bool hasBirthDate,
         bool hasDueDate,
@@ -96,7 +96,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(null, $"/children/add-child-details/{ChildId}")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_With_Invalid_Shows_Validation_Error_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task PostWithInvalidShowsValidationErrorAndBackLink(string? returnTo, string backLinkUrl)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -120,7 +120,6 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [], TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
         postDocument.AssertValidationError()
@@ -128,7 +127,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     }
 
     [Fact]
-    public async Task Returns_Not_Found_For_Nonexistant_Child()
+    public async Task ReturnsNotFoundForNonexistantChild()
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 

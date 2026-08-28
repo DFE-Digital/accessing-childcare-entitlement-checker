@@ -37,7 +37,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     /// From here; you may only go forwards to "is child born".
     /// </remarks>
     [Fact]
-    public async Task Post_Valid_Redirects()
+    public async Task PostValidRedirects()
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
@@ -63,7 +63,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     [InlineData(null, "/where-do-you-live")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_With_Long_Name_Shows_Validation_Error_And_BackLink(string? returnTo, string backLinkUrl)
+    public async Task PostWithLongNameShowsValidationErrorAndBackLink(string? returnTo, string backLinkUrl)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
@@ -77,7 +77,6 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
                 new KeyValuePair<string, string>("ChildName", new string('A', 61))
             ],

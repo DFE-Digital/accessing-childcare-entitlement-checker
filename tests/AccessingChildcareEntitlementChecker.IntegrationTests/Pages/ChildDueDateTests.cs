@@ -43,7 +43,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
     [InlineData(null, $"/children/check-childs-details")]
     [InlineData(ReturnTo.CheckAnswers, $"/children/check-childs-details")]
     [InlineData(ReturnTo.CheckChildDetails, $"/children/check-childs-details")]
-    public async Task Post_Valid_Redirects(string? returnTo, string continueUrl)
+    public async Task PostValidRedirects(string? returnTo, string continueUrl)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -69,9 +69,9 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
 
         var yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
-                new KeyValuePair<string, string>("ChildDueDate.Day", yesterday.Day.ToString()),
-                new KeyValuePair<string, string>("ChildDueDate.Month", yesterday.Month.ToString()),
-                new KeyValuePair<string, string>("ChildDueDate.Year", yesterday.Year.ToString())
+                new KeyValuePair<string, string>("ChildDueDate.Day", yesterday.Day.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("ChildDueDate.Month", yesterday.Month.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("ChildDueDate.Year", yesterday.Year.ToString(System.Globalization.CultureInfo.InvariantCulture))
             ],
             TestContext.Current.CancellationToken);
         postResponse.AssertRedirect(continueUrl);
@@ -81,7 +81,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
     [InlineData(null, $"/children/{ChildId}/has-the-child-been-born")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_With_Yesterdays_Date_Fails_Validation_With_BackLink(string? returnTo, string backLinkUrl)
+    public async Task PostWithYesterdaysDateFailsValidationWithBackLink(string? returnTo, string backLinkUrl)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -107,9 +107,9 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
 
         var yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
-                new KeyValuePair<string, string>("ChildDueDate.Day", yesterday.Day.ToString()),
-                new KeyValuePair<string, string>("ChildDueDate.Month", yesterday.Month.ToString()),
-                new KeyValuePair<string, string>("ChildDueDate.Year", yesterday.Year.ToString())
+                new KeyValuePair<string, string>("ChildDueDate.Day", yesterday.Day.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("ChildDueDate.Month", yesterday.Month.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("ChildDueDate.Year", yesterday.Year.ToString(System.Globalization.CultureInfo.InvariantCulture))
             ],
             TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
@@ -119,7 +119,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
     }
 
     [Fact]
-    public async Task Returns_Not_Found_For_Nonexistant_Child()
+    public async Task ReturnsNotFoundForNonexistantChild()
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 

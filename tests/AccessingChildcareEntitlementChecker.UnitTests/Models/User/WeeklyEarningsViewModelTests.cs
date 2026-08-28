@@ -16,7 +16,6 @@ public class WeeklyEarningsViewModelTests
     {
         _journeyState = new JourneyState();
         _localizerFactory = AcecSubstitute.ForLocalizerFactory();
-        _serviceProviderFunc = serviceType => _localizerFactory;
         _serviceProviderFunc = serviceType =>
         {
             if (serviceType == typeof(JourneyState)) return _journeyState;
@@ -26,7 +25,7 @@ public class WeeklyEarningsViewModelTests
     }
 
     [Fact]
-    public void Validate_ReturnsErrorWhenNoneSelected()
+    public void ValidateReturnsErrorWhenNoneSelected()
     {
         _journeyState.UserAge = AgeRange.UnderEighteen;
         _journeyState.WorkStatus = [WorkStatusOption.Apprentice];
@@ -46,7 +45,7 @@ public class WeeklyEarningsViewModelTests
     }
 
     [Fact]
-    public void Validate_Coverage_ThrowsIfNoJourneyState()
+    public void ValidateCoverageThrowsIfNoJourneyState()
     {
         Func<Type, object> serviceProviderFunc = serviceType =>
         {

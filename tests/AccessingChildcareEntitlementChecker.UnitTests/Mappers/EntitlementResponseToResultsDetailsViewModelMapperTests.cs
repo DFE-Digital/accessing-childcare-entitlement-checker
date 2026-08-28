@@ -63,13 +63,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
         var jackDob = today.AddMonths(-6);
         var emilyDob = today.AddYears(-1);
         var miaDob = today.AddYears(-2);
-        var alfieDob = today.AddYears(-1);
         var oliverDob = today.AddMonths(-1);
         var tomDob = today.AddYears(-3);
         var timDob = today.AddYears(-3);
-
-        var useFromDate = TermDateCalculator.GetNextTermStartDate(
-            today.AddMonths(-6));
 
         return new EntitlementResponse()
         {
@@ -314,7 +310,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ChildName()
+    public void MapChildName()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -324,7 +320,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_SchemeName()
+    public void MapSchemeName()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -340,7 +336,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_SchemeUrl()
+    public void MapSchemeUrl()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -356,7 +352,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ShowsThirtyHourWarning_WhenThirtyHoursAndFifteenHoursUniversalPresent()
+    public void MapShowsThirtyHourWarningWhenThirtyHoursAndFifteenHoursUniversalPresent()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -370,7 +366,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ShowsThirtyHourWarning_WhenThirtyHoursAndDisadvantagedFifteenHoursPresent()
+    public void MapShowsThirtyHourWarningWhenThirtyHoursAndDisadvantagedFifteenHoursPresent()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -384,7 +380,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursUniversal_ReturnsAskYourChildcareProviderOrLocalCouncil()
+    public void MapFifteenHoursUniversalReturnsAskYourChildcareProviderOrLocalCouncil()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -400,7 +396,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursForDisadvantagedChildren_EligibleNow_ReturnsApplyNow()
+    public void MapFifteenHoursForDisadvantagedChildrenEligibleNowReturnsApplyNow()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -417,7 +413,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursForDisadvantagedChildren_EligibleInFuture_ReturnsApplyFromDate()
+    public void MapFifteenHoursForDisadvantagedChildrenEligibleInFutureReturnsApplyFromDate()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -434,7 +430,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ThirtyHoursForWorkingFamilies_EligibleToApplyNow_ReturnsApplyBy()
+    public void MapThirtyHoursForWorkingFamiliesEligibleToApplyNowReturnsApplyBy()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -450,7 +446,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ThirtyHoursForWorkingFamilies_BornAndEligibleToApplyInFuture_ReturnsApplyFromToDate()
+    public void MapThirtyHoursForWorkingFamiliesBornAndEligibleToApplyInFutureReturnsApplyFromToDate()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -466,7 +462,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ThirtyHoursForWorkingFamilies_UnbornAndEligibleInFuture_ReturnsWhenTheyAreTwentyThreeWeeksOld()
+    public void MapThirtyHoursForWorkingFamiliesUnbornAndEligibleInFutureReturnsWhenTheyAreTwentyThreeWeeksOld()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -482,7 +478,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_TaxFreeChildcare_EligibleNow_ReturnsNow()
+    public void MapTaxFreeChildcareEligibleNowReturnsNow()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -499,7 +495,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_TaxFreeChildcare_EligibleInFuture_ReturnsWhenTheyAreBorn()
+    public void MapTaxFreeChildcareEligibleInFutureReturnsWhenTheyAreBorn()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -516,7 +512,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_UniversalCreditChildcare_UnbornEligibleInFuture_ReturnsWhenTheyAreBorn()
+    public void MapUniversalCreditChildcareUnbornEligibleInFutureReturnsWhenTheyAreBorn()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -532,7 +528,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_UniversalCreditChildcare_EligibleNow_ReturnsNow()
+    public void MapUniversalCreditChildcareEligibleNowReturnsNow()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -548,7 +544,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_DoesNotShowThirtyHourWarning_WhenThirtyHoursSchemeMissing()
+    public void MapDoesNotShowThirtyHourWarningWhenThirtyHoursSchemeMissing()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -562,7 +558,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ThirtyHoursForWorkingFamilies_EligibleNow_StartsFromTheStartOfNextTerm()
+    public void MapThirtyHoursForWorkingFamiliesEligibleNowStartsFromTheStartOfNextTerm()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -578,7 +574,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ThirtyHoursForWorkingFamilies_EligibleInFuture_StartsFromDate()
+    public void MapThirtyHoursForWorkingFamiliesEligibleInFutureStartsFromDate()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -594,7 +590,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ThirtyHoursForWorkingFamilies_Unborn_ReturnsWhenChildTurnsNineMonths()
+    public void MapThirtyHoursForWorkingFamiliesUnbornReturnsWhenChildTurnsNineMonths()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -610,7 +606,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_TaxFreeChildcare_EligibleNow_StartsNow()
+    public void MapTaxFreeChildcareEligibleNowStartsNow()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -626,7 +622,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_TaxFreeChildcare_Unborn_StartsWhenReturnToWork()
+    public void MapTaxFreeChildcareUnbornStartsWhenReturnToWork()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -642,7 +638,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_UniversalCreditChildcare_EligibleNow_StartsNow()
+    public void MapUniversalCreditChildcareEligibleNowStartsNow()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -658,7 +654,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_UniversalCreditChildcare_Unborn_StartsWhenReturnToWork()
+    public void MapUniversalCreditChildcareUnbornStartsWhenReturnToWork()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -674,7 +670,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursForDisadvantagedChildren_EligibleNowButBeforeWindowStart_ReturnsFrom()
+    public void MapFifteenHoursForDisadvantagedChildrenEligibleNowButBeforeWindowStartReturnsFrom()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -690,7 +686,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursForDisadvantagedChildren_EligibleInFuture_StartsFromDate()
+    public void MapFifteenHoursForDisadvantagedChildrenEligibleInFutureStartsFromDate()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -706,7 +702,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursUniversal_EligibleNow_StartsNow()
+    public void MapFifteenHoursUniversalEligibleNowStartsNow()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -722,7 +718,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursUniversal_Unborn_StartsTermAfterChildTurnsThree()
+    public void MapFifteenHoursUniversalUnbornStartsTermAfterChildTurnsThree()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -738,7 +734,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_TaxFreeChildcare_ReturnsCorrectEndsText()
+    public void MapTaxFreeChildcareReturnsCorrectEndsText()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -754,7 +750,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_UniversalCreditChildcare_ReturnsCorrectEndsText()
+    public void MapUniversalCreditChildcareReturnsCorrectEndsText()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -770,7 +766,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ThirtyHoursForWorkingFamilies_ReturnsCorrectEndsText()
+    public void MapThirtyHoursForWorkingFamiliesReturnsCorrectEndsText()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -786,7 +782,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursUniversal_ReturnsCorrectEndsText()
+    public void MapFifteenHoursUniversalReturnsCorrectEndsText()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -802,7 +798,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_TaxFreeChildcare_ReturnsCompatibleEligibleSchemes()
+    public void MapTaxFreeChildcareReturnsCompatibleEligibleSchemes()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -820,7 +816,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_UniversalCreditChildcare_WithNoOtherEligibleSchemes_ReturnsEmptyList()
+    public void MapUniversalCreditChildcareWithNoOtherEligibleSchemesReturnsEmptyList()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -836,7 +832,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_ThirtyHoursForWorkingFamilies_ReturnsCompatibleEligibleSchemes()
+    public void MapThirtyHoursForWorkingFamiliesReturnsCompatibleEligibleSchemes()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -854,7 +850,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursForDisadvantagedChildren_ReturnsCompatibleEligibleSchemes()
+    public void MapFifteenHoursForDisadvantagedChildrenReturnsCompatibleEligibleSchemes()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -871,7 +867,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursUniversal_ReturnsCompatibleEligibleSchemes()
+    public void MapFifteenHoursUniversalReturnsCompatibleEligibleSchemes()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -889,7 +885,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_FifteenHoursUniversal_EligibleInFuture_StartsFromDate()
+    public void MapFifteenHoursUniversalEligibleInFutureStartsFromDate()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -905,7 +901,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     }
 
     [Fact]
-    public void Map_OrdersFundedHoursSchemesInExpectedOrder()
+    public void MapOrdersFundedHoursSchemesInExpectedOrder()
     {
         var response = CreateTestEntitlementResponse();
 
@@ -934,7 +930,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
     [InlineData(ParentalLeaveParty.User, "WhenToApply_TaxFreeChildcare_UserParentalLeave", "Starts_TaxFreeChildcare_UserParentalLeave", "Ends_TaxFreeChildcare_UserParentalLeave")]
     [InlineData(ParentalLeaveParty.Partner, "WhenToApply_TaxFreeChildcare_PartnerParentalLeave", "Starts_TaxFreeChildcare_PartnerParentalLeave", "Ends_TaxFreeChildcare_PartnerParentalLeave")]
     [InlineData(ParentalLeaveParty.UserAndPartner, "WhenToApply_TaxFreeChildcare_UserAndPartnerParentalLeave", "Starts_TaxFreeChildcare_UserAndPartnerParentalLeave", "Ends_TaxFreeChildcare_UserAndPartnerParentalLeave")]
-    public void Map_TaxFreeChildcare_ParentalLeave_ReturnsExpectedText(ParentalLeaveParty parentalLeaveParty, string expectedWhenToApply, string expectedStarts, string expectedEnds)
+    public void MapTaxFreeChildcareParentalLeaveReturnsExpectedText(ParentalLeaveParty parentalLeaveParty, string expectedWhenToApply, string expectedStarts, string expectedEnds)
     {
         var child = new ChildResultDto
         {

@@ -1,12 +1,11 @@
 using Microsoft.Playwright;
 using Reqnroll;
 using Reqnroll.BoDi;
-using Xunit;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.Hooks;
 
 [Binding]
-internal class ScenarioSetupHooks(
+internal sealed class ScenarioSetupHooks(
     IObjectContainer objectContainer,
     IReqnrollOutputHelper outputHelper,
     FeatureContext featureContext,

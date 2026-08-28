@@ -36,7 +36,7 @@ public class PartnerYearlyEarningsTests(IntegrationTestFixture factory) : IClass
     [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.AboveThreshold, PartnerBenefitsOption.CarersAllowance)]
     [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, null)]
     [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, PartnerBenefitsOption.CarersAllowance)]
-    public async Task Post_Valid_Redirects(string? returnTo, YearlyEarningsOption partnerYearlyEarnings, PartnerBenefitsOption? partnerBenefits)
+    public async Task PostValidRedirects(string? returnTo, YearlyEarningsOption partnerYearlyEarnings, PartnerBenefitsOption? partnerBenefits)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -65,7 +65,7 @@ public class PartnerYearlyEarningsTests(IntegrationTestFixture factory) : IClass
     [InlineData(null, "/earnings/wage-partner")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_Invalid_Shows_Validation_Error(string? returnTo, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 

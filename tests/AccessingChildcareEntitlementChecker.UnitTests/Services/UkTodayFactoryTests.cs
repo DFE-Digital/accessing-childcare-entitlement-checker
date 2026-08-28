@@ -6,7 +6,7 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Services;
 public class UkTodayFactoryTests
 {
     [Fact]
-    public void Today_ReturnsUkDate_WhenUtcDateIsStillPreviousDay()
+    public void TodayReturnsUkDateWhenUtcDateIsStillPreviousDay()
     {
         var dateTimeFactory = Substitute.For<IDateTimeFactory>();
         dateTimeFactory.UtcNow.Returns(new DateTime(2026, 5, 11, 23, 30, 0, DateTimeKind.Utc));
@@ -16,7 +16,7 @@ public class UkTodayFactoryTests
     }
 
     [Fact]
-    public void Today_ReturnsSameDate_WhenUkAndUtcAreOnSameDay()
+    public void TodayReturnsSameDateWhenUkAndUtcAreOnSameDay()
     {
         var dateTimeFactory = Substitute.For<IDateTimeFactory>();
         dateTimeFactory.UtcNow.Returns(new DateTime(2026, 5, 11, 12, 0, 0, DateTimeKind.Utc));

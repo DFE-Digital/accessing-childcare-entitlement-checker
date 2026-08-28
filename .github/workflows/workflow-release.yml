@@ -83,6 +83,7 @@ jobs:
       contents: read
       checks: write
       pull-requests: read
+      security-events: write
     needs: version
     uses: ./.github/workflows/build-dotnet.yml
     with:
@@ -179,11 +180,11 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: web-app
-          path: ./artifacts/web-app
+          path: ./.artifacts/web-app
 
       - name: Zip web app
         run: |
-          cd ./artifacts/web-app
+          cd ./.artifacts/web-app
           zip -r ../../webapp.zip .
 
       - name: Download shutter content artifact

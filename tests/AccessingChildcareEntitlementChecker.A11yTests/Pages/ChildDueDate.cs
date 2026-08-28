@@ -5,14 +5,14 @@ namespace AccessingChildcareEntitlementChecker.A11yTests.Pages;
 public class ChildDueDatePageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
 {
     [Fact]
-    public async Task WhatIsChildsDueDatePage_HasNoAccessibilityViolations()
+    public async Task WhatIsChildsDueDatePageHasNoAccessibilityViolations()
     {
         await GoToExpectedChildDueDatePage();
         await EvaluatePage();
     }
 
     [Fact]
-    public async Task WhatIsChildsDueDatePage_WithValidationError_HasNoAccessibilityViolations()
+    public async Task WhatIsChildsDueDatePageWithValidationErrorHasNoAccessibilityViolations()
     {
         var childId = await GoToExpectedChildDueDatePage();
         await Continue();

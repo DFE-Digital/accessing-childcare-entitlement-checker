@@ -5,12 +5,11 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using NSubstitute;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.FeatureManagement;
-using System.Threading.Tasks;
 using AccessingChildcareEntitlementChecker.Web;
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Controllers;
 
-public class HomeControllerTests
+public class HomeControllerTests : IDisposable
 {
     private JourneyState _journeyState;
     private IJourneySession _journeySession;
@@ -28,7 +27,7 @@ public class HomeControllerTests
     }
 
     [Fact]
-    public void Start_ReturnsView()
+    public void StartReturnsView()
     {
         var result = _controller.Start();
         Assert.IsType<ViewResult>(result);
@@ -36,7 +35,7 @@ public class HomeControllerTests
 
 
     [Fact]
-    public async Task Location_Get_PopulatesModel_FromState_WhenFeatureFlagDisabled()
+    public async Task LocationGetPopulatesModelFromStateWhenFeatureFlagDisabled()
     {
         _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(false);
         _journeyState.CountryOfResidence = CountryOfResidence.England;
@@ -47,20 +46,20 @@ public class HomeControllerTests
     }
 
     [Fact]
-    public async Task Location_Get_RedirectsAndSetsEngland_WhenFeatureFlagEnabled()
+    public async Task LocationGetRedirectsAndSetsEnglandWhenFeatureFlagEnabled()
     {
         _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(true);
         var result = await _controller.Location();
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
 
         Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(nameof(IntroductionController.ChildName), redirectResult.ActionName);
         Assert.Equal(IntroductionController.Name, redirectResult.ControllerName);
     }
 
     [Fact]
-    public void Location_Post_ValidSelection_SavesState_AndRedirects()
+    public void LocationPostValidSelectionSavesStateAndRedirects()
     {
         var model = new LocationViewModel
         {
@@ -70,14 +69,14 @@ public class HomeControllerTests
         var result = _controller.Location(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(IntroductionController.ChildName), redirect.ActionName);
     }
 
     [Fact]
-    public void Location_Post_ValidSelection_WithExistingChildren_Redirects()
+    public void LocationPostValidSelectionWithExistingChildrenRedirects()
     {
         _journeyState.Children["child1"] = new Child("child1", "Child 1");
         var model = new LocationViewModel
@@ -88,7 +87,7 @@ public class HomeControllerTests
         var result = _controller.Location(model);
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
-        _journeySession.Received(1).Set(_journeyState);
+        _journeySession.Received(1).SetState(_journeyState);
         Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
         Assert.True(_controller.ModelState.IsValid);
 
@@ -97,7 +96,7 @@ public class HomeControllerTests
     }
 
     [Fact]
-    public void Location_Post_InvalidSelection_ReturnsViewWithError()
+    public void LocationPostInvalidSelectionReturnsViewWithError()
     {
         var model = new LocationViewModel
         {
@@ -108,15 +107,17 @@ public class HomeControllerTests
 
         var result = _controller.Location(model);
 
-        var view = Assert.IsType<ViewResult>(result);
+        Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
         Assert.True(_controller.ModelState.ContainsKey(nameof(model.Country)));
     }
 
     [Fact]
-    public void SessionExpired_ReturnsView()
+    public void SessionExpiredReturnsView()
     {
         var result = _controller.SessionExpired();
         Assert.IsType<ViewResult>(result);
     }
+
+    public void Dispose() { _controller?.Dispose(); GC.SuppressFinalize(this); }
 }

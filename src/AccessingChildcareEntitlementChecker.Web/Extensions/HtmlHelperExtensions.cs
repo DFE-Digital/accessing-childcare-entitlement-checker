@@ -32,7 +32,7 @@ public static class HtmlHelperExtensions
     /// Similar to EnumDisplayName.
     /// </remarks>
     [ExcludeFromCodeCoverage(Justification = "May be replaced and covered by UI tests")]
-    public static string? EnumDescription<TEnum>(this IHtmlHelper html, TEnum value)
+    public static string? EnumDescription<TEnum>(this IHtmlHelper _, TEnum value)
         where TEnum : struct, Enum
     {
         var member = typeof(TEnum)

@@ -2,7 +2,7 @@ using AccessingChildcareEntitlementChecker.E2eTests.UseCases.Builders;
 
 namespace AccessingChildcareEntitlementChecker.E2eTests.UseCases.Scenarios;
 
-internal class Scenario3 : IUseCase
+internal sealed class Scenario3 : IUseCase
 {
     public string Name => "One parent is earning under the threshold, household receives Universal Credit";
 
