@@ -89,16 +89,18 @@ public class DevelopmentExtensionsTests
         context.Request.Method = "GET";
 
         var nextCalled = false;
-        RequestDelegate next = (_) =>
-        {
-            nextCalled = true;
-            return Task.CompletedTask;
-        };
 
-        await InvokeMiddlewareAsync(context, next);
+        await InvokeMiddlewareAsync(context, Next);
 
         Assert.True(nextCalled);
         Assert.Equal(StatusCodes.Status200OK, context.Response.StatusCode); // Default status since next ran
+        return;
+
+        Task Next(HttpContext _)
+        {
+            nextCalled = true;
+            return Task.CompletedTask;
+        }
     }
 
     [Theory]
@@ -117,16 +119,18 @@ public class DevelopmentExtensionsTests
         context.Request.Headers.UserAgent = userAgent;
 
         var nextCalled = false;
-        RequestDelegate next = (_) =>
-        {
-            nextCalled = true;
-            return Task.CompletedTask;
-        };
 
-        await InvokeMiddlewareAsync(context, next);
+        await InvokeMiddlewareAsync(context, Next);
 
         Assert.True(nextCalled);
         Assert.Equal(StatusCodes.Status200OK, context.Response.StatusCode);
+        return;
+
+        Task Next(HttpContext _)
+        {
+            nextCalled = true;
+            return Task.CompletedTask;
+        }
     }
 
     [Theory]
@@ -147,17 +151,19 @@ public class DevelopmentExtensionsTests
         context.Request.Method = "GET";
 
         var nextCalled = false;
-        RequestDelegate next = (_) =>
-        {
-            nextCalled = true;
-            return Task.CompletedTask;
-        };
 
-        await InvokeMiddlewareAsync(context, next);
+        await InvokeMiddlewareAsync(context, Next);
 
         Assert.False(nextCalled);
         Assert.Equal(StatusCodes.Status401Unauthorized, context.Response.StatusCode);
         Assert.Equal("Basic realm=\"Development\"", context.Response.Headers.WWWAuthenticate.ToString());
+        return;
+
+        Task Next(HttpContext _)
+        {
+            nextCalled = true;
+            return Task.CompletedTask;
+        }
     }
 
     [Fact]
@@ -176,16 +182,18 @@ public class DevelopmentExtensionsTests
         context.Request.Headers.Authorization = "Basic YWRtaW46cGFzc3dvcmQ=";
 
         var nextCalled = false;
-        RequestDelegate next = (_) =>
-        {
-            nextCalled = true;
-            return Task.CompletedTask;
-        };
 
-        await InvokeMiddlewareAsync(context, next);
+        await InvokeMiddlewareAsync(context, Next);
 
         Assert.True(nextCalled);
         Assert.Equal(StatusCodes.Status200OK, context.Response.StatusCode);
+        return;
+
+        Task Next(HttpContext _)
+        {
+            nextCalled = true;
+            return Task.CompletedTask;
+        }
     }
 
     [Fact]
@@ -205,15 +213,17 @@ public class DevelopmentExtensionsTests
         context.Request.Headers.Authorization = "Basic YWRtaW46d3Jvbmc=";
 
         var nextCalled = false;
-        RequestDelegate next = (_) =>
-        {
-            nextCalled = true;
-            return Task.CompletedTask;
-        };
 
-        await InvokeMiddlewareAsync(context, next);
+        await InvokeMiddlewareAsync(context, Next);
 
         Assert.False(nextCalled);
         Assert.Equal(StatusCodes.Status401Unauthorized, context.Response.StatusCode);
+        return;
+
+        Task Next(HttpContext _)
+        {
+            nextCalled = true;
+            return Task.CompletedTask;
+        }
     }
 }
