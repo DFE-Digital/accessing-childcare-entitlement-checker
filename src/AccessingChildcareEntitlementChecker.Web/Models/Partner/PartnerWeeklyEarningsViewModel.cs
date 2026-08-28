@@ -3,9 +3,11 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models.Partner;
 
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class PartnerWeeklyEarningsViewModel : IValidatableObject
 {
     public PartnerWeeklyEarningsViewModel()

@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models.Summary;
 
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class RemoveChildViewModel
 {
     public string ChildId { get; set; } = default!;

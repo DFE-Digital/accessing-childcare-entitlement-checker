@@ -4,11 +4,11 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses;
 
 public class SchemeResultDto
 {
-    public SchemeCode SchemeCode { get; set; }
-    public bool EligibleNow { get; set; }
-    public bool EligibleInFuture { get; set; }
-    public DateOnly? ApplyFromDate { get; set; }
-    public DateOnly? UseFromDate { get; set; }
-    public ParentalLeaveParty? ApplyAndStartAffectedByParentalLeave { get; set; }
-    public ParentalLeaveParty? EligibilityEndsWithParentalLeaveFor { get; set; }
+    public SchemeCode SchemeCode { get; init; }
+    public bool EligibleNow { get; init; }
+    public bool EligibleInFuture { get; init; }
+    public DateOnly? ApplyFromDate { get; init; }
+    public DateOnly? UseFromDate { get; init; }
+    public ParentalLeaveParty? ApplyAndStartAffectedByParentalLeave { get; init; }
+    public ParentalLeaveParty? EligibilityEndsWithParentalLeaveFor { get; init; }
 }

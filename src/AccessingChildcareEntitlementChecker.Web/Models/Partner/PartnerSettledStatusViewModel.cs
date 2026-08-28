@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models.Partner;
 
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class PartnerSettledStatusViewModel
 {
     public PartnerSettledStatusViewModel()

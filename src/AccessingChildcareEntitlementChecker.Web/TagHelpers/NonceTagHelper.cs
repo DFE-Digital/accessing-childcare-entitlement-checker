@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
@@ -8,6 +9,7 @@ namespace AccessingChildcareEntitlementChecker.Web.TagHelpers;
 public class NonceTagHelper : TagHelper
 {
     [ViewContext]
+    [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
     public ViewContext? ViewContext { get; set; }
 
     public override void Process(TagHelperContext context, TagHelperOutput output)

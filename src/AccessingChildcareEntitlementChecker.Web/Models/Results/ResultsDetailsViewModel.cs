@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using AccessingChildcareEntitlementChecker.RulesEngine.Types;
 
 namespace AccessingChildcareEntitlementChecker.Web.Models.Results;
 
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class ResultsDetailsViewModel
 {
     public string ChildId { get; set; } = string.Empty;
@@ -10,6 +12,7 @@ public class ResultsDetailsViewModel
     public bool HouseholdHasAccessToPublicFunds { get; set; }
 }
 
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class SchemeSectionViewModel
 {
     public SchemeSectionType SectionType { get; set; }
@@ -17,6 +20,7 @@ public class SchemeSectionViewModel
     public List<SchemeDetailsViewModel> Schemes { get; set; } = [];
 }
 
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class SchemeDetailsViewModel
 {
     public SchemeCode SchemeCode { get; set; }

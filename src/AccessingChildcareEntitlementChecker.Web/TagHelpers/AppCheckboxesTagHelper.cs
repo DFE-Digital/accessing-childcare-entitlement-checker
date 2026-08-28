@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 using System.Text.Encodings.Web;
@@ -13,6 +14,7 @@ using System.Text.Encodings.Web;
 namespace AccessingChildcareEntitlementChecker.Web.TagHelpers;
 
 [HtmlTargetElement("app-checkboxes", TagStructure = TagStructure.WithoutEndTag)]
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
     : TagHelper
 {
