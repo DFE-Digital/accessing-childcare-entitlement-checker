@@ -18,7 +18,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -58,7 +58,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
         BirthStatus birthStatus,
         string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -98,7 +98,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostWithInvalidShowsValidationErrorAndBackLink(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -129,7 +129,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     [Fact]
     public async Task ReturnsNotFoundForNonexistantChild()
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
         var url = Url;

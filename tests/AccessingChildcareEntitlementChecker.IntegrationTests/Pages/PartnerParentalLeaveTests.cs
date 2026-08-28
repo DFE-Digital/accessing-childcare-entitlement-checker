@@ -16,7 +16,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -49,7 +49,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
         string? returnTo,
         WorkStatusOption? workStatus)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -84,7 +84,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -108,7 +108,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     public async Task PostInvalidNoneWithSelectionShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {

@@ -15,7 +15,7 @@ public class PartnerChildcareVoucherReceiptTests(IntegrationTestFixture factory)
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -39,7 +39,7 @@ public class PartnerChildcareVoucherReceiptTests(IntegrationTestFixture factory)
     [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, "/check-your-answers")]
     public async Task PostValidRedirects(string? returnTo, ChildcareVoucherReceiptOption partnerChildcareVoucherReceipt, string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerChildcareVoucherReceipt = partnerChildcareVoucherReceipt,
         });
@@ -67,7 +67,7 @@ public class PartnerChildcareVoucherReceiptTests(IntegrationTestFixture factory)
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 

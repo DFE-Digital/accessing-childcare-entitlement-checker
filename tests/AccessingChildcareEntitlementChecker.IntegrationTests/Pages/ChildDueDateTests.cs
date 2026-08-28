@@ -16,7 +16,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -45,7 +45,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
     [InlineData(ReturnTo.CheckChildDetails, $"/children/check-childs-details")]
     public async Task PostValidRedirects(string? returnTo, string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -83,7 +83,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostWithYesterdaysDateFailsValidationWithBackLink(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -121,7 +121,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
     [Fact]
     public async Task ReturnsNotFoundForNonexistantChild()
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
         var url = Url;

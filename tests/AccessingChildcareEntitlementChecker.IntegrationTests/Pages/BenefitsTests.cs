@@ -20,7 +20,7 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
         YearlyEarningsOption? yearlyEarnings,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             YearlyEarnings = yearlyEarnings,
         });
@@ -44,7 +44,7 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
     [InlineData(ReturnTo.CheckAnswers, BenefitsOption.CarersAllowance, ChildcareSupportOption.ChildcareVouchers)]
     public async Task PostValidRedirects(string? returnTo, BenefitsOption benefits, ChildcareSupportOption? childcareSupport)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Benefits = [benefits],
             ChildcareSupport = childcareSupport is null ? new() : [childcareSupport.Value],
@@ -77,7 +77,7 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
         YearlyEarningsOption? yearlyEarnings,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             YearlyEarnings = yearlyEarnings,
         });

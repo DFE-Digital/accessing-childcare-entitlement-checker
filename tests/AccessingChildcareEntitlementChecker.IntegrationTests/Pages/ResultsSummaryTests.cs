@@ -13,7 +13,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     public async Task GetResultsHasBackLink()
     {
         var state = new JourneyState();
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -39,7 +39,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
                 }
             }
         };
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -65,7 +65,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
                 }
             }
         };
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -92,7 +92,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
                 }
             }
         };
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -119,7 +119,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
                 }
             }
         };
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -151,7 +151,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             }
         };
 
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -184,7 +184,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             }
         };
 
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -221,7 +221,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             }
         };
 
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -260,7 +260,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             }
         };
 
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -295,7 +295,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             }
         };
 
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);

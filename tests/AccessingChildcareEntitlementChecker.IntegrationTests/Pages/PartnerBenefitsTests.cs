@@ -27,7 +27,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
         YearlyEarningsOption? partnerYearlyEarnings,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerPaidWork = partnerPaidWork,
             PartnerWorkStatus = partnerWorkStatus.HasValue ? [partnerWorkStatus.Value] : [],
@@ -55,7 +55,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(ReturnTo.CheckAnswers, PartnerBenefitsOption.CarersAllowance, PartnerChildcareSupportOption.ChildcareVouchers)]
     public async Task PostValidRedirects(string? returnTo, PartnerBenefitsOption partnerBenefits, PartnerChildcareSupportOption? partnerChildcareSupport)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerBenefits = [partnerBenefits],
             PartnerChildcareSupport = partnerChildcareSupport is null ? new() : [partnerChildcareSupport.Value],
@@ -95,7 +95,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
         YearlyEarningsOption? partnerYearlyEarnings,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerPaidWork = partnerPaidWork,
             PartnerWorkStatus = partnerWorkStatus.HasValue ? [partnerWorkStatus.Value] : [],

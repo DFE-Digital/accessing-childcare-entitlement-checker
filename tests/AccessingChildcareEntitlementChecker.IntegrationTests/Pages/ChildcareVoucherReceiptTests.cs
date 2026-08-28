@@ -15,7 +15,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -42,7 +42,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
     [InlineData(ReturnTo.CheckAnswers, ChildcareVoucherReceiptOption.ThroughSalarySacrifice, true)]
     public async Task PostValidRedirects(string? returnTo, ChildcareVoucherReceiptOption childcareVoucherReceipt, bool? hasPartner)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             ChildcareVoucherReceipt = childcareVoucherReceipt,
             HasPartner = hasPartner,
@@ -71,7 +71,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 

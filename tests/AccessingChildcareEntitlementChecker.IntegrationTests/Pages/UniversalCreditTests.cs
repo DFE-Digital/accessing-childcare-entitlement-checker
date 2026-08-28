@@ -29,7 +29,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
         YearlyEarningsOption? yearlyEarnings,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PaidWork = paidWork,
             WorkStatus = workStatus.HasValue ? [workStatus.Value] : [],
@@ -59,7 +59,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.DoesNotReceive, BenefitsOption.CarersAllowance)]
     public async Task PostValidRedirects(string? returnTo, UniversalCreditOption universalCredit, BenefitsOption? benefits)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             UniversalCredit = universalCredit,
             Benefits = benefits is null ? new() : [benefits.Value],
@@ -98,7 +98,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
         YearlyEarningsOption? yearlyEarnings,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PaidWork = paidWork,
             WorkStatus = workStatus.HasValue ? [workStatus.Value] : [],

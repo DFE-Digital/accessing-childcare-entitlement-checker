@@ -14,7 +14,7 @@ public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClass
         var sessionRequiredEndpoints = GetSessionRequiredEndpoints("GET");
         foreach (var url in sessionRequiredEndpoints)
         {
-            using var host = factory.CreateClientWithoutJourneySession();
+            await using var host = factory.CreateClientWithoutJourneySession();
 
             var client = host.CreateClient();
             var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -44,7 +44,7 @@ public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClass
             // Resource filter will fire after auth filters, which will check antiforgery.
             // So we need to run a valid GET first to obtain the token, and `WeeklyEarnings` checks
             // prerequisites during construction; which is a pain.
-            using var getHost = factory.CreateClientWithJourneyState(new JourneyState
+            await using var getHost = factory.CreateClientWithJourneyState(new JourneyState
             {
                 Children = children,
                 UserAge = AgeRange.UnderEighteen,
@@ -66,7 +66,7 @@ public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClass
 
             // Now we simulate the user timing out while sat on a page,
             // and then submitting the form.
-            using var postHost = factory.CreateClientWithoutJourneySession();
+            await using var postHost = factory.CreateClientWithoutJourneySession();
 
             using var postClient = postHost.CreateClient();
             var postResponse = await HttpClientHelpers.PostFormAsync(

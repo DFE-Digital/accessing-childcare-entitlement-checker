@@ -16,7 +16,7 @@ public class UserAgeTests(IntegrationTestFixture factory) : IClassFixture<Integr
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -48,7 +48,7 @@ public class UserAgeTests(IntegrationTestFixture factory) : IClassFixture<Integr
         WeeklyEarningsOption? weeklyEarnings,
         AgeRange newUserAge)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             UserAge = oldUserAge,
             Nationality = nationality,
@@ -80,7 +80,7 @@ public class UserAgeTests(IntegrationTestFixture factory) : IClassFixture<Integr
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 

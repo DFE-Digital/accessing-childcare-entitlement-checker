@@ -35,7 +35,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDetailsHasNavBarAndBetaBanner()
     {
-        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
         using var client = host.CreateClient();
 
@@ -52,7 +52,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDetailedHasBackLink()
     {
-        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
         using var client = host.CreateClient();
 
@@ -69,7 +69,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDetailedHasPrintButton()
     {
-        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
         using var client = host.CreateClient();
 
@@ -86,7 +86,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDetailedReturnsView()
     {
-        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
         using var client = host.CreateClient();
 
@@ -105,7 +105,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDetailedDisplaysTaxFreeChildcareDescription()
     {
-        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
         using var client = host.CreateClient();
 
@@ -122,7 +122,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDetailedDisplaysThirtyHoursDescription()
     {
-        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
         using var client = host.CreateClient();
 
@@ -139,7 +139,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDetailedDisplaysCanBeUsedWithRow()
     {
-        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
         using var client = host.CreateClient();
 
@@ -155,7 +155,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDetailedDisplaysCompatibleSchemes()
     {
-        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
         using var client = host.CreateClient();
 
@@ -172,7 +172,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDetailedDoesNotDisplayIncompatibleSchemes()
     {
-        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
         using var client = host.CreateClient();
 
@@ -188,7 +188,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDetailedDisplaysThirtyHourWarning()
     {
-        using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
         using var client = host.CreateClient();
 
@@ -212,7 +212,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
         var state = CreateJourneyState();
         state.Nationality = nationality;
         state.SettledStatus = settledStatus;
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
 

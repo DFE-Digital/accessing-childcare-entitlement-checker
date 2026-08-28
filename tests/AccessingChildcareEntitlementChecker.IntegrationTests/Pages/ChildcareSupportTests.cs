@@ -16,7 +16,7 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -40,7 +40,7 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
     [InlineData(ReturnTo.CheckAnswers, ChildcareSupportOption.ChildcareBursaryOrGrant, null, true, "/partner")]
     public async Task PostValidRedirects(string? returnTo, ChildcareSupportOption childcareSupport, ChildcareVoucherReceiptOption? childcareVoucherReceipt, bool? hasPartner, string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             ChildcareSupport = [childcareSupport],
             ChildcareVoucherReceipt = childcareVoucherReceipt,
@@ -70,7 +70,7 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 

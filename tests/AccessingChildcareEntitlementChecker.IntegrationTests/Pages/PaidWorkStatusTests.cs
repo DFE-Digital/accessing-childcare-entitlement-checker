@@ -19,7 +19,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
     public async Task Get(string? returnTo, NationalityOption? nationality, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Nationality = nationality,
         });
@@ -57,7 +57,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
         UniversalCreditOption? universalCredit,
         string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -98,7 +98,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, NationalityOption? nationality, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Nationality = nationality,
         });

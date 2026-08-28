@@ -13,7 +13,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     [Fact]
     public async Task GetHasPartnerHasRadiosAndBackLinkDefaultsToChildcareSupportBack()
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -31,7 +31,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     {
         var state = new JourneyState();
         state.ChildcareSupport.Add(ChildcareSupportOption.ChildcareVouchers);
-        using var host = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
 
         using var client = host.CreateClient();
 
@@ -51,7 +51,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     [InlineData(ReturnTo.CheckAnswers, false, null, "/check-your-answers")]
     public async Task PostValidRedirects(string? returnTo, bool hasPartner, AgeRange? partnerAge, string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             HasPartner = hasPartner,
             PartnerAge = partnerAge,

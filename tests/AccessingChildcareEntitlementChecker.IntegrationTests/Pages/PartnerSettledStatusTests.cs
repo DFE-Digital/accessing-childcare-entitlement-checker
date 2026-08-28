@@ -16,7 +16,7 @@ public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassF
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -41,7 +41,7 @@ public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassF
     [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, PartnerPaidWorkOption.Yes)]
     public async Task PostValidRedirects(string? returnTo, SettledStatusOption partnerSettledStatus, PartnerPaidWorkOption? partnerPaidWork)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerSettledStatus = partnerSettledStatus,
             PartnerPaidWork = partnerPaidWork,
@@ -70,7 +70,7 @@ public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassF
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 

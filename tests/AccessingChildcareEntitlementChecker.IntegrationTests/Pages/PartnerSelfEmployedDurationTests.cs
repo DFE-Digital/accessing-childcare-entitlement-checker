@@ -16,7 +16,7 @@ public class PartnerSelfEmployedDurationTests(IntegrationTestFixture factory) : 
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -38,7 +38,7 @@ public class PartnerSelfEmployedDurationTests(IntegrationTestFixture factory) : 
     [InlineData(ReturnTo.CheckAnswers, SelfEmployedDurationOption.NotLessThan12Months, null, WeeklyEarningsOption.AboveThreshold, "/earnings/wage-partner")]
     public async Task PostValidRedirects(string? returnTo, SelfEmployedDurationOption partnerSelfEmployedDuration, PartnerBenefitsOption? partnerBenefits, WeeklyEarningsOption? partnerWeeklyEarnings, string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerSelfEmployedDuration = partnerSelfEmployedDuration,
             PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
@@ -68,7 +68,7 @@ public class PartnerSelfEmployedDurationTests(IntegrationTestFixture factory) : 
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 

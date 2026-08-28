@@ -17,7 +17,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -48,7 +48,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, ChildSupport.NoneOfTheseApply)]
     public async Task PostValidRedirects(string? returnTo, ChildSupport? childSupport)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -89,7 +89,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostWithTomorrowsDateFailsValidationAndPreservesChildsNameWithBackLink(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -127,7 +127,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task ReturnsNotFoundForNonexistantChild()
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);

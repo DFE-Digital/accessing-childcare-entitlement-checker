@@ -16,7 +16,7 @@ public class YearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -39,7 +39,7 @@ public class YearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckAnswers, YearlyEarningsOption.BelowThreshold, null, UniversalCreditOption.Receives, "/benefits/universal-credit")]
     public async Task PostValidRedirects(string? returnTo, YearlyEarningsOption yearlyEarnings, BenefitsOption? benefits, UniversalCreditOption? universalCredit, string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             YearlyEarnings = yearlyEarnings,
             Benefits = benefits is null ? new() : [benefits.Value],
@@ -72,7 +72,7 @@ public class YearlyEarningsTests(IntegrationTestFixture factory) : IClassFixture
         string? returnTo,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 

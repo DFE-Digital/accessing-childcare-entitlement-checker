@@ -16,7 +16,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -45,7 +45,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
         PaidWorkOption? paidWork,
         string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Nationality = nationality,
             SettledStatus = settledStatus,
@@ -73,7 +73,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     [Fact]
     public async Task PostEuRedirectsToSettledStatus()
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -98,7 +98,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 

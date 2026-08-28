@@ -16,7 +16,7 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -42,7 +42,7 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, null, PartnerPaidWorkOption.Yes, "/work-status/work-partner")]
     public async Task PostValidRedirects(string? returnTo, NationalityOption partnerNationality, SettledStatusOption? partnerSettledStatus, PartnerPaidWorkOption? partnerPaidWork, string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerNationality = partnerNationality,
             PartnerSettledStatus = partnerSettledStatus,
@@ -72,7 +72,7 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 

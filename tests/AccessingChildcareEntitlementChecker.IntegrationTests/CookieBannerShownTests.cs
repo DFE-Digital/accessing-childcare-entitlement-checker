@@ -27,7 +27,7 @@ public partial class CookieBannerShownTests(IntegrationTestFixture factory) : IC
 
         foreach (var url in sessionRequiredEndpoints)
         {
-            using var getHost = factory.CreateClientWithJourneyState(new JourneyState
+            await using var getHost = factory.CreateClientWithJourneyState(new JourneyState
             {
                 Children = children,
                 UserAge = AgeRange.UnderEighteen,
@@ -63,7 +63,7 @@ public partial class CookieBannerShownTests(IntegrationTestFixture factory) : IC
 
         foreach (var url in sessionRequiredEndpoints)
         {
-            using var getHost = factory.CreateClientWithJourneyState(new JourneyState
+            await using var getHost = factory.CreateClientWithJourneyState(new JourneyState
             {
                 Children = children,
                 UserAge = AgeRange.UnderEighteen,

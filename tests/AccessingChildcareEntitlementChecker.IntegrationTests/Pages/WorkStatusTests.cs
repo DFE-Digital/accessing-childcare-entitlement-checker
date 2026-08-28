@@ -15,7 +15,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -39,7 +39,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, "/earnings/wage")]
     public async Task PostValidRedirects(string? returnTo, WorkStatusOption workStatus, SelfEmployedDurationOption? selfEmployedDuration, WeeklyEarningsOption? weeklyEarnings, string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             WorkStatus = [workStatus],
             SelfEmployedDuration = selfEmployedDuration,
@@ -70,7 +70,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -92,7 +92,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
     [Fact]
     public async Task PostSelectionRedirectsToSelfEmployed()
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 

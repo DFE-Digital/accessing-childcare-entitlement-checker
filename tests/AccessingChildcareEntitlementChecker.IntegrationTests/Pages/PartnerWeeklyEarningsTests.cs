@@ -20,7 +20,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
         WorkStatusOption partnerWorkStatus,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerAge = AgeRange.TwentyOneOrOver,
             PartnerWorkStatus = [partnerWorkStatus],
@@ -46,7 +46,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, PartnerBenefitsOption.CarersAllowance, "/Partner/PartnerBenefits")]
     public async Task PostValidRedirects(string? returnTo, WeeklyEarningsOption partnerWeeklyEarnings, YearlyEarningsOption? partnerYearlyEarnings, PartnerBenefitsOption? partnerBenefits, string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerAge = AgeRange.TwentyOneOrOver,
             PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
@@ -82,7 +82,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
         WorkStatusOption partnerWorkStatus,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PartnerAge = AgeRange.TwentyOneOrOver,
             PartnerWorkStatus = [partnerWorkStatus],

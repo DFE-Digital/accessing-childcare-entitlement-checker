@@ -25,7 +25,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
         NationalityOption? partnerNationality,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Nationality = nationality,
             SettledStatus = settledStatus,
@@ -65,7 +65,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
         PartnerBenefitsOption? partnerBenefits,
         string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -111,7 +111,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
         NationalityOption? partnerNationality,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Nationality = nationality,
             SettledStatus = settledStatus,

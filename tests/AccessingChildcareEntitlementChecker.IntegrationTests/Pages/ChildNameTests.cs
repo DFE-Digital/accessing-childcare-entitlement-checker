@@ -15,7 +15,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -39,7 +39,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     [Fact]
     public async Task PostValidRedirects()
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
 
@@ -65,7 +65,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostWithLongNameShowsValidationErrorAndBackLink(string? returnTo, string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";

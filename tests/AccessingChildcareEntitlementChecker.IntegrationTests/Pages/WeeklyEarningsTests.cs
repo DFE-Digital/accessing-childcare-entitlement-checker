@@ -22,7 +22,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
         SelfEmployedDurationOption? selfEmployedDuration,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             UserAge = AgeRange.UnderEighteen,
             WorkStatus = [workStatus],
@@ -50,7 +50,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckAnswers, WeeklyEarningsOption.BelowThreshold, null, UniversalCreditOption.Receives, "/benefits/universal-credit")]
     public async Task PostValidRedirects(string? returnTo, WeeklyEarningsOption weeklyEarnings, YearlyEarningsOption? yearlyEarnings, UniversalCreditOption? universalCredit, string continueUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             UserAge = AgeRange.UnderEighteen,
             WorkStatus = [WorkStatusOption.PaidEmployment],
@@ -89,7 +89,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
         SelfEmployedDurationOption? selfEmployedDuration,
         string backLinkUrl)
     {
-        using var host = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             UserAge = AgeRange.UnderEighteen,
             WorkStatus = [workStatus],
