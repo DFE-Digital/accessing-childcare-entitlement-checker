@@ -134,7 +134,7 @@ public abstract class JourneyPageBase : PageBase
         await ExpectPathAndQuery("/work-status/work-partner");
     }
 
-    protected async Task AnswerUserNationalityCitizenOfEU(string nationalityOption = "Citizen of an EU country, EEA country or Switzerland")
+    protected async Task AnswerUserNationalityCitizenOfEu(string nationalityOption = "Citizen of an EU country, EEA country or Switzerland")
     {
         await ExpectPathAndQuery("/nationality");
         await Page.GetByLabel(nationalityOption).CheckAsync();
@@ -346,7 +346,7 @@ public abstract class JourneyPageBase : PageBase
     protected async Task<Guid> GoToUserSettledStatusPage()
     {
         var childId = await GoToUserNationalityPage();
-        await AnswerUserNationalityCitizenOfEU();
+        await AnswerUserNationalityCitizenOfEu();
         await ExpectPathAndQuery("/nationality/settled-status");
         return childId;
     }

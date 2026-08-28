@@ -13,9 +13,9 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
 
     [Theory]
     [InlineData(null, null, null, null, "/nationality/nationality-partner")]
-    [InlineData(null, null, null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "/nationality/settled-status-partner")]
+    [InlineData(null, null, null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, "/nationality/settled-status-partner")]
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, null, null, "/age/partner-age")]
-    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, null, "/age/partner-age")]
+    [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.Yes, null, "/age/partner-age")]
     [InlineData(ReturnTo.CheckAnswers, null, null, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, null, null, null, "/children/check-childs-details")]
     public async Task Get(
@@ -95,9 +95,9 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
 
     [Theory]
     [InlineData(null, null, null, null, "/nationality/nationality-partner")]
-    [InlineData(null, null, null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "/nationality/settled-status-partner")]
+    [InlineData(null, null, null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, "/nationality/settled-status-partner")]
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, null, null, "/age/partner-age")]
-    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, null, "/age/partner-age")]
+    [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.Yes, null, "/age/partner-age")]
     [InlineData(ReturnTo.CheckAnswers, null, null, null, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, null, null, null, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(

@@ -61,7 +61,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         journeySession.SetState(journeyState);
         var nextAction = journeyState.PartnerNationality switch
         {
-            NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland => nameof(PartnerSettledStatus),
+            NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland => nameof(PartnerSettledStatus),
             NationalityOption.BritishOrIrishCitizen => nameof(PartnerPaidWork),
             NationalityOption.CitizenOfADifferentCountry => nameof(PartnerPaidWork),
             _ => throw new UnreachableException($"Unexpected PartnerNationality: {journeyState.PartnerNationality}"),
@@ -341,12 +341,12 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
             return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
-        if (journeyState is { Nationality: NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatus: SettledStatusOption.Yes })
+        if (journeyState is { Nationality: NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatus: SettledStatusOption.Yes })
         {
             return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
-        if (journeyState.PartnerNationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland)
+        if (journeyState.PartnerNationality == NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland)
         {
             return Url.ActionOrThrow(nameof(PartnerSettledStatus));
         }

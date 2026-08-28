@@ -14,7 +14,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [Theory]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, "/nationality")]
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, "/nationality")]
-    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "/nationality/settled-status")]
+    [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, "/nationality/settled-status")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
     public async Task Get(string? returnTo, NationalityOption? nationality, string backLinkUrl)
@@ -89,7 +89,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [Theory]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, "/nationality")]
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, "/nationality")]
-    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, "/nationality/settled-status")]
+    [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, "/nationality/settled-status")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, NationalityOption? nationality, string backLinkUrl)

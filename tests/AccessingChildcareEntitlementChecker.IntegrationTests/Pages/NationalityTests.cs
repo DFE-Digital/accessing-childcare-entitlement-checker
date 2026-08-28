@@ -31,11 +31,11 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     [Theory]
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work")]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, null, null, "/work-status/work")]
-    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, null, "/nationality/settled-status")]
+    [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, null, "/nationality/settled-status")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, PaidWorkOption.Yes, "/work-status/work")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work")]
-    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, null, "/nationality/settled-status")]
-    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, PaidWorkOption.Yes, "/nationality/settled-status")]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, null, "/nationality/settled-status")]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.Yes, PaidWorkOption.Yes, "/nationality/settled-status")]
     public async Task PostValidRedirects(
         string? returnTo,
         NationalityOption nationality,
@@ -67,7 +67,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     }
 
     [Fact]
-    public async Task PostEURedirectsToSettledStatus()
+    public async Task PostEuRedirectsToSettledStatus()
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
 
@@ -80,7 +80,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
         Assert.NotNull(cookie);
 
         var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
-                new KeyValuePair<string,string>("Nationality", "CitizenOfAnEUCountryEEACountryOrSwitzerland")
+                new KeyValuePair<string,string>("Nationality", "CitizenOfAnEuCountryEeaCountryOrSwitzerland")
             ],
             TestContext.Current.CancellationToken);
         postResponse.AssertRedirect("/nationality/settled-status");

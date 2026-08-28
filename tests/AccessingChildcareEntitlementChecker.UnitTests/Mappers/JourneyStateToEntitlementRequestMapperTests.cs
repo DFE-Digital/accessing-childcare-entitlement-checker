@@ -134,7 +134,7 @@ public class JourneyStateToEntitlementRequestMapperTests
             UserAge = AgeRange.UnderEighteen,
             PaidWork = PaidWorkOption.No,
             SettledStatus = SettledStatusOption.StillWaiting,
-            Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland,
+            Nationality = NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland,
 
             WorkStatus =
             [

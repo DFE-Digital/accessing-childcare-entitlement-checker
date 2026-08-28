@@ -7,11 +7,11 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Services;
 
 public class EntitlementRulesEngine
 {
-    private readonly IEnumerable<ISchemeEvaluator> schemeEvaluators;
+    private readonly IEnumerable<ISchemeEvaluator> _schemeEvaluators;
 
     public EntitlementRulesEngine(IEnumerable<ISchemeEvaluator> schemeEvaluators)
     {
-        this.schemeEvaluators = schemeEvaluators;
+        _schemeEvaluators = schemeEvaluators;
     }
 
     public EntitlementResponse Evaluate(
@@ -26,7 +26,7 @@ public class EntitlementRulesEngine
         {
             var schemes = new List<SchemeResultDto>();
 
-            foreach (var evaluator in schemeEvaluators)
+            foreach (var evaluator in _schemeEvaluators)
             {
                 var result = evaluator.Evaluate(context, child);
 

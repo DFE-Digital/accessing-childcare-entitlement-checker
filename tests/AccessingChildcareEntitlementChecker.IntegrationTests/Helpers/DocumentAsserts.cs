@@ -101,8 +101,8 @@ public static class DocumentAsserts
         Assert.NotNull(surveyLink);
 
         var href = surveyLink.GetAttribute("href");
-        const string ExpectedHref = "https://dferesearch.fra1.qualtrics.com/jfe/form/SV_8eotBOVwAQbdP8y";
-        Assert.Equal(ExpectedHref, href);
+        const string expectedHref = "https://dferesearch.fra1.qualtrics.com/jfe/form/SV_8eotBOVwAQbdP8y";
+        Assert.Equal(expectedHref, href);
 
         Assert.Equal("_blank", surveyLink.GetAttribute("target"));
         Assert.Equal("noopener noreferrer", surveyLink.GetAttribute("rel"));

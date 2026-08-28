@@ -96,7 +96,7 @@ public class UserControllerTests : IDisposable
 
     [Theory]
     [InlineData(NationalityOption.BritishOrIrishCitizen, null, nameof(UserController.PaidWork))]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, nameof(UserController.SettledStatus))]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, nameof(UserController.SettledStatus))]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, null, nameof(UserController.PaidWork))]
     public void NationalityPostSavesStateAndRedirects(NationalityOption nationality, string? returnTo, string actionName)
     {

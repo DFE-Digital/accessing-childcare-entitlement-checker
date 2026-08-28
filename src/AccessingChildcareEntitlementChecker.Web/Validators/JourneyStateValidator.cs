@@ -56,7 +56,7 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                 .NotNull();
 
             When(x =>
-                    x.Nationality == NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland,
+                    x.Nationality == NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland,
                 () =>
                 {
                     RuleFor(x => x.SettledStatus)

@@ -29,11 +29,11 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
     }
 
     [Theory]
-    [InlineData(null, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, null, "/nationality/settled-status-partner")]
+    [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, null, "/nationality/settled-status-partner")]
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work-partner")]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, null, null, "/work-status/work-partner")]
-    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, null, "/nationality/settled-status-partner")]
-    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, null, "/nationality/settled-status-partner")]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, null, "/nationality/settled-status-partner")]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.Yes, null, "/nationality/settled-status-partner")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work-partner")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, PartnerPaidWorkOption.Yes, "/work-status/work-partner")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, null, null, "/work-status/work-partner")]
