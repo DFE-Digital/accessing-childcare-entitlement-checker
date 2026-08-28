@@ -178,7 +178,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
     {
         if (expectedHeader == "Where do you live?" && settings.HmrcIntegrationEnabled)
         {
-            var uri = new System.Uri(page.Url);
+            var uri = new Uri(page.Url);
             expectedHeader = uri.AbsolutePath == "/" || string.IsNullOrEmpty(uri.AbsolutePath.Trim('/'))
                 ? "Before you continue"
                 : "Add details about your children";

@@ -612,5 +612,5 @@ public class PartnerControllerTests : IDisposable
         Assert.NotNull(result.Model<PartnerChildcareVoucherReceiptViewModel>());
     }
 
-    public void Dispose() { _controller?.Dispose(); GC.SuppressFinalize(this); }
+    public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
 }

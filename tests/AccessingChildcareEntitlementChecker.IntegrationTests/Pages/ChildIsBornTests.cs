@@ -66,8 +66,8 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
                         ChildId,
                         new Child(ChildId, "Sara")
                         {
-                            BirthDate = hasBirthDate ? Yesterday : (DateOnly?)null,
-                            DueDate = hasDueDate ? Tomorrow : (DateOnly?)null,
+                            BirthDate = hasBirthDate ? Yesterday : null,
+                            DueDate = hasDueDate ? Tomorrow : null,
                             BirthStatus = birthStatus,
                         }
                     }

@@ -83,8 +83,8 @@ public class SummaryRowFactoryTests
     }
 
     [Theory]
-    [InlineData(new TestSelection[] { TestSelection.One }, "Value One")]
-    [InlineData(new TestSelection[] { TestSelection.One, TestSelection.Two }, "Value One, Value Two")]
+    [InlineData(new[] { TestSelection.One }, "Value One")]
+    [InlineData(new[] { TestSelection.One, TestSelection.Two }, "Value One, Value Two")]
     public void ItExtractsTheDisplayNamesForListOfEnums(IEnumerable<TestSelection> enumList, string expectedValue)
     {
         _summaryRowFactory.Add<TestViewModel, List<TestSelection>, TestSelection>(

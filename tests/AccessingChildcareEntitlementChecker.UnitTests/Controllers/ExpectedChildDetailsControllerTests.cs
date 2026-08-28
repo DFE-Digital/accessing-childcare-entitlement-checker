@@ -122,5 +122,5 @@ public class ExpectedChildDetailsControllerTests : IDisposable
         Assert.IsType<NotFoundResult>(result);
     }
 
-    public void Dispose() { _controller?.Dispose(); GC.SuppressFinalize(this); }
+    public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
 }

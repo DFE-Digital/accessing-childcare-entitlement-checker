@@ -743,5 +743,5 @@ public class UserControllerTests : IDisposable
         Assert.NotNull(result.Model<ChildcareVoucherReceiptViewModel>());
     }
 
-    public void Dispose() { _controller?.Dispose(); GC.SuppressFinalize(this); }
+    public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
 }

@@ -1,10 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.Extensions.Localization;
 using NSubstitute;
-using System.ComponentModel.DataAnnotations;
 
-namespace AccessingChildcareEntitlementChecker.UnitTests.Models.BornChildDetails;
+namespace AccessingChildcareEntitlementChecker.UnitTests.Models.ExpectedChildDetails;
 
 public class ChildDueDateViewModelTests
 {
