@@ -101,7 +101,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task GetResultsDisplaysFifteenHoursUniversalAndFCFWP()
+    public async Task GetResultsDisplaysFifteenHoursUniversalAndFcfwp()
     {
         var state = new JourneyState();
         state.CountryOfResidence = CountryOfResidence.England;
@@ -156,9 +156,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [Theory]
     [InlineData(NationalityOption.BritishOrIrishCitizen, null, false)]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, null, true)]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, false)]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.No, true)]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.StillWaiting, false)]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.Yes, false)]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.No, true)]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.StillWaiting, false)]
     public async Task GetResultsDisplaysPublicFundsWarning(NationalityOption nationality, SettledStatusOption? settledStatus, bool hasWarning)
     {
         var state = new JourneyState();
@@ -178,14 +178,14 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        const string WarningText = "You need to check if you can access public funds";
+        const string warningText = "You need to check if you can access public funds";
         if (hasWarning)
         {
-            Assert.Contains(WarningText, doc.Body?.TextContent);
+            Assert.Contains(warningText, doc.Body?.TextContent);
         }
         else
         {
-            Assert.DoesNotContain(WarningText, doc.Body?.TextContent);
+            Assert.DoesNotContain(warningText, doc.Body?.TextContent);
         }
     }
 

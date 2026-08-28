@@ -291,7 +291,7 @@ public class JourneyStateToEntitlementRequestMapper
             NationalityOption.CitizenOfADifferentCountry =>
                 Nationality.Other,
 
-            NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland =>
+            NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland =>
                 Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
 
             null => null,

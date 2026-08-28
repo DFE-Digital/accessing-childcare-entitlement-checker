@@ -3,7 +3,7 @@ namespace AccessingChildcareEntitlementChecker.Web.Services;
 public class UkTodayFactory : ITodayFactory
 {
     private readonly IDateTimeFactory _dateTimeFactory;
-    private readonly TimeZoneInfo UkTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/London");
+    private readonly TimeZoneInfo _ukTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/London");
 
     public UkTodayFactory(IDateTimeFactory dateTimeFactory)
     {
@@ -15,7 +15,7 @@ public class UkTodayFactory : ITodayFactory
         get
         {
             var now = _dateTimeFactory.UtcNow;
-            var ukNow = TimeZoneInfo.ConvertTime(now, UkTimeZone);
+            var ukNow = TimeZoneInfo.ConvertTime(now, _ukTimeZone);
             return DateOnly.FromDateTime(ukNow);
         }
     }

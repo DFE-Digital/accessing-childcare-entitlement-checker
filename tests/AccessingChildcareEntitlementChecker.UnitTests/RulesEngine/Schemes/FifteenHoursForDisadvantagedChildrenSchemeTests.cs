@@ -187,7 +187,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
     }
 
     [Fact]
-    public void EvaluateWhenChildRecievesEHCPAutomaticallyEligibleReturnsSchemeResult()
+    public void EvaluateWhenChildRecievesEhcpAutomaticallyEligibleReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext
@@ -230,7 +230,7 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
     }
 
     [Fact]
-    public void EvaluateWhenChildRecievesDLAAutomaticallyEligibleReturnsSchemeResult()
+    public void EvaluateWhenChildRecievesDlaAutomaticallyEligibleReturnsSchemeResult()
     {
         var evaluator = CreateEvaluator();
         var context = new DerivedContext

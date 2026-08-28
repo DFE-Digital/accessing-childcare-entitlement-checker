@@ -14,12 +14,12 @@ public class IntroductionControllerTests : IDisposable
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly IntroductionController _controller;
-    private const string childId = "child-a";
+    private const string ChildId = "child-a";
 
     public IntroductionControllerTests()
     {
         _journeyState = new JourneyState();
-        _journeyState.Children[childId] = new Child(childId, "Child A");
+        _journeyState.Children[ChildId] = new Child(ChildId, "Child A");
         _journeySession = Substitute.For<IJourneySession>();
         var featureManager = Substitute.For<IFeatureManager>();
         _controller = new IntroductionController(_journeyState, _journeySession, featureManager);
@@ -44,9 +44,9 @@ public class IntroductionControllerTests : IDisposable
     [Fact]
     public async Task ChildNameGetPopulatesModelFromState()
     {
-        Assert.True(_journeyState.Children.TryGetValue(childId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
         child.Name = "Example";
-        var result = Assert.IsType<ViewResult>(await _controller.ChildName(childId));
+        var result = Assert.IsType<ViewResult>(await _controller.ChildName(ChildId));
 
         Assert.Equal("Example", result.Model<ChildNameViewModel>().ChildName);
     }
@@ -56,7 +56,7 @@ public class IntroductionControllerTests : IDisposable
     {
         var model = new ChildNameViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildName = "Example"
         };
 
@@ -93,7 +93,7 @@ public class IntroductionControllerTests : IDisposable
     [Fact]
     public void IsChildBornReturnsView()
     {
-        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(childId));
+        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(ChildId));
 
         Assert.Null(result.Model<ChildIsBornViewModel>().ChildIsBorn);
     }
@@ -107,9 +107,9 @@ public class IntroductionControllerTests : IDisposable
     [Fact]
     public void IsChildBornGetPopulatesModelFromState()
     {
-        Assert.True(_journeyState.Children.TryGetValue(childId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
         child.BirthStatus = BirthStatus.Born;
-        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(childId));
+        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(ChildId));
 
         Assert.Equal(BirthStatus.Born, result.Model<ChildIsBornViewModel>().ChildIsBorn);
     }
@@ -119,7 +119,7 @@ public class IntroductionControllerTests : IDisposable
     {
         var model = new ChildIsBornViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildIsBorn = BirthStatus.Born
         };
 
@@ -140,7 +140,7 @@ public class IntroductionControllerTests : IDisposable
     {
         var model = new ChildIsBornViewModel
         {
-            ChildId = childId,
+            ChildId = ChildId,
             ChildIsBorn = BirthStatus.Due
         };
 

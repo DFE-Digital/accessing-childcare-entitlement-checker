@@ -84,14 +84,14 @@ public class PartnerControllerTests : IDisposable
 
     [Theory]
     [InlineData(NationalityOption.BritishOrIrishCitizen, null, nameof(PartnerController.PartnerPaidWork))]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, null, nameof(PartnerController.PartnerSettledStatus))]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, nameof(PartnerController.PartnerSettledStatus))]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, null, nameof(PartnerController.PartnerPaidWork))]
     [InlineData(NationalityOption.BritishOrIrishCitizen, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerSettledStatus))]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerSettledStatus))]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
     public void PartnerNationalityPostSavesStateAndRedirects(NationalityOption option, string? returnTo, string actionName)
     {
-        _journeyState.PartnerNationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland;
+        _journeyState.PartnerNationality = NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland;
         _journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
         _journeyState.PartnerSettledStatus = SettledStatusOption.Yes;
         var model = new PartnerNationalityViewModel

@@ -10,11 +10,11 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Validators;
 
 public class JourneyStateValidatorCheckAnswersTests
 {
-    private readonly JourneyStateValidator validator = new();
+    private readonly JourneyStateValidator _validator = new();
 
     private FluentValidation.Results.ValidationResult Validate(JourneyState journeyState)
     {
-        return validator.Validate(
+        return _validator.Validate(
             journeyState,
             options => options.IncludeRuleSets(
                 JourneyStateValidator.CheckAnswersRuleSet));
@@ -203,7 +203,7 @@ public class JourneyStateValidatorCheckAnswersTests
     public void CheckAnswersWhenNationalityRequiresSettledStatusAndSettledStatusIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
-        journeyState.Nationality = NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland;
+        journeyState.Nationality = NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland;
 
         var result = Validate(journeyState);
 

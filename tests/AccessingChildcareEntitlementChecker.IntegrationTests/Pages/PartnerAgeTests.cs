@@ -30,9 +30,9 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
     [Theory]
     [InlineData(NationalityOption.BritishOrIrishCitizen, null, "/work-status/work-partner")]
     [InlineData(NationalityOption.CitizenOfADifferentCountry, null, "/nationality-partner")]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, "/work-status/work-partner")]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.StillWaiting, "/nationality-partner")]
-    [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.No, "/nationality-partner")]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.Yes, "/work-status/work-partner")]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.StillWaiting, "/nationality-partner")]
+    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.No, "/nationality-partner")]
     public async Task PostValidRedirects(
         NationalityOption userNationality,
         SettledStatusOption? userSettledStatusOption,

@@ -8,11 +8,11 @@ namespace AccessingChildcareEntitlementChecker.UnitTests.Validators;
 
 public class JourneyStateValidatorCheckChildDetailsTests
 {
-    private readonly JourneyStateValidator validator = new();
+    private readonly JourneyStateValidator _validator = new();
 
     private FluentValidation.Results.ValidationResult Validate(JourneyState journeyState)
     {
-        return validator.Validate(
+        return _validator.Validate(
             journeyState,
             options => options.IncludeRuleSets(
                 JourneyStateValidator.CheckChildDetailsRuleSet));
