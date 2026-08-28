@@ -32,7 +32,7 @@ public class RequireJourneySessionFilterTests
                new ActionDescriptor());
 
         _context = new ResourceExecutingContext(actionContext, [], []);
-        _next = new ResourceExecutionDelegate(() => Task.FromResult(new ResourceExecutedContext(actionContext, [])));
+        _next = () => Task.FromResult(new ResourceExecutedContext(actionContext, []));
 
         _sut = new RequireJourneySessionFilter(_mockLogger, _mockJourneySession);
     }

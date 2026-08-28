@@ -6,7 +6,7 @@ using AccessingChildcareEntitlementChecker.Web.Services;
 
 namespace AccessingChildcareEntitlementChecker.IntegrationTests;
 
-public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
+public class SessionExpiryTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     [Fact]
     public async Task GetWithoutSessionRedirectsToExpiry()

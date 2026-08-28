@@ -1,8 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using AccessingChildcareEntitlementChecker.Web.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.ComponentModel.DataAnnotations;
 
-namespace AccessingChildcareEntitlementChecker.Web.Models;
+namespace AccessingChildcareEntitlementChecker.Web.Models.Partner;
 
 public class PartnerSettledStatusViewModel
 {

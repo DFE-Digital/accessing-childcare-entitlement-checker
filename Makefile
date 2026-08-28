@@ -69,7 +69,7 @@ analyse-i-find:
 	jq -r --arg rule "$(rule)" 'if $$rule == "" then error("Please specify rule=VALUE, e.g. make analyse-i-find rule=InconsistentNaming") else . end | [.runs[0].results[]? | select(.ruleId == $$rule)] | .[] | "[\(.level)] \(.ruleId): \(.message.text) - \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine)"' $(ANALYSIS_RESULTS)/inspectcode.sarif
 
 # Run all static analysis.
-analyse: analyse-d analyse-f analyse-i
+analyse: analyse-d analyse-f analyse-i analyse-i-summary
 
 # ---------------------------------------------------------------------------
 # Verification

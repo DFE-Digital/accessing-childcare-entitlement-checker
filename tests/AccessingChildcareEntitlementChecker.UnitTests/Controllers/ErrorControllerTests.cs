@@ -50,5 +50,5 @@ public class ErrorControllerTests : IDisposable
         Assert.Equal(500, _errorController.Response.StatusCode);
     }
 
-    public void Dispose() { _errorController?.Dispose(); GC.SuppressFinalize(this); }
+    public void Dispose() { _errorController.Dispose(); GC.SuppressFinalize(this); }
 }

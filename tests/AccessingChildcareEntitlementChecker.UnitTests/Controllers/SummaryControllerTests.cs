@@ -394,5 +394,5 @@ public class SummaryControllerTests : IDisposable
         Assert.Equal(400, controller.Response.StatusCode);
     }
 
-    public void Dispose() { _controller?.Dispose(); GC.SuppressFinalize(this); }
+    public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
 }

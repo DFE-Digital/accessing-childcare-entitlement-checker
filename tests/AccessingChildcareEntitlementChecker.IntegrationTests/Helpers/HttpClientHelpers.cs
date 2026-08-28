@@ -1,12 +1,12 @@
 ﻿namespace AccessingChildcareEntitlementChecker.IntegrationTests.Helpers;
 
-public class HttpClientHelpers
+public static class HttpClientHelpers
 {
     public static async Task<HttpResponseMessage> PostFormAsync(
         HttpClient client,
         string url,
-        string cookie,
-        string token,
+        string? cookie,
+        string? token,
         IEnumerable<KeyValuePair<string, string>> formFields,
         CancellationToken cancellationToken)
     {

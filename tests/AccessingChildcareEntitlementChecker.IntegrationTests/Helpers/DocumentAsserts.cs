@@ -128,7 +128,7 @@ public static class DocumentAsserts
     {
         var hint = document.QuerySelector(".govuk-fieldset > .govuk-hint");
         Assert.NotNull(hint);
-        Assert.Equal(expectedHint, hint.TextContent?.Trim());
+        Assert.Equal(expectedHint, hint.TextContent.Trim());
         return document;
     }
 

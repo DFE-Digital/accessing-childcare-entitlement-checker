@@ -1,4 +1,6 @@
-﻿@using AccessingChildcareEntitlementChecker.Web.Controllers
+﻿<!-- ReSharper disable Razor.LayoutNotResolved -->
+<!-- ReSharper disable Razor.SectionNotResolved -->
+@using AccessingChildcareEntitlementChecker.Web.Controllers
 @using AccessingChildcareEntitlementChecker.Web.Services
 @using GovUk.Frontend.AspNetCore.Views
 @using Microsoft.Extensions.Options
@@ -15,9 +17,7 @@
     var cspNonce = ViewData[GovUkPageTemplateConstants.ViewDataKeys.CspNonce] as string ?? OptionsAccessor.Value.GetCspNonceForRequest?.Invoke(ViewContext.HttpContext);
     var shouldLoadGoogleTagManager = CookiePolicyService.HasConsented && !string.IsNullOrWhiteSpace(googleTagManagerContainerId);
 }
-
-
-
+ 
 @section Head {
     @if (shouldLoadGoogleTagManager)
     {

@@ -90,19 +90,21 @@ public class AppCheckboxesTagHelperTests
         Assert.Equal(3, _generatedOptions.Items.Count);
 
         var first = _generatedOptions.Items.First();
-        Assert.NotNull(first?.Value);
-        Assert.NotNull(first?.Text);
+        Assert.NotNull(first);
+        Assert.NotNull(first.Value);
+        Assert.NotNull(first.Text);
         Assert.Equal("0", first.Value.ToHtmlString());
         Assert.Equal("Childcare vouchers", first.Text.ToHtmlString());
-        Assert.NotNull(first?.Hint?.Text);
+        Assert.NotNull(first.Hint?.Text);
         Assert.Equal(
             "A scheme that lets you pay for childcare from your salary before tax, which closed to new applicants in October 2018",
             first.Hint.Text.ToHtmlString());
 
 
         var last = _generatedOptions.Items.Last();
-        Assert.NotNull(last?.Value);
-        Assert.NotNull(last?.Text);
+        Assert.NotNull(last);
+        Assert.NotNull(last.Value);
+        Assert.NotNull(last.Text);
         Assert.Equal("2", last.Value.ToHtmlString());
         Assert.Equal("No, I do not get any of these", last.Text.ToHtmlString());
     }
@@ -270,14 +272,14 @@ public class AppCheckboxesTagHelperTests
         Assert.True(first?.Checked);
     }
 
-    public class TestGovUkComponent : GovUkComponent
+    private sealed class TestGovUkComponent : GovUkComponent
     {
         public override IHtmlContent GetContent() => HtmlString.Empty;
 
         public override void ApplyToTagHelper(TagHelperOutput output) => output.SuppressOutput();
     }
 
-    public class FakeViewModel
+    private sealed class FakeViewModel
     {
         public List<ChildcareSupportOption> ChildcareSupport { get; set; } = [];
     }
