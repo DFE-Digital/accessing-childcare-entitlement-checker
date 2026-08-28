@@ -14,8 +14,10 @@ public class ChildDueDateViewModelTests
 
     public ChildDueDateViewModelTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children["child-a"] = new Child("child-a", "Jack");
+        _journeyState = new JourneyState
+        {
+            Children = { ["child-a"] = new Child("child-a", "Jack") }
+        };
         _dateTimeFactory = Substitute.For<ITodayFactory>();
         var localizerFactory = AcecSubstitute.ForLocalizerFactory();
 

@@ -14,8 +14,10 @@ public class ChildBirthDateViewModelTests
 
     public ChildBirthDateViewModelTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children["child-a"] = new Child("child-a", "Child A");
+        _journeyState = new JourneyState
+        {
+            Children = { ["child-a"] = new Child("child-a", "Child A") }
+        };
         _dateTimeFactory = Substitute.For<ITodayFactory>();
         var localizerFactory = Substitute.For<IStringLocalizerFactory>();
 
