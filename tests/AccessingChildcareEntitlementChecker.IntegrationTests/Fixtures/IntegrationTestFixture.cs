@@ -21,7 +21,7 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
     {
         return WithWebHostBuilder(builder =>
         {
-            builder.ConfigureAppConfiguration((context, config) =>
+            builder.ConfigureAppConfiguration((_, config) =>
             {
                 config.AddInMemoryCollection(featureFlags);
             });
@@ -45,7 +45,7 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
     {
         return WithWebHostBuilder(builder =>
         {
-            builder.ConfigureAppConfiguration((context, config) =>
+            builder.ConfigureAppConfiguration((_, config) =>
             {
                 config.AddInMemoryCollection(featureFlags);
             });

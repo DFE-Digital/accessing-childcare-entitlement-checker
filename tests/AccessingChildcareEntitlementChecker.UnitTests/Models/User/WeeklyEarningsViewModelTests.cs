@@ -16,7 +16,6 @@ public class WeeklyEarningsViewModelTests
     {
         _journeyState = new JourneyState();
         _localizerFactory = AcecSubstitute.ForLocalizerFactory();
-        _serviceProviderFunc = serviceType => _localizerFactory;
         _serviceProviderFunc = serviceType =>
         {
             if (serviceType == typeof(JourneyState)) return _journeyState;

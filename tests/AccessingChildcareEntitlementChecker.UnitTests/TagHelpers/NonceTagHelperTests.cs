@@ -232,7 +232,7 @@ public class NonceTagHelperTests
         var output = new TagHelperOutput(
             "script",
             [addNonceAttribute],
-            (useCachedResult, encoder) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+            (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
 
         // Act
         tagHelper.Process(context, output);
