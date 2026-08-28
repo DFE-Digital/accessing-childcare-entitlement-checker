@@ -25,12 +25,17 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsHasNavBarAndBetaBanner()
     {
-        var state = new JourneyState();
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.Children["child-1"] = new Child("child-1", "Jack")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            CountryOfResidence = CountryOfResidence.England,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Jack")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                }
+            }
         };
         using var client = factory.CreateClientWithJourneyState(state);
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -44,12 +49,17 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsHasTwoPrintButtons()
     {
-        var state = new JourneyState();
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.Children["child-1"] = new Child("child-1", "Jack")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            CountryOfResidence = CountryOfResidence.England,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Jack")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                }
+            }
         };
         using var client = factory.CreateClientWithJourneyState(state);
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -64,12 +74,17 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsReturnsView()
     {
-        var state = new JourneyState();
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.Children["child-1"] = new Child("child-1", "Jack")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            CountryOfResidence = CountryOfResidence.England,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Jack")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                }
+            }
         };
         using var client = factory.CreateClientWithJourneyState(state);
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -84,12 +99,17 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDisplaysFifteenHoursUniversalForEligibleChild()
     {
-        var state = new JourneyState();
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.Children["child-1"] = new Child("child-1", "Jack")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            CountryOfResidence = CountryOfResidence.England,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Jack")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                }
+            }
         };
         using var client = factory.CreateClientWithJourneyState(state);
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -103,17 +123,22 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDisplaysFifteenHoursUniversalAndFcfwp()
     {
-        var state = new JourneyState();
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
-        state.Nationality = NationalityOption.BritishOrIrishCitizen;
-        state.PaidWork = PaidWorkOption.Yes;
-        state.YearlyEarnings = YearlyEarningsOption.BelowThreshold;
-        state.HasPartner = false;
-        state.Children["child-1"] = new Child("child-1", "Jack")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            CountryOfResidence = CountryOfResidence.England,
+            WeeklyEarnings = WeeklyEarningsOption.AboveThreshold,
+            Nationality = NationalityOption.BritishOrIrishCitizen,
+            PaidWork = PaidWorkOption.Yes,
+            YearlyEarnings = YearlyEarningsOption.BelowThreshold,
+            HasPartner = false,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Jack")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                }
+            }
         };
 
         using var client = factory.CreateClientWithJourneyState(state);
@@ -129,18 +154,22 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDisplaysThirtyHourWarning()
     {
-        var state = new JourneyState();
-
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
-        state.Nationality = NationalityOption.BritishOrIrishCitizen;
-        state.PaidWork = PaidWorkOption.Yes;
-        state.YearlyEarnings = YearlyEarningsOption.BelowThreshold;
-        state.HasPartner = false;
-        state.Children["child-1"] = new Child("child-1", "Jack")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            CountryOfResidence = CountryOfResidence.England,
+            WeeklyEarnings = WeeklyEarningsOption.AboveThreshold,
+            Nationality = NationalityOption.BritishOrIrishCitizen,
+            PaidWork = PaidWorkOption.Yes,
+            YearlyEarnings = YearlyEarningsOption.BelowThreshold,
+            HasPartner = false,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Jack")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                }
+            }
         };
 
         using var client = factory.CreateClientWithJourneyState(state);
@@ -161,17 +190,22 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.StillWaiting, false)]
     public async Task GetResultsDisplaysPublicFundsWarning(NationalityOption nationality, SettledStatusOption? settledStatus, bool hasWarning)
     {
-        var state = new JourneyState();
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.Children["child-1"] = new Child("child-1", "Jack")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            CountryOfResidence = CountryOfResidence.England,
+            Nationality = nationality,
+            SettledStatus = settledStatus,
+            PaidWork = PaidWorkOption.No,
+            HasPartner = false,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Jack")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                }
+            }
         };
-        state.Nationality = nationality;
-        state.SettledStatus = settledStatus;
-        state.PaidWork = PaidWorkOption.No;
-        state.HasPartner = false;
 
         using var client = factory.CreateClientWithJourneyState(state);
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
@@ -192,18 +226,22 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDisplaysWithMixedEligibility()
     {
-        var state = new JourneyState();
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.Children["child-1"] = new Child("child-1", "CHILD-1")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
-        };
-
-        state.Children["child-2"] = new Child("child-2", "CHILD-2")
-        {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
+            CountryOfResidence = CountryOfResidence.England,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "CHILD-1")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                },
+                ["child-2"] = new Child("child-2", "CHILD-2")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
+                }
+            }
         };
 
         using var client = factory.CreateClientWithJourneyState(state);
@@ -221,18 +259,22 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     [Fact]
     public async Task GetResultsDisplaysWithNoEligibility()
     {
-        var state = new JourneyState();
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.Children["child-1"] = new Child("child-1", "CHILD-1")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
-        };
-
-        state.Children["child-2"] = new Child("child-2", "CHILD-2")
-        {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
+            CountryOfResidence = CountryOfResidence.England,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "CHILD-1")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
+                },
+                ["child-2"] = new Child("child-2", "CHILD-2")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
+                }
+            }
         };
 
         using var client = factory.CreateClientWithJourneyState(state);

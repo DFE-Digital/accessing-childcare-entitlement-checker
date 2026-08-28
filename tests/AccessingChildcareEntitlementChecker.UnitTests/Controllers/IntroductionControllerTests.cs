@@ -18,12 +18,16 @@ public class IntroductionControllerTests : IDisposable
 
     public IntroductionControllerTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children[ChildId] = new Child(ChildId, "Child A");
+        _journeyState = new JourneyState
+        {
+            Children = { [ChildId] = new Child(ChildId, "Child A") }
+        };
         _journeySession = Substitute.For<IJourneySession>();
         var featureManager = Substitute.For<IFeatureManager>();
-        _controller = new IntroductionController(_journeyState, _journeySession, featureManager);
-        _controller.Url = Substitute.For<IUrlHelper>();
+        _controller = new IntroductionController(_journeyState, _journeySession, featureManager)
+        {
+            Url = Substitute.For<IUrlHelper>()
+        };
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 

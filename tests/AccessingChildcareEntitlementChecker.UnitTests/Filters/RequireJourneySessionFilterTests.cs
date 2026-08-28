@@ -22,8 +22,10 @@ public class RequireJourneySessionFilterTests
     {
         _mockJourneySession = Substitute.For<IJourneySession>();
 
-        var httpContext = new DefaultHttpContext();
-        httpContext.Request.Path = "/foo";
+        var httpContext = new DefaultHttpContext
+        {
+            Request = { Path = "/foo" }
+        };
         var actionContext = new ActionContext(
                httpContext,
                new RouteData(),

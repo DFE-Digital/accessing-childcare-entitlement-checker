@@ -11,19 +11,22 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
     private static JourneyState CreateJourneyState()
     {
-        var state = new JourneyState();
-
-        state.CountryOfResidence = CountryOfResidence.England;
-        state.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
-        state.Nationality = NationalityOption.BritishOrIrishCitizen;
-        state.PaidWork = PaidWorkOption.Yes;
-        state.YearlyEarnings = YearlyEarningsOption.BelowThreshold;
-        state.HasPartner = false;
-
-        state.Children["child-1"] = new Child("child-1", "Jack")
+        var state = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            CountryOfResidence = CountryOfResidence.England,
+            WeeklyEarnings = WeeklyEarningsOption.AboveThreshold,
+            Nationality = NationalityOption.BritishOrIrishCitizen,
+            PaidWork = PaidWorkOption.Yes,
+            YearlyEarnings = YearlyEarningsOption.BelowThreshold,
+            HasPartner = false,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Jack")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                }
+            }
         };
 
         return state;

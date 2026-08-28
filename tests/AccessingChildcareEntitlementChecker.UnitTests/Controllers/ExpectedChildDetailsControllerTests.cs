@@ -17,11 +17,15 @@ public class ExpectedChildDetailsControllerTests : IDisposable
 
     public ExpectedChildDetailsControllerTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children[ChildId] = new Child(ChildId, "Child A");
+        _journeyState = new JourneyState
+        {
+            Children = { [ChildId] = new Child(ChildId, "Child A") }
+        };
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new ExpectedChildDetailsController(_journeyState, _journeySession);
-        _controller.Url = Substitute.For<IUrlHelper>();
+        _controller = new ExpectedChildDetailsController(_journeyState, _journeySession)
+        {
+            Url = Substitute.For<IUrlHelper>()
+        };
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 

@@ -81,9 +81,10 @@ public class DevelopmentExtensionsTests
 
         _app.UseDevelopmentAuth();
 
-        var context = new DefaultHttpContext();
-        context.Request.Path = path;
-        context.Request.Method = "GET";
+        var context = new DefaultHttpContext
+        {
+            Request = { Path = path, Method = "GET" }
+        };
 
         var nextCalled = false;
 
@@ -110,10 +111,15 @@ public class DevelopmentExtensionsTests
 
         _app.UseDevelopmentAuth();
 
-        var context = new DefaultHttpContext();
-        context.Request.Path = "/";
-        context.Request.Method = "GET";
-        context.Request.Headers.UserAgent = userAgent;
+        var context = new DefaultHttpContext
+        {
+            Request =
+            {
+                Path = "/",
+                Method = "GET",
+                Headers = { UserAgent = userAgent }
+            }
+        };
 
         var nextCalled = false;
 
@@ -143,9 +149,10 @@ public class DevelopmentExtensionsTests
 
         _app.UseDevelopmentAuth();
 
-        var context = new DefaultHttpContext();
-        context.Request.Path = path;
-        context.Request.Method = "GET";
+        var context = new DefaultHttpContext
+        {
+            Request = { Path = path, Method = "GET" }
+        };
 
         var nextCalled = false;
 
@@ -171,12 +178,15 @@ public class DevelopmentExtensionsTests
 
         _app.UseDevelopmentAuth();
 
-        var context = new DefaultHttpContext();
-        context.Request.Path = "/";
-        context.Request.Method = "GET";
-
-        // base64(user:password) -> base64("admin:password") -> "YWRtaW46cGFzc3dvcmQ="
-        context.Request.Headers.Authorization = "Basic YWRtaW46cGFzc3dvcmQ=";
+        var context = new DefaultHttpContext
+        {
+            Request =
+            {
+                Path = "/",
+                Method = "GET",
+                Headers = { Authorization = "Basic YWRtaW46cGFzc3dvcmQ=" }
+            }
+        };
 
         var nextCalled = false;
 
@@ -201,13 +211,19 @@ public class DevelopmentExtensionsTests
 
         _app.UseDevelopmentAuth();
 
-        var context = new DefaultHttpContext();
-        context.Request.Path = "/";
-        context.Request.Method = "GET";
-        context.Request.Headers.UserAgent = "Mozilla/5.0";
-
-        // base64("admin:wrong") -> "YWRtaW46d3Jvbmc="
-        context.Request.Headers.Authorization = "Basic YWRtaW46d3Jvbmc=";
+        var context = new DefaultHttpContext
+        {
+            Request =
+            {
+                Path = "/",
+                Method = "GET",
+                Headers =
+                {
+                    UserAgent = "Mozilla/5.0",
+                    Authorization = "Basic YWRtaW46d3Jvbmc="
+                }
+            }
+        };
 
         var nextCalled = false;
 

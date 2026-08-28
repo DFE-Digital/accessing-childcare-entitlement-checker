@@ -31,13 +31,18 @@ public class SummaryControllerTests : IDisposable
 
     public SummaryControllerTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
-        _journeyState.Children[ChildId] = new Child(ChildId, "Child A")
+        _journeyState = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
-            BirthDate = new DateOnly(2020, 1, 1),
-            ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
+            Nationality = NationalityOption.BritishOrIrishCitizen,
+            Children =
+            {
+                [ChildId] = new Child(ChildId, "Child A")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = new DateOnly(2020, 1, 1),
+                    ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
+                }
+            }
         };
         _journeySession = Substitute.For<IJourneySession>();
         _featureManager = Substitute.For<IFeatureManager>();

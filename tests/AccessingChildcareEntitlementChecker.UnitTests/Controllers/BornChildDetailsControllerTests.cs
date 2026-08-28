@@ -17,15 +17,22 @@ public class BornChildDetailsControllerTests : IDisposable
 
     public BornChildDetailsControllerTests()
     {
-        _journeyState = new JourneyState();
-        _journeyState.Children[ChildId] = new Child(ChildId, "Child A")
+        _journeyState = new JourneyState
         {
-            BirthStatus = BirthStatus.Born,
+            Children =
+            {
+                [ChildId] = new Child(ChildId, "Child A")
+                {
+                    BirthStatus = BirthStatus.Born,
+                }
+            }
         };
 
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new BornChildDetailsController(_journeyState, _journeySession);
-        _controller.Url = Substitute.For<IUrlHelper>();
+        _controller = new BornChildDetailsController(_journeyState, _journeySession)
+        {
+            Url = Substitute.For<IUrlHelper>()
+        };
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 
