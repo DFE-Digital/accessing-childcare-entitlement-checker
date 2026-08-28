@@ -18,7 +18,7 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -49,7 +49,7 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
             PartnerPaidWork = partnerPaidWork,
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -74,7 +74,7 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

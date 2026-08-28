@@ -36,7 +36,7 @@ public partial class CookieBannerShownTests(IntegrationTestFixture factory) : IC
                 PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
             });
 
-            var getClient = getHost.CreateClient();
+            using var getClient = getHost.CreateClient();
 
             var getResponse = await getClient.GetAsync(url, TestContext.Current.CancellationToken);
             var document = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -72,7 +72,7 @@ public partial class CookieBannerShownTests(IntegrationTestFixture factory) : IC
                 PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
             });
 
-            var getClient = getHost.CreateClient();
+            using var getClient = getHost.CreateClient();
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Cookie", "cookie_policy=enabled");

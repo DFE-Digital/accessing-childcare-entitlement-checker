@@ -15,7 +15,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
@@ -33,7 +33,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
         state.ChildcareSupport.Add(ChildcareSupportOption.ChildcareVouchers);
         using var host = factory.CreateClientWithJourneyState(state);
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
@@ -57,7 +57,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
             PartnerAge = partnerAge,
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();

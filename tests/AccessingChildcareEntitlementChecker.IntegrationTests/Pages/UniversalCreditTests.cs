@@ -38,7 +38,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
             YearlyEarnings = yearlyEarnings,
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -65,7 +65,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
             Benefits = benefits is null ? new() : [benefits.Value],
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -107,7 +107,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
             YearlyEarnings = yearlyEarnings,
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

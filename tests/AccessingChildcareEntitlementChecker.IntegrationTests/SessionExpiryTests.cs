@@ -54,7 +54,7 @@ public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClass
                 HasPartner = true
             });
 
-            var getClient = getHost.CreateClient();
+            using var getClient = getHost.CreateClient();
 
             var getResponse = await getClient.GetAsync(url, TestContext.Current.CancellationToken);
             getResponse.EnsureSuccessStatusCode();
@@ -68,7 +68,7 @@ public partial class SessionExpiryTests(IntegrationTestFixture factory) : IClass
             // and then submitting the form.
             using var postHost = factory.CreateClientWithoutJourneySession();
 
-            var postClient = postHost.CreateClient();
+            using var postClient = postHost.CreateClient();
             var postResponse = await HttpClientHelpers.PostFormAsync(
                 postClient,
                 url,

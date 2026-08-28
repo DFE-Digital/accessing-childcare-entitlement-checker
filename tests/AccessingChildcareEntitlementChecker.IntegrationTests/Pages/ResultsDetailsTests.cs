@@ -34,7 +34,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -51,7 +51,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -68,7 +68,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -85,7 +85,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -104,7 +104,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -121,7 +121,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -138,7 +138,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -154,7 +154,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -171,7 +171,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -187,7 +187,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
@@ -211,7 +211,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
         state.SettledStatus = settledStatus;
         using var host = factory.CreateClientWithJourneyState(state);
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 

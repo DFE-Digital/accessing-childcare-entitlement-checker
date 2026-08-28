@@ -28,7 +28,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
                 }
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -62,7 +62,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
                 }
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -100,7 +100,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
                 }
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -129,7 +129,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }

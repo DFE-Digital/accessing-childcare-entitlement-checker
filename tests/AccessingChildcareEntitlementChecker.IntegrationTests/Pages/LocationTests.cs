@@ -17,7 +17,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
             { "FeatureManagement:HmrcIntegration", "true" }
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.AssertRedirect("/children/add-child-details");
@@ -55,7 +55,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
                 : new Dictionary<string, Child>()
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

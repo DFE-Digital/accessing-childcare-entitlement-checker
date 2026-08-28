@@ -26,7 +26,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
             PartnerWorkStatus = [partnerWorkStatus],
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -55,7 +55,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
             PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -88,7 +88,7 @@ public class PartnerWeeklyEarningsTests(IntegrationTestFixture factory) : IClass
             PartnerWorkStatus = [partnerWorkStatus],
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

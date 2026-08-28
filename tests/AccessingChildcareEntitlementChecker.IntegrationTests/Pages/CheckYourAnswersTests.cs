@@ -22,7 +22,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
             { "FeatureManagement:HmrcIntegration", "true" }
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
@@ -46,7 +46,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
             PartnerChildcareSupport = partnerChildcareSupport.HasValue ? [partnerChildcareSupport.Value] : [],
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();

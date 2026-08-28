@@ -18,7 +18,7 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -47,7 +47,7 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
             HasPartner = hasPartner,
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -72,7 +72,7 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

@@ -39,7 +39,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
             }
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
@@ -77,7 +77,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
             }
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?childId={arrivedFromChildId}";
 
@@ -98,7 +98,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?childId={ChildId}";
 

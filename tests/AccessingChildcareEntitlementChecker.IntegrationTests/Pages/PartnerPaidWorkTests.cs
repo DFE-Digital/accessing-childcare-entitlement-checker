@@ -32,7 +32,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerNationality = partnerNationality,
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -80,7 +80,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -118,7 +118,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerNationality = partnerNationality,
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

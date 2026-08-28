@@ -29,7 +29,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
             SelfEmployedDuration = selfEmployedDuration,
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -59,7 +59,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
             UniversalCredit = universalCredit,
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -96,7 +96,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
             SelfEmployedDuration = selfEmployedDuration,
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

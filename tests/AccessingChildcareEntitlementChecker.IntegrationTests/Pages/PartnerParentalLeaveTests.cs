@@ -27,7 +27,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
                 },
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -61,7 +61,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
             PartnerWorkStatus = workStatus == null ? [] : [workStatus.Value],
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -86,7 +86,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
     {
         using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -119,7 +119,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
                 },
         });
 
-        var client = host.CreateClient();
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
