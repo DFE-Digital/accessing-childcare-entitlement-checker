@@ -142,7 +142,7 @@ public class JourneySessionTests
     [Fact]
     public void HasSessionReturnsFalseWhenNoSession()
     {
-        _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
+        _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(_ =>
         {
             return false;
         });

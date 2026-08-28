@@ -89,7 +89,7 @@ public class DevelopmentExtensionsTests
         context.Request.Method = "GET";
 
         var nextCalled = false;
-        RequestDelegate next = (ctx) =>
+        RequestDelegate next = (_) =>
         {
             nextCalled = true;
             return Task.CompletedTask;
@@ -117,7 +117,7 @@ public class DevelopmentExtensionsTests
         context.Request.Headers.UserAgent = userAgent;
 
         var nextCalled = false;
-        RequestDelegate next = (ctx) =>
+        RequestDelegate next = (_) =>
         {
             nextCalled = true;
             return Task.CompletedTask;
@@ -147,7 +147,7 @@ public class DevelopmentExtensionsTests
         context.Request.Method = "GET";
 
         var nextCalled = false;
-        RequestDelegate next = (ctx) =>
+        RequestDelegate next = (_) =>
         {
             nextCalled = true;
             return Task.CompletedTask;
@@ -176,7 +176,7 @@ public class DevelopmentExtensionsTests
         context.Request.Headers.Authorization = "Basic YWRtaW46cGFzc3dvcmQ=";
 
         var nextCalled = false;
-        RequestDelegate next = (ctx) =>
+        RequestDelegate next = (_) =>
         {
             nextCalled = true;
             return Task.CompletedTask;
@@ -205,7 +205,7 @@ public class DevelopmentExtensionsTests
         context.Request.Headers.Authorization = "Basic YWRtaW46d3Jvbmc=";
 
         var nextCalled = false;
-        RequestDelegate next = (ctx) =>
+        RequestDelegate next = (_) =>
         {
             nextCalled = true;
             return Task.CompletedTask;
