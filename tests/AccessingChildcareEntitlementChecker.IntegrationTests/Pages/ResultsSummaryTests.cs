@@ -13,7 +13,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
     public async Task GetResultsHasBackLink()
     {
         var state = new JourneyState();
-        using var client = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
+
+        using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -37,7 +39,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
                 }
             }
         };
-        using var client = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
+
+        using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -61,7 +65,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
                 }
             }
         };
-        using var client = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
+
+        using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -86,7 +92,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
                 }
             }
         };
-        using var client = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
+
+        using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -111,7 +119,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
                 }
             }
         };
-        using var client = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
+
+        using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -141,7 +151,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             }
         };
 
-        using var client = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
+
+        using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -172,7 +184,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             }
         };
 
-        using var client = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
+
+        using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -207,7 +221,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             }
         };
 
-        using var client = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
+
+        using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -244,7 +260,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             }
         };
 
-        using var client = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
+
+        using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -277,7 +295,9 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             }
         };
 
-        using var client = factory.CreateClientWithJourneyState(state);
+        await using var host = factory.CreateClientWithJourneyState(state);
+
+        using var client = host.CreateClient();
         var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);

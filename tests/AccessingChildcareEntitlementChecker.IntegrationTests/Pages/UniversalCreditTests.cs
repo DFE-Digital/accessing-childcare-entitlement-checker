@@ -29,7 +29,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
         YearlyEarningsOption? yearlyEarnings,
         string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PaidWork = paidWork,
             WorkStatus = workStatus.HasValue ? [workStatus.Value] : [],
@@ -37,6 +37,8 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
             WeeklyEarnings = weeklyEarnings,
             YearlyEarnings = yearlyEarnings,
         });
+
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -57,11 +59,13 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(ReturnTo.CheckAnswers, UniversalCreditOption.DoesNotReceive, BenefitsOption.CarersAllowance)]
     public async Task PostValidRedirects(string? returnTo, UniversalCreditOption universalCredit, BenefitsOption? benefits)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             UniversalCredit = universalCredit,
             Benefits = benefits is null ? new() : [benefits.Value],
         });
+
+        using var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -94,7 +98,7 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
         YearlyEarningsOption? yearlyEarnings,
         string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             PaidWork = paidWork,
             WorkStatus = workStatus.HasValue ? [workStatus.Value] : [],
@@ -102,6 +106,8 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
             WeeklyEarnings = weeklyEarnings,
             YearlyEarnings = yearlyEarnings,
         });
+
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

@@ -17,20 +17,22 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
         return base.CreateHost(builder);
     }
 
-    public HttpClient CreateClientWithFeatureFlags(Dictionary<string, string?> featureFlags)
+    public WebApplicationFactory<Program> CreateClientWithFeatureFlags(Dictionary<string, string?> featureFlags)
     {
-        return WithWebHostBuilder(builder =>
+        var webHost = WithWebHostBuilder(builder =>
         {
             builder.ConfigureAppConfiguration((_, config) =>
             {
                 config.AddInMemoryCollection(featureFlags);
             });
-        }).CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        });
+        webHost.ClientOptions.AllowAutoRedirect = false;
+        return webHost;
     }
 
-    public HttpClient CreateClientWithJourneyState(JourneyState state)
+    public WebApplicationFactory<Program> CreateClientWithJourneyState(JourneyState state)
     {
-        return WithWebHostBuilder(builder =>
+        var webHost = WithWebHostBuilder(builder =>
         {
             builder.ConfigureServices(services =>
             {
@@ -38,12 +40,14 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
                 services.AddScoped(_ => state);
                 services.AddScoped<IValidator<JourneyState>, JourneyStateValidator>();
             });
-        }).CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        });
+        webHost.ClientOptions.AllowAutoRedirect = false;
+        return webHost;
     }
 
-    public HttpClient CreateClientWithJourneyStateAndFeatureFlags(JourneyState state, Dictionary<string, string?> featureFlags)
+    public WebApplicationFactory<Program> CreateClientWithJourneyStateAndFeatureFlags(JourneyState state, Dictionary<string, string?> featureFlags)
     {
-        return WithWebHostBuilder(builder =>
+        var webHost = WithWebHostBuilder(builder =>
         {
             builder.ConfigureAppConfiguration((_, config) =>
             {
@@ -54,19 +58,23 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
                 services.AddScoped<IJourneySession>(_ => new TestJourneySession(state));
                 services.AddScoped(_ => state);
             });
-        }).CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        });
+        webHost.ClientOptions.AllowAutoRedirect = false;
+        return webHost;
     }
 
-    public HttpClient CreateClientWithoutJourneySession()
+    public WebApplicationFactory<Program> CreateClientWithoutJourneySession()
     {
-        return WithWebHostBuilder(builder =>
+        var webHost = WithWebHostBuilder(builder =>
         {
             builder.ConfigureServices(services =>
             {
                 services.AddScoped<IJourneySession, MissingJourneySession>();
                 services.AddScoped<IValidator<JourneyState>, JourneyStateValidator>();
             });
-        }).CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        });
+        webHost.ClientOptions.AllowAutoRedirect = false;
+        return webHost;
     }
 
     private sealed class TestJourneySession(JourneyState state) : IJourneySession

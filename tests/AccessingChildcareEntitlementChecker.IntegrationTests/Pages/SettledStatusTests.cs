@@ -16,7 +16,9 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -41,11 +43,13 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
     [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, PaidWorkOption.Yes)]
     public async Task PostValidRedirects(string? returnTo, SettledStatusOption settledStatus, PaidWorkOption? paidWork)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             SettledStatus = settledStatus,
             PaidWork = paidWork,
         });
+
+        using var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -68,7 +72,9 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState());
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState());
+
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

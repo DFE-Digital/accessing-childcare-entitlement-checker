@@ -12,10 +12,12 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     [Fact]
     public async Task GetWhenFeatureFlagEnabledRedirectsToChildName()
     {
-        using var client = factory.CreateClientWithFeatureFlags(new()
+        await using var host = factory.CreateClientWithFeatureFlags(new()
         {
             { "FeatureManagement:HmrcIntegration", "true" }
         });
+
+        using var client = host.CreateClient();
 
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         response.AssertRedirect("/children/add-child-details");
@@ -46,12 +48,14 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     [InlineData(ReturnTo.CheckAnswers, true, "/children/check-childs-details")]
     public async Task PostValidRedirects(string? returnTo, bool hasChild, string continueUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = hasChild
                 ? new Dictionary<string, Child> { { "child1", new Child("child1", "Child 1") } }
                 : new Dictionary<string, Child>()
         });
+
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

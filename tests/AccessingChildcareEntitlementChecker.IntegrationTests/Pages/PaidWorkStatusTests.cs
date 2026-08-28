@@ -19,10 +19,12 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
     public async Task Get(string? returnTo, NationalityOption? nationality, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Nationality = nationality,
         });
+
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -55,7 +57,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
         UniversalCreditOption? universalCredit,
         string continueUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -69,6 +71,8 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
             WorkStatus = workStatus is null ? new() : [workStatus.Value],
             UniversalCredit = universalCredit,
         });
+
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -94,10 +98,12 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(string? returnTo, NationalityOption? nationality, string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Nationality = nationality,
         });
+
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);

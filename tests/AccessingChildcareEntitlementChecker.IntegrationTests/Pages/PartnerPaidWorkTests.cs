@@ -25,12 +25,14 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
         NationalityOption? partnerNationality,
         string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Nationality = nationality,
             SettledStatus = settledStatus,
             PartnerNationality = partnerNationality,
         });
+
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
@@ -63,7 +65,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
         PartnerBenefitsOption? partnerBenefits,
         string continueUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
                 {
@@ -77,6 +79,8 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
             PartnerWorkStatus = partnerWorkStatus is null ? new() : [partnerWorkStatus.Value],
             PartnerBenefits = partnerBenefits is null ? new() : [partnerBenefits.Value],
         });
+
+        using var client = host.CreateClient();
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
@@ -107,12 +111,14 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
         NationalityOption? partnerNationality,
         string backLinkUrl)
     {
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Nationality = nationality,
             SettledStatus = settledStatus,
             PartnerNationality = partnerNationality,
         });
+
+        using var client = host.CreateClient();
 
         var url = $"{Url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
