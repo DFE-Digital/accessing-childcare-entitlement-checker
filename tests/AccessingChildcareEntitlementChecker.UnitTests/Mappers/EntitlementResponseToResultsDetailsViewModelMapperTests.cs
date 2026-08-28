@@ -77,7 +77,6 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
                     ChildId = "child-1",
                     ChildName = "Katie",
                     IsBorn = true,
-                    AgeInYears = 3,
                     Schemes =
                     [
                         new SchemeResultDto
@@ -107,7 +106,6 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
                     ChildId = "child-2",
                     ChildName = "Jack",
                     IsBorn = true,
-                    AgeInYears = 0,
                     Schemes =
                     [
                         new SchemeResultDto
@@ -162,7 +160,6 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
                     ChildId = "child-4",
                     ChildName = "Emily",
                     IsBorn = true,
-                    AgeInYears = 1,
                     Schemes =
                     [
                         new SchemeResultDto
@@ -188,7 +185,6 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
                     ChildId = "child-5",
                     ChildName = "Mia",
                     IsBorn = true,
-                    AgeInYears = 2,
                     Schemes =
                     [
                         new SchemeResultDto
@@ -213,7 +209,6 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
                     ChildId = "child-6",
                     ChildName = "Alfie",
                     IsBorn = true,
-                    AgeInYears = 1,
                     Schemes =
                     [
                         new SchemeResultDto
@@ -229,7 +224,6 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
                     ChildId = "child-7",
                     ChildName = "Oliver",
                     IsBorn = true,
-                    AgeInYears = 0,
                     Schemes =
                     [
                         new SchemeResultDto
@@ -253,7 +247,6 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
                     ChildId = "child-8",
                     ChildName = "Tom",
                     IsBorn = true,
-                    AgeInYears = 0,
                     Schemes =
                     [
                         new SchemeResultDto
@@ -270,7 +263,6 @@ public class EntitlementResponseToResultsDetailsViewModelMapperTests
                     ChildId = "child-9",
                     ChildName = "Tim",
                     IsBorn = true,
-                    AgeInYears = 3,
                     Schemes =
                     [
                         new SchemeResultDto

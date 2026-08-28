@@ -56,7 +56,6 @@ public static class DerivedContextBuilder
             SelfEmployedLessThan12Months = person.SelfEmployedLessThan12Months == true,
             EarnsAboveThreshold = person.EarnsAboveThreshold == true,
             ExceedsAdjustedNetIncomeLimit = person.ExceedsAdjustedNetIncomeLimit == true,
-            WorkStatuses = person.WorkStatuses.ToList(),
             Benefits = person.Benefits.ToList(),
             ChildcareSupport = person.ChildcareSupport.ToList()
         };

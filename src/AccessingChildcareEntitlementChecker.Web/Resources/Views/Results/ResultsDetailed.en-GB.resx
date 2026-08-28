@@ -239,5 +239,58 @@
     <data name="Ends_ThirtyHours_UserAndPartnerParentalLeave" xml:space="preserve">
       <value>When you and your partner return from parental leave</value>
     </data>
-
+  <data name="Childcare support details" xml:space="preserve">
+    <value>Childcare support details</value>
+  </data>
+  <data name="{0}'s childcare support" xml:space="preserve">
+    <value>{0}'s childcare support</value>
+  </data>
+  <data name="Print this page" xml:space="preserve">
+    <value>Print this page</value>
+  </data>
+  <data name="Based on your answers, this is the support you can get for {0} now or as they get older." xml:space="preserve">
+    <value>Based on your answers, this is the support you can get for {0} now or as they get older.</value>
+  </data>
+  <data name="You may not be able to use some of this straight away." xml:space="preserve">
+    <value>You may not be able to use some of this straight away.</value>
+  </data>
+  <data name="Help with childcare costs (up to £2,000 a year)" xml:space="preserve">
+    <value>Help with childcare costs (up to £2,000 a year)</value>
+  </data>
+  <data name="Help with childcare costs (up to £1,071 a month)" xml:space="preserve">
+    <value>Help with childcare costs (up to £1,071 a month)</value>
+  </data>
+  <data name="Childcare hours paid for each week (up to {0} hours a week)" xml:space="preserve">
+    <value>Childcare hours paid for each week (up to {0} hours a week)</value>
+  </data>
+  <data name="You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme." xml:space="preserve">
+    <value>You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme.</value>
+  </data>
+  <data name="For example, your child can get 30 hours through Free Childcare for Working Parents." xml:space="preserve">
+    <value>For example, your child can get 30 hours through Free Childcare for Working Parents.</value>
+  </data>
+  <data name="This does not increase to 45 hours when they become eligible for 15 hours free childcare for 3 and 4-year-olds." xml:space="preserve">
+    <value>This does not increase to 45 hours when they become eligible for 15 hours free childcare for 3 and 4-year-olds.</value>
+  </data>
+  <data name="When to apply" xml:space="preserve">
+    <value>When to apply</value>
+  </data>
+  <data name="Starts" xml:space="preserve">
+    <value>Starts</value>
+  </data>
+  <data name="Ends" xml:space="preserve">
+    <value>Ends</value>
+  </data>
+  <data name="Can be used with" xml:space="preserve">
+    <value>Can be used with</value>
+  </data>
+  <data name="Next steps" xml:space="preserve">
+    <value>Next steps</value>
+  </data>
+  <data name="Find out more about {0} and how to apply (opens in new tab)" xml:space="preserve">
+    <value>Find out more about {0} and how to apply (opens in new tab)</value>
+  </data>
+  <data name="Back to top" xml:space="preserve">
+    <value>Back to top</value>
+  </data>
 </root>

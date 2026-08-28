@@ -150,7 +150,7 @@ public class EntitlementRulesEngineTests
 
     private sealed class FakeEligibleSchemeEvaluator : ISchemeEvaluator
     {
-        public SchemeResultDto? Evaluate(
+        public SchemeResultDto Evaluate(
             DerivedContext context,
             ChildFacts child)
         {

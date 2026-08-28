@@ -38,7 +38,6 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             ChildId = childResult.ChildId,
             Name = childResult.ChildName,
             ShowThirtyHourWarning = GetThirtyHourWarning(childResult),
-            IsBorn = childResult.IsBorn,
             Schemes = childResult.Schemes
                 .OrderBy(s => GetSchemeOrder(s.SchemeCode))
                 .Select(s => MapSchemeResult(s, childResult))
@@ -54,10 +53,6 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             SchemeCode = schemeResult.SchemeCode,
             Name = GetSchemeName(schemeResult.SchemeCode),
             WhatYouGet = GetSchemeDescription(schemeResult.SchemeCode),
-            EligibleNow = schemeResult.EligibleNow,
-            EligibleInFuture = schemeResult.EligibleInFuture,
-            ApplyFromDate = schemeResult.ApplyFromDate,
-            UseFromDate = schemeResult.UseFromDate,
             WhenToApply = GetWhenToApply(schemeResult, childResult)
         };
 

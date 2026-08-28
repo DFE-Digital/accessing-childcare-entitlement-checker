@@ -4,7 +4,6 @@ public class ChildResultDto
 {
     public string ChildId { get; set; } = string.Empty;
     public string ChildName { get; set; } = string.Empty;
-    public int? AgeInYears { get; set; }
     public bool IsBorn { get; set; }
     public List<SchemeResultDto> Schemes { get; set; } = [];
 }

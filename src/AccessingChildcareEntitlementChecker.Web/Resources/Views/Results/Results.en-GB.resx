@@ -99,5 +99,70 @@
     <data name="WhenToApply_ThirtyHours_UserAndPartnerParentalLeave" xml:space="preserve">
       <value>The date you and your partner return from parental leave affects when you can apply</value>
     </data>
-
+    <data name="Childcare support you could get" xml:space="preserve">
+        <value>Childcare support you could get</value>
+    </data>
+    <data name="Based on your answers, this is the support you can get now or in the future." xml:space="preserve">
+        <value>Based on your answers, this is the support you can get now or in the future.</value>
+    </data>
+    <data name="Print this page" xml:space="preserve">
+        <value>Print this page</value>
+    </data>
+    <data name="You should check again if your circumstances change as this may change the support you can get." xml:space="preserve">
+        <value>You should check again if your circumstances change as this may change the support you can get.</value>
+    </data>
+    <data name="You cannot currently get any of the childcare support this service checks for {0}." xml:space="preserve">
+        <value>You cannot currently get any of the childcare support this service checks for {0}.</value>
+    </data>
+    <data name="To understand more about the support this service checks and when you may be eligible," xml:space="preserve">
+        <value>To understand more about the support this service checks and when you may be eligible,</value>
+    </data>
+    <data name="read the step by step guide about childcare (opens in new tab)" xml:space="preserve">
+        <value>read the step by step guide about childcare (opens in new tab)</value>
+    </data>
+    <data name="This is a summary of {0}'s childcare support." xml:space="preserve">
+        <value>This is a summary of {0}'s childcare support.</value>
+    </data>
+    <data name="Scheme" xml:space="preserve">
+        <value>Scheme</value>
+    </data>
+    <data name="What you get" xml:space="preserve">
+        <value>What you get</value>
+    </data>
+    <data name="When to apply" xml:space="preserve">
+        <value>When to apply</value>
+    </data>
+    <data name="Full information about {0}'s childcare support" xml:space="preserve">
+        <value>Full information about {0}'s childcare support</value>
+    </data>
+    <data name="View {0}'s full childcare support information" xml:space="preserve">
+        <value>View {0}'s full childcare support information</value>
+    </data>
+    <data name="This includes more details about each scheme such as when support starts and ends." xml:space="preserve">
+        <value>This includes more details about each scheme such as when support starts and ends.</value>
+    </data>
+    <data name="You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme." xml:space="preserve">
+        <value>You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme.</value>
+    </data>
+    <data name="Get help and advice about childcare support" xml:space="preserve">
+        <value>Get help and advice about childcare support</value>
+    </data>
+    <data name="read the step by step guide about childcare and getting help paying for it (opens in new tab)" xml:space="preserve">
+        <value>read the step by step guide about childcare and getting help paying for it (opens in new tab)</value>
+    </data>
+    <data name="To understand more you can" xml:space="preserve">
+        <value>To understand more you can</value>
+    </data>
+    <data name="Get help and advice at a family hub" xml:space="preserve">
+        <value>Get help and advice at a family hub</value>
+    </data>
+    <data name="Family hubs offer local support for parents and carers. They can help explain childcare options and find support in your area." xml:space="preserve">
+        <value>Family hubs offer local support for parents and carers. They can help explain childcare options and find support in your area.</value>
+    </data>
+    <data name="Find out if there's a family hub in your area (opens in new tab)" xml:space="preserve">
+        <value>Find out if there's a family hub in your area (opens in new tab)</value>
+    </data>
+    <data name="Back to top" xml:space="preserve">
+        <value>Back to top</value>
+    </data>
 </root>
