@@ -47,5 +47,47 @@
   </data>
   <data name="ServiceName">
     <value>Check if you are eligible for childcare funding</value>
-  </data>"
+  </data>
+    <data name="Need help?" xml:space="preserve">
+        <value>Need help?</value>
+    </data>
+    <data name="If you have a question, or want to report a problem with this service," xml:space="preserve">
+        <value>If you have a question, or want to report a problem with this service,</value>
+    </data>
+    <data name="contact us" xml:space="preserve">
+        <value>contact us</value>
+    </data>
+    <data name="Give feedback" xml:space="preserve">
+        <value>Give feedback</value>
+    </data>
+    <data name="Your feedback matters and will help us improve this service. Fill in our short" xml:space="preserve">
+        <value>Your feedback matters and will help us improve this service. Fill in our short</value>
+    </data>
+    <data name="feedback form" xml:space="preserve">
+        <value>feedback form</value>
+    </data>
+    <data name="Support links" xml:space="preserve">
+        <value>Support links</value>
+    </data>
+    <data name="Accessibility" xml:space="preserve">
+        <value>Accessibility</value>
+    </data>
+    <data name="Privacy notice" xml:space="preserve">
+        <value>Privacy notice</value>
+    </data>
+    <data name="Cookies" xml:space="preserve">
+        <value>Cookies</value>
+    </data>
+    <data name="All content is available under the" xml:space="preserve">
+        <value>All content is available under the</value>
+    </data>
+    <data name="Open Government Licence v3.0" xml:space="preserve">
+        <value>Open Government Licence v3.0</value>
+    </data>
+    <data name="except where otherwise stated" xml:space="preserve">
+        <value>except where otherwise stated</value>
+    </data>
+    <data name="© Crown copyright" xml:space="preserve">
+        <value>© Crown copyright</value>
+    </data>
 </root>

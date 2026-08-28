@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using NSubstitute;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 
 namespace AccessingChildcareEntitlementChecker.UnitTests.Models.Summary;
@@ -352,7 +353,9 @@ public class SummaryRowFactoryTests
         Two,
     }
 
-    public class TestViewModel
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
+    private sealed class TestViewModel
     {
         [Display(Name = "Test Enum Property Title")]
         public TestSelection TestProperty { get; set; }

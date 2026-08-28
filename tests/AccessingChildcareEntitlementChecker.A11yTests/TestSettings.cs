@@ -1,5 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace AccessingChildcareEntitlementChecker.A11yTests;
 
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 internal sealed class TestSettings
 {
     public string TestUrl { get; set; } = "http://localhost:5252/";
