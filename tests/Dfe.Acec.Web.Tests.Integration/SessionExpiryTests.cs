@@ -1,0 +1,101 @@
+using Dfe.Acec.Web.Models;
+using Dfe.Acec.Web.Models.BornChildDetails;
+using Dfe.Acec.Web.Services;
+using Dfe.Acec.Web.Tests.Integration.Fixtures;
+using Dfe.Acec.Web.Tests.Integration.Helpers;
+
+namespace Dfe.Acec.Web.Tests.Integration;
+
+public class SessionExpiryTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
+{
+    [Fact]
+    public async Task GetWithoutSessionRedirectsToExpiry()
+    {
+        var sessionRequiredEndpoints = GetSessionRequiredEndpoints("GET");
+        foreach (var url in sessionRequiredEndpoints)
+        {
+            await using var host = factory.CreateClientWithoutJourneySession();
+
+            var client = host.CreateClient();
+            var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
+            getResponse.AssertRedirect("/session-expired");
+        }
+    }
+
+    [Fact]
+    public async Task PostWithoutSessionRedirectsToExpiry()
+    {
+        var sessionRequiredEndpoints = GetSessionRequiredEndpoints("POST");
+        var children = new Dictionary<string, Child>
+               {
+                   {
+                       "1",
+                       new Child("1", "Child 1")
+                       {
+                           BirthStatus = BirthStatus.Born,
+                           BirthDate = new DateOnly(2020, 1, 1),
+                           ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
+                       }
+                   }
+               };
+
+        foreach (var url in sessionRequiredEndpoints)
+        {
+            // Resource filter will fire after auth filters, which will check antiforgery.
+            // So we need to run a valid GET first to obtain the token, and `WeeklyEarnings` checks
+            // prerequisites during construction; which is a pain.
+            await using var getHost = factory.CreateClientWithJourneyState(new JourneyState
+            {
+                Children = children,
+                UserAge = AgeRange.UnderEighteen,
+                WorkStatus = [WorkStatusOption.PaidEmployment],
+                PartnerAge = AgeRange.UnderEighteen,
+                PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
+                HasPartner = true
+            });
+
+            using var getClient = getHost.CreateClient();
+
+            var getResponse = await getClient.GetAsync(url, TestContext.Current.CancellationToken);
+            getResponse.EnsureSuccessStatusCode();
+            var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
+            var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
+            var cookie = HtmlHelpers.ExtractAntiforgeryCookie(getResponse);
+            Assert.NotNull(token);
+            Assert.NotNull(cookie);
+
+            // Now we simulate the user timing out while sat on a page,
+            // and then submitting the form.
+            await using var postHost = factory.CreateClientWithoutJourneySession();
+
+            using var postClient = postHost.CreateClient();
+            var postResponse = await HttpClientHelpers.PostFormAsync(
+                postClient,
+                url,
+                cookie,
+                token,
+                [],
+                TestContext.Current.CancellationToken);
+            postResponse.AssertRedirect("/session-expired");
+        }
+    }
+
+    private IEnumerable<string> GetSessionRequiredEndpoints(string verb)
+    {
+        var publicRoutes = new[]
+        {
+            "/",
+            "/session-expired",
+            "/privacy-notice",
+            "/accessibility-statement",
+            "/cookies",
+            "/throw",
+            "/robots.txt",
+            "/{controller=Home}/{action=Start}/{id?}",
+            "/start-page",
+            "/where-do-you-live"
+        };
+
+        return RouteHelper.GetEndpointsExcept(factory, verb, publicRoutes);
+    }
+}

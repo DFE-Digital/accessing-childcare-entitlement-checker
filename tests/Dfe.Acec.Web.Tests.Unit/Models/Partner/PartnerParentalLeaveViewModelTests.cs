@@ -1,0 +1,75 @@
+using Dfe.Acec.Web.Models.Partner;
+using Dfe.Acec.Web.Services;
+using Microsoft.Extensions.Localization;
+using System.ComponentModel.DataAnnotations;
+
+namespace Dfe.Acec.Web.Tests.Unit.Models.Partner;
+
+public class PartnerParentalLeaveViewModelTests
+{
+    private readonly JourneyState _journeyState;
+    private readonly Func<Type, object> _serviceProviderFunc;
+
+    public PartnerParentalLeaveViewModelTests()
+    {
+        _journeyState = new JourneyState();
+        var localizerFactory = AcecSubstitute.ForLocalizerFactory();
+        _serviceProviderFunc = serviceType =>
+        {
+            if (serviceType == typeof(JourneyState)) return _journeyState;
+            if (serviceType == typeof(IStringLocalizerFactory)) return localizerFactory;
+            return null!;
+        };
+    }
+
+    [Fact]
+    public void ConstructorInitializesPropertiesCorrectly()
+    {
+        _journeyState.PartnerParentalLeaveChildrenIds = ["child1", "child2"];
+        var backLink = "/previous-page";
+        var returnTo = "some-return-to-value";
+        var model = new PartnerParentalLeaveViewModel(_journeyState, backLink, returnTo);
+        Assert.Equal(backLink, model.BackLink);
+        Assert.Equal(returnTo, model.ReturnTo);
+        Assert.Equal(_journeyState.PartnerParentalLeaveChildrenIds, model.PartnerParentalLeaveChildrenIds);
+        Assert.Equal(_journeyState.Children.Values.ToList(), model.Children);
+    }
+
+    [Fact]
+    public void ValidateReturnsErrorWhenNoneSelectedWithOptions()
+    {
+        var model = new PartnerParentalLeaveViewModel()
+        {
+            PartnerParentalLeaveChildrenIds =
+            [
+                PartnerParentalLeaveViewModel.NoneSelectedValue,
+                "SomeOtherValue",
+            ],
+        };
+
+        var validationContext = new ValidationContext(model);
+        validationContext.InitializeServiceProvider(_serviceProviderFunc);
+
+        var validationResults = model.Validate(validationContext).ToList();
+
+        Assert.Single(validationResults);
+        Assert.Equal("Select which child your partner is on leave for, or 'None of these children'", validationResults[0].ErrorMessage);
+    }
+
+    [Fact]
+    public void ValidateReturnsErrorWhenOptionsAreEmpty()
+    {
+        var model = new PartnerParentalLeaveViewModel()
+        {
+            PartnerParentalLeaveChildrenIds = [],
+        };
+
+        var validationContext = new ValidationContext(model);
+        validationContext.InitializeServiceProvider(_serviceProviderFunc);
+
+        var validationResults = model.Validate(validationContext).ToList();
+
+        Assert.Single(validationResults);
+        Assert.Equal("Select which child your partner is on leave for, or 'None of these children'", validationResults[0].ErrorMessage);
+    }
+}

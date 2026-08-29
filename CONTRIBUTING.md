@@ -39,7 +39,8 @@ A quick setup requires:
 
 3. Run Unit and Component Tests:
    ```bash
-   dotnet test tests/Dfe.Acec.Tests.Unit
+   dotnet test tests/Dfe.Acec.Web.Tests.Unit
+   dotnet test tests/Dfe.Acec.RulesEngine.Tests.Unit
    ```
 
 4. Format and lint code:

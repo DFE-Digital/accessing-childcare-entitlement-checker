@@ -101,6 +101,6 @@ public static IServiceCollection AddRulesEngine(this IServiceCollection services
 
 Finally, let's prove our new scheme works exactly as expected!
 
-Create a new test file at `tests/Dfe.Acec.Tests.Unit/RulesEngine/Schemes/NewEntitlementSchemeTests.cs` and write a quick test to verify your logic.
+Create a new test file at `tests/Dfe.Acec.RulesEngine.Tests.Unit/Schemes/NewEntitlementSchemeTests.cs` and write a quick test to verify your logic.
 
 *Friendly tip: To see how the system orchestrates these rules conceptually under the hood, check out the [Rules engine explanation](/explanation/rules-engine/).*

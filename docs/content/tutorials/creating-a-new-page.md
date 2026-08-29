@@ -67,7 +67,7 @@ Navigate to `src/Dfe.Acec.Web/Views/NewJourneyPage` (you may need to create this
 
 It's a great habit to write a quick automated test for every new page to ensure it doesn't break in the future! We use Playwright for our End-to-End (E2E) tests.
 
-Open up your E2E test project and add a new scenario for your page (for example, in `tests/Dfe.Acec.Tests.E2e/Features/NewJourneyPage.feature`):
+Open up your E2E test project and add a new scenario for your page (for example, in `tests/Dfe.Acec.Web.Tests.E2e/Features/NewJourneyPage.feature`):
 
 ```gherkin
 Feature: New Journey Page

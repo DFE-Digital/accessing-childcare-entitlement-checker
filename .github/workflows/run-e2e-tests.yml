@@ -74,7 +74,7 @@ jobs:
           dotnet-version: ${{ steps.metadata.outputs.dotnet_version }}
 
       - name: Set execution permissions
-        run: chmod +x ./e2e-tests/Dfe.Acec.Tests.E2e
+        run: chmod +x ./e2e-tests/Dfe.Acec.Web.Tests.E2e
 
       - name: Install Playwright Browsers
         working-directory: e2e-tests
@@ -122,7 +122,7 @@ jobs:
           TestSettings__Browser: ${{ inputs.browser }}
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          dotnet test ./e2e-tests/Dfe.Acec.Tests.E2e.dll \
+          dotnet test ./e2e-tests/Dfe.Acec.Web.Tests.E2e.dll \
             --logger "trx;LogFileName=test-results.trx" \
             --results-directory ./TestResults \
             --verbosity normal

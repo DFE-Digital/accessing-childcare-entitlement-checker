@@ -16,10 +16,11 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   SOLUTION: Dfe.Acec.slnx
   WEB_APP: src/Dfe.Acec.Web/Dfe.Acec.Web.csproj
-  UNIT_TESTS: tests/Dfe.Acec.Tests.Unit/Dfe.Acec.Tests.Unit.csproj
-  INTEGRATION_TESTS: tests/Dfe.Acec.Tests.Integration/Dfe.Acec.Tests.Integration.csproj
-  E2E_TESTS: tests/Dfe.Acec.Tests.E2e/Dfe.Acec.Tests.E2e.csproj
-  A11Y_TESTS: tests/Dfe.Acec.Tests.A11y/Dfe.Acec.Tests.A11y.csproj
+  UNIT_TESTS_WEB: tests/Dfe.Acec.Web.Tests.Unit/Dfe.Acec.Web.Tests.Unit.csproj
+  UNIT_TESTS_RULES: tests/Dfe.Acec.RulesEngine.Tests.Unit/Dfe.Acec.RulesEngine.Tests.Unit.csproj
+  INTEGRATION_TESTS: tests/Dfe.Acec.Web.Tests.Integration/Dfe.Acec.Web.Tests.Integration.csproj
+  E2E_TESTS: tests/Dfe.Acec.Web.Tests.E2e/Dfe.Acec.Web.Tests.E2e.csproj
+  A11Y_TESTS: tests/Dfe.Acec.Web.Tests.A11y/Dfe.Acec.Web.Tests.A11y.csproj
   CONFIGURATION: Release
 
 jobs:
@@ -212,14 +213,23 @@ jobs:
       - name: Test
         id: test
         run: |
-          dotnet test ${{ env.UNIT_TESTS }} \
+          dotnet test ${{ env.UNIT_TESTS_WEB }} \
             -c ${{ env.CONFIGURATION }} \
             --no-build \
-            --results-directory ./TestResults/Tests.Unit \
-            --logger "trx;LogFileName=unit-test-results.trx" \
+            --results-directory ./TestResults/Web.Tests.Unit \
+            --logger "trx;LogFileName=unit-web-test-results.trx" \
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=opencover \
-            /p:CoverletOutput=TestResults/coverage/unit/
+            /p:CoverletOutput=TestResults/coverage/unit-web/
+          
+            dotnet test ${{ env.UNIT_TESTS_RULES }} \
+            -c ${{ env.CONFIGURATION }} \
+            --no-build \
+            --results-directory ./TestResults/RulesEngine.Tests.Unit \
+            --logger "trx;LogFileName=unit-rules-test-results.trx" \
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=opencover \
+            /p:CoverletOutput=TestResults/coverage/unit-rules/
           
           dotnet test ${{ env.INTEGRATION_TESTS }} \
             -c ${{ env.CONFIGURATION }} \

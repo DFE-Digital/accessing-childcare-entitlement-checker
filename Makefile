@@ -83,14 +83,21 @@ verify: build analyse test
 # ---------------------------------------------------------------------------
 
 test:
-	dotnet test tests/Dfe.Acec.Tests.Unit \
+	dotnet test tests/Dfe.Acec.Web.Tests.Unit \
 		--no-build \
 		--results-directory $(TEST_RESULTS) \
 		--logger "trx" \
 		/p:CollectCoverage=true \
 		/m:1
+		
+	dotnet test tests/Dfe.Acec.RulesEngine.Tests.Unit \
+		--no-build \
+		--results-directory $(TEST_RESULTS) \
+		--logger "trx" \
+		/p:CollectCoverage=true \
+		/m:1		
 
-	dotnet test tests/Dfe.Acec.Tests.Integration \
+	dotnet test tests/Dfe.Acec.Web.Tests.Integration \
 		--no-build \
 		--results-directory $(TEST_RESULTS) \
 		--logger "trx" \
@@ -98,17 +105,17 @@ test:
 		/m:1
 
 test-e2e:
-	dotnet test tests/Dfe.Acec.Tests.E2e \
+	dotnet test tests/Dfe.Acec.Web.Tests.E2e \
 		--no-build \
 		--logger:"console;verbosity=normal"
 
 test-a11y:
-	dotnet test tests/Dfe.Acec.Tests.A11y \
+	dotnet test tests/Dfe.Acec.Web.Tests.A11y \
 		--no-build \
 		--logger:"console;verbosity=normal"
 
 playwright-i:
-	pwsh ./.artifacts/bin/Dfe.Acec.Tests.E2e/debug/playwright.ps1 install --with-deps
+	pwsh ./.artifacts/bin/Dfe.Acec.Web.Tests.E2e/debug/playwright.ps1 install --with-deps
 
 # ---------------------------------------------------------------------------
 # Terraform

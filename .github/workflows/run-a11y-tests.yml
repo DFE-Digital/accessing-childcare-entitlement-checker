@@ -119,7 +119,7 @@ jobs:
           TestSettings__Browser: ${{ inputs.browser }}
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          dotnet test ./a11y-tests/Dfe.Acec.Tests.A11y.dll \
+          dotnet test ./a11y-tests/Dfe.Acec.Web.Tests.A11y.dll \
             --logger "trx;LogFileName=test-results.trx" \
             --results-directory ./TestResults
 

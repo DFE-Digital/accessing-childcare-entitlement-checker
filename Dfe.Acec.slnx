@@ -9,10 +9,11 @@
     <Project Path="src/Dfe.Acec.Web/Dfe.Acec.Web.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/Dfe.Acec.Tests.A11y/Dfe.Acec.Tests.A11y.csproj" />
-    <Project Path="tests/Dfe.Acec.Tests.E2e/Dfe.Acec.Tests.E2e.csproj" />
-    <Project Path="tests/Dfe.Acec.Tests.Integration/Dfe.Acec.Tests.Integration.csproj" />
-    <Project Path="tests/Dfe.Acec.Tests.Unit/Dfe.Acec.Tests.Unit.csproj" />
+    <Project Path="tests/Dfe.Acec.Web.Tests.A11y/Dfe.Acec.Web.Tests.A11y.csproj" />
+    <Project Path="tests/Dfe.Acec.Web.Tests.E2e/Dfe.Acec.Web.Tests.E2e.csproj" />
+    <Project Path="tests/Dfe.Acec.Web.Tests.Integration/Dfe.Acec.Web.Tests.Integration.csproj" />
+    <Project Path="tests/Dfe.Acec.Web.Tests.Unit/Dfe.Acec.Web.Tests.Unit.csproj" />
+    <Project Path="tests/Dfe.Acec.RulesEngine.Tests.Unit/Dfe.Acec.RulesEngine.Tests.Unit.csproj" />
   </Folder>
   <Folder Name="/src/Dfe.Acec.Shutter/">
     <File Path="src/Dfe.Acec.Shutter/package.json" />
