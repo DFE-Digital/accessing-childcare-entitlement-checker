@@ -5,7 +5,6 @@ using Dfe.Acec.Web.Services;
 using NSubstitute;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.FeatureManagement;
-using Dfe.Acec.Web;
 
 namespace Dfe.Acec.Web.Tests.Unit.Controllers;
 
