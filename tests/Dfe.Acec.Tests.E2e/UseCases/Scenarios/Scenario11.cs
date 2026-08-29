@@ -1,0 +1,34 @@
+using Dfe.Acec.Tests.E2e.UseCases.Builders;
+
+namespace Dfe.Acec.Tests.E2e.UseCases.Scenarios;
+
+internal sealed class Scenario11 : IUseCase
+{
+    public string Name => "Single parent not working, on carer's allowance";
+
+    public IEnumerable<JourneyStep> GetJourney()
+    {
+        return new JourneyBuilder()
+            .StartInLocation("England")
+
+            // Child 1
+            .AddChild(child => child
+                .WithName("Kurt")
+                .IsBorn("Yes")
+                .WithBirthDate(addYears: -1, addMonths: -7, addDays: -14)
+                .WithSupport("No, none of these apply"))
+
+            // Complete child details loop
+            .Action("Continue")
+
+            .SetUserAge("21 or over")
+            .SetNationality("British or Irish citizen")
+            .SetPaidWork("No, I am not in work")
+            .SetUniversalCredit("Yes")
+            .SetBenefits("Carer's Allowance")
+            .SetChildcareSupport("No, I do not get any of these")
+            .SetHasPartner("No")
+
+            .Build();
+    }
+}

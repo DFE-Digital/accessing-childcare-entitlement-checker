@@ -1,0 +1,88 @@
+@using Dfe.Acec.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.FeatureManagement
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@inject IViewLocalizer Localizer
+@inject IFeatureManager FeatureManager
+
+@{
+    var title = "Before you continue";
+    ViewData["Title"] = Localizer[title];
+}
+
+@section BeforeContent {
+    @if (await FeatureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
+    {
+        <govuk-back-link href="https://www.tax.service.gov.uk/childcare-calc/location">
+            @Shared["Button_Back"]
+        </govuk-back-link>
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            @Localizer[title]
+        </h1>
+
+        <govuk-inset-text>
+            @Localizer["You are now using a new service for people living in England to check what childcare support they may be eligible for."]
+        </govuk-inset-text>
+
+        <p class="govuk-body">
+            @Localizer["This is not an application for childcare support and your answers will not be shared."]
+        </p>
+
+        <h2 class="govuk-heading-m">
+            @Localizer["What you will need"]
+        </h2>
+
+        <p class="govuk-body">
+            @Localizer["You will need information about you and your partner, if you live with one, to answer questions about:"]
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@Localizer["children, including any you are expecting"]</li>
+            <li>@Localizer["work and income"]</li>
+            <li>@Localizer["nationality"]</li> 
+            <li>@Localizer["benefits you get"]</li>
+        </ul>
+        
+        <h2 class="govuk-heading-m">
+            @Localizer["Check if this service applies to you"]
+        </h2>
+        
+        <p class="govuk-body">
+            @Localizer["This service will not give accurate results if:"]
+        </p>
+        
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@Localizer["you do not live in England"]</li>
+            <li>@Localizer["your child is in local authority or foster care"]</li>
+            <li>@Localizer["your child does not live with you more than half of the time"]</li> 
+        </ul>
+        
+        <govuk-button-link
+            asp-controller="Home"
+            asp-action="@nameof(HomeController.Location)"
+            is-start-button="true"
+            class="govuk-!-margin-top-4 govuk-!-margin-bottom-6">
+
+            @Localizer["Continue"]
+
+        </govuk-button-link>
+        
+        
+        <h2 class="govuk-heading-m">
+            @Localizer["If you need more help understanding childcare support"]
+        </h2>
+
+        <p class="govuk-body">
+            @Localizer["If you cannot use this service, or need more help understanding what childcare support may be available, you can"]
+            <a class="govuk-link" href="https://www.gov.uk/find-local-council">
+                @Localizer["contact your local council"]
+            </a>.
+        </p>
+        
+    </div>
+</div>

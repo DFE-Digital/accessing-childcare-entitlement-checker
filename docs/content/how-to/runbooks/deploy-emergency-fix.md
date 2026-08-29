@@ -28,21 +28,21 @@ Implement the required code correction within the C# projects, then run the full
 
 1. **Verify rules engine calculations:**
    ```bash
-   dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests
+   dotnet test tests/Dfe.Acec.Tests.Unit
    ```
 2. **Verify database and integration dependencies:**
    ```bash
-   dotnet test tests/AccessingChildcareEntitlementChecker.IntegrationTests
+   dotnet test tests/Dfe.Acec.Tests.Integration
    ```
 3. **Verify user journeys (E2E) in the browser:**
    Ensure the local web application is running, configure `appsettings.Local.json` in the test folder with your local URL, and run:
    ```bash
-   dotnet test tests/AccessingChildcareEntitlementChecker.E2eTests --no-build
+   dotnet test tests/Dfe.Acec.Tests.E2e --no-build
    ```
 4. **Verify accessibility compliance:**
    Ensure the local web application is running, and run the automated accessibility tests:
    ```bash
-   dotnet test tests/AccessingChildcareEntitlementChecker.A11yTests --no-build
+   dotnet test tests/Dfe.Acec.Tests.A11y --no-build
    ```
 
 ## Step 3: Trigger the Pull Request and run automated CI validation

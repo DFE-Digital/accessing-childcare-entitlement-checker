@@ -1,0 +1,579 @@
+using Dfe.Acec.RulesEngine.Dtos.Responses;
+using Dfe.Acec.RulesEngine.Helpers;
+using Dfe.Acec.RulesEngine.Types;
+using Dfe.Acec.Web.Mappers;
+using Microsoft.Extensions.Localization;
+using NSubstitute;
+
+namespace Dfe.Acec.Tests.Unit.Mappers;
+
+public class EntitlementResponseToResultsSummaryViewModelMapperTests
+{
+    private readonly EntitlementResponseToResultsSummaryViewModelMapper _mapper;
+
+    private static DateOnly GetThirtyHoursApplyFrom(DateOnly dateOfBirth) =>
+        dateOfBirth.AddDays(23 * 7);
+
+    private static DateOnly GetThirtyHoursUseFrom(DateOnly dateOfBirth) =>
+        TermDateCalculator.GetNextTermStartDate(dateOfBirth.AddMonths(9));
+
+    private static DateOnly GetFifteenHoursUniversalUseFrom(DateOnly dateOfBirth) =>
+        TermDateCalculator.GetNextTermStartDate(dateOfBirth.AddYears(3));
+
+    private static DateOnly GetDisadvantagedTwoYearOldUseFrom(DateOnly dateOfBirth) =>
+        TermDateCalculator.GetNextTermStartDate(dateOfBirth.AddYears(2));
+
+    public EntitlementResponseToResultsSummaryViewModelMapperTests()
+    {
+        var localizerFactory = Substitute.For<IStringLocalizerFactory>();
+        var localizer = Substitute.For<IStringLocalizer>();
+
+        localizerFactory.Create(Arg.Any<string>(), Arg.Any<string>()).Returns(localizer);
+
+        localizer[Arg.Any<string>()]
+            .Returns(call =>
+            {
+                var key = call.Arg<string>();
+
+                return new LocalizedString(
+                    key,
+                    key);
+            });
+
+        localizer[Arg.Any<string>(), Arg.Any<object[]>()]
+            .Returns(call =>
+            {
+                var key = call.ArgAt<string>(0);
+
+                return new LocalizedString(
+                    key,
+                    key);
+            });
+
+        _mapper = new EntitlementResponseToResultsSummaryViewModelMapper(localizerFactory);
+    }
+
+    private static EntitlementResponse CreateTestEntitlementResponse()
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+
+        var katieDob = today.AddYears(-3);
+        var jackDob = today.AddMonths(-6);
+        var emilyDob = today.AddYears(-1);
+        var miaDob = today.AddYears(-2);
+        var oliverDob = today.AddMonths(-1);
+        var tomDob = today.AddYears(-3);
+        var timDob = today.AddYears(-3);
+
+        return new EntitlementResponse()
+        {
+            ChildResults =
+            [
+                // Child 1 - eligible now, triggers 30-hour warning
+                new ChildResultDto
+                {
+                    ChildId = "child-1",
+                    ChildName = "Katie",
+                    IsBorn = true,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
+                            EligibleNow = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(katieDob),
+                            UseFromDate = GetThirtyHoursUseFrom(katieDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursUniversal,
+                            EligibleNow = true,
+                            UseFromDate = GetFifteenHoursUniversalUseFrom(katieDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.TaxFreeChildcare,
+                            EligibleNow = true
+                        }
+                    ]
+                },
+
+                // Child 2 - born but not yet eligible for FCWP
+                new ChildResultDto
+                {
+                    ChildId = "child-2",
+                    ChildName = "Jack",
+                    IsBorn = true,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
+                            EligibleInFuture = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(jackDob),
+                            UseFromDate = GetThirtyHoursUseFrom(jackDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.TaxFreeChildcare,
+                            EligibleNow = true
+                        }
+                    ]
+                },
+
+                // Child 3 - unborn
+                new ChildResultDto
+                {
+                    ChildId = "child-3",
+                    ChildName = "Baby Smith",
+                    IsBorn = false,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
+                            EligibleInFuture = true
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.TaxFreeChildcare,
+                            EligibleInFuture = true
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.UniversalCreditChildcare,
+                            EligibleInFuture = true
+                        }
+                    ]
+                },
+
+                // Child 4 - disadvantaged 2 yr old Eligible in future
+                new ChildResultDto
+                {
+                    ChildId = "child-4",
+                    ChildName = "Emily",
+                    IsBorn = true,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursForDisadvantagedChildren,
+                            EligibleInFuture = true,
+                            ApplyFromDate = emilyDob.AddYears(2),
+                            UseFromDate = GetDisadvantagedTwoYearOldUseFrom(emilyDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
+                            EligibleNow = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(emilyDob),
+                            UseFromDate = GetThirtyHoursUseFrom(emilyDob)
+                        },
+                    ]
+                },
+
+                // Child 5 - disadvantaged 2 yr old Eligible now
+                new ChildResultDto
+                {
+                    ChildId = "child-5",
+                    ChildName = "Mia",
+                    IsBorn = true,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursForDisadvantagedChildren,
+                            EligibleNow = true,
+                            ApplyFromDate = miaDob.AddYears(2),
+                            UseFromDate = GetDisadvantagedTwoYearOldUseFrom(miaDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
+                            EligibleNow = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(miaDob),
+                            UseFromDate = GetThirtyHoursUseFrom(miaDob)
+                        },
+                    ]
+                },
+                // Child 6 - UC Eligible now
+                new ChildResultDto
+                {
+                    ChildId = "child-6",
+                    ChildName = "Alfie",
+                    IsBorn = true,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.UniversalCreditChildcare,
+                            EligibleNow = true
+                        },
+                    ]
+                },
+                // Child 7 - born, less than 23 weeks old
+                new ChildResultDto
+                {
+                    ChildId = "child-7",
+                    ChildName = "Oliver",
+                    IsBorn = true,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
+                            EligibleInFuture = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(oliverDob),
+                            UseFromDate = GetThirtyHoursUseFrom(oliverDob)
+                        }
+                    ]
+                },
+                // Child 8 - born, 15 hours eligible now
+                new ChildResultDto
+                {
+                    ChildId = "child-8",
+                    ChildName = "Tom",
+                    IsBorn = true,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursUniversal,
+                            EligibleNow = true,
+                            UseFromDate = GetFifteenHoursUniversalUseFrom(tomDob)
+                        }
+                    ]
+                },
+                // Child 9 - synthetic result containing every scheme to test display ordering
+                new ChildResultDto
+                {
+                    ChildId = "child-9",
+                    ChildName = "Tim",
+                    IsBorn = true,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursUniversal,
+                            EligibleNow = true,
+                            UseFromDate = GetFifteenHoursUniversalUseFrom(timDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.FifteenHoursForDisadvantagedChildren,
+                            EligibleNow = true,
+                            ApplyFromDate = timDob.AddYears(2),
+                            UseFromDate = GetDisadvantagedTwoYearOldUseFrom(timDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.ThirtyHoursForWorkingFamilies,
+                            EligibleNow = true,
+                            ApplyFromDate = GetThirtyHoursApplyFrom(timDob),
+                            UseFromDate = GetThirtyHoursUseFrom(timDob)
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.TaxFreeChildcare,
+                            EligibleNow = true
+                        },
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.UniversalCreditChildcare,
+                            EligibleNow = true
+                        }
+                    ]
+                }
+            ]
+        };
+    }
+
+    [Fact]
+    public void MapChildName()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Katie");
+
+        Assert.Equal("Katie", child.Name);
+    }
+
+    [Fact]
+    public void MapSchemeName()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Katie");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.TaxFreeChildcare);
+
+        Assert.Equal("TaxFreeChildcare_Name", scheme.Name);
+    }
+
+    [Fact]
+    public void MapSchemeDescription()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Katie");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.TaxFreeChildcare);
+
+        Assert.Equal("TaxFreeChildcare_Description", scheme.WhatYouGet);
+    }
+
+    [Fact]
+    public void MapOrdersSchemesInExpectedOrder()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.ChildId == "child-9");
+
+        Assert.Collection(child.Schemes,
+            scheme => Assert.Equal(SchemeCode.TaxFreeChildcare, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.UniversalCreditChildcare, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.ThirtyHoursForWorkingFamilies, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.FifteenHoursForDisadvantagedChildren, scheme.SchemeCode),
+            scheme => Assert.Equal(SchemeCode.FifteenHoursUniversal, scheme.SchemeCode));
+    }
+
+    [Fact]
+    public void MapShowsThirtyHourWarningWhenThirtyHoursAndFifteenHoursUniversalPresent()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Katie");
+
+        Assert.True(child.ShowThirtyHourWarning);
+    }
+
+    [Fact]
+    public void MapShowsThirtyHourWarningWhenThirtyHoursAndDisadvantagedFifteenHoursPresent()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Emily");
+
+        Assert.True(child.ShowThirtyHourWarning);
+    }
+
+    [Fact]
+    public void MapFifteenHoursUniversalReturnsAskYourChildcareProviderOrLocalCouncil()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Katie");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.FifteenHoursUniversal);
+
+        Assert.Equal("WhenToApply_AskProviderOrCouncil", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapFifteenHoursForDisadvantagedChildrenEligibleNowReturnsNow()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Mia");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.FifteenHoursForDisadvantagedChildren);
+
+        Assert.Equal("WhenToApply_Now", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapFifteenHoursForDisadvantagedChildrenEligibleInFutureReturnsApplyFromDate()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Emily");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.FifteenHoursForDisadvantagedChildren);
+
+        Assert.Equal("WhenToApply_FromDate", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapThirtyHoursForWorkingFamiliesEligibleNowReturnsNow()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Katie");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies);
+
+        Assert.Equal("WhenToApply_Now", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapThirtyHoursForWorkingFamiliesBornAndEligibleToApplyNowReturnsNow()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Jack");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies);
+
+        Assert.Equal("WhenToApply_Now", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapThirtyHoursForWorkingFamiliesUnbornAndEligibleInFutureReturnsWhenTheyAreTwentyThreeWeeksOld()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Baby Smith");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies);
+
+        Assert.Equal("WhenToApply_WhenTwentyThreeWeeksOld", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapThirtyHoursForWorkingFamiliesBornAndEligibleToApplyInFutureReturnsApplyFromDate()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Oliver");
+
+        var scheme = child.Schemes.Single(x =>
+            x.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies);
+
+        Assert.Equal("WhenToApply_FromDate", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapTaxFreeChildcareEligibleNowReturnsNow()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Katie");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.TaxFreeChildcare);
+
+        Assert.Equal("WhenToApply_Now", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapTaxFreeChildcareEligibleInFutureReturnsWhenTheyAreBorn()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Baby Smith");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.TaxFreeChildcare);
+
+        Assert.Equal("WhenToApply_WhenBorn", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapUniversalCreditChildcareUnbornEligibleInFutureReturnsWhenTheyAreBorn()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Baby Smith");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.UniversalCreditChildcare);
+
+        Assert.Equal("WhenToApply_WhenBorn", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapUniversalCreditChildcareEligibleNowReturnsNow()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Alfie");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.UniversalCreditChildcare);
+
+        Assert.Equal("WhenToApply_Now", scheme.WhenToApply);
+    }
+
+    [Fact]
+    public void MapDoesNotShowThirtyHourWarningWhenThirtyHoursSchemeMissing()
+    {
+        var response = CreateTestEntitlementResponse();
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.Name == "Tom");
+
+        Assert.False(child.ShowThirtyHourWarning);
+    }
+
+    [Theory]
+    [InlineData(ParentalLeaveParty.User, "WhenToApply_TaxFreeChildcare_UserParentalLeave")]
+    [InlineData(ParentalLeaveParty.Partner, "WhenToApply_TaxFreeChildcare_PartnerParentalLeave")]
+    [InlineData(ParentalLeaveParty.UserAndPartner, "WhenToApply_TaxFreeChildcare_UserAndPartnerParentalLeave")]
+    public void MapTaxFreeChildcareParentalLeaveReturnsExpectedWhenToApply(ParentalLeaveParty parentalLeaveParty, string expectedText)
+    {
+        var response = new EntitlementResponse
+        {
+            ChildResults =
+            [
+                new ChildResultDto
+                {
+                    ChildId = "child-9",
+                    ChildName = "Bradley",
+                    IsBorn = true,
+                    Schemes =
+                    [
+                        new SchemeResultDto
+                        {
+                            SchemeCode = SchemeCode.TaxFreeChildcare,
+                            EligibleNow = true,
+                            ApplyAndStartAffectedByParentalLeave = parentalLeaveParty
+                        }
+                    ]
+                }
+            ]
+        };
+
+        var result = _mapper.Map(response);
+
+        var child = result.Children.Single(x => x.ChildId == "child-9");
+
+        var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.TaxFreeChildcare);
+
+        Assert.Equal(expectedText, scheme.WhenToApply);
+    }
+
+}
+
+
+

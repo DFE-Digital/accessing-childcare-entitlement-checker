@@ -39,7 +39,7 @@ A quick setup requires:
 
 3. Run Unit and Component Tests:
    ```bash
-   dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests
+   dotnet test tests/Dfe.Acec.Tests.Unit
    ```
 
 4. Format and lint code:

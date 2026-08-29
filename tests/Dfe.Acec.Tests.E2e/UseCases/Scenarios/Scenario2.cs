@@ -1,0 +1,52 @@
+using Dfe.Acec.Tests.E2e.UseCases.Builders;
+
+namespace Dfe.Acec.Tests.E2e.UseCases.Scenarios;
+
+internal sealed class Scenario2 : IUseCase
+{
+    public string Name => "One parent on carer's allowance, child receives DLA";
+
+    public IEnumerable<JourneyStep> GetJourney()
+    {
+        return new JourneyBuilder()
+            .StartInLocation("England")
+
+            // Child 1
+            .AddChild(child => child
+                .WithName("Katherine")
+                .IsBorn("Yes")
+                .WithBirthDate(addYears: -9, addMonths: -7, addDays: -14)
+                .WithSupport("No, none of these apply"))
+
+            // Action: Add another child
+            .Action("Add another child")
+
+            // Child 2
+            .AddChild(child => child
+                .WithName("Tom")
+                .IsBorn("Yes")
+                .WithBirthDate(addYears: -2, addMonths: -11, addDays: 1)
+                .WithSupport("Disability Living Allowance (DLA)"))
+
+            // Complete child details loop
+            .Action("Continue")
+
+            .SetUserAge("21 or over")
+            .SetNationality("British or Irish citizen")
+            .SetPaidWork("No, I am not in work")
+            .SetUniversalCredit("No")
+            .SetBenefits("Carer's Allowance")
+            .SetChildcareSupport("No, I do not get any of these")
+            .SetHasPartner("Yes")
+
+            .SetPartnerAge("21 or over")
+            .SetPartnerPaidWork("Yes, they are currently in work")
+            .SetPartnerWorkStatus("Paid employment")
+            .SetPartnerWeeklyEarnings("Yes")
+            .SetPartnerYearlyEarnings("No")
+            .SetPartnerBenefits("No, they do not get any of these benefits")
+            .SetPartnerChildcareSupport("No, they do not get any of these")
+
+            .Build();
+    }
+}

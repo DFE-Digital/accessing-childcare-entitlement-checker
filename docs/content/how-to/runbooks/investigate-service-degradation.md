@@ -54,7 +54,7 @@ AppServiceConsoleLogs
 ## Step 3: Identify and mitigate the root cause
 
 ### Scenario A: Mitigate spiking logic exceptions in the rules engine
-1. If logs point to exceptions within `AccessingChildcareEntitlementChecker.RulesEngine.Services`, isolate the specific bad input (e.g., unexpected date format or null references in household facts) causing the crash.
+1. If logs point to exceptions within `Dfe.Acec.RulesEngine.Services`, isolate the specific bad input (e.g., unexpected date format or null references in household facts) causing the crash.
 2. Implement a code fix and execute **Runbook: Deploy an emergency fix**.
 
 ### Scenario B: Mitigate resource starvation (CPU/Memory exhaustion)

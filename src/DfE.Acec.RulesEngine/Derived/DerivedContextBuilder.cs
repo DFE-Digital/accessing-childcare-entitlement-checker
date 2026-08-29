@@ -1,0 +1,96 @@
+using Dfe.Acec.RulesEngine.Dtos.Requests;
+using Dfe.Acec.RulesEngine.Helpers;
+using Dfe.Acec.RulesEngine.Types;
+
+namespace Dfe.Acec.RulesEngine.Derived;
+
+public static class DerivedContextBuilder
+{
+    public static DerivedContext Build(EntitlementRequest request, DateOnly today)
+    {
+        var user = BuildPersonFacts(request.User);
+        var partner = request.Partner is null ? null : BuildPersonFacts(request.Partner);
+        var children = request.Children
+            .Select(child => BuildChildFacts(child, today))
+            .ToList();
+        var household = BuildHouseholdFacts(request);
+
+        return new DerivedContext
+        {
+            User = user,
+            Partner = partner,
+            Children = children,
+            Household = household
+        };
+    }
+
+    private static HouseholdFacts BuildHouseholdFacts(
+        EntitlementRequest request)
+    {
+        return new HouseholdFacts
+        {
+            HasPartner = request.Household.HasPartner,
+
+            ReceivesUniversalCredit = request.Household.ReceivesUniversalCredit,
+
+            HasAccessToPublicFunds =
+                HasAccessToPublicFunds(request.User) ||
+                request.Partner is not null &&
+                HasAccessToPublicFunds(request.Partner),
+
+            LivesInGreatBritain =
+                request.Household.CountryOfResidence is
+                    CountryOfResidence.England
+                    or CountryOfResidence.Scotland
+                    or CountryOfResidence.Wales,
+
+            CountryOfResidence = request.Household.CountryOfResidence
+        };
+    }
+
+    private static PersonFacts BuildPersonFacts(PersonDto person)
+    {
+        return new PersonFacts
+        {
+            PaidWorkStatus = person.PaidWorkStatus,
+            SelfEmployedLessThan12Months = person.SelfEmployedLessThan12Months == true,
+            EarnsAboveThreshold = person.EarnsAboveThreshold == true,
+            ExceedsAdjustedNetIncomeLimit = person.ExceedsAdjustedNetIncomeLimit == true,
+            Benefits = person.Benefits.ToList(),
+            ChildcareSupport = person.ChildcareSupport.ToList()
+        };
+    }
+
+    private static ChildFacts BuildChildFacts(ChildDto child, DateOnly today)
+    {
+        int? ageInYears = child.DateOfBirth is null
+            ? null
+            : AgeCalculations.CalculateAgeInYears(child.DateOfBirth.Value, today);
+
+        int? ageInMonths = child.DateOfBirth is null
+            ? null
+            : AgeCalculations.CalculateAgeInMonths(
+                child.DateOfBirth.Value,
+                today);
+
+        return new ChildFacts
+        {
+            ChildId = child.ChildId,
+            Name = child.Name,
+            IsBorn = child.BirthStatus == BirthStatus.Born,
+            DateOfBirth = child.DateOfBirth,
+            DueDate = child.DueDate,
+            AgeInYears = ageInYears,
+            AgeInMonths = ageInMonths,
+            ChildRelatedBenefits = child.ChildRelatedBenefits.ToList(),
+            UserIsOnParentalLeaveForChild = child.UserIsOnParentalLeaveForChild,
+            PartnerIsOnParentalLeaveForChild = child.PartnerIsOnParentalLeaveForChild,
+        };
+    }
+
+    private static bool HasAccessToPublicFunds(PersonDto person)
+    {
+        return person.Nationality == Nationality.BritishOrIrishCitizen
+               || person.HasSettledOrPreSettledStatus == true;
+    }
+}

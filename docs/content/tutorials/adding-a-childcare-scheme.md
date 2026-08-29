@@ -16,7 +16,7 @@ By the end of this guide, you'll have created a new scheme, registered it, and w
 
 First things first, we need to give our new scheme a name. The system identifies all our different childcare schemes using a shared list (an `enum`).
 
-Open up `src/AccessingChildcareEntitlementChecker.RulesEngine/Types/SchemeCode.cs` and add your new scheme to the bottom of the list:
+Open up `src/Dfe.Acec.RulesEngine/Types/SchemeCode.cs` and add your new scheme to the bottom of the list:
 
 ```csharp
 public enum SchemeCode
@@ -30,15 +30,15 @@ public enum SchemeCode
 
 Next, let's write the actual business logic! The Rules Engine uses the "Strategy Pattern", which means every scheme gets its own dedicated, isolated class.
 
-Create a new file in the `src/AccessingChildcareEntitlementChecker.RulesEngine/Schemes` folder named `NewEntitlementSchemeEvaluator.cs`. We will implement the `ISchemeEvaluator` interface here.
+Create a new file in the `src/Dfe.Acec.RulesEngine/Schemes` folder named `NewEntitlementSchemeEvaluator.cs`. We will implement the `ISchemeEvaluator` interface here.
 
 ```csharp
-using AccessingChildcareEntitlementChecker.RulesEngine.Derived;
-using AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses;
-using AccessingChildcareEntitlementChecker.RulesEngine.Evaluators;
-using AccessingChildcareEntitlementChecker.RulesEngine.Types;
+using Dfe.Acec.RulesEngine.Derived;
+using Dfe.Acec.RulesEngine.Dtos.Responses;
+using Dfe.Acec.RulesEngine.Evaluators;
+using Dfe.Acec.RulesEngine.Types;
 
-namespace AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
+namespace Dfe.Acec.RulesEngine.Schemes;
 
 public class NewEntitlementSchemeEvaluator : ISchemeEvaluator
 {
@@ -78,7 +78,7 @@ public class NewEntitlementSchemeEvaluator : ISchemeEvaluator
 
 Now that we have written our scheme, we need to tell the application about it so it can run it! We do this by registering it in the Dependency Injection (DI) container.
 
-Open `src/AccessingChildcareEntitlementChecker.RulesEngine/Extensions/ServiceCollectionExtensions.cs` and add your new evaluator to the list:
+Open `src/Dfe.Acec.RulesEngine/Extensions/ServiceCollectionExtensions.cs` and add your new evaluator to the list:
 
 ```csharp
 public static IServiceCollection AddRulesEngine(this IServiceCollection services)
@@ -101,6 +101,6 @@ public static IServiceCollection AddRulesEngine(this IServiceCollection services
 
 Finally, let's prove our new scheme works exactly as expected!
 
-Create a new test file at `tests/AccessingChildcareEntitlementChecker.UnitTests/RulesEngine/Schemes/NewEntitlementSchemeTests.cs` and write a quick test to verify your logic.
+Create a new test file at `tests/Dfe.Acec.Tests.Unit/RulesEngine/Schemes/NewEntitlementSchemeTests.cs` and write a quick test to verify your logic.
 
 *Friendly tip: To see how the system orchestrates these rules conceptually under the hood, check out the [Rules engine explanation](/explanation/rules-engine/).*

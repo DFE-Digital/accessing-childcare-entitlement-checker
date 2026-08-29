@@ -14,7 +14,7 @@ Configure and toggle feature flags to enable, disable, or test in-development ap
 
 Manage feature flags for local execution by editing the local JSON configuration file.
 
-1. **Create the file** `src/AccessingChildcareEntitlementChecker.Web/appsettings.Local.json` if it does not already exist.
+1. **Create the file** `src/Dfe.Acec.Web/appsettings.Local.json` if it does not already exist.
 2. **Configure the feature flags block** using the following structure:
    ```json
    {

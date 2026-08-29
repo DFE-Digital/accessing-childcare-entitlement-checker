@@ -68,6 +68,6 @@ terraform.tfstate*
 .notebook/
 
 # Shutter service generated files
-src/AccessingChildcareEntitlementChecker.Shutter/node_modules/
-src/AccessingChildcareEntitlementChecker.Shutter/assets/
+src/Dfe.Acec.Shutter/node_modules/
+src/Dfe.Acec.Shutter/assets/
 

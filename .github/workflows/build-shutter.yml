@@ -21,14 +21,14 @@ jobs:
       - name: Install dependencies and compile assets
         if: inputs.publish
         run: |
-          cd src/AccessingChildcareEntitlementChecker.Shutter
+          cd src/Dfe.Acec.Shutter
           npm ci
           npm run build
 
       - name: Zip Shutter Content
         if: inputs.publish
         run: |
-          cd src/AccessingChildcareEntitlementChecker.Shutter
+          cd src/Dfe.Acec.Shutter
           zip -r ../../shutter-content.zip index.html assets
 
       - name: Upload Shutter Content Artifact
