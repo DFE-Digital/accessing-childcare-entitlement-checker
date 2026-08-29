@@ -17,24 +17,45 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Checkout
-        if: ${{ env.INFRACOST_API_KEY != '' }}
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Setup Infracost
         if: ${{ env.INFRACOST_API_KEY != '' }}
         uses: infracost/actions/setup@v3
         with:
           api-key: ${{ env.INFRACOST_API_KEY }}
 
-      - name: Generate Infracost cost estimate
+      - name: Checkout base branch
         if: ${{ env.INFRACOST_API_KEY != '' }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+
+      - name: Generate Infracost cost estimate baseline
+        if: ${{ env.INFRACOST_API_KEY != '' }}
+        continue-on-error: true
         run: |
           infracost breakdown --path=infra/terraform \
                               --format=json \
-                              --out-file=/tmp/infracost.json
+                              --out-file=/tmp/infracost-base.json
+
+      - name: Checkout PR branch
+        if: ${{ env.INFRACOST_API_KEY != '' }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate Infracost diff
+        if: ${{ env.INFRACOST_API_KEY != '' }}
+        run: |
+          if [ -s /tmp/infracost-base.json ]; then
+            infracost diff --path=infra/terraform \
+                           --format=json \
+                           --compare-to=/tmp/infracost-base.json \
+                           --out-file=/tmp/infracost.json
+          else
+            infracost breakdown --path=infra/terraform \
+                                --format=json \
+                                --out-file=/tmp/infracost.json
+          fi
 
       - name: Post Infracost comment
         if: ${{ env.INFRACOST_API_KEY != '' }}
