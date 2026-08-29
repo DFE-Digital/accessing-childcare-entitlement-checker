@@ -1,4 +1,4 @@
-﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ComponentGeneration;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;

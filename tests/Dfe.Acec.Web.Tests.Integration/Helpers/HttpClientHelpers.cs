@@ -1,4 +1,4 @@
-﻿namespace Dfe.Acec.Web.Tests.Integration.Helpers;
+namespace Dfe.Acec.Web.Tests.Integration.Helpers;
 
 public static class HttpClientHelpers
 {

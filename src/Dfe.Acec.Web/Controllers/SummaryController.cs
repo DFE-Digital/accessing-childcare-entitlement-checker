@@ -1,17 +1,12 @@
 using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Filters;
 using Dfe.Acec.Web.Models;
-using Dfe.Acec.Web.Models.BornChildDetails;
-using Dfe.Acec.Web.Models.ExpectedChildDetails;
-using Dfe.Acec.Web.Models.Partner;
 using Dfe.Acec.Web.Models.Summary;
-using Dfe.Acec.Web.Models.User;
 using Dfe.Acec.Web.Services;
+using Dfe.Acec.Web.Services.Summary;
 using Dfe.Acec.Web.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using Microsoft.FeatureManagement;
 
 namespace Dfe.Acec.Web.Controllers;
 
@@ -19,10 +14,9 @@ namespace Dfe.Acec.Web.Controllers;
 public partial class SummaryController(
     JourneyState journeyState,
     IJourneySession journeySession,
-    IStringLocalizerFactory stringLocalizerFactory,
     IValidator<JourneyState> journeyStateValidator,
     ILogger<SummaryController> logger,
-    IFeatureManager featureManager)
+    ISummaryViewModelBuilder summaryViewModelBuilder)
     : Controller
 {
     public const string Name = "Summary";
@@ -33,7 +27,7 @@ public partial class SummaryController(
     {
         var removedChildNames = CheckForIncompleteChildren();
 
-        return View(BuildCheckChildDetailsViewModel(childId, removedChildNames));
+        return View(summaryViewModelBuilder.BuildCheckChildDetailsViewModel(journeyState, Url, childId, removedChildNames));
     }
 
     [HttpPost]
@@ -48,7 +42,7 @@ public partial class SummaryController(
             }
 
             ModelState.AddValidationErrors(result);
-            return View(BuildCheckChildDetailsViewModel());
+            return View(summaryViewModelBuilder.BuildCheckChildDetailsViewModel(journeyState, Url));
         }
 
         LogCorrelationIdMismatch();
@@ -61,7 +55,7 @@ public partial class SummaryController(
     {
         var removedChildNames = CheckForIncompleteChildren();
 
-        return View(await BuildCheckAnswersViewModel(fromChildId, removedChildNames));
+        return View(await summaryViewModelBuilder.BuildCheckAnswersViewModelAsync(journeyState, Url, fromChildId, removedChildNames));
     }
 
     [HttpPost]
@@ -156,67 +150,6 @@ public partial class SummaryController(
         return removedChildNames;
     }
 
-    private CheckChildDetailsViewModel BuildCheckChildDetailsViewModel(string? childId = null, IReadOnlyList<string>? removedChildNames = null)
-    {
-        var summaries = journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckChildDetails)).ToList().AsReadOnly();
-        var hasChildren = journeyState.Children.Count > 0;
-        var lastEditedChild = ResolveLastEditedChild(journeyState, childId);
-        var backLink = GetCheckChildDetailsBackLink(lastEditedChild);
-        return new CheckChildDetailsViewModel(summaries, hasChildren, lastEditedChild, backLink, journeyState.CorrelationId, removedChildNames ?? []);
-    }
-
-    private async Task<CheckAnswersViewModel> BuildCheckAnswersViewModel(string? fromChildId = null, IReadOnlyList<string>? removedChildNames = null)
-    {
-        var summaries = journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckAnswers)).ToList().AsReadOnly();
-        var hasChildren = journeyState.Children.Count > 0;
-        var lastEditedChild = ResolveLastEditedChild(journeyState, fromChildId);
-
-        var homeBuilder = new SummaryRowFactory(
-            MetadataProvider,
-            "Home",
-            stringLocalizerFactory);
-
-        if (!await featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
-        {
-            homeBuilder.AddLocation(journeyState.CountryOfResidence);
-        }
-
-        var userBuilder = new SummaryRowFactory(MetadataProvider, "User", stringLocalizerFactory)
-            .AddUserAge(journeyState.UserAge)
-            .Add((NationalityViewModel m) => m.Nationality, journeyState.Nationality, nameof(UserController.Nationality))
-            .Add((SettledStatusViewModel m) => m.SettledStatus, journeyState.SettledStatus, nameof(UserController.SettledStatus))
-            .Add((PaidWorkViewModel m) => m.PaidWork, journeyState.PaidWork, nameof(UserController.PaidWork))
-            .AddParentalLeave(journeyState)
-            .Add((WorkStatusViewModel m) => m.WorkStatus, journeyState.WorkStatus, nameof(UserController.WorkStatus))
-            .Add((SelfEmployedDurationViewModel m) => m.SelfEmployedDuration, journeyState.SelfEmployedDuration, nameof(UserController.SelfEmployedDuration))
-            .AddWeeklyEarnings(journeyState)
-            .Add((YearlyEarningsViewModel m) => m.YearlyEarnings, journeyState.YearlyEarnings, nameof(UserController.YearlyEarnings))
-            .Add((UniversalCreditViewModel m) => m.UniversalCredit, journeyState.UniversalCredit, nameof(UserController.UniversalCredit))
-            .Add((BenefitsViewModel m) => m.Benefits, journeyState.Benefits, nameof(UserController.Benefits))
-            .Add((ChildcareSupportViewModel m) => m.ChildcareSupport, journeyState.ChildcareSupport, nameof(UserController.ChildcareSupport))
-            .Add((ChildcareVoucherReceiptViewModel m) => m.ChildcareVoucherReceipt, journeyState.ChildcareVoucherReceipt, nameof(UserController.ChildcareVoucherReceipt))
-            .AddHasPartner(journeyState.HasPartner);
-
-        var partnerBuilder = new SummaryRowFactory(MetadataProvider, "Partner", stringLocalizerFactory)
-            .AddPartnerAge(journeyState.PartnerAge)
-            .Add((PartnerNationalityViewModel m) => m.PartnerNationality, journeyState.PartnerNationality, nameof(PartnerController.PartnerNationality))
-            .Add((PartnerSettledStatusViewModel m) => m.PartnerSettledStatus, journeyState.PartnerSettledStatus, nameof(PartnerController.PartnerSettledStatus))
-            .Add((PartnerPaidWorkViewModel m) => m.PartnerPaidWork, journeyState.PartnerPaidWork, nameof(PartnerController.PartnerPaidWork))
-            .AddPartnerParentalLeave(journeyState)
-            .Add((PartnerWorkStatusViewModel m) => m.PartnerWorkStatus, journeyState.PartnerWorkStatus, nameof(PartnerController.PartnerWorkStatus))
-            .Add((PartnerSelfEmployedDurationViewModel m) => m.PartnerSelfEmployedDuration, journeyState.PartnerSelfEmployedDuration, nameof(PartnerController.PartnerSelfEmployedDuration))
-            .AddPartnerWeeklyEarnings(journeyState)
-            .Add((PartnerYearlyEarningsViewModel m) => m.PartnerYearlyEarnings, journeyState.PartnerYearlyEarnings, nameof(PartnerController.PartnerYearlyEarnings))
-            .Add((PartnerBenefitsViewModel m) => m.PartnerBenefits, journeyState.PartnerBenefits, nameof(PartnerController.PartnerBenefits))
-            .Add((PartnerChildcareSupportViewModel m) => m.PartnerChildcareSupport, journeyState.PartnerChildcareSupport, nameof(PartnerController.PartnerChildcareSupport))
-            .Add((PartnerChildcareVoucherReceiptViewModel m) => m.PartnerChildcareVoucherReceipt, journeyState.PartnerChildcareVoucherReceipt, nameof(PartnerController.PartnerChildcareVoucherReceipt));
-
-        var userDetails = homeBuilder.ViewModels.Concat(userBuilder.ViewModels).ToList().AsReadOnly();
-        var partnerDetails = partnerBuilder.ViewModels;
-        var backLink = GetCheckAnswersBackLink();
-        return new CheckAnswersViewModel(summaries, hasChildren, lastEditedChild, userDetails, partnerDetails, backLink, journeyState.CorrelationId, removedChildNames ?? []);
-    }
-
     [LoggerMessage(
         EventId = 2,
         Level = LogLevel.Warning,
@@ -228,62 +161,4 @@ public partial class SummaryController(
         Level = LogLevel.Warning,
         Message = "Missing answers detected. Missing answers. Event: {microsoft.custom_event.name}")]
     private partial void LogMissingAnswers([TagName("microsoft.custom_event.name")] string customEventName = "MissingAnswers");
-
-    private ChildSummaryViewModel ChildSummaryViewModelFactory(Child child, string returnTo)
-    {
-        var born = new SummaryRowFactory(MetadataProvider, "BornChildDetails", stringLocalizerFactory)
-            .Add((ChildBirthDateViewModel m) => m.ChildBirthDate, child.BirthDate, nameof(BornChildDetailsController.ChildBirthDate))
-            .Add((ChildSupportViewModel m) => m.ChildSupportOptions, child.ChildSupportOptions, nameof(BornChildDetailsController.ChildSupport));
-
-        var expected = new SummaryRowFactory(MetadataProvider, "ExpectedChildDetails", stringLocalizerFactory)
-            .Add((ChildDueDateViewModel m) => m.ChildDueDate, child.DueDate, nameof(ExpectedChildDetailsController.ChildDueDate));
-
-        var summaryRows = born.ViewModels.Concat(expected.ViewModels).ToList().AsReadOnly();
-        return new ChildSummaryViewModel(child.ChildId, child.Name, returnTo, summaryRows);
-    }
-
-    private static Child? ResolveLastEditedChild(JourneyState journeyState, string? childId)
-    {
-        if (childId is not null && journeyState.Children.TryGetValue(childId, out var child))
-        {
-            return child;
-        }
-
-        return journeyState.Children.Values.LastOrDefault();
-    }
-
-    private string GetCheckChildDetailsBackLink(Child? child)
-    {
-        if (child?.BirthStatus == BirthStatus.Born)
-        {
-            return Url.ActionOrThrow(nameof(BornChildDetailsController.ChildSupport), BornChildDetailsController.Name, new { childId = child.ChildId });
-        }
-
-        if (child?.BirthStatus == BirthStatus.Due)
-        {
-            return Url.ActionOrThrow(nameof(ExpectedChildDetailsController.ChildDueDate), ExpectedChildDetailsController.Name, new { childId = child.ChildId });
-        }
-
-        return Url.ActionOrThrow(nameof(IntroductionController.ChildName), IntroductionController.Name);
-    }
-
-    /// <remarks>
-    /// Note null forgiving - although not encoded in the types we expect all required questions
-    /// to have values at this point; and fail fast if not!
-    /// </remarks>
-    private string GetCheckAnswersBackLink()
-    {
-        if (journeyState.HasPartner!.Value)
-        {
-            if (journeyState.PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.ChildcareVouchers))
-            {
-                return Url.ActionOrThrow(nameof(PartnerController.PartnerChildcareVoucherReceipt), PartnerController.Name);
-
-            }
-
-            return Url.ActionOrThrow(nameof(PartnerController.PartnerChildcareSupport), PartnerController.Name);
-        }
-
-        return Url.ActionOrThrow(nameof(UserController.HasPartner), UserController.Name);
-    }
 }

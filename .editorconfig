@@ -1,0 +1,46 @@
+﻿root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+dotnet_diagnostic.CA1501.severity = warning
+dotnet_diagnostic.CA1502.severity = warning
+dotnet_diagnostic.CA1505.severity = warning
+dotnet_diagnostic.CA1506.severity = warning
+
+# Generated code
+[**/*.g.cs]
+generated_code = true
+
+[**/*.generated.cs]
+generated_code = true
+
+[**/obj/**]
+generated_code = true
+
+[**/bin/**]
+generated_code = true
+
+[*.json]
+indent_style = space
+indent_size = 2
+
+
+[*.yml]
+indent_style = space
+indent_size = 2
+
+[*.yaml]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false

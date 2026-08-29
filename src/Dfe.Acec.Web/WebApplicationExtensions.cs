@@ -1,7 +1,13 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 using Dfe.Acec.Web.Controllers;
+using Microsoft.AspNetCore.Localization;
 
 namespace Dfe.Acec.Web;
 
+[SuppressMessage("ReSharper", "UnusedMethodReturnValue.Global")]
 public static class WebApplicationExtensions
 {
     private const string Home = "Home";
@@ -72,6 +78,59 @@ public static class WebApplicationExtensions
         app.MapControllerRoute(name: "Cookies", pattern: "cookies", defaults: new { controller = CookiesController.Name, action = nameof(CookiesController.Cookies) });
 
         app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Start}/{id?}", defaults: new { });
+
+        return app;
+    }
+
+    public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder app)
+    {
+        app.Use(async (context, next) =>
+        {
+            var bytes = RandomNumberGenerator.GetBytes(12);
+            context.Items["csp-nonce"] = Convert.ToBase64String(bytes);
+
+            context.Response.Headers.XFrameOptions = "DENY";
+            context.Response.Headers.XContentTypeOptions = "nosniff";
+            context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+
+            var csp = new StringBuilder();
+
+            csp.Append("default-src 'self'; ");
+            csp.Append($"script-src 'self' 'nonce-{context.Items["csp-nonce"]}' " +
+                       "https://www.googletagmanager.com " +
+                       "https://*.clarity.ms; ");
+            csp.Append("style-src 'self'; ");
+            csp.Append("img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; ");
+            csp.Append("font-src 'self'; ");
+            csp.Append(
+                "connect-src 'self' " +
+                "https://www.google-analytics.com " +
+                "https://*.google-analytics.com " +
+                "https://www.googletagmanager.com " +
+                "https://*.clarity.ms; ");
+            csp.Append("frame-src https://www.googletagmanager.com; ");
+            csp.Append("form-action 'self'; ");
+            csp.Append("object-src 'none'; ");
+            csp.Append("base-uri 'self'; ");
+            csp.Append("frame-ancestors 'none'; ");
+
+            context.Response.Headers.ContentSecurityPolicy = csp.ToString();
+
+            await next(context);
+        });
+
+        return app;
+    }
+
+    public static IApplicationBuilder UseRequestLocalizationDefaults(this IApplicationBuilder app)
+    {
+        var supportedCultures = new[] { new CultureInfo("en-GB") };
+        app.UseRequestLocalization(new RequestLocalizationOptions
+        {
+            DefaultRequestCulture = new RequestCulture("en-GB"),
+            SupportedCultures = supportedCultures,
+            SupportedUICultures = supportedCultures
+        });
 
         return app;
     }

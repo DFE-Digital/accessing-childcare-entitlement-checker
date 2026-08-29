@@ -1,4 +1,4 @@
-﻿using AngleSharp.Dom;
+using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 
 namespace Dfe.Acec.Web.Tests.Integration.Helpers;

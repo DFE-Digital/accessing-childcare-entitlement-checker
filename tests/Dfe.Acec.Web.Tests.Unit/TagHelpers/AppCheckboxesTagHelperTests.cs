@@ -21,58 +21,30 @@ public class AppCheckboxesTagHelperTests
     private readonly IComponentGenerator _componentGenerator;
     private readonly ViewContext _viewContext;
     private readonly ChildcareSupportViewModel _childcareSupportViewModel;
-    private readonly ModelMetadata _modelMetadata;
     private CheckboxesOptions? _generatedOptions;
 
     public AppCheckboxesTagHelperTests()
     {
-        var services = new ServiceCollection();
-        services.AddLogging();
-        services.AddMvcCore().AddDataAnnotations();
-        using var serviceProvider = services.BuildServiceProvider();
-        _metadataProvider = serviceProvider.GetRequiredService<IModelMetadataProvider>();
+        _metadataProvider = CreateModelMetadataProvider();
+        _viewContext = CreateViewContext(_metadataProvider);
+        _componentGenerator = CreateComponentGenerator();
 
-        var httpContext = new DefaultHttpContext();
-        _viewContext = new ViewContext
-        {
-            HttpContext = httpContext,
-            ViewData = new ViewDataDictionary(_metadataProvider, new ModelStateDictionary())
-        };
-
-#pragma warning disable CA2012 // ValueTask instances should be consumed correctly
-        _componentGenerator = Substitute.For<IComponentGenerator>();
-        _componentGenerator
-            .GenerateCheckboxesAsync(Arg.Do<CheckboxesOptions>(options => _generatedOptions = options))
-            .Returns(_ => ValueTask.FromResult<GovUkComponent>(new TestGovUkComponent()));
-#pragma warning restore CA2012
-
-        _tagHelperContext = new TagHelperContext(
-            tagName: "app-checkboxes",
-            allAttributes: [],
-            items: new Dictionary<object, object>(),
-            uniqueId: "test");
-
-        _tagHelperOutput = new TagHelperOutput(
-            "app-checkboxes",
-            attributes: [],
-            getChildContentAsync: (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+        _tagHelperContext = CreateTagHelperContext();
+        _tagHelperOutput = CreateTagHelperOutput();
 
         _childcareSupportViewModel = new ChildcareSupportViewModel
         {
             ChildcareSupport = [],
         };
-
-        _modelMetadata = _metadataProvider.GetMetadataForProperty(
-            typeof(ChildcareSupportViewModel),
-            nameof(ChildcareSupportViewModel.ChildcareSupport));
     }
 
     [Fact]
     public async Task ProcessAsyncWithEnumCollectionGeneratesDefault()
     {
-        var modelExpression = new ModelExpression(
+        var modelExpression = CreateModelExpression(
+            _childcareSupportViewModel,
             nameof(ChildcareSupportViewModel.ChildcareSupport),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
+            _childcareSupportViewModel.ChildcareSupport);
 
         var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
@@ -100,7 +72,6 @@ public class AppCheckboxesTagHelperTests
             "A scheme that lets you pay for childcare from your salary before tax, which closed to new applicants in October 2018",
             first.Hint.Text.ToHtmlString());
 
-
         var last = _generatedOptions.Items.Last();
         Assert.NotNull(last);
         Assert.NotNull(last.Value);
@@ -112,9 +83,10 @@ public class AppCheckboxesTagHelperTests
     [Fact]
     public async Task ProcessAsyncWithEnumCollectionAndExclusiveGeneratesExclusive()
     {
-        var modelExpression = new ModelExpression(
+        var modelExpression = CreateModelExpression(
+            _childcareSupportViewModel,
             nameof(ChildcareSupportViewModel.ChildcareSupport),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
+            _childcareSupportViewModel.ChildcareSupport);
 
         var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
@@ -140,9 +112,10 @@ public class AppCheckboxesTagHelperTests
     [Fact]
     public async Task ProcessAsyncWithEnumCollectionAndHintGeneratesHint()
     {
-        var modelExpression = new ModelExpression(
+        var modelExpression = CreateModelExpression(
+            _childcareSupportViewModel,
             nameof(ChildcareSupportViewModel.ChildcareSupport),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
+            _childcareSupportViewModel.ChildcareSupport);
 
         var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
@@ -165,13 +138,10 @@ public class AppCheckboxesTagHelperTests
             ChildcareSupport = []
         };
 
-        var modelMetadata = _metadataProvider.GetMetadataForProperty(
-            typeof(FakeViewModel),
-            nameof(FakeViewModel.ChildcareSupport));
-
-        var modelExpression = new ModelExpression(
+        var modelExpression = CreateModelExpression(
+            fakeViewModel,
             nameof(FakeViewModel.ChildcareSupport),
-            new ModelExplorer(_metadataProvider, modelMetadata, fakeViewModel.ChildcareSupport));
+            fakeViewModel.ChildcareSupport);
 
         var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
@@ -187,9 +157,10 @@ public class AppCheckboxesTagHelperTests
     [Fact]
     public async Task ProcessAsyncWithEnumCollectionAndLegendGeneratesLegend()
     {
-        var modelExpression = new ModelExpression(
+        var modelExpression = CreateModelExpression(
+            _childcareSupportViewModel,
             nameof(ChildcareSupportViewModel.ChildcareSupport),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
+            _childcareSupportViewModel.ChildcareSupport);
 
         var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
@@ -212,9 +183,10 @@ public class AppCheckboxesTagHelperTests
             nameof(ChildcareSupportViewModel.ChildcareSupport),
             "ERROR");
 
-        var modelExpression = new ModelExpression(
+        var modelExpression = CreateModelExpression(
+            _childcareSupportViewModel,
             nameof(ChildcareSupportViewModel.ChildcareSupport),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
+            _childcareSupportViewModel.ChildcareSupport);
 
         var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
@@ -234,9 +206,10 @@ public class AppCheckboxesTagHelperTests
     {
         _childcareSupportViewModel.ChildcareSupport = [ChildcareSupportOption.ChildcareVouchers];
 
-        var modelExpression = new ModelExpression(
+        var modelExpression = CreateModelExpression(
+            _childcareSupportViewModel,
             nameof(ChildcareSupportViewModel.ChildcareSupport),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
+            _childcareSupportViewModel.ChildcareSupport);
 
         var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
@@ -255,9 +228,10 @@ public class AppCheckboxesTagHelperTests
     public async Task ProcessAsyncWithEnumCollectionSelectsCheckboxesFromModelState()
     {
         _viewContext.ModelState.SetModelValue("ChildcareSupport", "0", "0");
-        var modelExpression = new ModelExpression(
+        var modelExpression = CreateModelExpression(
+            _childcareSupportViewModel,
             nameof(ChildcareSupportViewModel.ChildcareSupport),
-            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
+            _childcareSupportViewModel.ChildcareSupport);
 
         var helper = new AppCheckboxesTagHelper(_componentGenerator)
         {
@@ -270,6 +244,58 @@ public class AppCheckboxesTagHelperTests
         Assert.NotNull(_generatedOptions?.Items);
         var first = _generatedOptions.Items.First();
         Assert.True(first?.Checked);
+    }
+
+    private static IModelMetadataProvider CreateModelMetadataProvider()
+    {
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddMvcCore().AddDataAnnotations();
+        using var serviceProvider = services.BuildServiceProvider();
+        return serviceProvider.GetRequiredService<IModelMetadataProvider>();
+    }
+
+    private static ViewContext CreateViewContext(IModelMetadataProvider metadataProvider)
+    {
+        return new ViewContext
+        {
+            HttpContext = new DefaultHttpContext(),
+            ViewData = new ViewDataDictionary(metadataProvider, new ModelStateDictionary())
+        };
+    }
+
+    private IComponentGenerator CreateComponentGenerator()
+    {
+        var generator = Substitute.For<IComponentGenerator>();
+#pragma warning disable CA2012 // ValueTask instances should be consumed correctly
+        generator
+            .GenerateCheckboxesAsync(Arg.Do<CheckboxesOptions>(options => _generatedOptions = options))
+            .Returns(_ => ValueTask.FromResult<GovUkComponent>(new TestGovUkComponent()));
+#pragma warning restore CA2012
+        return generator;
+    }
+
+    private static TagHelperContext CreateTagHelperContext()
+    {
+        return new TagHelperContext(
+            tagName: "app-checkboxes",
+            allAttributes: [],
+            items: new Dictionary<object, object>(),
+            uniqueId: "test");
+    }
+
+    private static TagHelperOutput CreateTagHelperOutput()
+    {
+        return new TagHelperOutput(
+            "app-checkboxes",
+            attributes: [],
+            getChildContentAsync: (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+    }
+
+    private ModelExpression CreateModelExpression<TViewModel>(TViewModel model, string propertyName, object? modelValue)
+    {
+        var metadata = _metadataProvider.GetMetadataForProperty(model!.GetType(), propertyName);
+        return new ModelExpression(propertyName, new ModelExplorer(_metadataProvider, metadata, modelValue));
     }
 
     private sealed class TestGovUkComponent : GovUkComponent

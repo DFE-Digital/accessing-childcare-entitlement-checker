@@ -1,31 +1,35 @@
 <Project>
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <UseArtifactsOutput>true</UseArtifactsOutput>
-    <ArtifactsPath>$(MSBuildThisFileDirectory).artifacts</ArtifactsPath>
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <UseArtifactsOutput>true</UseArtifactsOutput>
+        <ArtifactsPath>$(MSBuildThisFileDirectory).artifacts</ArtifactsPath>
 
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
 
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
-    <Deterministic>true</Deterministic>
+        <Deterministic>true</Deterministic>
 
-    <!-- Code analysis -->
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <AnalysisMode>Recommended</AnalysisMode>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    
-    <!-- Treat compiler and analyser warnings as errors -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <!-- Code analysis -->
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <AnalysisMode>Recommended</AnalysisMode>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
-    <!-- NuGet security auditing -->
-    <NuGetAudit>true</NuGetAudit>
-    <NuGetAuditLevel>high</NuGetAuditLevel>
+        <!-- Treat compiler and analyser warnings as errors -->
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
-    <BuildInParallel>true</BuildInParallel>
-    <UseSharedCompilation>true</UseSharedCompilation>
-  </PropertyGroup>
+        <!-- NuGet security auditing -->
+        <NuGetAudit>true</NuGetAudit>
+        <NuGetAuditLevel>high</NuGetAuditLevel>
+
+        <BuildInParallel>true</BuildInParallel>
+        <UseSharedCompilation>true</UseSharedCompilation>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)CodeMetricsConfig.txt" />
+    </ItemGroup>
 </Project>

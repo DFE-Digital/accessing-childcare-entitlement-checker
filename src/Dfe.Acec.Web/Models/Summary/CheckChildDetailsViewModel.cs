@@ -1,4 +1,4 @@
-﻿using Dfe.Acec.Web.Services;
+using Dfe.Acec.Web.Services;
 
 namespace Dfe.Acec.Web.Models.Summary;
 
