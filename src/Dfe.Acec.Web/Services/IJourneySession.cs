@@ -2,7 +2,7 @@ namespace Dfe.Acec.Web.Services;
 
 public interface IJourneySession
 {
-    bool HasSession { get; }
-    JourneyState GetState();
-    void SetState(JourneyState journeyState);
+    public bool HasSession { get; }
+    public JourneyState GetState();
+    public void SetState(JourneyState journeyState);
 }

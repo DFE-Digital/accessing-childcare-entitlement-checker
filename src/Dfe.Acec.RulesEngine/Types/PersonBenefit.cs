@@ -1,14 +1,13 @@
-namespace Dfe.Acec.RulesEngine.Types
+namespace Dfe.Acec.RulesEngine.Types;
+
+public enum PersonBenefit
 {
-    public enum PersonBenefit
-    {
-        CarersAllowance,
-        ContributionBasedEmploymentAndSupportAllowance,
-        EmploymentAndSupportAllowance,
-        GuaranteedElementOfPensionCredit,
-        IncapacityBenefit,
-        LimitedCapabilityForWork,
-        LimitedCapabilityForWorkRelatedActivity,
-        SevereDisablementAllowance
-    }
+    CarersAllowance,
+    ContributionBasedEmploymentAndSupportAllowance,
+    EmploymentAndSupportAllowance,
+    GuaranteedElementOfPensionCredit,
+    IncapacityBenefit,
+    LimitedCapabilityForWork,
+    LimitedCapabilityForWorkRelatedActivity,
+    SevereDisablementAllowance
 }

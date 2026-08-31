@@ -8,19 +8,14 @@ using Microsoft.Extensions.Localization;
 
 namespace Dfe.Acec.Web.Mappers;
 
-public class EntitlementResponseToResultsDetailsViewModelMapper
+public class EntitlementResponseToResultsDetailsViewModelMapper(
+    IStringLocalizerFactory stringLocalizerFactory)
 {
     private const string UnknownSchemeCodeMessage = "Unknown scheme code";
     private const string StartsNowKey = "Starts_Now";
-    private readonly IStringLocalizer _localizer;
-
-    public EntitlementResponseToResultsDetailsViewModelMapper(
-        IStringLocalizerFactory stringLocalizerFactory)
-    {
-        _localizer = stringLocalizerFactory.Create(
+    private readonly IStringLocalizer _localizer = stringLocalizerFactory.Create(
             "Views.Results.ResultsDetailed",
             typeof(ResultsController).Assembly.GetName().Name!);
-    }
 
     public ResultsDetailsViewModel Map(ChildResultDto child, bool householdHasAccessToPublicFunds)
     {
@@ -40,8 +35,8 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
 
         var helpWithCosts = child.Schemes
             .Where(x =>
-                x.SchemeCode == SchemeCode.TaxFreeChildcare ||
-                x.SchemeCode == SchemeCode.UniversalCreditChildcare)
+                x.SchemeCode is SchemeCode.TaxFreeChildcare or
+                SchemeCode.UniversalCreditChildcare)
             .ToList();
 
         if (helpWithCosts.Count > 0)
@@ -50,18 +45,17 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             {
                 SectionType = SchemeSectionType.HelpWithChildcareCosts,
                 ShowThirtyHourWarning = false,
-                Schemes = helpWithCosts
+                Schemes = [.. helpWithCosts
                     .OrderBy(s => GetSchemeOrder(s.SchemeCode))
-                    .Select(x => MapSchemeResult(x, child))
-                    .ToList()
+                    .Select(x => MapSchemeResult(x, child))]
             });
         }
 
         var fundedHours = child.Schemes
             .Where(x =>
-                x.SchemeCode == SchemeCode.ThirtyHoursForWorkingFamilies ||
-                x.SchemeCode == SchemeCode.FifteenHoursForDisadvantagedChildren ||
-                x.SchemeCode == SchemeCode.FifteenHoursUniversal)
+                x.SchemeCode is SchemeCode.ThirtyHoursForWorkingFamilies or
+                SchemeCode.FifteenHoursForDisadvantagedChildren or
+                SchemeCode.FifteenHoursUniversal)
             .ToList();
 
         var showWarning =
@@ -78,10 +72,9 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             {
                 SectionType = SchemeSectionType.FundedChildCareHours,
                 ShowThirtyHourWarning = showWarning,
-                Schemes = fundedHours
+                Schemes = [.. fundedHours
                     .OrderBy(s => GetSchemeOrder(s.SchemeCode))
-                    .Select(x => MapSchemeResult(x, child))
-                    .ToList()
+                    .Select(x => MapSchemeResult(x, child))]
             });
         }
 
@@ -498,9 +491,7 @@ public class EntitlementResponseToResultsDetailsViewModelMapper
             .Select(x => x.SchemeCode)
             .ToHashSet();
 
-        return compatibleSchemes
-            .Where(eligibleSchemes.Contains)
-            .ToList();
+        return [.. compatibleSchemes.Where(eligibleSchemes.Contains)];
     }
 
     private static ArgumentOutOfRangeException UnknownSchemeCode(SchemeCode schemeCode) =>

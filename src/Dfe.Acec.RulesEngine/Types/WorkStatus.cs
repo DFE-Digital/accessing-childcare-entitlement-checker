@@ -1,9 +1,8 @@
-namespace Dfe.Acec.RulesEngine.Types
+namespace Dfe.Acec.RulesEngine.Types;
+
+public enum WorkStatus
 {
-    public enum WorkStatus
-    {
-        PaidEmployment,
-        SelfEmployed,
-        Apprentice
-    }
+    PaidEmployment,
+    SelfEmployed,
+    Apprentice
 }

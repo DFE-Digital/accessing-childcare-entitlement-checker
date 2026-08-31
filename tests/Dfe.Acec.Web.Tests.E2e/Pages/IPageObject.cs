@@ -2,8 +2,8 @@ namespace Dfe.Acec.Web.Tests.E2e.Pages;
 
 internal interface IPageObject
 {
-    string PageTitle { get; }
-    Task AnswerAsync(string answer);
-    Task ContinueAsync();
-    Task AssertHeaderAsync();
+    public string PageTitle { get; }
+    public Task AnswerAsync(string answer);
+    public Task ContinueAsync();
+    public Task AssertHeaderAsync();
 }

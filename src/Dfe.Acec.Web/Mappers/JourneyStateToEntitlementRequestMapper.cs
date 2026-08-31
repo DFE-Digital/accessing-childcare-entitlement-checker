@@ -6,8 +6,8 @@ using Dfe.Acec.Web.Models.Partner;
 using Dfe.Acec.Web.Models.User;
 using Dfe.Acec.Web.Services;
 using AgeRange = Dfe.Acec.RulesEngine.Types.AgeRange;
-using CountryOfResidence = Dfe.Acec.RulesEngine.Types.CountryOfResidence;
 using BirthStatus = Dfe.Acec.RulesEngine.Types.BirthStatus;
+using CountryOfResidence = Dfe.Acec.RulesEngine.Types.CountryOfResidence;
 
 namespace Dfe.Acec.Web.Mappers;
 
@@ -41,12 +41,12 @@ public class JourneyStateToEntitlementRequestMapper
         {
             AgeRange = MapAgeRange(journeyState.UserAge),
             PaidWorkStatus = MapPaidWorkStatus(journeyState.PaidWork),
-            WorkStatuses = journeyState.WorkStatus.Select(MapWorkStatus).ToList(),
+            WorkStatuses = [.. journeyState.WorkStatus.Select(MapWorkStatus)],
             SelfEmployedLessThan12Months = journeyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months,
             EarnsAboveThreshold = journeyState.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold,
             ExceedsAdjustedNetIncomeLimit = journeyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold,
-            Benefits = journeyState.Benefits.Select(MapPersonBenefit).OfType<PersonBenefit>().ToList(),
-            ChildcareSupport = journeyState.ChildcareSupport.Select(MapChildcareSupport).OfType<ChildcareSupport>().ToList(),
+            Benefits = [.. journeyState.Benefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
+            ChildcareSupport = [.. journeyState.ChildcareSupport.Select(MapChildcareSupport).OfType<ChildcareSupport>()],
             Nationality = MapNationality(journeyState.Nationality),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.SettledStatus),
         };
@@ -63,12 +63,12 @@ public class JourneyStateToEntitlementRequestMapper
         {
             AgeRange = MapAgeRange(journeyState.PartnerAge),
             PaidWorkStatus = MapPaidWorkStatus(journeyState.PartnerPaidWork),
-            WorkStatuses = journeyState.PartnerWorkStatus.Select(MapWorkStatus).ToList(),
+            WorkStatuses = [.. journeyState.PartnerWorkStatus.Select(MapWorkStatus)],
             SelfEmployedLessThan12Months = journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months,
             EarnsAboveThreshold = journeyState.PartnerWeeklyEarnings == WeeklyEarningsOption.AboveThreshold,
             ExceedsAdjustedNetIncomeLimit = journeyState.PartnerYearlyEarnings == YearlyEarningsOption.AboveThreshold,
-            Benefits = journeyState.PartnerBenefits.Select(MapPersonBenefit).OfType<PersonBenefit>().ToList(),
-            ChildcareSupport = journeyState.PartnerChildcareSupport.Select(MapPartnerChildcareSupport).OfType<ChildcareSupport>().ToList(),
+            Benefits = [.. journeyState.PartnerBenefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
+            ChildcareSupport = [.. journeyState.PartnerChildcareSupport.Select(MapPartnerChildcareSupport).OfType<ChildcareSupport>()],
             Nationality = MapNationality(journeyState.PartnerNationality),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.PartnerSettledStatus),
         };
@@ -339,10 +339,9 @@ public class JourneyStateToEntitlementRequestMapper
     private static List<ChildRelatedBenefit> MapChildBenefits(
         Child child)
     {
-        return child.ChildSupportOptions
+        return [.. child.ChildSupportOptions
             .Select(MapChildBenefit)
-            .OfType<ChildRelatedBenefit>()
-            .ToList();
+            .OfType<ChildRelatedBenefit>()];
     }
 
     private static ChildRelatedBenefit? MapChildBenefit(ChildSupport childSupport)

@@ -2,15 +2,10 @@ using System.Text.Json;
 
 namespace Dfe.Acec.Web.Services;
 
-public class JourneySession : IJourneySession
+public class JourneySession(IHttpContextAccessor accessor) : IJourneySession
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IHttpContextAccessor _httpContextAccessor = accessor;
     private const string Key = "JourneyState";
-
-    public JourneySession(IHttpContextAccessor accessor)
-    {
-        _httpContextAccessor = accessor;
-    }
 
     public bool HasSession => _httpContextAccessor.HttpContext?
         .Session

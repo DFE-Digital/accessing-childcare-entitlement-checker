@@ -1,7 +1,7 @@
+using System.ComponentModel.DataAnnotations;
 using Dfe.Acec.Web.Models.Partner;
 using Dfe.Acec.Web.Services;
 using Microsoft.Extensions.Localization;
-using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Acec.Web.Tests.Unit.Models.Partner;
 
@@ -15,8 +15,16 @@ public class PartnerChildcareSupportViewModelTests
         var localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType =>
         {
-            if (serviceType == typeof(JourneyState)) return journeyState;
-            if (serviceType == typeof(IStringLocalizerFactory)) return localizerFactory;
+            if (serviceType == typeof(JourneyState))
+            {
+                return journeyState;
+            }
+
+            if (serviceType == typeof(IStringLocalizerFactory))
+            {
+                return localizerFactory;
+            }
+
             return null!;
         };
     }

@@ -1,8 +1,7 @@
-namespace Dfe.Acec.RulesEngine.Types
+namespace Dfe.Acec.RulesEngine.Types;
+
+public enum ChildcareSupport
 {
-    public enum ChildcareSupport
-    {
-        ChildcareBursaryOrGrant,
-        ChildcareVouchers
-    }
+    ChildcareBursaryOrGrant,
+    ChildcareVouchers
 }

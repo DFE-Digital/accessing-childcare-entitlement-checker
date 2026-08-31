@@ -1,4 +1,4 @@
-﻿root = true
+root = true
 
 [*]
 charset = utf-8
@@ -7,11 +7,121 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 
 [*.cs]
+# ---------------------------------------------------------------------------
+# C# Core Formatting & Indentation
+# ---------------------------------------------------------------------------
 indent_style = space
 indent_size = 4
 tab_width = 4
 
-# Generated code
+# ---------------------------------------------------------------------------
+# Modern C# Language Features
+# ---------------------------------------------------------------------------
+csharp_style_namespace_declarations = file_scoped:error
+csharp_style_implicit_object_creation_when_type_is_apparent = true:error
+csharp_style_prefer_switch_expression = true:error
+csharp_style_prefer_pattern_matching = true:error
+csharp_style_prefer_not_pattern = true:error
+csharp_style_prefer_extended_property_pattern = true:error
+csharp_style_throw_expression = true:error
+csharp_style_conditional_delegate_call = true:error
+csharp_style_prefer_range_operator = true:error
+csharp_style_prefer_index_operator = true:error
+csharp_style_prefer_primary_constructors = true:error
+dotnet_style_prefer_collection_expression = true:error
+
+# ---------------------------------------------------------------------------
+# Code Style and Layout Preferences
+# ---------------------------------------------------------------------------
+csharp_prefer_braces = true:error
+csharp_using_directive_placement = outside_namespace:error
+dotnet_separate_import_directive_groups = false
+dotnet_sort_system_directives_first = true
+dotnet_style_require_accessibility_modifiers = always:error
+
+# Var preferences
+csharp_style_var_for_built_in_types = true:error
+csharp_style_var_when_type_is_apparent = true:error
+csharp_style_var_elsewhere = true:error
+
+# Newline & spacing preferences
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_preserve_single_line_blocks = true
+csharp_space_after_cast = false
+
+# ---------------------------------------------------------------------------
+# Naming Conventions
+# ---------------------------------------------------------------------------
+# Private fields must start with an underscore _ and be camelCase (e.g., _myField)
+dotnet_naming_rule.private_fields_should_be_camel_case.severity = error
+dotnet_naming_rule.private_fields_should_be_camel_case.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_camel_case.style = camel_case_underscore_style
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case
+dotnet_naming_style.camel_case_underscore_style.required_prefix = _
+
+# Interfaces must start with I (e.g., IMyInterface)
+dotnet_naming_rule.interfaces_should_start_with_i.severity = error
+dotnet_naming_rule.interfaces_should_start_with_i.symbols = interfaces
+dotnet_naming_rule.interfaces_should_start_with_i.style = prefix_i_style
+
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+dotnet_naming_symbols.interfaces.applicable_accessibilities = *
+
+dotnet_naming_style.prefix_i_style.capitalization = pascal_case
+dotnet_naming_style.prefix_i_style.required_prefix = I
+
+# ---------------------------------------------------------------------------
+# Code Quality, Safety, & Diagnostics (Roslyn / CA / CS Rules)
+# ---------------------------------------------------------------------------
+
+# Maintainability & Complexity
+dotnet_diagnostic.CA1501.severity = warning
+dotnet_diagnostic.CA1502.severity = warning
+dotnet_diagnostic.CA1505.severity = warning
+dotnet_diagnostic.CA1506.severity = warning
+
+# Performance
+dotnet_diagnostic.CA1845.severity = error
+dotnet_diagnostic.CA1851.severity = error
+dotnet_diagnostic.CA1859.severity = error
+dotnet_diagnostic.CA1860.severity = error
+dotnet_diagnostic.CA1861.severity = error
+dotnet_diagnostic.CA1862.severity = error
+
+# Async & Multithreading
+dotnet_diagnostic.CA2016.severity = error
+dotnet_diagnostic.CS4014.severity = error
+
+# Resource Management
+dotnet_diagnostic.CA2000.severity = warning
+
+# Security
+dotnet_diagnostic.CA2100.severity = error
+
+# Nullable Correctness
+dotnet_diagnostic.CS8600.severity = error
+dotnet_diagnostic.CS8601.severity = error
+dotnet_diagnostic.CS8602.severity = error
+dotnet_diagnostic.CS8603.severity = error
+dotnet_diagnostic.CS8604.severity = error
+dotnet_diagnostic.CS8618.severity = error
+
+# Common IDE Cleanliness & Documentation Rules
+dotnet_diagnostic.IDE0004.severity = error
+dotnet_diagnostic.IDE0005.severity = error
+dotnet_diagnostic.CS1591.severity = none
+
+# ---------------------------------------------------------------------------
+# Generated Code
+# ---------------------------------------------------------------------------
 [**/*.g.cs]
 generated_code = true
 
@@ -24,10 +134,12 @@ generated_code = true
 [**/bin/**]
 generated_code = true
 
+# ---------------------------------------------------------------------------
+# Non-C# Languages & File Formats
+# ---------------------------------------------------------------------------
 [*.json]
 indent_style = space
 indent_size = 2
-
 
 [*.yml]
 indent_style = space

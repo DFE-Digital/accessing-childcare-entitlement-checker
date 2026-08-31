@@ -1,10 +1,9 @@
-namespace Dfe.Acec.RulesEngine.Types
+namespace Dfe.Acec.RulesEngine.Types;
+
+public enum CountryOfResidence
 {
-    public enum CountryOfResidence
-    {
-        England,
-        Scotland,
-        Wales,
-        NorthernIreland
-    }
+    England,
+    Scotland,
+    Wales,
+    NorthernIreland
 }

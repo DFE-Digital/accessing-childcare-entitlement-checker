@@ -7,20 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Acec.Web.Controllers;
 
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
-public class ExpectedChildDetailsController : Controller
+public class ExpectedChildDetailsController(
+    JourneyState journeyState,
+    IJourneySession journeySession) : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
+    private readonly JourneyState _journeyState = journeyState;
+    private readonly IJourneySession _journeySession = journeySession;
 
     public const string Name = "ExpectedChildDetails";
-
-    public ExpectedChildDetailsController(
-        JourneyState journeyState,
-        IJourneySession journeySession)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-    }
 
     [HttpGet]
     public IActionResult ChildDueDate(string childId, string? returnTo = null)

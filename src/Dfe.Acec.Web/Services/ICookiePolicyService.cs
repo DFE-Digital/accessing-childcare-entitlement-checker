@@ -2,7 +2,7 @@ namespace Dfe.Acec.Web.Services;
 
 public interface ICookiePolicyService
 {
-    bool HasConsented { get; }
-    bool HasUserPreference { get; }
-    void SetConsentStatus(bool consented);
+    public bool HasConsented { get; }
+    public bool HasUserPreference { get; }
+    public void SetConsentStatus(bool consented);
 }

@@ -1,0 +1,9 @@
+﻿# Code metrics configuration
+
+CA1501: 4
+CA1502(Method): 10
+CA1502(Type): 40
+CA1505(Method): 20
+CA1505(Type): 20
+CA1506(Method): 15
+CA1506(Type): 30

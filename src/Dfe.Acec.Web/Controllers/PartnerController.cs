@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Dfe.Acec.Web.Filters;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.Partner;
 using Dfe.Acec.Web.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Acec.Web.Controllers;
 
@@ -134,7 +134,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         if (!ModelState.IsValid)
         {
             model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerPaidWork));
-            model.Children = journeyState.Children.Values.ToList();
+            model.Children = [.. journeyState.Children.Values];
             return View(model);
         }
 

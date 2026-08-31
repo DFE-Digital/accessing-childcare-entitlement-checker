@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.Web.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Localization;
 
 namespace Dfe.Acec.Web.Models.Partner;
 
@@ -19,7 +19,7 @@ public class PartnerParentalLeaveViewModel : IValidatableObject
     public PartnerParentalLeaveViewModel(JourneyState journeyState, string backLink, string? returnTo = null)
     {
         PartnerParentalLeaveChildrenIds = journeyState.PartnerParentalLeaveChildrenIds;
-        Children = journeyState.Children.Values.ToList();
+        Children = [.. journeyState.Children.Values];
         BackLink = backLink;
         ReturnTo = returnTo;
     }

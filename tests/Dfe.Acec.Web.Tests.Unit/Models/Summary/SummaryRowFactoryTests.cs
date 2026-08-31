@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.Partner;
 using Dfe.Acec.Web.Models.Summary;
@@ -7,8 +9,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using NSubstitute;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 
 namespace Dfe.Acec.Web.Tests.Unit.Models.Summary;
@@ -89,7 +89,7 @@ public class SummaryRowFactoryTests
     {
         _summaryRowFactory.Add<TestViewModel, List<TestSelection>, TestSelection>(
             m => m.TestPropertyList,
-            enumList.ToList(),
+            [.. enumList],
             "test-action-name");
         var rows = _summaryRowFactory.ViewModels;
 

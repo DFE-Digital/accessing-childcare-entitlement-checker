@@ -5,7 +5,7 @@ namespace Dfe.Acec.RulesEngine.Evaluators;
 
 public interface ISchemeEvaluator
 {
-    SchemeResultDto? Evaluate(
+    public SchemeResultDto? Evaluate(
         DerivedContext context,
         ChildFacts child);
 }

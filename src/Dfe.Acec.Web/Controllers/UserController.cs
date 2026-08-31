@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Dfe.Acec.Web.Filters;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.User;
 using Dfe.Acec.Web.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Acec.Web.Controllers;
 
@@ -126,7 +126,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
         if (!ModelState.IsValid)
         {
             model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PaidWork));
-            model.Children = journeyState.Children.Values.ToList();
+            model.Children = [.. journeyState.Children.Values];
             return View(model);
         }
 

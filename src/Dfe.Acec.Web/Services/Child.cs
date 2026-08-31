@@ -3,11 +3,11 @@ using Dfe.Acec.Web.Models.BornChildDetails;
 
 namespace Dfe.Acec.Web.Services;
 
-public class Child
+public class Child(string childId, string name)
 {
-    public string ChildId { get; set; }
+    public string ChildId { get; set; } = childId;
 
-    public string Name { get; set; }
+    public string Name { get; set; } = name;
 
     public BirthStatus? BirthStatus { get; set; }
 
@@ -16,10 +16,4 @@ public class Child
     public List<ChildSupport> ChildSupportOptions { get; set; } = [];
 
     public DateOnly? DueDate { get; set; }
-
-    public Child(string childId, string name)
-    {
-        ChildId = childId;
-        Name = name;
-    }
 }
