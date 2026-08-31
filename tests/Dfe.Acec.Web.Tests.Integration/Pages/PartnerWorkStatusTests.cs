@@ -7,7 +7,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class PartnerWorkStatusTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/work-status/work-status-partner";
+    private const string _url = "/work-status/work-status-partner";
 
     [Theory]
     [InlineData(null, "/work-status/work-partner")]
@@ -19,7 +19,7 @@ public class PartnerWorkStatusTests(IntegrationTestFixture factory) : IClassFixt
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -47,7 +47,7 @@ public class PartnerWorkStatusTests(IntegrationTestFixture factory) : IClassFixt
         });
 
         using var client = host.CreateClient();
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -73,7 +73,7 @@ public class PartnerWorkStatusTests(IntegrationTestFixture factory) : IClassFixt
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

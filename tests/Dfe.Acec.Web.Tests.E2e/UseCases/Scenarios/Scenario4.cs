@@ -6,9 +6,7 @@ internal sealed class Scenario4 : IUseCase
 {
     public string Name => "One parent aged 18-20, child not yet born";
 
-    public IEnumerable<JourneyStep> GetJourney()
-    {
-        return new JourneyBuilder()
+    public IEnumerable<JourneyStep> GetJourney() => new JourneyBuilder()
             .StartInLocation("England")
 
             // Child 1
@@ -50,5 +48,4 @@ internal sealed class Scenario4 : IUseCase
             .SetPartnerChildcareSupport("No, they do not get any of these")
 
             .Build();
-    }
 }

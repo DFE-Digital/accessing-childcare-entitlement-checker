@@ -7,8 +7,8 @@ namespace Dfe.Acec.RulesEngine.Schemes;
 
 public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
 {
-    private const int MinimumEligibleAgeInYears = 0;
-    private const int MaximumEligibleAgeInYears = 16;
+    private const int _minimumEligibleAgeInYears = 0;
+    private const int _maximumEligibleAgeInYears = 16;
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
         var meetsHouseholdRequirements =
@@ -20,7 +20,7 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
         var eligibleNow =
             meetsHouseholdRequirements &&
             child.IsBorn &&
-            child.AgeInYears is >= MinimumEligibleAgeInYears and <= MaximumEligibleAgeInYears;
+            child.AgeInYears is >= _minimumEligibleAgeInYears and <= _maximumEligibleAgeInYears;
 
         var eligibleInFuture =
             meetsHouseholdRequirements &&
@@ -64,22 +64,16 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
             (partnerWorking && userExempt);
     }
 
-    private static bool HasQualifyingPaidWorkStatus(PersonFacts person)
-    {
-        return person.PaidWorkStatus is
+    private static bool HasQualifyingPaidWorkStatus(PersonFacts person) => person.PaidWorkStatus is
             PaidWorkStatus.Yes or
             PaidWorkStatus.SickLeave or
             PaidWorkStatus.ParentalLeave;
-    }
 
     private static bool HasQualifyingExemptionBenefit(
-        PersonFacts person)
-    {
-        return person.Benefits.Any(
-            QualifyingExemptionBenefits.Contains);
-    }
+        PersonFacts person) => person.Benefits.Any(
+            _qualifyingExemptionBenefits.Contains);
 
-    private static readonly List<PersonBenefit> QualifyingExemptionBenefits =
+    private static readonly List<PersonBenefit> _qualifyingExemptionBenefits =
     [
         PersonBenefit.CarersAllowance,
         PersonBenefit.LimitedCapabilityForWork,

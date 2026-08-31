@@ -10,16 +10,10 @@ internal sealed class ErrorSteps(IPage page)
     private IResponse? _lastResponse;
 
     [Given("I visit a non-existent page")]
-    public async Task GivenIVisitANonExistentPage()
-    {
-        _lastResponse = await page.GotoAsync("/ThisPageDoesNotExist");
-    }
+    public async Task GivenIVisitANonExistentPage() => _lastResponse = await page.GotoAsync("/ThisPageDoesNotExist");
 
     [Given("I visit the development-only error test page")]
-    public async Task GivenIVisitTheDevelopmentOnlyErrorTestPage()
-    {
-        _lastResponse = await page.GotoAsync("/error");
-    }
+    public async Task GivenIVisitTheDevelopmentOnlyErrorTestPage() => _lastResponse = await page.GotoAsync("/error");
 
     [Then("I am not redirected to another page")]
     public void ThenIAmNotRedirectedToAnotherPage()
@@ -29,16 +23,10 @@ internal sealed class ErrorSteps(IPage page)
     }
 
     [Then("the HTTP status code is 404 Not Found")]
-    public void ThenTheHttpStatusCodeIsNotFound()
-    {
-        Assert.Equal(404, _lastResponse?.Status);
-    }
+    public void ThenTheHttpStatusCodeIsNotFound() => Assert.Equal(404, _lastResponse?.Status);
 
     [Then("the HTTP status code is 500 Internal Server Error")]
-    public void ThenTheHttpStatusCodeIsInternalServerError()
-    {
-        Assert.Equal(500, _lastResponse?.Status);
-    }
+    public void ThenTheHttpStatusCodeIsInternalServerError() => Assert.Equal(500, _lastResponse?.Status);
 
     [Then("the {string} error is {string}")]
     public async Task ThenTheStringErrorIsString(string fieldName, string expectedError)

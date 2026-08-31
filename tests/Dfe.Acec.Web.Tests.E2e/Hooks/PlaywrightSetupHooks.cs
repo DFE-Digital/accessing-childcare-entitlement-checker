@@ -45,22 +45,16 @@ internal sealed class PlaywrightSetupHooks
         _playwrightInstance.Dispose();
     }
 
-    private static async Task<IBrowser> LaunchBrowser(TestSettings settings, IPlaywright playwright, BrowserTypeLaunchOptions launchOptions)
+    private static async Task<IBrowser> LaunchBrowser(TestSettings settings, IPlaywright playwright, BrowserTypeLaunchOptions launchOptions) => settings.Browser.ToLowerInvariant() switch
     {
-        return settings.Browser.ToLowerInvariant() switch
-        {
-            "firefox" => await playwright.Firefox.LaunchAsync(launchOptions),
-            "webkit" => await playwright.Webkit.LaunchAsync(launchOptions),
-            _ => await playwright.Chromium.LaunchAsync(launchOptions)
-        };
-    }
+        "firefox" => await playwright.Firefox.LaunchAsync(launchOptions),
+        "webkit" => await playwright.Webkit.LaunchAsync(launchOptions),
+        _ => await playwright.Chromium.LaunchAsync(launchOptions)
+    };
 
-    private static BrowserTypeLaunchOptions BrowserTypeLaunchOptions()
+    private static BrowserTypeLaunchOptions BrowserTypeLaunchOptions() => new()
     {
-        return new BrowserTypeLaunchOptions
-        {
-            Headless = _settings.Headless,
-            SlowMo = _settings.SlowMo
-        };
-    }
+        Headless = _settings.Headless,
+        SlowMo = _settings.SlowMo
+    };
 }

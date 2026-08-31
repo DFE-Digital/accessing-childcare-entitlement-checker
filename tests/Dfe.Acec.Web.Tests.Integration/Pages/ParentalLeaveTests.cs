@@ -7,8 +7,8 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
-    private const string Url = "/leave/parental-leave";
+    private const string _childId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+    private const string _url = "/leave/parental-leave";
 
     [Theory]
     [InlineData(null, "/work-status/work")]
@@ -21,15 +21,15 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
             Children = new Dictionary<string, Child>
                 {
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
+                        _childId,
+                        new Child(_childId, "Sara")
                     }
                 },
         });
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -54,8 +54,8 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
             Children = new Dictionary<string, Child>
                 {
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
+                        _childId,
+                        new Child(_childId, "Sara")
                     }
                 },
             WorkStatus = workStatus == null ? [] : [workStatus.Value],
@@ -63,7 +63,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -73,7 +73,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
         Assert.NotNull(cookie);
 
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
-            new KeyValuePair<string, string>("ParentalLeaveChildrenIds", ChildId),
+            new KeyValuePair<string, string>("ParentalLeaveChildrenIds", _childId),
         ], TestContext.Current.CancellationToken);
 
         postResponse.AssertRedirect("/work-status/work-status");
@@ -88,7 +88,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -113,15 +113,15 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
             Children = new Dictionary<string, Child>
                 {
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
+                        _childId,
+                        new Child(_childId, "Sara")
                     }
                 },
         });
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -131,7 +131,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
         Assert.NotNull(cookie);
 
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
-            new KeyValuePair<string, string>("ParentalLeaveChildrenIds", ChildId),
+            new KeyValuePair<string, string>("ParentalLeaveChildrenIds", _childId),
             new KeyValuePair<string, string>("ParentalLeaveChildrenIds", "None")
         ], TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);

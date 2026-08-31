@@ -26,7 +26,7 @@ namespace Dfe.Acec.Web.Models.Summary;
 /// </remarks>
 public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, string controllerName, IStringLocalizerFactory stringLocalizerFactory)
 {
-    private const string TitleResourceKey = "Title";
+    private const string _titleResourceKey = "Title";
     private readonly List<SummaryRowViewModel> _viewModels = [];
     private readonly IStringLocalizerFactory _stringLocalizerFactory = stringLocalizerFactory;
 
@@ -124,7 +124,7 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
         };
 
         var displayValue = GetResourceValueFromViewForLocale("Views.Home.Location", displayKey);
-        var label = GetResourceValueFromViewForLocale("Views.Home.Location", TitleResourceKey);
+        var label = GetResourceValueFromViewForLocale("Views.Home.Location", _titleResourceKey);
         return Add(label, displayValue, "Location");
     }
 
@@ -144,7 +144,7 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
         };
 
         var displayValue = GetResourceValueFromViewForLocale("Views.User.UserAge", displayKey);
-        var label = GetResourceValueFromViewForLocale("Views.User.UserAge", TitleResourceKey);
+        var label = GetResourceValueFromViewForLocale("Views.User.UserAge", _titleResourceKey);
         return Add(label, displayValue, "UserAge");
     }
 
@@ -180,7 +180,7 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
             _ => throw new InvalidOperationException($"Unexpected HasPartner value: {hasPartner}")
         };
 
-        var label = GetResourceValueFromViewForLocale("Views.User.HasPartner", TitleResourceKey);
+        var label = GetResourceValueFromViewForLocale("Views.User.HasPartner", _titleResourceKey);
         return Add(label, displayValue, "HasPartner");
     }
 
@@ -200,7 +200,7 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
         };
 
         var displayValue = GetResourceValueFromViewForLocale("Views.Partner.PartnerAge", displayKey);
-        var label = GetResourceValueFromViewForLocale("Views.Partner.PartnerAge", TitleResourceKey);
+        var label = GetResourceValueFromViewForLocale("Views.Partner.PartnerAge", _titleResourceKey);
         return Add(label, displayValue, "PartnerAge");
     }
 
@@ -255,15 +255,12 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
         return this;
     }
 
-    private static string GetEnumDisplayName(Enum value)
-    {
-        return value.GetType()
+    private static string GetEnumDisplayName(Enum value) => value.GetType()
             .GetMember(value.ToString())[0]
             .GetCustomAttributes(typeof(DisplayAttribute), inherit: false)
             .Cast<DisplayAttribute>()
             .First()
             .Name ?? value.ToString();
-    }
 
     private string GetLabelLocalisationKey(Type viewModelType, LambdaExpression lambdaExpression)
     {

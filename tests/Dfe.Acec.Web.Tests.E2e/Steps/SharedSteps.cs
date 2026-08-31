@@ -8,11 +8,8 @@ namespace Dfe.Acec.Web.Tests.E2e.Steps;
 internal sealed class SharedSteps(IPage page)
 {
     [Then("I should see the hint text {string}")]
-    public async Task ThenIShouldSeeTheHintTextString(string hintText)
-    {
-        await Expect(page.Locator(".govuk-hint"))
+    public async Task ThenIShouldSeeTheHintTextString(string hintText) => await Expect(page.Locator(".govuk-hint"))
             .ToHaveTextAsync(hintText);
-    }
 
     [Then("I should see a success banner that says {string}")]
     public async Task ThenIShouldSeeASuccessBannerThatSaysString(string p0)

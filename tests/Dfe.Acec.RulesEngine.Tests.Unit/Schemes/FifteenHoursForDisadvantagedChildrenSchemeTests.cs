@@ -7,50 +7,41 @@ namespace Dfe.Acec.RulesEngine.Tests.Unit.Schemes;
 
 public class FifteenHoursForDisadvantagedChildrenSchemeTests
 {
-    private static readonly DateOnly Today = new(2025, 1, 1);
+    private static readonly DateOnly _today = new(2025, 1, 1);
 
-    private static FifteenHoursForDisadvantagedChildrenEvaluator CreateEvaluator()
+    private static FifteenHoursForDisadvantagedChildrenEvaluator CreateEvaluator() => new();
+    private static DerivedContext CreateEligibleContext() => new()
     {
-        return new FifteenHoursForDisadvantagedChildrenEvaluator();
-    }
-    private static DerivedContext CreateEligibleContext()
-    {
-        return new DerivedContext
+        Household = new HouseholdFacts
         {
-            Household = new HouseholdFacts
-            {
-                HasPartner = false,
-                HasAccessToPublicFunds = true,
-                CountryOfResidence = CountryOfResidence.England
-            },
+            HasPartner = false,
+            HasAccessToPublicFunds = true,
+            CountryOfResidence = CountryOfResidence.England
+        },
 
-            User = new PersonFacts
-            {
-                Benefits =
+        User = new PersonFacts
+        {
+            Benefits =
                 [
                     PersonBenefit.GuaranteedElementOfPensionCredit
                 ]
-            }
-        };
-    }
+        }
+    };
 
     private static ChildFacts CreateBornChild(
-        DateOnly dateOfBirth)
-    {
-        return new ChildFacts
+        DateOnly dateOfBirth) => new()
         {
             Name = "Jack",
             IsBorn = true,
             DateOfBirth = dateOfBirth,
             AgeInYears = AgeCalculations.CalculateAgeInYears(
                 dateOfBirth,
-                Today),
+                _today),
 
             AgeInMonths = AgeCalculations.CalculateAgeInMonths(
                 dateOfBirth,
-                Today)
+                _today)
         };
-    }
 
     [Fact]
     public void EvaluateWhenChildIsBornAndEligibleNowReturnsSchemeResult()

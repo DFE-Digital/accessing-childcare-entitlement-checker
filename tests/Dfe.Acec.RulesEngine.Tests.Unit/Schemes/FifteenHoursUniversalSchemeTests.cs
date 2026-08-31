@@ -7,41 +7,32 @@ namespace Dfe.Acec.RulesEngine.Tests.Unit.Schemes;
 
 public class FifteenHoursUniversalSchemeTests
 {
-    private static readonly DateOnly Today = new(2025, 1, 1);
+    private static readonly DateOnly _today = new(2025, 1, 1);
 
-    private static FifteenHoursUniversalEvaluator CreateEvaluator()
-    {
-        return new FifteenHoursUniversalEvaluator();
-    }
+    private static FifteenHoursUniversalEvaluator CreateEvaluator() => new();
 
     private static DerivedContext CreateContext(
-        CountryOfResidence country = CountryOfResidence.England)
-    {
-        return new DerivedContext
+        CountryOfResidence country = CountryOfResidence.England) => new()
         {
             Household = new HouseholdFacts
             {
                 CountryOfResidence = country
             }
         };
-    }
     private static ChildFacts CreateBornChild(
-        DateOnly dateOfBirth)
-    {
-        return new ChildFacts
+        DateOnly dateOfBirth) => new()
         {
             Name = "Jack",
             IsBorn = true,
             DateOfBirth = dateOfBirth,
             AgeInYears = AgeCalculations.CalculateAgeInYears(
                 dateOfBirth,
-                Today),
+                _today),
 
             AgeInMonths = AgeCalculations.CalculateAgeInMonths(
                 dateOfBirth,
-                Today)
+                _today)
         };
-    }
 
     [Fact]
     public void EvaluateWhenChildIsEligibleNowReturnsSchemeResult()

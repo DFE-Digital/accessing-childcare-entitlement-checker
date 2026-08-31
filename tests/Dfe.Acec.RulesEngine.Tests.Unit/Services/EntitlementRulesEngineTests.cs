@@ -152,24 +152,18 @@ public class EntitlementRulesEngineTests
     {
         public SchemeResultDto Evaluate(
             DerivedContext context,
-            ChildFacts child)
-        {
-            return new SchemeResultDto
+            ChildFacts child) => new()
             {
                 SchemeCode = SchemeCode.UniversalCreditChildcare,
                 EligibleNow = true,
                 EligibleInFuture = false
             };
-        }
     }
 
     private sealed class FakeIneligibleSchemeEvaluator : ISchemeEvaluator
     {
         public SchemeResultDto? Evaluate(
             DerivedContext context,
-            ChildFacts child)
-        {
-            return null;
-        }
+            ChildFacts child) => null;
     }
 }

@@ -6,13 +6,13 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class CookiesTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/cookies";
+    private const string _url = "/cookies";
 
     [Fact]
     public async Task Get()
     {
         using var client = factory.CreateClient();
-        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertHeading("Cookie policy");
@@ -22,7 +22,7 @@ public class CookiesTests(IntegrationTestFixture factory) : IClassFixture<Integr
     public async Task GetWithMalformedParameterReturnsBadRequest()
     {
         using var client = factory.CreateClient();
-        var response = await client.GetAsync($"{Url}?hasSetCookies=banana", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync($"{_url}?hasSetCookies=banana", TestContext.Current.CancellationToken);
         response.AssertBadRequest();
     }
 
@@ -37,7 +37,7 @@ public class CookiesTests(IntegrationTestFixture factory) : IClassFixture<Integr
                 AllowAutoRedirect = false
             });
 
-        var getResponse = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var getResponse = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
@@ -45,7 +45,7 @@ public class CookiesTests(IntegrationTestFixture factory) : IClassFixture<Integr
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, _url, cookie, token, [
             new KeyValuePair<string, string>("AnalyticsCookiesEnabled", analyticsCookiesEnabled.ToString())
         ], TestContext.Current.CancellationToken);
 
@@ -65,7 +65,7 @@ public class CookiesTests(IntegrationTestFixture factory) : IClassFixture<Integr
                 AllowAutoRedirect = false
             });
 
-        var getResponse = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var getResponse = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);

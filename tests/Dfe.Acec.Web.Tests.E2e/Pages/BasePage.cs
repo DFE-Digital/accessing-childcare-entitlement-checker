@@ -12,10 +12,7 @@ internal abstract class BasePage(IPage page) : IPageObject
 
     public abstract Task AnswerAsync(string answer);
 
-    public virtual async Task ContinueAsync()
-    {
-        await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
-    }
+    public virtual async Task ContinueAsync() => await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
 
     public virtual async Task AssertHeaderAsync()
     {
@@ -32,12 +29,9 @@ internal abstract class BasePage(IPage page) : IPageObject
         }
     }
 
-    protected async Task SelectRadioAsync(string option)
-    {
-        await Page
+    protected async Task SelectRadioAsync(string option) => await Page
             .GetByRole(AriaRole.Radio, new PageGetByRoleOptions { Name = option, Exact = true })
             .CheckAsync();
-    }
 
     protected async Task FillTextAsync(string text)
     {

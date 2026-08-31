@@ -8,7 +8,7 @@ namespace Dfe.Acec.RulesEngine.Schemes;
 
 public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
 {
-    private const int MaximumEligibleAgeInYears = 2;
+    private const int _maximumEligibleAgeInYears = 2;
 
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
@@ -23,7 +23,7 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
         var eligibleNow =
             livesInEngland &&
             child.IsBorn &&
-            child.AgeInYears == MaximumEligibleAgeInYears &&
+            child.AgeInYears == _maximumEligibleAgeInYears &&
             meetsEligibilityCriteria;
 
 
@@ -31,7 +31,7 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
             livesInEngland &&
             (
                 !child.IsBorn ||
-                child.AgeInYears < MaximumEligibleAgeInYears
+                child.AgeInYears < _maximumEligibleAgeInYears
             )
             &&
             meetsEligibilityCriteria;
@@ -68,42 +68,27 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
     }
 
     private static bool ChildMeetsAutomaticEligibilityCriteria(
-        ChildFacts child)
-    {
-        return
-            child.ChildRelatedBenefits.Contains(
+        ChildFacts child) => child.ChildRelatedBenefits.Contains(
                 ChildRelatedBenefit.DisabilityLivingAllowance)
 
             || child.ChildRelatedBenefits.Contains(
                 ChildRelatedBenefit.EducationHealthAndCarePlan);
-    }
 
     private static bool HouseholdMeetsBenefitEligibility(
-        DerivedContext context)
-    {
-        return
-            context.Household.CountryOfResidence == CountryOfResidence.England &&
+        DerivedContext context) => context.Household.CountryOfResidence == CountryOfResidence.England &&
             context.Household.HasAccessToPublicFunds &&
             HouseholdReceivesQualifyingBenefit(context);
-    }
 
     private static bool HouseholdReceivesQualifyingBenefit(
-        DerivedContext context)
-    {
-        return
-            context.Household.ReceivesUniversalCredit ||
+        DerivedContext context) => context.Household.ReceivesUniversalCredit ||
             PersonReceivesQualifyingBenefit(context.User) ||
             context.Partner is not null && PersonReceivesQualifyingBenefit(context.Partner);
-    }
 
     private static bool PersonReceivesQualifyingBenefit(
-        PersonFacts person)
-    {
-        return person.Benefits.Any(
-            QualifyingBenefits.Contains);
-    }
+        PersonFacts person) => person.Benefits.Any(
+            _qualifyingBenefits.Contains);
 
-    private static readonly List<PersonBenefit> QualifyingBenefits =
+    private static readonly List<PersonBenefit> _qualifyingBenefits =
     [
         PersonBenefit.GuaranteedElementOfPensionCredit
     ];

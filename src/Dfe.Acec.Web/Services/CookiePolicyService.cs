@@ -1,14 +1,14 @@
-namespace Dfe.Acec.Web.Services;
+﻿namespace Dfe.Acec.Web.Services;
 
 public class CookiePolicyService(
     IHttpContextAccessor httpContextAccessor,
     CookieSecurePolicy securePolicy) : ICookiePolicyService
 {
-    public const string CookieName = "cookie_policy";
+    private const string _cookieName = "cookie_policy";
 
-    private const string Enabled = "enabled";
+    private const string _enabled = "enabled";
 
-    private const string Disabled = "disabled";
+    private const string _disabled = "disabled";
 
     public bool HasConsented
     {
@@ -20,12 +20,12 @@ public class CookiePolicyService(
                 return false;
             }
 
-            if (!context.Request.Cookies.TryGetValue(CookieName, out var value))
+            if (!context.Request.Cookies.TryGetValue(_cookieName, out var value))
             {
                 return false;
             }
 
-            return value == Enabled;
+            return value == _enabled;
         }
     }
 
@@ -39,12 +39,12 @@ public class CookiePolicyService(
                 return false;
             }
 
-            if (!context.Request.Cookies.TryGetValue(CookieName, out var value))
+            if (!context.Request.Cookies.TryGetValue(_cookieName, out var value))
             {
                 return false;
             }
 
-            return value is Enabled or Disabled;
+            return value is _enabled or _disabled;
         }
     }
 
@@ -56,7 +56,7 @@ public class CookiePolicyService(
             return;
         }
 
-        var serialisedValue = consented ? Enabled : Disabled;
+        var serialisedValue = consented ? _enabled : _disabled;
         var cookieOptions = new CookieBuilder
         {
             Path = "/",
@@ -67,6 +67,6 @@ public class CookiePolicyService(
             Expiration = TimeSpan.FromDays(365),
         }.Build(context, DateTimeOffset.UtcNow);
 
-        context.Response.Cookies.Append(CookieName, serialisedValue, cookieOptions);
+        context.Response.Cookies.Append(_cookieName, serialisedValue, cookieOptions);
     }
 }

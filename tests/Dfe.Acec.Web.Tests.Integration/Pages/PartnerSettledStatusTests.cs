@@ -8,7 +8,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/nationality/settled-status-partner";
+    private const string _url = "/nationality/settled-status-partner";
 
     [Theory]
     [InlineData(null, "/nationality/nationality-partner")]
@@ -20,7 +20,7 @@ public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassF
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -48,7 +48,7 @@ public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassF
         });
 
         using var client = host.CreateClient();
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -74,7 +74,7 @@ public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassF
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

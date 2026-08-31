@@ -7,7 +7,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/work-status/work-status";
+    private const string _url = "/work-status/work-status";
 
     [Theory]
     [InlineData(null, "/work-status/work")]
@@ -19,7 +19,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -48,7 +48,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -74,7 +74,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -96,7 +96,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         using var client = host.CreateClient();
 
-        var getResponse = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var getResponse = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
@@ -104,7 +104,7 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, _url, cookie, token, [
                 new("WorkStatus", "SelfEmployed"),
             ],
             TestContext.Current.CancellationToken);

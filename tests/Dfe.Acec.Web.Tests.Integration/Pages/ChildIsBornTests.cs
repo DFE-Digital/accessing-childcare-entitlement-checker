@@ -7,13 +7,13 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
-    private const string Url = $"/children/{ChildId}/has-the-child-been-born";
-    private static readonly DateOnly Tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
-    private static readonly DateOnly Yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
+    private const string _childId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+    private const string _url = $"/children/{_childId}/has-the-child-been-born";
+    private static readonly DateOnly _tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
+    private static readonly DateOnly _yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
 
     [Theory]
-    [InlineData(null, $"/children/add-child-details/{ChildId}")]
+    [InlineData(null, $"/children/add-child-details/{_childId}")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
@@ -23,15 +23,15 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
             Children = new Dictionary<string, Child>
                 {
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
+                        _childId,
+                        new Child(_childId, "Sara")
                     }
                 }
         });
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -42,15 +42,15 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     }
 
     [Theory]
-    [InlineData(null, false, false, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
-    [InlineData(null, false, false, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
-    [InlineData(ReturnTo.CheckAnswers, true, false, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
-    [InlineData(ReturnTo.CheckAnswers, false, true, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
-    [InlineData(ReturnTo.CheckAnswers, false, true, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
-    [InlineData(ReturnTo.CheckChildDetails, true, false, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
-    [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Born, $"/children/{ChildId}/childs-date-of-birth")]
-    [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
-    [InlineData(ReturnTo.CheckChildDetails, true, false, BirthStatus.Due, $"/children/{ChildId}/expectant-childs-due-date")]
+    [InlineData(null, false, false, BirthStatus.Born, $"/children/{_childId}/childs-date-of-birth")]
+    [InlineData(null, false, false, BirthStatus.Due, $"/children/{_childId}/expectant-childs-due-date")]
+    [InlineData(ReturnTo.CheckAnswers, true, false, BirthStatus.Born, $"/children/{_childId}/childs-date-of-birth")]
+    [InlineData(ReturnTo.CheckAnswers, false, true, BirthStatus.Born, $"/children/{_childId}/childs-date-of-birth")]
+    [InlineData(ReturnTo.CheckAnswers, false, true, BirthStatus.Due, $"/children/{_childId}/expectant-childs-due-date")]
+    [InlineData(ReturnTo.CheckChildDetails, true, false, BirthStatus.Born, $"/children/{_childId}/childs-date-of-birth")]
+    [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Born, $"/children/{_childId}/childs-date-of-birth")]
+    [InlineData(ReturnTo.CheckChildDetails, false, true, BirthStatus.Due, $"/children/{_childId}/expectant-childs-due-date")]
+    [InlineData(ReturnTo.CheckChildDetails, true, false, BirthStatus.Due, $"/children/{_childId}/expectant-childs-due-date")]
     public async Task PostValidRedirects(
         string? returnTo,
         bool hasBirthDate,
@@ -63,11 +63,11 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
             Children = new Dictionary<string, Child>
                 {
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
+                        _childId,
+                        new Child(_childId, "Sara")
                         {
-                            BirthDate = hasBirthDate ? Yesterday : null,
-                            DueDate = hasDueDate ? Tomorrow : null,
+                            BirthDate = hasBirthDate ? _yesterday : null,
+                            DueDate = hasDueDate ? _tomorrow : null,
                             BirthStatus = birthStatus,
                         }
                     }
@@ -76,7 +76,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -93,7 +93,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
     }
 
     [Theory]
-    [InlineData(null, $"/children/add-child-details/{ChildId}")]
+    [InlineData(null, $"/children/add-child-details/{_childId}")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostWithInvalidShowsValidationErrorAndBackLink(string? returnTo, string backLinkUrl)
@@ -103,15 +103,15 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
             Children = new Dictionary<string, Child>
                 {
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
+                        _childId,
+                        new Child(_childId, "Sara")
                     }
                 }
         });
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -132,7 +132,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
         await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
-        var url = Url;
+        var url = _url;
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }

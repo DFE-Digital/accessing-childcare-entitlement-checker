@@ -26,7 +26,7 @@ public partial class SummaryController(
     : Controller
 {
     public const string Name = "Summary";
-    private const string StateMismatchView = "StateMismatch";
+    private const string _stateMismatchView = "StateMismatch";
 
     [HttpGet]
     public ViewResult CheckChildDetails(string? childId = null)
@@ -53,7 +53,7 @@ public partial class SummaryController(
 
         LogCorrelationIdMismatch();
         Response.StatusCode = 400;
-        return View(StateMismatchView);
+        return View(_stateMismatchView);
     }
 
     [HttpGet]
@@ -77,12 +77,12 @@ public partial class SummaryController(
 
             LogMissingAnswers();
             Response.StatusCode = 400;
-            return View(StateMismatchView);
+            return View(_stateMismatchView);
         }
 
         LogCorrelationIdMismatch();
         Response.StatusCode = 400;
-        return View(StateMismatchView);
+        return View(_stateMismatchView);
     }
 
     [HttpGet]

@@ -8,7 +8,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/earnings/wage";
+    private const string _url = "/earnings/wage";
 
     [Theory]
     [InlineData(null, WorkStatusOption.PaidEmployment, null, "/work-status/work-status")]
@@ -31,7 +31,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -61,7 +61,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -98,7 +98,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

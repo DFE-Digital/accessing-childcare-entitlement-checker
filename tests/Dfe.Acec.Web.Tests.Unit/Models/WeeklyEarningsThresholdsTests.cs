@@ -16,16 +16,10 @@ public class WeeklyEarningsThresholdsTests
     }
 
     [Fact]
-    public void ThrowsIfAgeRangeIsNotAnswered()
-    {
-        Assert.Throws<InvalidOperationException>(() => WeeklyEarningsThresholds.Create(null, []));
-    }
+    public void ThrowsIfAgeRangeIsNotAnswered() => Assert.Throws<InvalidOperationException>(() => WeeklyEarningsThresholds.Create(null, []));
 
     [Fact]
-    public void ThrowsIfWorkStatusIsNotAnswered()
-    {
-        Assert.Throws<InvalidOperationException>(() => WeeklyEarningsThresholds.Create(AgeRange.EighteenToTwenty, []));
-    }
+    public void ThrowsIfWorkStatusIsNotAnswered() => Assert.Throws<InvalidOperationException>(() => WeeklyEarningsThresholds.Create(AgeRange.EighteenToTwenty, []));
 
     [Fact]
     public void CoverageThrowsIfInvalidAgeRangePassed()

@@ -13,13 +13,13 @@ public class ExpectedChildDetailsControllerTests : IDisposable
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly ExpectedChildDetailsController _controller;
-    private const string ChildId = "child-a";
+    private const string _childId = "child-a";
 
     public ExpectedChildDetailsControllerTests()
     {
         _journeyState = new JourneyState
         {
-            Children = { [ChildId] = new Child(ChildId, "Child A") }
+            Children = { [_childId] = new Child(_childId, "Child A") }
         };
         _journeySession = Substitute.For<IJourneySession>();
         _controller = new ExpectedChildDetailsController(_journeyState, _journeySession)
@@ -32,22 +32,19 @@ public class ExpectedChildDetailsControllerTests : IDisposable
     [Fact]
     public void ChildDueDateReturnsView()
     {
-        var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(ChildId));
+        var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(_childId));
         Assert.Null(result.Model<ChildDueDateViewModel>().ChildDueDate);
     }
 
     [Fact]
-    public void ChildDueDateIfChildDoesNotExistReturnsNotFound()
-    {
-        Assert.IsType<NotFoundResult>(_controller.ChildDueDate("DOES-NOT-EXIST"));
-    }
+    public void ChildDueDateIfChildDoesNotExistReturnsNotFound() => Assert.IsType<NotFoundResult>(_controller.ChildDueDate("DOES-NOT-EXIST"));
 
     [Fact]
     public void ChildDueDateGetPopulatesModelFromState()
     {
-        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(_childId, out var child));
         child.DueDate = new DateOnly(2020, 1, 15);
-        var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(ChildId));
+        var result = Assert.IsType<ViewResult>(_controller.ChildDueDate(_childId));
         Assert.Equal(new DateOnly(2020, 1, 15), result.Model<ChildDueDateViewModel>().ChildDueDate);
     }
 
@@ -56,7 +53,7 @@ public class ExpectedChildDetailsControllerTests : IDisposable
     {
         var model = new ChildDueDateViewModel
         {
-            ChildId = ChildId,
+            ChildId = _childId,
             ChildDueDate = new DateOnly(2020, 1, 15)
         };
 
@@ -64,7 +61,7 @@ public class ExpectedChildDetailsControllerTests : IDisposable
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).SetState(_journeyState);
-        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(_childId, out var child));
         Assert.Equal(new DateOnly(2020, 1, 15), child.DueDate);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(nameof(SummaryController.CheckChildDetails), redirect.ActionName);
@@ -75,7 +72,7 @@ public class ExpectedChildDetailsControllerTests : IDisposable
     {
         var model = new ChildDueDateViewModel
         {
-            ChildId = ChildId,
+            ChildId = _childId,
             ChildDueDate = new DateOnly(2020, 1, 15),
             ReturnTo = ReturnTo.CheckChildDetails
         };

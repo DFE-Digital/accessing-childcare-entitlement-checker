@@ -7,48 +7,39 @@ namespace Dfe.Acec.RulesEngine.Tests.Unit.Schemes;
 
 public class TaxFreeChildcareSchemeTests
 {
-    private static readonly DateOnly Today = new(2025, 1, 1);
+    private static readonly DateOnly _today = new(2025, 1, 1);
 
-    private static TaxFreeChildcareEvaluator CreateEvaluator()
-    {
-        return new TaxFreeChildcareEvaluator();
-    }
+    private static TaxFreeChildcareEvaluator CreateEvaluator() => new();
 
-    private static DerivedContext CreateEligibleContext()
+    private static DerivedContext CreateEligibleContext() => new()
     {
-        return new DerivedContext
+        Household = new HouseholdFacts
         {
-            Household = new HouseholdFacts
-            {
-                HasPartner = false,
-                HasAccessToPublicFunds = true
-            },
+            HasPartner = false,
+            HasAccessToPublicFunds = true
+        },
 
-            User = new PersonFacts
-            {
-                PaidWorkStatus = PaidWorkStatus.Yes,
-                EarnsAboveThreshold = true
-            }
-        };
-    }
+        User = new PersonFacts
+        {
+            PaidWorkStatus = PaidWorkStatus.Yes,
+            EarnsAboveThreshold = true
+        }
+    };
 
     private static ChildFacts CreateBornChild(
-        DateOnly dateOfBirth)
-    {
-        return new ChildFacts
+        DateOnly dateOfBirth) => new()
         {
             Name = "Jack",
             IsBorn = true,
             DateOfBirth = dateOfBirth,
             AgeInYears = AgeCalculations.CalculateAgeInYears(
                 dateOfBirth,
-                Today),
+                _today),
 
             AgeInMonths = AgeCalculations.CalculateAgeInMonths(
                 dateOfBirth,
-                Today)
+                _today)
         };
-    }
 
     [Fact]
     public void EvaluateWhenChildIsEligibleNowReturnsSchemeResult()

@@ -8,19 +8,19 @@ namespace Dfe.Acec.RulesEngine.Schemes;
 
 public class FifteenHoursUniversalEvaluator : ISchemeEvaluator
 {
-    private const int MinimumEligibleAgeInYears = 3;
-    private const int MaximumEligibleAgeInYears = 4;
+    private const int _minimumEligibleAgeInYears = 3;
+    private const int _maximumEligibleAgeInYears = 4;
 
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
         var eligibleNow =
             context.Household.CountryOfResidence == CountryOfResidence.England &&
             child.IsBorn &&
-            child.AgeInYears is >= MinimumEligibleAgeInYears and <= MaximumEligibleAgeInYears;
+            child.AgeInYears is >= _minimumEligibleAgeInYears and <= _maximumEligibleAgeInYears;
 
         var eligibleInFuture =
             context.Household.CountryOfResidence == CountryOfResidence.England &&
-            ((child.IsBorn && child.AgeInYears is < MinimumEligibleAgeInYears) || !child.IsBorn);
+            ((child.IsBorn && child.AgeInYears is < _minimumEligibleAgeInYears) || !child.IsBorn);
 
         if (!eligibleNow && !eligibleInFuture)
         {
@@ -29,8 +29,8 @@ public class FifteenHoursUniversalEvaluator : ISchemeEvaluator
 
         var thirdBirthdayDate =
             child.IsBorn
-                ? child.DateOfBirth?.AddYears(MinimumEligibleAgeInYears)
-                : child.DueDate?.AddYears(MinimumEligibleAgeInYears);
+                ? child.DateOfBirth?.AddYears(_minimumEligibleAgeInYears)
+                : child.DueDate?.AddYears(_minimumEligibleAgeInYears);
 
 
         DateOnly? useFromDate =

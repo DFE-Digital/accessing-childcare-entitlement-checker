@@ -6,9 +6,7 @@ internal sealed class Scenario5 : IUseCase
 {
     public string Name => "Single parent who is self employed, child is not born yet";
 
-    public IEnumerable<JourneyStep> GetJourney()
-    {
-        return new JourneyBuilder()
+    public IEnumerable<JourneyStep> GetJourney() => new JourneyBuilder()
             .StartInLocation("England")
 
             // Child 1
@@ -31,5 +29,4 @@ internal sealed class Scenario5 : IUseCase
             .SetHasPartner("No")
 
             .Build();
-    }
 }

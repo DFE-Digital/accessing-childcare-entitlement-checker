@@ -8,7 +8,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class PartnerSelfEmployedDurationTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/work-status/self-employed-partner";
+    private const string _url = "/work-status/self-employed-partner";
 
     [Theory]
     [InlineData(null, "/work-status/work-status-partner")]
@@ -20,7 +20,7 @@ public class PartnerSelfEmployedDurationTests(IntegrationTestFixture factory) : 
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -46,7 +46,7 @@ public class PartnerSelfEmployedDurationTests(IntegrationTestFixture factory) : 
         });
 
         using var client = host.CreateClient();
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -72,7 +72,7 @@ public class PartnerSelfEmployedDurationTests(IntegrationTestFixture factory) : 
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

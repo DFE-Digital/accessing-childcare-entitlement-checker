@@ -8,7 +8,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/check-your-answers";
+    private const string _url = "/check-your-answers";
 
     [Fact]
     public async Task GetWhenFeatureFlagEnabledSuppressesLocationRow()
@@ -24,7 +24,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
 
         using var client = host.CreateClient();
 
-        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
 
         var content = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
@@ -48,7 +48,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
 
         using var client = host.CreateClient();
 
-        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink(backLinkUrl)

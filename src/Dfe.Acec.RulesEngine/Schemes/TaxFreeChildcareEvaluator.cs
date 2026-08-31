@@ -7,8 +7,8 @@ namespace Dfe.Acec.RulesEngine.Schemes;
 
 public class TaxFreeChildcareEvaluator : ISchemeEvaluator
 {
-    private const int MaximumEligibleAgeInYears = 11;
-    private const int MaximumEligibleAgeInYearsWithDisability = 16;
+    private const int _maximumEligibleAgeInYears = 11;
+    private const int _maximumEligibleAgeInYearsWithDisability = 16;
 
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
@@ -96,8 +96,8 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
 
         var maximumEligibleAgeInYears =
             childHasEligibleDisability
-                ? MaximumEligibleAgeInYearsWithDisability
-                : MaximumEligibleAgeInYears;
+                ? _maximumEligibleAgeInYearsWithDisability
+                : _maximumEligibleAgeInYears;
 
         return child.AgeInYears <= maximumEligibleAgeInYears;
     }
@@ -172,20 +172,13 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
             meetsIncomeRequirement;
     }
 
-    private static bool HasQualifyingPaidWorkStatus(PersonFacts person)
-    {
-        return person.PaidWorkStatus is
+    private static bool HasQualifyingPaidWorkStatus(PersonFacts person) => person.PaidWorkStatus is
             PaidWorkStatus.Yes
             or PaidWorkStatus.ParentalLeave
             or PaidWorkStatus.SickLeave;
-    }
 
-    private static bool MeetsMinimumIncomeRequirement(PersonFacts person)
-    {
-        return
-            person.EarnsAboveThreshold ||
+    private static bool MeetsMinimumIncomeRequirement(PersonFacts person) => person.EarnsAboveThreshold ||
             person.SelfEmployedLessThan12Months;
-    }
 
     private static ParentalLeaveParty? GetEligibilityEndParty(DerivedContext context, ParentalLeaveAssessment parentalLeaveAssessment)
     {
@@ -216,43 +209,30 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
             eligibilityDependsOnPartnerLeave);
     }
 
-    private static ParentalLeaveParty? GetParentalLeaveParty(bool appliesToUser, bool appliesToPartner)
+    private static ParentalLeaveParty? GetParentalLeaveParty(bool appliesToUser, bool appliesToPartner) => (appliesToUser, appliesToPartner) switch
     {
-        return (appliesToUser, appliesToPartner) switch
-        {
-            (true, true) => ParentalLeaveParty.UserAndPartner,
+        (true, true) => ParentalLeaveParty.UserAndPartner,
 
-            (true, false) => ParentalLeaveParty.User,
+        (true, false) => ParentalLeaveParty.User,
 
-            (false, true) => ParentalLeaveParty.Partner,
+        (false, true) => ParentalLeaveParty.Partner,
 
-            _ => null
-        };
-    }
+        _ => null
+    };
 
-    private static bool PersonIsDisqualified(PersonFacts person)
-    {
-        return ReceivesDisqualifyingChildcareSupport(person);
-    }
+    private static bool PersonIsDisqualified(PersonFacts person) => ReceivesDisqualifyingChildcareSupport(person);
 
-    private static bool ReceivesDisqualifyingChildcareSupport(PersonFacts person)
-    {
-        return
-            person.ChildcareSupport.Contains(
+    private static bool ReceivesDisqualifyingChildcareSupport(PersonFacts person) => person.ChildcareSupport.Contains(
                 ChildcareSupport.ChildcareVouchers)
 
             || person.ChildcareSupport.Contains(
                 ChildcareSupport.ChildcareBursaryOrGrant);
-    }
 
-    private static bool HasQualifyingExemptionBenefit(PersonFacts person)
-    {
-        return person.Benefits.Any(
-            QualifyingExemptionBenefits.Contains);
-    }
+    private static bool HasQualifyingExemptionBenefit(PersonFacts person) => person.Benefits.Any(
+            _qualifyingExemptionBenefits.Contains);
 
     private static readonly List<PersonBenefit>
-        QualifyingExemptionBenefits =
+        _qualifyingExemptionBenefits =
     [
         PersonBenefit.CarersAllowance,
         PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,

@@ -14,43 +14,34 @@ namespace Dfe.Acec.Web.Mappers;
 public class JourneyStateToEntitlementRequestMapper
 {
 
-    public EntitlementRequest Map(JourneyState journeyState)
+    public EntitlementRequest Map(JourneyState journeyState) => new()
     {
-        return new EntitlementRequest
-        {
-            Household = MapHousehold(journeyState),
-            User = MapUser(journeyState),
-            Partner = MapPartner(journeyState),
-            Children = MapChildren(journeyState)
-        };
-    }
+        Household = MapHousehold(journeyState),
+        User = MapUser(journeyState),
+        Partner = MapPartner(journeyState),
+        Children = MapChildren(journeyState)
+    };
 
-    private static HouseholdDto MapHousehold(JourneyState journeyState)
+    private static HouseholdDto MapHousehold(JourneyState journeyState) => new()
     {
-        return new HouseholdDto
-        {
-            CountryOfResidence = MapCountryOfResidence(journeyState.CountryOfResidence),
-            HasPartner = journeyState.HasPartner == true,
-            ReceivesUniversalCredit = journeyState.UniversalCredit == UniversalCreditOption.Receives,
-        };
-    }
+        CountryOfResidence = MapCountryOfResidence(journeyState.CountryOfResidence),
+        HasPartner = journeyState.HasPartner == true,
+        ReceivesUniversalCredit = journeyState.UniversalCredit == UniversalCreditOption.Receives,
+    };
 
-    private static PersonDto MapUser(JourneyState journeyState)
+    private static PersonDto MapUser(JourneyState journeyState) => new()
     {
-        return new PersonDto
-        {
-            AgeRange = MapAgeRange(journeyState.UserAge),
-            PaidWorkStatus = MapPaidWorkStatus(journeyState.PaidWork),
-            WorkStatuses = [.. journeyState.WorkStatus.Select(MapWorkStatus)],
-            SelfEmployedLessThan12Months = journeyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months,
-            EarnsAboveThreshold = journeyState.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold,
-            ExceedsAdjustedNetIncomeLimit = journeyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold,
-            Benefits = [.. journeyState.Benefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
-            ChildcareSupport = [.. journeyState.ChildcareSupport.Select(MapChildcareSupport).OfType<ChildcareSupport>()],
-            Nationality = MapNationality(journeyState.Nationality),
-            HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.SettledStatus),
-        };
-    }
+        AgeRange = MapAgeRange(journeyState.UserAge),
+        PaidWorkStatus = MapPaidWorkStatus(journeyState.PaidWork),
+        WorkStatuses = [.. journeyState.WorkStatus.Select(MapWorkStatus)],
+        SelfEmployedLessThan12Months = journeyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months,
+        EarnsAboveThreshold = journeyState.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold,
+        ExceedsAdjustedNetIncomeLimit = journeyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold,
+        Benefits = [.. journeyState.Benefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
+        ChildcareSupport = [.. journeyState.ChildcareSupport.Select(MapChildcareSupport).OfType<ChildcareSupport>()],
+        Nationality = MapNationality(journeyState.Nationality),
+        HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.SettledStatus),
+    };
 
     private static PersonDto? MapPartner(JourneyState journeyState)
     {
@@ -86,25 +77,20 @@ public class JourneyStateToEntitlementRequestMapper
         return children;
     }
 
-    private static ChildDto MapChild(Child child, JourneyState journeyState)
+    private static ChildDto MapChild(Child child, JourneyState journeyState) => new()
     {
-        return new ChildDto()
-        {
-            ChildId = child.ChildId,
-            Name = child.Name,
-            BirthStatus = MapBirthStatus(child.BirthStatus),
-            DateOfBirth = child.BirthDate,
-            DueDate = child.DueDate,
-            ChildRelatedBenefits = MapChildBenefits(child),
-            UserIsOnParentalLeaveForChild = journeyState.ParentalLeaveChildrenIds.Contains(child.ChildId),
-            PartnerIsOnParentalLeaveForChild = journeyState.PartnerParentalLeaveChildrenIds.Contains(child.ChildId),
-        };
-    }
+        ChildId = child.ChildId,
+        Name = child.Name,
+        BirthStatus = MapBirthStatus(child.BirthStatus),
+        DateOfBirth = child.BirthDate,
+        DueDate = child.DueDate,
+        ChildRelatedBenefits = MapChildBenefits(child),
+        UserIsOnParentalLeaveForChild = journeyState.ParentalLeaveChildrenIds.Contains(child.ChildId),
+        PartnerIsOnParentalLeaveForChild = journeyState.PartnerParentalLeaveChildrenIds.Contains(child.ChildId),
+    };
 
     private static CountryOfResidence?
-        MapCountryOfResidence(Web.Models.CountryOfResidence? country)
-    {
-        return country switch
+        MapCountryOfResidence(Web.Models.CountryOfResidence? country) => country switch
         {
             Models.CountryOfResidence.England =>
                 CountryOfResidence.England,
@@ -123,190 +109,160 @@ public class JourneyStateToEntitlementRequestMapper
             _ => throw new ArgumentOutOfRangeException(
                 nameof(country))
         };
-    }
 
-    private static AgeRange? MapAgeRange(Web.Models.AgeRange? ageRange)
+    private static AgeRange? MapAgeRange(Web.Models.AgeRange? ageRange) => ageRange switch
     {
-        return ageRange switch
-        {
-            Models.AgeRange.UnderEighteen =>
-                AgeRange.UnderEighteen,
+        Models.AgeRange.UnderEighteen =>
+            AgeRange.UnderEighteen,
 
-            Models.AgeRange.EighteenToTwenty =>
-                AgeRange.EighteenToTwenty,
+        Models.AgeRange.EighteenToTwenty =>
+            AgeRange.EighteenToTwenty,
 
-            Models.AgeRange.TwentyOneOrOver =>
-                AgeRange.TwentyOneOrOver,
+        Models.AgeRange.TwentyOneOrOver =>
+            AgeRange.TwentyOneOrOver,
 
-            null => null,
+        null => null,
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(ageRange))
+        _ => throw new ArgumentOutOfRangeException(
+            nameof(ageRange))
 
-        };
-    }
+    };
 
 
-    private static PaidWorkStatus? MapPaidWorkStatus(PaidWorkOption? paidWorkOption)
+    private static PaidWorkStatus? MapPaidWorkStatus(PaidWorkOption? paidWorkOption) => paidWorkOption switch
     {
-        return paidWorkOption switch
-        {
-            PaidWorkOption.Yes => PaidWorkStatus.Yes,
-            PaidWorkOption.No => PaidWorkStatus.No,
-            PaidWorkOption.ParentalLeave => PaidWorkStatus.ParentalLeave,
-            PaidWorkOption.SickLeave => PaidWorkStatus.SickLeave,
-            null => null,
-            _ => throw new ArgumentOutOfRangeException(nameof(paidWorkOption))
+        PaidWorkOption.Yes => PaidWorkStatus.Yes,
+        PaidWorkOption.No => PaidWorkStatus.No,
+        PaidWorkOption.ParentalLeave => PaidWorkStatus.ParentalLeave,
+        PaidWorkOption.SickLeave => PaidWorkStatus.SickLeave,
+        null => null,
+        _ => throw new ArgumentOutOfRangeException(nameof(paidWorkOption))
 
-        };
-    }
+    };
 
-    private static PaidWorkStatus? MapPaidWorkStatus(PartnerPaidWorkOption? partnerPaidWorkOption)
+    private static PaidWorkStatus? MapPaidWorkStatus(PartnerPaidWorkOption? partnerPaidWorkOption) => partnerPaidWorkOption switch
     {
-        return partnerPaidWorkOption switch
-        {
-            PartnerPaidWorkOption.Yes => PaidWorkStatus.Yes,
-            PartnerPaidWorkOption.No => PaidWorkStatus.No,
-            PartnerPaidWorkOption.ParentalLeave => PaidWorkStatus.ParentalLeave,
-            PartnerPaidWorkOption.SickLeave => PaidWorkStatus.SickLeave,
-            null => null,
-            _ => throw new ArgumentOutOfRangeException(nameof(partnerPaidWorkOption))
+        PartnerPaidWorkOption.Yes => PaidWorkStatus.Yes,
+        PartnerPaidWorkOption.No => PaidWorkStatus.No,
+        PartnerPaidWorkOption.ParentalLeave => PaidWorkStatus.ParentalLeave,
+        PartnerPaidWorkOption.SickLeave => PaidWorkStatus.SickLeave,
+        null => null,
+        _ => throw new ArgumentOutOfRangeException(nameof(partnerPaidWorkOption))
 
-        };
-    }
+    };
 
-    private static WorkStatus MapWorkStatus(WorkStatusOption workStatus)
+    private static WorkStatus MapWorkStatus(WorkStatusOption workStatus) => workStatus switch
     {
-        return workStatus switch
-        {
-            WorkStatusOption.PaidEmployment =>
-                WorkStatus.PaidEmployment,
+        WorkStatusOption.PaidEmployment =>
+            WorkStatus.PaidEmployment,
 
-            WorkStatusOption.SelfEmployed =>
-                WorkStatus.SelfEmployed,
+        WorkStatusOption.SelfEmployed =>
+            WorkStatus.SelfEmployed,
 
-            WorkStatusOption.Apprentice =>
-                WorkStatus.Apprentice,
+        WorkStatusOption.Apprentice =>
+            WorkStatus.Apprentice,
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(workStatus))
-        };
-    }
+        _ => throw new ArgumentOutOfRangeException(
+            nameof(workStatus))
+    };
 
-    private static PersonBenefit? MapPersonBenefit(BenefitsOption benefit)
+    private static PersonBenefit? MapPersonBenefit(BenefitsOption benefit) => benefit switch
     {
-        return benefit switch
-        {
-            BenefitsOption.CarersAllowance =>
-                PersonBenefit.CarersAllowance,
+        BenefitsOption.CarersAllowance =>
+            PersonBenefit.CarersAllowance,
 
-            BenefitsOption.ContributionBasedEmploymentAndSupportAllowance =>
-                PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
+        BenefitsOption.ContributionBasedEmploymentAndSupportAllowance =>
+            PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
 
-            BenefitsOption.EmploymentAndSupportAllowance =>
-                PersonBenefit.EmploymentAndSupportAllowance,
+        BenefitsOption.EmploymentAndSupportAllowance =>
+            PersonBenefit.EmploymentAndSupportAllowance,
 
-            BenefitsOption.GuaranteedElementOfPensionCredit =>
-                PersonBenefit.GuaranteedElementOfPensionCredit,
+        BenefitsOption.GuaranteedElementOfPensionCredit =>
+            PersonBenefit.GuaranteedElementOfPensionCredit,
 
-            BenefitsOption.IncapacityBenefit =>
-                PersonBenefit.IncapacityBenefit,
+        BenefitsOption.IncapacityBenefit =>
+            PersonBenefit.IncapacityBenefit,
 
-            BenefitsOption.LimitedCapabilityForWork =>
-                PersonBenefit.LimitedCapabilityForWork,
+        BenefitsOption.LimitedCapabilityForWork =>
+            PersonBenefit.LimitedCapabilityForWork,
 
-            BenefitsOption.LimitedCapabilityForWorkRelatedActivity =>
-                PersonBenefit.LimitedCapabilityForWorkRelatedActivity,
+        BenefitsOption.LimitedCapabilityForWorkRelatedActivity =>
+            PersonBenefit.LimitedCapabilityForWorkRelatedActivity,
 
-            BenefitsOption.SevereDisablementAllowance =>
-                PersonBenefit.SevereDisablementAllowance,
+        BenefitsOption.SevereDisablementAllowance =>
+            PersonBenefit.SevereDisablementAllowance,
 
 
-            BenefitsOption.None =>
-                null,
+        BenefitsOption.None =>
+            null,
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(benefit),
-                benefit,
-                null)
-        };
-    }
+        _ => throw new ArgumentOutOfRangeException(
+            nameof(benefit),
+            benefit,
+            null)
+    };
 
     private static PersonBenefit? MapPersonBenefit(
-        PartnerBenefitsOption benefit)
-    {
-        return MapPersonBenefit(
+        PartnerBenefitsOption benefit) => MapPersonBenefit(
             Enum.Parse<BenefitsOption>(
                 benefit.ToString()));
-    }
 
-    private static ChildcareSupport? MapChildcareSupport(ChildcareSupportOption childcareSupport)
+    private static ChildcareSupport? MapChildcareSupport(ChildcareSupportOption childcareSupport) => childcareSupport switch
     {
-        return childcareSupport switch
-        {
-            ChildcareSupportOption.ChildcareBursaryOrGrant =>
-                ChildcareSupport.ChildcareBursaryOrGrant,
+        ChildcareSupportOption.ChildcareBursaryOrGrant =>
+            ChildcareSupport.ChildcareBursaryOrGrant,
 
-            ChildcareSupportOption.ChildcareVouchers =>
-                ChildcareSupport.ChildcareVouchers,
+        ChildcareSupportOption.ChildcareVouchers =>
+            ChildcareSupport.ChildcareVouchers,
 
-            ChildcareSupportOption.None =>
-                null,
+        ChildcareSupportOption.None =>
+            null,
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(childcareSupport),
-                childcareSupport,
-                null)
+        _ => throw new ArgumentOutOfRangeException(
+            nameof(childcareSupport),
+            childcareSupport,
+            null)
 
-        };
-    }
+    };
 
-    private static ChildcareSupport? MapPartnerChildcareSupport(PartnerChildcareSupportOption partnerChildcareSupport)
+    private static ChildcareSupport? MapPartnerChildcareSupport(PartnerChildcareSupportOption partnerChildcareSupport) => partnerChildcareSupport switch
     {
-        return partnerChildcareSupport switch
-        {
-            PartnerChildcareSupportOption.ChildcareBursaryOrGrant =>
-                ChildcareSupport.ChildcareBursaryOrGrant,
+        PartnerChildcareSupportOption.ChildcareBursaryOrGrant =>
+            ChildcareSupport.ChildcareBursaryOrGrant,
 
-            PartnerChildcareSupportOption.ChildcareVouchers =>
-                ChildcareSupport.ChildcareVouchers,
+        PartnerChildcareSupportOption.ChildcareVouchers =>
+            ChildcareSupport.ChildcareVouchers,
 
-            PartnerChildcareSupportOption.None =>
-                null,
+        PartnerChildcareSupportOption.None =>
+            null,
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(partnerChildcareSupport),
-                partnerChildcareSupport,
-                null)
-        };
-    }
+        _ => throw new ArgumentOutOfRangeException(
+            nameof(partnerChildcareSupport),
+            partnerChildcareSupport,
+            null)
+    };
 
-    private static Nationality? MapNationality(NationalityOption? nationality)
+    private static Nationality? MapNationality(NationalityOption? nationality) => nationality switch
     {
-        return nationality switch
-        {
-            NationalityOption.BritishOrIrishCitizen =>
-                Nationality.BritishOrIrishCitizen,
+        NationalityOption.BritishOrIrishCitizen =>
+            Nationality.BritishOrIrishCitizen,
 
-            NationalityOption.CitizenOfADifferentCountry =>
-                Nationality.Other,
+        NationalityOption.CitizenOfADifferentCountry =>
+            Nationality.Other,
 
-            NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland =>
-                Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
+        NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland =>
+            Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
 
-            null => null,
+        null => null,
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(nationality),
-                nationality,
-                null)
-        };
-    }
+        _ => throw new ArgumentOutOfRangeException(
+            nameof(nationality),
+            nationality,
+            null)
+    };
 
     private static bool? MapSettledStatus(
-        SettledStatusOption? settledStatus)
-    {
-        return settledStatus switch
+        SettledStatusOption? settledStatus) => settledStatus switch
         {
             SettledStatusOption.Yes or SettledStatusOption.StillWaiting => true,
 
@@ -317,57 +273,47 @@ public class JourneyStateToEntitlementRequestMapper
             _ => throw new ArgumentOutOfRangeException(
                 nameof(settledStatus))
         };
-    }
 
-    private static BirthStatus? MapBirthStatus(Models.BirthStatus? birthStatus)
+    private static BirthStatus? MapBirthStatus(Models.BirthStatus? birthStatus) => birthStatus switch
     {
-        return birthStatus switch
-        {
-            Models.BirthStatus.Born =>
-                BirthStatus.Born,
+        Models.BirthStatus.Born =>
+            BirthStatus.Born,
 
-            Models.BirthStatus.Due =>
-                BirthStatus.Due,
+        Models.BirthStatus.Due =>
+            BirthStatus.Due,
 
-            null => null,
+        null => null,
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(birthStatus))
-        };
-    }
+        _ => throw new ArgumentOutOfRangeException(
+            nameof(birthStatus))
+    };
 
     private static List<ChildRelatedBenefit> MapChildBenefits(
-        Child child)
-    {
-        return [.. child.ChildSupportOptions
+        Child child) => [.. child.ChildSupportOptions
             .Select(MapChildBenefit)
             .OfType<ChildRelatedBenefit>()];
-    }
 
-    private static ChildRelatedBenefit? MapChildBenefit(ChildSupport childSupport)
+    private static ChildRelatedBenefit? MapChildBenefit(ChildSupport childSupport) => childSupport switch
     {
-        return childSupport switch
-        {
-            ChildSupport.ArmedForcesIndependencePayment =>
-                ChildRelatedBenefit.ArmedForcesIndependencePayment,
+        ChildSupport.ArmedForcesIndependencePayment =>
+            ChildRelatedBenefit.ArmedForcesIndependencePayment,
 
-            ChildSupport.CertificateOfVisualImpairment =>
-                ChildRelatedBenefit.CertificateOfVisualImpairment,
+        ChildSupport.CertificateOfVisualImpairment =>
+            ChildRelatedBenefit.CertificateOfVisualImpairment,
 
-            ChildSupport.DisabilityLivingAllowance =>
-                ChildRelatedBenefit.DisabilityLivingAllowance,
+        ChildSupport.DisabilityLivingAllowance =>
+            ChildRelatedBenefit.DisabilityLivingAllowance,
 
-            ChildSupport.EducationHealthAndCarePlan =>
-                ChildRelatedBenefit.EducationHealthAndCarePlan,
+        ChildSupport.EducationHealthAndCarePlan =>
+            ChildRelatedBenefit.EducationHealthAndCarePlan,
 
-            ChildSupport.PersonalIndependencePayment =>
-                ChildRelatedBenefit.PersonalIndependencePayment,
+        ChildSupport.PersonalIndependencePayment =>
+            ChildRelatedBenefit.PersonalIndependencePayment,
 
-            ChildSupport.NoneOfTheseApply =>
-                null,
+        ChildSupport.NoneOfTheseApply =>
+            null,
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(childSupport))
-        };
-    }
+        _ => throw new ArgumentOutOfRangeException(
+            nameof(childSupport))
+    };
 }

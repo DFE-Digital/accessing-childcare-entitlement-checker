@@ -8,7 +8,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/nationality";
+    private const string _url = "/nationality";
 
     [Theory]
     [InlineData(null, "/age/parent-age")]
@@ -20,7 +20,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -54,7 +54,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -77,7 +77,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
 
         using var client = host.CreateClient();
 
-        var getResponse = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var getResponse = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
@@ -85,7 +85,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, _url, cookie, token, [
                 new KeyValuePair<string,string>("Nationality", "CitizenOfAnEuCountryEeaCountryOrSwitzerland")
             ],
             TestContext.Current.CancellationToken);
@@ -102,7 +102,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

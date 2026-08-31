@@ -7,7 +7,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/age/partner-age";
+    private const string _url = "/age/partner-age";
 
     [Theory]
     [InlineData(null, "/partner")]
@@ -19,7 +19,7 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -48,7 +48,7 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         using var client = host.CreateClient();
 
-        var getResponse = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var getResponse = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
         var token = HtmlHelpers.ExtractAntiforgeryToken(getDocument);
@@ -56,7 +56,7 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
+        var postResponse = await HttpClientHelpers.PostFormAsync(client, _url, cookie, token, [
             new KeyValuePair<string, string>("PartnerAge", AgeRange.EighteenToTwenty.ToString())
         ], TestContext.Current.CancellationToken);
 
@@ -73,7 +73,7 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

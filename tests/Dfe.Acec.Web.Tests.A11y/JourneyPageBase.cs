@@ -4,7 +4,7 @@ namespace Dfe.Acec.Web.Tests.A11y;
 
 public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(output)
 {
-    private const string DefaultChildName = "Jack";
+    private const string _defaultChildName = "Jack";
 
     protected async Task StartJourney()
     {
@@ -35,7 +35,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await ExpectPathAndQuery("/children/add-child-details");
     }
 
-    private async Task<Guid> AddChild(string childName = DefaultChildName)
+    private async Task<Guid> AddChild(string childName = _defaultChildName)
     {
         await ExpectPathAndQuery("/children/add-child-details");
         await Page.GetByLabel("What name should we use for this child?").FillAsync(childName);
@@ -268,7 +268,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         return childId;
     }
 
-    protected async Task<Guid> GoToHasChildBeenBornPage(string childName = DefaultChildName)
+    protected async Task<Guid> GoToHasChildBeenBornPage(string childName = _defaultChildName)
     {
         await StartJourney();
         await AnswerLocation();
@@ -277,7 +277,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         return childId;
     }
 
-    protected async Task<Guid> GoToChildDateOfBirthPage(string childName = DefaultChildName)
+    protected async Task<Guid> GoToChildDateOfBirthPage(string childName = _defaultChildName)
     {
         var childId = await GoToHasChildBeenBornPage(childName);
         await AnswerChildHasBeenBorn(childId);
@@ -285,7 +285,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         return childId;
     }
 
-    protected async Task<Guid> GoToExpectedChildDueDatePage(string childName = DefaultChildName)
+    protected async Task<Guid> GoToExpectedChildDueDatePage(string childName = _defaultChildName)
     {
         var childId = await GoToHasChildBeenBornPage(childName);
         await AnswerChildHasBeenBorn(childId, false);
@@ -293,7 +293,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         return childId;
     }
 
-    protected async Task<Guid> CompleteBornChildToSummary(string childName = DefaultChildName)
+    protected async Task<Guid> CompleteBornChildToSummary(string childName = _defaultChildName)
     {
         var childId = await GoToChildDateOfBirthPage(childName);
         await EnterChildDateOfBirth(childId);
@@ -491,7 +491,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
 
         await Page.GetByRole(
                 AriaRole.Link,
-                new PageGetByRoleOptions { Name = $"View {DefaultChildName}'s full childcare support information" })
+                new PageGetByRoleOptions { Name = $"View {_defaultChildName}'s full childcare support information" })
             .ClickAsync();
 
         await ExpectPathAndQuery($"/Results/ResultsDetailed?childId={childId}");

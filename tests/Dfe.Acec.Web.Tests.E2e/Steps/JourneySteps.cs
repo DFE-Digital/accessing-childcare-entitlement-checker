@@ -10,10 +10,7 @@ namespace Dfe.Acec.Web.Tests.E2e.Steps;
 internal sealed class JourneySteps(IPage page, TestSettings settings)
 {
     [Given("I am on the childcare entitlement checker website")]
-    public async Task GivenIAmOnTheChildcareEntitlementCheckerWebsite()
-    {
-        await page.GotoAsync("/");
-    }
+    public async Task GivenIAmOnTheChildcareEntitlementCheckerWebsite() => await page.GotoAsync("/");
 
     [Given("I click the link to start the journey")]
     public async Task GivenIClickTheLinkToStartTheJourney()
@@ -109,10 +106,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
     }
 
     [Given("I check my children's details and click on Continue")]
-    public async Task GivenICheckMyChildrensDetailsAndClickOnContinue()
-    {
-        await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
-    }
+    public async Task GivenICheckMyChildrensDetailsAndClickOnContinue() => await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
 
     [Given("I fill in my own details")]
     public async Task GivenIFillInMyOwnDetails()
@@ -167,10 +161,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
 
     [Given("I click the Add another child button")]
     [When("I click the Add another child button")]
-    public async Task GivenIClickTheAddAnotherChildButton()
-    {
-        await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
-    }
+    public async Task GivenIClickTheAddAnotherChildButton() => await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
 
     [When(@"the page header is ""(.*)""")]
     [Then(@"the page header is ""(.*)""")]
@@ -187,26 +178,14 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
     }
 
     [When("I click on Continue")]
-    public async Task WhenIClickOnContinue()
-    {
-        await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
-    }
+    public async Task WhenIClickOnContinue() => await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
 
     [When("I click the back link")]
-    public async Task WhenIClickTheBackLink()
-    {
-        await page.Locator(".govuk-back-link").ClickAsync();
-    }
+    public async Task WhenIClickTheBackLink() => await page.Locator(".govuk-back-link").ClickAsync();
 
     [Then(@"I will be directed to the next page in the user journey ""(.*)""")]
-    public async Task ThenIWillBeDirectedToTheNextPageInTheUserJourney(string expectedHeader)
-    {
-        await Expect(page.Locator("body")).ToContainTextAsync(expectedHeader);
-    }
+    public async Task ThenIWillBeDirectedToTheNextPageInTheUserJourney(string expectedHeader) => await Expect(page.Locator("body")).ToContainTextAsync(expectedHeader);
 
     [Then(@"I should be returned to the previous page in the user journey ""(.*)""")]
-    public async Task ThenIShouldBeReturnedToThePreviousPageInTheUserJourney(string expectedHeader)
-    {
-        await Expect(page.GetByRole(AriaRole.Heading, new PageGetByRoleOptions { Level = 1 })).ToHaveTextAsync(expectedHeader);
-    }
+    public async Task ThenIShouldBeReturnedToThePreviousPageInTheUserJourney(string expectedHeader) => await Expect(page.GetByRole(AriaRole.Heading, new PageGetByRoleOptions { Level = 1 })).ToHaveTextAsync(expectedHeader);
 }

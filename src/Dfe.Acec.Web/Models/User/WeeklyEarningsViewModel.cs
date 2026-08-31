@@ -44,12 +44,7 @@ public class WeeklyEarningsViewModel : IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
-        if (journeyState is null)
-        {
-            throw new InvalidOperationException($"JourneyState service is not available in the validation context for {nameof(WeeklyEarningsViewModel)}");
-        }
-
+        var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState ?? throw new InvalidOperationException($"JourneyState service is not available in the validation context for {nameof(WeeklyEarningsViewModel)}");
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(WorkStatusViewModel));
         var weeklyEarningsThresholds = WeeklyEarningsThresholds.Create(journeyState.UserAge, journeyState.WorkStatus);

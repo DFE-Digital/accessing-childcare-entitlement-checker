@@ -10,13 +10,10 @@ public class JourneyStateValidatorCheckChildDetailsTests
 {
     private readonly JourneyStateValidator _validator = new();
 
-    private FluentValidation.Results.ValidationResult Validate(JourneyState journeyState)
-    {
-        return _validator.Validate(
+    private FluentValidation.Results.ValidationResult Validate(JourneyState journeyState) => _validator.Validate(
             journeyState,
             options => options.IncludeRuleSets(
                 JourneyStateValidator.CheckChildDetailsRuleSet));
-    }
 
     [Fact]
     public void CheckChildDetailsWhenBornChildIsCompleteIsValid()

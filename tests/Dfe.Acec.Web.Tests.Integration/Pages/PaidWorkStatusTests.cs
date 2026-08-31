@@ -8,8 +8,8 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
-    private const string Url = "/work-status/work";
+    private const string _childId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+    private const string _url = "/work-status/work";
 
     [Theory]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, "/nationality")]
@@ -26,7 +26,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -62,19 +62,19 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
             Children = new Dictionary<string, Child>
                 {
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
+                        _childId,
+                        new Child(_childId, "Sara")
                     }
                 },
             PaidWork = paidWork,
-            ParentalLeaveChildrenIds = hasAnsweredParentalLeaveChildren ? [ChildId] : [],
+            ParentalLeaveChildrenIds = hasAnsweredParentalLeaveChildren ? [_childId] : [],
             WorkStatus = workStatus is null ? new() : [workStatus.Value],
             UniversalCredit = universalCredit,
         });
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -105,7 +105,7 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

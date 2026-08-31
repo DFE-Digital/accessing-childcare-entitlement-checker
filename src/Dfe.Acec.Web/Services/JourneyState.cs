@@ -68,10 +68,7 @@ public class JourneyState
 
     public ChildcareVoucherReceiptOption? PartnerChildcareVoucherReceipt { get; set; }
 
-    public void Apply(LocationViewModel model)
-    {
-        CountryOfResidence = model.Country;
-    }
+    public void Apply(LocationViewModel model) => CountryOfResidence = model.Country;
 
     public void Apply(ChildNameViewModel model)
     {
@@ -80,10 +77,7 @@ public class JourneyState
             throw new InvalidOperationException("Child name cannot be null");
         }
 
-        if (model.ChildId == null)
-        {
-            model.ChildId = Guid.NewGuid().ToString();
-        }
+        model.ChildId ??= Guid.NewGuid().ToString();
 
         if (!Children.TryGetValue(model.ChildId, out var child))
         {
@@ -156,10 +150,7 @@ public class JourneyState
         Nationality = model.Nationality;
     }
 
-    public void Apply(SettledStatusViewModel model)
-    {
-        SettledStatus = model.SettledStatus;
-    }
+    public void Apply(SettledStatusViewModel model) => SettledStatus = model.SettledStatus;
 
     public void Apply(PaidWorkViewModel model)
     {
@@ -191,10 +182,7 @@ public class JourneyState
         PaidWork = model.PaidWork;
     }
 
-    public void Apply(ParentalLeaveViewModel model)
-    {
-        ParentalLeaveChildrenIds = model.ParentalLeaveChildrenIds;
-    }
+    public void Apply(ParentalLeaveViewModel model) => ParentalLeaveChildrenIds = model.ParentalLeaveChildrenIds;
 
     public void Apply(WorkStatusViewModel model)
     {
@@ -237,15 +225,9 @@ public class JourneyState
         YearlyEarnings = model.YearlyEarnings;
     }
 
-    public void Apply(UniversalCreditViewModel model)
-    {
-        UniversalCredit = model.UniversalCredit;
-    }
+    public void Apply(UniversalCreditViewModel model) => UniversalCredit = model.UniversalCredit;
 
-    public void Apply(BenefitsViewModel model)
-    {
-        Benefits = model.Benefits;
-    }
+    public void Apply(BenefitsViewModel model) => Benefits = model.Benefits;
 
     public void Apply(ChildcareSupportViewModel model)
     {
@@ -257,10 +239,7 @@ public class JourneyState
         ChildcareSupport = model.ChildcareSupport;
     }
 
-    public void Apply(ChildcareVoucherReceiptViewModel model)
-    {
-        ChildcareVoucherReceipt = model.ChildcareVoucherReceipt;
-    }
+    public void Apply(ChildcareVoucherReceiptViewModel model) => ChildcareVoucherReceipt = model.ChildcareVoucherReceipt;
 
     public void Apply(HasPartnerViewModel model)
     {
@@ -303,10 +282,7 @@ public class JourneyState
         PartnerNationality = model.PartnerNationality;
     }
 
-    public void Apply(PartnerSettledStatusViewModel model)
-    {
-        PartnerSettledStatus = model.PartnerSettledStatus;
-    }
+    public void Apply(PartnerSettledStatusViewModel model) => PartnerSettledStatus = model.PartnerSettledStatus;
 
     public void Apply(PartnerPaidWorkViewModel model)
     {
@@ -338,10 +314,7 @@ public class JourneyState
         PartnerPaidWork = model.PartnerPaidWork;
     }
 
-    public void Apply(PartnerParentalLeaveViewModel model)
-    {
-        PartnerParentalLeaveChildrenIds = model.PartnerParentalLeaveChildrenIds;
-    }
+    public void Apply(PartnerParentalLeaveViewModel model) => PartnerParentalLeaveChildrenIds = model.PartnerParentalLeaveChildrenIds;
 
     public void Apply(PartnerWorkStatusViewModel model)
     {
@@ -374,15 +347,9 @@ public class JourneyState
         PartnerWeeklyEarnings = model.PartnerWeeklyEarnings;
     }
 
-    public void Apply(PartnerYearlyEarningsViewModel model)
-    {
-        PartnerYearlyEarnings = model.PartnerYearlyEarnings;
-    }
+    public void Apply(PartnerYearlyEarningsViewModel model) => PartnerYearlyEarnings = model.PartnerYearlyEarnings;
 
-    public void Apply(PartnerBenefitsViewModel model)
-    {
-        PartnerBenefits = model.PartnerBenefits;
-    }
+    public void Apply(PartnerBenefitsViewModel model) => PartnerBenefits = model.PartnerBenefits;
 
     public void Apply(PartnerChildcareSupportViewModel model)
     {
@@ -394,8 +361,5 @@ public class JourneyState
         PartnerChildcareSupport = model.PartnerChildcareSupport;
     }
 
-    public void Apply(PartnerChildcareVoucherReceiptViewModel model)
-    {
-        PartnerChildcareVoucherReceipt = model.PartnerChildcareVoucherReceipt;
-    }
+    public void Apply(PartnerChildcareVoucherReceiptViewModel model) => PartnerChildcareVoucherReceipt = model.PartnerChildcareVoucherReceipt;
 }

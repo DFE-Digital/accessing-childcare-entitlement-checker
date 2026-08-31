@@ -44,6 +44,30 @@ csharp_style_var_for_built_in_types = true:error
 csharp_style_var_when_type_is_apparent = true:error
 csharp_style_var_elsewhere = true:error
 
+# Expression-bodied members
+csharp_style_expression_bodied_methods = true:warning
+csharp_style_expression_bodied_constructors = false:warning
+csharp_style_expression_bodied_properties = true:warning
+csharp_style_expression_bodied_indexers = true:warning
+csharp_style_expression_bodied_accessors = true:warning
+
+# Pattern matching preferences
+csharp_style_prefer_pattern_matching_over_is_with_cast_check = true:error
+csharp_style_prefer_pattern_matching_over_as_with_null_check = true:error
+
+# Object and collection initialization
+dotnet_style_object_initializer = true:warning
+dotnet_style_collection_initializer = true:warning
+
+# Simplification preferences
+dotnet_style_coalesce_expression = true:warning
+dotnet_style_null_propagation = true:error
+dotnet_style_prefer_auto_properties = true:warning
+dotnet_style_prefer_compound_assignment = true:warning
+dotnet_style_prefer_simplified_boolean_expressions = true:error
+dotnet_style_prefer_simplified_interpolation = true:error
+dotnet_style_prefer_conditional_expression_over_assignment = true:error
+
 # Newline & spacing preferences
 csharp_new_line_before_open_brace = all
 csharp_new_line_before_else = true
@@ -78,6 +102,46 @@ dotnet_naming_symbols.interfaces.applicable_accessibilities = *
 dotnet_naming_style.prefix_i_style.capitalization = pascal_case
 dotnet_naming_style.prefix_i_style.required_prefix = I
 
+# Parameters must use camelCase
+dotnet_naming_rule.parameters_should_be_camel_case.severity = error
+dotnet_naming_rule.parameters_should_be_camel_case.symbols = parameters
+dotnet_naming_rule.parameters_should_be_camel_case.style = camel_case_style
+
+dotnet_naming_symbols.parameters.applicable_kinds = parameter
+dotnet_naming_symbols.parameters.applicable_accessibilities = *
+
+dotnet_naming_style.camel_case_style.capitalization = camel_case
+
+# Local variables must use camelCase
+dotnet_naming_rule.locals_should_be_camel_case.severity = error
+dotnet_naming_rule.locals_should_be_camel_case.symbols = locals
+dotnet_naming_rule.locals_should_be_camel_case.style = camel_case_style
+
+dotnet_naming_symbols.locals.applicable_kinds = local
+dotnet_naming_symbols.locals.applicable_accessibilities = *
+
+# Classes, structs, records, methods, properties, events, and public fields
+# must use PascalCase
+dotnet_naming_rule.types_and_members_should_be_pascal_case.severity = error
+dotnet_naming_rule.types_and_members_should_be_pascal_case.symbols = types_and_members
+dotnet_naming_rule.types_and_members_should_be_pascal_case.style = pascal_case_style
+
+dotnet_naming_symbols.types_and_members.applicable_kinds = class,struct,record,method,property,event,field
+dotnet_naming_symbols.types_and_members.applicable_accessibilities = public,internal,protected,protected_internal,private_protected
+
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+# Type parameters must start with T and use PascalCase (e.g., TRequest)
+dotnet_naming_rule.type_parameters_should_start_with_t.severity = error
+dotnet_naming_rule.type_parameters_should_start_with_t.symbols = type_parameters
+dotnet_naming_rule.type_parameters_should_start_with_t.style = type_parameter_style
+
+dotnet_naming_symbols.type_parameters.applicable_kinds = type_parameter
+dotnet_naming_symbols.type_parameters.applicable_accessibilities = *
+
+dotnet_naming_style.type_parameter_style.capitalization = pascal_case
+dotnet_naming_style.type_parameter_style.required_prefix = T
+
 # ---------------------------------------------------------------------------
 # Code Quality, Safety, & Diagnostics (Roslyn / CA / CS Rules)
 # ---------------------------------------------------------------------------
@@ -89,12 +153,14 @@ dotnet_diagnostic.CA1505.severity = warning
 dotnet_diagnostic.CA1506.severity = warning
 
 # Performance
-dotnet_diagnostic.CA1845.severity = error
-dotnet_diagnostic.CA1851.severity = error
-dotnet_diagnostic.CA1859.severity = error
-dotnet_diagnostic.CA1860.severity = error
-dotnet_diagnostic.CA1861.severity = error
-dotnet_diagnostic.CA1862.severity = error
+# Performance analyzers are warnings because the optimal implementation
+# can depend on context and should not override readability automatically.
+dotnet_diagnostic.CA1845.severity = warning
+dotnet_diagnostic.CA1851.severity = warning
+dotnet_diagnostic.CA1859.severity = warning
+dotnet_diagnostic.CA1860.severity = warning
+dotnet_diagnostic.CA1861.severity = warning
+dotnet_diagnostic.CA1862.severity = warning
 
 # Async & Multithreading
 dotnet_diagnostic.CA2016.severity = error
@@ -146,6 +212,22 @@ indent_style = space
 indent_size = 2
 
 [*.yaml]
+indent_style = space
+indent_size = 2
+
+[*.xml]
+indent_style = space
+indent_size = 2
+
+[*.csproj]
+indent_style = space
+indent_size = 2
+
+[*.props]
+indent_style = space
+indent_size = 2
+
+[*.targets]
 indent_style = space
 indent_size = 2
 

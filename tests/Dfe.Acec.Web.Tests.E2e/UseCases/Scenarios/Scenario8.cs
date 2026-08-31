@@ -6,9 +6,7 @@ internal sealed class Scenario8 : IUseCase
 {
     public string Name => "Single parent on sick leave, parent is a citizen of a different country";
 
-    public IEnumerable<JourneyStep> GetJourney()
-    {
-        return new JourneyBuilder()
+    public IEnumerable<JourneyStep> GetJourney() => new JourneyBuilder()
             .StartInLocation("England")
 
             // Child 1
@@ -32,5 +30,4 @@ internal sealed class Scenario8 : IUseCase
             .SetHasPartner("No")
 
             .Build();
-    }
 }

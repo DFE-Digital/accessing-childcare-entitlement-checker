@@ -18,34 +18,25 @@ internal sealed class CookieSteps(IPage page)
     }
 
     [When("I click the Reject button")]
-    public async Task WhenIClickTheRejectButton()
+    public async Task WhenIClickTheRejectButton() => await page.GetByRole(AriaRole.Button, new()
     {
-        await page.GetByRole(AriaRole.Button, new()
-        {
-            Name = "Reject analytics cookies"
-        })
+        Name = "Reject analytics cookies"
+    })
         .ClickAsync();
-    }
 
     [When("I click the link to change my cookie preferences")]
-    public async Task WhenIClickTheLinkToChangeMyCookiePreferences()
+    public async Task WhenIClickTheLinkToChangeMyCookiePreferences() => await page.GetByRole(AriaRole.Link, new()
     {
-        await page.GetByRole(AriaRole.Link, new()
-        {
-            Name = "View cookies"
-        })
+        Name = "View cookies"
+    })
         .ClickAsync();
-    }
 
     [When("I click the Accept button")]
-    public async Task WhenIClickTheAcceptButton()
+    public async Task WhenIClickTheAcceptButton() => await page.GetByRole(AriaRole.Button, new()
     {
-        await page.GetByRole(AriaRole.Button, new()
-        {
-            Name = "Accept analytics cookies"
-        })
+        Name = "Accept analytics cookies"
+    })
         .ClickAsync();
-    }
 
     [When("the unselected cookie banner is shown")]
     [Then("the unselected cookie banner is shown")]

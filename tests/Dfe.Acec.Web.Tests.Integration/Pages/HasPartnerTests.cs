@@ -8,7 +8,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/partner";
+    private const string _url = "/partner";
 
     [Fact]
     public async Task GetHasPartnerHasRadiosAndBackLinkDefaultsToChildcareSupportBack()
@@ -17,7 +17,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         using var client = host.CreateClient();
 
-        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(2)
@@ -35,7 +35,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
 
         using var client = host.CreateClient();
 
-        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink("/benefits/childcare-vouchers")
@@ -58,7 +58,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
         });
 
         using var client = host.CreateClient();
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

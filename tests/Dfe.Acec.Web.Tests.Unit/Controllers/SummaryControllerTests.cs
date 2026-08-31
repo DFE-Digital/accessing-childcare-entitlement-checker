@@ -25,7 +25,7 @@ public class SummaryControllerTests : IDisposable
     private readonly IJourneySession _journeySession;
     private readonly IFeatureManager _featureManager;
     private readonly SummaryController _controller;
-    private const string ChildId = "child-a";
+    private const string _childId = "child-a";
     private readonly FakeLogger<SummaryController> _logger = new();
 
     public SummaryControllerTests()
@@ -35,7 +35,7 @@ public class SummaryControllerTests : IDisposable
             Nationality = NationalityOption.BritishOrIrishCitizen,
             Children =
             {
-                [ChildId] = new Child(ChildId, "Child A")
+                [_childId] = new Child(_childId, "Child A")
                 {
                     BirthStatus = BirthStatus.Born,
                     BirthDate = new DateOnly(2020, 1, 1),
@@ -64,11 +64,12 @@ public class SummaryControllerTests : IDisposable
             stringLocalizerFactory,
             new JourneyStateValidator(),
             _logger,
-            _featureManager);
-
-        _controller.ControllerContext = new ControllerContext
+            _featureManager)
         {
-            HttpContext = new DefaultHttpContext()
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            }
         };
         _controller.TempData = new TempDataDictionary(_controller.HttpContext, Substitute.For<ITempDataProvider>());
         _controller.MetadataProvider = metadataProvider;
@@ -85,7 +86,7 @@ public class SummaryControllerTests : IDisposable
         Assert.Equal(_journeyState.CorrelationId, checkChildDetailsViewModel.CorrelationId);
 
         var childSummaryViewModel = Assert.Single(checkChildDetailsViewModel.Children);
-        Assert.Equal(ChildId, childSummaryViewModel.ChildId);
+        Assert.Equal(_childId, childSummaryViewModel.ChildId);
         Assert.Equal("Child A", childSummaryViewModel.Name);
     }
 
@@ -123,7 +124,7 @@ public class SummaryControllerTests : IDisposable
     [Fact]
     public void RemoveGetReturnsViewWhenChildExists()
     {
-        var result = Assert.IsType<ViewResult>(_controller.Remove(ChildId));
+        var result = Assert.IsType<ViewResult>(_controller.Remove(_childId));
         Assert.IsType<RemoveChildViewModel>(result.Model);
         Assert.Equal("Child A", result.Model<RemoveChildViewModel>().Name);
     }
@@ -145,7 +146,7 @@ public class SummaryControllerTests : IDisposable
     [Fact]
     public void RemovePostWhenNotValidReturns()
     {
-        var model = new RemoveChildViewModel { ChildId = ChildId, Name = "Child A", RemoveConfirmed = null, };
+        var model = new RemoveChildViewModel { ChildId = _childId, Name = "Child A", RemoveConfirmed = null, };
 
         _controller.ModelState.AddModelError(nameof(model.RemoveConfirmed), "Faked Model Binding Error");
 
@@ -160,7 +161,7 @@ public class SummaryControllerTests : IDisposable
     [Fact]
     public void RemovePostWhenNotConfirmedRedirects()
     {
-        var model = new RemoveChildViewModel { ChildId = ChildId, Name = "Child A", RemoveConfirmed = false, };
+        var model = new RemoveChildViewModel { ChildId = _childId, Name = "Child A", RemoveConfirmed = false, };
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove(model));
         Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
         _journeySession.Received(0).SetState(_journeyState);
@@ -169,7 +170,7 @@ public class SummaryControllerTests : IDisposable
     [Fact]
     public void RemovePostWhenConfirmedAndFoundRedirects()
     {
-        var model = new RemoveChildViewModel { ChildId = ChildId, Name = "Child A", RemoveConfirmed = true, };
+        var model = new RemoveChildViewModel { ChildId = _childId, Name = "Child A", RemoveConfirmed = true, };
         var result = Assert.IsType<RedirectToActionResult>(_controller.Remove(model));
         Assert.Equal(nameof(SummaryController.CheckChildDetails), result.ActionName);
         _journeySession.Received(1).SetState(_journeyState);
@@ -306,11 +307,12 @@ public class SummaryControllerTests : IDisposable
             AcecSubstitute.ForLocalizerFactory(),
             validator,
             _logger,
-            _featureManager);
-
-        controller.ControllerContext = _controller.ControllerContext;
-        controller.MetadataProvider = _controller.MetadataProvider;
-        controller.Url = _controller.Url;
+            _featureManager)
+        {
+            ControllerContext = _controller.ControllerContext,
+            MetadataProvider = _controller.MetadataProvider,
+            Url = _controller.Url
+        };
 
         var model = new CheckAnswersSubmitModel(Guid.NewGuid());
 
@@ -334,10 +336,12 @@ public class SummaryControllerTests : IDisposable
             localizerFactory,
             mockValidator,
             _logger,
-            _featureManager);
-        controller.ControllerContext = _controller.ControllerContext;
-        controller.MetadataProvider = _controller.MetadataProvider;
-        controller.Url = _controller.Url;
+            _featureManager)
+        {
+            ControllerContext = _controller.ControllerContext,
+            MetadataProvider = _controller.MetadataProvider,
+            Url = _controller.Url
+        };
 
         var model = new CheckChildDetailsSubmitModel(_journeyState.CorrelationId);
 
@@ -377,11 +381,12 @@ public class SummaryControllerTests : IDisposable
             AcecSubstitute.ForLocalizerFactory(),
             mockValidator,
             _logger,
-            _featureManager);
-
-        controller.ControllerContext = _controller.ControllerContext;
-        controller.MetadataProvider = _controller.MetadataProvider;
-        controller.Url = _controller.Url;
+            _featureManager)
+        {
+            ControllerContext = _controller.ControllerContext,
+            MetadataProvider = _controller.MetadataProvider,
+            Url = _controller.Url
+        };
 
         var model = new CheckAnswersSubmitModel(
             _journeyState.CorrelationId);

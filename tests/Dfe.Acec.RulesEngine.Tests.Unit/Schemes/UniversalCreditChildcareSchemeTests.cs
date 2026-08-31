@@ -7,48 +7,39 @@ namespace Dfe.Acec.RulesEngine.Tests.Unit.Schemes;
 
 public class UniversalCreditChildcareSchemeTests
 {
-    private static readonly DateOnly Today = new(2025, 1, 1);
+    private static readonly DateOnly _today = new(2025, 1, 1);
 
-    private static UniversalCreditChildcareEvaluator CreateEvaluator()
+    private static UniversalCreditChildcareEvaluator CreateEvaluator() => new();
+    private static DerivedContext CreateEligibleContext() => new()
     {
-        return new UniversalCreditChildcareEvaluator();
-    }
-    private static DerivedContext CreateEligibleContext()
-    {
-        return new DerivedContext
+        Household = new HouseholdFacts
         {
-            Household = new HouseholdFacts
-            {
-                HasPartner = false,
-                ReceivesUniversalCredit = true,
-                HasAccessToPublicFunds = true,
-                LivesInGreatBritain = true
-            },
+            HasPartner = false,
+            ReceivesUniversalCredit = true,
+            HasAccessToPublicFunds = true,
+            LivesInGreatBritain = true
+        },
 
-            User = new PersonFacts
-            {
-                PaidWorkStatus = PaidWorkStatus.Yes
-            }
-        };
-    }
+        User = new PersonFacts
+        {
+            PaidWorkStatus = PaidWorkStatus.Yes
+        }
+    };
 
     private static ChildFacts CreateBornChild(
-        DateOnly dateOfBirth)
-    {
-        return new ChildFacts
+        DateOnly dateOfBirth) => new()
         {
             Name = "Jack",
             IsBorn = true,
             DateOfBirth = dateOfBirth,
             AgeInYears = AgeCalculations.CalculateAgeInYears(
                 dateOfBirth,
-                Today),
+                _today),
 
             AgeInMonths = AgeCalculations.CalculateAgeInMonths(
                 dateOfBirth,
-                Today)
+                _today)
         };
-    }
 
 
     [Fact]

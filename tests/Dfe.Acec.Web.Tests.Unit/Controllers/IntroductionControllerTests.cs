@@ -14,13 +14,13 @@ public class IntroductionControllerTests : IDisposable
     private readonly JourneyState _journeyState;
     private readonly IJourneySession _journeySession;
     private readonly IntroductionController _controller;
-    private const string ChildId = "child-a";
+    private const string _childId = "child-a";
 
     public IntroductionControllerTests()
     {
         _journeyState = new JourneyState
         {
-            Children = { [ChildId] = new Child(ChildId, "Child A") }
+            Children = { [_childId] = new Child(_childId, "Child A") }
         };
         _journeySession = Substitute.For<IJourneySession>();
         var featureManager = Substitute.For<IFeatureManager>();
@@ -40,17 +40,14 @@ public class IntroductionControllerTests : IDisposable
     }
 
     [Fact]
-    public async Task ChildNameIfChildDoesNotExistReturnsNotFound()
-    {
-        Assert.IsType<NotFoundResult>(await _controller.ChildName("DOES-NOT-EXIST"));
-    }
+    public async Task ChildNameIfChildDoesNotExistReturnsNotFound() => Assert.IsType<NotFoundResult>(await _controller.ChildName("DOES-NOT-EXIST"));
 
     [Fact]
     public async Task ChildNameGetPopulatesModelFromState()
     {
-        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(_childId, out var child));
         child.Name = "Example";
-        var result = Assert.IsType<ViewResult>(await _controller.ChildName(ChildId));
+        var result = Assert.IsType<ViewResult>(await _controller.ChildName(_childId));
 
         Assert.Equal("Example", result.Model<ChildNameViewModel>().ChildName);
     }
@@ -60,7 +57,7 @@ public class IntroductionControllerTests : IDisposable
     {
         var model = new ChildNameViewModel
         {
-            ChildId = ChildId,
+            ChildId = _childId,
             ChildName = "Example"
         };
 
@@ -97,23 +94,20 @@ public class IntroductionControllerTests : IDisposable
     [Fact]
     public void IsChildBornReturnsView()
     {
-        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(ChildId));
+        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(_childId));
 
         Assert.Null(result.Model<ChildIsBornViewModel>().ChildIsBorn);
     }
 
     [Fact]
-    public void IsChildBornIfChildDoesNotExistReturnsNotFound()
-    {
-        Assert.IsType<NotFoundResult>(_controller.IsChildBorn("DOES-NOT-EXIST"));
-    }
+    public void IsChildBornIfChildDoesNotExistReturnsNotFound() => Assert.IsType<NotFoundResult>(_controller.IsChildBorn("DOES-NOT-EXIST"));
 
     [Fact]
     public void IsChildBornGetPopulatesModelFromState()
     {
-        Assert.True(_journeyState.Children.TryGetValue(ChildId, out var child));
+        Assert.True(_journeyState.Children.TryGetValue(_childId, out var child));
         child.BirthStatus = BirthStatus.Born;
-        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(ChildId));
+        var result = Assert.IsType<ViewResult>(_controller.IsChildBorn(_childId));
 
         Assert.Equal(BirthStatus.Born, result.Model<ChildIsBornViewModel>().ChildIsBorn);
     }
@@ -123,7 +117,7 @@ public class IntroductionControllerTests : IDisposable
     {
         var model = new ChildIsBornViewModel
         {
-            ChildId = ChildId,
+            ChildId = _childId,
             ChildIsBorn = BirthStatus.Born
         };
 
@@ -144,7 +138,7 @@ public class IntroductionControllerTests : IDisposable
     {
         var model = new ChildIsBornViewModel
         {
-            ChildId = ChildId,
+            ChildId = _childId,
             ChildIsBorn = BirthStatus.Due
         };
 

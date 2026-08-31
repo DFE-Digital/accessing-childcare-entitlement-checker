@@ -9,10 +9,7 @@ public static class ReturnTo
 
     public const string CheckAnswers = "check-your-answers";
 
-    public static bool TryGetReturnToUrl(IUrlHelper urlHelper, string? returnTo, [NotNullWhen(true)] out string? url)
-    {
-        return TryGetReturnToUrl(urlHelper, returnTo, null, out url);
-    }
+    public static bool TryGetReturnToUrl(IUrlHelper urlHelper, string? returnTo, [NotNullWhen(true)] out string? url) => TryGetReturnToUrl(urlHelper, returnTo, null, out url);
 
     public static bool TryGetReturnToUrl(IUrlHelper urlHelper, string? returnTo, string? childId, [NotNullWhen(true)] out string? url)
     {

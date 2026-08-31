@@ -75,16 +75,10 @@ internal sealed class SummarySteps(IPage page, TestSettings settings)
     }
 
     [Then("I should see one summary card")]
-    public async Task ThenIShouldSeeOneSummaryCard()
-    {
-        await Expect(page.Locator(".govuk-summary-card")).ToHaveCountAsync(1);
-    }
+    public async Task ThenIShouldSeeOneSummaryCard() => await Expect(page.Locator(".govuk-summary-card")).ToHaveCountAsync(1);
 
     [Then("I should see {int} summary cards")]
-    public async Task ThenIShouldSeeIntSummaryCards(int expectedSummaryCardCount)
-    {
-        await Expect(page.Locator(".govuk-summary-card")).ToHaveCountAsync(expectedSummaryCardCount);
-    }
+    public async Task ThenIShouldSeeIntSummaryCards(int expectedSummaryCardCount) => await Expect(page.Locator(".govuk-summary-card")).ToHaveCountAsync(expectedSummaryCardCount);
 
     [Then("I should see a summary card with the title {string} and the following summary:")]
     public async Task ThenIShouldSeeASummaryCardWithTheTitleStringAndTheFollowingSummary(string title, DataTable dataTable)
@@ -122,17 +116,11 @@ internal sealed class SummarySteps(IPage page, TestSettings settings)
     }
 
     [Then("I should see some text saying {string}")]
-    public async Task ThenIShouldSeeSomeTextSayingString(string expectedText)
-    {
-        await Expect(page.Locator("body")).ToContainTextAsync(expectedText);
-    }
+    public async Task ThenIShouldSeeSomeTextSayingString(string expectedText) => await Expect(page.Locator("body")).ToContainTextAsync(expectedText);
 
     [Then("I should not see a Continue button")]
-    public async Task ThenIShouldNotSeeAContinueButton()
-    {
-        await Expect(page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }))
+    public async Task ThenIShouldNotSeeAContinueButton() => await Expect(page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }))
             .Not.ToBeVisibleAsync();
-    }
 
     [Then("I should see a summary list for {string} with the following summary:")]
     public async Task ThenIShouldSeeASummaryListForStringWithTheFollowingSummary(string title, DataTable dataTable)

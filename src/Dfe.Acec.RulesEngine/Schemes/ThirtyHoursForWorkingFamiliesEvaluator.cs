@@ -9,9 +9,9 @@ namespace Dfe.Acec.RulesEngine.Schemes;
 
 public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
 {
-    private const int ApplyAgeInWeeks = 23;
-    private const int MinimumEligibleAgeInMonths = 9;
-    private const int MaximumEligibleAgeInYears = 4;
+    private const int _applyAgeInWeeks = 23;
+    private const int _minimumEligibleAgeInMonths = 9;
+    private const int _maximumEligibleAgeInYears = 4;
 
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
@@ -26,12 +26,12 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
         var eligibleNow =
             meetsHouseholdRequirements &&
             child.IsBorn &&
-            child.AgeInMonths is >= MinimumEligibleAgeInMonths &&
-            child.AgeInYears is <= MaximumEligibleAgeInYears;
+            child.AgeInMonths is >= _minimumEligibleAgeInMonths &&
+            child.AgeInYears is <= _maximumEligibleAgeInYears;
 
         var eligibleInFuture =
             meetsHouseholdRequirements &&
-            ((child.IsBorn && child.AgeInMonths is < MinimumEligibleAgeInMonths) || !child.IsBorn);
+            ((child.IsBorn && child.AgeInMonths is < _minimumEligibleAgeInMonths) || !child.IsBorn);
 
         if (!eligibleNow && !eligibleInFuture)
         {
@@ -40,13 +40,13 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
 
         var applyFromDate =
             child.IsBorn
-                ? child.DateOfBirth?.AddDays(ApplyAgeInWeeks * 7)
-                : child.DueDate?.AddDays(ApplyAgeInWeeks * 7);
+                ? child.DateOfBirth?.AddDays(_applyAgeInWeeks * 7)
+                : child.DueDate?.AddDays(_applyAgeInWeeks * 7);
 
         var nineMonthsOldDate =
             child.IsBorn
-                ? child.DateOfBirth?.AddMonths(MinimumEligibleAgeInMonths)
-                : child.DueDate?.AddMonths(MinimumEligibleAgeInMonths);
+                ? child.DateOfBirth?.AddMonths(_minimumEligibleAgeInMonths)
+                : child.DueDate?.AddMonths(_minimumEligibleAgeInMonths);
 
         DateOnly? useFromDate =
             nineMonthsOldDate is not null
@@ -167,20 +167,13 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
             && meetsIncomeRequirement;
     }
 
-    private static bool HasQualifyingPaidWorkStatus(PersonFacts person)
-    {
-        return person.PaidWorkStatus is
+    private static bool HasQualifyingPaidWorkStatus(PersonFacts person) => person.PaidWorkStatus is
             PaidWorkStatus.Yes
             or PaidWorkStatus.ParentalLeave
             or PaidWorkStatus.SickLeave;
-    }
 
-    private static bool MeetsMinimumIncomeRequirement(PersonFacts person)
-    {
-        return
-            person.EarnsAboveThreshold
+    private static bool MeetsMinimumIncomeRequirement(PersonFacts person) => person.EarnsAboveThreshold
             || person.SelfEmployedLessThan12Months;
-    }
 
     private static ParentalLeaveParty? GetEligibilityEndParty(DerivedContext context, ParentalLeaveAssessment parentalLeaveAssessment)
     {
@@ -209,30 +202,24 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
             eligibilityDependsOnPartnerLeave);
     }
 
-    private static ParentalLeaveParty? GetParentalLeaveParty(bool appliesToUser, bool appliesToPartner)
+    private static ParentalLeaveParty? GetParentalLeaveParty(bool appliesToUser, bool appliesToPartner) => (appliesToUser, appliesToPartner) switch
     {
-        return (appliesToUser, appliesToPartner) switch
-        {
-            (true, true) =>
-                ParentalLeaveParty.UserAndPartner,
+        (true, true) =>
+            ParentalLeaveParty.UserAndPartner,
 
-            (true, false) =>
-                ParentalLeaveParty.User,
+        (true, false) =>
+            ParentalLeaveParty.User,
 
-            (false, true) =>
-                ParentalLeaveParty.Partner,
+        (false, true) =>
+            ParentalLeaveParty.Partner,
 
-            _ => null
-        };
-    }
+        _ => null
+    };
 
-    private static bool HasQualifyingExemptionBenefit(PersonFacts person)
-    {
-        return person.Benefits.Any(
-            QualifyingExemptionBenefits.Contains);
-    }
+    private static bool HasQualifyingExemptionBenefit(PersonFacts person) => person.Benefits.Any(
+            _qualifyingExemptionBenefits.Contains);
 
-    private static readonly List<PersonBenefit> QualifyingExemptionBenefits =
+    private static readonly List<PersonBenefit> _qualifyingExemptionBenefits =
     [
         PersonBenefit.IncapacityBenefit,
         PersonBenefit.SevereDisablementAllowance,

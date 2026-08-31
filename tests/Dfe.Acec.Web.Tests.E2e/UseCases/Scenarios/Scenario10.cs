@@ -6,9 +6,7 @@ internal sealed class Scenario10 : IUseCase
 {
     public string Name => "Parent is a non-UK national without pre-settled or settled status";
 
-    public IEnumerable<JourneyStep> GetJourney()
-    {
-        return new JourneyBuilder()
+    public IEnumerable<JourneyStep> GetJourney() => new JourneyBuilder()
             .StartInLocation("England")
 
             // Child 1
@@ -44,5 +42,4 @@ internal sealed class Scenario10 : IUseCase
             .SetHasPartner("No")
 
             .Build();
-    }
 }

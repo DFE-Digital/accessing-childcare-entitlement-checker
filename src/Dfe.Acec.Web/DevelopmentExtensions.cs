@@ -4,21 +4,21 @@ namespace Dfe.Acec.Web;
 
 public static class DevelopmentExtensions
 {
-    private const string DevelopmentBasicAuthPasswordSettingName = "DevelopmentBasicAuthPassword";
+    private const string _developmentBasicAuthPasswordSettingName = "DevelopmentBasicAuthPassword";
 
-    private static readonly Action<ILogger, string, string, string, Exception?> LogMissingOrInvalidAuthHeader =
+    private static readonly Action<ILogger, string, string, string, Exception?> _logMissingOrInvalidAuthHeader =
         LoggerMessage.Define<string, string, string>(
             LogLevel.Warning,
             new EventId(1, "MissingOrInvalidAuthHeader"),
             "Development auth failed: Missing or invalid Authorization header format. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}");
 
-    private static readonly Action<ILogger, string, string, string, Exception?> LogIncorrectPassword =
+    private static readonly Action<ILogger, string, string, string, Exception?> _logIncorrectPassword =
         LoggerMessage.Define<string, string, string>(
             LogLevel.Warning,
             new EventId(2, "IncorrectPassword"),
             "Development auth failed: Incorrect password provided. Method: {Method}, Path: {Path}, UserAgent: {UserAgent}");
 
-    private static readonly Action<ILogger, string, string, string, Exception?> LogMalformedCredentials =
+    private static readonly Action<ILogger, string, string, string, Exception?> _logMalformedCredentials =
         LoggerMessage.Define<string, string, string>(
             LogLevel.Warning,
             new EventId(3, "MalformedCredentials"),
@@ -31,7 +31,7 @@ public static class DevelopmentExtensions
         var config = app.ApplicationServices.GetRequiredService<IConfiguration>();
         var env = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
 
-        var developmentBasicAuthPassword = config[DevelopmentBasicAuthPasswordSettingName];
+        var developmentBasicAuthPassword = config[_developmentBasicAuthPasswordSettingName];
 
         if (string.IsNullOrEmpty(developmentBasicAuthPassword) || env.IsProduction())
         {
@@ -53,7 +53,7 @@ public static class DevelopmentExtensions
 
             if (!authorizationHeader.StartsWith(basicPrefix, StringComparison.OrdinalIgnoreCase))
             {
-                LogMissingOrInvalidAuthHeader(
+                _logMissingOrInvalidAuthHeader(
                     logger,
                     context.Request.Method,
                     context.Request.Path.ToString(),
@@ -73,7 +73,7 @@ public static class DevelopmentExtensions
 
                 if (!string.Equals(password, developmentBasicAuthPassword, StringComparison.Ordinal))
                 {
-                    LogIncorrectPassword(
+                    _logIncorrectPassword(
                         logger,
                         context.Request.Method,
                         context.Request.Path.ToString(),
@@ -86,7 +86,7 @@ public static class DevelopmentExtensions
             }
             catch (FormatException ex)
             {
-                LogMalformedCredentials(
+                _logMalformedCredentials(
                     logger,
                     context.Request.Method,
                     context.Request.Path.ToString(),

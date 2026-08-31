@@ -56,8 +56,5 @@ public class RequireJourneySessionFilterTests
         Assert.Empty(_mockLogger.Messages);
     }
 
-    private void AssertLogged(string expectedMessage)
-    {
-        Assert.Contains(expectedMessage, _mockLogger.Messages);
-    }
+    private void AssertLogged(string expectedMessage) => Assert.Contains(expectedMessage, _mockLogger.Messages);
 }

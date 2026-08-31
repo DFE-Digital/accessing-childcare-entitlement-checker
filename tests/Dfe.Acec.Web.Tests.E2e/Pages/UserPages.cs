@@ -9,10 +9,7 @@ internal sealed class StartPage(IPage page) : BasePage(page)
 
     public override Task AnswerAsync(string answer) => Task.CompletedTask; // No question to answer
 
-    public override async Task ContinueAsync()
-    {
-        await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
-    }
+    public override async Task ContinueAsync() => await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
 }
 
 [PagePattern(PageNames.Location)]

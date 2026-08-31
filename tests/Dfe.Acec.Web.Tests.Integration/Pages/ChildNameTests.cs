@@ -7,7 +7,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/children/add-child-details";
+    private const string _url = "/children/add-child-details";
 
     [Theory]
     [InlineData(null, "/where-do-you-live")]
@@ -19,7 +19,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -43,7 +43,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
 
         using var client = host.CreateClient();
 
-        var url = Url;
+        var url = _url;
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -68,7 +68,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
         await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

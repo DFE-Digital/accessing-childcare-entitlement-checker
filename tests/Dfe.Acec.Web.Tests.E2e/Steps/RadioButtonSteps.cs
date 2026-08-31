@@ -8,12 +8,9 @@ namespace Dfe.Acec.Web.Tests.E2e.Steps;
 internal sealed class RadioButtonSteps(IPage page)
 {
     [When("I select the {string} radio button")]
-    public async Task WhenISelectTheStringRadioButton(string label)
-    {
-        await page
+    public async Task WhenISelectTheStringRadioButton(string label) => await page
             .GetByLabel(label, new PageGetByLabelOptions { Exact = true })
             .CheckAsync();
-    }
 
     [When("I do not select a radio button")]
     [Then("no radio buttons are selected")]
@@ -48,10 +45,7 @@ internal sealed class RadioButtonSteps(IPage page)
     }
 
     [Then("the {string} radio button should be selected")]
-    public async Task ThenTheStringRadioButtonShouldBeSelected(string label)
-    {
-        await Expect(page.GetByLabel(label)).ToBeCheckedAsync();
-    }
+    public async Task ThenTheStringRadioButtonShouldBeSelected(string label) => await Expect(page.GetByLabel(label)).ToBeCheckedAsync();
 
     [Then("all other options should be deselected")]
     public async Task ThenAllOtherOptionsShouldBeDeselected()

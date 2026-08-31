@@ -14,16 +14,10 @@ public class HomeController(JourneyState journeyState, IJourneySession journeySe
     public const string Name = "Home";
 
     [HttpGet]
-    public IActionResult SessionExpired()
-    {
-        return View();
-    }
+    public IActionResult SessionExpired() => View();
 
     [HttpGet]
-    public IActionResult Start()
-    {
-        return View();
-    }
+    public IActionResult Start() => View();
 
     [HttpGet]
     public async Task<IActionResult> Location(string? returnTo = null)

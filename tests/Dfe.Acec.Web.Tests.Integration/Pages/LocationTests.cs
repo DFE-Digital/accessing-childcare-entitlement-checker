@@ -7,7 +7,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class LocationTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = "/where-do-you-live";
+    private const string _url = "/where-do-you-live";
 
     [Fact]
     public async Task GetWhenFeatureFlagEnabledRedirectsToChildName()
@@ -19,7 +19,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
 
         using var client = host.CreateClient();
 
-        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         response.AssertRedirect("/children/add-child-details");
     }
 
@@ -31,7 +31,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     {
         using var client = factory.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -57,7 +57,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -80,7 +80,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     public async Task PostInvalidShowsValidationError(string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClient();
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);

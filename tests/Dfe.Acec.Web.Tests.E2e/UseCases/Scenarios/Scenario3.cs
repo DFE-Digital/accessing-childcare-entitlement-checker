@@ -6,9 +6,7 @@ internal sealed class Scenario3 : IUseCase
 {
     public string Name => "One parent is earning under the threshold, household receives Universal Credit";
 
-    public IEnumerable<JourneyStep> GetJourney()
-    {
-        return new JourneyBuilder()
+    public IEnumerable<JourneyStep> GetJourney() => new JourneyBuilder()
             .StartInLocation("England")
 
             // Child 1
@@ -40,5 +38,4 @@ internal sealed class Scenario3 : IUseCase
             .SetPartnerChildcareSupport("No, they do not get any of these")
 
             .Build();
-    }
 }

@@ -8,11 +8,11 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
-    private const string Url = $"/children/{ChildId}/childs-date-of-birth";
+    private const string _childId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
+    private const string _url = $"/children/{_childId}/childs-date-of-birth";
 
     [Theory]
-    [InlineData(null, $"/children/{ChildId}/has-the-child-been-born")]
+    [InlineData(null, $"/children/{_childId}/has-the-child-been-born")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
@@ -22,15 +22,15 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
             Children = new Dictionary<string, Child>
                 {
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
+                        _childId,
+                        new Child(_childId, "Sara")
                     }
                 }
         });
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
@@ -53,8 +53,8 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
             Children = new Dictionary<string, Child>
                 {
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
+                        _childId,
+                        new Child(_childId, "Sara")
                         {
                             ChildSupportOptions = childSupport == null ? [] : [childSupport.Value],
                         }
@@ -64,7 +64,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -80,11 +80,11 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
                 new KeyValuePair<string, string>("ChildBirthDate.Year", yesterday.Year.ToString(System.Globalization.CultureInfo.InvariantCulture))
             ],
             TestContext.Current.CancellationToken);
-        postResponse.AssertRedirect($"/children/{ChildId}/child-benefits");
+        postResponse.AssertRedirect($"/children/{_childId}/child-benefits");
     }
 
     [Theory]
-    [InlineData(null, $"/children/{ChildId}/has-the-child-been-born")]
+    [InlineData(null, $"/children/{_childId}/has-the-child-been-born")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostWithTomorrowsDateFailsValidationAndPreservesChildsNameWithBackLink(string? returnTo, string backLinkUrl)
@@ -94,15 +94,15 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
             Children = new Dictionary<string, Child>
                 {
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
+                        _childId,
+                        new Child(_childId, "Sara")
                     }
                 }
         });
 
         using var client = host.CreateClient();
 
-        var url = $"{Url}?returnTo={returnTo}";
+        var url = $"{_url}?returnTo={returnTo}";
         var getResponse = await client.GetAsync(url, TestContext.Current.CancellationToken);
         getResponse.EnsureSuccessStatusCode();
         var getDocument = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
@@ -130,7 +130,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
         await using var host = factory.CreateClientWithJourneyState(new JourneyState());
 
         using var client = host.CreateClient();
-        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        var response = await client.GetAsync(_url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }
 }

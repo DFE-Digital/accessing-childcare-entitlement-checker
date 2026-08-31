@@ -6,9 +6,7 @@ internal sealed class Scenario6 : IUseCase
 {
     public string Name => "Both parents under 18, one parent an apprentice, one parent earning under the threshold";
 
-    public IEnumerable<JourneyStep> GetJourney()
-    {
-        return new JourneyBuilder()
+    public IEnumerable<JourneyStep> GetJourney() => new JourneyBuilder()
             .StartInLocation("England")
 
             // Child 1
@@ -40,5 +38,4 @@ internal sealed class Scenario6 : IUseCase
             .SetPartnerChildcareSupport("No, they do not get any of these")
 
             .Build();
-    }
 }

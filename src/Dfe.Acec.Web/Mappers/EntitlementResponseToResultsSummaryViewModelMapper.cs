@@ -10,46 +10,34 @@ namespace Dfe.Acec.Web.Mappers;
 public class EntitlementResponseToResultsSummaryViewModelMapper(
     IStringLocalizerFactory stringLocalizerFactory)
 {
-    private const string UnknownSchemeCodeMessage = "Unknown scheme code";
+    private const string _unknownSchemeCodeMessage = "Unknown scheme code";
     private readonly IStringLocalizer _localizer = stringLocalizerFactory.Create(
             "Views.Results.Results",
             typeof(ResultsController).Assembly.GetName().Name!);
 
-    public ResultsSummaryViewModel Map(EntitlementResponse response)
+    public ResultsSummaryViewModel Map(EntitlementResponse response) => new()
     {
-        return new ResultsSummaryViewModel()
-        {
-            Children = [.. response.ChildResults.Select(MapChildResults)],
-            HasAccessToPublicFunds = response.HasAccessToPublicFunds,
-        };
+        Children = [.. response.ChildResults.Select(MapChildResults)],
+        HasAccessToPublicFunds = response.HasAccessToPublicFunds,
+    };
 
-    }
-
-    private ChildResultsViewModel MapChildResults(ChildResultDto childResult)
+    private ChildResultsViewModel MapChildResults(ChildResultDto childResult) => new()
     {
-        return new ChildResultsViewModel()
-        {
-            ChildId = childResult.ChildId,
-            Name = childResult.ChildName,
-            ShowThirtyHourWarning = GetThirtyHourWarning(childResult),
-            Schemes = [.. childResult.Schemes
+        ChildId = childResult.ChildId,
+        Name = childResult.ChildName,
+        ShowThirtyHourWarning = GetThirtyHourWarning(childResult),
+        Schemes = [.. childResult.Schemes
                 .OrderBy(s => GetSchemeOrder(s.SchemeCode))
                 .Select(s => MapSchemeResult(s, childResult))]
-        };
+    };
 
-    }
-
-    private SchemeResultsViewModel MapSchemeResult(SchemeResultDto schemeResult, ChildResultDto childResult)
+    private SchemeResultsViewModel MapSchemeResult(SchemeResultDto schemeResult, ChildResultDto childResult) => new()
     {
-        return new SchemeResultsViewModel()
-        {
-            SchemeCode = schemeResult.SchemeCode,
-            Name = GetSchemeName(schemeResult.SchemeCode),
-            WhatYouGet = GetSchemeDescription(schemeResult.SchemeCode),
-            WhenToApply = GetWhenToApply(schemeResult, childResult)
-        };
-
-    }
+        SchemeCode = schemeResult.SchemeCode,
+        Name = GetSchemeName(schemeResult.SchemeCode),
+        WhatYouGet = GetSchemeDescription(schemeResult.SchemeCode),
+        WhenToApply = GetWhenToApply(schemeResult, childResult)
+    };
 
     private string GetWhenToApply(SchemeResultDto schemeResult, ChildResultDto childResult)
     {
@@ -83,43 +71,37 @@ public class EntitlementResponseToResultsSummaryViewModelMapper(
         throw new InvalidOperationException($"Unknown scheme code while mapping GetWhenToApply(): {schemeResult.SchemeCode}");
     }
 
-    private string GetTaxFreeChildcareWhenToApply(SchemeResultDto schemeResult, ChildResultDto child)
+    private string GetTaxFreeChildcareWhenToApply(SchemeResultDto schemeResult, ChildResultDto child) => schemeResult.ApplyAndStartAffectedByParentalLeave switch
     {
-        return schemeResult.ApplyAndStartAffectedByParentalLeave switch
-        {
-            ParentalLeaveParty.User => _localizer["WhenToApply_TaxFreeChildcare_UserParentalLeave"],
+        ParentalLeaveParty.User => _localizer["WhenToApply_TaxFreeChildcare_UserParentalLeave"],
 
-            ParentalLeaveParty.Partner => _localizer["WhenToApply_TaxFreeChildcare_PartnerParentalLeave"],
+        ParentalLeaveParty.Partner => _localizer["WhenToApply_TaxFreeChildcare_PartnerParentalLeave"],
 
-            ParentalLeaveParty.UserAndPartner => _localizer["WhenToApply_TaxFreeChildcare_UserAndPartnerParentalLeave"],
+        ParentalLeaveParty.UserAndPartner => _localizer["WhenToApply_TaxFreeChildcare_UserAndPartnerParentalLeave"],
 
-            null => child.IsBorn
-                ? _localizer["WhenToApply_Now"]
-                : _localizer["WhenToApply_WhenBorn"],
+        null => child.IsBorn
+            ? _localizer["WhenToApply_Now"]
+            : _localizer["WhenToApply_WhenBorn"],
 
-            _ => throw new UnreachableException(
-                $"Unsupported parental leave party while mapping GetTaxFreeChildcareWhenToApply(): " +
-                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
-        };
-    }
+        _ => throw new UnreachableException(
+            $"Unsupported parental leave party while mapping GetTaxFreeChildcareWhenToApply(): " +
+            $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
+    };
 
-    private string GetThirtyHoursWhenToApply(SchemeResultDto schemeResult, ChildResultDto child)
+    private string GetThirtyHoursWhenToApply(SchemeResultDto schemeResult, ChildResultDto child) => schemeResult.ApplyAndStartAffectedByParentalLeave switch
     {
-        return schemeResult.ApplyAndStartAffectedByParentalLeave switch
-        {
-            ParentalLeaveParty.User => _localizer["WhenToApply_ThirtyHours_UserParentalLeave"],
+        ParentalLeaveParty.User => _localizer["WhenToApply_ThirtyHours_UserParentalLeave"],
 
-            ParentalLeaveParty.Partner => _localizer["WhenToApply_ThirtyHours_PartnerParentalLeave"],
+        ParentalLeaveParty.Partner => _localizer["WhenToApply_ThirtyHours_PartnerParentalLeave"],
 
-            ParentalLeaveParty.UserAndPartner => _localizer["WhenToApply_ThirtyHours_UserAndPartnerParentalLeave"],
+        ParentalLeaveParty.UserAndPartner => _localizer["WhenToApply_ThirtyHours_UserAndPartnerParentalLeave"],
 
-            null => GetStandardThirtyHoursWhenToApply(schemeResult, child),
+        null => GetStandardThirtyHoursWhenToApply(schemeResult, child),
 
-            _ => throw new UnreachableException(
-                $"Unsupported parental leave party while mapping GetThirtyHoursWhenToApply(): " +
-                $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
-        };
-    }
+        _ => throw new UnreachableException(
+            $"Unsupported parental leave party while mapping GetThirtyHoursWhenToApply(): " +
+            $"{schemeResult.ApplyAndStartAffectedByParentalLeave}")
+    };
 
     private string GetStandardThirtyHoursWhenToApply(SchemeResultDto schemeResult, ChildResultDto child)
     {
@@ -152,51 +134,42 @@ public class EntitlementResponseToResultsSummaryViewModelMapper(
 
     }
 
-    private static int GetSchemeOrder(SchemeCode schemeCode)
+    private static int GetSchemeOrder(SchemeCode schemeCode) => schemeCode switch
     {
-        return schemeCode switch
-        {
-            SchemeCode.TaxFreeChildcare => 1,
-            SchemeCode.UniversalCreditChildcare => 2,
-            SchemeCode.ThirtyHoursForWorkingFamilies => 3,
-            SchemeCode.FifteenHoursForDisadvantagedChildren => 4,
-            SchemeCode.FifteenHoursUniversal => 5,
+        SchemeCode.TaxFreeChildcare => 1,
+        SchemeCode.UniversalCreditChildcare => 2,
+        SchemeCode.ThirtyHoursForWorkingFamilies => 3,
+        SchemeCode.FifteenHoursForDisadvantagedChildren => 4,
+        SchemeCode.FifteenHoursUniversal => 5,
 
-            _ => 999
-        };
-    }
+        _ => 999
+    };
 
-    private string GetSchemeName(SchemeCode schemeCode)
+    private string GetSchemeName(SchemeCode schemeCode) => schemeCode switch
     {
-        return schemeCode switch
-        {
-            SchemeCode.TaxFreeChildcare => _localizer["TaxFreeChildcare_Name"],
-            SchemeCode.FifteenHoursUniversal => _localizer["FifteenHoursUniversal_Name"],
-            SchemeCode.FifteenHoursForDisadvantagedChildren => _localizer["FifteenHoursForDisadvantagedChildren_Name"],
-            SchemeCode.UniversalCreditChildcare => _localizer["UniversalCreditChildcare_Name"],
-            SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["ThirtyHoursForWorkingFamilies_Name"],
+        SchemeCode.TaxFreeChildcare => _localizer["TaxFreeChildcare_Name"],
+        SchemeCode.FifteenHoursUniversal => _localizer["FifteenHoursUniversal_Name"],
+        SchemeCode.FifteenHoursForDisadvantagedChildren => _localizer["FifteenHoursForDisadvantagedChildren_Name"],
+        SchemeCode.UniversalCreditChildcare => _localizer["UniversalCreditChildcare_Name"],
+        SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["ThirtyHoursForWorkingFamilies_Name"],
 
-            _ => throw UnknownSchemeCode(schemeCode)
-        };
-    }
+        _ => throw UnknownSchemeCode(schemeCode)
+    };
 
-    private string GetSchemeDescription(SchemeCode schemeCode)
+    private string GetSchemeDescription(SchemeCode schemeCode) => schemeCode switch
     {
-        return schemeCode switch
-        {
-            SchemeCode.TaxFreeChildcare => _localizer["TaxFreeChildcare_Description"],
-            SchemeCode.FifteenHoursUniversal => _localizer["FifteenHoursUniversal_Description"],
-            SchemeCode.FifteenHoursForDisadvantagedChildren => _localizer["FifteenHoursForDisadvantagedChildren_Description"],
-            SchemeCode.UniversalCreditChildcare => _localizer["UniversalCreditChildcare_Description"],
-            SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["ThirtyHoursForWorkingFamilies_Description"],
+        SchemeCode.TaxFreeChildcare => _localizer["TaxFreeChildcare_Description"],
+        SchemeCode.FifteenHoursUniversal => _localizer["FifteenHoursUniversal_Description"],
+        SchemeCode.FifteenHoursForDisadvantagedChildren => _localizer["FifteenHoursForDisadvantagedChildren_Description"],
+        SchemeCode.UniversalCreditChildcare => _localizer["UniversalCreditChildcare_Description"],
+        SchemeCode.ThirtyHoursForWorkingFamilies => _localizer["ThirtyHoursForWorkingFamilies_Description"],
 
-            _ => throw UnknownSchemeCode(schemeCode)
-        };
-    }
+        _ => throw UnknownSchemeCode(schemeCode)
+    };
 
     private static ArgumentOutOfRangeException UnknownSchemeCode(SchemeCode schemeCode) =>
         new(
             nameof(schemeCode),
             schemeCode,
-            UnknownSchemeCodeMessage);
+            _unknownSchemeCodeMessage);
 }

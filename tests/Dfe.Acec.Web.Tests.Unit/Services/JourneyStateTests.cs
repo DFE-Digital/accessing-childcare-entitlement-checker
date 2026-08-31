@@ -12,19 +12,13 @@ public class JourneyStateTests
     }
 
     [Fact]
-    public void GetChildReturnsNullIfChildDoesNotExist()
-    {
-        Assert.False(_journeyState.Children.TryGetValue("non-existent-child-id", out _));
-    }
+    public void GetChildReturnsNullIfChildDoesNotExist() => Assert.False(_journeyState.Children.TryGetValue("non-existent-child-id", out _));
 
     [Fact]
-    public void ApplyChildNameThrowsIfNoChildName()
-    {
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            _journeyState.Apply(new ChildNameViewModel());
-        });
-    }
+    public void ApplyChildNameThrowsIfNoChildName() => Assert.Throws<InvalidOperationException>(() =>
+                                                            {
+                                                                _journeyState.Apply(new ChildNameViewModel());
+                                                            });
 
     [Fact]
     public void ApplyChildNameSetsChildIdIfNull()

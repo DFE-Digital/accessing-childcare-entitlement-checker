@@ -19,8 +19,10 @@ public class PartnerControllerTests : IDisposable
     {
         _journeyState = new JourneyState();
         _journeySession = Substitute.For<IJourneySession>();
-        _controller = new PartnerController(_journeyState, _journeySession);
-        _controller.Url = Substitute.For<IUrlHelper>();
+        _controller = new PartnerController(_journeyState, _journeySession)
+        {
+            Url = Substitute.For<IUrlHelper>()
+        };
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 

@@ -25,9 +25,7 @@ public static class DerivedContextBuilder
     }
 
     private static HouseholdFacts BuildHouseholdFacts(
-        EntitlementRequest request)
-    {
-        return new HouseholdFacts
+        EntitlementRequest request) => new()
         {
             HasPartner = request.Household.HasPartner,
 
@@ -46,20 +44,16 @@ public static class DerivedContextBuilder
 
             CountryOfResidence = request.Household.CountryOfResidence
         };
-    }
 
-    private static PersonFacts BuildPersonFacts(PersonDto person)
+    private static PersonFacts BuildPersonFacts(PersonDto person) => new()
     {
-        return new PersonFacts
-        {
-            PaidWorkStatus = person.PaidWorkStatus,
-            SelfEmployedLessThan12Months = person.SelfEmployedLessThan12Months == true,
-            EarnsAboveThreshold = person.EarnsAboveThreshold == true,
-            ExceedsAdjustedNetIncomeLimit = person.ExceedsAdjustedNetIncomeLimit == true,
-            Benefits = [.. person.Benefits],
-            ChildcareSupport = [.. person.ChildcareSupport]
-        };
-    }
+        PaidWorkStatus = person.PaidWorkStatus,
+        SelfEmployedLessThan12Months = person.SelfEmployedLessThan12Months == true,
+        EarnsAboveThreshold = person.EarnsAboveThreshold == true,
+        ExceedsAdjustedNetIncomeLimit = person.ExceedsAdjustedNetIncomeLimit == true,
+        Benefits = [.. person.Benefits],
+        ChildcareSupport = [.. person.ChildcareSupport]
+    };
 
     private static ChildFacts BuildChildFacts(ChildDto child, DateOnly today)
     {
@@ -88,9 +82,6 @@ public static class DerivedContextBuilder
         };
     }
 
-    private static bool HasAccessToPublicFunds(PersonDto person)
-    {
-        return person.Nationality == Nationality.BritishOrIrishCitizen
+    private static bool HasAccessToPublicFunds(PersonDto person) => person.Nationality == Nationality.BritishOrIrishCitizen
                || person.HasSettledOrPreSettledStatus == true;
-    }
 }

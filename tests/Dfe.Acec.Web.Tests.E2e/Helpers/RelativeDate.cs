@@ -4,11 +4,11 @@ namespace Dfe.Acec.Web.Tests.E2e.Helpers;
 
 internal static class RelativeDate
 {
-    private const string Today = "today";
-    private const string Yesterday = "yesterday";
-    private const string Tomorrow = "tomorrow";
+    private const string _today = "today";
+    private const string _yesterday = "yesterday";
+    private const string _tomorrow = "tomorrow";
 
-    private static readonly CultureInfo GbCulture = CultureInfo.GetCultureInfo("en-GB");
+    private static readonly CultureInfo _gbCulture = CultureInfo.GetCultureInfo("en-GB");
 
     public static DateOnly Parse(string value)
     {
@@ -16,19 +16,16 @@ internal static class RelativeDate
 
         return value.Trim().ToLowerInvariant() switch
         {
-            Today => today,
-            Yesterday => today.AddDays(-1),
-            Tomorrow => today.AddDays(1),
-            _ => DateOnly.Parse(value, GbCulture)
+            _today => today,
+            _yesterday => today.AddDays(-1),
+            _tomorrow => today.AddDays(1),
+            _ => DateOnly.Parse(value, _gbCulture)
         };
     }
 
-    public static bool IsRelative(string value)
+    public static bool IsRelative(string value) => value.Trim().ToLowerInvariant() switch
     {
-        return value.Trim().ToLowerInvariant() switch
-        {
-            Today or Yesterday or Tomorrow => true,
-            _ => false
-        };
-    }
+        _today or _yesterday or _tomorrow => true,
+        _ => false
+    };
 }

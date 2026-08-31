@@ -5,17 +5,17 @@ namespace Dfe.Acec.Web.Services;
 public class JourneySession(IHttpContextAccessor accessor) : IJourneySession
 {
     private readonly IHttpContextAccessor _httpContextAccessor = accessor;
-    private const string Key = "JourneyState";
+    private const string _key = "JourneyState";
 
     public bool HasSession => _httpContextAccessor.HttpContext?
         .Session
-        .TryGetValue(Key, out _) ?? false;
+        .TryGetValue(_key, out _) ?? false;
 
     public JourneyState GetState()
     {
         var json = _httpContextAccessor.HttpContext?
             .Session
-            .GetString(Key);
+            .GetString(_key);
 
         if (string.IsNullOrWhiteSpace(json))
         {
@@ -35,6 +35,6 @@ public class JourneySession(IHttpContextAccessor accessor) : IJourneySession
         var json = JsonSerializer.Serialize(journeyState);
         httpContext
             .Session
-            .SetString(Key, json);
+            .SetString(_key, json);
     }
 }

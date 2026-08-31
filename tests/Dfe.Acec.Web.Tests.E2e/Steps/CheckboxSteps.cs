@@ -8,20 +8,14 @@ namespace Dfe.Acec.Web.Tests.E2e.Steps;
 internal sealed class CheckboxSteps(IPage page)
 {
     [When("I select the {string} checkbox")]
-    public async Task WhenISelectTheStringCheckbox(string label)
-    {
-        await page
+    public async Task WhenISelectTheStringCheckbox(string label) => await page
             .GetByLabel(label, new PageGetByLabelOptions { Exact = true })
             .CheckAsync();
-    }
 
     [When("I deselect the {string} checkbox")]
-    public async Task WhenIDeselectTheStringCheckbox(string label)
-    {
-        await page
+    public async Task WhenIDeselectTheStringCheckbox(string label) => await page
             .GetByLabel(label, new PageGetByLabelOptions { Exact = true })
             .UncheckAsync();
-    }
 
     [When("I do not select a checkbox")]
     [Then("no checkboxes are selected")]

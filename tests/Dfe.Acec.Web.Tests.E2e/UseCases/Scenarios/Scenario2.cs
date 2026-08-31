@@ -6,9 +6,7 @@ internal sealed class Scenario2 : IUseCase
 {
     public string Name => "One parent on carer's allowance, child receives DLA";
 
-    public IEnumerable<JourneyStep> GetJourney()
-    {
-        return new JourneyBuilder()
+    public IEnumerable<JourneyStep> GetJourney() => new JourneyBuilder()
             .StartInLocation("England")
 
             // Child 1
@@ -48,5 +46,4 @@ internal sealed class Scenario2 : IUseCase
             .SetPartnerChildcareSupport("No, they do not get any of these")
 
             .Build();
-    }
 }

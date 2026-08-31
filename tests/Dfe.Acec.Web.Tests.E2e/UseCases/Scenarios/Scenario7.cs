@@ -6,9 +6,7 @@ internal sealed class Scenario7 : IUseCase
 {
     public string Name => "One parent on parental leave";
 
-    public IEnumerable<JourneyStep> GetJourney()
-    {
-        return new JourneyBuilder()
+    public IEnumerable<JourneyStep> GetJourney() => new JourneyBuilder()
             .StartInLocation("England")
 
             // Child 1
@@ -52,5 +50,4 @@ internal sealed class Scenario7 : IUseCase
             .SetPartnerChildcareSupport("No, they do not get any of these")
 
             .Build();
-    }
 }

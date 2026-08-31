@@ -18,14 +18,8 @@ public class UrlHelperExtensionTests
     }
 
     [Fact]
-    public void WhenUrlDoesNotExistItWillThrow()
-    {
-        Assert.Throws<InvalidOperationException>(() => _urlHelper.ActionOrThrow("NonExistentRoute"));
-    }
+    public void WhenUrlDoesNotExistItWillThrow() => Assert.Throws<InvalidOperationException>(() => _urlHelper.ActionOrThrow("NonExistentRoute"));
 
     [Fact]
-    public void WhenUrlDoesNotExistWithControllerItWillThrow()
-    {
-        Assert.Throws<InvalidOperationException>(() => _urlHelper.ActionOrThrow("NonExistentRoute", "NonExistentController"));
-    }
+    public void WhenUrlDoesNotExistWithControllerItWillThrow() => Assert.Throws<InvalidOperationException>(() => _urlHelper.ActionOrThrow("NonExistentRoute", "NonExistentController"));
 }

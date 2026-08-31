@@ -6,9 +6,7 @@ internal sealed class Scenario11 : IUseCase
 {
     public string Name => "Single parent not working, on carer's allowance";
 
-    public IEnumerable<JourneyStep> GetJourney()
-    {
-        return new JourneyBuilder()
+    public IEnumerable<JourneyStep> GetJourney() => new JourneyBuilder()
             .StartInLocation("England")
 
             // Child 1
@@ -30,5 +28,4 @@ internal sealed class Scenario11 : IUseCase
             .SetHasPartner("No")
 
             .Build();
-    }
 }

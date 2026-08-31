@@ -26,10 +26,7 @@ internal static partial class RouteHelper
     /// </summary>
     /// <param name="routePattern">The route pattern to convert.</param>
     /// <returns>A concrete route with placeholder values.</returns>
-    private static string MaterializeRoute(string routePattern)
-    {
-        return RouteParameterRegex().Replace(routePattern, "1");
-    }
+    private static string MaterializeRoute(string routePattern) => RouteParameterRegex().Replace(routePattern, "1");
 
     [GeneratedRegex(@"\{[^}]+\}")]
     private static partial Regex RouteParameterRegex();

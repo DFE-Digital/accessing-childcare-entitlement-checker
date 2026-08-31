@@ -12,13 +12,10 @@ public class JourneyStateValidatorCheckAnswersTests
 {
     private readonly JourneyStateValidator _validator = new();
 
-    private FluentValidation.Results.ValidationResult Validate(JourneyState journeyState)
-    {
-        return _validator.Validate(
+    private FluentValidation.Results.ValidationResult Validate(JourneyState journeyState) => _validator.Validate(
             journeyState,
             options => options.IncludeRuleSets(
                 JourneyStateValidator.CheckAnswersRuleSet));
-    }
 
     private static Child CreateBornChild()
     {
@@ -32,50 +29,44 @@ public class JourneyStateValidatorCheckAnswersTests
         return child;
     }
 
-    private static JourneyState CreateValidUserOnlyJourneyState()
+    private static JourneyState CreateValidUserOnlyJourneyState() => new()
     {
-        return new JourneyState
-        {
-            CountryOfResidence = CountryOfResidence.England,
-            Children =
+        CountryOfResidence = CountryOfResidence.England,
+        Children =
             {
                 [CreateBornChild().ChildId] = CreateBornChild()
             },
-            UserAge = AgeRange.TwentyOneOrOver,
-            Nationality = NationalityOption.BritishOrIrishCitizen,
-            PaidWork = PaidWorkOption.No,
-            UniversalCredit = UniversalCreditOption.DoesNotReceive,
-            Benefits = [BenefitsOption.None],
-            ChildcareSupport = [ChildcareSupportOption.None],
-            HasPartner = false
-        };
-    }
+        UserAge = AgeRange.TwentyOneOrOver,
+        Nationality = NationalityOption.BritishOrIrishCitizen,
+        PaidWork = PaidWorkOption.No,
+        UniversalCredit = UniversalCreditOption.DoesNotReceive,
+        Benefits = [BenefitsOption.None],
+        ChildcareSupport = [ChildcareSupportOption.None],
+        HasPartner = false
+    };
 
-    private static JourneyState CreateValidUserAndPartnerOnlyJourneyState()
+    private static JourneyState CreateValidUserAndPartnerOnlyJourneyState() => new()
     {
-        return new JourneyState
-        {
-            CountryOfResidence = CountryOfResidence.England,
-            Children =
+        CountryOfResidence = CountryOfResidence.England,
+        Children =
             {
                 [CreateBornChild().ChildId] = CreateBornChild()
             },
-            UserAge = AgeRange.TwentyOneOrOver,
-            Nationality = NationalityOption.BritishOrIrishCitizen,
-            PaidWork = PaidWorkOption.No,
-            UniversalCredit = UniversalCreditOption.DoesNotReceive,
-            Benefits = [BenefitsOption.None],
-            ChildcareSupport = [ChildcareSupportOption.None],
-            HasPartner = true,
+        UserAge = AgeRange.TwentyOneOrOver,
+        Nationality = NationalityOption.BritishOrIrishCitizen,
+        PaidWork = PaidWorkOption.No,
+        UniversalCredit = UniversalCreditOption.DoesNotReceive,
+        Benefits = [BenefitsOption.None],
+        ChildcareSupport = [ChildcareSupportOption.None],
+        HasPartner = true,
 
-            PartnerAge = AgeRange.TwentyOneOrOver,
-            PartnerNationality = NationalityOption.BritishOrIrishCitizen,
-            PartnerPaidWork = PartnerPaidWorkOption.No,
-            PartnerBenefits = [PartnerBenefitsOption.None],
-            PartnerChildcareSupport = [PartnerChildcareSupportOption.None],
+        PartnerAge = AgeRange.TwentyOneOrOver,
+        PartnerNationality = NationalityOption.BritishOrIrishCitizen,
+        PartnerPaidWork = PartnerPaidWorkOption.No,
+        PartnerBenefits = [PartnerBenefitsOption.None],
+        PartnerChildcareSupport = [PartnerChildcareSupportOption.None],
 
-        };
-    }
+    };
 
     [Fact]
     public void CheckAnswersWhenUserOnlyJourneyIsCompleteIsValid()

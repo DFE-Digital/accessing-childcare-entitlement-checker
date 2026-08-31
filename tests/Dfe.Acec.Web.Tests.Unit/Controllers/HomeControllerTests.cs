@@ -20,8 +20,10 @@ public class HomeControllerTests : IDisposable
         _journeyState = new JourneyState();
         _journeySession = Substitute.For<IJourneySession>();
         _featureManager = Substitute.For<IFeatureManager>();
-        _controller = new HomeController(_journeyState, _journeySession, _featureManager);
-        _controller.Url = Substitute.For<IUrlHelper>();
+        _controller = new HomeController(_journeyState, _journeySession, _featureManager)
+        {
+            Url = Substitute.For<IUrlHelper>()
+        };
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 
