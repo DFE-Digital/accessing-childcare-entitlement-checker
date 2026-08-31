@@ -1,4 +1,4 @@
-﻿using Dfe.Acec.Web.Models.Cookies;
+using Dfe.Acec.Web.Models.Cookies;
 using Dfe.Acec.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 

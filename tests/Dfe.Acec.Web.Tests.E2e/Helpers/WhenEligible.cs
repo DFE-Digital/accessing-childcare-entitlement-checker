@@ -1,4 +1,4 @@
-﻿namespace Dfe.Acec.Web.Tests.E2e.Helpers;
+namespace Dfe.Acec.Web.Tests.E2e.Helpers;
 
 public enum WhenEligible
 {
