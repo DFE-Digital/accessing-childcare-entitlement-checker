@@ -1,4 +1,4 @@
-﻿namespace Dfe.Acec.Web.Services;
+namespace Dfe.Acec.Web.Services;
 
 public class CookiePolicyService(
     IHttpContextAccessor httpContextAccessor,
