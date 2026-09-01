@@ -1,20 +1,20 @@
 using Dfe.Acec.Web.Controllers;
+using Dfe.Acec.Web.Models;
+using Dfe.Acec.Web.Models.BornChildDetails;
+using Dfe.Acec.Web.Models.Summary;
+using Dfe.Acec.Web.Models.User;
+using Dfe.Acec.Web.Services;
 using Dfe.Acec.Web.Validators;
 using FluentValidation;
 using FluentValidation.Results;
-using Dfe.Acec.Web.Models;
-using Dfe.Acec.Web.Models.Summary;
-using Dfe.Acec.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
-using NSubstitute;
 using Microsoft.FeatureManagement;
-using Dfe.Acec.Web.Models.BornChildDetails;
-using Dfe.Acec.Web.Models.User;
+using NSubstitute;
 
 
 namespace Dfe.Acec.Web.Tests.Unit.Controllers;
@@ -64,11 +64,12 @@ public class SummaryControllerTests : IDisposable
             stringLocalizerFactory,
             new JourneyStateValidator(),
             _logger,
-            _featureManager);
-
-        _controller.ControllerContext = new ControllerContext
+            _featureManager)
         {
-            HttpContext = new DefaultHttpContext()
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            }
         };
         _controller.TempData = new TempDataDictionary(_controller.HttpContext, Substitute.For<ITempDataProvider>());
         _controller.MetadataProvider = metadataProvider;
@@ -306,11 +307,12 @@ public class SummaryControllerTests : IDisposable
             AcecSubstitute.ForLocalizerFactory(),
             validator,
             _logger,
-            _featureManager);
-
-        controller.ControllerContext = _controller.ControllerContext;
-        controller.MetadataProvider = _controller.MetadataProvider;
-        controller.Url = _controller.Url;
+            _featureManager)
+        {
+            ControllerContext = _controller.ControllerContext,
+            MetadataProvider = _controller.MetadataProvider,
+            Url = _controller.Url
+        };
 
         var model = new CheckAnswersSubmitModel(Guid.NewGuid());
 
@@ -334,10 +336,12 @@ public class SummaryControllerTests : IDisposable
             localizerFactory,
             mockValidator,
             _logger,
-            _featureManager);
-        controller.ControllerContext = _controller.ControllerContext;
-        controller.MetadataProvider = _controller.MetadataProvider;
-        controller.Url = _controller.Url;
+            _featureManager)
+        {
+            ControllerContext = _controller.ControllerContext,
+            MetadataProvider = _controller.MetadataProvider,
+            Url = _controller.Url
+        };
 
         var model = new CheckChildDetailsSubmitModel(_journeyState.CorrelationId);
 
@@ -377,11 +381,12 @@ public class SummaryControllerTests : IDisposable
             AcecSubstitute.ForLocalizerFactory(),
             mockValidator,
             _logger,
-            _featureManager);
-
-        controller.ControllerContext = _controller.ControllerContext;
-        controller.MetadataProvider = _controller.MetadataProvider;
-        controller.Url = _controller.Url;
+            _featureManager)
+        {
+            ControllerContext = _controller.ControllerContext,
+            MetadataProvider = _controller.MetadataProvider,
+            Url = _controller.Url
+        };
 
         var model = new CheckAnswersSubmitModel(
             _journeyState.CorrelationId);

@@ -1,8 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.Partner;
 using Dfe.Acec.Web.Services;
 using Microsoft.Extensions.Localization;
-using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Acec.Web.Tests.Unit.Models.Partner;
 
@@ -18,8 +18,16 @@ public class PartnerWeeklyEarningsViewModelTests
         _localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType =>
         {
-            if (serviceType == typeof(JourneyState)) return _journeyState;
-            if (serviceType == typeof(IStringLocalizerFactory)) return _localizerFactory;
+            if (serviceType == typeof(JourneyState))
+            {
+                return _journeyState;
+            }
+
+            if (serviceType == typeof(IStringLocalizerFactory))
+            {
+                return _localizerFactory;
+            }
+
             return null!;
         };
     }
@@ -49,7 +57,11 @@ public class PartnerWeeklyEarningsViewModelTests
     {
         Func<Type, object> serviceProviderFunc = serviceType =>
         {
-            if (serviceType == typeof(IStringLocalizerFactory)) return _localizerFactory;
+            if (serviceType == typeof(IStringLocalizerFactory))
+            {
+                return _localizerFactory;
+            }
+
             return null!;
         };
 

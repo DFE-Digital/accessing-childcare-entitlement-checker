@@ -1,7 +1,7 @@
+using System.ComponentModel.DataAnnotations;
 using Dfe.Acec.Web.Models.User;
 using Dfe.Acec.Web.Services;
 using Microsoft.Extensions.Localization;
-using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Acec.Web.Tests.Unit.Models.User;
 
@@ -16,8 +16,16 @@ public class ParentalLeaveViewModelTests
         var localizerFactory = AcecSubstitute.ForLocalizerFactory();
         _serviceProviderFunc = serviceType =>
         {
-            if (serviceType == typeof(JourneyState)) return _journeyState;
-            if (serviceType == typeof(IStringLocalizerFactory)) return localizerFactory;
+            if (serviceType == typeof(JourneyState))
+            {
+                return _journeyState;
+            }
+
+            if (serviceType == typeof(IStringLocalizerFactory))
+            {
+                return localizerFactory;
+            }
+
             return null!;
         };
     }

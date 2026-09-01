@@ -1,5 +1,5 @@
-using Dfe.Acec.Web.Models;
 using System.Diagnostics;
+using Dfe.Acec.Web.Models;
 
 namespace Dfe.Acec.Web.Tests.Unit.Models;
 

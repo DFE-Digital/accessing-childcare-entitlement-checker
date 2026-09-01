@@ -10,10 +10,10 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 {
     private IPlaywright? _playwright;
     private IBrowser? _browser;
-    private TestSettings _settings = null!;
+    private TestSettings? _settings;
 
     protected IPage Page { get; private set; } = null!;
-    internal TestSettings Settings => _settings;
+    internal TestSettings Settings => _settings ?? throw new InvalidOperationException($"{nameof(_settings)} is null.");
 
     protected virtual string? PageUrl => null;
 
@@ -90,7 +90,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
         var violations = results
             .Violations
-            .Where(v => _settings.Impacts.Contains(v.Impact))
+            .Where(v => Settings.Impacts.Contains(v.Impact))
             .ToArray();
 
         foreach (var violation in violations)

@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -8,6 +6,8 @@ using Dfe.Acec.Web.Controllers;
 using Dfe.Acec.Web.Models.Partner;
 using Dfe.Acec.Web.Models.User;
 using Dfe.Acec.Web.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Localization;
 
 namespace Dfe.Acec.Web.Models.Summary;
 
