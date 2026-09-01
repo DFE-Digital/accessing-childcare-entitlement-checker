@@ -16,14 +16,14 @@ To set up secret storage for the web application, execute the following commands
 
 1. **Navigate to the web project directory:**
    ```bash
-   cd src/AccessingChildcareEntitlementChecker.Web
+   cd src/Dfe.Acec.Web
    ```
 2. **Initialise user secrets:**
    ```bash
    dotnet user-secrets init
    ```
 
-*(Note: This creates a unique secrets identifier in your `AccessingChildcareEntitlementChecker.Web.csproj` file.)*
+*(Note: This creates a unique secrets identifier in your `Dfe.Acec.Web.csproj` file.)*
 
 ## Set local secret values
 

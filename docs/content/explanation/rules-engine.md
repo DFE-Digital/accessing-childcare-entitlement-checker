@@ -9,7 +9,7 @@ eleventyNavigation:
   key: Rules engine
 ---
 
-This guide explains the design and architecture of the `AccessingChildcareEntitlementChecker.RulesEngine` project. It describes how the system evaluates and extends childcare entitlement schemes.
+This guide explains the design and architecture of the `Dfe.Acec.RulesEngine` project. It describes how the system evaluates and extends childcare entitlement schemes.
 
 ## Overview
 
@@ -122,12 +122,12 @@ public enum SchemeCode
 We write a new evaluator as a single, stateless strategy class that implements the `ISchemeEvaluator` interface. This class holds the regulatory rules and maps facts to a deterministic result:
 
 ```csharp
-using AccessingChildcareEntitlementChecker.RulesEngine.Derived;
-using AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses;
-using AccessingChildcareEntitlementChecker.RulesEngine.Evaluators;
-using AccessingChildcareEntitlementChecker.RulesEngine.Types;
+using Dfe.Acec.RulesEngine.Derived;
+using Dfe.Acec.RulesEngine.Dtos.Responses;
+using Dfe.Acec.RulesEngine.Evaluators;
+using Dfe.Acec.RulesEngine.Types;
 
-namespace AccessingChildcareEntitlementChecker.RulesEngine.Schemes;
+namespace Dfe.Acec.RulesEngine.Schemes;
 
 public class NewEntitlementSchemeEvaluator : ISchemeEvaluator
 {

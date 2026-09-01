@@ -26,7 +26,7 @@ The development environment uses a modern, stable stack and clear patterns. Thes
 * **Separate parts**: The codebase separates the stateless `RulesEngine` (core logic) from the stateful `Web` application (sessions and views).
 
 ### Routing conventions
-To make navigation easy, the application uses centralised routing in [WebApplicationExtensions.cs](/src/AccessingChildcareEntitlementChecker.Web/WebApplicationExtensions.cs). We do not use attribute-based routing on single controllers. Centralised routing gives you one file to see and update the full user journey.
+To make navigation easy, the application uses centralised routing in [WebApplicationExtensions.cs](/src/Dfe.Acec.Web/WebApplicationExtensions.cs). We do not use attribute-based routing on single controllers. Centralised routing gives you one file to see and update the full user journey.
 
 ## Source control and history curation
 

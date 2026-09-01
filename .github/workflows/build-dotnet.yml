@@ -14,12 +14,13 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-  SOLUTION: AccessingChildcareEntitlementChecker.slnx
-  WEB_APP: src/AccessingChildcareEntitlementChecker.Web/AccessingChildcareEntitlementChecker.Web.csproj
-  UNIT_TESTS: tests/AccessingChildcareEntitlementChecker.UnitTests/AccessingChildcareEntitlementChecker.UnitTests.csproj
-  INTEGRATION_TESTS: tests/AccessingChildcareEntitlementChecker.IntegrationTests/AccessingChildcareEntitlementChecker.IntegrationTests.csproj
-  E2E_TESTS: tests/AccessingChildcareEntitlementChecker.E2eTests/AccessingChildcareEntitlementChecker.E2eTests.csproj
-  A11Y_TESTS: tests/AccessingChildcareEntitlementChecker.A11yTests/AccessingChildcareEntitlementChecker.A11yTests.csproj
+  SOLUTION: Dfe.Acec.slnx
+  WEB_APP: src/Dfe.Acec.Web/Dfe.Acec.Web.csproj
+  UNIT_TESTS_WEB: tests/Dfe.Acec.Web.Tests.Unit/Dfe.Acec.Web.Tests.Unit.csproj
+  UNIT_TESTS_RULES: tests/Dfe.Acec.RulesEngine.Tests.Unit/Dfe.Acec.RulesEngine.Tests.Unit.csproj
+  INTEGRATION_TESTS: tests/Dfe.Acec.Web.Tests.Integration/Dfe.Acec.Web.Tests.Integration.csproj
+  E2E_TESTS: tests/Dfe.Acec.Web.Tests.E2e/Dfe.Acec.Web.Tests.E2e.csproj
+  A11Y_TESTS: tests/Dfe.Acec.Web.Tests.A11y/Dfe.Acec.Web.Tests.A11y.csproj
   CONFIGURATION: Release
 
 jobs:
@@ -194,7 +195,7 @@ jobs:
             /d:sonar.token="${SONAR_TOKEN}" \
             /d:sonar.cs.vstest.reportsPaths="TestResults/**/*.trx" \
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
-            /d:sonar.exclusions="**/AccessingChildcareEntitlementChecker.Shutter/**,**/scripts/**,**/docs/**,**/infra/**,**/.github/**,**/.devcontainer/**,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
+            /d:sonar.exclusions="**/Dfe.Acec.Shutter/**,**/scripts/**,**/docs/**,**/infra/**,**/.github/**,**/.devcontainer/**,**/*.html,**/*.json,**/*.scss,**/wwwroot/**" \
             /d:sonar.coverage.exclusions="**/Program.cs" \
             /d:sonar.cpd.exclusions="**/PartnerParentalLeave.cshtml,**/JourneyStateValidator.cs" \
             /d:sonar.issue.ignore.block=e1 \
@@ -212,19 +213,28 @@ jobs:
       - name: Test
         id: test
         run: |
-          dotnet test ${{ env.UNIT_TESTS }} \
+          dotnet test ${{ env.UNIT_TESTS_WEB }} \
             -c ${{ env.CONFIGURATION }} \
             --no-build \
-            --results-directory ./TestResults/UnitTests \
-            --logger "trx;LogFileName=unit-test-results.trx" \
+            --results-directory ./TestResults/Web.Tests.Unit \
+            --logger "trx;LogFileName=unit-web-test-results.trx" \
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=opencover \
-            /p:CoverletOutput=TestResults/coverage/unit/
+            /p:CoverletOutput=TestResults/coverage/unit-web/
+          
+            dotnet test ${{ env.UNIT_TESTS_RULES }} \
+            -c ${{ env.CONFIGURATION }} \
+            --no-build \
+            --results-directory ./TestResults/RulesEngine.Tests.Unit \
+            --logger "trx;LogFileName=unit-rules-test-results.trx" \
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=opencover \
+            /p:CoverletOutput=TestResults/coverage/unit-rules/
           
           dotnet test ${{ env.INTEGRATION_TESTS }} \
             -c ${{ env.CONFIGURATION }} \
             --no-build \
-            --results-directory ./TestResults/IntegrationTests \
+            --results-directory ./TestResults/Tests.Integration \
             --logger "trx;LogFileName=integration-test-results.trx" \
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=opencover \

@@ -14,12 +14,12 @@ Let's build a new page for our web application! In this tutorial, we'll add a fr
 
 First, we need an MVC Controller to handle the web request and return our new page.
 
-Navigate to `src/AccessingChildcareEntitlementChecker.Web/Controllers` and create a new file named `NewJourneyPageController.cs`:
+Navigate to `src/Dfe.Acec.Web/Controllers` and create a new file named `NewJourneyPageController.cs`:
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccessingChildcareEntitlementChecker.Web.Controllers;
+namespace Dfe.Acec.Web.Controllers;
 
 [Route("new-journey-page")]
 public class NewJourneyPageController : Controller
@@ -37,7 +37,7 @@ public class NewJourneyPageController : Controller
 
 Now, let's create the actual HTML view that the user will see. We use Razor views combined with special GovUK ASP.NET Core Tag Helpers to make building accessible pages super easy.
 
-Navigate to `src/AccessingChildcareEntitlementChecker.Web/Views/NewJourneyPage` (you may need to create this folder) and create a file named `Index.cshtml`:
+Navigate to `src/Dfe.Acec.Web/Views/NewJourneyPage` (you may need to create this folder) and create a file named `Index.cshtml`:
 
 ```html
 @{
@@ -67,7 +67,7 @@ Navigate to `src/AccessingChildcareEntitlementChecker.Web/Views/NewJourneyPage` 
 
 It's a great habit to write a quick automated test for every new page to ensure it doesn't break in the future! We use Playwright for our End-to-End (E2E) tests.
 
-Open up your E2E test project and add a new scenario for your page (for example, in `tests/AccessingChildcareEntitlementChecker.E2eTests/Features/NewJourneyPage.feature`):
+Open up your E2E test project and add a new scenario for your page (for example, in `tests/Dfe.Acec.Web.Tests.E2e/Features/NewJourneyPage.feature`):
 
 ```gherkin
 Feature: New Journey Page

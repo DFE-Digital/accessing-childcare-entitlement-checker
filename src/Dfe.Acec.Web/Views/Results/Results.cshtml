@@ -1,0 +1,188 @@
+@inject IViewLocalizer Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Dfe.Acec.Web.Models.Results.ResultsSummaryViewModel
+
+@{
+    ViewData["Title"] = Localizer["Childcare support you could get"];
+}
+
+<link rel="stylesheet" href="~/css/results.css" />
+
+@section BeforeContent {
+    <govuk-back-link asp-controller="Summary" asp-action="CheckAnswers">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 id="top" class="govuk-heading-xl">@Localizer["Childcare support you could get"]</h1>
+        
+        <button class="app-print-link" type="button">
+            @Localizer["Print this page"]
+        </button>
+        
+        @if (Model.Children.Count > 0)
+        {
+            <p class="govuk-body">
+                @Localizer["Based on your answers, this is the support you can get now or in the future."]
+            </p>
+    
+            <p class="govuk-body">
+                @Localizer["You should check again if your circumstances change as this may change the support you can get."]
+            </p>   
+        }
+
+        @if (!Model.HasAccessToPublicFunds)
+        {
+            <partial name="_PublicFundsWarning" />
+        }
+
+        @foreach (var child in Model.Children)
+        {
+            <div class="app-results-section">
+
+                <h2 class="govuk-heading-l results-name">
+                    @child.Name
+                </h2>
+
+                @if (child.Schemes.Count == 0)
+                {
+                    <p class="govuk-body">
+                        @Localizer["You cannot currently get any of the childcare support this service checks for {0}.", child.Name]
+                    </p>
+
+                    <p class="govuk-body">
+                        @Localizer["To understand more about the support this service checks and when you may be eligible,"]
+                        <a href="https://www.gov.uk/get-childcare"
+                           class="govuk-link"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            @Localizer["read the step by step guide about childcare (opens in new tab)"]</a>.
+                    </p>
+
+                    continue;
+                }
+                
+                <p class="govuk-body">
+                    @Localizer["This is a summary of {0}'s childcare support.", child.Name]
+                </p>
+
+                <table class="govuk-table app-results-table">
+                    <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header">@Localizer["Scheme"]</th>
+                        <th scope="col" class="govuk-table__header">@Localizer["What you get"]</th>
+                        <th scope="col" class="govuk-table__header">@Localizer["When to apply"]</th>
+                    </tr>
+                    </thead>
+
+                    <tbody class="govuk-table__body">
+                    @foreach (var scheme in child.Schemes)
+                    {
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell">
+                                @scheme.Name
+                            </td>
+
+                            <td class="govuk-table__cell">
+                                @scheme.WhatYouGet
+                            </td>
+
+                            <td class="govuk-table__cell">
+                                @scheme.WhenToApply
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="govuk-heading-m">
+                @Localizer["Full information about {0}'s childcare support", child.Name]
+            </h3>
+            
+
+            <p class="govuk-body">
+                <a asp-action="ResultsDetailed"
+                   asp-route-childId="@child.ChildId"
+                   class="govuk-link">
+                    @Localizer["View {0}'s full childcare support information", child.Name]</a>.
+            </p>
+            
+            <p class="govuk-body">
+                @Localizer["This includes more details about each scheme such as when support starts and ends."]
+            </p>
+
+            @if (child.ShowThirtyHourWarning)
+            {
+                <div class="govuk-inset-text">
+                    <p>@Localizer["You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme."]</p>
+                </div>
+            }
+        }
+
+        <div class="app-getHelp">
+            <h2 class="govuk-heading-l">
+                @Localizer["Get help and advice about childcare support"]
+            </h2>
+
+            <p class="govuk-body">
+                @Localizer["To understand more you can"]
+                <text> </text>
+                <a href="https://www.gov.uk/get-childcare"
+                   class="govuk-link"
+                   target="_blank"
+                   rel="noopener noreferrer">@Localizer["read the step by step guide about childcare and getting help paying for it (opens in new tab)"]</a>.
+                <text> </text>
+            </p>
+
+            <h3 class="govuk-heading-s">
+                @Localizer["Get help and advice at a family hub"]
+            </h3>
+
+            <p class="govuk-body">
+                @Localizer["Family hubs offer local support for parents and carers. They can help explain childcare options and find support in your area."]
+            </p>
+
+            <p class="govuk-body">
+                <a class="govuk-link"
+                   href="https://www.gov.uk/find-family-hub-local-area"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    @Localizer["Find out if there's a family hub in your area (opens in new tab)"]</a>.
+            </p>
+        </div>
+        
+        <button class="app-print-link" type="button">
+            @Localizer["Print this page"]
+        </button>
+        
+        <div class="app-back-to-top">
+            <a class="govuk-link govuk-link--no-visited-state app-back-to-top__link"
+               href="#top">
+                <svg
+                    class="app-back-to-top__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="17"
+                    viewBox="0 0 13 17"
+                    aria-hidden="true">
+                    <path fill="currentColor"
+                          d="M6.5 0L0 6.5 1.4 8l4-4v12.7h2V4l4.3 4L13 6.4z" />
+                </svg>
+                @Localizer["Back to top"]
+            </a>
+        </div>
+        
+    </div>
+    
+    <script add-nonce="true">
+        document
+            .querySelectorAll('.app-print-link')
+            .forEach(button =>
+                button.addEventListener('click', () => window.print()));
+    </script>
+</div>

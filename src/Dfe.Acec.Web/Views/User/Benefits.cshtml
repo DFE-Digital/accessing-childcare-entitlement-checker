@@ -1,0 +1,26 @@
+@using Dfe.Acec.Web.Models.User
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+@model BenefitsViewModel
+
+@{
+    ViewData["Title"] = Html.DisplayNameFor(model => model.Benefits);
+}
+
+@section BeforeContent {
+    <govuk-back-link href="@Model.BackLink">
+        @Shared["Button_Back"]
+    </govuk-back-link>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" novalidate>
+            <input type="hidden" asp-for="ReturnTo" />
+            <app-checkboxes for="Benefits" exclusive-value="BenefitsOption.None" />
+
+            <govuk-button type="submit">
+                @Shared["Button_Continue"]
+            </govuk-button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using Dfe.Acec.Web.Services;
+
+namespace Dfe.Acec.Web.Models.User;
+
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
+public class SettledStatusViewModel
+{
+    public SettledStatusViewModel()
+    {
+        BackLink = string.Empty;
+    }
+
+    public SettledStatusViewModel(JourneyState journeyState, string backLink, string? returnTo = null)
+    {
+        SettledStatus = journeyState.SettledStatus;
+        BackLink = backLink;
+        ReturnTo = returnTo;
+    }
+
+    [BindNever]
+    public string BackLink { get; set; }
+
+    public string? ReturnTo { get; set; }
+
+    [Display(Name = "Do you have settled or pre-settled status under the EU Settlement Scheme?")]
+    [Required(ErrorMessage = "Select if you have settled or pre-settled status")]
+    public SettledStatusOption? SettledStatus { get; set; }
+}

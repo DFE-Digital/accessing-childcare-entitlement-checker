@@ -40,7 +40,7 @@ Let's get the repository set up and pull in the dependencies you need:
    *Using PowerShell:*
    ```powershell
    dotnet build
-   pwsh .\.artifacts\bin\AccessingChildcareEntitlementChecker.E2eTests\debug\playwright.ps1 install --with-deps
+   pwsh .\.artifacts\bin\Dfe.Acec.Web.Tests.E2e\debug\playwright.ps1 install --with-deps
    ```
 
 ## 2. Build the solution
@@ -58,7 +58,7 @@ dotnet build
 Ready to see it in action? You can launch the web application locally with:
 
 ```bash
-dotnet run --project src/AccessingChildcareEntitlementChecker.Web
+dotnet run --project src/Dfe.Acec.Web
 ```
 
 Once it starts up, you'll see a local development URL in your terminal output (like `https://localhost:xxxx` or `http://localhost:xxxx`). Open that up in your browser to explore the application!
@@ -72,7 +72,8 @@ These tests are super fast! They run completely in-memory, so you don't need to 
 
 Give them a spin with:
 ```bash
-dotnet test tests/AccessingChildcareEntitlementChecker.UnitTests
+dotnet test tests/Dfe.Acec.Web.Tests.Unit
+dotnet test tests/Dfe.Acec.RulesEngine.Tests.Unit
 ```
 
 ### Integration tests
@@ -80,7 +81,7 @@ These tests verify how our application components interact with external depende
 
 Run them using:
 ```bash
-dotnet test tests/AccessingChildcareEntitlementChecker.IntegrationTests
+dotnet test tests/Dfe.Acec.Web.Tests.Integration
 ```
 
 ### End-to-end (E2E) & accessibility (A11y) tests
@@ -89,7 +90,7 @@ Both our E2E and A11y tests use Playwright to simulate real user journeys in a l
 #### Configuring the test target
 To run these tests, they need to know the local URL of your running web application. We configure this using an `appsettings.Local.json` file in the test folders so you don't have to specify environment variables every time.
 
-Create an `appsettings.Local.json` file in both `tests/AccessingChildcareEntitlementChecker.E2eTests/` and `tests/AccessingChildcareEntitlementChecker.A11yTests/` with the following configuration:
+Create an `appsettings.Local.json` file in both `tests/Dfe.Acec.Web.Tests.E2e/` and `tests/Dfe.Acec.Web.Tests.A11y/` with the following configuration:
 
 ```json
 {
@@ -103,13 +104,13 @@ Create an `appsettings.Local.json` file in both `tests/AccessingChildcareEntitle
 #### Running the E2E tests
 Make sure your web application is running locally. Then, run the E2E tests in a separate terminal window:
 ```bash
-dotnet test tests/AccessingChildcareEntitlementChecker.E2eTests --no-build
+dotnet test tests/Dfe.Acec.Web.Tests.E2e --no-build
 ```
 
 #### Running the accessibility (A11y) tests
 Our A11y tests scan our page layouts against WCAG guidelines. Make sure your web application is running, then run:
 ```bash
-dotnet test tests/AccessingChildcareEntitlementChecker.A11yTests --no-build
+dotnet test tests/Dfe.Acec.Web.Tests.A11y --no-build
 ```
 
 *Note: When running locally, you might see browser windows pop up as the tests run. When they run in our automated CI environment, they will run quietly in "headless" mode.*

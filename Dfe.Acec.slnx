@@ -1,0 +1,24 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/src/">
+    <Project Path="src/Dfe.Acec.RulesEngine/Dfe.Acec.RulesEngine.csproj" />
+    <Project Path="src/Dfe.Acec.Web/Dfe.Acec.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Dfe.Acec.Web.Tests.A11y/Dfe.Acec.Web.Tests.A11y.csproj" />
+    <Project Path="tests/Dfe.Acec.Web.Tests.E2e/Dfe.Acec.Web.Tests.E2e.csproj" />
+    <Project Path="tests/Dfe.Acec.Web.Tests.Integration/Dfe.Acec.Web.Tests.Integration.csproj" />
+    <Project Path="tests/Dfe.Acec.Web.Tests.Unit/Dfe.Acec.Web.Tests.Unit.csproj" />
+    <Project Path="tests/Dfe.Acec.RulesEngine.Tests.Unit/Dfe.Acec.RulesEngine.Tests.Unit.csproj" />
+  </Folder>
+  <Folder Name="/src/Dfe.Acec.Shutter/">
+    <File Path="src/Dfe.Acec.Shutter/package.json" />
+    <File Path="src/Dfe.Acec.Shutter/package-lock.json" />
+    <File Path="src/Dfe.Acec.Shutter/copy-assets.js" />
+    <File Path="src/Dfe.Acec.Shutter/index.html" />
+  </Folder>
+</Solution>

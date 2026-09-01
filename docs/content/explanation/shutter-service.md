@@ -74,7 +74,7 @@ To secure deployment, write access is strictly limited to the GitHub Actions wor
 The shutter page content is managed strictly as source code rather than being modified ad-hoc in the cloud console. 
 
 The shutter files reside in the repository under:
-`src/AccessingChildcareEntitlementChecker.Shutter/`
+`src/Dfe.Acec.Shutter/`
 
 This code-first model provides several benefits:
 

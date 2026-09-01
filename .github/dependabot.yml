@@ -132,7 +132,7 @@ updates:
           - "patch"
 
   - package-ecosystem: "npm"
-    directory: "/src/AccessingChildcareEntitlementChecker.Shutter"
+    directory: "/src/Dfe.Acec.Shutter"
     target-branch: "main"
     schedule:
       interval: "weekly"

@@ -1,0 +1,23 @@
+using static Microsoft.Playwright.Assertions;
+
+namespace Dfe.Acec.Web.Tests.A11y.Pages;
+
+public class UserAgePageAccessibilityTests(ITestOutputHelper output) : JourneyPageBase(output)
+{
+    [Fact]
+    public async Task UserAgePageHasNoAccessibilityViolations()
+    {
+        await GoToUserAgePage();
+        await EvaluatePage();
+    }
+
+    [Fact]
+    public async Task UserAgePageWithValidationErrorHasNoAccessibilityViolations()
+    {
+        await GoToUserAgePage();
+        await Continue();
+        await ExpectPathAndQuery("/age/parent-age");
+        await Expect(Page.Locator(".govuk-error-summary")).ToBeVisibleAsync();
+        await EvaluatePage();
+    }
+}

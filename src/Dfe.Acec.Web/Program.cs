@@ -1,0 +1,143 @@
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
+using Dfe.Acec.Web;
+using GovUk.Frontend.AspNetCore;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Dfe.Acec.RulesEngine.Extensions;
+using Dfe.Acec.Web.Mappers;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.FeatureManagement;
+
+// Prevent Redis timeouts under bursty load (e.g. E2E tests, traffic spikes)
+// by explicitly setting a higher minimum for the ThreadPool.
+// See: https://stackexchange.github.io/StackExchange.Redis/Timeouts#threadpool-growth
+ThreadPool.SetMinThreads(200, 200);
+
+var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var securePolicy = builder.Environment.IsDevelopment()
+    ? CookieSecurePolicy.SameAsRequest
+    : CookieSecurePolicy.Always;
+
+services.AddSingleton(typeof(CookieSecurePolicy), securePolicy);
+
+var appInsightsConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
+if (!string.IsNullOrEmpty(appInsightsConnectionString))
+{
+    services.AddOpenTelemetry().UseAzureMonitor();
+}
+
+services
+    .AddLocalization(options => options.ResourcesPath = "Resources")
+    .AddDistributedCacheConfiguration(builder.Configuration)
+    .AddSession(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = securePolicy;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+    })
+    .AddAntiforgery(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = securePolicy;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+    })
+    .AddHttpContextAccessor()
+    .AddGovUkFrontend(options =>
+    {
+        options.GetCspNonceForRequest = context => context.Items["csp-nonce"]?.ToString();
+    })
+    .AddHealthChecks();
+
+services.AddFeatureManagement();
+
+services
+    .AddControllersWithViews(options =>
+        {
+            options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+        })
+    .AddDataAnnotationsLocalization()
+    .AddViewLocalization();
+
+services.AddJourneyServices();
+
+services.AddSingleton<EntitlementResponseToResultsSummaryViewModelMapper>();
+services.AddSingleton<EntitlementResponseToResultsDetailsViewModelMapper>();
+services.AddSingleton<JourneyStateToEntitlementRequestMapper>();
+services.AddRulesEngine();
+
+services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto;
+    options.KnownProxies.Clear();
+    options.KnownIPNetworks.Clear();
+    options.AllowedHosts = ["*.azurefd.net", "check-if-you-are-eligible-for-childcare-funding.education.gov.uk"];
+});
+
+var app = builder.Build();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
+}
+
+app.UseDevelopmentAuth();
+app.Use(async (context, next) =>
+{
+    var bytes = RandomNumberGenerator.GetBytes(12);
+    context.Items["csp-nonce"] = Convert.ToBase64String(bytes);
+
+    context.Response.Headers.XFrameOptions = "DENY";
+    context.Response.Headers.XContentTypeOptions = "nosniff";
+    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+
+    var csp = new StringBuilder();
+
+    csp.Append("default-src 'self'; ");
+    csp.Append($"script-src 'self' 'nonce-{context.Items["csp-nonce"]}' " +
+               "https://www.googletagmanager.com " +
+               "https://*.clarity.ms; ");
+    csp.Append("style-src 'self'; ");
+    csp.Append("img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; ");
+    csp.Append("font-src 'self'; ");
+    csp.Append(
+        "connect-src 'self' " +
+        "https://www.google-analytics.com " +
+        "https://*.google-analytics.com " +
+        "https://www.googletagmanager.com " +
+        "https://*.clarity.ms; ");
+    csp.Append("frame-src https://www.googletagmanager.com; ");
+    csp.Append("form-action 'self'; ");
+    csp.Append("object-src 'none'; ");
+    csp.Append("base-uri 'self'; ");
+    csp.Append("frame-ancestors 'none'; ");
+
+    context.Response.Headers.ContentSecurityPolicy = csp.ToString();
+
+    await next(context);
+});
+
+var supportedCultures = new[] { new CultureInfo("en-GB") };
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-GB"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+})
+    .UseHttpsRedirection()
+    .UseStaticFiles()
+    .UseGovUkFrontend()
+    .UseRouting()
+    .UseSession()
+    .UseAuthorization()
+    .UseExceptionHandler("/Error")
+    .UseStatusCodePagesWithReExecute("/error/{0}");
+
+app.MapTestException();
+app.MapRobotsExclusionProtocol();
+app.MapHealthChecks("/health");
+app.MapControllerRoutes();
+
+await app.RunAsync();

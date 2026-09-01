@@ -1,0 +1,30 @@
+@using Dfe.Acec.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Localizer["Title"]
+        </h1>
+    
+        <p class="govuk-body">
+            @Localizer["Body_TypedAddress"]
+        </p>
+
+        <p class="govuk-body">
+            @Localizer["Body_PastedAddress"]
+        </p>
+
+        <p class="govuk-body">
+            @Localizer["Body_Return"]
+            <a class="govuk-link" href="@Url.Action(nameof(HomeController.Start), HomeController.Name)">
+                @Localizer["Body_Link"]
+            </a>.
+        </p>
+    </div>
+</div>
