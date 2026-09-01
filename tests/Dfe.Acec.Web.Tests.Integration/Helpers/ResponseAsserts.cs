@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 
 namespace Dfe.Acec.Web.Tests.Integration.Helpers;
 

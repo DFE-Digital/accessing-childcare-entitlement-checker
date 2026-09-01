@@ -1,4 +1,4 @@
-﻿using Dfe.Acec.Web.Controllers;
+using Dfe.Acec.Web.Controllers;
 using Dfe.Acec.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

@@ -1,4 +1,4 @@
-﻿using Dfe.Acec.RulesEngine.Services;
+using Dfe.Acec.RulesEngine.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.Web.Filters;
