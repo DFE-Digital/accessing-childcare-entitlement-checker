@@ -12,6 +12,8 @@
 
     <Deterministic>true</Deterministic>
 
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
     <!-- Code analysis -->
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
@@ -27,4 +29,8 @@
     <BuildInParallel>true</BuildInParallel>
     <UseSharedCompilation>true</UseSharedCompilation>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)CodeMetricsConfig.txt"/>
+  </ItemGroup>
 </Project>
