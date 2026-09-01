@@ -1,4 +1,4 @@
-﻿using Dfe.Acec.Web.Models;
+using Dfe.Acec.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Acec.Web;
