@@ -5,14 +5,9 @@ using Dfe.Acec.RulesEngine.Evaluators;
 
 namespace Dfe.Acec.RulesEngine.Services;
 
-public class EntitlementRulesEngine
+public class EntitlementRulesEngine(IEnumerable<ISchemeEvaluator> schemeEvaluators)
 {
-    private readonly IEnumerable<ISchemeEvaluator> _schemeEvaluators;
-
-    public EntitlementRulesEngine(IEnumerable<ISchemeEvaluator> schemeEvaluators)
-    {
-        _schemeEvaluators = schemeEvaluators;
-    }
+    private readonly IEnumerable<ISchemeEvaluator> _schemeEvaluators = schemeEvaluators;
 
     public EntitlementResponse Evaluate(
         EntitlementRequest request,

@@ -1,14 +1,9 @@
 namespace Dfe.Acec.Web.Services;
 
-public class UkTodayFactory : ITodayFactory
+public class UkTodayFactory(IDateTimeFactory dateTimeFactory) : ITodayFactory
 {
-    private readonly IDateTimeFactory _dateTimeFactory;
+    private readonly IDateTimeFactory _dateTimeFactory = dateTimeFactory;
     private readonly TimeZoneInfo _ukTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/London");
-
-    public UkTodayFactory(IDateTimeFactory dateTimeFactory)
-    {
-        _dateTimeFactory = dateTimeFactory;
-    }
 
     public DateOnly Today
     {

@@ -24,25 +24,17 @@ namespace Dfe.Acec.Web.Models.Summary;
 /// for values. Those that don't are handled with custom logic to extract the localised resources
 /// from the relevant view resource files.
 /// </remarks>
-public class SummaryRowFactory
+public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, string controllerName, IStringLocalizerFactory stringLocalizerFactory)
 {
     private const string TitleResourceKey = "Title";
-    private readonly List<SummaryRowViewModel> _viewModels;
-    private readonly IStringLocalizerFactory _stringLocalizerFactory;
-
-    public SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, string controllerName, IStringLocalizerFactory stringLocalizerFactory)
-    {
-        ModelMetadataProvider = modelMetadataProvider;
-        ControllerName = controllerName;
-        _stringLocalizerFactory = stringLocalizerFactory;
-        _viewModels = [];
-    }
+    private readonly List<SummaryRowViewModel> _viewModels = [];
+    private readonly IStringLocalizerFactory _stringLocalizerFactory = stringLocalizerFactory;
 
     public IReadOnlyList<SummaryRowViewModel> ViewModels => _viewModels;
 
-    private IModelMetadataProvider ModelMetadataProvider { get; }
+    private IModelMetadataProvider ModelMetadataProvider { get; } = modelMetadataProvider;
 
-    private string ControllerName { get; }
+    private string ControllerName { get; } = controllerName;
 
     public SummaryRowFactory Add<TViewModel, TProperty>(
         Expression<Func<TViewModel, TProperty?>> viewModelProperty,

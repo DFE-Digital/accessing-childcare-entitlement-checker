@@ -126,7 +126,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
         if (!ModelState.IsValid)
         {
             model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PaidWork));
-            model.Children = journeyState.Children.Values.ToList();
+            model.Children = [.. journeyState.Children.Values];
             return View(model);
         }
 

@@ -19,7 +19,7 @@ public class PartnerParentalLeaveViewModel : IValidatableObject
     public PartnerParentalLeaveViewModel(JourneyState journeyState, string backLink, string? returnTo = null)
     {
         PartnerParentalLeaveChildrenIds = journeyState.PartnerParentalLeaveChildrenIds;
-        Children = journeyState.Children.Values.ToList();
+        Children = [.. journeyState.Children.Values];
         BackLink = backLink;
         ReturnTo = returnTo;
     }

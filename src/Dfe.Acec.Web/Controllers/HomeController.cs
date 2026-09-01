@@ -5,20 +5,13 @@ using Microsoft.FeatureManagement;
 
 namespace Dfe.Acec.Web.Controllers;
 
-public class HomeController : Controller
+public class HomeController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager) : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
-    private readonly IFeatureManager _featureManager;
+    private readonly JourneyState _journeyState = journeyState;
+    private readonly IJourneySession _journeySession = journeySession;
+    private readonly IFeatureManager _featureManager = featureManager;
 
     public const string Name = "Home";
-
-    public HomeController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-        _featureManager = featureManager;
-    }
 
     [HttpGet]
     public IActionResult SessionExpired()
