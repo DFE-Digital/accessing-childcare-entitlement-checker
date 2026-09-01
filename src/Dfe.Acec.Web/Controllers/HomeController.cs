@@ -5,20 +5,9 @@ using Microsoft.FeatureManagement;
 
 namespace Dfe.Acec.Web.Controllers;
 
-public class HomeController : Controller
+public class HomeController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager) : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
-    private readonly IFeatureManager _featureManager;
-
     public const string Name = "Home";
-
-    public HomeController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-        _featureManager = featureManager;
-    }
 
     [HttpGet]
     public IActionResult SessionExpired()
@@ -35,15 +24,15 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> Location(string? returnTo = null)
     {
-        if (await _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
+        if (await featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
         {
-            _journeyState.CountryOfResidence = CountryOfResidence.England;
-            _journeySession.SetState(_journeyState);
+            journeyState.CountryOfResidence = CountryOfResidence.England;
+            journeySession.SetState(journeyState);
             return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name);
         }
 
         var backLink = GetLocationBackLink(returnTo);
-        return View(new LocationViewModel(_journeyState, backLink, returnTo));
+        return View(new LocationViewModel(journeyState, backLink, returnTo));
     }
 
     [HttpPost]
@@ -55,9 +44,9 @@ public class HomeController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.SetState(_journeyState);
-        if (_journeyState.Children.Count > 0)
+        journeyState.Apply(model);
+        journeySession.SetState(journeyState);
+        if (journeyState.Children.Count > 0)
         {
             return RedirectToAction(nameof(SummaryController.CheckChildDetails), SummaryController.Name);
         }

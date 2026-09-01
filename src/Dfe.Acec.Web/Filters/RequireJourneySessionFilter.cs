@@ -9,14 +9,11 @@ public partial class RequireJourneySessionFilter(
     ILogger<RequireJourneySessionFilter> logger,
     IJourneySession journeySession) : IAsyncResourceFilter
 {
-    private readonly ILogger<RequireJourneySessionFilter> _logger = logger;
-    private readonly IJourneySession _journeySession = journeySession;
-
     public Task OnResourceExecutionAsync(
         ResourceExecutingContext context,
         ResourceExecutionDelegate next)
     {
-        if (_journeySession.HasSession)
+        if (journeySession.HasSession)
         {
             return next();
         }

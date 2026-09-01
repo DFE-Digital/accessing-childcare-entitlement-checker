@@ -1,9 +1,8 @@
-namespace Dfe.Acec.RulesEngine.Types
+namespace Dfe.Acec.RulesEngine.Types;
+
+public enum Nationality
 {
-    public enum Nationality
-    {
-        BritishOrIrishCitizen,
-        EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
-        Other
-    }
+    BritishOrIrishCitizen,
+    EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
+    Other
 }

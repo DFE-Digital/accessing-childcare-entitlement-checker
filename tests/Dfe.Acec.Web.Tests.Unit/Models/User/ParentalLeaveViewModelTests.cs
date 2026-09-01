@@ -32,7 +32,7 @@ public class ParentalLeaveViewModelTests
         Assert.Equal(backLink, model.BackLink);
         Assert.Equal(returnTo, model.ReturnTo);
         Assert.Equal(_journeyState.ParentalLeaveChildrenIds, model.ParentalLeaveChildrenIds);
-        Assert.Equal(_journeyState.Children.Values.ToList(), model.Children);
+        Assert.Equal([.. _journeyState.Children.Values], model.Children);
     }
 
     [Fact]

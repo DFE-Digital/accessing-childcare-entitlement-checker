@@ -89,7 +89,7 @@ public class SummaryRowFactoryTests
     {
         _summaryRowFactory.Add<TestViewModel, List<TestSelection>, TestSelection>(
             m => m.TestPropertyList,
-            enumList.ToList(),
+            [.. enumList],
             "test-action-name");
         var rows = _summaryRowFactory.ViewModels;
 

@@ -6,8 +6,6 @@ namespace Dfe.Acec.Web.Controllers;
 
 public class CookiesController(ICookiePolicyService cookiePolicyService) : Controller
 {
-    private readonly ICookiePolicyService _cookiePolicyService = cookiePolicyService;
-
     public const string Name = "Cookies";
 
     [HttpGet]
@@ -18,7 +16,7 @@ public class CookiesController(ICookiePolicyService cookiePolicyService) : Contr
             return BadRequest();
         }
 
-        var analyticsEnabled = _cookiePolicyService.HasConsented;
+        var analyticsEnabled = cookiePolicyService.HasConsented;
         var cookiesViewModel = new CookiesViewModel(
             hasSetCookies ?? false,
             analyticsEnabled);
@@ -33,7 +31,7 @@ public class CookiesController(ICookiePolicyService cookiePolicyService) : Contr
             return View(model);
         }
 
-        _cookiePolicyService.SetConsentStatus(model.AnalyticsCookiesEnabled ?? false);
+        cookiePolicyService.SetConsentStatus(model.AnalyticsCookiesEnabled ?? false);
         return RedirectToAction(nameof(Cookies), Name, new { hasSetCookies = true });
     }
 
@@ -45,7 +43,7 @@ public class CookiesController(ICookiePolicyService cookiePolicyService) : Contr
             return BadRequest();
         }
 
-        _cookiePolicyService.SetConsentStatus(model.AnalyticsCookiesEnabled ?? false);
+        cookiePolicyService.SetConsentStatus(model.AnalyticsCookiesEnabled ?? false);
         return NoContent();
     }
 }

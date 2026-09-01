@@ -7,11 +7,32 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 
 [*.cs]
+# ---------------------------------------------------------------------------
+# C# Core Formatting & Indentation
+# ---------------------------------------------------------------------------
 indent_style = space
 indent_size = 4
 tab_width = 4
 
-# Generated code
+# ---------------------------------------------------------------------------
+# Modern C# Language Features
+# ---------------------------------------------------------------------------
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_style_implicit_object_creation_when_type_is_apparent = true:warning
+csharp_style_prefer_switch_expression = true:warning
+csharp_style_prefer_pattern_matching = true:warning
+csharp_style_prefer_not_pattern = true:warning
+csharp_style_prefer_extended_property_pattern = true:warning
+csharp_style_throw_expression = true:warning
+csharp_style_conditional_delegate_call = true:warning
+csharp_style_prefer_range_operator = true:warning
+csharp_style_prefer_index_operator = true:warning
+csharp_style_prefer_primary_constructors = true:warning
+dotnet_style_prefer_collection_expression = true:warning
+
+# ---------------------------------------------------------------------------
+# Generated Code
+# ---------------------------------------------------------------------------
 [**/*.g.cs]
 generated_code = true
 
@@ -24,16 +45,35 @@ generated_code = true
 [**/bin/**]
 generated_code = true
 
+
+# ---------------------------------------------------------------------------
+# Non-C# Languages & File Formats
+# ---------------------------------------------------------------------------
 [*.json]
 indent_style = space
 indent_size = 2
-
 
 [*.yml]
 indent_style = space
 indent_size = 2
 
 [*.yaml]
+indent_style = space
+indent_size = 2
+
+[*.xml]
+indent_style = space
+indent_size = 2
+
+[*.csproj]
+indent_style = space
+indent_size = 2
+
+[*.props]
+indent_style = space
+indent_size = 2
+
+[*.targets]
 indent_style = space
 indent_size = 2
 

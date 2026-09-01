@@ -7,24 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Acec.Web.Controllers;
 
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
-public class BornChildDetailsController : Controller
+public class BornChildDetailsController(
+    JourneyState journeyState,
+    IJourneySession journeySession) : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
-
     public const string Name = "BornChildDetails";
-    public BornChildDetailsController(
-        JourneyState journeyState,
-        IJourneySession journeySession)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-    }
 
     [HttpGet]
     public IActionResult ChildBirthDate(string childId, string? returnTo = null)
     {
-        if (!_journeyState.Children.TryGetValue(childId, out var child))
+        if (!journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
@@ -36,7 +28,7 @@ public class BornChildDetailsController : Controller
     [HttpPost]
     public IActionResult ChildBirthDate(ChildBirthDateViewModel model)
     {
-        if (!_journeyState.Children.TryGetValue(model.ChildId, out var child))
+        if (!journeyState.Children.TryGetValue(model.ChildId, out var child))
         {
             return NotFound();
         }
@@ -48,8 +40,8 @@ public class BornChildDetailsController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.SetState(_journeyState);
+        journeyState.Apply(model);
+        journeySession.SetState(journeyState);
 
         return this.RedirectToAction(
             nameof(ChildSupport),
@@ -59,7 +51,7 @@ public class BornChildDetailsController : Controller
     [HttpGet]
     public IActionResult ChildSupport(string childId, string? returnTo = null)
     {
-        if (!_journeyState.Children.TryGetValue(childId, out var child))
+        if (!journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
@@ -71,7 +63,7 @@ public class BornChildDetailsController : Controller
     [HttpPost]
     public IActionResult ChildSupport(ChildSupportViewModel model)
     {
-        if (!_journeyState.Children.TryGetValue(model.ChildId, out var child))
+        if (!journeyState.Children.TryGetValue(model.ChildId, out var child))
         {
             return NotFound();
         }
@@ -83,8 +75,8 @@ public class BornChildDetailsController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.SetState(_journeyState);
+        journeyState.Apply(model);
+        journeySession.SetState(journeyState);
 
         return this.RedirectToAction(
             nameof(SummaryController.CheckChildDetails),

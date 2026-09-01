@@ -7,25 +7,19 @@ using Microsoft.Extensions.Localization;
 
 namespace Dfe.Acec.Web.Mappers;
 
-public class EntitlementResponseToResultsSummaryViewModelMapper
+public class EntitlementResponseToResultsSummaryViewModelMapper(
+    IStringLocalizerFactory stringLocalizerFactory)
 {
     private const string UnknownSchemeCodeMessage = "Unknown scheme code";
-    private readonly IStringLocalizer _localizer;
-
-    public EntitlementResponseToResultsSummaryViewModelMapper(
-        IStringLocalizerFactory stringLocalizerFactory)
-    {
-        _localizer = stringLocalizerFactory.Create(
+    private readonly IStringLocalizer _localizer = stringLocalizerFactory.Create(
             "Views.Results.Results",
             typeof(ResultsController).Assembly.GetName().Name!);
-    }
-
 
     public ResultsSummaryViewModel Map(EntitlementResponse response)
     {
         return new ResultsSummaryViewModel()
         {
-            Children = response.ChildResults.Select(MapChildResults).ToList(),
+            Children = [.. response.ChildResults.Select(MapChildResults)],
             HasAccessToPublicFunds = response.HasAccessToPublicFunds,
         };
 
@@ -38,10 +32,9 @@ public class EntitlementResponseToResultsSummaryViewModelMapper
             ChildId = childResult.ChildId,
             Name = childResult.ChildName,
             ShowThirtyHourWarning = GetThirtyHourWarning(childResult),
-            Schemes = childResult.Schemes
+            Schemes = [.. childResult.Schemes
                 .OrderBy(s => GetSchemeOrder(s.SchemeCode))
-                .Select(s => MapSchemeResult(s, childResult))
-                .ToList()
+                .Select(s => MapSchemeResult(s, childResult))]
         };
 
     }

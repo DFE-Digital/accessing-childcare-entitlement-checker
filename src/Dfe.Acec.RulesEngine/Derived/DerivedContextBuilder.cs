@@ -56,8 +56,8 @@ public static class DerivedContextBuilder
             SelfEmployedLessThan12Months = person.SelfEmployedLessThan12Months == true,
             EarnsAboveThreshold = person.EarnsAboveThreshold == true,
             ExceedsAdjustedNetIncomeLimit = person.ExceedsAdjustedNetIncomeLimit == true,
-            Benefits = person.Benefits.ToList(),
-            ChildcareSupport = person.ChildcareSupport.ToList()
+            Benefits = [.. person.Benefits],
+            ChildcareSupport = [.. person.ChildcareSupport]
         };
     }
 
@@ -82,7 +82,7 @@ public static class DerivedContextBuilder
             DueDate = child.DueDate,
             AgeInYears = ageInYears,
             AgeInMonths = ageInMonths,
-            ChildRelatedBenefits = child.ChildRelatedBenefits.ToList(),
+            ChildRelatedBenefits = [.. child.ChildRelatedBenefits],
             UserIsOnParentalLeaveForChild = child.UserIsOnParentalLeaveForChild,
             PartnerIsOnParentalLeaveForChild = child.PartnerIsOnParentalLeaveForChild,
         };

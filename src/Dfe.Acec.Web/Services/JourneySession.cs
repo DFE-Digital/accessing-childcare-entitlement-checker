@@ -2,23 +2,17 @@ using System.Text.Json;
 
 namespace Dfe.Acec.Web.Services;
 
-public class JourneySession : IJourneySession
+public class JourneySession(IHttpContextAccessor accessor) : IJourneySession
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private const string Key = "JourneyState";
 
-    public JourneySession(IHttpContextAccessor accessor)
-    {
-        _httpContextAccessor = accessor;
-    }
-
-    public bool HasSession => _httpContextAccessor.HttpContext?
+    public bool HasSession => accessor.HttpContext?
         .Session
         .TryGetValue(Key, out _) ?? false;
 
     public JourneyState GetState()
     {
-        var json = _httpContextAccessor.HttpContext?
+        var json = accessor.HttpContext?
             .Session
             .GetString(Key);
 
@@ -32,7 +26,7 @@ public class JourneySession : IJourneySession
 
     public void SetState(JourneyState journeyState)
     {
-        var httpContext = _httpContextAccessor.HttpContext
+        var httpContext = accessor.HttpContext
             ?? throw new InvalidOperationException("No HttpContext available");
 
         journeyState.CorrelationId = Guid.NewGuid();

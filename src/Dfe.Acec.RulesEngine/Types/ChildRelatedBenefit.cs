@@ -1,11 +1,10 @@
-namespace Dfe.Acec.RulesEngine.Types
+namespace Dfe.Acec.RulesEngine.Types;
+
+public enum ChildRelatedBenefit
 {
-    public enum ChildRelatedBenefit
-    {
-        ArmedForcesIndependencePayment,
-        CertificateOfVisualImpairment,
-        DisabilityLivingAllowance,
-        EducationHealthAndCarePlan,
-        PersonalIndependencePayment,
-    }
+    ArmedForcesIndependencePayment,
+    CertificateOfVisualImpairment,
+    DisabilityLivingAllowance,
+    EducationHealthAndCarePlan,
+    PersonalIndependencePayment,
 }
