@@ -7,25 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Acec.Web.Controllers;
 
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
-public class ExpectedChildDetailsController : Controller
+public class ExpectedChildDetailsController(
+    JourneyState journeyState,
+    IJourneySession journeySession) : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
-
     public const string Name = "ExpectedChildDetails";
-
-    public ExpectedChildDetailsController(
-        JourneyState journeyState,
-        IJourneySession journeySession)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-    }
 
     [HttpGet]
     public IActionResult ChildDueDate(string childId, string? returnTo = null)
     {
-        if (!_journeyState.Children.TryGetValue(childId, out var child))
+        if (!journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
@@ -37,7 +28,7 @@ public class ExpectedChildDetailsController : Controller
     [HttpPost]
     public IActionResult ChildDueDate(ChildDueDateViewModel model)
     {
-        if (!_journeyState.Children.TryGetValue(model.ChildId, out var _))
+        if (!journeyState.Children.TryGetValue(model.ChildId, out var _))
         {
             return NotFound();
         }
@@ -48,8 +39,8 @@ public class ExpectedChildDetailsController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.SetState(_journeyState);
+        journeyState.Apply(model);
+        journeySession.SetState(journeyState);
 
         return this.RedirectToAction(
             nameof(SummaryController.CheckChildDetails),

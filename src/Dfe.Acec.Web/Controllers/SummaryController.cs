@@ -141,9 +141,7 @@ public partial class SummaryController(
                 .Where(x => invalidChildIds.Contains(x.Key))
                 .ToList();
 
-            removedChildNames = invalidChildren
-                .Select(x => x.Value.Name)
-                .ToList();
+            removedChildNames = [.. invalidChildren.Select(x => x.Value.Name)];
 
             foreach (var child in invalidChildren)
             {

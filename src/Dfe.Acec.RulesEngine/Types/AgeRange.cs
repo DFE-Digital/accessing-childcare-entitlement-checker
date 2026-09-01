@@ -1,9 +1,8 @@
-namespace Dfe.Acec.RulesEngine.Types
+namespace Dfe.Acec.RulesEngine.Types;
+
+public enum AgeRange
 {
-    public enum AgeRange
-    {
-        UnderEighteen,
-        EighteenToTwenty,
-        TwentyOneOrOver,
-    }
+    UnderEighteen,
+    EighteenToTwenty,
+    TwentyOneOrOver,
 }

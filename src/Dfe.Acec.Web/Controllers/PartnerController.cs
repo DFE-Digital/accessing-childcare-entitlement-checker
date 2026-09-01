@@ -134,7 +134,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         if (!ModelState.IsValid)
         {
             model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerPaidWork));
-            model.Children = journeyState.Children.Values.ToList();
+            model.Children = [.. journeyState.Children.Values];
             return View(model);
         }
 

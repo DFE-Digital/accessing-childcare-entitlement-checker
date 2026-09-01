@@ -44,7 +44,7 @@ public class CookiePolicyService(
                 return false;
             }
 
-            return value == Enabled || value == Disabled;
+            return value is Enabled or Disabled;
         }
     }
 

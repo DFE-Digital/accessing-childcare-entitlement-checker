@@ -9,20 +9,9 @@ using Microsoft.FeatureManagement;
 namespace Dfe.Acec.Web.Controllers;
 
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
-public class IntroductionController : Controller
+public class IntroductionController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager) : Controller
 {
-    private readonly JourneyState _journeyState;
-    private readonly IJourneySession _journeySession;
-    private readonly IFeatureManager _featureManager;
-
     public const string Name = "Introduction";
-
-    public IntroductionController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager)
-    {
-        _journeyState = journeyState;
-        _journeySession = journeySession;
-        _featureManager = featureManager;
-    }
 
     [HttpGet]
     public async Task<IActionResult> ChildName(string? childId = null, string? returnTo = null)
@@ -34,7 +23,7 @@ public class IntroductionController : Controller
             return View(childNameViewModel);
         }
 
-        if (!_journeyState.Children.TryGetValue(childId, out var child))
+        if (!journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
@@ -52,8 +41,8 @@ public class IntroductionController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.SetState(_journeyState);
+        journeyState.Apply(model);
+        journeySession.SetState(journeyState);
 
         return this.RedirectTo<IntroductionController>(
             nameof(IsChildBorn),
@@ -63,7 +52,7 @@ public class IntroductionController : Controller
     [HttpGet]
     public IActionResult IsChildBorn(string childId, string? returnTo = null)
     {
-        if (!_journeyState.Children.TryGetValue(childId, out var child))
+        if (!journeyState.Children.TryGetValue(childId, out var child))
         {
             return NotFound();
         }
@@ -75,7 +64,7 @@ public class IntroductionController : Controller
     [HttpPost]
     public IActionResult IsChildBorn(ChildIsBornViewModel model)
     {
-        if (!_journeyState.Children.TryGetValue(model.ChildId, out var child))
+        if (!journeyState.Children.TryGetValue(model.ChildId, out var child))
         {
             return NotFound();
         }
@@ -86,8 +75,8 @@ public class IntroductionController : Controller
             return View(model);
         }
 
-        _journeyState.Apply(model);
-        _journeySession.SetState(_journeyState);
+        journeyState.Apply(model);
+        journeySession.SetState(journeyState);
 
         var (nextAction, nextController) = child.BirthStatus switch
         {
@@ -109,7 +98,7 @@ public class IntroductionController : Controller
             return url;
         }
 
-        return await _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration)
+        return await featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration)
                 ? Url.ActionOrThrow(nameof(HomeController.Start), HomeController.Name)
                 : Url.ActionOrThrow(nameof(HomeController.Location), HomeController.Name);
     }
