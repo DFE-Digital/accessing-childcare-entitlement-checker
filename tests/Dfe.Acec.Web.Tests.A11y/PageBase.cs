@@ -10,10 +10,9 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 {
     private IPlaywright? _playwright;
     private IBrowser? _browser;
-    private TestSettings _settings = null!;
 
     protected IPage Page { get; private set; } = null!;
-    internal TestSettings Settings => _settings;
+    internal TestSettings Settings { get; private set; } = null!;
 
     protected virtual string? PageUrl => null;
 
@@ -25,18 +24,18 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
             .AddEnvironmentVariables()
             .Build();
 
-        _settings = new TestSettings();
-        configuration.GetSection(nameof(TestSettings)).Bind(_settings);
+        Settings = new TestSettings();
+        configuration.GetSection(nameof(TestSettings)).Bind(Settings);
 
         _playwright = await Playwright.CreateAsync();
 
         var launchOptions = new BrowserTypeLaunchOptions
         {
-            Headless = _settings.Headless,
-            SlowMo = _settings.SlowMo
+            Headless = Settings.Headless,
+            SlowMo = Settings.SlowMo
         };
 
-        _browser = _settings.Browser.ToLowerInvariant() switch
+        _browser = Settings.Browser.ToLowerInvariant() switch
         {
             "firefox" => await _playwright.Firefox.LaunchAsync(launchOptions),
             "webkit" => await _playwright.Webkit.LaunchAsync(launchOptions),
@@ -46,9 +45,9 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
         var contextOptions = new BrowserNewContextOptions
         {
             IgnoreHTTPSErrors = true,
-            UserAgent = _settings.UserAgent,
-            BaseURL = _settings.TestUrl,
-            ExtraHTTPHeaders = ExtraHttpHeaders(_settings)
+            UserAgent = Settings.UserAgent,
+            BaseURL = Settings.TestUrl,
+            ExtraHTTPHeaders = ExtraHttpHeaders(Settings)
         };
 
         var context = await _browser.NewContextAsync(contextOptions);
@@ -90,7 +89,7 @@ public abstract class PageBase(ITestOutputHelper output) : IAsyncLifetime
 
         var violations = results
             .Violations
-            .Where(v => _settings.Impacts.Contains(v.Impact))
+            .Where(v => Settings.Impacts.Contains(v.Impact))
             .ToArray();
 
         foreach (var violation in violations)

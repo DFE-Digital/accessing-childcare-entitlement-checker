@@ -38,12 +38,12 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
             return null;
         }
 
-        DateOnly? applyFromDate =
+        var applyFromDate =
             child.IsBorn
                 ? child.DateOfBirth?.AddDays(ApplyAgeInWeeks * 7)
                 : child.DueDate?.AddDays(ApplyAgeInWeeks * 7);
 
-        DateOnly? nineMonthsOldDate =
+        var nineMonthsOldDate =
             child.IsBorn
                 ? child.DateOfBirth?.AddMonths(MinimumEligibleAgeInMonths)
                 : child.DueDate?.AddMonths(MinimumEligibleAgeInMonths);

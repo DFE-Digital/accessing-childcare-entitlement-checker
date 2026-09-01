@@ -80,10 +80,7 @@ public class JourneyState
             throw new InvalidOperationException("Child name cannot be null");
         }
 
-        if (model.ChildId == null)
-        {
-            model.ChildId = Guid.NewGuid().ToString();
-        }
+        model.ChildId ??= Guid.NewGuid().ToString();
 
         if (!Children.TryGetValue(model.ChildId, out var child))
         {
