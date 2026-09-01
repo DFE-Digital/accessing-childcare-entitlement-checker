@@ -4,6 +4,7 @@ using Dfe.Acec.Web.Filters;
 using Dfe.Acec.Web.Services;
 using Dfe.Acec.Web.Validators;
 using FluentValidation;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using StackExchange.Redis;
 
@@ -47,6 +48,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    [PublicAPI]
     public static IServiceCollection AddJourneyServices(this IServiceCollection services)
     {
         services.AddScoped<IDateTimeFactory, DateTimeFactory>();

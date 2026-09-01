@@ -4,9 +4,9 @@ namespace Dfe.Acec.Web.Models;
 
 public record WeeklyEarningsThresholds(string PerWeek, string PerMonth, string PerYear)
 {
-    public static readonly WeeklyEarningsThresholds Under18OrApprentice = new("128", "554", "6,656");
-    public static readonly WeeklyEarningsThresholds EighteenToTwenty = new("173", "752", "9,027");
-    public static readonly WeeklyEarningsThresholds TwentyOneOrOver = new("203", "879", "10,574");
+    private static readonly WeeklyEarningsThresholds _under18OrApprentice = new("128", "554", "6,656");
+    private static readonly WeeklyEarningsThresholds _eighteenToTwenty = new("173", "752", "9,027");
+    private static readonly WeeklyEarningsThresholds _twentyOneOrOver = new("203", "879", "10,574");
 
     public static WeeklyEarningsThresholds Create(AgeRange? age, List<WorkStatusOption> workStatus)
     {
@@ -17,15 +17,15 @@ public record WeeklyEarningsThresholds(string PerWeek, string PerMonth, string P
 
         if (workStatus.Contains(WorkStatusOption.Apprentice))
         {
-            return Under18OrApprentice;
+            return _under18OrApprentice;
         }
         else
         {
             return age switch
             {
-                AgeRange.UnderEighteen => Under18OrApprentice,
-                AgeRange.EighteenToTwenty => EighteenToTwenty,
-                AgeRange.TwentyOneOrOver => TwentyOneOrOver,
+                AgeRange.UnderEighteen => _under18OrApprentice,
+                AgeRange.EighteenToTwenty => _eighteenToTwenty,
+                AgeRange.TwentyOneOrOver => _twentyOneOrOver,
                 _ => throw new UnreachableException($"Unexpected age range: {age}")
             };
         }

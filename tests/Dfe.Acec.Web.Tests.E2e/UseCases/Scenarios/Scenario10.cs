@@ -1,7 +1,9 @@
 using Dfe.Acec.Web.Tests.E2e.UseCases.Builders;
+using JetBrains.Annotations;
 
 namespace Dfe.Acec.Web.Tests.E2e.UseCases.Scenarios;
 
+[UsedImplicitly]
 internal sealed class Scenario10 : IUseCase
 {
     public string Name => "Parent is a non-UK national without pre-settled or settled status";

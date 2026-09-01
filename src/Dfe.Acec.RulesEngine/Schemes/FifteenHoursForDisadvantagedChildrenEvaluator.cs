@@ -22,8 +22,7 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
 
         var eligibleNow =
             livesInEngland &&
-            child.IsBorn &&
-            child.AgeInYears == MaximumEligibleAgeInYears &&
+            child is { IsBorn: true, AgeInYears: MaximumEligibleAgeInYears } &&
             meetsEligibilityCriteria;
 
 
@@ -82,8 +81,7 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
         DerivedContext context)
     {
         return
-            context.Household.CountryOfResidence == CountryOfResidence.England &&
-            context.Household.HasAccessToPublicFunds &&
+            context.Household is { CountryOfResidence: CountryOfResidence.England, HasAccessToPublicFunds: true } &&
             HouseholdReceivesQualifyingBenefit(context);
     }
 

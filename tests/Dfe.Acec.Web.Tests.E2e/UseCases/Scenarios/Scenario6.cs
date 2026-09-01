@@ -1,7 +1,9 @@
 using Dfe.Acec.Web.Tests.E2e.UseCases.Builders;
+using JetBrains.Annotations;
 
 namespace Dfe.Acec.Web.Tests.E2e.UseCases.Scenarios;
 
+[UsedImplicitly]
 internal sealed class Scenario6 : IUseCase
 {
     public string Name => "Both parents under 18, one parent an apprentice, one parent earning under the threshold";

@@ -6,18 +6,13 @@ namespace Dfe.Acec.Web.Tests.Unit.Controllers;
 
 public class ErrorControllerTests : IDisposable
 {
-    private readonly ErrorController _errorController;
-
-    public ErrorControllerTests()
+    private readonly ErrorController _errorController = new()
     {
-        _errorController = new ErrorController
+        ControllerContext = new ControllerContext
         {
-            ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-            }
-        };
-    }
+            HttpContext = new DefaultHttpContext()
+        }
+    };
 
     [Fact]
     public void InternalServerErrorReturnsViewWithStatusCode500()

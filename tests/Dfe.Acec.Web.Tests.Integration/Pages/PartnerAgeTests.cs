@@ -57,7 +57,7 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
         Assert.NotNull(cookie);
 
         var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
-            new KeyValuePair<string, string>("PartnerAge", AgeRange.EighteenToTwenty.ToString())
+            new KeyValuePair<string, string>("PartnerAge", nameof(AgeRange.EighteenToTwenty))
         ], TestContext.Current.CancellationToken);
 
         postResponse.AssertRedirect(continueUrl);

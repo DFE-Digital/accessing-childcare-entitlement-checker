@@ -7,7 +7,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = $"/benefits/childcare-vouchers";
+    private const string Url = "/benefits/childcare-vouchers";
 
     [Theory]
     [InlineData(null, "/benefits/childcare-support")]

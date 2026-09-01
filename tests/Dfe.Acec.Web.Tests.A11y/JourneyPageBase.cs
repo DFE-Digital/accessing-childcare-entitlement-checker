@@ -81,16 +81,6 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await ExpectPathAndQuery($"/children/{childId}/child-benefits");
     }
 
-    protected async Task EnterExpectedChildDueDate(Guid childId, string day = "1", string month = "1", string year = "2027")
-    {
-        await ExpectPathAndQuery($"/children/{childId}/expectant-childs-due-date");
-        await Page.GetByLabel("Day").FillAsync(day);
-        await Page.GetByLabel("Month").FillAsync(month);
-        await Page.GetByLabel("Year").FillAsync(year);
-        await Continue();
-        await ExpectPathAndQuery($"/children/{childId}/child-benefits");
-    }
-
     private async Task SelectChildSupportOptions(Guid childId)
     {
         await ExpectPathAndQuery($"/children/{childId}/child-benefits");

@@ -1,5 +1,5 @@
 using System.Net;
-using System.Text;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
@@ -54,7 +54,7 @@ public class ComponentTests
     {
         var factory = CreateFactory("Development");
         var client = factory.CreateClient();
-        client.DefaultRequestHeaders.Authorization = new("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes("user:dev-only")));
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String("user:dev-only"u8.ToArray()));
 
         var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
 

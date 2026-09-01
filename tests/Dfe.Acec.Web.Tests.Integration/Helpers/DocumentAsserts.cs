@@ -1,5 +1,6 @@
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
+using JetBrains.Annotations;
 
 namespace Dfe.Acec.Web.Tests.Integration.Helpers;
 
@@ -15,28 +16,28 @@ public static class DocumentAsserts
 
     public static IDocument AssertCheckboxCount(this IDocument document, int expectedCount)
     {
-        var checkboxes = document.QuerySelectorAll($"input[type=checkbox]");
+        var checkboxes = document.QuerySelectorAll("input[type=checkbox]");
         Assert.Equal(expectedCount, checkboxes.Length);
         return document;
     }
 
     public static IDocument AssertRadioButtonCount(this IDocument document, int expectedCount)
     {
-        var radios = document.QuerySelectorAll($"input[type=radio]");
+        var radios = document.QuerySelectorAll("input[type=radio]");
         Assert.Equal(expectedCount, radios.Length);
         return document;
     }
 
     public static IDocument AssertTextInput(this IDocument document)
     {
-        var texts = document.QuerySelectorAll($"input[type=text]");
+        var texts = document.QuerySelectorAll("input[type=text]");
         Assert.Single(texts);
         return document;
     }
 
     public static IDocument AssertDateInput(this IDocument document)
     {
-        var texts = document.QuerySelectorAll($".govuk-date-input");
+        var texts = document.QuerySelectorAll(".govuk-date-input");
         Assert.Single(texts);
         return document;
     }
@@ -110,6 +111,7 @@ public static class DocumentAsserts
         return document;
     }
 
+    [PublicAPI]
     public static IDocument AssertCookieBanner(this IDocument document)
     {
         var cookieBanner = document.QuerySelector(".govuk-cookie-banner");
@@ -117,6 +119,7 @@ public static class DocumentAsserts
         return document;
     }
 
+    [PublicAPI]
     public static IDocument AssertNoCookieBanner(this IDocument document)
     {
         var cookieBanner = document.QuerySelector(".govuk-cookie-banner");
@@ -124,6 +127,7 @@ public static class DocumentAsserts
         return document;
     }
 
+    [PublicAPI]
     public static IDocument AssertGroupHint(this IDocument document, string expectedHint)
     {
         var hint = document.QuerySelector(".govuk-fieldset > .govuk-hint");

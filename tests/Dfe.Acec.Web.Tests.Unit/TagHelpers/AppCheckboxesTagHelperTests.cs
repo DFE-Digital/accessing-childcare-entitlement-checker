@@ -2,6 +2,7 @@ using Dfe.Acec.Web.Models.User;
 using Dfe.Acec.Web.TagHelpers;
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ComponentGeneration;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -281,6 +282,7 @@ public class AppCheckboxesTagHelperTests
 
     private sealed class FakeViewModel
     {
+        [UsedImplicitly]
         public List<ChildcareSupportOption> ChildcareSupport { get; set; } = [];
     }
 }

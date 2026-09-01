@@ -1,5 +1,6 @@
 using System.Globalization;
 using Dfe.Acec.Web.Tests.E2e.Pages;
+using JetBrains.Annotations;
 
 namespace Dfe.Acec.Web.Tests.E2e.UseCases.Builders;
 
@@ -26,6 +27,7 @@ internal sealed class ChildBuilder
         return this;
     }
 
+    [PublicAPI]
     public ChildBuilder WithDueDate(int addYears = 0, int addMonths = 0, int addDays = 0)
     {
         var date = DateTime.Today.AddYears(addYears).AddMonths(addMonths).AddDays(addDays);
@@ -33,6 +35,7 @@ internal sealed class ChildBuilder
         return this;
     }
 
+    [PublicAPI]
     public ChildBuilder WithSupport(string support)
     {
         _steps.Add(new AnswerStep(PageNames.ChildSupport, support));

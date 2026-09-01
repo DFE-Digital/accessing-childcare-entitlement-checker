@@ -1,4 +1,3 @@
-using System.Text;
 using System.Text.Json;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Services;
@@ -12,9 +11,9 @@ namespace Dfe.Acec.Web.Tests.Unit.Services;
 
 public class JourneySessionTests
 {
-    private ISession _session;
-    private IHttpContextAccessor _httpContextAccessor;
-    private JourneySession _journeySession;
+    private readonly ISession _session;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly JourneySession _journeySession;
 
     public JourneySessionTests()
     {
@@ -107,7 +106,7 @@ public class JourneySessionTests
     {
         _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
         {
-            x[1] = Encoding.UTF8.GetBytes("null");
+            x[1] = "null"u8.ToArray();
             return true;
         });
 
@@ -132,7 +131,7 @@ public class JourneySessionTests
     {
         _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(x =>
         {
-            x[1] = Encoding.UTF8.GetBytes("A");
+            x[1] = "A"u8.ToArray();
             return true;
         });
 
@@ -142,10 +141,7 @@ public class JourneySessionTests
     [Fact]
     public void HasSessionReturnsFalseWhenNoSession()
     {
-        _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(_ =>
-        {
-            return false;
-        });
+        _session.TryGetValue("JourneyState", out Arg.Any<byte[]>()!).Returns(_ => false);
 
         Assert.False(_journeySession.HasSession);
     }
