@@ -8,7 +8,7 @@ internal static class RelativeDate
     private const string Yesterday = "yesterday";
     private const string Tomorrow = "tomorrow";
 
-    private static readonly CultureInfo GbCulture = CultureInfo.GetCultureInfo("en-GB");
+    private static readonly CultureInfo _gbCulture = CultureInfo.GetCultureInfo("en-GB");
 
     public static DateOnly Parse(string value)
     {
@@ -19,7 +19,7 @@ internal static class RelativeDate
             Today => today,
             Yesterday => today.AddDays(-1),
             Tomorrow => today.AddDays(1),
-            _ => DateOnly.Parse(value, GbCulture)
+            _ => DateOnly.Parse(value, _gbCulture)
         };
     }
 

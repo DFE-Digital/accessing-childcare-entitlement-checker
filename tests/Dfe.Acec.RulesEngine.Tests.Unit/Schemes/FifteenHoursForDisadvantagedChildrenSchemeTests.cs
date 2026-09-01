@@ -7,7 +7,7 @@ namespace Dfe.Acec.RulesEngine.Tests.Unit.Schemes;
 
 public class FifteenHoursForDisadvantagedChildrenSchemeTests
 {
-    private static readonly DateOnly Today = new(2025, 1, 1);
+    private static readonly DateOnly _today = new(2025, 1, 1);
 
     private static FifteenHoursForDisadvantagedChildrenEvaluator CreateEvaluator()
     {
@@ -44,11 +44,11 @@ public class FifteenHoursForDisadvantagedChildrenSchemeTests
             DateOfBirth = dateOfBirth,
             AgeInYears = AgeCalculations.CalculateAgeInYears(
                 dateOfBirth,
-                Today),
+                _today),
 
             AgeInMonths = AgeCalculations.CalculateAgeInMonths(
                 dateOfBirth,
-                Today)
+                _today)
         };
     }
 
