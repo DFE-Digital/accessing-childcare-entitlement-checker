@@ -34,7 +34,7 @@ ANALYSIS_RESULTS := ./.analysis-results
 build:
 	dotnet clean
 	dotnet restore --locked-mode
-	dotnet format --verify-no-changes
+	dotnet format --verify-no-changes --severity error
 	dotnet build --no-restore
 
 # ---------------------------------------------------------------------------
@@ -52,6 +52,7 @@ analyse-d:
 analyse-f:
 	dotnet format \
 		--verify-no-changes \
+	    --severity error \
 		--no-restore
 
 # Deep InspectCode analysis.
@@ -89,13 +90,13 @@ test:
 		--logger "trx" \
 		/p:CollectCoverage=true \
 		/m:1
-		
+
 	dotnet test tests/Dfe.Acec.RulesEngine.Tests.Unit \
 		--no-build \
 		--results-directory $(TEST_RESULTS) \
 		--logger "trx" \
 		/p:CollectCoverage=true \
-		/m:1		
+		/m:1
 
 	dotnet test tests/Dfe.Acec.Web.Tests.Integration \
 		--no-build \

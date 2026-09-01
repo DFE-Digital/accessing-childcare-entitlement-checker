@@ -156,7 +156,7 @@ jobs:
 
       - name: Check formatting
         id: format
-        run: dotnet format ${{ env.SOLUTION }} --verify-no-changes
+        run: dotnet format ${{ env.SOLUTION }} --verify-no-changes  --severity error
 
       - name: Record format result
         if: always()
@@ -180,7 +180,7 @@ jobs:
           category: inspectcode
 
       # Exclusions
-      # - `Program.cs` - this is partially tested by an integration test; but awkward to test - 
+      # - `Program.cs` - this is partially tested by an integration test; but awkward to test -
       # - `**/PartnerParentalLeave.cshtml` - this template triggers CPD against `User/ParentalLeave.cshtml`. Deduplicating is awkward
       #   due to govuk tag helpers - we can't easily use a partial. A more comprehensive fix is required, possibly using custom
       #   tag helpers.
@@ -221,7 +221,7 @@ jobs:
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=opencover \
             /p:CoverletOutput=TestResults/coverage/unit-web/
-          
+
             dotnet test ${{ env.UNIT_TESTS_RULES }} \
             -c ${{ env.CONFIGURATION }} \
             --no-build \
@@ -230,7 +230,7 @@ jobs:
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=opencover \
             /p:CoverletOutput=TestResults/coverage/unit-rules/
-          
+
           dotnet test ${{ env.INTEGRATION_TESTS }} \
             -c ${{ env.CONFIGURATION }} \
             --no-build \
@@ -304,7 +304,7 @@ jobs:
           if [ -d "e2e-tests" ]; then
             echo "E2E_PUBLISHED=created" >> $GITHUB_ENV
           fi
-          
+
       - name: Publish A11y Tests
         if: inputs.publish
         run: >
@@ -312,7 +312,7 @@ jobs:
           -c ${{ env.CONFIGURATION }}
           -o a11y-tests
           --no-build
-          
+
       - name: Record A11y publish
         if: always()
         run: |
@@ -356,7 +356,7 @@ jobs:
         with:
           name: e2e-tests
           path: e2e-tests.zip
-          
+
       - name: Zip A11y Tests
         if: inputs.publish
         run: zip -r a11y-tests.zip a11y-tests
@@ -377,25 +377,25 @@ jobs:
           web_icon="⏭️"
           e2e_icon="⏭️"
           a11y_icon="⏭️"
-          
+
           if [ "$FORMAT" = "passed" ]; then format_icon="✅"
           elif [ "$FORMAT" = "failed" ]; then format_icon="❌"
           fi
-          
+
           if [ "$TESTS" = "passed" ]; then test_icon="✅"
           elif [ "$TESTS" = "failed" ]; then test_icon="❌"
           fi
-          
+
           if [ "$VULNS" = "clean" ]; then vulns_icon="🟢"; fi
-          
+
           if [ "$WEB_APP_PUBLISHED" = "created" ]; then web_icon="📦"; fi
           if [ "$E2E_PUBLISHED" = "created" ]; then e2e_icon="🧪"; fi
           if [ "$A11Y_PUBLISHED" = "created" ]; then a11y_icon="♿"; fi
-          
+
           {
             echo "## 🧪 .NET CI Report Card"
             echo
-          
+
             echo "| Area | Status | Result |"
             echo "|------|--------|--------|"
             echo "| Format | $format_icon | $FORMAT |"
@@ -405,7 +405,7 @@ jobs:
             echo "| E2E Tests | $e2e_icon | $E2E_PUBLISHED |"
             echo "| A11y Tests | $a11y_icon | $A11Y_PUBLISHED |"
             echo
-          
+
             if [ "$FORMAT" = "passed" ] && \
                [ "$TESTS" = "passed" ] && \
                [ "$VULNS" = "clean" ]; then
@@ -413,21 +413,21 @@ jobs:
             else
               echo "### Overall: 🟡 Needs attention"
             fi
-          
+
             echo
             echo "### 🔎 SonarCloud"
             echo "- Dashboard: https://sonarcloud.io/dashboard?id=DFE-Digital_accessing-childcare-entitlement-checker"
             echo "- New code: https://sonarcloud.io/summary/new_code?id=DFE-Digital_accessing-childcare-entitlement-checker&branch=$ENCODED_REF"
             echo "- Overall: https://sonarcloud.io/summary/overall?id=DFE-Digital_accessing-childcare-entitlement-checker&branch=$ENCODED_REF"
             echo
-          
+
             echo "### 📈 Coverage"
             echo
-          
+
             if [ -f coverage-report/SummaryGithub.md ]; then
               cat coverage-report/SummaryGithub.md
             else
               echo "Coverage report unavailable."
             fi
-          
+
           } >> "$GITHUB_STEP_SUMMARY"
