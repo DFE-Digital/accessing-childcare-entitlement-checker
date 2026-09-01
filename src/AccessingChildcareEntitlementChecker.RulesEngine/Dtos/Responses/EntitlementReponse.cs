@@ -2,7 +2,7 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Responses;
 
 public class EntitlementResponse
 {
-    public List<ChildResultDto> ChildResults { get; set; } = [];
+    public List<ChildResultDto> ChildResults { get; init; } = [];
 
-    public bool HasAccessToPublicFunds { get; set; }
+    public bool HasAccessToPublicFunds { get; init; }
 }

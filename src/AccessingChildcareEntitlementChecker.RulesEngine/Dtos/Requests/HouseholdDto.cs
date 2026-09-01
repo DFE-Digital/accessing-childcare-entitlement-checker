@@ -4,8 +4,8 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Requests;
 
 public class HouseholdDto
 {
-    public CountryOfResidence? CountryOfResidence { get; set; }
-    public bool HasPartner { get; set; }
-    public bool ReceivesUniversalCredit { get; set; }
+    public CountryOfResidence? CountryOfResidence { get; init; }
+    public bool HasPartner { get; init; }
+    public bool ReceivesUniversalCredit { get; init; }
 
 }

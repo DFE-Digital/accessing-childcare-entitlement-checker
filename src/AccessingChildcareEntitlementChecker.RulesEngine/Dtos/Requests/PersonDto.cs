@@ -4,15 +4,15 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Dtos.Requests;
 
 public class PersonDto
 {
-    public AgeRange? AgeRange { get; set; }
-    public PaidWorkStatus? PaidWorkStatus { get; set; }
-    public List<WorkStatus> WorkStatuses { get; set; } = [];
-    public bool? SelfEmployedLessThan12Months { get; set; }
-    public bool? EarnsAboveThreshold { get; set; }
-    public bool? ExceedsAdjustedNetIncomeLimit { get; set; }
-    public List<PersonBenefit> Benefits { get; set; } = [];
+    public AgeRange? AgeRange { get; init; }
+    public PaidWorkStatus? PaidWorkStatus { get; init; }
+    public List<WorkStatus> WorkStatuses { get; init; } = [];
+    public bool? SelfEmployedLessThan12Months { get; init; }
+    public bool? EarnsAboveThreshold { get; init; }
+    public bool? ExceedsAdjustedNetIncomeLimit { get; init; }
+    public List<PersonBenefit> Benefits { get; init; } = [];
 
-    public List<ChildcareSupport> ChildcareSupport { get; set; } = [];
-    public Nationality? Nationality { get; set; }
-    public bool? HasSettledOrPreSettledStatus { get; set; }
+    public List<ChildcareSupport> ChildcareSupport { get; init; } = [];
+    public Nationality? Nationality { get; init; }
+    public bool? HasSettledOrPreSettledStatus { get; init; }
 }

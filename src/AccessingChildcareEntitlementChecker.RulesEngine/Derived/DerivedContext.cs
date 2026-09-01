@@ -2,8 +2,8 @@ namespace AccessingChildcareEntitlementChecker.RulesEngine.Derived;
 
 public class DerivedContext
 {
-    public HouseholdFacts Household { get; set; } = new();
-    public PersonFacts User { get; set; } = new();
-    public PersonFacts? Partner { get; set; }
-    public List<ChildFacts> Children { get; set; } = [];
+    public HouseholdFacts Household { get; init; } = new();
+    public PersonFacts User { get; init; } = new();
+    public PersonFacts? Partner { get; init; }
+    public List<ChildFacts> Children { get; init; } = [];
 }

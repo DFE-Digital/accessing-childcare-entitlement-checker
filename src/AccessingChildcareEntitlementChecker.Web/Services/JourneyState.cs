@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using AccessingChildcareEntitlementChecker.Web.Models;
 using AccessingChildcareEntitlementChecker.Web.Models.BornChildDetails;
 using AccessingChildcareEntitlementChecker.Web.Models.ExpectedChildDetails;
@@ -6,6 +7,7 @@ using AccessingChildcareEntitlementChecker.Web.Models.Partner;
 
 namespace AccessingChildcareEntitlementChecker.Web.Services;
 
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class JourneyState
 {
     public Guid CorrelationId { get; set; } = Guid.NewGuid();
