@@ -7,7 +7,7 @@ namespace Dfe.Acec.RulesEngine.Tests.Unit.Schemes;
 
 public class UniversalCreditChildcareSchemeTests
 {
-    private static readonly DateOnly Today = new(2025, 1, 1);
+    private static readonly DateOnly _today = new(2025, 1, 1);
 
     private static UniversalCreditChildcareEvaluator CreateEvaluator()
     {
@@ -42,11 +42,11 @@ public class UniversalCreditChildcareSchemeTests
             DateOfBirth = dateOfBirth,
             AgeInYears = AgeCalculations.CalculateAgeInYears(
                 dateOfBirth,
-                Today),
+                _today),
 
             AgeInMonths = AgeCalculations.CalculateAgeInMonths(
                 dateOfBirth,
-                Today)
+                _today)
         };
     }
 

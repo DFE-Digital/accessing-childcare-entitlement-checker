@@ -7,7 +7,7 @@ namespace Dfe.Acec.RulesEngine.Tests.Unit.Schemes;
 
 public class ThirtyHoursForWorkingFamiliesSchemeTests
 {
-    private static readonly DateOnly Today = new(2025, 1, 1);
+    private static readonly DateOnly _today = new(2025, 1, 1);
 
     private static ThirtyHoursForWorkingFamiliesEvaluator CreateEvaluator()
     {
@@ -42,9 +42,9 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
             Name = "Jack",
             IsBorn = true,
             DateOfBirth = dateOfBirth,
-            AgeInYears = AgeCalculations.CalculateAgeInYears(dateOfBirth, Today),
+            AgeInYears = AgeCalculations.CalculateAgeInYears(dateOfBirth, _today),
 
-            AgeInMonths = AgeCalculations.CalculateAgeInMonths(dateOfBirth, Today)
+            AgeInMonths = AgeCalculations.CalculateAgeInMonths(dateOfBirth, _today)
         };
     }
 

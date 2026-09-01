@@ -100,10 +100,10 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
         PersonFacts person)
     {
         return person.Benefits.Any(
-            QualifyingBenefits.Contains);
+            _qualifyingBenefits.Contains);
     }
 
-    private static readonly List<PersonBenefit> QualifyingBenefits =
+    private static readonly List<PersonBenefit> _qualifyingBenefits =
     [
         PersonBenefit.GuaranteedElementOfPensionCredit
     ];

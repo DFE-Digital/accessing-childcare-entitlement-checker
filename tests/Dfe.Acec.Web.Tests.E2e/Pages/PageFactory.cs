@@ -5,11 +5,11 @@ namespace Dfe.Acec.Web.Tests.E2e.Pages;
 
 internal sealed class PageFactory(IPage page)
 {
-    private static readonly List<(string Pattern, Type PageType)> PageRegistry;
+    private static readonly List<(string Pattern, Type PageType)> _pageRegistry;
 
     static PageFactory()
     {
-        PageRegistry = [];
+        _pageRegistry = [];
 
         var pageObjectTypes = Assembly.GetExecutingAssembly()
             .GetTypes()
@@ -20,7 +20,7 @@ internal sealed class PageFactory(IPage page)
             var attribute = type.GetCustomAttribute<PagePatternAttribute>()
                             ?? throw new InvalidOperationException($"Page Object type '{type.Name}' must be decorated with a [PagePattern] attribute.");
 
-            PageRegistry.Add((attribute.Pattern, type));
+            _pageRegistry.Add((attribute.Pattern, type));
         }
     }
 
@@ -28,7 +28,7 @@ internal sealed class PageFactory(IPage page)
     {
         var cleaned = pageNameOrHeading.Trim();
 
-        foreach (var (pattern, pageType) in PageRegistry)
+        foreach (var (pattern, pageType) in _pageRegistry)
         {
             if (MatchesPattern(pattern, cleaned))
             {

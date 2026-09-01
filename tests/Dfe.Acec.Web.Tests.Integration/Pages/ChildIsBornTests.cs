@@ -9,8 +9,8 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
 {
     private const string ChildId = "9fbb8965-c988-4199-8b40-189efcfe2a1e";
     private const string Url = $"/children/{ChildId}/has-the-child-been-born";
-    private static readonly DateOnly Tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
-    private static readonly DateOnly Yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
+    private static readonly DateOnly _tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
+    private static readonly DateOnly _yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
 
     [Theory]
     [InlineData(null, $"/children/add-child-details/{ChildId}")]
@@ -66,8 +66,8 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
                         ChildId,
                         new Child(ChildId, "Sara")
                         {
-                            BirthDate = hasBirthDate ? Yesterday : null,
-                            DueDate = hasDueDate ? Tomorrow : null,
+                            BirthDate = hasBirthDate ? _yesterday : null,
+                            DueDate = hasDueDate ? _tomorrow : null,
                             BirthStatus = birthStatus,
                         }
                     }

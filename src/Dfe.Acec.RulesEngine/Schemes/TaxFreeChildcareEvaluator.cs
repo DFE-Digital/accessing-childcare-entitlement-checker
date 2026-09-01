@@ -248,11 +248,11 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
     private static bool HasQualifyingExemptionBenefit(PersonFacts person)
     {
         return person.Benefits.Any(
-            QualifyingExemptionBenefits.Contains);
+            _qualifyingExemptionBenefits.Contains);
     }
 
     private static readonly List<PersonBenefit>
-        QualifyingExemptionBenefits =
+        _qualifyingExemptionBenefits =
     [
         PersonBenefit.CarersAllowance,
         PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
