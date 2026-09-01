@@ -1,9 +1,11 @@
 using System.Net;
+using JetBrains.Annotations;
 
 namespace Dfe.Acec.Web.Tests.Integration.Helpers;
 
 public static class ResponseAsserts
 {
+    //noinspection ParameterOnlyUsedForPreconditionCheck.Global
     public static HttpResponseMessage AssertRedirect(this HttpResponseMessage response, string expectedLink)
     {
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
@@ -17,6 +19,7 @@ public static class ResponseAsserts
         return response;
     }
 
+    [PublicAPI]
     public static HttpResponseMessage AssertCookie(this HttpResponseMessage response, string key, string value)
     {
         var cookie = $"{key}={value};";
@@ -25,6 +28,7 @@ public static class ResponseAsserts
         return response;
     }
 
+    [PublicAPI]
     public static HttpResponseMessage AssertBadRequest(this HttpResponseMessage response)
     {
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

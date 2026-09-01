@@ -34,7 +34,7 @@ internal sealed class CheckboxSteps(IPage page)
         await Expect(checkedCheckboxes).ToHaveCountAsync(0);
     }
 
-    [Then(@"I should see the following checkboxes:")]
+    [Then("I should see the following checkboxes:")]
     public async Task ThenIShouldSeeTheFollowingCheckboxes(DataTable dataTable)
     {
         var expectedOptions = dataTable.Rows.Select(r => new

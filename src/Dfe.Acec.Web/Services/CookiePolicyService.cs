@@ -4,7 +4,7 @@ public class CookiePolicyService(
     IHttpContextAccessor httpContextAccessor,
     CookieSecurePolicy securePolicy) : ICookiePolicyService
 {
-    public const string CookieName = "cookie_policy";
+    private const string CookieName = "cookie_policy";
 
     private const string Enabled = "enabled";
 

@@ -12,20 +12,16 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
         var meetsHouseholdRequirements =
-            context.Household.HasAccessToPublicFunds &&
-            context.Household.LivesInGreatBritain &&
-            context.Household.ReceivesUniversalCredit &&
+            context.Household is { HasAccessToPublicFunds: true, LivesInGreatBritain: true, ReceivesUniversalCredit: true } &&
             MeetsWorkRequirements(context);
 
         var eligibleNow =
             meetsHouseholdRequirements &&
-            child.IsBorn &&
-            child.AgeInYears is >= MinimumEligibleAgeInYears and <= MaximumEligibleAgeInYears;
+            child is { IsBorn: true, AgeInYears: >= MinimumEligibleAgeInYears and <= MaximumEligibleAgeInYears };
 
         var eligibleInFuture =
             meetsHouseholdRequirements &&
-            !child.IsBorn &&
-            child.DueDate is not null;
+            child is { IsBorn: false, DueDate: not null };
 
         if (!eligibleNow && !eligibleInFuture)
         {

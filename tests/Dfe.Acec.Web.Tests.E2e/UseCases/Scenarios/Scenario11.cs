@@ -1,7 +1,9 @@
 using Dfe.Acec.Web.Tests.E2e.UseCases.Builders;
+using JetBrains.Annotations;
 
 namespace Dfe.Acec.Web.Tests.E2e.UseCases.Scenarios;
 
+[UsedImplicitly]
 internal sealed class Scenario11 : IUseCase
 {
     public string Name => "Single parent not working, on carer's allowance";

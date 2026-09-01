@@ -8,7 +8,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Pages;
 
 public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
-    private const string Url = $"/benefits/childcare-support";
+    private const string Url = "/benefits/childcare-support";
 
     [Theory]
     [InlineData(null, "/benefits/benefits")]

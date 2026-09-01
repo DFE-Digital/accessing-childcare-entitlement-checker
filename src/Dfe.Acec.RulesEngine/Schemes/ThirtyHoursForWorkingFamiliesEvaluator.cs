@@ -25,13 +25,11 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
 
         var eligibleNow =
             meetsHouseholdRequirements &&
-            child.IsBorn &&
-            child.AgeInMonths is >= MinimumEligibleAgeInMonths &&
-            child.AgeInYears is <= MaximumEligibleAgeInYears;
+            child is { IsBorn: true, AgeInMonths: >= MinimumEligibleAgeInMonths, AgeInYears: <= MaximumEligibleAgeInYears };
 
         var eligibleInFuture =
             meetsHouseholdRequirements &&
-            ((child.IsBorn && child.AgeInMonths is < MinimumEligibleAgeInMonths) || !child.IsBorn);
+            (child is { IsBorn: true, AgeInMonths: < MinimumEligibleAgeInMonths } || !child.IsBorn);
 
         if (!eligibleNow && !eligibleInFuture)
         {

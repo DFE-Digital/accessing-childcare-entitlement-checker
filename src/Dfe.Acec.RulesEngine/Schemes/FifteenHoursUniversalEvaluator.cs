@@ -15,12 +15,11 @@ public class FifteenHoursUniversalEvaluator : ISchemeEvaluator
     {
         var eligibleNow =
             context.Household.CountryOfResidence == CountryOfResidence.England &&
-            child.IsBorn &&
-            child.AgeInYears is >= MinimumEligibleAgeInYears and <= MaximumEligibleAgeInYears;
+            child is { IsBorn: true, AgeInYears: >= MinimumEligibleAgeInYears and <= MaximumEligibleAgeInYears };
 
         var eligibleInFuture =
             context.Household.CountryOfResidence == CountryOfResidence.England &&
-            ((child.IsBorn && child.AgeInYears is < MinimumEligibleAgeInYears) || !child.IsBorn);
+            (child is { IsBorn: true, AgeInYears: < MinimumEligibleAgeInYears } || !child.IsBorn);
 
         if (!eligibleNow && !eligibleInFuture)
         {

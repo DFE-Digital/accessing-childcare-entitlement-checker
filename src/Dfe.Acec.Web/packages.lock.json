@@ -48,6 +48,12 @@
           "Microsoft.Extensions.FileProviders.Embedded": "10.0.10"
         }
       },
+      "JetBrains.Annotations": {
+        "type": "Direct",
+        "requested": "[2026.2.0, )",
+        "resolved": "2026.2.0",
+        "contentHash": "drvAEaI7Xf4wU6dx4UTB9MoZWXZlraaQ0qoeThPQ411FxNhId7QdUTukIC9I8aUHP0ycAaGwZNKqSvfOZQvUlg=="
+      },
       "Microsoft.Azure.StackExchangeRedis": {
         "type": "Direct",
         "requested": "[3.3.1, )",
@@ -287,7 +293,10 @@
         "contentHash": "wLBKzFnDCxP12VL9ANydSYhk59fC4cvOr9ypYQLPnAj48NQIhqnjdD2yhP8yEKyBJEjERWS9DisKL7rX5eU25Q=="
       },
       "dfe.acec.rulesengine": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "JetBrains.Annotations": "[2026.2.0, )"
+        }
       }
     }
   }

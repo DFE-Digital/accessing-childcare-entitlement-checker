@@ -10,10 +10,10 @@ namespace Dfe.Acec.Web.Tests.Unit.Controllers;
 
 public class HomeControllerTests : IDisposable
 {
-    private JourneyState _journeyState;
-    private IJourneySession _journeySession;
-    private IFeatureManager _featureManager;
-    private HomeController _controller;
+    private readonly JourneyState _journeyState;
+    private readonly IJourneySession _journeySession;
+    private readonly IFeatureManager _featureManager;
+    private readonly HomeController _controller;
 
     public HomeControllerTests()
     {

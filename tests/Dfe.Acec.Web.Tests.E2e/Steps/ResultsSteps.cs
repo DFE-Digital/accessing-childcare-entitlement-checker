@@ -1,4 +1,5 @@
 using Dfe.Acec.Web.Tests.E2e.Helpers;
+using JetBrains.Annotations;
 using Microsoft.Playwright;
 using Reqnroll;
 using static Microsoft.Playwright.Assertions;
@@ -8,7 +9,7 @@ namespace Dfe.Acec.Web.Tests.E2e.Steps;
 [Binding]
 public sealed class ResultsSteps(IPage page)
 {
-    [Then(@"I {word} see the public funds warning")]
+    [Then("I {word} see the public funds warning")]
     public async Task ThenICanOrCannotSeeThePublicFundsWarning(string canOrCannot)
     {
         var shouldSeeWarning = canOrCannot == "can";
@@ -42,7 +43,7 @@ public sealed class ResultsSteps(IPage page)
     }
 
     [Then("I can see that {string} is eligible for:")]
-    public async Task ThenICanSeeThatIsEligibleFor(string name, DataTable dataTable)
+    public async Task ThenICanSeeThatStringIsEligibleFor(string name, DataTable dataTable)
     {
         var expecteds = dataTable.CreateSet<SchemeEligibilityResult>().ToList();
         var actuals = await GetEligibleSchemes(name);
@@ -123,5 +124,6 @@ public sealed class ResultsSteps(IPage page)
         return results;
     }
 
+    [UsedImplicitly]
     private sealed record SchemeEligibilityResult(string Scheme, WhenEligible When, bool? IsBorn = null);
 }

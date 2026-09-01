@@ -6,7 +6,7 @@ namespace Dfe.Acec.Web.Models.Summary;
 [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class RemoveChildViewModel
 {
-    public string ChildId { get; set; } = default!;
+    public string ChildId { get; set; } = null!;
 
     public string Name { get; set; } = string.Empty;
 

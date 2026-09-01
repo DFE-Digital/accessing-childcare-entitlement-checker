@@ -1,4 +1,5 @@
 using System.Text;
+using JetBrains.Annotations;
 
 namespace Dfe.Acec.Web;
 
@@ -124,6 +125,7 @@ public static class DevelopmentExtensions
         path.StartsWith("/robots", StringComparison.OrdinalIgnoreCase) &&
         path.EndsWith(".txt", StringComparison.OrdinalIgnoreCase);
 
+    [PublicAPI]
     public static IEndpointRouteBuilder MapRobotsExclusionProtocol(this IEndpointRouteBuilder builder)
     {
         var env = builder.ServiceProvider.GetRequiredService<IHostEnvironment>();
@@ -136,6 +138,7 @@ public static class DevelopmentExtensions
         return builder;
     }
 
+    [PublicAPI]
     public static IEndpointRouteBuilder MapTestException(this IEndpointRouteBuilder builder)
     {
         var env = builder.ServiceProvider.GetRequiredService<IHostEnvironment>();

@@ -55,24 +55,22 @@ public class PartnerWeeklyEarningsViewModelTests
     [Fact]
     public void ValidateCoverageThrowsIfNoJourneyState()
     {
-        Func<Type, object> serviceProviderFunc = serviceType =>
-        {
-            if (serviceType == typeof(IStringLocalizerFactory))
-            {
-                return _localizerFactory;
-            }
-
-            return null!;
-        };
-
         var model = new PartnerWeeklyEarningsViewModel()
         {
             PartnerWeeklyEarnings = null,
         };
 
         var validationContext = new ValidationContext(model);
-        validationContext.InitializeServiceProvider(serviceProviderFunc);
+        validationContext.InitializeServiceProvider(ServiceProviderFunc);
 
         Assert.Throws<InvalidOperationException>(() => model.Validate(validationContext).ToList());
+        return;
+
+        object ServiceProviderFunc(Type serviceType)
+        {
+            return serviceType == typeof(IStringLocalizerFactory)
+                ? _localizerFactory
+                : null!;
+        }
     }
 }

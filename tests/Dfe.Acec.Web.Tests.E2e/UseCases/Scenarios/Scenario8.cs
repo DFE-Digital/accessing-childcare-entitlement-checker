@@ -1,7 +1,9 @@
 using Dfe.Acec.Web.Tests.E2e.UseCases.Builders;
+using JetBrains.Annotations;
 
 namespace Dfe.Acec.Web.Tests.E2e.UseCases.Scenarios;
 
+[UsedImplicitly]
 internal sealed class Scenario8 : IUseCase
 {
     public string Name => "Single parent on sick leave, parent is a citizen of a different country";

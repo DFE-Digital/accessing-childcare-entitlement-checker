@@ -5,11 +5,7 @@ namespace Dfe.Acec.Web.Tests.Unit.Services;
 
 public class JourneyStateTests
 {
-    private readonly JourneyState _journeyState;
-    public JourneyStateTests()
-    {
-        _journeyState = new JourneyState();
-    }
+    private readonly JourneyState _journeyState = new();
 
     [Fact]
     public void GetChildReturnsNullIfChildDoesNotExist()

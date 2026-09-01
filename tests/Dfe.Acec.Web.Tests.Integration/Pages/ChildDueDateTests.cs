@@ -40,9 +40,9 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
     }
 
     [Theory]
-    [InlineData(null, $"/children/check-childs-details")]
-    [InlineData(ReturnTo.CheckAnswers, $"/children/check-childs-details")]
-    [InlineData(ReturnTo.CheckChildDetails, $"/children/check-childs-details")]
+    [InlineData(null, "/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, "/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostValidRedirects(string? returnTo, string continueUrl)
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState

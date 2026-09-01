@@ -1,4 +1,5 @@
 using Dfe.Acec.Web.Controllers;
+using JetBrains.Annotations;
 
 namespace Dfe.Acec.Web;
 
@@ -14,6 +15,7 @@ public static class WebApplicationExtensions
     private const string Results = "Results";
     private const string Error = "Error";
 
+    [PublicAPI]
     public static WebApplication MapControllerRoutes(this WebApplication app)
     {
         app.MapControllerRoute(name: "root", pattern: "", defaults: new { controller = Home, action = nameof(HomeController.Start) });

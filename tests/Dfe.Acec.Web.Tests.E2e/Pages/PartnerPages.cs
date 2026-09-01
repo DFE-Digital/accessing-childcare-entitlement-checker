@@ -1,8 +1,10 @@
+using JetBrains.Annotations;
 using Microsoft.Playwright;
 
 namespace Dfe.Acec.Web.Tests.E2e.Pages;
 
 [PagePattern(PageNames.HasPartner)]
+[UsedImplicitly]
 internal sealed class HasPartnerPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.HasPartner;
@@ -10,6 +12,7 @@ internal sealed class HasPartnerPage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerAge)]
+[UsedImplicitly]
 internal sealed class PartnerAgePage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerAge;
@@ -17,6 +20,7 @@ internal sealed class PartnerAgePage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerPaidWork)]
+[UsedImplicitly]
 internal sealed class PartnerPaidWorkPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerPaidWork;
@@ -24,6 +28,7 @@ internal sealed class PartnerPaidWorkPage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerParentalLeave)]
+[UsedImplicitly]
 internal sealed class PartnerParentalLeavePage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerParentalLeave;
@@ -31,6 +36,7 @@ internal sealed class PartnerParentalLeavePage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerBenefits)]
+[UsedImplicitly]
 internal sealed class PartnerBenefitsPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerBenefits;
@@ -38,6 +44,7 @@ internal sealed class PartnerBenefitsPage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerChildcareSupport)]
+[UsedImplicitly]
 internal sealed class PartnerChildcareSupportPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerChildcareSupport;
@@ -45,6 +52,7 @@ internal sealed class PartnerChildcareSupportPage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerChildcareVoucherReceipt)]
+[UsedImplicitly]
 internal sealed class PartnerChildcareVoucherReceiptPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerChildcareVoucherReceipt;
@@ -52,6 +60,7 @@ internal sealed class PartnerChildcareVoucherReceiptPage(IPage page) : BasePage(
 }
 
 [PagePattern(PageNames.PartnerWorkStatus)]
+[UsedImplicitly]
 internal sealed class PartnerWorkStatusPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerWorkStatus;
@@ -59,6 +68,7 @@ internal sealed class PartnerWorkStatusPage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerSelfEmployedDuration)]
+[UsedImplicitly]
 internal sealed class PartnerSelfEmployedDurationPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerSelfEmployedDuration;
@@ -66,6 +76,7 @@ internal sealed class PartnerSelfEmployedDurationPage(IPage page) : BasePage(pag
 }
 
 [PagePattern(PageNames.PartnerWeeklyEarnings)]
+[UsedImplicitly]
 internal sealed class PartnerWeeklyEarningsPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerWeeklyEarnings;
@@ -73,6 +84,7 @@ internal sealed class PartnerWeeklyEarningsPage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerYearlyEarnings)]
+[UsedImplicitly]
 internal sealed class PartnerYearlyEarningsPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerYearlyEarnings;
@@ -80,6 +92,7 @@ internal sealed class PartnerYearlyEarningsPage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerNationality)]
+[UsedImplicitly]
 internal sealed class PartnerNationalityPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerNationality;
@@ -87,6 +100,7 @@ internal sealed class PartnerNationalityPage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerSettledStatus)]
+[UsedImplicitly]
 internal sealed class PartnerSettledStatusPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerSettledStatus;
@@ -94,6 +108,7 @@ internal sealed class PartnerSettledStatusPage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerLeaveType)]
+[UsedImplicitly]
 internal sealed class PartnerLeaveTypePage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerLeaveType;
@@ -101,6 +116,7 @@ internal sealed class PartnerLeaveTypePage(IPage page) : BasePage(page)
 }
 
 [PagePattern(PageNames.PartnerLeaveWeeklyEarnings)]
+[UsedImplicitly]
 internal sealed class PartnerLeaveWeeklyEarnings(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerLeaveWeeklyEarnings;

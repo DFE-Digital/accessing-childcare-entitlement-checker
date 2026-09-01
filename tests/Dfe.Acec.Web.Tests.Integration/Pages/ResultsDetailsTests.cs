@@ -39,7 +39,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         using var client = host.CreateClient();
 
-        var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -56,7 +56,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         using var client = host.CreateClient();
 
-        var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -73,7 +73,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         using var client = host.CreateClient();
 
-        var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 

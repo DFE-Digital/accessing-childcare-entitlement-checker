@@ -6,6 +6,7 @@ using Dfe.Acec.Web.Controllers;
 using Dfe.Acec.Web.Models.Partner;
 using Dfe.Acec.Web.Models.User;
 using Dfe.Acec.Web.Services;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 
@@ -106,6 +107,7 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
             : Add((PartnerParentalLeaveViewModel s) => s.PartnerParentalLeaveChildrenIds, displayValue, nameof(PartnerController.PartnerParentalLeave));
     }
 
+    [PublicAPI]
     public SummaryRowFactory AddLocation(CountryOfResidence? countryOfResidence)
     {
         if (countryOfResidence == null)
@@ -267,7 +269,7 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
     private string GetLabelLocalisationKey(Type viewModelType, LambdaExpression lambdaExpression)
     {
         var body = lambdaExpression.Body;
-        if (body is UnaryExpression unary && unary.NodeType == ExpressionType.Convert)
+        if (body is UnaryExpression { NodeType: ExpressionType.Convert } unary)
         {
             body = unary.Operand;
         }
