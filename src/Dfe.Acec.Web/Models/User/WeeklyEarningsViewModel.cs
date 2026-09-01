@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.Web.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Localization;
 
 namespace Dfe.Acec.Web.Models.User;
 
@@ -44,12 +44,7 @@ public class WeeklyEarningsViewModel : IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
-        if (journeyState is null)
-        {
-            throw new InvalidOperationException($"JourneyState service is not available in the validation context for {nameof(WeeklyEarningsViewModel)}");
-        }
-
+        var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState ?? throw new InvalidOperationException($"JourneyState service is not available in the validation context for {nameof(WeeklyEarningsViewModel)}");
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(WorkStatusViewModel));
         var weeklyEarningsThresholds = WeeklyEarningsThresholds.Create(journeyState.UserAge, journeyState.WorkStatus);

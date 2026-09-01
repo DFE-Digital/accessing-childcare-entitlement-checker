@@ -8,9 +8,9 @@ using Dfe.Acec.Web.Services;
 using AgeRange = Dfe.Acec.Web.Models.AgeRange;
 using BirthStatus = Dfe.Acec.Web.Models.BirthStatus;
 using CountryOfResidence = Dfe.Acec.Web.Models.CountryOfResidence;
-using RulesCountryOfResidence = Dfe.Acec.RulesEngine.Types.CountryOfResidence;
 using RulesAgeRange = Dfe.Acec.RulesEngine.Types.AgeRange;
 using RulesBirthStatus = Dfe.Acec.RulesEngine.Types.BirthStatus;
+using RulesCountryOfResidence = Dfe.Acec.RulesEngine.Types.CountryOfResidence;
 
 namespace Dfe.Acec.Web.Tests.Unit.Mappers;
 

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Dfe.Acec.Web.Controllers;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Services;
@@ -5,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.FeatureManagement;
 using NSubstitute;
-using System.Diagnostics;
 
 namespace Dfe.Acec.Web.Tests.Unit.Controllers;
 

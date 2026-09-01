@@ -1,11 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
 using Azure.Identity;
-using StackExchange.Redis;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Dfe.Acec.Web.Filters;
 using Dfe.Acec.Web.Services;
 using Dfe.Acec.Web.Validators;
 using FluentValidation;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using StackExchange.Redis;
 
 namespace Dfe.Acec.Web;
 

@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.Web.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Dfe.Acec.Web.Models.Partner;
 

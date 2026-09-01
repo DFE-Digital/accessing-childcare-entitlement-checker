@@ -1,3 +1,5 @@
+using System.Text;
+using System.Text.Json;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Services;
 using Microsoft.AspNetCore.Http;
@@ -5,8 +7,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Session;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using System.Text;
-using System.Text.Json;
 
 namespace Dfe.Acec.Web.Tests.Unit.Services;
 

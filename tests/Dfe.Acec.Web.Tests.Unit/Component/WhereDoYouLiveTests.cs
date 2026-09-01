@@ -1,8 +1,8 @@
+using System.Net;
+using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
-using System.Text;
-using System.Net;
 
 namespace Dfe.Acec.Web.Tests.Unit.Component;
 
