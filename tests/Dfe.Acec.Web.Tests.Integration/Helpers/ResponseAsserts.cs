@@ -29,7 +29,6 @@ public static class ResponseAsserts
     }
 
     [PublicAPI]
-
     public static HttpResponseMessage AssertBadRequest(this HttpResponseMessage response)
     {
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
