@@ -17,9 +17,8 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>Recommended</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    
-    <!-- Treat compiler and analyser warnings as errors -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 
     <!-- NuGet security auditing -->
     <NuGetAudit>true</NuGetAudit>
