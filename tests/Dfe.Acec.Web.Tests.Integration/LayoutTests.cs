@@ -32,6 +32,7 @@ public class LayoutTests(IntegrationTestFixture factory) : IClassFixture<Integra
             .AssertFooterContainsLink("https://accessibility-statements.education.gov.uk/s/89") // accessibility statement
             .AssertFooterContainsLink("https://www.gov.uk/government/publications/privacy-information-members-of-the-public/privacy-information-members-of-the-public#using-your-data-when-you-use-our-websites") // privacy notice
             .AssertFooterContainsLink("/cookies") // cookies
-            .AssertFooterContainsLink("https://dferesearch.fra1.qualtrics.com/jfe/form/SV_5doFVpOqJt1dD7g"); // contact us & feedback form
+            .AssertFooterContainsLink("https://dferesearch.fra1.qualtrics.com/jfe/form/SV_5doFVpOqJt1dD7g") // contact us
+            .AssertFooterContainsLink("https://dferesearch.fra1.qualtrics.com/jfe/form/SV_8eotBOVwAQbdP8y"); // feedback form
     }
 }
