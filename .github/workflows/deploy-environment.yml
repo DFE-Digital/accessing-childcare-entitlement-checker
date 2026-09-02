@@ -92,6 +92,7 @@ jobs:
 
     - name: Get Terraform State Details
       id: tf-backend
+      working-directory: .
       run: |
         RG_NAME=$(jq -r '.resourceGroupName.value' infra/bicep/environments/${{ inputs.environment }}.params.json)
         ACC_NAME=$(jq -r '.storageAccountName.value' infra/bicep/environments/${{ inputs.environment }}.params.json)
