@@ -7,6 +7,6 @@
     "start": "npx http-server ."
   },
   "dependencies": {
-    "govuk-frontend": "^6.4.0"
+    "govuk-frontend": "^6.5.0"
   }
 }
