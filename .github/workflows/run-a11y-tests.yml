@@ -136,19 +136,3 @@ jobs:
           path: TestResults/*.trx
           reporter: dotnet-trx
           fail-on-error: true
-
-      - name: Add A11y summary
-        if: always()
-        env:
-          TEST_OUTCOME: ${{ steps.test.outcome }}
-          TARGET_URL: ${{ env.TARGET_URL }}
-        run: |
-          test_icon="❔"
-          if [ "$TEST_OUTCOME" = "success" ]; then test_icon="✅"; fi
-          if [ "$TEST_OUTCOME" = "failure" ]; then test_icon="❌"; fi
-          
-          echo "## 🧪 A11y Test Report (${{ inputs.browser }})" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Area | Status | Target | Browser |" >> $GITHUB_STEP_SUMMARY
-          echo "|------|--------|--------|---------|" >> $GITHUB_STEP_SUMMARY
-          echo "| A11y Tests | $test_icon | $TARGET_URL | ${{ inputs.browser }} |" >> $GITHUB_STEP_SUMMARY

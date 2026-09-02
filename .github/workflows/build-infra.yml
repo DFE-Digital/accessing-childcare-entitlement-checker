@@ -35,21 +35,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Encode ref_name
-        env:
-          REF_NAME: ${{ github.ref_name }}
-        run: |
-          ENCODED_REF="$REF_NAME"
-          ENCODED_REF="${ENCODED_REF//\//%2F}"
-          echo "ENCODED_REF=$ENCODED_REF" >> $GITHUB_ENV
-
-      - name: Init summary state
-        run: |
-          echo "TF_FMT=unknown" >> $GITHUB_ENV
-          echo "TF_VALIDATE=unknown" >> $GITHUB_ENV
-          echo "CHECKOV=unknown" >> $GITHUB_ENV
-          echo "PACKAGE=skipped" >> $GITHUB_ENV
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
         with:
@@ -81,32 +66,10 @@ jobs:
         run: terraform fmt -check
         working-directory: ${{ inputs.infra-directory }}/terraform
 
-      - name: Record fmt result
-        if: always()
-        env:
-          FMT_OUTCOME: ${{ steps.fmt.outcome }}
-        run: |
-          if [ "$FMT_OUTCOME" = "success" ]; then
-            echo "TF_FMT=passed" >> $GITHUB_ENV
-          else
-            echo "TF_FMT=failed" >> $GITHUB_ENV
-          fi
-
       - name: Terraform Validate
         id: validate
         run: terraform validate
         working-directory: ${{ inputs.infra-directory }}/terraform
-
-      - name: Record validate result
-        if: always()
-        env:
-          VALIDATE_OUTCOME: ${{ steps.validate.outcome }}
-        run: |
-          if [ "$VALIDATE_OUTCOME" = "success" ]; then
-            echo "TF_VALIDATE=passed" >> $GITHUB_ENV
-          else
-            echo "TF_VALIDATE=failed" >> $GITHUB_ENV
-          fi
 
       - name: Pull Checkov image
         run: docker pull bridgecrew/checkov
@@ -129,17 +92,6 @@ jobs:
             -o junitxml \
             --output-file-path console,/results/results.xml
 
-      - name: Record Checkov result
-        if: always()
-        env:
-          CHECKOV_OUTCOME: ${{ steps.checkov.outcome }}
-        run: |
-          if [ "$CHECKOV_OUTCOME" = "success" ]; then
-            echo "CHECKOV=passed" >> $GITHUB_ENV
-          else
-            echo "CHECKOV=failed" >> $GITHUB_ENV
-          fi
-
       - name: Publish Checkov results
         uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
         if: always()
@@ -161,74 +113,9 @@ jobs:
         run: |
           zip -r infra-package.zip .
 
-      - name: Record package status
-        if: always()
-        env:
-          PUBLISH: ${{ inputs.publish }}
-        run: |
-          if [ "$PUBLISH" = "true" ]; then
-            echo "PACKAGE=created" >> $GITHUB_ENV
-          else
-            echo "PACKAGE=skipped" >> $GITHUB_ENV
-          fi
-
       - name: Upload infra package
         if: inputs.publish
         uses: actions/upload-artifact@v7
         with:
           name: infra-package
           path: ${{ inputs.infra-directory }}/infra-package.zip
-
-      - name: Add summary
-        if: always()
-        env:
-          REPO: ${{ github.repository }}
-        run: |
-          fmt_icon="❔"
-          validate_icon="❔"
-          checkov_icon="❔"
-          package_icon="❔"
-          
-          # Terraform fmt
-          if [ "$TF_FMT" = "passed" ]; then fmt_icon="✅"
-          elif [ "$TF_FMT" = "failed" ]; then fmt_icon="❌"
-          fi
-          
-          # Terraform validate
-          if [ "$TF_VALIDATE" = "passed" ]; then validate_icon="✅"
-          elif [ "$TF_VALIDATE" = "failed" ]; then validate_icon="❌"
-          fi
-          
-          # Checkov
-          if [ "$CHECKOV" = "passed" ]; then checkov_icon="✅"
-          elif [ "$CHECKOV" = "failed" ]; then checkov_icon="❌"
-          fi
-          
-          # Package
-          if [ "$PACKAGE" = "created" ]; then package_icon="📦"
-          else package_icon="⏭️"
-          fi
-              
-          echo "## 🧱 Terraform CI Report Card" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          echo "| Area | Status | Details |" >> $GITHUB_STEP_SUMMARY
-          echo "|------|--------|---------|" >> $GITHUB_STEP_SUMMARY
-          
-          echo "| Terraform fmt | $fmt_icon | $TF_FMT |" >> $GITHUB_STEP_SUMMARY
-          echo "| Terraform validate | $validate_icon | $TF_VALIDATE |" >> $GITHUB_STEP_SUMMARY
-          echo "| Checkov | $checkov_icon | $CHECKOV |" >> $GITHUB_STEP_SUMMARY
-          echo "| Package | $package_icon | $PACKAGE |" >> $GITHUB_STEP_SUMMARY
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          if [ "$TF_FMT" = "passed" ] && [ "$TF_VALIDATE" = "passed" ] && [ "$CHECKOV" = "passed" ]; then
-            echo "### Overall: 🟢 Healthy" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "### Overall: 🟡 Needs attention" >> $GITHUB_STEP_SUMMARY
-          fi
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          echo "### 🔎 Links" >> $GITHUB_STEP_SUMMARY
-          echo "- Security: https://github.com/$REPO/security/code-scanning?query=branch:$ENCODED_REF" >> $GITHUB_STEP_SUMMARY

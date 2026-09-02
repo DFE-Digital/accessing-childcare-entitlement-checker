@@ -34,7 +34,7 @@ graph TD;
 
 ### 1. Reusable Deployments (`deploy-environment.yml`)
 The `deploy-environment.yml` workflow manages the deployment lifecycle for a single environment. It accepts the target environment name as input and resolves variables:
-- We set up Terraform state storage using Bicep.
+- We set up Terraform state storage using Bicep. This step can be skipped to improve pipeline performance by setting the `BOOTSTRAP_TF` configuration variable to `'false'`.
 - We set up Terraform and apply configurations.
 - We deploy the application package using `az webapp deploy`.
 
@@ -49,6 +49,6 @@ Automated gates protect deployments to production and other high-risk environmen
 
 ### 3. Static Code Analysis and Security Scanning
 We integrate static code analysis directly into our CI process using JetBrains inspectcode.
-- The `build-dotnet` workflow runs `inspectcode` against the solution.
+- The `inspect-code` workflow runs `inspectcode` against the solution in parallel with the main build.
 - The workflow generates a SARIF (Static Analysis Results Interchange Format) report.
 - The report is automatically uploaded to GitHub Code Scanning, providing visibility of warnings and issues directly within pull requests and the repository's security tab.

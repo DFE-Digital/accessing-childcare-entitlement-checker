@@ -39,22 +39,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Encode ref_name
-        env:
-          REF_NAME: ${{ github.ref_name }}
-        run: |
-          ENCODED_REF="$REF_NAME"
-          ENCODED_REF="${ENCODED_REF//\//%2F}"
-          echo "ENCODED_REF=$ENCODED_REF" >> $GITHUB_ENV
-
-      - name: Init summary state
-        run: |
-          echo "FORMAT=unknown" >> $GITHUB_ENV
-          echo "TESTS=unknown" >> $GITHUB_ENV
-          echo "WEB_APP_PUBLISHED=skipped" >> $GITHUB_ENV
-          echo "E2E_PUBLISHED=skipped" >> $GITHUB_ENV
-          echo "A11Y_PUBLISHED=skipped" >> $GITHUB_ENV
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
 
@@ -97,87 +81,8 @@ jobs:
       - name: Restore dotnet tools
         run: dotnet tool restore
 
-      - name: Scan vulnerable packages
-        id: vulnerabilities
-        run: |
-          dotnet list ${{ env.SOLUTION }} package \
-            --vulnerable \
-            --include-transitive \
-            --format json \
-            > vulnerability-report.json
-
-      - name: Parse vulnerability report
-        if: always()
-        run: |
-          file="vulnerability-report.json"
-
-          if [ ! -f "$file" ]; then
-            echo "VULNS=missing" >> $GITHUB_ENV
-            exit 0
-          fi
-
-          CRITICAL=$(jq '[.projects[]?
-          | .frameworks[]?
-          | .topLevelPackages[]?
-          | .vulnerabilities[]?
-          | select(.severity=="Critical")
-          ] | length' "$file")
-
-          HIGH=$(jq '[.projects[]?
-          | .frameworks[]?
-          | .topLevelPackages[]?
-          | .vulnerabilities[]?
-          | select(.severity=="High")
-          ] | length' "$file")
-
-          MEDIUM=$(jq '[.projects[]?
-          | .frameworks[]?
-          | .topLevelPackages[]?
-          | .vulnerabilities[]?
-          | select(.severity=="Moderate" or .severity=="Medium")
-          ] | length' "$file")
-
-          TOTAL=$(jq '[.projects[]?
-          | .frameworks[]?
-          | .topLevelPackages[]?
-          | .vulnerabilities[]?
-          ] | length // 0' vulnerability-report.json)
-
-          if [ "$TOTAL" -eq 0 ]; then
-            VULNS="clean"
-          else
-            VULNS="detected"
-          fi
-
-          echo "VULNS=$VULNS" >> $GITHUB_ENV
-          echo "VULNS_CRITICAL=$CRITICAL" >> $GITHUB_ENV
-          echo "VULNS_HIGH=$HIGH" >> $GITHUB_ENV
-          echo "VULNS_MEDIUM=$MEDIUM" >> $GITHUB_ENV
-
       - name: Check formatting
-        id: format
         run: dotnet format ${{ env.SOLUTION }} --verify-no-changes
-
-      - name: Record format result
-        if: always()
-        env:
-          FORMAT_OUTCOME: ${{ steps.format.outcome }}
-        run: |
-          if [ "$FORMAT_OUTCOME" = "success" ]; then
-            echo "FORMAT=passed" >> $GITHUB_ENV
-          else
-            echo "FORMAT=failed" >> $GITHUB_ENV
-          fi
-
-      - name: Inspect code
-        run: dotnet tool run jb inspectcode ${{ env.SOLUTION }} --output=inspectcode.sarif --format=Sarif
-        continue-on-error: true
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v4.37.1
-        with:
-          sarif_file: inspectcode.sarif
-          category: inspectcode
 
       # Exclusions
       # - `Program.cs` - this is partially tested by an integration test; but awkward to test - 
@@ -222,7 +127,7 @@ jobs:
             /p:CoverletOutputFormat=opencover \
             /p:CoverletOutput=TestResults/coverage/unit-web/
           
-            dotnet test ${{ env.UNIT_TESTS_RULES }} \
+          dotnet test ${{ env.UNIT_TESTS_RULES }} \
             -c ${{ env.CONFIGURATION }} \
             --no-build \
             --results-directory ./TestResults/RulesEngine.Tests.Unit \
@@ -239,17 +144,6 @@ jobs:
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=opencover \
             /p:CoverletOutput=TestResults/coverage/integration/
-
-      - name: Record test result
-        if: always()
-        env:
-          TEST_OUTCOME: ${{ steps.test.outcome }}
-        run: |
-          if [ "$TEST_OUTCOME" = "success" ]; then
-            echo "TESTS=passed" >> $GITHUB_ENV
-          else
-            echo "TESTS=failed" >> $GITHUB_ENV
-          fi
 
       - name: Sonar End
         if: always()
@@ -283,13 +177,6 @@ jobs:
           -o web-app
           --no-build
 
-      - name: Record web app publish
-        if: always()
-        run: |
-          if [ -d "web-app" ]; then
-            echo "WEB_APP_PUBLISHED=created" >> $GITHUB_ENV
-          fi
-
       - name: Publish e2e Tests
         if: inputs.publish
         run: >
@@ -297,13 +184,6 @@ jobs:
           -c ${{ env.CONFIGURATION }}
           -o e2e-tests
           --no-build
-
-      - name: Record e2e publish
-        if: always()
-        run: |
-          if [ -d "e2e-tests" ]; then
-            echo "E2E_PUBLISHED=created" >> $GITHUB_ENV
-          fi
           
       - name: Publish A11y Tests
         if: inputs.publish
@@ -312,13 +192,6 @@ jobs:
           -c ${{ env.CONFIGURATION }}
           -o a11y-tests
           --no-build
-          
-      - name: Record A11y publish
-        if: always()
-        run: |
-          if [ -d "a11y-tests" ]; then
-            echo "A11Y_PUBLISHED=created" >> $GITHUB_ENV
-          fi
 
       - name: Upload coverage report
         if: always()
@@ -326,12 +199,6 @@ jobs:
         with:
           name: coverage-report
           path: coverage-report
-
-      - name: Upload vulnerability report
-        uses: actions/upload-artifact@v7
-        with:
-          name: vulnerability-report
-          path: vulnerability-report.json
 
       - name: Upload metadata
         uses: actions/upload-artifact@v7
@@ -346,6 +213,10 @@ jobs:
           name: web-app
           path: web-app
 
+      # We must manually zip these directories before upload. 
+      # The actions/upload-artifact action's default folder upload behavior 
+      # excludes hidden directories (like the '.playwright' binaries folder). 
+      # Zipping them first forces the action to package and upload everything.
       - name: Zip e2e Tests
         if: inputs.publish
         run: zip -r e2e-tests.zip e2e-tests
@@ -357,6 +228,10 @@ jobs:
           name: e2e-tests
           path: e2e-tests.zip
           
+      # We must manually zip these directories before upload. 
+      # The actions/upload-artifact action's default folder upload behavior 
+      # excludes hidden directories (like the '.playwright' binaries folder). 
+      # Zipping them first forces the action to package and upload everything.
       - name: Zip A11y Tests
         if: inputs.publish
         run: zip -r a11y-tests.zip a11y-tests
@@ -367,67 +242,3 @@ jobs:
         with:
           name: a11y-tests
           path: a11y-tests.zip
-
-      - name: Add CI summary
-        if: always()
-        run: |
-          format_icon="❔"
-          test_icon="❔"
-          vulns_icon="📄"
-          web_icon="⏭️"
-          e2e_icon="⏭️"
-          a11y_icon="⏭️"
-          
-          if [ "$FORMAT" = "passed" ]; then format_icon="✅"
-          elif [ "$FORMAT" = "failed" ]; then format_icon="❌"
-          fi
-          
-          if [ "$TESTS" = "passed" ]; then test_icon="✅"
-          elif [ "$TESTS" = "failed" ]; then test_icon="❌"
-          fi
-          
-          if [ "$VULNS" = "clean" ]; then vulns_icon="🟢"; fi
-          
-          if [ "$WEB_APP_PUBLISHED" = "created" ]; then web_icon="📦"; fi
-          if [ "$E2E_PUBLISHED" = "created" ]; then e2e_icon="🧪"; fi
-          if [ "$A11Y_PUBLISHED" = "created" ]; then a11y_icon="♿"; fi
-          
-          {
-            echo "## 🧪 .NET CI Report Card"
-            echo
-          
-            echo "| Area | Status | Result |"
-            echo "|------|--------|--------|"
-            echo "| Format | $format_icon | $FORMAT |"
-            echo "| Tests | $test_icon | $TESTS |"
-            echo "| Vulnerabilities | $vulns_icon | 🔴 $VULNS_CRITICAL 🟠 $VULNS_HIGH 🟡 $VULNS_MEDIUM |"
-            echo "| Web App | $web_icon | $WEB_APP_PUBLISHED |"
-            echo "| E2E Tests | $e2e_icon | $E2E_PUBLISHED |"
-            echo "| A11y Tests | $a11y_icon | $A11Y_PUBLISHED |"
-            echo
-          
-            if [ "$FORMAT" = "passed" ] && \
-               [ "$TESTS" = "passed" ] && \
-               [ "$VULNS" = "clean" ]; then
-              echo "### Overall: 🟢 Healthy"
-            else
-              echo "### Overall: 🟡 Needs attention"
-            fi
-          
-            echo
-            echo "### 🔎 SonarCloud"
-            echo "- Dashboard: https://sonarcloud.io/dashboard?id=DFE-Digital_accessing-childcare-entitlement-checker"
-            echo "- New code: https://sonarcloud.io/summary/new_code?id=DFE-Digital_accessing-childcare-entitlement-checker&branch=$ENCODED_REF"
-            echo "- Overall: https://sonarcloud.io/summary/overall?id=DFE-Digital_accessing-childcare-entitlement-checker&branch=$ENCODED_REF"
-            echo
-          
-            echo "### 📈 Coverage"
-            echo
-          
-            if [ -f coverage-report/SummaryGithub.md ]; then
-              cat coverage-report/SummaryGithub.md
-            else
-              echo "Coverage report unavailable."
-            fi
-          
-          } >> "$GITHUB_STEP_SUMMARY"

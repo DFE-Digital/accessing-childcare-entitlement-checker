@@ -1,0 +1,57 @@
+name: Inspect Code
+
+on:
+  workflow_call:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  SOLUTION: Dfe.Acec.slnx
+
+jobs:
+  inspect:
+    name: Inspect code
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v6
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Cache dotnet tools
+        uses: actions/cache@v6
+        with:
+          path: ~/.dotnet/tools
+          key: tools-${{ runner.os }}-${{ hashFiles('.config/dotnet-tools.json') }}
+          restore-keys: |
+            tools-${{ runner.os }}-
+
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION }} --locked-mode
+
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+
+      - name: Inspect code
+        run: dotnet tool run jb inspectcode ${{ env.SOLUTION }} --output=inspectcode.sarif --format=Sarif
+        continue-on-error: true
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v4.37.1
+        with:
+          sarif_file: inspectcode.sarif
+          category: inspectcode

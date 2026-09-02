@@ -67,3 +67,13 @@ The bootstrap phase defines and creates these key resources under `infra/bicep/`
 6. **Log Analytics Workspace & Diagnostics**:
    * Dedicate a workspace to tracking operations (e.g., `279d01-uks-cec-law-tf-state`) with a data retention period of 90 days and the `PerGB2018` SKU.
    * Configure diagnostic settings on the Storage Account's Blob Service to send logs (`StorageRead`, `StorageWrite`, `StorageDelete`) and transactions to the Log Analytics Workspace for security auditing (named `${storageAccountName}-blob-diag`).
+
+## Skip bootstrapping in CI/CD pipelines
+
+Executing the Bicep template on every deployment checks and ensures that the Azure Resource Group and Storage Account exist and are correctly configured. However, this check can take 3+ minutes to complete on every run.
+
+To optimize deployment times when the backend infrastructure is already bootstrapped:
+1. Define a GitHub Configuration Variable named `BOOTSTRAP_TF` at the environment, repository, or organization level.
+2. Set its value to `'false'`.
+
+When `BOOTSTRAP_TF` is set to `'false'`, the pipeline skips the Bicep template deployment steps entirely, but still securely extracts the backend parameters directly from the configuration files to initialize and lock the remote state backend. If the variable is set to `'true'` or is omitted, the bootstrap steps will run normally.
