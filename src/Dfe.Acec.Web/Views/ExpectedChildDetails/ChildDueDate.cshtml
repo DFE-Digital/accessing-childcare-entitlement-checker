@@ -16,28 +16,25 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Localizer["What is this child's due date?"]
+        </h1>
+
+        <p class="govuk-body">
+            @Localizer["We use this date to give you accurate results, including when you may be able to apply and when your childcare support could start and end."]
+        </p>
+
         <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
             <govuk-date-input for="ChildDueDate">
                 <govuk-date-input-fieldset>
-                    <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                    <govuk-date-input-fieldset-legend class="govuk-visually-hidden">
                         @Localizer["What is this child's due date?"]
                     </govuk-date-input-fieldset-legend>
 
                     <govuk-date-input-error-message />
                 </govuk-date-input-fieldset>
             </govuk-date-input>
-
-            <govuk-details>
-                <govuk-details-summary>
-                    @Localizer["Why we ask for a due date"]
-                </govuk-details-summary>
-                <govuk-details-text>
-                    <p>
-                        @Localizer["We use this date to give you accurate results, including when you may be able to apply and when your childcare support could start and end."]
-                    </p>
-                </govuk-details-text>
-            </govuk-details>
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
