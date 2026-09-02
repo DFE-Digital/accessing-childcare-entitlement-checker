@@ -45,6 +45,7 @@ jobs:
       DEPLOY_ZIP_PATH: "../../.artifacts/webapp.zip"
       TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
       TF_VAR_google_tag_manager_container_id: ${{ vars.GOOGLE_TAG_MANAGER_CONTAINER_ID }}
+      BOOTSTRAP_TF: ${{ vars.BOOTSTRAP_TF }}
 
     steps:
     - name: Download Infra Metadata
@@ -89,19 +90,24 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Set service principal metadata
-      continue-on-error: true
+    - name: Get Terraform State Details
+      id: tf-backend
       run: |
-        az rest --method put --uri "https://management.azure.com/providers/microsoft.managementpartner/partners/6084223?api-version=2018-02-01" --body '{"partnerId": "6084223"}' || true        
+        RG_NAME=$(jq -r '.resourceGroupName.value' infra/bicep/environments/${{ inputs.environment }}.params.json)
+        ACC_NAME=$(jq -r '.storageAccountName.value' infra/bicep/environments/${{ inputs.environment }}.params.json)
+        echo "resourceGroupName=$RG_NAME" >> "$GITHUB_OUTPUT"
+        echo "storageAccountName=$ACC_NAME" >> "$GITHUB_OUTPUT"
 
     - name: Get Workflow Service Principal Object ID
       id: get-sp-id
+      if: env.BOOTSTRAP_TF != 'false'
       run: |
         SP_OBJECT_ID=$(az ad sp show --id ${{ secrets.AZURE_CLIENT_ID }} --query id -o tsv)
         echo "object_id=$SP_OBJECT_ID" >> "$GITHUB_OUTPUT"
 
     - name: Bootstrap Terraform
       id: bootstrap-tf
+      if: env.BOOTSTRAP_TF != 'false'
       uses: azure/arm-deploy@v2
       with:
         scope: subscription
@@ -119,8 +125,8 @@ jobs:
     - name: Unlock Terraform State
       working-directory: ./infra
       env:
-        ACC_NAME: ${{ steps.bootstrap-tf.outputs.storageAccountName }}
-        RG_NAME: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}
+        ACC_NAME: ${{ steps.tf-backend.outputs.storageAccountName }}
+        RG_NAME: ${{ steps.tf-backend.outputs.resourceGroupName }}
       shell: bash
       run: |
         chmod +x scripts/manage-storage-access.sh
@@ -129,8 +135,8 @@ jobs:
     - name: Terraform Init
       run: |
         terraform init \
-          -backend-config="resource_group_name=${{ steps.bootstrap-tf.outputs.resourceGroupName }}" \
-          -backend-config="storage_account_name=${{ steps.bootstrap-tf.outputs.storageAccountName }}"
+          -backend-config="resource_group_name=${{ steps.tf-backend.outputs.resourceGroupName }}" \
+          -backend-config="storage_account_name=${{ steps.tf-backend.outputs.storageAccountName }}"
 
     - name: Terraform Plan
       run: terraform plan -no-color -out=main.tfplan -var-file="environments/${{ inputs.environment }}.tfvars"
@@ -153,8 +159,8 @@ jobs:
       if: ${{ always() }}
       working-directory: ./infra
       env:
-        ACC_NAME: ${{ steps.bootstrap-tf.outputs.storageAccountName }}
-        RG_NAME: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}
+        ACC_NAME: ${{ steps.tf-backend.outputs.storageAccountName }}
+        RG_NAME: ${{ steps.tf-backend.outputs.resourceGroupName }}
       shell: bash
       run: |
         chmod +x scripts/manage-storage-access.sh
@@ -215,17 +221,6 @@ jobs:
 
     - name: Publish deployment summary
       env:
-        RG_NAME: ${{ steps.tf-outputs.outputs.resource_group_name }}
-        APP_NAME: ${{ steps.tf-outputs.outputs.web_app_name }}
         FD_HOSTNAME: ${{ steps.tf-outputs.outputs.frontdoor_hostname }}
       run: |
-        DEPLOY_URL="https://$FD_HOSTNAME"
-
-        {
-          echo "## Deployment Details"
-          echo
-          echo "* **URL**: [$DEPLOY_URL]($DEPLOY_URL)"
-          echo "* **Front Door Hostname**: $FD_HOSTNAME"
-          echo "* **Resource Group**: $RG_NAME"
-          echo "* **Web App Name**: $APP_NAME"
-        } >> "$GITHUB_STEP_SUMMARY"
+        echo "https://$FD_HOSTNAME" >> "$GITHUB_STEP_SUMMARY"

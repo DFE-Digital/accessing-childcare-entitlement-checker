@@ -15,6 +15,7 @@ These workflows enforce code quality, run accessibility and end-to-end tests, pe
 | Workflow name | Trigger event | Purpose | Key secrets / parameters |
 | :--- | :--- | :--- | :--- |
 | `build-dotnet.yml` | Pull request, push to main | Compiles and runs unit and integration tests for the .NET application. | None (standard test environment) |
+| `inspect-code.yml` | Pull request, push to main (via `workflow_call`) | Runs deep JetBrains InspectCode static analysis against the .NET solution. | None |
 | `build-infra.yml` | Pull request, push to main | Validates and lints Terraform and Bicep infrastructure-as-code files. | None (static validation and linting) |
 | `deploy-environment.yml` | Workflow dispatch, release | Deploys the infrastructure and web application to a specified environment. | `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` |
 | `run-e2e-tests.yml` | Workflow dispatch, schedule | Executes end-to-end user journey tests using Playwright. | `TEST_BASE_URL` |

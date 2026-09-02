@@ -177,13 +177,3 @@ jobs:
           git add zap/findings.json docs/content/reference/testing/zap-report.md
           git commit -m "security: update ZAP findings snapshot"
           git push -f origin chore/zap-findings-updates
-
-      - name: Generate Step Summary
-        if: always()
-        env:
-          T_URL: ${{ env.TARGET_URL }}
-          REPO: ${{ github.repository }}
-        run: |
-          echo "### ZAP Scan Results for $T_URL" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **SARIF Alerts:** [View in Security tab](https://github.com/$REPO/security/code-scanning)" >> $GITHUB_STEP_SUMMARY

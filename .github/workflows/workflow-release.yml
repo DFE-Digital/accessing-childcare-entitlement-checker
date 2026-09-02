@@ -91,6 +91,14 @@ jobs:
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  inspect-code:
+    name: Inspect Code
+    permissions:
+      contents: read
+      security-events: write
+    needs: version
+    uses: ./.github/workflows/inspect-code.yml
+
   build-infra:
     name: Build Infrastructure
     permissions:

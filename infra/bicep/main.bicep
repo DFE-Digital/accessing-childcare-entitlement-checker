@@ -12,9 +12,6 @@ param subnetName string
 param subnetAddressPrefix string
 param workflowPrincipalId string
 
-output resourceGroupName string = resourceGroupName
-output storageAccountName string = storageAccountName
-
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: location

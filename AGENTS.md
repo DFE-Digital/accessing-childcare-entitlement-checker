@@ -16,7 +16,7 @@
 - Restore local tools with `dotnet tool restore`.
 
 ## Testing and analysis
-- After changing C# code, run `make check`.
+- After changing C# code, run `make build` and `make test`.
 - Before completing a substantial change, run `make verify`.
 - Run `make test-e2e` or `make test-a11y` only when the change requires those tests and the web application is running.
 - After changing Terraform, run `make tf-f` and `make tf-v`.

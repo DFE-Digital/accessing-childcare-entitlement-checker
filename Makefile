@@ -4,16 +4,16 @@
 	test-e2e \
 	test-a11y \
 	playwright-i \
-	analyze \
-	analyse-d \
-	analyse-f \
-	analyse-i \
-	analyse-i-summary \
-	analyse-i-find \
+	inspect \
+	inspect-a \
+	inspect-r \
+	inspect-f \
 	verify \
 	tf-f \
 	tf-v \
-	tf-docs \
+	tf-d \
+	tf-i \
+	tf \
 	docs-c \
 	docs-b \
 	docs-s \
@@ -28,55 +28,33 @@ TEST_RESULTS := ./.test-results
 ANALYSIS_RESULTS := ./.analysis-results
 
 # ---------------------------------------------------------------------------
-# .NET - Build
+# Build
 # ---------------------------------------------------------------------------
 
 build:
-	dotnet clean
+	dotnet clean --nologo --verbosity minimal
 	dotnet restore --locked-mode
-	dotnet format --verify-no-changes
-	dotnet build --no-restore
+	dotnet format --verify-no-changes --verbosity minimal
+	dotnet build --configuration Release --no-restore --no-incremental --nologo --verbosity minimal
 
 # ---------------------------------------------------------------------------
-# .NET - Static Analysis
+# Inspect
 # ---------------------------------------------------------------------------
 
-# Fast analysis using the .NET SDK / Roslyn.
-analyse-d:
-	dotnet build \
-		--no-restore \
-		--nologo \
-		--verbosity minimal
-
-# Verify formatting without modifying files.
-analyse-f:
-	dotnet format \
-		--verify-no-changes \
-		--no-restore
-
-# Deep InspectCode analysis.
-analyse-i:
+inspect-a:
 	dotnet tool run jb inspectcode $(SOLUTION) \
 		--output=$(ANALYSIS_RESULTS)/inspectcode.sarif \
 		--format=Sarif
 
-analyse-i-summary:
+inspect-r:
 	jq -r '[.runs[0].results[]?] | group_by(.level) | .[] | "[\(.[0].level)]", (group_by(.ruleId) | .[] | "  \(.[0].ruleId): \(length)")' $(ANALYSIS_RESULTS)/inspectcode.sarif
 
 rule ?= $(ruleid)
 
-analyse-i-find:
-	jq -r --arg rule "$(rule)" 'if $$rule == "" then error("Please specify rule=VALUE, e.g. make analyse-i-find rule=InconsistentNaming") else . end | [.runs[0].results[]? | select(.ruleId == $$rule)] | .[] | "[\(.level)] \(.ruleId): \(.message.text) - \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine)"' $(ANALYSIS_RESULTS)/inspectcode.sarif
+inspect-f:
+	jq -r --arg rule "$(rule)" 'if $$rule == "" then error("Please specify rule=VALUE, e.g. make inspect-f rule=InconsistentNaming") else . end | [.runs[0].results[]? | select(.ruleId == $$rule)] | .[] | "[\(.level)] \(.ruleId): \(.message.text) - \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine)"' $(ANALYSIS_RESULTS)/inspectcode.sarif
 
-# Run all static analysis.
-analyse: analyse-d analyse-f analyse-i analyse-i-summary
-
-# ---------------------------------------------------------------------------
-# Verification
-# ---------------------------------------------------------------------------
-
-# Full local verification.
-verify: build analyse test
+inspect: inspect-a inspect-r
 
 # ---------------------------------------------------------------------------
 # Tests
@@ -89,13 +67,13 @@ test:
 		--logger "trx" \
 		/p:CollectCoverage=true \
 		/m:1
-		
+
 	dotnet test tests/Dfe.Acec.RulesEngine.Tests.Unit \
 		--no-build \
 		--results-directory $(TEST_RESULTS) \
 		--logger "trx" \
 		/p:CollectCoverage=true \
-		/m:1		
+		/m:1
 
 	dotnet test tests/Dfe.Acec.Web.Tests.Integration \
 		--no-build \
@@ -121,17 +99,28 @@ playwright-i:
 # Terraform
 # ---------------------------------------------------------------------------
 
+tf-i:
+	terraform -chdir=infra/terraform init -input=false -backend=false
+
 tf-f:
-	terraform fmt -recursive infra/
+	terraform -chdir=infra/terraform fmt -recursive
 
 tf-v:
 	terraform -chdir=infra/terraform validate
 
-tf-docs:
+tf-d:
 	terraform-docs -c .terraform-docs.yml \
 		--output-file ../../docs/content/reference/architecture/deployed-infrastructure.md \
 		--output-mode inject \
 		infra/terraform
+
+tf: tf-i tf-f tf-v tf-d
+
+# ---------------------------------------------------------------------------
+# Verification
+# ---------------------------------------------------------------------------
+
+verify: build inspect test tf
 
 # ---------------------------------------------------------------------------
 # Documentation

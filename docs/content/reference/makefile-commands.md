@@ -23,12 +23,10 @@ These commands run development pipelines, verify code format, execute testing ta
 
 | Command | Action description |
 | :--- | :--- |
-| `make analyse-d` | Executes fast static analysis using the .NET SDK and Roslyn analyzers. |
-| `make analyse-f` | Verifies code formatting rules across the solution without modifying files. |
-| `make analyse-i` | Executes deep InspectCode analysis using JetBrains global tools. Outputs SARIF results to both a file and the console. |
-| `make analyse-i-summary` | Displays a summarized hierarchical list of InspectCode findings grouped by severity level and rule ID with counts. |
-| `make analyse-i-find rule=<RuleId>` | Displays all individual occurrences of a specific rule ID (e.g., `make analyse-i-find rule=InconsistentNaming`). |
-| `make analyse` | Runs all static analysis targets (`analyse-d`, `analyse-f`, and `analyse-i`). |
+| `make inspect-a` | Executes deep InspectCode analysis using JetBrains global tools. Outputs SARIF results to the analysis results folder. |
+| `make inspect-r` | Displays a summarized hierarchical list of InspectCode findings grouped by severity level and rule ID with counts. |
+| `make inspect-f rule=<RuleId>` | Displays all individual occurrences of a specific rule ID (e.g., `make inspect-f rule=InconsistentNaming`). |
+| `make inspect` | Runs both InspectCode analysis and displays the summarized findings (`inspect-a` and `inspect-r`). |
 
 ## Testing commands
 
@@ -43,9 +41,11 @@ These commands run development pipelines, verify code format, execute testing ta
 
 | Command | Action description |
 | :--- | :--- |
+| `make tf-i` | Initialises Terraform configuration locally without a backend. |
 | `make tf-f` | Spacially cleans and recursively formats all Terraform configuration files in the `infra/` folder. |
 | `make tf-v` | Validates Terraform configuration syntax, rules, and resource parameters. |
-| `make tf-docs` | Generates architectural documentation from Terraform variables and injects it into the deployed infrastructure guide. |
+| `make tf-d` | Generates architectural documentation from Terraform variables and injects it into the deployed infrastructure guide. |
+| `make tf` | Executes all local Terraform checks (`tf-i`, `tf-f`, `tf-v`, and `tf-d`). |
 
 ## Documentation commands
 
