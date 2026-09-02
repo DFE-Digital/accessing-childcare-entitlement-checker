@@ -42,7 +42,7 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
-            Nationality = userNationality,
+            NationalityOptions = [userNationality],
             SettledStatus = userSettledStatusOption,
         });
 

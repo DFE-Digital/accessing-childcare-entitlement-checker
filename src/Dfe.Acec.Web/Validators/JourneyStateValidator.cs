@@ -52,11 +52,12 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
             RuleFor(x => x.UserAge)
                 .NotNull();
 
-            RuleFor(x => x.Nationality)
-                .NotNull();
+            RuleFor(x => x.NationalityOptions)
+                .NotNull()
+                .NotEmpty();
 
             When(x =>
-                    x.Nationality == NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland,
+                    x.NationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland),
                 () =>
                 {
                     RuleFor(x => x.SettledStatus)
@@ -161,6 +162,22 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                 {
                     RuleFor(x => x.PartnerAge)
                         .NotNull();
+
+                    When(x => !x.NationalityOptions.Contains(NationalityOption.BritishOrIrishCitizen) && x.SettledStatus != SettledStatusOption.Yes,
+                        () =>
+                        {
+                            RuleFor(x => x.PartnerNationalityOptions)
+                                .NotNull()
+                                .NotEmpty();
+
+                            When(x =>
+                                    x.PartnerNationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland),
+                                () =>
+                                {
+                                    RuleFor(x => x.PartnerSettledStatus)
+                                        .NotNull();
+                                });
+                        });
 
                     RuleFor(x => x.PartnerPaidWork)
                         .NotNull();

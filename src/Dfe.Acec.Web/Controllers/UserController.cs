@@ -51,14 +51,8 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
 
         journeyState.Apply(model);
         journeySession.SetState(journeyState);
-        var nextAction = journeyState.Nationality switch
-        {
-            NationalityOption.BritishOrIrishCitizen => nameof(PaidWork),
-            NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland => nameof(SettledStatus),
-            NationalityOption.CitizenOfADifferentCountry => nameof(PaidWork),
-            _ => throw new UnreachableException($"Unexpected nationality option: {journeyState.Nationality}")
-        };
-
+        var needsSettledStatus = journeyState.NationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland);
+        var nextAction = needsSettledStatus ? nameof(SettledStatus) : nameof(PaidWork);
         return RedirectToAction(nextAction);
     }
 
@@ -389,7 +383,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
             return url;
         }
 
-        if (journeyState.Nationality == NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland)
+        if (journeyState.NationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland))
         {
             return Url.ActionOrThrow(nameof(SettledStatus));
         }

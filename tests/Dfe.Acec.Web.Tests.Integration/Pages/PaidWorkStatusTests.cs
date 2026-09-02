@@ -17,11 +17,11 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, "/nationality/settled-status")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
-    public async Task Get(string? returnTo, NationalityOption? nationality, string backLinkUrl)
+    public async Task Get(string? returnTo, NationalityOption nationality, string backLinkUrl)
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
-            Nationality = nationality,
+            NationalityOptions = [nationality],
         });
 
         using var client = host.CreateClient();
@@ -96,11 +96,11 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(null, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, "/nationality/settled-status")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, NationalityOption.CitizenOfADifferentCountry, "/children/check-childs-details")]
-    public async Task PostInvalidShowsValidationError(string? returnTo, NationalityOption? nationality, string backLinkUrl)
+    public async Task PostInvalidShowsValidationError(string? returnTo, NationalityOption nationality, string backLinkUrl)
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
-            Nationality = nationality,
+            NationalityOptions = [nationality],
         });
 
         using var client = host.CreateClient();

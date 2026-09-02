@@ -24,7 +24,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertRadioButtonCount(3)
+        doc.AssertCheckboxCount(3)
             .AssertBackLink(backLinkUrl)
             .AssertNavigationBar()
             .AssertBetaBanner();
@@ -47,7 +47,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
-            Nationality = nationality,
+            NationalityOptions = [nationality],
             SettledStatus = settledStatus,
             PaidWork = paidWork
         });
@@ -64,7 +64,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
         Assert.NotNull(cookie);
 
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
-                new KeyValuePair<string,string>("Nationality", nationality.ToString())
+                new KeyValuePair<string,string>("NationalityOptions", nationality.ToString())
             ],
             TestContext.Current.CancellationToken);
         postResponse.AssertRedirect(continueUrl);
@@ -86,7 +86,7 @@ public class NationalityTests(IntegrationTestFixture factory) : IClassFixture<In
         Assert.NotNull(cookie);
 
         var postResponse = await HttpClientHelpers.PostFormAsync(client, Url, cookie, token, [
-                new KeyValuePair<string,string>("Nationality", "CitizenOfAnEuCountryEeaCountryOrSwitzerland")
+                new KeyValuePair<string,string>("NationalityOptions", "CitizenOfAnEuCountryEeaCountryOrSwitzerland")
             ],
             TestContext.Current.CancellationToken);
         postResponse.AssertRedirect("/nationality/settled-status");

@@ -5,7 +5,7 @@
 @model NationalityViewModel
 
 @{
-    ViewData["Title"] = Html.DisplayNameFor(model => model.Nationality);
+    ViewData["Title"] = Html.DisplayNameFor(model => model.NationalityOptions);
 }
 
 @section BeforeContent {
@@ -17,7 +17,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">
-            @Html.DisplayNameFor(model => model.Nationality)
+            @Html.DisplayNameFor(model => model.NationalityOptions)
         </h1>
 
         <p class="govuk-body">
@@ -30,28 +30,7 @@
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
-            <govuk-radios for="Nationality">
-                <govuk-radios-fieldset>
-                    <govuk-radios-fieldset-legend class="govuk-visually-hidden">
-                        @Html.DisplayNameFor(model => model.Nationality)
-                    </govuk-radios-fieldset-legend>
-                    <govuk-radios-error-message />
-                    @foreach (var value in Enum.GetValues<NationalityOption>())
-                    {
-                        <govuk-radios-item value="@value">
-                            @Html.EnumDisplayName(value)
-                            @if (value == NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland)
-                            {
-                                <govuk-radios-item-hint>
-                                    <a class="govuk-link" href="https://www.gov.uk/eu-eea" target="_blank" rel="noopener noreferrer">
-                                        @Localizer["View the list of EU and EEA countries (opens in new tab)"]
-                                    </a>
-                                </govuk-radios-item-hint>
-                            }
-                        </govuk-radios-item>
-                    }
-                </govuk-radios-fieldset>
-            </govuk-radios>
+            <app-checkboxes for="NationalityOptions" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
