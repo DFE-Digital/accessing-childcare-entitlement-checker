@@ -85,7 +85,7 @@ jobs:
         run: dotnet format ${{ env.SOLUTION }} --verify-no-changes
 
       # Exclusions
-      # - `Program.cs` - this is partially tested by an integration test; but awkward to test - 
+      # - `Program.cs` - this is partially tested by an integration test; but awkward to test -
       # - `**/PartnerParentalLeave.cshtml` - this template triggers CPD against `User/ParentalLeave.cshtml`. Deduplicating is awkward
       #   due to govuk tag helpers - we can't easily use a partial. A more comprehensive fix is required, possibly using custom
       #   tag helpers.
@@ -111,7 +111,7 @@ jobs:
       - name: Build
         run: >
           dotnet build ${{ env.SOLUTION }}
-          -c ${{ env.CONFIGURATION }}
+          --configuration ${{ env.CONFIGURATION }}
           --no-restore
           /p:ContinuousIntegrationBuild=true
 
@@ -119,31 +119,31 @@ jobs:
         id: test
         run: |
           dotnet test ${{ env.UNIT_TESTS_WEB }} \
-            -c ${{ env.CONFIGURATION }} \
+            --configuration ${{ env.CONFIGURATION }} \
             --no-build \
-            --results-directory ./TestResults/Web.Tests.Unit \
-            --logger "trx;LogFileName=unit-web-test-results.trx" \
-            /p:CollectCoverage=true \
-            /p:CoverletOutputFormat=opencover \
-            /p:CoverletOutput=TestResults/coverage/unit-web/
-          
+            --results-directory ./.test-results/web-unit-tests \
+            --report-trx \
+            --coverlet \
+            --coverlet-output-format opencover \
+            --coverlet-include "[Dfe.Acec.*]*"
+
           dotnet test ${{ env.UNIT_TESTS_RULES }} \
-            -c ${{ env.CONFIGURATION }} \
+            --configuration ${{ env.CONFIGURATION }} \
             --no-build \
-            --results-directory ./TestResults/RulesEngine.Tests.Unit \
-            --logger "trx;LogFileName=unit-rules-test-results.trx" \
-            /p:CollectCoverage=true \
-            /p:CoverletOutputFormat=opencover \
-            /p:CoverletOutput=TestResults/coverage/unit-rules/
-          
+            --results-directory ./.test-results/rules-engine-unit-tests \
+            --report-trx \
+            --coverlet \
+            --coverlet-output-format opencover \
+            --coverlet-include "[Dfe.Acec.*]*"
+
           dotnet test ${{ env.INTEGRATION_TESTS }} \
-            -c ${{ env.CONFIGURATION }} \
+            --configuration ${{ env.CONFIGURATION }} \
             --no-build \
-            --results-directory ./TestResults/Tests.Integration \
-            --logger "trx;LogFileName=integration-test-results.trx" \
-            /p:CollectCoverage=true \
-            /p:CoverletOutputFormat=opencover \
-            /p:CoverletOutput=TestResults/coverage/integration/
+            --results-directory ./.test-results/web-integration-tests \
+            --report-trx \
+            --coverlet \
+            --coverlet-output-format opencover \
+            --coverlet-include "[Dfe.Acec.*]*"
 
       - name: Sonar End
         if: always()
@@ -156,7 +156,7 @@ jobs:
         continue-on-error: true
         run: |
           dotnet tool run reportgenerator \
-            -reports:"**/coverage.opencover.xml"\
+            -reports:"**/coverage.opencover*.xml"\
             -targetdir:coverage-report \
             -reporttypes:"Html;TextSummary;MarkdownSummaryGithub"
 
@@ -173,7 +173,7 @@ jobs:
         if: always()
         with:
           name: Test Results
-          path: TestResults/**/*.trx
+          path: .test-results/**/*.trx
           reporter: dotnet-trx
           fail-on-error: true
 
@@ -192,7 +192,7 @@ jobs:
           -c ${{ env.CONFIGURATION }}
           -o e2e-tests
           --no-build
-          
+
       - name: Publish A11y Tests
         if: inputs.publish
         run: >
@@ -221,9 +221,9 @@ jobs:
           name: web-app
           path: web-app
 
-      # We must manually zip these directories before upload. 
-      # The actions/upload-artifact action's default folder upload behavior 
-      # excludes hidden directories (like the '.playwright' binaries folder). 
+      # We must manually zip these directories before upload.
+      # The actions/upload-artifact action's default folder upload behavior
+      # excludes hidden directories (like the '.playwright' binaries folder).
       # Zipping them first forces the action to package and upload everything.
       - name: Zip e2e Tests
         if: inputs.publish
@@ -235,10 +235,10 @@ jobs:
         with:
           name: e2e-tests
           path: e2e-tests.zip
-          
-      # We must manually zip these directories before upload. 
-      # The actions/upload-artifact action's default folder upload behavior 
-      # excludes hidden directories (like the '.playwright' binaries folder). 
+
+      # We must manually zip these directories before upload.
+      # The actions/upload-artifact action's default folder upload behavior
+      # excludes hidden directories (like the '.playwright' binaries folder).
       # Zipping them first forces the action to package and upload everything.
       - name: Zip A11y Tests
         if: inputs.publish
