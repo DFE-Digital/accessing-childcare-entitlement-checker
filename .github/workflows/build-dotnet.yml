@@ -160,6 +160,14 @@ jobs:
             -targetdir:coverage-report \
             -reporttypes:"Html;TextSummary;MarkdownSummaryGithub"
 
+      - name: Write coverage summary to job summary
+        if: always()
+        continue-on-error: true
+        run: |
+          if [ -f coverage-report/SummaryGithub.md ]; then
+            cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+          fi
+
       - name: Publish test results
         uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
         if: always()
