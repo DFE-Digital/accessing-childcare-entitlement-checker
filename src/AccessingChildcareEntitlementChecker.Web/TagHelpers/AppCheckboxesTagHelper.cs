@@ -24,10 +24,10 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
 
     [HtmlAttributeName("legend")]
     public IHtmlContent? Legend { get; set; }
-    
+
     [HtmlAttributeName("clarity-mask-legend")]
     public bool MaskLegend { get; set; }
-    
+
     [HtmlAttributeName("clarity-mask-error")]
     public bool MaskError { get; set; }
 
