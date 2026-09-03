@@ -186,6 +186,13 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
         await Expect(page.GetByRole(AriaRole.Heading, new PageGetByRoleOptions { Level = 1 })).ToHaveTextAsync(expectedHeader);
     }
 
+    [When(@"the page title is ""(.*)""")]
+    [Then(@"the page title is ""(.*)""")]
+    public async Task WhenThePageTitleIs(string expectedTitle)
+    {
+        await Expect(page).ToHaveTitleAsync(expectedTitle);
+    }
+
     [When("I click on Continue")]
     public async Task WhenIClickOnContinue()
     {

@@ -5,7 +5,7 @@
 @model ChildBirthDateViewModel
 
 @{
-    ViewData["Title"] = Localizer["Title", Model.ChildName];
+    ViewData["Title"] = Localizer["Title"];
 }
 
 @section BeforeContent {
@@ -29,7 +29,7 @@
             <govuk-date-input for="ChildBirthDate">
                 <govuk-date-input-fieldset>
                     <govuk-date-input-fieldset-legend class="govuk-visually-hidden">
-                        @Localizer["Title", Model.ChildName]
+                        @Localizer["Heading", Model.ChildName]
                     </govuk-date-input-fieldset-legend>
 
                     <govuk-date-input-error-message />
