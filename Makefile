@@ -35,7 +35,7 @@ build:
 	dotnet clean --nologo --verbosity minimal
 	dotnet restore --locked-mode
 	dotnet format --verify-no-changes --verbosity minimal
-	dotnet build --configuration Release --no-restore --no-incremental --nologo --verbosity minimal
+	dotnet build --no-restore --no-incremental --nologo --verbosity minimal
 
 # ---------------------------------------------------------------------------
 # Inspect
@@ -63,34 +63,39 @@ inspect: inspect-a inspect-r
 test:
 	dotnet test tests/Dfe.Acec.Web.Tests.Unit \
 		--no-build \
-		--results-directory $(TEST_RESULTS) \
-		--logger "trx" \
-		/p:CollectCoverage=true \
-		/m:1
+		--results-directory ./.test-results/web-unit-tests \
+		--report-trx \
+		--coverlet \
+		--coverlet-output-format opencover \
+		--coverlet-include "[Dfe.Acec.*]*"
 
 	dotnet test tests/Dfe.Acec.RulesEngine.Tests.Unit \
 		--no-build \
-		--results-directory $(TEST_RESULTS) \
-		--logger "trx" \
-		/p:CollectCoverage=true \
-		/m:1
+		--results-directory ./.test-results/rules-engine-unit-tests \
+		--report-trx \
+		--coverlet \
+		--coverlet-output-format opencover \
+		--coverlet-include "[Dfe.Acec.*]*"
 
 	dotnet test tests/Dfe.Acec.Web.Tests.Integration \
 		--no-build \
-		--results-directory $(TEST_RESULTS) \
-		--logger "trx" \
-		/p:CollectCoverage=true \
-		/m:1
+		--results-directory ./.test-results/web-integration-tests \
+		--report-trx \
+		--coverlet \
+		--coverlet-output-format opencover \
+		--coverlet-include "[Dfe.Acec.*]*"
 
 test-e2e:
 	dotnet test tests/Dfe.Acec.Web.Tests.E2e \
 		--no-build \
-		--logger:"console;verbosity=normal"
+		--results-directory ./.test-results/web-e2e-tests \
+		--report-trx
 
 test-a11y:
 	dotnet test tests/Dfe.Acec.Web.Tests.A11y \
 		--no-build \
-		--logger:"console;verbosity=normal"
+		--results-directory ./.test-results/web-a11y-tests \
+		--report-trx
 
 playwright-i:
 	pwsh ./.artifacts/bin/Dfe.Acec.Web.Tests.E2e/debug/playwright.ps1 install --with-deps
