@@ -28,9 +28,6 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
     [HtmlAttributeName("clarity-mask-legend")]
     public bool MaskLegend { get; set; }
 
-    [HtmlAttributeName("clarity-mask-error")]
-    public bool MaskError { get; set; }
-
     [ViewContext]
     [HtmlAttributeNotBound]
     public ViewContext ViewContext { get; set; } = null!;
@@ -91,17 +88,7 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
         if (!string.IsNullOrEmpty(error))
         {
             ViewContext.HttpContext.AddPageError(error, $"#{idPrefix}");
-            return new ErrorMessageOptions
-            {
-                Text = error,
-                Attributes = MaskError
-                    ? new AttributeCollection(
-                        new Dictionary<string, string?>
-                        {
-                            ["data-clarity-mask"] = "true"
-                        })
-                    : null
-            };
+            return new ErrorMessageOptions { Text = error };
         }
 
         return null;

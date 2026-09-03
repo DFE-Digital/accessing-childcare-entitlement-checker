@@ -20,23 +20,18 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
+            {
                 {
-                    {
-                        ChildId,
-                        new Child(ChildId, "Sara")
-                    }
+                    ChildId,
+                    new Child(ChildId, "Sara")
                 }
+            }
         });
 
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-
-        var maskedElement = doc.QuerySelector("[data-clarity-mask=\"true\"]");
-
-        Assert.NotNull(maskedElement);
-        Assert.Contains("Sara", maskedElement.TextContent);
 
         doc.AssertDateInput()
             .AssertBackLink(backLinkUrl)
@@ -55,15 +50,15 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
+            {
                 {
+                    ChildId,
+                    new Child(ChildId, "Sara")
                     {
-                        ChildId,
-                        new Child(ChildId, "Sara")
-                        {
-                            ChildSupportOptions = childSupport == null ? [] : [childSupport.Value],
-                        }
+                        ChildSupportOptions = childSupport == null ? [] : [childSupport.Value],
                     }
                 }
+            }
         });
 
         var url = $"{Url}?returnTo={returnTo}";
@@ -89,17 +84,18 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(null, $"/children/{ChildId}/has-the-child-been-born")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
-    public async Task Post_With_Tomorrows_Date_Fails_Validation_And_Preserves_Childs_Name_With_BackLink(string? returnTo, string backLinkUrl)
+    public async Task Post_With_Tomorrows_Date_Fails_Validation_And_Preserves_Childs_Name_With_BackLink(
+        string? returnTo, string backLinkUrl)
     {
         using var client = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child>
+            {
                 {
-                    {
-                        ChildId,
-                        new Child(ChildId, "Sara")
-                    }
+                    ChildId,
+                    new Child(ChildId, "Sara")
                 }
+            }
         });
 
         var url = $"{Url}?returnTo={returnTo}";
@@ -120,8 +116,8 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
             TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
         postDocument.AssertHeading("What is Sara's date of birth?")
-                    .AssertValidationError()
-                    .AssertBackLink(backLinkUrl);
+            .AssertValidationError()
+            .AssertBackLink(backLinkUrl);
     }
 
     [Fact]
@@ -130,5 +126,31 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Get_HeadingMaskedForClarity()
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                {
+                    ChildId,
+                    new Child(ChildId, "Sara")
+                }
+            }
+        });
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var legend = document.QuerySelector("legend.govuk-fieldset__legend");
+
+        Assert.NotNull(legend);
+        Assert.Equal("true", legend.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", legend.TextContent);
     }
 }

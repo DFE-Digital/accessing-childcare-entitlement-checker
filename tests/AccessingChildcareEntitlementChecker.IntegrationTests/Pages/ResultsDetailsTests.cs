@@ -34,7 +34,8 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -49,7 +50,8 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -64,7 +66,8 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync($"/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -79,7 +82,8 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -96,14 +100,19 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        Assert.Contains("Working families can get help with childcare costs for children aged 0 to 11 (or 16 if they have a disability).", doc.Body?.TextContent);
-        Assert.Contains("You can get up to £2,000 a year towards these costs. If your child has a disability, this increases to £4,000 a year.", doc.Body?.TextContent);
+        Assert.Contains(
+            "Working families can get help with childcare costs for children aged 0 to 11 (or 16 if they have a disability).",
+            doc.Body?.TextContent);
+        Assert.Contains(
+            "You can get up to £2,000 a year towards these costs. If your child has a disability, this increases to £4,000 a year.",
+            doc.Body?.TextContent);
     }
 
     [Fact]
@@ -111,14 +120,19 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        Assert.Contains("Working parents can get up to 30 hours of funded childcare a week for children aged 9 months to 4 years old.", doc.Body?.TextContent);
-        Assert.Contains("You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme.", doc.Body?.TextContent);
+        Assert.Contains(
+            "Working parents can get up to 30 hours of funded childcare a week for children aged 9 months to 4 years old.",
+            doc.Body?.TextContent);
+        Assert.Contains(
+            "You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme.",
+            doc.Body?.TextContent);
     }
 
     [Fact]
@@ -126,7 +140,8 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -140,7 +155,8 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -155,7 +171,8 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -169,13 +186,16 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     {
         using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
 
-        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        Assert.Contains("You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme.", doc.Body?.TextContent);
+        Assert.Contains(
+            "You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme.",
+            doc.Body?.TextContent);
     }
 
     [Theory]
@@ -184,14 +204,16 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.Yes, false)]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.No, true)]
     [InlineData(NationalityOption.CitizenOfAnEUCountryEEACountryOrSwitzerland, SettledStatusOption.StillWaiting, false)]
-    public async Task Get_ResultsDetailed_DisplaysPublicFundsWarning(NationalityOption nationality, SettledStatusOption? settledStatus, bool hasWarning)
+    public async Task Get_ResultsDetailed_DisplaysPublicFundsWarning(NationalityOption nationality,
+        SettledStatusOption? settledStatus, bool hasWarning)
     {
         var state = CreateJourneyState();
         state.Nationality = nationality;
         state.SettledStatus = settledStatus;
         using var client = factory.CreateClientWithJourneyState(state);
 
-        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1",
+            TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -206,5 +228,38 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
         {
             Assert.DoesNotContain(WarningText, doc.Body?.TextContent);
         }
+    }
+
+    [Fact]
+    public async Task Get_SensitiveElementsMaskedForClarity()
+    {
+        using var client = factory.CreateClientWithJourneyState(CreateJourneyState());
+
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var heading = document.QuerySelector("h1.govuk-heading-xl");
+        var intro = document.QuerySelector("p.govuk-body[data-clarity-mask=\"true\"]");
+        var whenToApply = document.QuerySelector("#when-to-apply");
+        var starts = document.QuerySelector("#starts");
+        var ends = document.QuerySelector("#ends");
+
+        Assert.NotNull(heading);
+        Assert.Equal("true", heading.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(intro);
+        Assert.Equal("true", intro.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(whenToApply);
+        Assert.Equal("true", whenToApply.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(starts);
+        Assert.Equal("true", starts.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(ends);
+        Assert.Equal("true", ends.GetAttribute("data-clarity-mask"));
     }
 }

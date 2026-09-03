@@ -122,4 +122,88 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
             DueDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(3))
         };
     }
+
+    [Fact]
+    public async Task Get_ChildSummaryTitleMaskedForClarity()
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                {
+                    ChildId,
+                    CreateBornChild(ChildId, "Sara")
+                }
+            }
+        });
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var title = document.QuerySelector(".govuk-summary-card__title-wrapper");
+
+        Assert.NotNull(title);
+        Assert.Equal("true", title.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", title.TextContent);
+    }
+
+    [Fact]
+    public async Task Get_ChildSummaryRowKeysMaskedForClarity()
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                {
+                    ChildId,
+                    CreateBornChild(ChildId, "Sara")
+                }
+            }
+        });
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var keys = document.QuerySelectorAll(".govuk-summary-list__key");
+
+        Assert.NotEmpty(keys);
+
+        foreach (var key in keys)
+        {
+            Assert.Equal("true", key.GetAttribute("data-clarity-mask"));
+        }
+    }
+
+    [Theory]
+    [InlineData("check-your-childrens-details")]
+    public async Task Get_RemovePageTitleMaskedForClarity(string returnTo)
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                {
+                    ChildId,
+                    CreateBornChild(ChildId, "Sara")
+                }
+            }
+        });
+
+        var url = $"/children/{ChildId}/remove?returnTo={returnTo}";
+
+        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var maskedElement = document.QuerySelector("[data-clarity-mask=\"true\"]");
+
+        Assert.NotNull(maskedElement);
+        Assert.Contains("Sara", maskedElement.TextContent);
+    }
 }

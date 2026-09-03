@@ -32,10 +32,6 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        var legend = doc.QuerySelector("legend");
-        Assert.NotNull(legend);
-        Assert.Equal("true", legend.GetAttribute("data-clarity-mask"));
-
         doc.AssertCheckboxCount(6)
             .AssertBackLink(backLinkUrl)
             .AssertNavigationBar()
@@ -119,5 +115,29 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
         using var client = factory.CreateClientWithJourneyState(new JourneyState());
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Get_HeadingMaskedForClarity()
+    {
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                {
+                    ChildId,
+                    new Child(ChildId, "Sara")
+                }
+            }
+        });
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+        var legend = document.QuerySelector("legend");
+
+        Assert.NotNull(legend);
+        Assert.Equal("true", legend.GetAttribute("data-clarity-mask"));
     }
 }
