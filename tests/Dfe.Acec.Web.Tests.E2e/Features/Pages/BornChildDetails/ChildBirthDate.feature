@@ -11,7 +11,8 @@ Background:
 
 Scenario: Page load
 	When the page header is "What is Sara's date of birth?"
-	Then I should see the hint text "For example, 31 3 2022"
+	Then the page title is "What is this child's date of birth?"
+	And I should see the hint text "For example, 31 3 2022"
 	And I should see a date entry input
 	And the date entry input is empty
 

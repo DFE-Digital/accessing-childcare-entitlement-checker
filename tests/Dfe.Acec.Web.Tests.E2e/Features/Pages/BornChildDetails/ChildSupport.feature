@@ -12,7 +12,8 @@ Background:
 
 Scenario: Page load
 	When the page header is "Does Sara get any of the following support?"
-	Then I should see the following checkboxes:
+	Then the page title is "Does this child get any of the following support?"
+	And I should see the following checkboxes:
 		| Name                                  |
 		| Armed Forces Independence Payment     |
 		| Certificate of visual impairment      |
