@@ -31,6 +31,11 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var legend = doc.QuerySelector("legend");
+        Assert.NotNull(legend);
+        Assert.Equal("true", legend.GetAttribute("data-clarity-mask"));
+
         doc.AssertCheckboxCount(6)
             .AssertBackLink(backLinkUrl)
             .AssertNavigationBar()

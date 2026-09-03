@@ -32,6 +32,12 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var maskedElement = doc.QuerySelector("[data-clarity-mask=\"true\"]");
+
+        Assert.NotNull(maskedElement);
+        Assert.Contains("Sara", maskedElement.TextContent);
+
         doc.AssertDateInput()
             .AssertBackLink(backLinkUrl)
             .AssertNavigationBar()
