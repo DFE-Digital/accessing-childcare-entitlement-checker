@@ -122,9 +122,7 @@ jobs:
           TestSettings__Browser: ${{ inputs.browser }}
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          ./e2e-tests/Dfe.Acec.Web.Tests.E2e \
-            --results-directory ./.test-results/web-e2e-tests \
-            --report-trx
+          ./e2e-tests/Dfe.Acec.Web.Tests.E2e
 
       - name: Stop app
         if: always() && env.APP_STARTED == 'true'
@@ -136,6 +134,6 @@ jobs:
         uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
         with:
           name: E2E Test Results (${{ inputs.browser }})
-          path: .test-results/**/*.trx
+          path: "**/*.trx"
           reporter: dotnet-trx
           fail-on-error: true

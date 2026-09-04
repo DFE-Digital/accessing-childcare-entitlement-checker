@@ -1,13 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
-    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="coverlet.MTP">
       <PrivateAssets>all</PrivateAssets>
@@ -19,10 +11,6 @@
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="Xunit" />
-  </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dfe.Acec.RulesEngine\Dfe.Acec.RulesEngine.csproj" />
   </ItemGroup>

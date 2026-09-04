@@ -11,6 +11,8 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
     <Deterministic>true</Deterministic>
+    <!-- Enabled when CI=true (GitHub Actions sets this by default). With Deterministic, the SDK uses this for DeterministicSourcePaths in reproducible CI builds. -->
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
@@ -20,17 +22,36 @@
     <AnalysisMode>Recommended</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <!-- Warnings fail the build in CI only; local builds keep warnings visible without failing. -->
+    <TreatWarningsAsErrors Condition="'$(CI)' == 'true'">true</TreatWarningsAsErrors>
 
     <!-- NuGet security auditing -->
     <NuGetAudit>true</NuGetAudit>
     <NuGetAuditLevel>high</NuGetAuditLevel>
+    <NuGetAuditMode>all</NuGetAuditMode>
 
     <BuildInParallel>true</BuildInParallel>
     <UseSharedCompilation>true</UseSharedCompilation>
   </PropertyGroup>
 
+  <PropertyGroup Condition="$(MSBuildProjectName.Contains('.Tests.'))">
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <IsTestingPlatformApplication>true</IsTestingPlatformApplication>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformCommandLineArguments>$(TestingPlatformCommandLineArguments) --config-file "$(MSBuildThisFileDirectory)testconfig.json"</TestingPlatformCommandLineArguments>
+  </PropertyGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)CodeMetricsConfig.txt"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="$(MSBuildProjectName.Contains('.Tests.'))">
+    <Using Include="Xunit"/>
+    <None Include="$(MSBuildThisFileDirectory)testconfig.json" Link="$(AssemblyName).testconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://testing.microsoft.com/schemas/2024/01/testconfig.json",
+  "platformOptions": {
+    "resultDirectory": "./.test-results"
+  },
+  "commandLineOptions": {
+    "report-trx": true
+  },
+  "xUnit": {
+    "culture": "en-GB",
+    "parallelizeTestCollections": true
+  }
+}
