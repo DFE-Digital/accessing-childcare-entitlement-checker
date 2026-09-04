@@ -114,7 +114,8 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
     {
         return new Child(childId, name)
         {
-            BirthStatus = BirthStatus.Due, DueDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(3))
+            BirthStatus = BirthStatus.Due,
+            DueDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(3))
         };
     }
 
