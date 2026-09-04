@@ -1,0 +1,35 @@
+@using AccessingChildcareEntitlementChecker.Web.Models.Summary
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<SummaryRowViewModel>
+
+<govuk-summary-list>
+    @foreach (var row in Model)
+    {
+        <govuk-summary-list-row>
+            <govuk-summary-list-row-key>@Localizer[row.Key]</govuk-summary-list-row-key>
+            @if (row.MaskValueForClarity)
+            {
+                <govuk-summary-list-row-value
+                    data-clarity-mask="true"
+                    data-testid="parental-leave-child-names">
+                    @row.Value
+                </govuk-summary-list-row-value>
+            }
+            else
+            {
+                <govuk-summary-list-row-value>
+                    @row.Value
+                </govuk-summary-list-row-value>
+            }
+            <govuk-summary-list-row-actions>
+                <govuk-summary-list-row-action
+                    asp-controller="@row.ChangeController"
+                    asp-action="@row.ChangeAction"
+                    asp-route-returnTo="@ReturnTo.CheckAnswers">
+                    @Localizer["Change"]
+                </govuk-summary-list-row-action>
+            </govuk-summary-list-row-actions>
+        </govuk-summary-list-row>
+    }
+</govuk-summary-list>

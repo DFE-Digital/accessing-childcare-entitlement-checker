@@ -66,71 +66,12 @@
             </div>
 
             <h2 class="govuk-heading-m">@Localizer["Your details"]</h2>
-            <govuk-summary-list>
-                @foreach (var row in Model.UserDetails)
-                {
-                    <govuk-summary-list-row>
-                        <govuk-summary-list-row-key>@Localizer[row.Key]</govuk-summary-list-row-key>
-                        @if (row.MaskValueForClarity)
-                        {
-                            <govuk-summary-list-row-value
-                                data-clarity-mask="true"
-                                data-testid="parental-leave-child-names">
-                                @row.Value
-                            </govuk-summary-list-row-value>
-                        }
-                        else
-                        {
-                            <govuk-summary-list-row-value>
-                                @row.Value
-                            </govuk-summary-list-row-value>
-                        }
-                        <govuk-summary-list-row-actions>
-                            <govuk-summary-list-row-action
-                                asp-controller="@row.ChangeController"
-                                asp-action="@row.ChangeAction"
-                                asp-route-returnTo="@ReturnTo.CheckAnswers">
-                                @Localizer["Change"]
-                            </govuk-summary-list-row-action>
-                        </govuk-summary-list-row-actions>
-                    </govuk-summary-list-row>
-                }
-            </govuk-summary-list>
+            <partial name="_SummaryList" model="Model.UserDetails" />
 
             @if (Model.PartnerDetails.Any())
             {
                 <h2 class="govuk-heading-m">@Localizer["Your partners details"]</h2>
-                @* sonarignore:start - Intentional duplication required to conditionally omit data-clarity-mask on GOV.UK tag helper. AC-953 *@
-                <govuk-summary-list>
-                    @foreach (var row in Model.PartnerDetails)
-                    {
-                        <govuk-summary-list-row>
-                            <govuk-summary-list-row-key>@Localizer[row.Key]</govuk-summary-list-row-key>
-                            @if (row.MaskValueForClarity)
-                            {
-                                <govuk-summary-list-row-value
-                                    data-clarity-mask="true"
-                                    data-testid="parental-leave-child-names">
-                                    @row.Value
-                                </govuk-summary-list-row-value>
-                            }
-                            else
-                            {
-                                <govuk-summary-list-row-value>
-                                    @row.Value
-                                </govuk-summary-list-row-value>
-                            }
-                            <govuk-summary-list-row-actions>
-                                <govuk-summary-list-row-action asp-controller="@row.ChangeController"
-                                                               asp-action="@row.ChangeAction"
-                                                               asp-route-returnTo="@ReturnTo.CheckAnswers">
-                                    @Localizer["Change"]
-                                </govuk-summary-list-row-action>
-                            </govuk-summary-list-row-actions>
-                        </govuk-summary-list-row>
-                    }
-                </govuk-summary-list>
-                @* sonarignore:end *@
+                <partial name="_SummaryList" model="Model.PartnerDetails" />
             }
 
             <p class="govuk-body">@Localizer["Click 'Continue' to view your results."]</p>
