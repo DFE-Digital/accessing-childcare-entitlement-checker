@@ -13,14 +13,9 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
     [Fact]
     public async Task GetWhenFeatureFlagEnabledSuppressesLocationRow()
     {
-        await using var host = factory.CreateClientWithJourneyStateAndFeatureFlags(new JourneyState
-        {
-            CountryOfResidence = CountryOfResidence.England,
-            HasPartner = false,
-        }, new()
-        {
-            { "FeatureManagement:HmrcIntegration", "true" }
-        });
+        await using var host = factory.CreateClientWithJourneyStateAndFeatureFlags(
+            new JourneyState { CountryOfResidence = CountryOfResidence.England, HasPartner = false, },
+            new() { { "FeatureManagement:HmrcIntegration", "true" } });
 
         using var client = host.CreateClient();
 
@@ -54,5 +49,69 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
         doc.AssertBackLink(backLinkUrl)
             .AssertNavigationBar()
             .AssertBetaBanner();
+    }
+
+    [Fact]
+    public async Task GetParentalLeaveChildNameMaskedForClarity()
+    {
+        const string childId = "child-1";
+
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            CountryOfResidence = CountryOfResidence.England,
+            HasPartner = false,
+            PaidWork = PaidWorkOption.ParentalLeave,
+            Children = new Dictionary<string, Child>
+            {
+                {
+                    childId,
+                    new Child(childId, "Sara")
+                    {
+                        BirthStatus = BirthStatus.Born,
+                        BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+                        ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
+                    }
+                }
+            },
+            ParentalLeaveChildrenIds = [childId]
+        });
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var parentalLeaveValue = doc.QuerySelector("[data-testid=\"parental-leave-child-names\"]");
+
+        Assert.NotNull(parentalLeaveValue);
+        Assert.Equal("true", parentalLeaveValue.GetAttribute("data-clarity-mask"));
+        Assert.Equal("Sara", parentalLeaveValue.TextContent.Trim());
+    }
+
+    [Theory]
+    [InlineData("check-your-answers")]
+    public async Task Get_RemovePageTitleMaskedForClarity(string returnTo)
+    {
+        const string childId = "child-1";
+
+        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child> { { childId, new Child(childId, "Sara") } }
+        });
+
+        var url = $"/children/{childId}/remove?returnTo={returnTo}";
+
+        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var legend = document.QuerySelector("legend.govuk-fieldset__legend");
+
+        Assert.NotNull(legend);
+        Assert.Equal("true", legend.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", legend.TextContent);
     }
 }

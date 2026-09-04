@@ -90,7 +90,7 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
         var displayValue = string.Join(", ", childrenNames);
         return displayValue == string.Empty
             ? this
-            : Add((ParentalLeaveViewModel s) => s.ParentalLeaveChildrenIds, displayValue, nameof(UserController.ParentalLeave));
+            : Add((ParentalLeaveViewModel s) => s.ParentalLeaveChildrenIds, displayValue, nameof(UserController.ParentalLeave), true);
     }
 
     public SummaryRowFactory AddPartnerParentalLeave(JourneyState journeyState)
@@ -104,7 +104,7 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
         var displayValue = string.Join(", ", childrenNames);
         return displayValue == string.Empty
             ? this
-            : Add((PartnerParentalLeaveViewModel s) => s.PartnerParentalLeaveChildrenIds, displayValue, nameof(PartnerController.PartnerParentalLeave));
+            : Add((PartnerParentalLeaveViewModel s) => s.PartnerParentalLeaveChildrenIds, displayValue, nameof(PartnerController.PartnerParentalLeave), true);
     }
 
     [PublicAPI]
@@ -240,7 +240,8 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
     private SummaryRowFactory Add<TViewModel, TProperty>(
         Expression<Func<TViewModel, TProperty?>> viewModelProperty,
         string value,
-        string controllerActionName)
+        string controllerActionName,
+        bool maskValueForClarity = false)
     {
         var key = GetLabelLocalisationKey(typeof(TViewModel), viewModelProperty);
 
@@ -249,7 +250,8 @@ public class SummaryRowFactory(IModelMetadataProvider modelMetadataProvider, str
             key,
             value,
             ControllerName,
-            controllerActionName);
+            controllerActionName,
+            maskValueForClarity);
 
         _viewModels.Add(vm);
 
