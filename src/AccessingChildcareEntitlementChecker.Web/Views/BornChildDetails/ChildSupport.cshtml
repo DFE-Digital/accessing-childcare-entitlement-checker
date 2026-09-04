@@ -19,8 +19,9 @@
         <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
             <app-checkboxes for="ChildSupportOptions"
-                                 legend="@Localizer["Does {0} get any of the following support?", Model.ChildName]"
-                                 exclusive-value="ChildSupport.NoneOfTheseApply" />
+                                 legend ="@Localizer["Does {0} get any of the following support?", Model.ChildName]"
+                                 exclusive-value="ChildSupport.NoneOfTheseApply" 
+                                 clarity-mask-legend="true" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]

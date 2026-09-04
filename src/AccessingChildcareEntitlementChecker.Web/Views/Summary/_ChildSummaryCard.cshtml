@@ -5,7 +5,7 @@
 @model ChildSummaryViewModel
 
 <govuk-summary-card>
-    <govuk-summary-card-title>@Model.Name</govuk-summary-card-title>
+    <govuk-summary-card-title data-clarity-mask="true">@Model.Name</govuk-summary-card-title>
     <govuk-summary-card-actions>
         <govuk-summary-card-action asp-controller="Summary" asp-action="Remove" asp-route-childId="@Model.ChildId" asp-route-returnTo="@Model.ReturnTo">
             @Localizer["Remove"]
@@ -15,7 +15,7 @@
         @foreach (var row in Model.Rows)
         {
             <govuk-summary-list-row>
-                <govuk-summary-list-row-key>@Localizer[row.Key, Model.Name]</govuk-summary-list-row-key>
+                <govuk-summary-list-row-key data-clarity-mask="true">@Localizer[row.Key, Model.Name]</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>@row.Value</govuk-summary-list-row-value>
                 <govuk-summary-list-row-actions>
                     <govuk-summary-list-row-action

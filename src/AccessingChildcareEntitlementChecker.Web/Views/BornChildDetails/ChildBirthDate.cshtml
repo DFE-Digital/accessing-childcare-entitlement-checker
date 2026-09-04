@@ -20,7 +20,7 @@
             <input type="hidden" asp-for="ReturnTo" />
             <govuk-date-input for="ChildBirthDate">
                 <govuk-date-input-fieldset>
-                    <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                    <govuk-date-input-fieldset-legend is-page-heading="true" data-clarity-mask="true" class="govuk-fieldset__legend--l">
                         @Localizer["Heading", Model.ChildName ?? "child"]
                     </govuk-date-input-fieldset-legend>
 
