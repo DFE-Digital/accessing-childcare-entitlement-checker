@@ -100,6 +100,7 @@
             @if (Model.PartnerDetails.Any())
             {
                 <h2 class="govuk-heading-m">@Localizer["Your partners details"]</h2>
+                @* sonarignore:start - Intentional duplication required to conditionally omit data-clarity-mask on GOV.UK tag helper. AC-953 *@
                 <govuk-summary-list>
                     @foreach (var row in Model.PartnerDetails)
                     {
@@ -129,6 +130,7 @@
                         </govuk-summary-list-row>
                     }
                 </govuk-summary-list>
+                @* sonarignore:end *@
             }
 
             <p class="govuk-body">@Localizer["Click 'Continue' to view your results."]</p>
