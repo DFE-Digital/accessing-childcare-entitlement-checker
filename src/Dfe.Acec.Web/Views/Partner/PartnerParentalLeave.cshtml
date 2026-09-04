@@ -30,7 +30,7 @@
                     <govuk-checkboxes-error-message />
                     @foreach (var child in Model.Children)
                     {
-                    <govuk-checkboxes-item value="@child.ChildId">
+                    <govuk-checkboxes-item value="@child.ChildId" data-clarity-mask="true">
                         @child.Name
                     </govuk-checkboxes-item>
                     }

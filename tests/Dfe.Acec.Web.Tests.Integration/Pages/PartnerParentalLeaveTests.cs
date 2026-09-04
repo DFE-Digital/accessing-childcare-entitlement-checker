@@ -138,4 +138,33 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
         postDocument.AssertValidationError()
             .AssertBackLink(backLinkUrl);
     }
+
+    [Fact]
+    public async Task GetChildCheckboxLabelMaskedForClarity()
+    {
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                {
+                    ChildId,
+                    new Child(ChildId, "Sara")
+                }
+            }
+        });
+
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var childLabel = document.QuerySelector(".govuk-checkboxes__item");
+
+        Assert.NotNull(childLabel);
+        Assert.Equal("true", childLabel.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", childLabel.TextContent);
+    }
 }

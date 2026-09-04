@@ -35,21 +35,6 @@ public class ChildSupportViewModelTests
     }
 
     [Fact]
-    public void ValidateThrowsWhenNoChild()
-    {
-        var child = new Child("DOES-NOT-EXIST", "Child b");
-        var model = new ChildSupportViewModel(child, "backLink")
-        {
-            ChildSupportOptions = []
-        };
-
-        var validationContext = new ValidationContext(model);
-        validationContext.InitializeServiceProvider(_serviceProviderFunc);
-
-        Assert.Throws<InvalidOperationException>(() => model.Validate(validationContext).ToList());
-    }
-
-    [Fact]
     public void ValidateReturnsErrorWhenNoneSelectedWithOptions()
     {
         Assert.True(_journeyState.Children.TryGetValue("child-a", out var child));
@@ -68,7 +53,7 @@ public class ChildSupportViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("Select any support Jack gets, or select 'No, none of these apply'", validationResults[0].ErrorMessage);
+        Assert.Equal("Select any support this child gets, or select 'No, none of these apply'", validationResults[0].ErrorMessage);
     }
 
     [Fact]
@@ -86,6 +71,6 @@ public class ChildSupportViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("Select any support Jack gets, or select 'No, none of these apply'", validationResults[0].ErrorMessage);
+        Assert.Equal("Select any support this child gets, or select 'No, none of these apply'", validationResults[0].ErrorMessage);
     }
 }

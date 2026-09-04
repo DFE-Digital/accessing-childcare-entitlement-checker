@@ -18,13 +18,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
-            Children = new Dictionary<string, Child>
-                {
-                    {
-                        ChildId,
-                        new Child(ChildId, "Sara")
-                    }
-                },
+            Children = new Dictionary<string, Child> { { ChildId, new Child(ChildId, "Sara") } },
         });
 
         using var client = host.CreateClient();
@@ -51,13 +45,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
-            Children = new Dictionary<string, Child>
-                {
-                    {
-                        ChildId,
-                        new Child(ChildId, "Sara")
-                    }
-                },
+            Children = new Dictionary<string, Child> { { ChildId, new Child(ChildId, "Sara") } },
             WorkStatus = workStatus == null ? [] : [workStatus.Value],
         });
 
@@ -97,7 +85,9 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
         Assert.NotNull(token);
         Assert.NotNull(cookie);
 
-        var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [], TestContext.Current.CancellationToken);
+        var postResponse =
+            await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [],
+                TestContext.Current.CancellationToken);
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
         postDocument.AssertValidationError()
             .AssertBackLink(backLinkUrl);
@@ -110,13 +100,7 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
-            Children = new Dictionary<string, Child>
-                {
-                    {
-                        ChildId,
-                        new Child(ChildId, "Sara")
-                    }
-                },
+            Children = new Dictionary<string, Child> { { ChildId, new Child(ChildId, "Sara") } },
         });
 
         using var client = host.CreateClient();
@@ -137,5 +121,28 @@ public class ParentalLeaveTests(IntegrationTestFixture factory) : IClassFixture<
         var postDocument = await HtmlHelpers.ParseHtmlAsync(postResponse.Content);
         postDocument.AssertValidationError()
             .AssertBackLink(backLinkUrl);
+    }
+
+    [Fact]
+    public async Task GetChildCheckboxLabelMaskedForClarity()
+    {
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child> { { ChildId, new Child(ChildId, "Sara") } }
+        });
+
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var childLabel = document.QuerySelector(".govuk-checkboxes__item");
+
+        Assert.NotNull(childLabel);
+        Assert.Equal("true", childLabel.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", childLabel.TextContent);
     }
 }
