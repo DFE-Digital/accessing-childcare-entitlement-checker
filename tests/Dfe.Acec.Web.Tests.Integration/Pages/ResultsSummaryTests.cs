@@ -314,12 +314,15 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
             Nationality = NationalityOption.BritishOrIrishCitizen,
             PaidWork = PaidWorkOption.Yes,
             YearlyEarnings = YearlyEarningsOption.BelowThreshold,
-            HasPartner = false
-        };
-
-        state.Children["child-1"] = new Child("child-1", "Sara")
-        {
-            BirthStatus = BirthStatus.Born, BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
+            HasPartner = false,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Sara")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3))
+                }
+            }
         };
 
         await using var host = factory.CreateClientWithJourneyState(state);
