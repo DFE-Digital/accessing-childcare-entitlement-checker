@@ -32,7 +32,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         journeySession.SetState(journeyState);
 
         var nextAction = nameof(PartnerPaidWork);
-        if (journeyState.Nationality != NationalityOption.BritishOrIrishCitizen
+        if (!journeyState.NationalityOptions.Contains(NationalityOption.BritishOrIrishCitizen)
             && journeyState.SettledStatus != SettledStatusOption.Yes)
         {
             nextAction = nameof(PartnerNationality);
@@ -59,14 +59,9 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
 
         journeyState.Apply(model);
         journeySession.SetState(journeyState);
-        var nextAction = journeyState.PartnerNationality switch
-        {
-            NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland => nameof(PartnerSettledStatus),
-            NationalityOption.BritishOrIrishCitizen => nameof(PartnerPaidWork),
-            NationalityOption.CitizenOfADifferentCountry => nameof(PartnerPaidWork),
-            _ => throw new UnreachableException($"Unexpected PartnerNationality: {journeyState.PartnerNationality}"),
-        };
 
+        var needsSettledStatus = journeyState.PartnerNationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland);
+        var nextAction = needsSettledStatus ? nameof(PartnerSettledStatus) : nameof(PartnerPaidWork);
         return RedirectToAction(nextAction);
     }
 
@@ -336,17 +331,18 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
             return url;
         }
 
-        if (journeyState.Nationality == NationalityOption.BritishOrIrishCitizen)
+        if (journeyState.NationalityOptions.Contains(NationalityOption.BritishOrIrishCitizen))
         {
             return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
-        if (journeyState is { Nationality: NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatus: SettledStatusOption.Yes })
+        var userNeedsSettledStatus = journeyState.NationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland);
+        if (userNeedsSettledStatus && journeyState.SettledStatus == SettledStatusOption.Yes)
         {
             return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
-        if (journeyState.PartnerNationality == NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland)
+        if (journeyState.PartnerNationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland))
         {
             return Url.ActionOrThrow(nameof(PartnerSettledStatus));
         }

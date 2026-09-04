@@ -83,17 +83,17 @@ public class UserControllerTests : IDisposable
     {
         var result = Assert.IsType<ViewResult>(_controller.Nationality());
 
-        Assert.Null(result.Model<NationalityViewModel>().Nationality);
+        Assert.Equal([], result.Model<NationalityViewModel>().NationalityOptions);
     }
 
     [Fact]
     public void NationalityGetPopulatesModelFromState()
     {
-        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
+        _journeyState.NationalityOptions = [NationalityOption.BritishOrIrishCitizen];
 
         var result = Assert.IsType<ViewResult>(_controller.Nationality());
 
-        Assert.Equal(NationalityOption.BritishOrIrishCitizen, result.Model<NationalityViewModel>().Nationality);
+        Assert.Equal(NationalityOption.BritishOrIrishCitizen, result.Model<NationalityViewModel>().NationalityOptions.Single());
     }
 
     [Theory]
@@ -104,7 +104,7 @@ public class UserControllerTests : IDisposable
     {
         var model = new NationalityViewModel
         {
-            Nationality = nationality,
+            NationalityOptions = [nationality],
             ReturnTo = returnTo
         };
 
@@ -112,7 +112,7 @@ public class UserControllerTests : IDisposable
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).SetState(_journeyState);
-        Assert.Equal(nationality, _journeyState.Nationality);
+        Assert.Equal(nationality, _journeyState.NationalityOptions.Single());
         Assert.Null(_journeyState.SettledStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
@@ -123,27 +123,16 @@ public class UserControllerTests : IDisposable
     {
         var model = new NationalityViewModel
         {
-            Nationality = null
+            NationalityOptions = []
         };
-        _controller.ModelState.AddModelError(nameof(model.Nationality), "Faked Model Binding Error");
+        _controller.ModelState.AddModelError(nameof(model.NationalityOptions), "Faked Model Binding Error");
 
         var result = _controller.Nationality(model);
 
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
-        Assert.True(_controller.ModelState.ContainsKey(nameof(model.Nationality)));
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.NationalityOptions)));
         _journeySession.DidNotReceive().SetState(_journeyState);
-    }
-
-    [Fact]
-    public void NationalityPostUnreachableCoverage()
-    {
-        var model = new NationalityViewModel
-        {
-            Nationality = (NationalityOption)99,
-        };
-
-        Assert.Throws<UnreachableException>(() => _controller.Nationality(model));
     }
 
     [Fact]

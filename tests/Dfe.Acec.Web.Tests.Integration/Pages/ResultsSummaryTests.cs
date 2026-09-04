@@ -137,7 +137,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             CountryOfResidence = CountryOfResidence.England,
             WeeklyEarnings = WeeklyEarningsOption.AboveThreshold,
-            Nationality = NationalityOption.BritishOrIrishCitizen,
+            NationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             PaidWork = PaidWorkOption.Yes,
             YearlyEarnings = YearlyEarningsOption.BelowThreshold,
             HasPartner = false,
@@ -170,7 +170,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             CountryOfResidence = CountryOfResidence.England,
             WeeklyEarnings = WeeklyEarningsOption.AboveThreshold,
-            Nationality = NationalityOption.BritishOrIrishCitizen,
+            NationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             PaidWork = PaidWorkOption.Yes,
             YearlyEarnings = YearlyEarningsOption.BelowThreshold,
             HasPartner = false,
@@ -207,7 +207,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         var state = new JourneyState
         {
             CountryOfResidence = CountryOfResidence.England,
-            Nationality = nationality,
+            NationalityOptions = [nationality],
             SettledStatus = settledStatus,
             PaidWork = PaidWorkOption.No,
             HasPartner = false,

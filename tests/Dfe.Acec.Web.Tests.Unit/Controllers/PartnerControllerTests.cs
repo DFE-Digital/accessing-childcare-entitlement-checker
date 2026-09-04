@@ -49,7 +49,7 @@ public class PartnerControllerTests : IDisposable
     public void PartnerAgePostValidSelectionSavesStateAndRedirects(string? returnTo, NationalityOption userNationality, string actionName)
     {
         _journeyState.PartnerAge = AgeRange.EighteenToTwenty;
-        _journeyState.Nationality = userNationality;
+        _journeyState.NationalityOptions = [userNationality];
         _journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
         _journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.BelowThreshold;
         var model = new PartnerAgeViewModel()
@@ -93,19 +93,19 @@ public class PartnerControllerTests : IDisposable
     [InlineData(NationalityOption.CitizenOfADifferentCountry, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
     public void PartnerNationalityPostSavesStateAndRedirects(NationalityOption option, string? returnTo, string actionName)
     {
-        _journeyState.PartnerNationality = NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland;
+        _journeyState.PartnerNationalityOptions = [NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland];
         _journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
         _journeyState.PartnerSettledStatus = SettledStatusOption.Yes;
         var model = new PartnerNationalityViewModel
         {
-            PartnerNationality = option,
+            PartnerNationalityOptions = [option],
             ReturnTo = returnTo
         };
 
         var result = _controller.PartnerNationality(model);
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).SetState(_journeyState);
-        Assert.Equal(option, _journeyState.PartnerNationality);
+        Assert.Equal(option, _journeyState.PartnerNationalityOptions.Single());
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
     }
@@ -114,20 +114,20 @@ public class PartnerControllerTests : IDisposable
     public void PartnerNationalityPostInvalidSelectionReturnsViewWithError()
     {
         var model = new PartnerNationalityViewModel();
-        _controller.ModelState.AddModelError(nameof(model.PartnerNationality), "Faked Model Binding Error");
+        _controller.ModelState.AddModelError(nameof(model.PartnerNationalityOptions), "Faked Model Binding Error");
         var result = _controller.PartnerNationality(model);
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
-        Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerNationality)));
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.PartnerNationalityOptions)));
         _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
     [Fact]
     public void PartnerNationalityGetPopulatesModelFromState()
     {
-        _journeyState.PartnerNationality = NationalityOption.BritishOrIrishCitizen;
+        _journeyState.PartnerNationalityOptions = [NationalityOption.BritishOrIrishCitizen];
         var result = Assert.IsType<ViewResult>(_controller.PartnerNationality());
-        Assert.Equal(NationalityOption.BritishOrIrishCitizen, result.Model<PartnerNationalityViewModel>().PartnerNationality);
+        Assert.Equal(NationalityOption.BritishOrIrishCitizen, result.Model<PartnerNationalityViewModel>().PartnerNationalityOptions.Single());
     }
 
     [Fact]
@@ -135,17 +135,6 @@ public class PartnerControllerTests : IDisposable
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerNationality());
         Assert.NotNull(result.Model<PartnerNationalityViewModel>());
-    }
-
-    [Fact]
-    public void PartnerNationalityPostUnreachableCoverage()
-    {
-        var model = new PartnerNationalityViewModel
-        {
-            PartnerNationality = (NationalityOption)99,
-        };
-
-        Assert.Throws<UnreachableException>(() => _controller.PartnerNationality(model));
     }
 
     [Theory]

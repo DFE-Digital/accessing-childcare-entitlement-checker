@@ -27,9 +27,9 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
-            Nationality = nationality,
+            NationalityOptions = nationality == null ? [] : [nationality.Value],
             SettledStatus = settledStatus,
-            PartnerNationality = partnerNationality,
+            PartnerNationalityOptions = partnerNationality == null ? [] : [partnerNationality.Value],
         });
 
         using var client = host.CreateClient();
@@ -113,9 +113,9 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
-            Nationality = nationality,
+            NationalityOptions = nationality == null ? [] : [nationality.Value],
             SettledStatus = settledStatus,
-            PartnerNationality = partnerNationality,
+            PartnerNationalityOptions = partnerNationality == null ? [] : [partnerNationality.Value],
         });
 
         using var client = host.CreateClient();

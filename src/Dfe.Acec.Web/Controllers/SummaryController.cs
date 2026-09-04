@@ -181,7 +181,7 @@ public partial class SummaryController(
 
         var userBuilder = new SummaryRowFactory(MetadataProvider, "User", stringLocalizerFactory)
             .AddUserAge(journeyState.UserAge)
-            .Add((NationalityViewModel m) => m.Nationality, journeyState.Nationality, nameof(UserController.Nationality))
+            .Add((NationalityViewModel m) => m.NationalityOptions, journeyState.NationalityOptions, nameof(UserController.Nationality))
             .Add((SettledStatusViewModel m) => m.SettledStatus, journeyState.SettledStatus, nameof(UserController.SettledStatus))
             .Add((PaidWorkViewModel m) => m.PaidWork, journeyState.PaidWork, nameof(UserController.PaidWork))
             .AddParentalLeave(journeyState)
@@ -197,7 +197,7 @@ public partial class SummaryController(
 
         var partnerBuilder = new SummaryRowFactory(MetadataProvider, "Partner", stringLocalizerFactory)
             .AddPartnerAge(journeyState.PartnerAge)
-            .Add((PartnerNationalityViewModel m) => m.PartnerNationality, journeyState.PartnerNationality, nameof(PartnerController.PartnerNationality))
+            .Add((PartnerNationalityViewModel m) => m.PartnerNationalityOptions, journeyState.PartnerNationalityOptions, nameof(PartnerController.PartnerNationality))
             .Add((PartnerSettledStatusViewModel m) => m.PartnerSettledStatus, journeyState.PartnerSettledStatus, nameof(PartnerController.PartnerSettledStatus))
             .Add((PartnerPaidWorkViewModel m) => m.PartnerPaidWork, journeyState.PartnerPaidWork, nameof(PartnerController.PartnerPaidWork))
             .AddPartnerParentalLeave(journeyState)

@@ -24,7 +24,7 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertRadioButtonCount(3)
+        doc.AssertCheckboxCount(3)
             .AssertBackLink(backLinkUrl)
             .AssertNavigationBar()
             .AssertBetaBanner();
@@ -44,7 +44,7 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
-            PartnerNationality = partnerNationality,
+            PartnerNationalityOptions = [partnerNationality],
             PartnerSettledStatus = partnerSettledStatus,
             PartnerPaidWork = partnerPaidWork,
         });
@@ -60,7 +60,7 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
         Assert.NotNull(cookie);
 
         var postResponse = await HttpClientHelpers.PostFormAsync(client, url, cookie, token, [
-            new KeyValuePair<string, string>("PartnerNationality", partnerNationality.ToString())
+            new KeyValuePair<string, string>("PartnerNationalityOptions", partnerNationality.ToString())
         ], TestContext.Current.CancellationToken);
 
         postResponse.AssertRedirect(continueUrl);

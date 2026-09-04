@@ -47,7 +47,7 @@ public class JourneyStateToEntitlementRequestMapper
             ExceedsAdjustedNetIncomeLimit = journeyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold,
             Benefits = [.. journeyState.Benefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
             ChildcareSupport = [.. journeyState.ChildcareSupport.Select(MapChildcareSupport).OfType<ChildcareSupport>()],
-            Nationality = MapNationality(journeyState.Nationality),
+            Nationality = MapNationality(journeyState.NationalityOptions),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.SettledStatus),
         };
     }
@@ -69,7 +69,7 @@ public class JourneyStateToEntitlementRequestMapper
             ExceedsAdjustedNetIncomeLimit = journeyState.PartnerYearlyEarnings == YearlyEarningsOption.AboveThreshold,
             Benefits = [.. journeyState.PartnerBenefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
             ChildcareSupport = [.. journeyState.PartnerChildcareSupport.Select(MapPartnerChildcareSupport).OfType<ChildcareSupport>()],
-            Nationality = MapNationality(journeyState.PartnerNationality),
+            Nationality = MapNationality(journeyState.PartnerNationalityOptions),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.PartnerSettledStatus),
         };
     }
@@ -281,26 +281,32 @@ public class JourneyStateToEntitlementRequestMapper
         };
     }
 
-    private static Nationality? MapNationality(NationalityOption? nationality)
+    private static Nationality? MapNationality(List<NationalityOption> nationalityOptions)
     {
-        return nationality switch
+        if (nationalityOptions == null || nationalityOptions.Count == 0)
         {
-            NationalityOption.BritishOrIrishCitizen =>
-                Nationality.BritishOrIrishCitizen,
+            return null;
+        }
 
-            NationalityOption.CitizenOfADifferentCountry =>
-                Nationality.Other,
+        if (nationalityOptions.Contains(NationalityOption.BritishOrIrishCitizen))
+        {
+            return Nationality.BritishOrIrishCitizen;
+        }
 
-            NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland =>
-                Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
+        if (nationalityOptions.Contains(NationalityOption.CitizenOfADifferentCountry))
+        {
+            return Nationality.Other;
+        }
 
-            null => null,
+        if (nationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland))
+        {
+            return Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen;
+        }
 
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(nationality),
-                nationality,
-                null)
-        };
+        throw new ArgumentOutOfRangeException(
+                nameof(nationalityOptions),
+                nationalityOptions,
+                null);
     }
 
     private static bool? MapSettledStatus(

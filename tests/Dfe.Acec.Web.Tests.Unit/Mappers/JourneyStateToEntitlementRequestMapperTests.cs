@@ -39,7 +39,7 @@ public class JourneyStateToEntitlementRequestMapperTests
             [
                 BenefitsOption.CarersAllowance
             ],
-            Nationality = NationalityOption.BritishOrIrishCitizen,
+            NationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             PaidWork = PaidWorkOption.Yes,
             WorkStatus = [
                 WorkStatusOption.PaidEmployment,
@@ -134,7 +134,7 @@ public class JourneyStateToEntitlementRequestMapperTests
             UserAge = AgeRange.UnderEighteen,
             PaidWork = PaidWorkOption.No,
             SettledStatus = SettledStatusOption.StillWaiting,
-            Nationality = NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland,
+            NationalityOptions = [NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland],
 
             WorkStatus =
             [

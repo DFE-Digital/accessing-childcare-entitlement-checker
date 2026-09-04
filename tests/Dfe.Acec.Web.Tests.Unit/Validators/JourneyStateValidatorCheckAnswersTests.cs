@@ -42,7 +42,7 @@ public class JourneyStateValidatorCheckAnswersTests
                 [CreateBornChild().ChildId] = CreateBornChild()
             },
             UserAge = AgeRange.TwentyOneOrOver,
-            Nationality = NationalityOption.BritishOrIrishCitizen,
+            NationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             PaidWork = PaidWorkOption.No,
             UniversalCredit = UniversalCreditOption.DoesNotReceive,
             Benefits = [BenefitsOption.None],
@@ -61,7 +61,7 @@ public class JourneyStateValidatorCheckAnswersTests
                 [CreateBornChild().ChildId] = CreateBornChild()
             },
             UserAge = AgeRange.TwentyOneOrOver,
-            Nationality = NationalityOption.BritishOrIrishCitizen,
+            NationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             PaidWork = PaidWorkOption.No,
             UniversalCredit = UniversalCreditOption.DoesNotReceive,
             Benefits = [BenefitsOption.None],
@@ -69,7 +69,7 @@ public class JourneyStateValidatorCheckAnswersTests
             HasPartner = true,
 
             PartnerAge = AgeRange.TwentyOneOrOver,
-            PartnerNationality = NationalityOption.BritishOrIrishCitizen,
+            PartnerNationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             PartnerPaidWork = PartnerPaidWorkOption.No,
             PartnerBenefits = [PartnerBenefitsOption.None],
             PartnerChildcareSupport = [PartnerChildcareSupportOption.None],
@@ -119,14 +119,14 @@ public class JourneyStateValidatorCheckAnswersTests
     public void CheckAnswersWhenNationalityIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
-        journeyState.Nationality = null;
+        journeyState.NationalityOptions = [];
 
         var result = Validate(journeyState);
 
         Assert.False(result.IsValid);
         Assert.Contains(
             result.Errors,
-            error => error.PropertyName == nameof(JourneyState.Nationality));
+            error => error.PropertyName == nameof(JourneyState.NationalityOptions));
     }
 
     [Fact]
@@ -203,7 +203,7 @@ public class JourneyStateValidatorCheckAnswersTests
     public void CheckAnswersWhenNationalityRequiresSettledStatusAndSettledStatusIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
-        journeyState.Nationality = NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland;
+        journeyState.NationalityOptions = [NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland];
 
         var result = Validate(journeyState);
 
