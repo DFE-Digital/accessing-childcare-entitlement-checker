@@ -53,7 +53,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
             .AssertNavigationBar()
             .AssertBetaBanner();
     }
-    
+
     [Fact]
     public async Task GetParentalLeaveChildNameMaskedForClarity()
     {
@@ -66,7 +66,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
             PaidWork = PaidWorkOption.ParentalLeave,
 
             Children = new Dictionary<string, Child>
-            
+
             {
                 {
                     childId,
@@ -75,7 +75,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
                         BirthStatus = BirthStatus.Born,
                         BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3)),
                         ChildSupportOptions = [ChildSupport.NoneOfTheseApply]
-                        
+
                     }
                 }
             },
@@ -95,7 +95,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
         Assert.Equal("true", parentalLeaveValue.GetAttribute("data-clarity-mask"));
         Assert.Equal("Sara", parentalLeaveValue.TextContent.Trim());
     }
-    
+
     [Theory]
     [InlineData("check-your-answers")]
     public async Task Get_RemovePageTitleMaskedForClarity(string returnTo)
