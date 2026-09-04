@@ -63,39 +63,29 @@ inspect: inspect-a inspect-r
 test:
 	dotnet test tests/Dfe.Acec.Web.Tests.Unit \
 		--no-build \
-		--results-directory ./.test-results/web-unit-tests \
-		--report-trx \
 		--coverlet \
 		--coverlet-output-format opencover \
 		--coverlet-include "[Dfe.Acec.*]*"
 
 	dotnet test tests/Dfe.Acec.RulesEngine.Tests.Unit \
 		--no-build \
-		--results-directory ./.test-results/rules-engine-unit-tests \
-		--report-trx \
 		--coverlet \
 		--coverlet-output-format opencover \
 		--coverlet-include "[Dfe.Acec.*]*"
 
 	dotnet test tests/Dfe.Acec.Web.Tests.Integration \
 		--no-build \
-		--results-directory ./.test-results/web-integration-tests \
-		--report-trx \
 		--coverlet \
 		--coverlet-output-format opencover \
 		--coverlet-include "[Dfe.Acec.*]*"
 
 test-e2e:
 	dotnet test tests/Dfe.Acec.Web.Tests.E2e \
-		--no-build \
-		--results-directory ./.test-results/web-e2e-tests \
-		--report-trx
+		--no-build
 
 test-a11y:
 	dotnet test tests/Dfe.Acec.Web.Tests.A11y \
-		--no-build \
-		--results-directory ./.test-results/web-a11y-tests \
-		--report-trx
+		--no-build
 
 playwright-i:
 	pwsh ./.artifacts/bin/Dfe.Acec.Web.Tests.E2e/debug/playwright.ps1 install --with-deps

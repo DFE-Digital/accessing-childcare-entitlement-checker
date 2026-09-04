@@ -119,9 +119,7 @@ jobs:
           TestSettings__Browser: ${{ inputs.browser }}
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          ./a11y-tests/Dfe.Acec.Web.Tests.A11y \
-            --results-directory ./.test-results/web-a11y-tests \
-            --report-trx
+          ./a11y-tests/Dfe.Acec.Web.Tests.A11y
 
       - name: Stop app
         if: always() && env.APP_STARTED == 'true'
@@ -133,6 +131,6 @@ jobs:
         uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
         with:
           name: A11y Test Results (${{ inputs.browser }})
-          path: .test-results/**/*.trx
+          path: "**/*.trx"
           reporter: dotnet-trx
           fail-on-error: true

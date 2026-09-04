@@ -112,8 +112,6 @@ jobs:
           dotnet test ${{ env.UNIT_TESTS_WEB }} \
             --configuration ${{ env.CONFIGURATION }} \
             --no-build \
-            --results-directory ./.test-results/web-unit-tests \
-            --report-trx \
             --coverlet \
             --coverlet-output-format opencover \
             --coverlet-include "[Dfe.Acec.*]*"
@@ -121,8 +119,6 @@ jobs:
           dotnet test ${{ env.UNIT_TESTS_RULES }} \
             --configuration ${{ env.CONFIGURATION }} \
             --no-build \
-            --results-directory ./.test-results/rules-engine-unit-tests \
-            --report-trx \
             --coverlet \
             --coverlet-output-format opencover \
             --coverlet-include "[Dfe.Acec.*]*"
@@ -130,8 +126,6 @@ jobs:
           dotnet test ${{ env.INTEGRATION_TESTS }} \
             --configuration ${{ env.CONFIGURATION }} \
             --no-build \
-            --results-directory ./.test-results/web-integration-tests \
-            --report-trx \
             --coverlet \
             --coverlet-output-format opencover \
             --coverlet-include "[Dfe.Acec.*]*"
@@ -164,7 +158,7 @@ jobs:
         if: always()
         with:
           name: Test Results
-          path: .test-results/**/*.trx
+          path: "**/*.trx"
           reporter: dotnet-trx
           fail-on-error: true
 

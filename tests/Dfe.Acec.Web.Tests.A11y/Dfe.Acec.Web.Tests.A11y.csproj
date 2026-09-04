@@ -1,13 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
-    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Deque.AxeCore.Playwright"/>
     <PackageReference Include="Microsoft.Extensions.Configuration"/>
@@ -17,11 +9,6 @@
     <PackageReference Include="Microsoft.Playwright"/>
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport"/>
     <PackageReference Include="xunit.v3"/>
-
-  </ItemGroup>
-
-  <ItemGroup>
-    <Using Include="Xunit"/>
   </ItemGroup>
 
 </Project>

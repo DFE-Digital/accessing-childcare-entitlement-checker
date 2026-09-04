@@ -16,7 +16,7 @@ This reference is generated automatically from the active Terraform configuratio
 | Name | Version |
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.12.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 5.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 5.3.0 |
 
 ## Providers
 
@@ -34,61 +34,61 @@ No modules.
 | Name | Type |
 |------|------|
 | [azapi_update_resource.shutter_origin_group_auth](https://registry.terraform.io/providers/Azure/azapi/2.12.0/docs/resources/update_resource) | resource |
-| [azurerm_application_insights.application-insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
-| [azurerm_application_insights_standard_web_test.web-app-test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights_standard_web_test) | resource |
-| [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_custom_domain) | resource |
-| [azurerm_cdn_frontdoor_custom_domain_association.web-app-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_custom_domain_association) | resource |
-| [azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_endpoint) | resource |
-| [azurerm_cdn_frontdoor_firewall_policy.web_firewall_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_firewall_policy) | resource |
-| [azurerm_cdn_frontdoor_origin.frontdoor-shutter-origin](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_origin) | resource |
-| [azurerm_cdn_frontdoor_origin.frontdoor-web-origin](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_origin) | resource |
-| [azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_origin_group) | resource |
-| [azurerm_cdn_frontdoor_origin_group.shutter-origin-group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_origin_group) | resource |
-| [azurerm_cdn_frontdoor_profile.frontdoor-web-profile](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_profile) | resource |
-| [azurerm_cdn_frontdoor_route.frontdoor-web-route](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_route) | resource |
-| [azurerm_cdn_frontdoor_rule.security_txt_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
-| [azurerm_cdn_frontdoor_rule.shutter_rewrite_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
-| [azurerm_cdn_frontdoor_rule.thanks_txt_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
-| [azurerm_cdn_frontdoor_rule_set.security_rules](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule_set) | resource |
-| [azurerm_cdn_frontdoor_rule_set.shutter_rules](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule_set) | resource |
-| [azurerm_cdn_frontdoor_security_policy.frontdoor-web-security-policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_security_policy) | resource |
-| [azurerm_consumption_budget_resource_group.load_test_rg_budget](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/consumption_budget_resource_group) | resource |
-| [azurerm_consumption_budget_resource_group.web_rg_budget](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/consumption_budget_resource_group) | resource |
-| [azurerm_linux_web_app.web-app-service](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app) | resource |
-| [azurerm_linux_web_app_slot.staging](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app_slot) | resource |
-| [azurerm_load_test.load_test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/load_test) | resource |
-| [azurerm_log_analytics_data_export_rule.log-export](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_data_export_rule) | resource |
-| [azurerm_log_analytics_workspace.log-analytics-workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
-| [azurerm_managed_redis.redis](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis) | resource |
-| [azurerm_managed_redis_access_policy_assignment.app_redis_access](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis_access_policy_assignment) | resource |
-| [azurerm_monitor_action_group.email_action_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
-| [azurerm_monitor_diagnostic_setting.frontdoor_logging](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
-| [azurerm_monitor_diagnostic_setting.redis_database_diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
-| [azurerm_monitor_diagnostic_setting.redis_diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
-| [azurerm_monitor_diagnostic_setting.staging_webapp_logs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
-| [azurerm_monitor_diagnostic_setting.webapp_logs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
-| [azurerm_monitor_metric_alert.app_service_5xx_errors](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_metric_alert.app_service_plan_cpu](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_metric_alert.app_service_plan_memory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_metric_alert.high_exception_rate](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_metric_alert.high_response_time](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_metric_alert.redis_high_connections](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_metric_alert.redis_high_cpu](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_metric_alert.redis_high_memory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_metric_alert.waf_blocked_requests](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_metric_alert.web_test_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_resource_group.load_test_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.web-rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_role_assignment.frontdoor_shutter_read_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.shutter_deploy_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_service_plan.web-app-service-plan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan) | resource |
-| [azurerm_storage_account.log-archive](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
-| [azurerm_storage_account.shutter](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
-| [azurerm_storage_container.shutter_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
-| [azurerm_storage_management_policy.log-archive-policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
-| [azurerm_user_assigned_identity.app_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
-| [azurerm_user_assigned_identity.frontdoor_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
-| [azurerm_client_config.client](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_application_insights.application-insights](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/application_insights) | resource |
+| [azurerm_application_insights_standard_web_test.web-app-test](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/application_insights_standard_web_test) | resource |
+| [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_custom_domain) | resource |
+| [azurerm_cdn_frontdoor_custom_domain_association.web-app-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_custom_domain_association) | resource |
+| [azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_endpoint) | resource |
+| [azurerm_cdn_frontdoor_firewall_policy.web_firewall_policy](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_firewall_policy) | resource |
+| [azurerm_cdn_frontdoor_origin.frontdoor-shutter-origin](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_origin) | resource |
+| [azurerm_cdn_frontdoor_origin.frontdoor-web-origin](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_origin) | resource |
+| [azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_origin_group) | resource |
+| [azurerm_cdn_frontdoor_origin_group.shutter-origin-group](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_origin_group) | resource |
+| [azurerm_cdn_frontdoor_profile.frontdoor-web-profile](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_profile) | resource |
+| [azurerm_cdn_frontdoor_route.frontdoor-web-route](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_route) | resource |
+| [azurerm_cdn_frontdoor_rule.security_txt_rule](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_rule) | resource |
+| [azurerm_cdn_frontdoor_rule.shutter_rewrite_rule](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_rule) | resource |
+| [azurerm_cdn_frontdoor_rule.thanks_txt_rule](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_rule) | resource |
+| [azurerm_cdn_frontdoor_rule_set.security_rules](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_rule_set) | resource |
+| [azurerm_cdn_frontdoor_rule_set.shutter_rules](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_rule_set) | resource |
+| [azurerm_cdn_frontdoor_security_policy.frontdoor-web-security-policy](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/cdn_frontdoor_security_policy) | resource |
+| [azurerm_consumption_budget_resource_group.load_test_rg_budget](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/consumption_budget_resource_group) | resource |
+| [azurerm_consumption_budget_resource_group.web_rg_budget](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/consumption_budget_resource_group) | resource |
+| [azurerm_linux_web_app.web-app-service](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/linux_web_app) | resource |
+| [azurerm_linux_web_app_slot.staging](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/linux_web_app_slot) | resource |
+| [azurerm_load_test.load_test](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/load_test) | resource |
+| [azurerm_log_analytics_data_export_rule.log-export](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/log_analytics_data_export_rule) | resource |
+| [azurerm_log_analytics_workspace.log-analytics-workspace](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/log_analytics_workspace) | resource |
+| [azurerm_managed_redis.redis](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/managed_redis) | resource |
+| [azurerm_managed_redis_access_policy_assignment.app_redis_access](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/managed_redis_access_policy_assignment) | resource |
+| [azurerm_monitor_action_group.email_action_group](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_action_group) | resource |
+| [azurerm_monitor_diagnostic_setting.frontdoor_logging](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_diagnostic_setting) | resource |
+| [azurerm_monitor_diagnostic_setting.redis_database_diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_diagnostic_setting) | resource |
+| [azurerm_monitor_diagnostic_setting.redis_diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_diagnostic_setting) | resource |
+| [azurerm_monitor_diagnostic_setting.staging_webapp_logs](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_diagnostic_setting) | resource |
+| [azurerm_monitor_diagnostic_setting.webapp_logs](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_diagnostic_setting) | resource |
+| [azurerm_monitor_metric_alert.app_service_5xx_errors](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.app_service_plan_cpu](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.app_service_plan_memory](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.high_exception_rate](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.high_response_time](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.redis_high_connections](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.redis_high_cpu](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.redis_high_memory](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.waf_blocked_requests](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.web_test_alert](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_resource_group.load_test_rg](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.web-rg](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/resource_group) | resource |
+| [azurerm_role_assignment.frontdoor_shutter_read_role](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.shutter_deploy_role](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/role_assignment) | resource |
+| [azurerm_service_plan.web-app-service-plan](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/service_plan) | resource |
+| [azurerm_storage_account.log-archive](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/storage_account) | resource |
+| [azurerm_storage_account.shutter](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/storage_account) | resource |
+| [azurerm_storage_container.shutter_container](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/storage_container) | resource |
+| [azurerm_storage_management_policy.log-archive-policy](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/storage_management_policy) | resource |
+| [azurerm_user_assigned_identity.app_identity](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/user_assigned_identity) | resource |
+| [azurerm_user_assigned_identity.frontdoor_identity](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/resources/user_assigned_identity) | resource |
+| [azurerm_client_config.client](https://registry.terraform.io/providers/hashicorp/azurerm/5.3.0/docs/data-sources/client_config) | data source |
 
 ## Inputs
 
