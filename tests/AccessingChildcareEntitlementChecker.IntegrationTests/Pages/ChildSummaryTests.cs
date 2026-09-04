@@ -201,9 +201,10 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
 
         var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        var maskedElement = document.QuerySelector("[data-clarity-mask=\"true\"]");
+        var legend = document.QuerySelector("legend.govuk-fieldset__legend");
 
-        Assert.NotNull(maskedElement);
-        Assert.Contains("Sara", maskedElement.TextContent);
+        Assert.NotNull(legend);
+        Assert.Equal("true", legend.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", legend.TextContent);
     }
 }

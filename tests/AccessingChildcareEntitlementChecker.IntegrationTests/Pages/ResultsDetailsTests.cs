@@ -243,9 +243,9 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var heading = document.QuerySelector("h1.govuk-heading-xl");
         var intro = document.QuerySelector("p.govuk-body[data-clarity-mask=\"true\"]");
-        var whenToApply = document.QuerySelector("#when-to-apply");
-        var starts = document.QuerySelector("#starts");
-        var ends = document.QuerySelector("#ends");
+        var whenToApply = document.QuerySelector("[data-testid=\"when-to-apply\"]");
+        var starts = document.QuerySelector("[data-testid=\"starts\"]");
+        var ends = document.QuerySelector("[data-testid=\"ends\"]");
 
         Assert.NotNull(heading);
         Assert.Equal("true", heading.GetAttribute("data-clarity-mask"));
