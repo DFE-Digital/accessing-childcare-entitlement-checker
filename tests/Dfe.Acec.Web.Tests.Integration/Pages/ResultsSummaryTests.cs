@@ -303,4 +303,52 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertHeading("You are not currently eligible for childcare support");
     }
+
+    [Fact]
+    public async Task GetSensitiveElementsMaskedForClarity()
+    {
+        var state = new JourneyState
+        {
+            CountryOfResidence = CountryOfResidence.England,
+            WeeklyEarnings = WeeklyEarningsOption.AboveThreshold,
+            Nationality = NationalityOption.BritishOrIrishCitizen,
+            PaidWork = PaidWorkOption.Yes,
+            YearlyEarnings = YearlyEarningsOption.BelowThreshold,
+            HasPartner = false,
+            Children =
+            {
+                ["child-1"] = new Child("child-1", "Sara")
+                {
+                    BirthStatus = BirthStatus.Born,
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-3))
+                }
+            }
+        };
+
+        await using var host = factory.CreateClientWithJourneyState(state);
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync("/results", TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var childName = document.QuerySelector("h2.results-name");
+        var summary = document.QuerySelector(".app-results-section > p.govuk-body");
+        var fullInformationHeading = document.QuerySelector("h3.govuk-heading-m");
+        var fullInformationLink = document.QuerySelector("a[href^=\"/Results/ResultsDetailed\"]");
+
+        Assert.NotNull(childName);
+        Assert.Equal("true", childName.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(summary);
+        Assert.Equal("true", summary.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(fullInformationHeading);
+        Assert.Equal("true", fullInformationHeading.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(fullInformationLink);
+        Assert.Equal("true", fullInformationLink.GetAttribute("data-clarity-mask"));
+    }
 }
