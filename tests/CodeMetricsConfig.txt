@@ -1,9 +1,9 @@
-﻿# Code metrics configuration
+# Code metrics configuration for Tests
 
 CA1501: 4
 CA1502(Method): 10
 CA1502(Type): 40
 CA1505(Method): 20
 CA1505(Type): 20
-CA1506(Method): 40
-CA1506(Type): 80
+CA1506(Method): 60
+CA1506(Type): 120

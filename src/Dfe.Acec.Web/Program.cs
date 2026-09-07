@@ -1,3 +1,5 @@
+#pragma warning disable CA1506 // Excessive class coupling
+
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;

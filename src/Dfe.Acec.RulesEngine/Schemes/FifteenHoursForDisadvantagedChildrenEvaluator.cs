@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.RulesEngine.Derived;
 using Dfe.Acec.RulesEngine.Dtos.Responses;
 using Dfe.Acec.RulesEngine.Evaluators;
@@ -10,6 +11,7 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
 {
     private const int MaximumEligibleAgeInYears = 2;
 
+    [SuppressMessage("Maintainability", "CA1502:Avoid excessive complexity", Justification = "Complexity in place before rules added. Code needs to be reviewed.")]
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
         var livesInEngland =

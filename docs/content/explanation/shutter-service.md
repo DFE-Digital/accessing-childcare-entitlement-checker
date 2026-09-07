@@ -43,7 +43,7 @@ graph TD
     
     subgraph Routing Toggle
         AFD -->|Normal Route| WebApp[Main Web App Service]
-        AFD -->|Shutter Route / failover.sh| ShutterStorage[Azure Storage Account]
+        AFD -->|Shutter Route| ShutterStorage[Azure Storage Account]
     end
     
     subgraph Storage Access
@@ -66,7 +66,7 @@ To secure deployment, write access is strictly limited to the GitHub Actions wor
 ### 2. Front Door routing and URL rewriting
 
 - **Normal Operation**: Azure Front Door routes all traffic (`/*`) to the main Web App App Service using the `SecurityRules` rule set.
-- **Shutter Operation**: Using our `failover.sh` runbook script, we update the route's origin group to point to the `shutter-origin-group`, attach both `SecurityRules` and `ShutterRules` rule sets, and set the origin path to `/shutter`.
+- **Shutter Operation**: Using our automated GitHub Actions workflow, we update the route's origin group to point to the `shutter-origin-group`, attach both `SecurityRules` and `ShutterRules` rule sets, and set the origin path to `/shutter`.
 - **Path Rewriting**: The `ShutterRules` rule set applies a `url_rewrite` rule. This rule rewrites any requested path (e.g. `/about` or `/help`) to `/index.html` before requesting the file from the blob origin, provided the path does not begin with `/assets/`. This ensures the user stays on their requested URL in their address bar but receives the "Service Unavailable" page, while still letting critical assets and security redirects (like `/security.txt` from `SecurityRules`) load successfully.
 
 ## Managing shutter content like code

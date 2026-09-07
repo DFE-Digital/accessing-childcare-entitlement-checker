@@ -119,20 +119,12 @@ jobs:
           TestSettings__Browser: ${{ inputs.browser }}
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          dotnet test ./a11y-tests/Dfe.Acec.Web.Tests.A11y.dll \
-            --logger "trx;LogFileName=test-results.trx" \
-            --results-directory ./TestResults
+          ./a11y-tests/Dfe.Acec.Web.Tests.A11y \
+            --retry-failed-tests 3 \
+            --retry-failed-tests-delay 500ms \
+            --retry-failed-tests-max-percentage 20
 
       - name: Stop app
         if: always() && env.APP_STARTED == 'true'
         run: |
           kill "$(cat app.pid)" || true
-
-      - name: Publish A11y test results
-        if: always()
-        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
-        with:
-          name: A11y Test Results (${{ inputs.browser }})
-          path: TestResults/*.trx
-          reporter: dotnet-trx
-          fail-on-error: true

@@ -8,6 +8,7 @@ using Dfe.Acec.Web.Models.User;
 namespace Dfe.Acec.Web.Services;
 
 [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
+[SuppressMessage("Maintainability", "CA1502:Avoid excessive complexity", Justification = "Complexity in place before rules added. Code needs to be reviewed.")]
 public class JourneyState
 {
     public Guid CorrelationId { get; set; } = Guid.NewGuid();

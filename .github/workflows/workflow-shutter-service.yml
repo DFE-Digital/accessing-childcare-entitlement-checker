@@ -1,0 +1,99 @@
+name: Shutter Service
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target Environment'
+        required: true
+        type: environment
+      action:
+        description: 'Action'
+        required: true
+        type: choice
+        options:
+          - shutter
+          - restore
+        default: shutter
+
+jobs:
+  shutter:
+    name: 'Shutter / Restore Service'
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}
+      deployment: false
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Set Environment Prefix
+        shell: bash
+        run: |
+          ENV_NAME="${{ inputs.environment }}"
+          ENV_NAME_LC=$(echo "$ENV_NAME" | tr '[:upper:]' '[:lower:]')
+
+          case "$ENV_NAME_LC" in
+            development) ENV_PREFIX="d01" ;;
+            test) ENV_PREFIX="t01" ;;
+            staging) ENV_PREFIX="p02" ;;
+            production) ENV_PREFIX="p01" ;;
+            *) echo "Unknown environment: $ENV_NAME"; exit 1 ;;
+          esac
+
+          echo "ENV_PREFIX=$ENV_PREFIX" >> $GITHUB_ENV
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@7ddb5af1ef8758cf1353cf3b42f940aee27ba21c
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Execute Failover Action
+        shell: bash
+        run: |
+          ENV_PREFIX="${{ env.ENV_PREFIX }}"
+          ACTION="${{ inputs.action }}"
+
+          PROJECT_ID="s279"
+          PREFIX="${PROJECT_ID}${ENV_PREFIX}"
+          RG="${PREFIX}rg-uks-cec-web"
+          PROFILE="${PREFIX}-web-fd-profile"
+          ENDPOINT="${PREFIX}-web-fd-endpoint"
+          ROUTE="${PREFIX}-web-fd-route"
+
+          if [ "$ACTION" = "shutter" ]; then
+              echo "Enabling shutter mode for environment ${{ inputs.environment }} (prefix $ENV_PREFIX)..."
+              ORIGIN_GROUP="${PREFIX}-shutter-fd-origin-group"
+              RULE_SET_1="${ENV_PREFIX}SecurityRules"
+              RULE_SET_2="${ENV_PREFIX}ShutterRules"
+              ORIGIN_PATH="/shutter"
+              
+              az afd route update \
+                  --resource-group "$RG" \
+                  --profile-name "$PROFILE" \
+                  --endpoint-name "$ENDPOINT" \
+                  --route-name "$ROUTE" \
+                  --origin-group "$ORIGIN_GROUP" \
+                  --rule-sets "$RULE_SET_1" "$RULE_SET_2" \
+                  --origin-path "$ORIGIN_PATH"
+              echo "Shutter mode successfully enabled."
+
+          elif [ "$ACTION" = "restore" ]; then
+              echo "Restoring normal operation for environment ${{ inputs.environment }} (prefix $ENV_PREFIX)..."
+              ORIGIN_GROUP="${PREFIX}-web-fd-origin-group"
+              RULE_SET_1="${ENV_PREFIX}SecurityRules"
+              ORIGIN_PATH=""
+              
+              az afd route update \
+                  --resource-group "$RG" \
+                  --profile-name "$PROFILE" \
+                  --endpoint-name "$ENDPOINT" \
+                  --route-name "$ROUTE" \
+                  --origin-group "$ORIGIN_GROUP" \
+                  --rule-sets "$RULE_SET_1" \
+                  --origin-path "$ORIGIN_PATH"
+              echo "Normal operation successfully restored."
+          fi

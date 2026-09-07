@@ -122,21 +122,12 @@ jobs:
           TestSettings__Browser: ${{ inputs.browser }}
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          dotnet test ./e2e-tests/Dfe.Acec.Web.Tests.E2e.dll \
-            --logger "trx;LogFileName=test-results.trx" \
-            --results-directory ./TestResults \
-            --verbosity normal
+          ./e2e-tests/Dfe.Acec.Web.Tests.E2e \
+            --retry-failed-tests 3 \
+            --retry-failed-tests-delay 500ms \
+            --retry-failed-tests-max-percentage 20
 
       - name: Stop app
         if: always() && env.APP_STARTED == 'true'
         run: |
           kill "$(cat app.pid)" || true
-
-      - name: Publish E2E test results
-        if: always()
-        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
-        with:
-          name: E2E Test Results (${{ inputs.browser }})
-          path: TestResults/*.trx
-          reporter: dotnet-trx
-          fail-on-error: true

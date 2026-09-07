@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.Web.Controllers;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.User;
@@ -9,6 +10,7 @@ using NSubstitute;
 
 namespace Dfe.Acec.Web.Tests.Unit.Controllers;
 
+[SuppressMessage("Maintainability", "CA1502:Avoid excessive complexity", Justification = "Complexity in place before rules added. Code needs to be reviewed.")]
 public class UserControllerTests : IDisposable
 {
     private readonly JourneyState _journeyState;

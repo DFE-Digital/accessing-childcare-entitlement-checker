@@ -168,7 +168,7 @@ resource "azurerm_monitor_metric_alert" "waf_blocked_requests" {
   name                = "${local.service_prefix}-waf-blocked-requests"
   resource_group_name = azurerm_resource_group.web-rg.name
   scopes              = [azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id]
-  severity            = 3
+  severity            = 1
   frequency           = "PT1M"
   window_size         = "PT5M"
 
@@ -200,7 +200,7 @@ resource "azurerm_monitor_metric_alert" "redis_high_cpu" {
   scopes              = [azurerm_managed_redis.redis.id]
   severity            = 2
   frequency           = "PT1M"
-  window_size         = "PT5M"
+  window_size         = "PT15M"
 
   criteria {
     metric_namespace = "Microsoft.Cache/redisEnterprise"

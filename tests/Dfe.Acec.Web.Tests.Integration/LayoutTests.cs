@@ -25,13 +25,14 @@ public class LayoutTests(IntegrationTestFixture factory) : IClassFixture<Integra
     public async Task LayoutIncludesRequiredFooterLinks()
     {
         using var getClient = factory.CreateClient();
-        var request = new HttpRequestMessage(HttpMethod.Get, "/");
+        using var request = new HttpRequestMessage(HttpMethod.Get, "/");
         var getResponse = await getClient.SendAsync(request, TestContext.Current.CancellationToken);
         var document = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
         document
             .AssertFooterContainsLink("https://accessibility-statements.education.gov.uk/s/89") // accessibility statement
             .AssertFooterContainsLink("https://www.gov.uk/government/publications/privacy-information-members-of-the-public/privacy-information-members-of-the-public#using-your-data-when-you-use-our-websites") // privacy notice
             .AssertFooterContainsLink("/cookies") // cookies
-            .AssertFooterContainsLink("https://dferesearch.fra1.qualtrics.com/jfe/form/SV_5doFVpOqJt1dD7g"); // contact us & feedback form
+            .AssertFooterContainsLink("https://dferesearch.fra1.qualtrics.com/jfe/form/SV_5doFVpOqJt1dD7g") // contact us
+            .AssertFooterContainsLink("https://dferesearch.fra1.qualtrics.com/jfe/form/SV_8eotBOVwAQbdP8y"); // feedback form
     }
 }

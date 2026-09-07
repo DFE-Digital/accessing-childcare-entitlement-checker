@@ -8,24 +8,28 @@ namespace Dfe.Acec.Web.Tests.Unit.Component;
 
 public class ComponentTests
 {
-    private static WebApplicationFactory<Program> CreateFactory(string environmentName) =>
-        new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder =>
+    private sealed class CustomWebApplicationFactory(string environmentName) : WebApplicationFactory<Program>
+    {
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            builder.UseEnvironment(environmentName);
+            builder.ConfigureAppConfiguration((_, config) =>
             {
-                builder.UseEnvironment(environmentName);
-                builder.ConfigureAppConfiguration((_, config) =>
+                config.AddInMemoryCollection(new Dictionary<string, string?>
                 {
-                    config.AddInMemoryCollection(new Dictionary<string, string?>
-                    {
-                        ["DevelopmentBasicAuthPassword"] = "dev-only"
-                    });
+                    ["DevelopmentBasicAuthPassword"] = "dev-only"
                 });
             });
+        }
+    }
+
+    private static WebApplicationFactory<Program> CreateFactory(string environmentName) =>
+        new CustomWebApplicationFactory(environmentName);
 
     [Fact]
     public async Task GetRootReturnsSuccess()
     {
-        var factory = CreateFactory("Production");
+        await using var factory = CreateFactory("Production");
         var client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             BaseAddress = new Uri("https://localhost")
@@ -40,7 +44,7 @@ public class ComponentTests
     [Fact]
     public async Task GetRootRequiresBasicAuthInDevelopment()
     {
-        var factory = CreateFactory("Development");
+        await using var factory = CreateFactory("Development");
         var client = factory.CreateClient();
 
         var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
@@ -52,7 +56,7 @@ public class ComponentTests
     [Fact]
     public async Task GetRootSucceedsWithBasicAuthInDevelopment()
     {
-        var factory = CreateFactory("Development");
+        await using var factory = CreateFactory("Development");
         var client = factory.CreateClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String("user:dev-only"u8.ToArray()));
 
@@ -64,7 +68,7 @@ public class ComponentTests
     [Fact]
     public async Task GetRobotsTxtReturnsNoIndexInstructionsInDevelopment()
     {
-        var factory = CreateFactory("Development");
+        await using var factory = CreateFactory("Development");
         var client = factory.CreateClient();
 
         var response = await client.GetAsync("/robots.txt", TestContext.Current.CancellationToken);
@@ -78,7 +82,7 @@ public class ComponentTests
     [Fact]
     public async Task GetRobotsTxtReturnsNotFoundOutsideDevelopment()
     {
-        var factory = CreateFactory("Production");
+        await using var factory = CreateFactory("Production");
         var client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             BaseAddress = new Uri("https://localhost")
@@ -92,7 +96,7 @@ public class ComponentTests
     [Fact]
     public async Task GetHealthCheckDoesNotRequireBasicAuthInDevelopment()
     {
-        var factory = CreateFactory("Development");
+        await using var factory = CreateFactory("Development");
         var client = factory.CreateClient();
 
         var response = await client.GetAsync("/health", TestContext.Current.CancellationToken);

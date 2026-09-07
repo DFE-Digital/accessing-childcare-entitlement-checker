@@ -15,6 +15,8 @@ using Microsoft.FeatureManagement;
 
 namespace Dfe.Acec.Web.Controllers;
 
+#pragma warning disable CA1506 // Excessive class coupling
+
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
 public partial class SummaryController(
     JourneyState journeyState,

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.RulesEngine.Dtos.Responses;
 using Dfe.Acec.RulesEngine.Helpers;
 using Dfe.Acec.RulesEngine.Types;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Dfe.Acec.Web.Mappers;
 
+[SuppressMessage("Maintainability", "CA1502:Avoid excessive complexity", Justification = "Complexity in place before rules added. Code needs to be reviewed.")]
 public class EntitlementResponseToResultsDetailsViewModelMapper(
     IStringLocalizerFactory stringLocalizerFactory)
 {

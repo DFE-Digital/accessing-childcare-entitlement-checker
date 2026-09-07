@@ -117,7 +117,7 @@ dotnet_diagnostic.CS8602.severity = warning
 dotnet_diagnostic.CS8603.severity = warning
 dotnet_diagnostic.CS8604.severity = warning
 dotnet_diagnostic.CS8618.severity = warning
-dotnet_diagnostic.CA2000.severity = suggestion
+dotnet_diagnostic.CA2000.severity = warning
 dotnet_diagnostic.CA2100.severity = warning
 dotnet_diagnostic.CA1845.severity = warning
 dotnet_diagnostic.CA1851.severity = warning
@@ -126,9 +126,9 @@ dotnet_diagnostic.CA1860.severity = warning
 dotnet_diagnostic.CA1861.severity = warning
 dotnet_diagnostic.CA1862.severity = warning
 dotnet_diagnostic.CA1501.severity = warning
-dotnet_diagnostic.CA1502.severity = suggestion
+dotnet_diagnostic.CA1502.severity = warning
 dotnet_diagnostic.CA1505.severity = warning
-dotnet_diagnostic.CA1506.severity = suggestion
+dotnet_diagnostic.CA1506.severity = warning
 
 # ---------------------------------------------------------------------------
 # Generated Code

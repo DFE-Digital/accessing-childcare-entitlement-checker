@@ -1,18 +1,20 @@
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.RulesEngine.Derived;
 using Dfe.Acec.RulesEngine.Dtos.Responses;
 using Dfe.Acec.RulesEngine.Evaluators;
 using Dfe.Acec.RulesEngine.Helpers;
 using Dfe.Acec.RulesEngine.Types;
 
-
 namespace Dfe.Acec.RulesEngine.Schemes;
 
+[SuppressMessage("Maintainability", "CA1502:Avoid excessive complexity", Justification = "Complexity in place before rules added. Code needs to be reviewed.")]
 public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
 {
     private const int ApplyAgeInWeeks = 23;
     private const int MinimumEligibleAgeInMonths = 9;
     private const int MaximumEligibleAgeInYears = 4;
 
+    [SuppressMessage("Maintainability", "CA1502:Avoid excessive complexity", Justification = "Complexity in place before rules added. Code needs to be reviewed.")]
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
         var parentalLeaveAssessment = AssessParentalLeave(context, child);

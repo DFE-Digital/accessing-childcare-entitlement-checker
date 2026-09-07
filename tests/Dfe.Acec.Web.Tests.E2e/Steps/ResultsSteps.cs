@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.Web.Tests.E2e.Helpers;
 using JetBrains.Annotations;
 using Microsoft.Playwright;
@@ -43,6 +44,7 @@ public sealed class ResultsSteps(IPage page)
     }
 
     [Then("I can see that {string} is eligible for:")]
+    [SuppressMessage("Maintainability", "CA1502:Avoid excessive complexity", Justification = "Complexity in place before rules added. Code needs to be reviewed.")]
     public async Task ThenICanSeeThatStringIsEligibleFor(string name, DataTable dataTable)
     {
         var expecteds = dataTable.CreateSet<SchemeEligibilityResult>().ToList();

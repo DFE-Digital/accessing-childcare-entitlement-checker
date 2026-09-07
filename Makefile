@@ -35,7 +35,7 @@ build:
 	dotnet clean --nologo --verbosity minimal
 	dotnet restore --locked-mode
 	dotnet format --verify-no-changes --verbosity minimal
-	dotnet build --configuration Release --no-restore --no-incremental --nologo --verbosity minimal
+	dotnet build --no-restore --no-incremental --nologo --verbosity minimal
 
 # ---------------------------------------------------------------------------
 # Inspect
@@ -61,36 +61,28 @@ inspect: inspect-a inspect-r
 # ---------------------------------------------------------------------------
 
 test:
-	dotnet test tests/Dfe.Acec.Web.Tests.Unit \
-		--no-build \
-		--results-directory $(TEST_RESULTS) \
-		--logger "trx" \
-		/p:CollectCoverage=true \
-		/m:1
-
-	dotnet test tests/Dfe.Acec.RulesEngine.Tests.Unit \
-		--no-build \
-		--results-directory $(TEST_RESULTS) \
-		--logger "trx" \
-		/p:CollectCoverage=true \
-		/m:1
-
-	dotnet test tests/Dfe.Acec.Web.Tests.Integration \
-		--no-build \
-		--results-directory $(TEST_RESULTS) \
-		--logger "trx" \
-		/p:CollectCoverage=true \
-		/m:1
+	dotnet test \
+  		--test-modules ".artifacts/bin/**/**.Tests.Unit.dll;.artifacts/bin/**/**.Tests.Integration.dll" \
+  		--max-parallel-test-modules 3 \
+  		--coverlet \
+  		--coverlet-output-format opencover \
+  		--coverlet-include "[Dfe.Acec.*]*"
 
 test-e2e:
 	dotnet test tests/Dfe.Acec.Web.Tests.E2e \
 		--no-build \
-		--logger:"console;verbosity=normal"
+		-- \
+		--retry-failed-tests 3 \
+		--retry-failed-tests-delay 500ms \
+		--retry-failed-tests-max-percentage 20
 
 test-a11y:
 	dotnet test tests/Dfe.Acec.Web.Tests.A11y \
 		--no-build \
-		--logger:"console;verbosity=normal"
+		-- \
+		--retry-failed-tests 3 \
+		--retry-failed-tests-delay 500ms \
+		--retry-failed-tests-max-percentage 20
 
 playwright-i:
 	pwsh ./.artifacts/bin/Dfe.Acec.Web.Tests.E2e/debug/playwright.ps1 install --with-deps

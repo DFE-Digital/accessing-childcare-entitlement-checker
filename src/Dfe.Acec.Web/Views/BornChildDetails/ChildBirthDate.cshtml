@@ -16,28 +16,25 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">
+            @Localizer["Title", Model.ChildName]
+        </h1>
+
+        <p class="govuk-body">
+            @Localizer["Details_Text"]
+        </p>
+
         <form method="post" asp-route-childId="@Model.ChildId" asp-antiforgery="true" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
             <govuk-date-input for="ChildBirthDate">
                 <govuk-date-input-fieldset>
-                    <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                    <govuk-date-input-fieldset-legend class="govuk-visually-hidden">
                         @Localizer["Title", Model.ChildName]
                     </govuk-date-input-fieldset-legend>
 
                     <govuk-date-input-error-message />
                 </govuk-date-input-fieldset>
             </govuk-date-input>
-
-            <govuk-details>
-                <govuk-details-summary>
-                    @Localizer["Details_Title"]
-                </govuk-details-summary>
-                <govuk-details-text>
-                    <p>
-                        @Localizer["Details_Text"]
-                    </p>
-                </govuk-details-text>
-            </govuk-details>
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]

@@ -10,7 +10,7 @@ public static class HttpClientHelpers
         IEnumerable<KeyValuePair<string, string>> formFields,
         CancellationToken cancellationToken)
     {
-        var req = new HttpRequestMessage(HttpMethod.Post, url);
+        using var req = new HttpRequestMessage(HttpMethod.Post, url);
         if (cookie != null)
         {
             req.Headers.Add("Cookie", cookie);
