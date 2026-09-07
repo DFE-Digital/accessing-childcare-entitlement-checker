@@ -6,7 +6,12 @@ on:
       environment:
         description: 'Target Environment'
         required: true
-        type: environment
+        type: choice
+        options:
+          - development
+          - test
+          - staging
+          - production
       action:
         description: 'Action'
         required: true
@@ -64,6 +69,8 @@ jobs:
           ENDPOINT="${PREFIX}-web-fd-endpoint"
           ROUTE="${PREFIX}-web-fd-route"
 
+          SUB_ID=$(az account show --query id -o tsv)
+
           if [ "$ACTION" = "shutter" ]; then
               echo "Enabling shutter mode for environment ${{ inputs.environment }} (prefix $ENV_PREFIX)..."
               ORIGIN_GROUP="${PREFIX}-shutter-fd-origin-group"
@@ -77,7 +84,7 @@ jobs:
                   --endpoint-name "$ENDPOINT" \
                   --route-name "$ROUTE" \
                   --origin-group "$ORIGIN_GROUP" \
-                  --rule-sets "$RULE_SET_1" "$RULE_SET_2" \
+                  --formatted-rule-sets "[{id:/subscriptions/$SUB_ID/resourceGroups/$RG/providers/Microsoft.Cdn/profiles/$PROFILE/ruleSets/$RULE_SET_1},{id:/subscriptions/$SUB_ID/resourceGroups/$RG/providers/Microsoft.Cdn/profiles/$PROFILE/ruleSets/$RULE_SET_2}]" \
                   --origin-path "$ORIGIN_PATH"
               echo "Shutter mode successfully enabled."
 
@@ -85,7 +92,6 @@ jobs:
               echo "Restoring normal operation for environment ${{ inputs.environment }} (prefix $ENV_PREFIX)..."
               ORIGIN_GROUP="${PREFIX}-web-fd-origin-group"
               RULE_SET_1="${ENV_PREFIX}SecurityRules"
-              ORIGIN_PATH=""
               
               az afd route update \
                   --resource-group "$RG" \
@@ -93,7 +99,7 @@ jobs:
                   --endpoint-name "$ENDPOINT" \
                   --route-name "$ROUTE" \
                   --origin-group "$ORIGIN_GROUP" \
-                  --rule-sets "$RULE_SET_1" \
-                  --origin-path "$ORIGIN_PATH"
+                  --formatted-rule-sets "[{id:/subscriptions/$SUB_ID/resourceGroups/$RG/providers/Microsoft.Cdn/profiles/$PROFILE/ruleSets/$RULE_SET_1}]" \
+                  --remove origin_path
               echo "Normal operation successfully restored."
           fi
