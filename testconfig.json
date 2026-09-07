@@ -5,7 +5,8 @@
   },
   "commandLineOptions": {
     "report-trx": true,
-    "report-gh": true
+    "report-gh": true,
+    "report-gh-step-summary": "off"
   },
   "xUnit": {
     "culture": "en-GB",
