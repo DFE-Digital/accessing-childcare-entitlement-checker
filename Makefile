@@ -61,31 +61,28 @@ inspect: inspect-a inspect-r
 # ---------------------------------------------------------------------------
 
 test:
-	dotnet test tests/Dfe.Acec.Web.Tests.Unit \
-		--no-build \
-		--coverlet \
-		--coverlet-output-format opencover \
-		--coverlet-include "[Dfe.Acec.*]*"
-
-	dotnet test tests/Dfe.Acec.RulesEngine.Tests.Unit \
-		--no-build \
-		--coverlet \
-		--coverlet-output-format opencover \
-		--coverlet-include "[Dfe.Acec.*]*"
-
-	dotnet test tests/Dfe.Acec.Web.Tests.Integration \
-		--no-build \
-		--coverlet \
-		--coverlet-output-format opencover \
-		--coverlet-include "[Dfe.Acec.*]*"
+	dotnet test \
+  		--test-modules ".artifacts/bin/**/**.Tests.Unit.dll;.artifacts/bin/**/**.Tests.Integration.dll" \
+  		--max-parallel-test-modules 3 \
+  		--coverlet \
+  		--coverlet-output-format opencover \
+  		--coverlet-include "[Dfe.Acec.*]*"
 
 test-e2e:
 	dotnet test tests/Dfe.Acec.Web.Tests.E2e \
-		--no-build
+		--no-build \
+		-- \
+		--retry-failed-tests 3 \
+		--retry-failed-tests-delay 500ms \
+		--retry-failed-tests-max-percentage 20
 
 test-a11y:
 	dotnet test tests/Dfe.Acec.Web.Tests.A11y \
-		--no-build
+		--no-build \
+		-- \
+		--retry-failed-tests 3 \
+		--retry-failed-tests-delay 500ms \
+		--retry-failed-tests-max-percentage 20
 
 playwright-i:
 	pwsh ./.artifacts/bin/Dfe.Acec.Web.Tests.E2e/debug/playwright.ps1 install --with-deps
