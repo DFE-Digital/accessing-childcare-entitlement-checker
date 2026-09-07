@@ -82,6 +82,6 @@ Now you know how to use Azure Cloud Shell!
 
 You can launch Cloud Shell anytime, clone repositories, run Azure CLI commands to inspect resources, and use the built-in editor to manage configuration files.
 
-To learn more about how we utilize Cloud Shell during specific operational events, read our [Service shuttering runbook](/how-to/runbooks/service-shuttering/). 
+To learn more about our operational procedures, read our [Service shuttering runbook](/how-to/runbooks/service-shuttering/) or our [Regional failover runbook](/how-to/runbooks/regional-failover/). 
 
 To learn more about the shutter service architecture, read our [Shutter service explanation guide](/explanation/shutter-service/).

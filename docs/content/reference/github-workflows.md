@@ -18,6 +18,7 @@ These workflows enforce code quality, run accessibility and end-to-end tests, pe
 | `inspect-code.yml` | Pull request, push to main (via `workflow_call`) | Runs deep JetBrains InspectCode static analysis against the .NET solution. | None |
 | `build-infra.yml` | Pull request, push to main | Validates and lints Terraform and Bicep infrastructure-as-code files. | None (static validation and linting) |
 | `deploy-environment.yml` | Workflow dispatch, release | Deploys the infrastructure and web application to a specified environment. | `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` |
+| `workflow-shutter-service.yml` | Workflow dispatch | Safely shutters or restores the web application for a selected environment by toggling Front Door routing. | `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` |
 | `run-e2e-tests.yml` | Workflow dispatch, schedule | Executes end-to-end user journey tests using Playwright. | `TEST_BASE_URL` |
 | `run-a11y-tests.yml` | Workflow dispatch, schedule | Runs automated accessibility verification checks on application views. | `TEST_BASE_URL` |
 | `validate-tf-docs.yml` | Pull request (via `workflow_call`) | Validates that generated Terraform documentation is up-to-date. | None |
