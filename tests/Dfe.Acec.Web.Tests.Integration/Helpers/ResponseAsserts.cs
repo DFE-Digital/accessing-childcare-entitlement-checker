@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using JetBrains.Annotations;
 
@@ -5,7 +6,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Helpers;
 
 public static class ResponseAsserts
 {
-    //noinspection ParameterOnlyUsedForPreconditionCheck.Global
+    [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Global")]
     public static HttpResponseMessage AssertRedirect(this HttpResponseMessage response, string expectedLink)
     {
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
