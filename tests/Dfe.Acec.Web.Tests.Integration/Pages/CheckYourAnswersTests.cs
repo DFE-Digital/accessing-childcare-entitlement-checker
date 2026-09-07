@@ -1,5 +1,7 @@
 using Dfe.Acec.Web.Models;
+using Dfe.Acec.Web.Models.BornChildDetails;
 using Dfe.Acec.Web.Models.Partner;
+using Dfe.Acec.Web.Models.User;
 using Dfe.Acec.Web.Services;
 using Dfe.Acec.Web.Tests.Integration.Fixtures;
 using Dfe.Acec.Web.Tests.Integration.Helpers;
@@ -13,14 +15,9 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
     [Fact]
     public async Task GetWhenFeatureFlagEnabledSuppressesLocationRow()
     {
-        await using var host = factory.CreateClientWithJourneyStateAndFeatureFlags(new JourneyState
-        {
-            CountryOfResidence = CountryOfResidence.England,
-            HasPartner = false,
-        }, new()
-        {
-            { "FeatureManagement:HmrcIntegration", "true" }
-        });
+        await using var host = factory.CreateClientWithJourneyStateAndFeatureFlags(
+            new JourneyState { CountryOfResidence = CountryOfResidence.England, HasPartner = false, },
+            new() { { "FeatureManagement:HmrcIntegration", "true" } });
 
         using var client = host.CreateClient();
 
@@ -61,7 +58,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
     {
         const string childId = "child-1";
 
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             CountryOfResidence = CountryOfResidence.England,
             HasPartner = false,
@@ -81,6 +78,8 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
             ParentalLeaveChildrenIds = [childId]
         });
 
+        using var client = host.CreateClient();
+
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
 
         response.EnsureSuccessStatusCode();
@@ -96,14 +95,16 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
 
     [Theory]
     [InlineData("check-your-answers")]
-    public async Task Get_RemovePageTitleMaskedForClarity(string returnTo)
+    public async Task GetRemovePageTitleMaskedForClarity(string returnTo)
     {
         const string childId = "child-1";
 
-        using var client = factory.CreateClientWithJourneyState(new JourneyState
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             Children = new Dictionary<string, Child> { { childId, new Child(childId, "Sara") } }
         });
+
+        using var client = host.CreateClient();
 
         var url = $"/children/{childId}/remove?returnTo={returnTo}";
 
