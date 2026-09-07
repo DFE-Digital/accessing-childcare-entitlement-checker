@@ -301,18 +301,17 @@ public class SummaryControllerTests : IDisposable
     {
         var validator = Substitute.For<IValidator<JourneyState>>();
 
-        var controller = new SummaryController(
+        using var controller = new SummaryController(
             _journeyState,
             _journeySession,
             AcecSubstitute.ForLocalizerFactory(),
             validator,
             _logger,
-            _featureManager)
-        {
-            ControllerContext = _controller.ControllerContext,
-            MetadataProvider = _controller.MetadataProvider,
-            Url = _controller.Url
-        };
+            _featureManager);
+
+        controller.ControllerContext = _controller.ControllerContext;
+        controller.MetadataProvider = _controller.MetadataProvider;
+        controller.Url = _controller.Url;
 
         var model = new CheckAnswersSubmitModel(Guid.NewGuid());
 
@@ -330,18 +329,17 @@ public class SummaryControllerTests : IDisposable
         mockValidator.Validate(Arg.Any<ValidationContext<JourneyState>>()).Returns(validationResult);
 
         var localizerFactory = AcecSubstitute.ForLocalizerFactory();
-        var controller = new SummaryController(
+        using var controller = new SummaryController(
             _journeyState,
             _journeySession,
             localizerFactory,
             mockValidator,
             _logger,
-            _featureManager)
-        {
-            ControllerContext = _controller.ControllerContext,
-            MetadataProvider = _controller.MetadataProvider,
-            Url = _controller.Url
-        };
+            _featureManager);
+
+        controller.ControllerContext = _controller.ControllerContext;
+        controller.MetadataProvider = _controller.MetadataProvider;
+        controller.Url = _controller.Url;
 
         var model = new CheckChildDetailsSubmitModel(_journeyState.CorrelationId);
 
@@ -375,18 +373,17 @@ public class SummaryControllerTests : IDisposable
             .Validate(Arg.Any<ValidationContext<JourneyState>>())
             .Returns(validationResult);
 
-        var controller = new SummaryController(
+        using var controller = new SummaryController(
             _journeyState,
             _journeySession,
             AcecSubstitute.ForLocalizerFactory(),
             mockValidator,
             _logger,
-            _featureManager)
-        {
-            ControllerContext = _controller.ControllerContext,
-            MetadataProvider = _controller.MetadataProvider,
-            Url = _controller.Url
-        };
+            _featureManager);
+
+        controller.ControllerContext = _controller.ControllerContext;
+        controller.MetadataProvider = _controller.MetadataProvider;
+        controller.Url = _controller.Url;
 
         var model = new CheckAnswersSubmitModel(
             _journeyState.CorrelationId);

@@ -25,7 +25,7 @@ public class LayoutTests(IntegrationTestFixture factory) : IClassFixture<Integra
     public async Task LayoutIncludesRequiredFooterLinks()
     {
         using var getClient = factory.CreateClient();
-        var request = new HttpRequestMessage(HttpMethod.Get, "/");
+        using var request = new HttpRequestMessage(HttpMethod.Get, "/");
         var getResponse = await getClient.SendAsync(request, TestContext.Current.CancellationToken);
         var document = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
         document

@@ -74,7 +74,7 @@ public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixt
 
             using var getClient = getHost.CreateClient();
 
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Cookie", "cookie_policy=enabled");
             var getResponse = await getClient.SendAsync(request, TestContext.Current.CancellationToken);
             var document = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
