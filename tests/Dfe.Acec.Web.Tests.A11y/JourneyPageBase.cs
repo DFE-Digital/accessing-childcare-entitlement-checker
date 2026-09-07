@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Playwright;
 
 namespace Dfe.Acec.Web.Tests.A11y;
 
+[SuppressMessage("Maintainability", "CA1502:Avoid excessive complexity", Justification = "Complexity in place before rules added. Code needs to be reviewed.")]
 public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(output)
 {
     private const string DefaultChildName = "Jack";

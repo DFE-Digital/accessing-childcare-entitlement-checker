@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.RulesEngine.Dtos.Responses;
 using Dfe.Acec.RulesEngine.Helpers;
 using Dfe.Acec.RulesEngine.Types;
@@ -8,6 +9,7 @@ using NSubstitute;
 
 namespace Dfe.Acec.Web.Tests.Unit.Mappers;
 
+[SuppressMessage("Maintainability", "CA1502:Avoid excessive complexity", Justification = "Complexity in place before rules added. Code needs to be reviewed.")]
 public class EntitlementResponseToResultsDetailsViewModelMapperTests
 {
     private readonly EntitlementResponseToResultsDetailsViewModelMapper _mapper;
