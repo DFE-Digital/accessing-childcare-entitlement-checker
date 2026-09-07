@@ -95,6 +95,16 @@ app.Use(async (context, next) =>
     context.Response.Headers.XContentTypeOptions = "nosniff";
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
 
+    var path = context.Request.Path.Value ?? string.Empty;
+    var isStaticAsset = path.StartsWith("/assets/", StringComparison.OrdinalIgnoreCase)
+                        || path.StartsWith("/css/", StringComparison.OrdinalIgnoreCase)
+                        || path.StartsWith("/images/", StringComparison.OrdinalIgnoreCase)
+                        || path.Equals("/favicon.ico", StringComparison.OrdinalIgnoreCase);
+
+    context.Response.Headers.CacheControl = isStaticAsset
+        ? "public, max-age=31536000, immutable"
+        : "no-cache, no-store, must-revalidate";
+
     var csp = new StringBuilder();
 
     csp.Append("default-src 'self'; ");
@@ -129,7 +139,13 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     SupportedUICultures = supportedCultures
 })
     .UseHttpsRedirection()
-    .UseStaticFiles()
+    .UseStaticFiles(new StaticFileOptions
+    {
+        OnPrepareResponse = ctx =>
+        {
+            ctx.Context.Response.Headers.CacheControl = "public, max-age=31536000, immutable";
+        }
+    })
     .UseGovUkFrontend()
     .UseRouting()
     .UseSession()
