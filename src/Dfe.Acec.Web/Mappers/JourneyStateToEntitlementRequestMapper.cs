@@ -283,7 +283,7 @@ public class JourneyStateToEntitlementRequestMapper
 
     private static Nationality? MapNationality(List<NationalityOption> nationalityOptions)
     {
-        if (nationalityOptions == null || nationalityOptions.Count == 0)
+        if (nationalityOptions.Count == 0)
         {
             return null;
         }
