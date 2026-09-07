@@ -13,9 +13,14 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
     [Fact]
     public async Task GetWhenFeatureFlagEnabledSuppressesLocationRow()
     {
-        await using var host = factory.CreateClientWithJourneyStateAndFeatureFlags(
-            new JourneyState { CountryOfResidence = CountryOfResidence.England, HasPartner = false, },
-            new() { { "FeatureManagement:HmrcIntegration", "true" } });
+        await using var host = factory.CreateClientWithJourneyStateAndFeatureFlags(new JourneyState
+        {
+            CountryOfResidence = CountryOfResidence.England,
+            HasPartner = false,
+        }, new()
+        {
+            { "FeatureManagement:HmrcIntegration", "true" }
+        });
 
         using var client = host.CreateClient();
 
