@@ -70,7 +70,7 @@
             @if (Model.PartnerDetails.Any())
             {
                 <h2 class="govuk-heading-m">@Localizer["Your partners details"]</h2>
-                <partial name="_SummaryList" model="Model.UserDetails" />
+                <partial name="_SummaryList" model="Model.PartnerDetails" />
             }
 
             <p class="govuk-body">@Localizer["Click 'Continue' to view your results."]</p>
