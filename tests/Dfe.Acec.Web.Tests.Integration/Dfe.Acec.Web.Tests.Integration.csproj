@@ -7,6 +7,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="xunit.v3" />
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+    <PackageReference Include="Microsoft.Testing.Extensions.GitHubActionsReport" />
     <PackageReference Include="AngleSharp" />
   </ItemGroup>
 

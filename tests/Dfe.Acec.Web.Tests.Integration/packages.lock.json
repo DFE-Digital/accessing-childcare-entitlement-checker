@@ -31,6 +31,15 @@
           "Microsoft.Extensions.Hosting": "10.0.11"
         }
       },
+      "Microsoft.Testing.Extensions.GitHubActionsReport": {
+        "type": "Direct",
+        "requested": "[2.4.0, )",
+        "resolved": "2.4.0",
+        "contentHash": "ifLB/Tn18NWKcJ0weNJ76XgTsSqrOn0Qekccm6FJoOf7gmfOhME+p4VPok74+/iHsUBwm3rmJTxmXcLbS3pWdw==",
+        "dependencies": {
+          "Microsoft.Testing.Platform": "[2.4.0, 3.0.0)"
+        }
+      },
       "Microsoft.Testing.Extensions.TrxReport": {
         "type": "Direct",
         "requested": "[2.4.0, )",

@@ -4,7 +4,8 @@
     "resultDirectory": "./.test-results"
   },
   "commandLineOptions": {
-    "report-trx": true
+    "report-trx": true,
+    "report-gh": true
   },
   "xUnit": {
     "culture": "en-GB",

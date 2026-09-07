@@ -27,6 +27,7 @@
     <PackageVersion Include="AngleSharp" Version="1.7.2" />
     <PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="2.4.0" />
     <PackageVersion Include="Microsoft.Testing.Extensions.Retry" Version="2.4.0" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.GitHubActionsReport" Version="2.4.0" />
     <PackageVersion Include="coverlet.MTP" Version="10.0.1" />
   </ItemGroup>
 </Project>
