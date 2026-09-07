@@ -1,0 +1,34 @@
+description = "Drafts a Pull Request description based on current branch changes and a JIRA ticket, saving it to .tmp/."
+
+prompt = """
+You are an expert developer assistant. Your task is to generate a professional Pull Request description for the current branch and save it in `.tmp/pull_request_<timestamp>.md`.
+
+Follow these steps sequentially using your available tools:
+
+### Step 1: Check Git Status (Hard Stop)
+Run `git status --porcelain` to check for any uncommitted or pending changes in the working directory.
+- **Crucial Rule:** If there are ANY modified, added, deleted, or untracked files listed in the output of `git status --porcelain`, you MUST stop immediately. Print a message explaining that there are uncommitted changes, and do NOT proceed any further.
+
+### Step 2: Determine Base Branch and Gather Changes
+If the working directory is perfectly clean:
+1. Determine the target base branch of this repository. Usually, this is the default remote branch (e.g., `origin/main` or `origin/master`). If it is not immediately clear, use the `ask_user` tool to confirm the correct target base branch.
+2. Retrieve the changes introduced *specifically* on the current branch compared to that base branch. Use a command like `git log <base-branch>..HEAD` and `git diff <base-branch>..HEAD` (excluding changes/commits that are already in the base branch).
+- *Do not load the entire diff if it is too large; summarize it or extract the file changes first.*
+
+### Step 3: Read the Pull Request Template
+Read the contents of `.github/pull_request_template.md`. 
+If this file does not exist, use a standard PR structure with sections: Title/Jira Ticket, Summary, Changes, and Checklist.
+
+### Step 4: Ask User for JIRA Ticket Number
+You **MUST NOT** guess or assume the JIRA ticket ID.
+Call the `ask_user` tool to request the JIRA ticket ID (e.g., "AC-123") from the user. Provide:
+- Header: "JIRA Ticket"
+- Question: "Please enter the JIRA ticket ID for this work:"
+- Placeholder: "e.g., AC-123"
+
+### Step 5: Synthesize the PR Description and Save Output
+1. Combine the JIRA ticket ID, the branch changes (diff and commit log), and the pull request template to generate a complete, high-quality PR description. Use UK English, sentence-case headings, and clear formatting.
+2. Get the current date and time stamp (formatted as `YYYYMMDD_HHMMSS`).
+3. Save the full drafted PR description in `.tmp/pull_request_<timestamp>.md`. Ensure you create `.tmp` directory if it does not exist.
+4. Output a brief message to the user confirming the location and filename of the saved draft.
+"""
