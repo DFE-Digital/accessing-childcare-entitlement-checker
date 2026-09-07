@@ -14,65 +14,42 @@ Shuttering is controlled entirely via Azure Front Door routing. The static shutt
 
 We have two methods for toggling the shutter state:
 
-1. **Azure Cloud Shell (Recommended)** - Quick, script-driven toggle that prevents syntax errors.
+1. **GitHub Actions Workflow (Recommended)** - Automated trigger using GitHub UI.
 2. **Azure Portal (ClickOps)** - Manual configuration through the Azure Portal interface.
 
-## Using Azure Cloud Shell (Recommended)
+## Using GitHub Actions Workflow (Recommended)
 
-This method uses the pre-installed Azure CLI inside the browser-based Azure Cloud Shell. It executes the failover script located in the repository.
+This method triggers the **Shutter Service** GitHub Actions workflow, which automatically runs the necessary Azure CLI commands securely.
 
-### Step 1: Open Azure Cloud Shell
+### Step 1: Open the Shutter Service Workflow
 
-1. Log into the [Azure Portal](https://portal.azure.com).
-2. Click the **Cloud Shell** icon (`>_`) in the top-right toolbar.
-3. Ensure the environment dropdown is set to **Bash**.
+1. Navigate to the repository on GitHub.
+2. Click the **Actions** tab at the top of the page.
+3. In the left-hand sidebar under **All workflows**, select **Shutter Service**.
 
-### Step 2: Retrieve the Failover Script
+### Step 2: Run the Workflow
 
-If you do not have the repository cloned in your Cloud Shell session, you can download the script directly from the repository using `curl` or `wget`, or clone the codebase:
+1. On the right-hand side, click the **Run workflow** dropdown button.
+2. Configure the following inputs:
+   - **Target Environment**: Select the target environment (e.g., `development`, `test`, `staging`, `production`).
+   - **Action**: Choose either `shutter` (to enable the shutter page) or `restore` (to restore the live service).
+3. Click the green **Run workflow** button to execute.
 
-```bash
-# Clone the repository if not already present
-git clone https://github.com/DFE-Digital/accessing-childcare-entitlement-checker.git
-cd accessing-childcare-entitlement-checker/infra/scripts
-chmod +x failover.sh
-```
-
-### Step 3: Execute the Failover
-
-To find your target `<environment_prefix>`, check the environment code (e.g. `d01` for development, `t01` for test, `s01` for staging, `p01` for production).
-
-#### To Enable the Shutter (Failover):
-Run the script with the environment prefix and `shutter`:
-
-```bash
-./failover.sh <environment_prefix> shutter
-# Example: ./failover.sh p01 shutter
-```
-
-This script will:
-- Safely update the Front Door Route (`<prefix>-web-fd-route`) to forward traffic to the `shutter-origin-group`.
-- Set the route's **Origin path** to `/shutter` so assets are fetched from the correct container directory.
-- Associate both the `SecurityRules` and `ShutterRules` rule sets, ensuring that critical security redirects remain functional while the site is shuttered.
-
-#### To Disable the Shutter (Restore Service):
-
-Run the script with the environment prefix and `restore`:
-
-```bash
-./failover.sh <environment_prefix> restore
-# Example: ./failover.sh p01 restore
-```
-
-This script will:
-
-- Revert the Front Door Route to point back to the main App Service `web-fd-origin-group`.
-- Clear the route's **Origin path** (sets it to empty).
-- Restore the route's association to use only the `SecurityRules` rule set.
+This workflow will perform the following actions:
+- Authenticate securely to Azure via OpenID Connect (OIDC).
+- Automatically resolve the correct Azure resource group and Front Door route names for your selected environment.
+- **For Shuttering**:
+  - Safely update the Front Door Route (`<prefix>-web-fd-route`) to forward traffic to the `shutter-origin-group`.
+  - Set the route's **Origin path** to `/shutter` so assets are fetched from the correct container directory.
+  - Associate both the `SecurityRules` and `ShutterRules` rule sets, ensuring that critical security redirects remain functional while the site is shuttered.
+- **For Restoring**:
+  - Revert the Front Door Route to point back to the main App Service `web-fd-origin-group`.
+  - Clear the route's **Origin path** (sets it to empty).
+  - Restore the route's association to use only the `SecurityRules` rule set.
 
 ## Manual Toggle via Azure Portal (ClickOps)
 
-Use this method if you do not have access to Cloud Shell or prefer using the graphical user interface.
+Use this method if you do not have permission to run GitHub Actions workflows or prefer using the graphical user interface.
 
 ### Step 1: Locate the Front Door Profile
 
