@@ -45,7 +45,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)CodeMetricsConfig.txt"/>
+    <AdditionalFiles Condition="!$(MSBuildProjectName.Contains('.Tests.'))" Include="$(MSBuildThisFileDirectory)CodeMetricsConfig.txt" />
+    <AdditionalFiles Condition="$(MSBuildProjectName.Contains('.Tests.'))" Include="$(MSBuildThisFileDirectory)tests\CodeMetricsConfig.txt" />
   </ItemGroup>
 
   <ItemGroup Condition="$(MSBuildProjectName.Contains('.Tests.'))">
