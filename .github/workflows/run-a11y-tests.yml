@@ -128,12 +128,3 @@ jobs:
         if: always() && env.APP_STARTED == 'true'
         run: |
           kill "$(cat app.pid)" || true
-
-      - name: Publish A11y test results
-        if: always()
-        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
-        with:
-          name: A11y Test Results (${{ inputs.browser }})
-          path: ".test-results/*.trx"
-          reporter: dotnet-trx
-          fail-on-error: true

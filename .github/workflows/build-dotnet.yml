@@ -16,9 +16,6 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   SOLUTION: Dfe.Acec.slnx
   WEB_APP: src/Dfe.Acec.Web/Dfe.Acec.Web.csproj
-  UNIT_TESTS_WEB: tests/Dfe.Acec.Web.Tests.Unit/Dfe.Acec.Web.Tests.Unit.csproj
-  UNIT_TESTS_RULES: tests/Dfe.Acec.RulesEngine.Tests.Unit/Dfe.Acec.RulesEngine.Tests.Unit.csproj
-  INTEGRATION_TESTS: tests/Dfe.Acec.Web.Tests.Integration/Dfe.Acec.Web.Tests.Integration.csproj
   E2E_TESTS: tests/Dfe.Acec.Web.Tests.E2e/Dfe.Acec.Web.Tests.E2e.csproj
   A11Y_TESTS: tests/Dfe.Acec.Web.Tests.A11y/Dfe.Acec.Web.Tests.A11y.csproj
   CONFIGURATION: Release
@@ -109,23 +106,9 @@ jobs:
       - name: Test
         id: test
         run: |
-          dotnet test ${{ env.UNIT_TESTS_WEB }} \
-            --configuration ${{ env.CONFIGURATION }} \
-            --no-build \
-            --coverlet \
-            --coverlet-output-format opencover \
-            --coverlet-include "[Dfe.Acec.*]*"
-
-          dotnet test ${{ env.UNIT_TESTS_RULES }} \
-            --configuration ${{ env.CONFIGURATION }} \
-            --no-build \
-            --coverlet \
-            --coverlet-output-format opencover \
-            --coverlet-include "[Dfe.Acec.*]*"
-
-          dotnet test ${{ env.INTEGRATION_TESTS }} \
-            --configuration ${{ env.CONFIGURATION }} \
-            --no-build \
+          dotnet test \
+            --test-modules ".artifacts/bin/**/**.Tests.Unit.dll;.artifacts/bin/**/**.Tests.Integration.dll" \
+            --max-parallel-test-modules 3 \
             --coverlet \
             --coverlet-output-format opencover \
             --coverlet-include "[Dfe.Acec.*]*"
@@ -150,17 +133,9 @@ jobs:
         continue-on-error: true
         run: |
           if [ -f coverage-report/SummaryGithub.md ]; then
-            cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+            awk '/^## Coverage$/ { found=1 } found' \
+              coverage-report/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
           fi
-
-      - name: Publish test results
-        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
-        if: always()
-        with:
-          name: Test Results
-          path: "**/*.trx"
-          reporter: dotnet-trx
-          fail-on-error: true
 
       - name: Publish Web App
         if: inputs.publish
