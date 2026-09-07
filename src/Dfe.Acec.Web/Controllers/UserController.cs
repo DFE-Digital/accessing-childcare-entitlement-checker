@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.Web.Filters;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.User;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Acec.Web.Controllers;
 
+[SuppressMessage("Maintainability", "CA1502:Avoid excessive complexity", Justification = "Complexity in place before rules added. Code needs to be reviewed.")]
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
 public class UserController(JourneyState journeyState, IJourneySession journeySession) : Controller
 {
