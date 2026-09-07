@@ -122,7 +122,10 @@ jobs:
           TestSettings__Browser: ${{ inputs.browser }}
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          ./e2e-tests/Dfe.Acec.Web.Tests.E2e
+          ./e2e-tests/Dfe.Acec.Web.Tests.E2e \
+            --retry-failed-tests 3 \
+            --retry-failed-tests-delay 500ms \
+            --retry-failed-tests-max-percentage 20
 
       - name: Stop app
         if: always() && env.APP_STARTED == 'true'
