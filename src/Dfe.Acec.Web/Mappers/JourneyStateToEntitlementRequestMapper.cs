@@ -293,14 +293,14 @@ public class JourneyStateToEntitlementRequestMapper
             return Nationality.BritishOrIrishCitizen;
         }
 
-        if (nationalityOptions.Contains(NationalityOption.CitizenOfADifferentCountry))
-        {
-            return Nationality.Other;
-        }
-
         if (nationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland))
         {
             return Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen;
+        }
+
+        if (nationalityOptions.Contains(NationalityOption.CitizenOfADifferentCountry))
+        {
+            return Nationality.Other;
         }
 
         throw new ArgumentOutOfRangeException(
