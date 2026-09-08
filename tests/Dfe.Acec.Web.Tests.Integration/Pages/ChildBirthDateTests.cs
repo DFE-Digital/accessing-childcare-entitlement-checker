@@ -135,7 +135,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Fact]
-    public async Task GetLegendMaskedForClarity()
+    public async Task GetHeadingMaskedForClarity()
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
@@ -156,10 +156,10 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
 
         var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        var legend = document.QuerySelector("legend.govuk-visually-hidden");
+        var heading = document.QuerySelector("h1.govuk-heading-l");
 
-        Assert.NotNull(legend);
-        Assert.Equal("true", legend.GetAttribute("data-clarity-mask"));
-        Assert.Contains("Sara", legend.TextContent);
+        Assert.NotNull(heading);
+        Assert.Equal("true", heading.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", heading.TextContent);
     }
 }
