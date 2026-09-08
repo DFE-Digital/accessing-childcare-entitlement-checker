@@ -490,5 +490,16 @@ public class JourneyStateValidatorCheckAnswersTests
             error => error.PropertyName == nameof(JourneyState.PartnerChildcareVoucherReceipt));
     }
 
+    [Fact]
+    public void CheckAnswers_WhenYearlyEarningsAreAboveThreshold_DoesNotRequireUniversalCredit()
+    {
+        var journeyState = CreateValidUserOnlyJourneyState();
 
+        journeyState.YearlyEarnings = YearlyEarningsOption.AboveThreshold;
+        journeyState.UniversalCredit = null;
+
+        var result = Validate(journeyState);
+
+        Assert.True(result.IsValid);
+    }
 }
