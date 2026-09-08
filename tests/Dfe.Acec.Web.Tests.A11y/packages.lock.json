@@ -65,6 +65,15 @@
           "System.ComponentModel.Annotations": "5.0.0"
         }
       },
+      "Microsoft.Testing.Extensions.CtrfReport": {
+        "type": "Direct",
+        "requested": "[1.0.0-alpha.26452.8, )",
+        "resolved": "1.0.0-alpha.26452.8",
+        "contentHash": "7hvQpNdjlyATgy8IK8/S86DpCOFZb2ELR4S/NdZQHFsIIj/radUz+93GawEU4HubtzW+77+6fDDIg0fsDux0kg==",
+        "dependencies": {
+          "Microsoft.Testing.Platform": "[2.4.0, 3.0.0)"
+        }
+      },
       "Microsoft.Testing.Extensions.GitHubActionsReport": {
         "type": "Direct",
         "requested": "[2.4.0, )",

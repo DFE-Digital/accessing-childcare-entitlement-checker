@@ -28,6 +28,7 @@
     <PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="2.4.0" />
     <PackageVersion Include="Microsoft.Testing.Extensions.Retry" Version="2.4.0" />
     <PackageVersion Include="Microsoft.Testing.Extensions.GitHubActionsReport" Version="2.4.0" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.CtrfReport" Version="1.0.0-alpha.26452.8" />
     <PackageVersion Include="coverlet.MTP" Version="10.0.1" />
   </ItemGroup>
 </Project>
