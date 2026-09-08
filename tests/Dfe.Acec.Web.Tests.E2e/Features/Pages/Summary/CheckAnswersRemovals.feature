@@ -10,6 +10,7 @@ Background:
 Scenario: Cancel a removal
 	When I click the Remove link in the "Aydin" card
 	And the page header is "Are you sure you want to remove Aydin?"
+	And the page title is "Are you sure you want to remove this child?"
 	And I should see 2 radio buttons with the following options:
 		| Option |
 		| Yes    |
@@ -29,6 +30,7 @@ Scenario: Back navigation
 Scenario: Remove Aydin
 	When I click the Remove link in the "Aydin" card
 	And the page header is "Are you sure you want to remove Aydin?"
+	And the page title is "Are you sure you want to remove this child?"
 	And I should see 2 radio buttons with the following options:
 		| Option |
 		| Yes    |
