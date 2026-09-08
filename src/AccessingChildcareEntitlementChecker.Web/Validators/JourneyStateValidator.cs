@@ -133,7 +133,7 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                         });
 
                 });
-            
+
             When(x =>
                     x.YearlyEarnings != YearlyEarningsOption.AboveThreshold,
                 () =>
