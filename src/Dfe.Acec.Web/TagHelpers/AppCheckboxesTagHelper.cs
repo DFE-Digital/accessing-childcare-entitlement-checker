@@ -27,8 +27,8 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
     [HtmlAttributeName("legend")]
     public IHtmlContent? Legend { get; set; }
 
-    [HtmlAttributeName("clarity-mask-legend")]
-    public bool MaskLegend { get; set; }
+    [HtmlAttributeName(DictionaryAttributePrefix = "legend-")]
+    public Dictionary<string, string?> LegendAttributes { get; } = [];
 
     [ViewContext]
     [HtmlAttributeNotBound]
@@ -67,12 +67,8 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
                     Html = legendHtml,
                     Classes = "govuk-fieldset__legend--l",
                     IsPageHeading = true,
-                    Attributes = MaskLegend
-                        ? new AttributeCollection(
-                            new Dictionary<string, string?>
-                            {
-                                ["data-clarity-mask"] = "true"
-                            })
+                    Attributes = LegendAttributes.Count > 0
+                        ? new AttributeCollection(LegendAttributes)
                         : null
                 },
             },
