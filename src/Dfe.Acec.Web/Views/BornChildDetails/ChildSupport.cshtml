@@ -20,7 +20,8 @@
             <input type="hidden" asp-for="ReturnTo" />
             <app-checkboxes for="ChildSupportOptions"
                                  legend="@Localizer["Does {0} get any of the following support?", Model.ChildName]"
-                                 exclusive-value="ChildSupport.NoneOfTheseApply" />
+                                 exclusive-value="ChildSupport.NoneOfTheseApply"
+                                 legend-is-page-heading="true" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]

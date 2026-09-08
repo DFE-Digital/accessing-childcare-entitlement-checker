@@ -29,7 +29,7 @@
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
-            <app-checkboxes for="PartnerNationalityOptions" />
+            <app-checkboxes for="PartnerNationalityOptions" legend-is-page-heading="false" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]

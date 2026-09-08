@@ -16,7 +16,7 @@
     <div class="govuk-grid-column-two-thirds">
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
-            <app-checkboxes for="PartnerWorkStatus" />
+            <app-checkboxes for="PartnerWorkStatus" legend-is-page-heading="true" />
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
