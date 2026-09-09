@@ -219,6 +219,36 @@ public class PartnerControllerTests : IDisposable
         Assert.Equal(actionName, redirect.ActionName);
     }
 
+    [Theory]
+    [InlineData(PartnerPaidWorkOption.Yes, nameof(PartnerController.PartnerWorkStatus))]
+    [InlineData(PartnerPaidWorkOption.No, nameof(PartnerController.PartnerBenefits))]
+    [InlineData(PartnerPaidWorkOption.ParentalLeave, nameof(PartnerController.PartnerParentalLeave))]
+    [InlineData(PartnerPaidWorkOption.SickLeave, nameof(PartnerController.PartnerWorkStatus))]
+    public void PartnerPaidWorkPostSameSelectionKeepsLaterAnswers(PartnerPaidWorkOption option, string actionName)
+    {
+        _journeyState.PartnerPaidWork = option;
+        _journeyState.PartnerWorkStatus = [WorkStatusOption.SelfEmployed];
+        _journeyState.PartnerParentalLeaveChildrenIds = ["child-a"];
+        _journeyState.PartnerSelfEmployedDuration = SelfEmployedDurationOption.NotLessThan12Months;
+        _journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
+        _journeyState.PartnerYearlyEarnings = YearlyEarningsOption.BelowThreshold;
+        var model = new PartnerPaidWorkViewModel
+        {
+            PartnerPaidWork = option,
+            ReturnTo = ReturnTo.CheckAnswers
+        };
+        var result = _controller.PartnerPaidWork(model);
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).SetState(_journeyState);
+        Assert.Equal(option, _journeyState.PartnerPaidWork);
+        Assert.Equal([WorkStatusOption.SelfEmployed], _journeyState.PartnerWorkStatus);
+        Assert.Equal(["child-a"], _journeyState.PartnerParentalLeaveChildrenIds);
+        Assert.Equal(SelfEmployedDurationOption.NotLessThan12Months, _journeyState.PartnerSelfEmployedDuration);
+        Assert.Equal(WeeklyEarningsOption.AboveThreshold, _journeyState.PartnerWeeklyEarnings);
+        Assert.Equal(YearlyEarningsOption.BelowThreshold, _journeyState.PartnerYearlyEarnings);
+        Assert.Equal(actionName, redirect.ActionName);
+    }
+
     [Fact]
     public void PartnerPaidWorkPostInvalidSelectionReturnsViewWithError()
     {
