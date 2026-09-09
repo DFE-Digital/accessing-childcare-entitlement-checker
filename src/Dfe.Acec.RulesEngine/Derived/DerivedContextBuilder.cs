@@ -90,7 +90,7 @@ public static class DerivedContextBuilder
 
     private static bool HasAccessToPublicFunds(PersonDto person)
     {
-        return person.Nationality == Nationality.BritishOrIrishCitizen
+        return person.Nationalities.Contains(Nationality.BritishOrIrishCitizen)
                || person.HasSettledOrPreSettledStatus == true;
     }
 }
