@@ -34,6 +34,20 @@ Scenario: Continue with selection
 	And I click on Continue
 	Then the page header is "What is your partner's age?"
 
+Scenario Outline: My answer is still selected when I come back to the question
+	Given I fill in my own details
+	And I answer "Do you live with a partner?" as "<Answer>"
+	When the page header is "<Next page>"
+	And I click the back link
+	Then the page header is "Do you live with a partner?"
+	And the "<Answer>" radio button should be selected
+	And all other options should be deselected
+
+Examples:
+	| Answer | Next page                   |
+	| Yes    | What is your partner's age? |
+	| No     | Check your answers          |
+
 Scenario: Back navigation from How do you receive your childcare vouchers?
 	Given I fill in my own details
 	When I click the back link
