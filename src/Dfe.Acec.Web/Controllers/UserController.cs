@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Filters;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.User;
@@ -53,8 +54,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
 
         journeyState.Apply(model);
         journeySession.SetState(journeyState);
-        var needsSettledStatus = journeyState.NationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland);
-        var nextAction = needsSettledStatus ? nameof(SettledStatus) : nameof(PaidWork);
+        var nextAction = journeyState.NationalityOptions.NeedsSettledStatusAnswer() ? nameof(SettledStatus) : nameof(PaidWork);
         return RedirectToAction(nextAction);
     }
 
@@ -385,7 +385,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
             return url;
         }
 
-        if (journeyState.NationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland))
+        if (journeyState.NationalityOptions.IsCitizenOfAnEuCountryEeaCountryOrSwitzerland())
         {
             return Url.ActionOrThrow(nameof(SettledStatus));
         }

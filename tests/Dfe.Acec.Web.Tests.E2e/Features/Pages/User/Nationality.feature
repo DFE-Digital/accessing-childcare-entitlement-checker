@@ -58,7 +58,7 @@ Scenario: Continue with British or Irish citizen and Citizen of a different coun
 	And I select the "Citizen of a different country" checkbox
 	And I select the "Citizen of an EU country, EEA country or Switzerland" checkbox
 	And I click on Continue
-	Then the page header is "Do you have settled or pre-settled status under the EU Settlement Scheme?"
+	Then the page header is "Are you in paid work?"
 
 Scenario: Back navigation
 	When I click the back link

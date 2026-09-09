@@ -99,14 +99,18 @@ public class UserControllerTests : IDisposable
     }
 
     [Theory]
-    [InlineData(NationalityOption.BritishOrIrishCitizen, null, nameof(UserController.PaidWork))]
-    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, nameof(UserController.SettledStatus))]
-    [InlineData(NationalityOption.CitizenOfADifferentCountry, null, nameof(UserController.PaidWork))]
-    public void NationalityPostSavesStateAndRedirects(NationalityOption nationality, string? returnTo, string actionName)
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen }, null, nameof(UserController.PaidWork))]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland }, null, nameof(UserController.PaidWork))]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, NationalityOption.CitizenOfADifferentCountry }, null, nameof(UserController.PaidWork))]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfADifferentCountry }, null, nameof(UserController.PaidWork))]
+    [InlineData(new[] { NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland }, null, nameof(UserController.SettledStatus))]
+    [InlineData(new[] { NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, NationalityOption.CitizenOfADifferentCountry }, null, nameof(UserController.SettledStatus))]
+    [InlineData(new[] { NationalityOption.CitizenOfADifferentCountry }, null, nameof(UserController.PaidWork))]
+    public void NationalityPostSavesStateAndRedirects(NationalityOption[] nationalityOptions, string? returnTo, string actionName)
     {
         var model = new NationalityViewModel
         {
-            NationalityOptions = [nationality],
+            NationalityOptions = [.. nationalityOptions],
             ReturnTo = returnTo
         };
 
@@ -114,7 +118,7 @@ public class UserControllerTests : IDisposable
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).SetState(_journeyState);
-        Assert.Equal(nationality, _journeyState.NationalityOptions.Single());
+        Assert.Equal(nationalityOptions, _journeyState.NationalityOptions);
         Assert.Null(_journeyState.SettledStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);

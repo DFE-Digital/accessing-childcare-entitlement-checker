@@ -1,3 +1,4 @@
+using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.Partner;
 using Dfe.Acec.Web.Models.User;
@@ -56,13 +57,8 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                 .NotNull()
                 .NotEmpty();
 
-            When(x =>
-                    x.NationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland),
-                () =>
-                {
-                    RuleFor(x => x.SettledStatus)
-                        .NotNull();
-                });
+            When(x => x.NationalityOptions.NeedsSettledStatusAnswer(),
+                () => RuleFor(x => x.SettledStatus).NotNull());
 
             RuleFor(x => x.PaidWork)
                 .NotNull();
@@ -163,20 +159,15 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                     RuleFor(x => x.PartnerAge)
                         .NotNull();
 
-                    When(x => !x.NationalityOptions.Contains(NationalityOption.BritishOrIrishCitizen) && x.SettledStatus != SettledStatusOption.Yes,
+                    When(x => !x.NationalityOptions.IsBritishOrIrishCitizen() && x.SettledStatus != SettledStatusOption.Yes,
                         () =>
                         {
                             RuleFor(x => x.PartnerNationalityOptions)
                                 .NotNull()
                                 .NotEmpty();
 
-                            When(x =>
-                                    x.PartnerNationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland),
-                                () =>
-                                {
-                                    RuleFor(x => x.PartnerSettledStatus)
-                                        .NotNull();
-                                });
+                            When(x => x.PartnerNationalityOptions.NeedsSettledStatusAnswer(),
+                            () => RuleFor(x => x.PartnerSettledStatus).NotNull());
                         });
 
                     RuleFor(x => x.PartnerPaidWork)

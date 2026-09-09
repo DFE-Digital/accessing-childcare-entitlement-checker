@@ -33,8 +33,7 @@ public class PartnerNationalityViewModel : IValidatableObject
     {
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(PartnerNationalityViewModel));
-        var isEmpty = PartnerNationalityOptions.Count == 0;
-        if (isEmpty)
+        if (PartnerNationalityOptions.Count == 0)
         {
             yield return new ValidationResult(localizer["Select your partner's nationality"], [nameof(PartnerNationalityOptions)]);
         }

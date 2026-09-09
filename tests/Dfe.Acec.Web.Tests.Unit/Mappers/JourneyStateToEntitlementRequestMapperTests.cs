@@ -217,7 +217,7 @@ public class JourneyStateToEntitlementRequestMapperTests
     [InlineData(new[] { NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland }, Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen)]
     [InlineData(new[] { NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, NationalityOption.CitizenOfADifferentCountry }, Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen)]
     [InlineData(new[] { NationalityOption.CitizenOfADifferentCountry }, Nationality.Other)]
-    public void MapNationality(NationalityOption[] nationalityOptions, Nationality? expectedNationality)
+    public void MapReturnsExpectedNationalityForNationalityOptions(NationalityOption[] nationalityOptions, Nationality? expectedNationality)
     {
         var mapper = new JourneyStateToEntitlementRequestMapper();
         var journeyState = CreateJourneyState();
@@ -245,11 +245,11 @@ public class JourneyStateToEntitlementRequestMapperTests
     }
 
     [Fact]
-    public void MapNationalityThrows()
+    public void MapThrowsForUnknownNationalityOption()
     {
         var mapper = new JourneyStateToEntitlementRequestMapper();
         var journeyState = CreateJourneyState();
         journeyState.NationalityOptions = [((NationalityOption)99)];
-        Assert.Throws<ArgumentOutOfRangeException>(() => mapper.Map(journeyState));
+        Assert.Throws<ArgumentException>(() => mapper.Map(journeyState));
     }
 }

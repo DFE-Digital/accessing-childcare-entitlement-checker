@@ -1,5 +1,6 @@
 using Dfe.Acec.RulesEngine.Dtos.Requests;
 using Dfe.Acec.RulesEngine.Types;
+using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.BornChildDetails;
 using Dfe.Acec.Web.Models.Partner;
@@ -288,12 +289,12 @@ public class JourneyStateToEntitlementRequestMapper
             return null;
         }
 
-        if (nationalityOptions.Contains(NationalityOption.BritishOrIrishCitizen))
+        if (nationalityOptions.IsBritishOrIrishCitizen())
         {
             return Nationality.BritishOrIrishCitizen;
         }
 
-        if (nationalityOptions.Contains(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland))
+        if (nationalityOptions.IsCitizenOfAnEuCountryEeaCountryOrSwitzerland())
         {
             return Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen;
         }
@@ -303,10 +304,7 @@ public class JourneyStateToEntitlementRequestMapper
             return Nationality.Other;
         }
 
-        throw new ArgumentOutOfRangeException(
-                nameof(nationalityOptions),
-                nationalityOptions,
-                null);
+        throw new ArgumentException("Invalid nationality options provided", nameof(nationalityOptions));
     }
 
     private static bool? MapSettledStatus(
