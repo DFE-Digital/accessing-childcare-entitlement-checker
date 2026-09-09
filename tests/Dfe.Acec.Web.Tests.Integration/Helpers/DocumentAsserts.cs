@@ -28,6 +28,7 @@ public static class DocumentAsserts
         return document;
     }
 
+    [PublicAPI]
     public static IDocument AssertRadioChecked(this IDocument document, string name, string expectedValue)
     {
         var radios = document.QuerySelectorAll($"input[type=radio][name={name}]");
