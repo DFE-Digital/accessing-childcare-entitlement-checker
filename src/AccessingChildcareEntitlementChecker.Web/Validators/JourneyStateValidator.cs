@@ -134,9 +134,13 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
 
                 });
 
-
-            RuleFor(x => x.UniversalCredit)
-                .NotNull();
+            When(x =>
+                    x.YearlyEarnings != YearlyEarningsOption.AboveThreshold,
+                () =>
+                {
+                    RuleFor(x => x.UniversalCredit)
+                        .NotNull();
+                });
 
             RuleFor(x => x.Benefits)
                 .NotEmpty();
