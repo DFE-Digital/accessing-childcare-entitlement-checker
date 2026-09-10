@@ -232,4 +232,38 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
             Assert.DoesNotContain(warningText, doc.Body?.TextContent);
         }
     }
+
+    [Fact]
+    public async Task GetSensitiveElementsMaskedForClarity()
+    {
+        await using var host = factory.CreateClientWithJourneyState(CreateJourneyState());
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var heading = document.QuerySelector("h1.govuk-heading-xl");
+        var intro = document.QuerySelector("p.govuk-body[data-clarity-mask=\"true\"]");
+        var whenToApply = document.QuerySelector("[data-testid=\"when-to-apply\"]");
+        var starts = document.QuerySelector("[data-testid=\"starts\"]");
+        var ends = document.QuerySelector("[data-testid=\"ends\"]");
+
+        Assert.NotNull(heading);
+        Assert.Equal("true", heading.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(intro);
+        Assert.Equal("true", intro.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(whenToApply);
+        Assert.Equal("true", whenToApply.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(starts);
+        Assert.Equal("true", starts.GetAttribute("data-clarity-mask"));
+
+        Assert.NotNull(ends);
+        Assert.Equal("true", ends.GetAttribute("data-clarity-mask"));
+    }
 }

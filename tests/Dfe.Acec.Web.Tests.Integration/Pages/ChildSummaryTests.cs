@@ -26,13 +26,9 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
         {
             Children = new Dictionary<string, Child>
             {
+                { ChildId, CreateBornChild(ChildId, "Sara") },
                 {
-                    ChildId,
-                    CreateBornChild(ChildId, "Sara")
-                },
-                {
-                    OtherChildId,
-                    birthStatus == BirthStatus.Born
+                    OtherChildId, birthStatus == BirthStatus.Born
                         ? CreateBornChild(OtherChildId, "Aydin")
                         : CreateDueChild(OtherChildId, "Aydin")
                 }
@@ -66,14 +62,8 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
         {
             Children = new Dictionary<string, Child>
             {
-                {
-                    ChildId,
-                    CreateBornChild(ChildId, "Sara")
-                },
-                {
-                    OtherChildId,
-                    CreateDueChild(OtherChildId, "Aydin")
-                }
+                { ChildId, CreateBornChild(ChildId, "Sara") },
+                { OtherChildId, CreateDueChild(OtherChildId, "Aydin") }
             }
         });
 
@@ -128,4 +118,81 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
             DueDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(3))
         };
     }
+
+    [Fact]
+    public async Task GetChildSummaryTitleMaskedForClarity()
+    {
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child> { { ChildId, CreateBornChild(ChildId, "Sara") } }
+        });
+
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var title = document.QuerySelector(".govuk-summary-card__title-wrapper");
+
+        Assert.NotNull(title);
+        Assert.Equal("true", title.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", title.TextContent);
+    }
+
+    [Fact]
+    public async Task GetChildSummaryRowKeysMaskedForClarity()
+    {
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child> { { ChildId, CreateBornChild(ChildId, "Sara") } }
+        });
+
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var keys = document.QuerySelectorAll(".govuk-summary-list__key");
+
+        Assert.NotEmpty(keys);
+
+        foreach (var key in keys)
+        {
+            Assert.Equal("true", key.GetAttribute("data-clarity-mask"));
+        }
+    }
+
+    [Theory]
+    [InlineData("check-your-childrens-details")]
+    public async Task GetRemovePageTitleMaskedForClarity(string returnTo)
+    {
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child> { { ChildId, CreateBornChild(ChildId, "Sara") } }
+        });
+
+        using var client = host.CreateClient();
+
+        var url = $"/children/{ChildId}/remove?returnTo={returnTo}";
+
+        var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var legend = document.QuerySelector("legend.govuk-fieldset__legend");
+
+        Assert.NotNull(legend);
+        Assert.Equal("true", legend.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", legend.TextContent);
+    }
+
+
 }

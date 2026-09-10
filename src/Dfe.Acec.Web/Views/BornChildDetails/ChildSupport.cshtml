@@ -5,7 +5,7 @@
 @model ChildSupportViewModel
 
 @{
-    ViewData["Title"] = Localizer["Does {0} get any of the following support?", Model.ChildName];
+    ViewData["Title"] = Localizer["Does this child get any of the following support?"];
 }
 
 @section BeforeContent {
@@ -21,8 +21,8 @@
             <app-checkboxes for="ChildSupportOptions"
                                  legend="@Localizer["Does {0} get any of the following support?", Model.ChildName]"
                                  exclusive-value="ChildSupport.NoneOfTheseApply"
-                                 legend-is-page-heading="true" />
-
+                                 legend-is-page-heading="true"
+                                 legend-data-clarity-mask="true" />
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
             </govuk-button>

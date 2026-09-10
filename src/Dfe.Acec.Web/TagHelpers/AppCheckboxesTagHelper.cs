@@ -30,6 +30,9 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
     [HtmlAttributeName("legend-is-page-heading")]
     public bool LegendIsPageHeading { get; set; }
 
+    [HtmlAttributeName(DictionaryAttributePrefix = "legend-")]
+    public Dictionary<string, string?> LegendAttributes { get; } = [];
+
     [ViewContext]
     [HtmlAttributeNotBound]
     public ViewContext ViewContext { get; set; } = null!;
@@ -67,6 +70,9 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
                     Html = legendHtml,
                     Classes = LegendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-visually-hidden",
                     IsPageHeading = LegendIsPageHeading,
+                    Attributes = LegendAttributes.Count > 0
+                        ? new AttributeCollection(LegendAttributes)
+                        : null
                 },
             },
             Hint = hint,

@@ -129,10 +129,12 @@ dotnet_diagnostic.CA1501.severity = warning
 dotnet_diagnostic.CA1502.severity = warning
 dotnet_diagnostic.CA1505.severity = warning
 dotnet_diagnostic.CA1506.severity = warning
+dotnet_diagnostic.ASP0015.severity = warning
 
 # ---------------------------------------------------------------------------
 # Generated Code
 # ---------------------------------------------------------------------------
+
 [**/*.g.cs]
 generated_code = true
 

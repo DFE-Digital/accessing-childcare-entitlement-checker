@@ -92,7 +92,7 @@ playwright-i:
 # ---------------------------------------------------------------------------
 
 tf-i:
-	terraform -chdir=infra/terraform init -input=false -backend=false
+	terraform -chdir=infra/terraform init -input=false -backend=false -upgrade
 
 tf-f:
 	terraform -chdir=infra/terraform fmt -recursive

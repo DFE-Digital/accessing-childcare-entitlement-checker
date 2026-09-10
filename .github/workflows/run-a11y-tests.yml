@@ -120,6 +120,7 @@ jobs:
           TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
         run: |
           ./a11y-tests/Dfe.Acec.Web.Tests.A11y \
+            --report-ctrf \
             --retry-failed-tests 3 \
             --retry-failed-tests-delay 500ms \
             --retry-failed-tests-max-percentage 20
@@ -128,3 +129,19 @@ jobs:
         if: always() && env.APP_STARTED == 'true'
         run: |
           kill "$(cat app.pid)" || true
+
+      - name: Publish A11y test results
+        if: always()
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
+        with:
+          name: A11y Test Results (${{ inputs.browser }})
+          path: ".test-results/*.trx"
+          reporter: dotnet-trx
+
+      - name: Publish Flaky & Test Summary (CTRF)
+        uses: ctrf-io/github-actions-ctrf@v1
+        if: always()
+        with:
+          summary-report: true
+          flaky-report: true
+          report-path: '.test-results/*.ctrf.json'

@@ -48,7 +48,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.security_rules.id]
   enabled                       = true
 
-  forwarding_protocol    = "MatchRequest"
+  forwarding_protocol    = "HttpsOnly"
   https_redirect_enabled = true
   patterns_to_match      = ["/*"]
   supported_protocols    = ["Http", "Https"]
@@ -79,7 +79,6 @@ resource "azurerm_cdn_frontdoor_origin_group" "shutter-origin-group" {
 }
 
 resource "azapi_update_resource" "shutter_origin_group_auth" {
-
   type        = "Microsoft.Cdn/profiles/originGroups@2023-05-01"
   resource_id = azurerm_cdn_frontdoor_origin_group.shutter-origin-group.id
 
@@ -99,7 +98,7 @@ resource "azapi_update_resource" "shutter_origin_group_auth" {
 
 resource "azurerm_cdn_frontdoor_origin" "frontdoor-shutter-origin" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.shutter-origin-group.id
-  certificate_name_check_enabled = true
+  certificate_name_check_enabled = false
   host_name                      = azurerm_storage_account.shutter.primary_blob_host
   http_port                      = 80
   https_port                     = 443

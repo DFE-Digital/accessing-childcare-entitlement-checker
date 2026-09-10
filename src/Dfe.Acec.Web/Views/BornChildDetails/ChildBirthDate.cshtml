@@ -5,7 +5,7 @@
 @model ChildBirthDateViewModel
 
 @{
-    ViewData["Title"] = Localizer["Title", Model.ChildName];
+    ViewData["Title"] = Localizer["Title"];
 }
 
 @section BeforeContent {
@@ -16,8 +16,8 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Localizer["Title", Model.ChildName]
+        <h1 class="govuk-heading-l" data-clarity-mask="true">
+            @Localizer["Heading", Model.ChildName]
         </h1>
 
         <p class="govuk-body">
@@ -28,8 +28,8 @@
             <input type="hidden" asp-for="ReturnTo" />
             <govuk-date-input for="ChildBirthDate">
                 <govuk-date-input-fieldset>
-                    <govuk-date-input-fieldset-legend class="govuk-visually-hidden">
-                        @Localizer["Title", Model.ChildName]
+                    <govuk-date-input-fieldset-legend class="govuk-visually-hidden" data-clarity-mask="true">>
+                        @Localizer["Heading", Model.ChildName]
                     </govuk-date-input-fieldset-legend>
 
                     <govuk-date-input-error-message />
