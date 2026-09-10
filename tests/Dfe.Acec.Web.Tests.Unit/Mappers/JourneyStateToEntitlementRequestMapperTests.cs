@@ -88,7 +88,7 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Contains(PersonBenefit.CarersAllowance, result.User.Benefits);
         Assert.Contains(WorkStatus.PaidEmployment, result.User.WorkStatuses);
         Assert.Contains(WorkStatus.SelfEmployed, result.User.WorkStatuses);
-        Assert.Contains(Nationality.BritishOrIrishCitizen, result.User.Nationalities);
+        Assert.Equal([Nationality.BritishOrIrishCitizen], result.User.Nationalities);
         Assert.Equal(PaidWorkStatus.Yes, result.User.PaidWorkStatus);
         Assert.Contains(ChildcareSupport.ChildcareBursaryOrGrant, result.User.ChildcareSupport);
 

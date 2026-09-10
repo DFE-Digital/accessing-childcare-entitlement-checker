@@ -296,8 +296,8 @@ public class JourneyStateToEntitlementRequestMapper
                 Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
 
             _ => throw new ArgumentException(
-                "Argument was not a valid nationality",
-                nameof(nationality))
+                    $"Unsupported nationality option: {nationality}",
+                    nameof(nationality))
         })];
     }
 

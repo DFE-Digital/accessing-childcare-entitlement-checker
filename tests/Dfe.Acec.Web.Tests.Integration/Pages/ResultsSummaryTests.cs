@@ -311,7 +311,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         {
             CountryOfResidence = CountryOfResidence.England,
             WeeklyEarnings = WeeklyEarningsOption.AboveThreshold,
-            Nationality = NationalityOption.BritishOrIrishCitizen,
+            NationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             PaidWork = PaidWorkOption.Yes,
             YearlyEarnings = YearlyEarningsOption.BelowThreshold,
             HasPartner = false,
