@@ -29,7 +29,7 @@ public class EntitlementRulesEngineTests
 
             User = new PersonDto
             {
-                Nationality = Nationality.BritishOrIrishCitizen,
+                Nationalities = [Nationality.BritishOrIrishCitizen],
                 Benefits = []
             },
 
@@ -74,7 +74,7 @@ public class EntitlementRulesEngineTests
 
             User = new PersonDto
             {
-                Nationality = Nationality.BritishOrIrishCitizen,
+                Nationalities = [Nationality.BritishOrIrishCitizen],
                 Benefits = []
             },
 
@@ -116,7 +116,7 @@ public class EntitlementRulesEngineTests
 
             User = new PersonDto
             {
-                Nationality = Nationality.BritishOrIrishCitizen,
+                Nationalities = [Nationality.BritishOrIrishCitizen],
                 Benefits = []
             },
 

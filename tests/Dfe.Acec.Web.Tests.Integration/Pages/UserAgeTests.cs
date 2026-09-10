@@ -51,7 +51,7 @@ public class UserAgeTests(IntegrationTestFixture factory) : IClassFixture<Integr
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             UserAge = oldUserAge,
-            Nationality = nationality,
+            NationalityOptions = nationality == null ? [] : [nationality.Value],
             PaidWork = paidWork,
             WeeklyEarnings = weeklyEarnings,
         });

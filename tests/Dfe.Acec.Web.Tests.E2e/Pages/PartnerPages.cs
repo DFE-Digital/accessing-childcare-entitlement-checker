@@ -96,7 +96,7 @@ internal sealed class PartnerYearlyEarningsPage(IPage page) : BasePage(page)
 internal sealed class PartnerNationalityPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.PartnerNationality;
-    public override async Task AnswerAsync(string answer) => await SelectRadioAsync(answer);
+    public override async Task AnswerAsync(string answer) => await CheckCheckboxesAsync(answer);
 }
 
 [PagePattern(PageNames.PartnerSettledStatus)]

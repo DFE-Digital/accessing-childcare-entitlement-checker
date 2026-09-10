@@ -13,6 +13,6 @@ public class PersonDto
     public List<PersonBenefit> Benefits { get; init; } = [];
 
     public List<ChildcareSupport> ChildcareSupport { get; init; } = [];
-    public Nationality? Nationality { get; init; }
+    public List<Nationality> Nationalities { get; init; } = [];
     public bool? HasSettledOrPreSettledStatus { get; init; }
 }

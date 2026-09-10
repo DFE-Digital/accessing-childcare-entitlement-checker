@@ -1,3 +1,4 @@
+using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.Partner;
 using Dfe.Acec.Web.Models.User;
@@ -52,16 +53,12 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
             RuleFor(x => x.UserAge)
                 .NotNull();
 
-            RuleFor(x => x.Nationality)
-                .NotNull();
+            RuleFor(x => x.NationalityOptions)
+                .NotNull()
+                .NotEmpty();
 
-            When(x =>
-                    x.Nationality == NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland,
-                () =>
-                {
-                    RuleFor(x => x.SettledStatus)
-                        .NotNull();
-                });
+            When(x => x.NationalityOptions.NeedsSettledStatusAnswer(),
+                () => RuleFor(x => x.SettledStatus).NotNull());
 
             RuleFor(x => x.PaidWork)
                 .NotNull();
@@ -166,6 +163,17 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
                 {
                     RuleFor(x => x.PartnerAge)
                         .NotNull();
+
+                    When(x => !x.NationalityOptions.IsBritishOrIrishCitizen() && x.SettledStatus != SettledStatusOption.Yes,
+                        () =>
+                        {
+                            RuleFor(x => x.PartnerNationalityOptions)
+                                .NotNull()
+                                .NotEmpty();
+
+                            When(x => x.PartnerNationalityOptions.NeedsSettledStatusAnswer(),
+                            () => RuleFor(x => x.PartnerSettledStatus).NotNull());
+                        });
 
                     RuleFor(x => x.PartnerPaidWork)
                         .NotNull();

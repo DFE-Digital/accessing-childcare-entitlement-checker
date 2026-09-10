@@ -39,7 +39,7 @@ public class JourneyStateToEntitlementRequestMapperTests
             [
                 BenefitsOption.CarersAllowance
             ],
-            Nationality = NationalityOption.BritishOrIrishCitizen,
+            NationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             PaidWork = PaidWorkOption.Yes,
             WorkStatus = [
                 WorkStatusOption.PaidEmployment,
@@ -88,7 +88,7 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Contains(PersonBenefit.CarersAllowance, result.User.Benefits);
         Assert.Contains(WorkStatus.PaidEmployment, result.User.WorkStatuses);
         Assert.Contains(WorkStatus.SelfEmployed, result.User.WorkStatuses);
-        Assert.Equal(Nationality.BritishOrIrishCitizen, result.User.Nationality);
+        Assert.Equal([Nationality.BritishOrIrishCitizen], result.User.Nationalities);
         Assert.Equal(PaidWorkStatus.Yes, result.User.PaidWorkStatus);
         Assert.Contains(ChildcareSupport.ChildcareBursaryOrGrant, result.User.ChildcareSupport);
 
@@ -134,7 +134,7 @@ public class JourneyStateToEntitlementRequestMapperTests
             UserAge = AgeRange.UnderEighteen,
             PaidWork = PaidWorkOption.No,
             SettledStatus = SettledStatusOption.StillWaiting,
-            Nationality = NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland,
+            NationalityOptions = [NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland],
 
             WorkStatus =
             [
@@ -202,9 +202,70 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Null(result.Household.CountryOfResidence);
         Assert.Null(result.User.AgeRange);
         Assert.Null(result.User.PaidWorkStatus);
-        Assert.Null(result.User.Nationality);
+        Assert.Empty(result.User.Nationalities);
         Assert.Null(result.User.HasSettledOrPreSettledStatus);
         Assert.Empty(result.Children);
         Assert.Null(result.Partner);
+    }
+
+    [Theory]
+    [InlineData(new NationalityOption[] { },
+        new Nationality[] { })]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen },
+        new[] { Nationality.BritishOrIrishCitizen })]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland },
+        new[] { Nationality.BritishOrIrishCitizen, Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen })]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, NationalityOption.CitizenOfADifferentCountry },
+        new[] { Nationality.BritishOrIrishCitizen, Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen, Nationality.Other })]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfADifferentCountry },
+        new[] { Nationality.BritishOrIrishCitizen, Nationality.Other })]
+    [InlineData(new[] { NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland },
+        new[] { Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen })]
+    [InlineData(new[] { NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, NationalityOption.CitizenOfADifferentCountry },
+        new[] { Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen, Nationality.Other })]
+    [InlineData(new[] { NationalityOption.CitizenOfADifferentCountry },
+        new[] { Nationality.Other })]
+    public void MapReturnsExpectedNationalityForNationalityOptions(NationalityOption[] nationalityOptions, Nationality[] expectedNationalities)
+    {
+        var mapper = new JourneyStateToEntitlementRequestMapper();
+        var journeyState = CreateJourneyState();
+        journeyState.NationalityOptions = [.. nationalityOptions];
+        var result = mapper.Map(journeyState);
+        Assert.Equal([.. expectedNationalities], result.User.Nationalities);
+    }
+
+    [Theory]
+    [InlineData(new NationalityOption[] { },
+        new Nationality[] { })]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen },
+        new[] { Nationality.BritishOrIrishCitizen })]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland },
+        new[] { Nationality.BritishOrIrishCitizen, Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen })]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, NationalityOption.CitizenOfADifferentCountry },
+        new[] { Nationality.BritishOrIrishCitizen, Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen, Nationality.Other })]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfADifferentCountry },
+        new[] { Nationality.BritishOrIrishCitizen, Nationality.Other })]
+    [InlineData(new[] { NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland },
+        new[] { Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen })]
+    [InlineData(new[] { NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, NationalityOption.CitizenOfADifferentCountry },
+        new[] { Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen, Nationality.Other })]
+    [InlineData(new[] { NationalityOption.CitizenOfADifferentCountry },
+        new[] { Nationality.Other })]
+    public void MapPartnerNationality(NationalityOption[] nationalityOptions, Nationality[] expectedNationalities)
+    {
+        var mapper = new JourneyStateToEntitlementRequestMapper();
+        var journeyState = CreateJourneyState();
+        journeyState.PartnerNationalityOptions = [.. nationalityOptions];
+        var result = mapper.Map(journeyState);
+        Assert.Equal([.. expectedNationalities], result.Partner!.Nationalities);
+    }
+
+    [Fact]
+    public void MapThrowsForUnknownNationalityOption()
+    {
+        var mapper = new JourneyStateToEntitlementRequestMapper();
+        var journeyState = CreateJourneyState();
+        journeyState.NationalityOptions = [((NationalityOption)99)];
+        Assert.Throws<ArgumentException>(() => mapper.Map(journeyState));
     }
 }

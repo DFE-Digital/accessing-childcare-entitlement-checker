@@ -15,7 +15,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
         {
             CountryOfResidence = CountryOfResidence.England,
             WeeklyEarnings = WeeklyEarningsOption.AboveThreshold,
-            Nationality = NationalityOption.BritishOrIrishCitizen,
+            NationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             PaidWork = PaidWorkOption.Yes,
             YearlyEarnings = YearlyEarningsOption.BelowThreshold,
             HasPartner = false,
@@ -210,7 +210,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
     public async Task GetResultsDetailedDisplaysPublicFundsWarning(NationalityOption nationality, SettledStatusOption? settledStatus, bool hasWarning)
     {
         var state = CreateJourneyState();
-        state.Nationality = nationality;
+        state.NationalityOptions = [nationality];
         state.SettledStatus = settledStatus;
         await using var host = factory.CreateClientWithJourneyState(state);
 

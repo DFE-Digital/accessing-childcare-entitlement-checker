@@ -38,7 +38,7 @@ internal sealed class UserAgePage(IPage page) : BasePage(page)
 internal sealed class NationalityPage(IPage page) : BasePage(page)
 {
     public override string PageTitle => PageNames.Nationality;
-    public override async Task AnswerAsync(string answer) => await SelectRadioAsync(answer);
+    public override async Task AnswerAsync(string answer) => await CheckCheckboxesAsync(answer);
 }
 
 [PagePattern(PageNames.PaidWork)]

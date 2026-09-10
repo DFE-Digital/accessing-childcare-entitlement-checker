@@ -8,6 +8,7 @@ using Dfe.Acec.Web.Services;
 using AgeRange = Dfe.Acec.RulesEngine.Types.AgeRange;
 using BirthStatus = Dfe.Acec.RulesEngine.Types.BirthStatus;
 using CountryOfResidence = Dfe.Acec.RulesEngine.Types.CountryOfResidence;
+using Nationality = Dfe.Acec.RulesEngine.Types.Nationality;
 
 namespace Dfe.Acec.Web.Mappers;
 
@@ -47,7 +48,7 @@ public class JourneyStateToEntitlementRequestMapper
             ExceedsAdjustedNetIncomeLimit = journeyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold,
             Benefits = [.. journeyState.Benefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
             ChildcareSupport = [.. journeyState.ChildcareSupport.Select(MapChildcareSupport).OfType<ChildcareSupport>()],
-            Nationality = MapNationality(journeyState.Nationality),
+            Nationalities = MapNationalities(journeyState.NationalityOptions),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.SettledStatus),
         };
     }
@@ -69,7 +70,7 @@ public class JourneyStateToEntitlementRequestMapper
             ExceedsAdjustedNetIncomeLimit = journeyState.PartnerYearlyEarnings == YearlyEarningsOption.AboveThreshold,
             Benefits = [.. journeyState.PartnerBenefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
             ChildcareSupport = [.. journeyState.PartnerChildcareSupport.Select(MapPartnerChildcareSupport).OfType<ChildcareSupport>()],
-            Nationality = MapNationality(journeyState.PartnerNationality),
+            Nationalities = MapNationalities(journeyState.PartnerNationalityOptions),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.PartnerSettledStatus),
         };
     }
@@ -281,9 +282,9 @@ public class JourneyStateToEntitlementRequestMapper
         };
     }
 
-    private static Nationality? MapNationality(NationalityOption? nationality)
+    private static List<Nationality> MapNationalities(List<NationalityOption> nationalities)
     {
-        return nationality switch
+        return [.. nationalities.Select(nationality => nationality switch
         {
             NationalityOption.BritishOrIrishCitizen =>
                 Nationality.BritishOrIrishCitizen,
@@ -294,13 +295,10 @@ public class JourneyStateToEntitlementRequestMapper
             NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland =>
                 Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
 
-            null => null,
-
-            _ => throw new ArgumentOutOfRangeException(
-                nameof(nationality),
-                nationality,
-                null)
-        };
+            _ => throw new ArgumentException(
+                    $"Unsupported nationality option: {nationality}",
+                    nameof(nationality))
+        })];
     }
 
     private static bool? MapSettledStatus(

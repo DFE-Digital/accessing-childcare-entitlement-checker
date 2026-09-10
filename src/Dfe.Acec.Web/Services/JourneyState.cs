@@ -23,7 +23,7 @@ public class JourneyState
 
     public AgeRange? UserAge { get; set; }
 
-    public NationalityOption? Nationality { get; set; }
+    public List<NationalityOption> NationalityOptions { get; set; } = [];
 
     public List<WorkStatusOption> WorkStatus { get; set; } = [];
 
@@ -47,7 +47,7 @@ public class JourneyState
 
     public AgeRange? PartnerAge { get; set; }
 
-    public NationalityOption? PartnerNationality { get; set; }
+    public List<NationalityOption> PartnerNationalityOptions { get; set; } = [];
 
     public SettledStatusOption? PartnerSettledStatus { get; set; }
 
@@ -144,14 +144,14 @@ public class JourneyState
 
     public void Apply(NationalityViewModel model)
     {
-        if (model.Nationality != Nationality)
+        if (!model.NationalityOptions.SequenceEqual(NationalityOptions))
         {
             SettledStatus = null;
-            PartnerNationality = null;
+            PartnerNationalityOptions = [];
             PartnerSettledStatus = null;
         }
 
-        Nationality = model.Nationality;
+        NationalityOptions = model.NationalityOptions;
     }
 
     public void Apply(SettledStatusViewModel model)
@@ -265,7 +265,7 @@ public class JourneyState
         if (model.HasPartner == false)
         {
             PartnerAge = null;
-            PartnerNationality = null;
+            PartnerNationalityOptions = [];
             PartnerSettledStatus = null;
             PartnerPaidWork = null;
             PartnerWorkStatus = [];
@@ -293,12 +293,12 @@ public class JourneyState
 
     public void Apply(PartnerNationalityViewModel model)
     {
-        if (model.PartnerNationality != PartnerNationality)
+        if (!model.PartnerNationalityOptions.SequenceEqual(PartnerNationalityOptions))
         {
             PartnerSettledStatus = null;
         }
 
-        PartnerNationality = model.PartnerNationality;
+        PartnerNationalityOptions = model.PartnerNationalityOptions;
     }
 
     public void Apply(PartnerSettledStatusViewModel model)

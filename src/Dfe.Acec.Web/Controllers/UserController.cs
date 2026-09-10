@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Filters;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.User;
@@ -53,14 +54,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
 
         journeyState.Apply(model);
         journeySession.SetState(journeyState);
-        var nextAction = journeyState.Nationality switch
-        {
-            NationalityOption.BritishOrIrishCitizen => nameof(PaidWork),
-            NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland => nameof(SettledStatus),
-            NationalityOption.CitizenOfADifferentCountry => nameof(PaidWork),
-            _ => throw new UnreachableException($"Unexpected nationality option: {journeyState.Nationality}")
-        };
-
+        var nextAction = journeyState.NationalityOptions.NeedsSettledStatusAnswer() ? nameof(SettledStatus) : nameof(PaidWork);
         return RedirectToAction(nextAction);
     }
 
@@ -391,7 +385,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
             return url;
         }
 
-        if (journeyState.Nationality == NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland)
+        if (journeyState.NationalityOptions.IsCitizenOfAnEuCountryEeaCountryOrSwitzerland())
         {
             return Url.ActionOrThrow(nameof(SettledStatus));
         }

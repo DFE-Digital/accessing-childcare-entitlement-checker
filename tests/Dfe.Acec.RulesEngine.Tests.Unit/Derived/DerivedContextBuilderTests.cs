@@ -19,7 +19,7 @@ public class DerivedContextBuilderTests
 
             User = new PersonDto
             {
-                Nationality = Nationality.BritishOrIrishCitizen,
+                Nationalities = [Nationality.BritishOrIrishCitizen],
                 HasSettledOrPreSettledStatus = false,
                 Benefits = [],
                 PaidWorkStatus = PaidWorkStatus.Yes

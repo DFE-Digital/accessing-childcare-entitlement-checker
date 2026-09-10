@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Filters;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.Partner;
@@ -34,7 +35,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         journeySession.SetState(journeyState);
 
         var nextAction = nameof(PartnerPaidWork);
-        if (journeyState.Nationality != NationalityOption.BritishOrIrishCitizen
+        if (!journeyState.NationalityOptions.IsBritishOrIrishCitizen()
             && journeyState.SettledStatus != SettledStatusOption.Yes)
         {
             nextAction = nameof(PartnerNationality);
@@ -61,14 +62,8 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
 
         journeyState.Apply(model);
         journeySession.SetState(journeyState);
-        var nextAction = journeyState.PartnerNationality switch
-        {
-            NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland => nameof(PartnerSettledStatus),
-            NationalityOption.BritishOrIrishCitizen => nameof(PartnerPaidWork),
-            NationalityOption.CitizenOfADifferentCountry => nameof(PartnerPaidWork),
-            _ => throw new UnreachableException($"Unexpected PartnerNationality: {journeyState.PartnerNationality}"),
-        };
 
+        var nextAction = journeyState.PartnerNationalityOptions.NeedsSettledStatusAnswer() ? nameof(PartnerSettledStatus) : nameof(PartnerPaidWork);
         return RedirectToAction(nextAction);
     }
 
@@ -338,17 +333,18 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
             return url;
         }
 
-        if (journeyState.Nationality == NationalityOption.BritishOrIrishCitizen)
+        if (journeyState.NationalityOptions.IsBritishOrIrishCitizen())
         {
             return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
-        if (journeyState is { Nationality: NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatus: SettledStatusOption.Yes })
+        var userNeedsSettledStatus = journeyState.NationalityOptions.IsCitizenOfAnEuCountryEeaCountryOrSwitzerland();
+        if (userNeedsSettledStatus && journeyState.SettledStatus == SettledStatusOption.Yes)
         {
             return Url.ActionOrThrow(nameof(PartnerAge));
         }
 
-        if (journeyState.PartnerNationality == NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland)
+        if (journeyState.PartnerNationalityOptions.IsCitizenOfAnEuCountryEeaCountryOrSwitzerland())
         {
             return Url.ActionOrThrow(nameof(PartnerSettledStatus));
         }

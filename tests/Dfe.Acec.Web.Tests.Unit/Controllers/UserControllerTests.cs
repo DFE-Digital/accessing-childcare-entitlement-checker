@@ -85,28 +85,32 @@ public class UserControllerTests : IDisposable
     {
         var result = Assert.IsType<ViewResult>(_controller.Nationality());
 
-        Assert.Null(result.Model<NationalityViewModel>().Nationality);
+        Assert.Equal([], result.Model<NationalityViewModel>().NationalityOptions);
     }
 
     [Fact]
     public void NationalityGetPopulatesModelFromState()
     {
-        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
+        _journeyState.NationalityOptions = [NationalityOption.BritishOrIrishCitizen];
 
         var result = Assert.IsType<ViewResult>(_controller.Nationality());
 
-        Assert.Equal(NationalityOption.BritishOrIrishCitizen, result.Model<NationalityViewModel>().Nationality);
+        Assert.Equal(NationalityOption.BritishOrIrishCitizen, result.Model<NationalityViewModel>().NationalityOptions.Single());
     }
 
     [Theory]
-    [InlineData(NationalityOption.BritishOrIrishCitizen, null, nameof(UserController.PaidWork))]
-    [InlineData(NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, nameof(UserController.SettledStatus))]
-    [InlineData(NationalityOption.CitizenOfADifferentCountry, null, nameof(UserController.PaidWork))]
-    public void NationalityPostSavesStateAndRedirects(NationalityOption nationality, string? returnTo, string actionName)
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen }, null, nameof(UserController.PaidWork))]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland }, null, nameof(UserController.PaidWork))]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, NationalityOption.CitizenOfADifferentCountry }, null, nameof(UserController.PaidWork))]
+    [InlineData(new[] { NationalityOption.BritishOrIrishCitizen, NationalityOption.CitizenOfADifferentCountry }, null, nameof(UserController.PaidWork))]
+    [InlineData(new[] { NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland }, null, nameof(UserController.SettledStatus))]
+    [InlineData(new[] { NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, NationalityOption.CitizenOfADifferentCountry }, null, nameof(UserController.SettledStatus))]
+    [InlineData(new[] { NationalityOption.CitizenOfADifferentCountry }, null, nameof(UserController.PaidWork))]
+    public void NationalityPostSavesStateAndRedirects(NationalityOption[] nationalityOptions, string? returnTo, string actionName)
     {
         var model = new NationalityViewModel
         {
-            Nationality = nationality,
+            NationalityOptions = [.. nationalityOptions],
             ReturnTo = returnTo
         };
 
@@ -114,7 +118,7 @@ public class UserControllerTests : IDisposable
 
         var redirect = Assert.IsType<RedirectToActionResult>(result);
         _journeySession.Received(1).SetState(_journeyState);
-        Assert.Equal(nationality, _journeyState.Nationality);
+        Assert.Equal(nationalityOptions, _journeyState.NationalityOptions);
         Assert.Null(_journeyState.SettledStatus);
         Assert.True(_controller.ModelState.IsValid);
         Assert.Equal(actionName, redirect.ActionName);
@@ -125,27 +129,16 @@ public class UserControllerTests : IDisposable
     {
         var model = new NationalityViewModel
         {
-            Nationality = null
+            NationalityOptions = []
         };
-        _controller.ModelState.AddModelError(nameof(model.Nationality), "Faked Model Binding Error");
+        _controller.ModelState.AddModelError(nameof(model.NationalityOptions), "Faked Model Binding Error");
 
         var result = _controller.Nationality(model);
 
         Assert.IsType<ViewResult>(result);
         Assert.False(_controller.ModelState.IsValid);
-        Assert.True(_controller.ModelState.ContainsKey(nameof(model.Nationality)));
+        Assert.True(_controller.ModelState.ContainsKey(nameof(model.NationalityOptions)));
         _journeySession.DidNotReceive().SetState(_journeyState);
-    }
-
-    [Fact]
-    public void NationalityPostUnreachableCoverage()
-    {
-        var model = new NationalityViewModel
-        {
-            Nationality = (NationalityOption)99,
-        };
-
-        Assert.Throws<UnreachableException>(() => _controller.Nationality(model));
     }
 
     [Fact]

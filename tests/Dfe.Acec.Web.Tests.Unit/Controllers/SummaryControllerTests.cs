@@ -32,7 +32,7 @@ public class SummaryControllerTests : IDisposable
     {
         _journeyState = new JourneyState
         {
-            Nationality = NationalityOption.BritishOrIrishCitizen,
+            NationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             Children =
             {
                 [ChildId] = new Child(ChildId, "Child A")
@@ -266,7 +266,7 @@ public class SummaryControllerTests : IDisposable
     public void CheckAnswersPostRedirectsWhenCorrelationIdMatchesAndValidationPasses()
     {
         _journeyState.CountryOfResidence = CountryOfResidence.England;
-        _journeyState.Nationality = NationalityOption.BritishOrIrishCitizen;
+        _journeyState.NationalityOptions = [NationalityOption.BritishOrIrishCitizen];
         _journeyState.UserAge = AgeRange.TwentyOneOrOver;
         _journeyState.PaidWork = PaidWorkOption.No;
         _journeyState.UniversalCredit = UniversalCreditOption.DoesNotReceive;

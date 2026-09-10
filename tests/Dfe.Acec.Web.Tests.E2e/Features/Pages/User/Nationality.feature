@@ -10,32 +10,53 @@ Background:
 
 Scenario: Page load
 	When the page header is "What is your nationality?"
-	Then I should see 3 radio buttons with the following options:
+	Then I should see the following checkboxes:
 		| Option                                               |
 		| British or Irish citizen                             |
 		| Citizen of an EU country, EEA country or Switzerland |
 		| Citizen of a different country                       |
-	And no radio buttons are selected
+	And no checkboxes are selected
 
-Scenario: Radio button selection
-	When I select the "British or Irish citizen" radio button
-	And I select the "Citizen of an EU country, EEA country or Switzerland" radio button
-	Then the "Citizen of an EU country, EEA country or Switzerland" radio button should be selected
-	And all other options should be deselected
+Scenario: Checkbox selection
+	When I select the "British or Irish citizen" checkbox
+	And I select the "Citizen of an EU country, EEA country or Switzerland" checkbox
+	Then the following checkboxes should be selected:
+		| Checkbox                                             |
+		| British or Irish citizen                             |
+		| Citizen of an EU country, EEA country or Switzerland |
 
 Scenario: Continue without selection
-	When I do not select a radio button
+	When I do not select a checkbox
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
 	And the error summary and inline validation should be "Select your nationality"
 
 Scenario: Continue with Citizen of an EU country, EEA country or Switzerland
-	When I select the "Citizen of an EU country, EEA country or Switzerland" radio button
+	When I select the "Citizen of an EU country, EEA country or Switzerland" checkbox
+	And I click on Continue
+	Then the page header is "Do you have settled or pre-settled status under the EU Settlement Scheme?"
+
+Scenario: Continue with Citizen of an EU country, EEA country or Switzerland and Citizen of a different country
+	When I select the "Citizen of an EU country, EEA country or Switzerland" checkbox
+	And I select the "Citizen of a different country" checkbox
 	And I click on Continue
 	Then the page header is "Do you have settled or pre-settled status under the EU Settlement Scheme?"
 
 Scenario: Continue with British or Irish citizen
-	When I select the "British or Irish citizen" radio button
+	When I select the "British or Irish citizen" checkbox
+	And I click on Continue
+	Then the page header is "Are you in paid work?"
+
+Scenario: Continue with British or Irish citizen and Citizen of a different country
+	When I select the "British or Irish citizen" checkbox
+	And I select the "Citizen of a different country" checkbox
+	And I click on Continue
+	Then the page header is "Are you in paid work?"
+
+Scenario: Continue with British or Irish citizen and Citizen of a different country and Citizen of an EU country, EEA country or Switzerland
+	When I select the "British or Irish citizen" checkbox
+	And I select the "Citizen of a different country" checkbox
+	And I select the "Citizen of an EU country, EEA country or Switzerland" checkbox
 	And I click on Continue
 	Then the page header is "Are you in paid work?"
 
