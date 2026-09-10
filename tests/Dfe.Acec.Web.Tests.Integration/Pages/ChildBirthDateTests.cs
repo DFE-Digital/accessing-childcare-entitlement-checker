@@ -133,4 +133,33 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
         var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }
+
+    [Fact]
+    public async Task GetHeadingMaskedForClarity()
+    {
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                {
+                    ChildId,
+                    new Child(ChildId, "Sara")
+                }
+            }
+        });
+
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        var heading = document.QuerySelector("h1.govuk-heading-l");
+
+        Assert.NotNull(heading);
+        Assert.Equal("true", heading.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", heading.TextContent);
+    }
 }

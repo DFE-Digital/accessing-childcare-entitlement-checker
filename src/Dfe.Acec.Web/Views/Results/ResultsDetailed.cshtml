@@ -21,13 +21,13 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <h1 id="top" class="govuk-heading-xl">@Localizer["{0}'s childcare support", Model.ChildName ]</h1>
+        <h1 id="top" class="govuk-heading-xl" data-clarity-mask="true">@Localizer["{0}'s childcare support", Model.ChildName ]</h1>
         
         <button class="app-print-link" type="button">
             @Localizer["Print this page"]
         </button>
         
-        <p class="govuk-body">
+        <p class="govuk-body" data-clarity-mask="true">
             @Localizer["Based on your answers, this is the support you can get for {0} now or as they get older.", Model.ChildName]
         </p> 
         
@@ -59,7 +59,6 @@
                             </h2>
                         }
 
-                        
                         break;
 
                     case SchemeSectionType.FundedChildCareHours:
@@ -113,7 +112,7 @@
                                 <dt class="govuk-summary-list__key">
                                     @Localizer["When to apply"]
                                 </dt>
-                                <dd class="govuk-summary-list__value">
+                                <dd data-testid="when-to-apply" class="govuk-summary-list__value" data-clarity-mask="true">
                                     @scheme.WhenToApply
                                 </dd>
                             </div>
@@ -122,7 +121,7 @@
                                 <dt class="govuk-summary-list__key">
                                     @Localizer["Starts"]
                                 </dt>
-                                <dd class="govuk-summary-list__value">
+                                <dd data-testid="starts" class="govuk-summary-list__value" data-clarity-mask="true">
                                     @scheme.Starts
                                 </dd>
                             </div>
@@ -131,7 +130,7 @@
                                 <dt class="govuk-summary-list__key">
                                     @Localizer["Ends"]
                                 </dt>
-                                <dd class="govuk-summary-list__value">
+                                <dd data-testid="ends" class="govuk-summary-list__value" data-clarity-mask="true">
                                     @scheme.Ends
                                 </dd>
                             </div>

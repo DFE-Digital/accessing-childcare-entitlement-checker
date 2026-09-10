@@ -39,19 +39,19 @@ public class ChildSupportViewModel : IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        var journeyState = validationContext.GetService(typeof(JourneyState)) as JourneyState;
-        var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
+        var localizerFactory =
+            validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
+
         var localizer = localizerFactory!.Create(typeof(ChildSupportViewModel));
+
         var isEmpty = ChildSupportOptions.Count == 0;
-        var selectedAndNone = ChildSupportOptions.Contains(ChildSupport.NoneOfTheseApply) && ChildSupportOptions.Count > 1;
+        var selectedAndNone =
+            ChildSupportOptions.Contains(ChildSupport.NoneOfTheseApply)
+            && ChildSupportOptions.Count > 1;
+
         if (isEmpty || selectedAndNone)
         {
-            if (!journeyState!.Children.TryGetValue(ChildId, out var child))
-            {
-                throw new InvalidOperationException($"No child found with ID {ChildId}");
-            }
-
-            yield return new ValidationResult(localizer["Select any support {0} gets, or select 'No, none of these apply'", child.Name], [nameof(ChildSupportOptions)]);
+            yield return new ValidationResult(localizer["Select any support this child gets, or select 'No, none of these apply'"], [nameof(ChildSupportOptions)]);
         }
     }
 }

@@ -27,6 +27,9 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
     [HtmlAttributeName("legend")]
     public IHtmlContent? Legend { get; set; }
 
+    [HtmlAttributeName(DictionaryAttributePrefix = "legend-")]
+    public Dictionary<string, string?> LegendAttributes { get; } = [];
+
     [ViewContext]
     [HtmlAttributeNotBound]
     public ViewContext ViewContext { get; set; } = null!;
@@ -63,7 +66,10 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
                     Text = text,
                     Html = legendHtml,
                     Classes = "govuk-fieldset__legend--l",
-                    IsPageHeading = true
+                    IsPageHeading = true,
+                    Attributes = LegendAttributes.Count > 0
+                        ? new AttributeCollection(LegendAttributes)
+                        : null
                 },
             },
             Hint = hint,

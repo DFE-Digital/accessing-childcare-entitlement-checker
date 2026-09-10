@@ -44,13 +44,13 @@
         {
             <div class="app-results-section">
 
-                <h2 class="govuk-heading-l results-name">
+                <h2 class="govuk-heading-l results-name" data-clarity-mask="true">
                     @child.Name
                 </h2>
 
                 @if (child.Schemes.Count == 0)
                 {
-                    <p class="govuk-body">
+                    <p class="govuk-body" data-clarity-mask="true">
                         @Localizer["You cannot currently get any of the childcare support this service checks for {0}.", child.Name]
                     </p>
 
@@ -66,7 +66,7 @@
                     continue;
                 }
                 
-                <p class="govuk-body">
+                <p class="govuk-body" data-clarity-mask="true">
                     @Localizer["This is a summary of {0}'s childcare support.", child.Name]
                 </p>
 
@@ -100,7 +100,7 @@
                 </table>
             </div>
 
-            <h3 class="govuk-heading-m">
+            <h3 class="govuk-heading-m" data-clarity-mask="true">
                 @Localizer["Full information about {0}'s childcare support", child.Name]
             </h3>
             
@@ -108,6 +108,7 @@
             <p class="govuk-body">
                 <a asp-action="ResultsDetailed"
                    asp-route-childId="@child.ChildId"
+                   data-clarity-mask="true"
                    class="govuk-link">
                     @Localizer["View {0}'s full childcare support information", child.Name]</a>.
             </p>
