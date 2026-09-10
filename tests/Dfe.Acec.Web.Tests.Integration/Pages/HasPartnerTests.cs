@@ -44,6 +44,25 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
     }
 
     [Theory]
+    [InlineData(true, "True")]
+    [InlineData(false, "False")]
+    public async Task GetHasPartnerSelectsTheSavedAnswer(bool hasPartner, string expectedValue)
+    {
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            HasPartner = hasPartner,
+        });
+
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+        doc.AssertRadioButtonCount(2)
+            .AssertRadioChecked("HasPartner", expectedValue);
+    }
+
+    [Theory]
     [InlineData(null, true, null, "/age/partner-age")]
     [InlineData(ReturnTo.CheckAnswers, true, null, "/age/partner-age")]
     [InlineData(ReturnTo.CheckAnswers, true, AgeRange.UnderEighteen, "/age/partner-age")]

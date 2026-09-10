@@ -284,6 +284,38 @@ public class UserControllerTests : IDisposable
         Assert.Equal(actionName, redirect.ActionName);
     }
 
+    [Theory]
+    [InlineData(PaidWorkOption.No, nameof(UserController.UniversalCredit))]
+    [InlineData(PaidWorkOption.ParentalLeave, nameof(UserController.ParentalLeave))]
+    [InlineData(PaidWorkOption.SickLeave, nameof(UserController.WorkStatus))]
+    [InlineData(PaidWorkOption.Yes, nameof(UserController.WorkStatus))]
+    public void PaidWorkPostSameSelectionKeepsLaterAnswers(PaidWorkOption option, string actionName)
+    {
+        _journeyState.PaidWork = option;
+        _journeyState.WorkStatus = [WorkStatusOption.SelfEmployed];
+        _journeyState.ParentalLeaveChildrenIds = ["child-a"];
+        _journeyState.SelfEmployedDuration = SelfEmployedDurationOption.NotLessThan12Months;
+        _journeyState.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
+        _journeyState.YearlyEarnings = YearlyEarningsOption.BelowThreshold;
+        var model = new PaidWorkViewModel
+        {
+            PaidWork = option,
+            ReturnTo = ReturnTo.CheckAnswers
+        };
+
+        var result = _controller.PaidWork(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        _journeySession.Received(1).SetState(_journeyState);
+        Assert.Equal(option, _journeyState.PaidWork);
+        Assert.Equal([WorkStatusOption.SelfEmployed], _journeyState.WorkStatus);
+        Assert.Equal(["child-a"], _journeyState.ParentalLeaveChildrenIds);
+        Assert.Equal(SelfEmployedDurationOption.NotLessThan12Months, _journeyState.SelfEmployedDuration);
+        Assert.Equal(WeeklyEarningsOption.AboveThreshold, _journeyState.WeeklyEarnings);
+        Assert.Equal(YearlyEarningsOption.BelowThreshold, _journeyState.YearlyEarnings);
+        Assert.Equal(actionName, redirect.ActionName);
+    }
+
     [Fact]
     public void PaidWorkPostInvalidSelectionReturnsViewWithError()
     {
