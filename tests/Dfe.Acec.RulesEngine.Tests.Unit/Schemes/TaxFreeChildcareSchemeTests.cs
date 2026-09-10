@@ -659,4 +659,27 @@ public class TaxFreeChildcareSchemeTests
         Assert.Null(result.EligibilityEndsWithParentalLeaveFor);
     }
 
+    [Fact]
+    public void EvaluateWhenChildHasEligibleDisabilityAndFifteenYearsOldReturnsEligibility()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = CreateEligibleContext();
+
+        var child  = new ChildFacts
+        {
+            Name = "Jack",
+            IsBorn = true,
+            AgeInYears = 15,
+            AgeInMonths = 0,
+            ChildRelatedBenefits = [ChildRelatedBenefit.ArmedForcesIndependencePayment]
+        };
+
+        var result = scheme.Evaluate(context, child);
+
+        Assert.NotNull(result);
+        Assert.True(result.EligibleNow);
+        Assert.False(result.EligibleInFuture);
+    }
+
 }
