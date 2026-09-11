@@ -261,7 +261,8 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
         [
             ChildRelatedBenefit.ArmedForcesIndependencePayment,
             ChildRelatedBenefit.CertificateOfVisualImpairment,
-            ChildRelatedBenefit.DisabilityLivingAllowance
+            ChildRelatedBenefit.DisabilityLivingAllowance,
+            ChildRelatedBenefit.EducationHealthAndCarePlan
         ];
 
     private sealed record ParentalLeaveAssessment(
