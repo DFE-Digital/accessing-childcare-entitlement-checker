@@ -90,11 +90,7 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
     private static bool ChildIsWithinMaximumEligibleAgeInYears(ChildFacts child)
     {
         var childHasEligibleDisability =
-            child.ChildRelatedBenefits.Contains(
-                ChildRelatedBenefit.DisabilityLivingAllowance)
-
-            || child.ChildRelatedBenefits.Contains(
-                ChildRelatedBenefit.EducationHealthAndCarePlan);
+            child.ChildRelatedBenefits.Any(_childRelatedBenefitsIncreasingEligibleAge.Contains);
 
         var maximumEligibleAgeInYears =
             childHasEligibleDisability
@@ -253,14 +249,21 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
             _qualifyingExemptionBenefits.Contains);
     }
 
-    private static readonly List<PersonBenefit>
-        _qualifyingExemptionBenefits =
+    private static readonly List<PersonBenefit> _qualifyingExemptionBenefits =
     [
         PersonBenefit.CarersAllowance,
         PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
         PersonBenefit.IncapacityBenefit,
         PersonBenefit.SevereDisablementAllowance
     ];
+
+    private static readonly List<ChildRelatedBenefit> _childRelatedBenefitsIncreasingEligibleAge =
+        [
+            ChildRelatedBenefit.ArmedForcesIndependencePayment,
+            ChildRelatedBenefit.CertificateOfVisualImpairment,
+            ChildRelatedBenefit.DisabilityLivingAllowance,
+            ChildRelatedBenefit.EducationHealthAndCarePlan
+        ];
 
     private sealed record ParentalLeaveAssessment(
         bool UserCanUseTemporaryIncomeExemption,

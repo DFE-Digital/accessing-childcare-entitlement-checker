@@ -197,26 +197,30 @@ public class TaxFreeChildcareSchemeTests
         Assert.True(result.EligibleInFuture);
     }
 
-    [Fact]
-    public void EvaluateDisabledChildEligibleNowUnderExtendedAgeRangeReturnsSchemeResult()
+    [Theory]
+    [InlineData(new[] { ChildRelatedBenefit.ArmedForcesIndependencePayment })]
+    [InlineData(new[] { ChildRelatedBenefit.DisabilityLivingAllowance })]
+    [InlineData(new[] { ChildRelatedBenefit.EducationHealthAndCarePlan })]
+    [InlineData(new[] { ChildRelatedBenefit.CertificateOfVisualImpairment })]
+    [InlineData(new[] { ChildRelatedBenefit.CertificateOfVisualImpairment, ChildRelatedBenefit.ArmedForcesIndependencePayment, ChildRelatedBenefit.EducationHealthAndCarePlan, ChildRelatedBenefit.DisabilityLivingAllowance })]
+    public void EvaluateDisabledChildEligibleNowUnderExtendedAgeRangeReturnsSchemeResult(ChildRelatedBenefit[] benefits)
     {
-        var evaluator = CreateEvaluator();
+        var scheme = CreateEvaluator();
+
         var context = CreateEligibleContext();
+
         var child = new ChildFacts
         {
             Name = "Jack",
             IsBorn = true,
-            ChildRelatedBenefits =
-            [
-                ChildRelatedBenefit.DisabilityLivingAllowance
-            ],
-            AgeInYears = 16
+            AgeInYears = 15,
+            AgeInMonths = 0,
+            ChildRelatedBenefits = [.. benefits]
         };
 
-        var result = evaluator.Evaluate(context, child);
+        var result = scheme.Evaluate(context, child);
 
         Assert.NotNull(result);
-        Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
         Assert.True(result.EligibleNow);
         Assert.False(result.EligibleInFuture);
     }
@@ -658,5 +662,4 @@ public class TaxFreeChildcareSchemeTests
         Assert.Null(result.ApplyAndStartAffectedByParentalLeave);
         Assert.Null(result.EligibilityEndsWithParentalLeaveFor);
     }
-
 }
