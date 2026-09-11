@@ -260,7 +260,8 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
     private static readonly List<ChildRelatedBenefit> _childRelatedBenefitsIncreasingEligibleAge =
         [
             ChildRelatedBenefit.ArmedForcesIndependencePayment,
-            ChildRelatedBenefit.CertificateOfVisualImpairment
+            ChildRelatedBenefit.CertificateOfVisualImpairment,
+            ChildRelatedBenefit.DisabilityLivingAllowance
         ];
 
     private sealed record ParentalLeaveAssessment(

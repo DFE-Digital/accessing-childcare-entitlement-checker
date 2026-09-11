@@ -199,8 +199,9 @@ public class TaxFreeChildcareSchemeTests
 
     [Theory]
     [InlineData(new[] { ChildRelatedBenefit.ArmedForcesIndependencePayment })]
+    [InlineData(new[] { ChildRelatedBenefit.DisabilityLivingAllowance })]
     [InlineData(new[] { ChildRelatedBenefit.CertificateOfVisualImpairment })]
-    [InlineData(new[] { ChildRelatedBenefit.CertificateOfVisualImpairment, ChildRelatedBenefit.ArmedForcesIndependencePayment })]
+    [InlineData(new[] { ChildRelatedBenefit.CertificateOfVisualImpairment, ChildRelatedBenefit.ArmedForcesIndependencePayment, ChildRelatedBenefit.DisabilityLivingAllowance })]
     public void EvaluateDisabledChildEligibleNowUnderExtendedAgeRangeReturnsSchemeResult(ChildRelatedBenefit[] benefits)
     {
         var scheme = CreateEvaluator();
