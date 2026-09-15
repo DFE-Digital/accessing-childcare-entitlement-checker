@@ -245,6 +245,9 @@ Scenario: Removing a partner clears their parental leave answer from the summary
 		| Question                                                              | Answer                          |
 		| Is your partner in paid work?                                         | Yes, but they are on parental leave |
 		| Which child is your partner on leave for?                            | Sara                            |
+		| How would you describe your partner's work status?                   | Paid employment                 |
+		| On average, will your partner expect to earn £203 a week or more before tax when their parental leave ends? | Yes |
+		| Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No |
 		| Does your partner get any of these benefits?                         | Carer's Allowance               |
 		| Does your partner already get any of these to help pay for childcare? | Childcare vouchers              |
 		| How does your partner receive childcare vouchers?                    | A workplace nursery scheme      |
