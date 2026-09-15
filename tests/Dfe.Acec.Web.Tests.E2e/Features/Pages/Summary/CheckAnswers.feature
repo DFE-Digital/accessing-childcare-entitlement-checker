@@ -191,6 +191,37 @@ Scenario: Self employed details are not shown when I change my answer
 	Then the page header is "Check your answers"
 	And I do not see a summary row "Have you been self-employed for less than 12 months"
 
+Scenario: Weekly earnings are kept when I re-confirm that I am on parental leave
+	When I click the Change link in the "Your details" summary list for "Are you in paid work?"
+	And I answer the questions as follows:
+		| Question                                                                                          | Answer                          |
+		| Are you in paid work?                                                                             | Yes, but I am on parental leave |
+		| Which child are you on leave for?                                                                 | Sara                            |
+		| How would you describe your work status?                                                          | Self-employed                   |
+		| Have you been self-employed for less than 12 months?                                              | No                              |
+		| On average, will you expect to earn £128 a week or more before tax when your parental leave ends? | Yes                             |
+		| Do you expect your adjusted net income to be more than £100,000 for the current tax year?         | No                              |
+		| Does your household receive universal credit?                                                     | Yes                             |
+		| Do you get any of these benefits?                                                                 | Carer's Allowance               |
+		| Do you already get any of these to help pay for childcare?                                        | Childcare vouchers              |
+		| How do you receive your childcare vouchers?                                                       | A workplace nursery scheme      |
+		| Do you live with a partner?                                                                       | Yes                             |
+		| What is your partner's age?                                                                       | 21 or over                      |
+		| Is your partner in paid work?                                                                     | No, they are not in work        |
+		| Does your partner get any of these benefits?                                                      | Carer's Allowance               |
+		| Does your partner already get any of these to help pay for childcare?                             | Childcare vouchers              |
+		| How does your partner receive childcare vouchers?                                                 | A workplace nursery scheme      |
+	And the page header is "Check your answers"
+	And I click the Change link in the "Your details" summary list for "Are you in paid work?"
+	And I answer the questions as follows:
+		| Question                                             | Answer                          |
+		| Are you in paid work?                                | Yes, but I am on parental leave |
+		| Which child are you on leave for?                    | Sara                            |
+		| How would you describe your work status?             | Self-employed                   |
+		| Have you been self-employed for less than 12 months? | No                              |
+	Then the page header is "On average, will you expect to earn £128 a week or more before tax when your parental leave ends?"
+	And the "Yes" radio button should be selected
+
 Scenario: Back navigation to Does your partner already get any of these to help pay for childcare?
 	When I click the Change link in the "Your partners details" summary list for "Does your partner already get any of these to help pay for childcare?"
 	And I deselect the "Childcare vouchers" checkbox

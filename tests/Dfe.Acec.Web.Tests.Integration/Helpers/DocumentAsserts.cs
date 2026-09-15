@@ -28,6 +28,17 @@ public static class DocumentAsserts
         return document;
     }
 
+    [PublicAPI]
+    public static IDocument AssertRadioChecked(this IDocument document, string name, string expectedValue)
+    {
+        var radios = document.QuerySelectorAll($"input[type=radio][name={name}]");
+        Assert.NotEmpty(radios);
+
+        var checkedRadio = Assert.Single(radios, radio => radio.HasAttribute("checked"));
+        Assert.Equal(expectedValue, checkedRadio.GetAttribute("value"));
+        return document;
+    }
+
     public static IDocument AssertTextInput(this IDocument document)
     {
         var texts = document.QuerySelectorAll("input[type=text]");

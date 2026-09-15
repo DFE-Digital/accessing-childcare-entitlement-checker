@@ -161,6 +161,11 @@ public class JourneyState
 
     public void Apply(PaidWorkViewModel model)
     {
+        if (PaidWork == model.PaidWork)
+        {
+            return;
+        }
+
         if (model.PaidWork == PaidWorkOption.Yes)
         {
             ParentalLeaveChildrenIds = [];
@@ -308,6 +313,11 @@ public class JourneyState
 
     public void Apply(PartnerPaidWorkViewModel model)
     {
+        if (PartnerPaidWork == model.PartnerPaidWork)
+        {
+            return;
+        }
+
         if (model.PartnerPaidWork == PartnerPaidWorkOption.Yes)
         {
             PartnerParentalLeaveChildrenIds = [];
