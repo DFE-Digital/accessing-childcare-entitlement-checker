@@ -29,7 +29,7 @@ Scenario: Checkbox selection
 		| Childcare vouchers           |
 		| A childcare bursary or grant |
 
-Scenario: None selection is validated without Javascript
+Scenario: Selecting both a valid option and None is validated when JavaScript is disabled
 	When I select the "Childcare vouchers" checkbox
 	And I select the "A childcare bursary or grant" checkbox
 	And I select the "No, I do not get any of these" checkbox

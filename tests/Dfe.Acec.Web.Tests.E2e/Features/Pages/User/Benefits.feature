@@ -40,7 +40,7 @@ Scenario: Checkbox selection
 		| Carer's Allowance                                   |
 		| Contribution-based Employment and Support Allowance |
 
-Scenario: None selection is validated without Javascript
+Scenario: Selecting both a valid option and None is validated when JavaScript is disabled
 	Given I answer questions as follows:
 		| Question                                      | Answer               |
 		| Are you in paid work?                         | No, I am not in work |

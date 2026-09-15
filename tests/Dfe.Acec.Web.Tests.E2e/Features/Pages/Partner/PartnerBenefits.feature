@@ -35,7 +35,7 @@ Scenario: Checkbox selection
 		| Carer's Allowance                                   |
 		| Contribution-based Employment and Support Allowance |
 
-Scenario: None selection is validated without Javascript
+Scenario: Selecting both a valid option and None is validated when JavaScript is disabled
 	Given I answer "Is your partner in paid work?" as "No, they are not in work"
 	When I select the "Carer's Allowance" checkbox
 	And I select the "No, they do not get any of these benefits" checkbox

@@ -27,7 +27,7 @@ Scenario: Checkbox selection
 		| Sara     |
 		| Aydin    |
 
-Scenario: None selection is validated without Javascript
+Scenario: Selecting both a valid option and None is validated when JavaScript is disabled
 	When I select the "Sara" checkbox
 	And I select the "None of these children" checkbox
 	And I click on Continue
