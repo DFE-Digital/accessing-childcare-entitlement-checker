@@ -34,10 +34,15 @@ public class PartnerChildcareSupportViewModel : IValidatableObject
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(PartnerChildcareSupportViewModel));
         var isEmpty = PartnerChildcareSupport.Count == 0;
-        var selectedAndNone = PartnerChildcareSupport.Count > 1 && PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.None);
-        if (isEmpty || selectedAndNone)
+        if (isEmpty)
         {
             yield return new ValidationResult(localizer["Select any of this childcare support your partner already gets, or select 'No, they do not get any of these'"], [nameof(PartnerChildcareSupport)]);
+        }
+
+        var selectedAndNone = PartnerChildcareSupport.Count > 1 && PartnerChildcareSupport.Contains(PartnerChildcareSupportOption.None);
+        if (selectedAndNone)
+        {
+            yield return new ValidationResult(localizer["You may not select 'No, they do not get any of these' with other options"], [nameof(PartnerChildcareSupport)]);
         }
     }
 }

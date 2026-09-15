@@ -47,7 +47,7 @@ public class BenefitsViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("Select any benefits you get, or select 'No, I do not get any of these benefits'", validationResults[0].ErrorMessage);
+        Assert.Equal("You may not select 'No, I do not get any of these benefits' with other options", validationResults[0].ErrorMessage);
     }
 
     [Fact]

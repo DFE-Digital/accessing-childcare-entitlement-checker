@@ -61,7 +61,7 @@ public class ParentalLeaveViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("Select which child you are on leave for, or 'None of these children'", validationResults[0].ErrorMessage);
+        Assert.Equal("You may not select 'None of these children' with other options", validationResults[0].ErrorMessage);
     }
 
     [Fact]

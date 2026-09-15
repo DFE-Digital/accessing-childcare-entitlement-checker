@@ -40,6 +40,17 @@ Scenario: Checkbox selection
 		| Carer's Allowance                                   |
 		| Contribution-based Employment and Support Allowance |
 
+Scenario: Selecting both a valid option and None is validated when JavaScript is disabled
+	Given I answer questions as follows:
+		| Question                                      | Answer               |
+		| Are you in paid work?                         | No, I am not in work |
+		| Does your household receive universal credit? | Yes                  |
+	When I select the "Carer's Allowance" checkbox
+	And I select the "No, I do not get any of these benefits" checkbox
+	And I click on Continue
+	Then an error summary box should appear at the top of the page
+	And the error summary and inline validation should be "You may not select 'No, I do not get any of these benefits' with other options"
+
 Scenario: Continue without selection
 	Given I answer questions as follows:
 		| Question                                      | Answer               |

@@ -45,13 +45,15 @@ public class ChildSupportViewModel : IValidatableObject
         var localizer = localizerFactory!.Create(typeof(ChildSupportViewModel));
 
         var isEmpty = ChildSupportOptions.Count == 0;
-        var selectedAndNone =
-            ChildSupportOptions.Contains(ChildSupport.NoneOfTheseApply)
-            && ChildSupportOptions.Count > 1;
-
-        if (isEmpty || selectedAndNone)
+        if (isEmpty)
         {
             yield return new ValidationResult(localizer["Select any support this child gets, or select 'No, none of these apply'"], [nameof(ChildSupportOptions)]);
+        }
+
+        var selectedAndNone = ChildSupportOptions.Count > 1 && ChildSupportOptions.Contains(ChildSupport.NoneOfTheseApply);
+        if (selectedAndNone)
+        {
+            yield return new ValidationResult(localizer["You may not select 'No, none of these apply' with other options"], [nameof(ChildSupportOptions)]);
         }
     }
 }

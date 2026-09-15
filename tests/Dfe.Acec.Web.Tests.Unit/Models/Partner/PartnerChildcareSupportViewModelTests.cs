@@ -47,7 +47,7 @@ public class PartnerChildcareSupportViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("Select any of this childcare support your partner already gets, or select 'No, they do not get any of these'", validationResults[0].ErrorMessage);
+        Assert.Equal("You may not select 'No, they do not get any of these' with other options", validationResults[0].ErrorMessage);
     }
 
 

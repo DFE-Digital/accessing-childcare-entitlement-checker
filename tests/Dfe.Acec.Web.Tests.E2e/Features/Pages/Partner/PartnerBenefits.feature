@@ -35,6 +35,14 @@ Scenario: Checkbox selection
 		| Carer's Allowance                                   |
 		| Contribution-based Employment and Support Allowance |
 
+Scenario: Selecting both a valid option and None is validated when JavaScript is disabled
+	Given I answer "Is your partner in paid work?" as "No, they are not in work"
+	When I select the "Carer's Allowance" checkbox
+	And I select the "No, they do not get any of these benefits" checkbox
+	And I click on Continue
+	Then an error summary box should appear at the top of the page
+	And the error summary and inline validation should be "You may not select 'No, they do not get any of these benefits' with other options"
+
 Scenario: Continue without selection
 	Given I answer "Is your partner in paid work?" as "No, they are not in work"
 	When I do not select a checkbox
