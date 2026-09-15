@@ -238,3 +238,31 @@ Scenario: Back navigation to Do you live with a partner?
 	And the page header is "Check your answers"
 	When I click the back link
 	Then the page header is "Do you live with a partner?"
+
+Scenario: Removing a partner clears their parental leave answer from the summary
+	When I click the Change link in the "Your partners details" summary list for "Is your partner in paid work?"
+	And I answer the questions as follows:
+		| Question                                                              | Answer                          |
+		| Is your partner in paid work?                                         | Yes, but they are on parental leave |
+		| Which child is your partner on leave for?                            | Sara                            |
+		| How would you describe your partner's work status?                   | Paid employment                 |
+		| On average, will your partner expect to earn £203 a week or more before tax when their parental leave ends? | Yes |
+		| Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No |
+		| Does your partner get any of these benefits?                         | Carer's Allowance               |
+		| Does your partner already get any of these to help pay for childcare? | Childcare vouchers              |
+		| How does your partner receive childcare vouchers?                    | A workplace nursery scheme      |
+	Then the page header is "Check your answers"
+	And I should see a summary list for "Your partners details" with the following summary:
+		| Question                                   | Answer |
+		| Which child is your partner on leave for?  | Sara   |
+	When I click the Change link in the "Your details" summary list for "Are you in paid work?"
+	And I answer the questions as follows:
+		| Question                                                                                  | Answer                        |
+		| Are you in paid work?                                                                     | No, I am not in work           |
+		| Does your household receive universal credit?                                             | Yes                            |
+		| Do you get any of these benefits?                                                         | Carer's Allowance              |
+		| Do you already get any of these to help pay for childcare?                                | Childcare vouchers             |
+		| How do you receive your childcare vouchers?                                               | A workplace nursery scheme     |
+		| Do you live with a partner?                                                               | No                             |
+	Then the page header is "Check your answers"
+	And I do not see a summary list for "Your partners details"

@@ -120,6 +120,18 @@ public class JourneyStateTests
         Assert.Null(_journeyState.YearlyEarnings);
     }
 
+    [Fact]
+    public void ApplyHasPartnerClearsPartnerParentalLeaveChildrenIfChangedToFalse()
+    {
+        _journeyState.HasPartner = true;
+        _journeyState.PartnerPaidWork = PartnerPaidWorkOption.ParentalLeave;
+        _journeyState.PartnerParentalLeaveChildrenIds = ["child-a"];
+
+        _journeyState.Apply(new HasPartnerViewModel { HasPartner = false });
+
+        Assert.Empty(_journeyState.PartnerParentalLeaveChildrenIds);
+    }
+
     [Theory]
     [InlineData(PartnerPaidWorkOption.Yes)]
     [InlineData(PartnerPaidWorkOption.ParentalLeave)]
