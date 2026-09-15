@@ -273,6 +273,7 @@ public class JourneyState
             PartnerNationalityOptions = [];
             PartnerSettledStatus = null;
             PartnerPaidWork = null;
+            PartnerParentalLeaveChildrenIds = [];
             PartnerWorkStatus = [];
             PartnerSelfEmployedDuration = null;
             PartnerWeeklyEarnings = null;
