@@ -53,7 +53,7 @@ public class ChildSupportViewModelTests
         var validationResults = model.Validate(validationContext).ToList();
 
         Assert.Single(validationResults);
-        Assert.Equal("Select any support this child gets, or select 'No, none of these apply'", validationResults[0].ErrorMessage);
+        Assert.Equal("You may not select 'No, none of these apply' with other options", validationResults[0].ErrorMessage);
     }
 
     [Fact]

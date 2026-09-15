@@ -34,10 +34,15 @@ public class BenefitsViewModel : IValidatableObject
         var localizerFactory = validationContext.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
         var localizer = localizerFactory!.Create(typeof(BenefitsViewModel));
         var isEmpty = Benefits.Count == 0;
-        var selectedAndNone = Benefits.Count > 1 && Benefits.Contains(BenefitsOption.None);
-        if (isEmpty || selectedAndNone)
+        if (isEmpty)
         {
             yield return new ValidationResult(localizer["Select any benefits you get, or select 'No, I do not get any of these benefits'"], [nameof(Benefits)]);
+        }
+
+        var selectedAndNone = Benefits.Count > 1 && Benefits.Contains(BenefitsOption.None);
+        if (selectedAndNone)
+        {
+            yield return new ValidationResult(localizer["You may not select 'No, I do not get any of these benefits' with other options"], [nameof(Benefits)]);
         }
     }
 }

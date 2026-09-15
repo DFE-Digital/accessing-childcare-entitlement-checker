@@ -41,10 +41,15 @@ public class ParentalLeaveViewModel : IValidatableObject
         var localizer = localizerFactory!.Create(typeof(ParentalLeaveViewModel));
 
         var isEmpty = ParentalLeaveChildrenIds.Count == 0;
-        var isNoneSelectedWithOption = ParentalLeaveChildrenIds.Count > 1 && ParentalLeaveChildrenIds.Contains(NoneSelectedValue);
-        if (isEmpty || isNoneSelectedWithOption)
+        if (isEmpty)
         {
             yield return new ValidationResult(localizer["Select which child you are on leave for, or 'None of these children'"], [nameof(ParentalLeaveChildrenIds)]);
+        }
+
+        var selectedAndNone = ParentalLeaveChildrenIds.Count > 1 && ParentalLeaveChildrenIds.Contains(NoneSelectedValue);
+        if (selectedAndNone)
+        {
+            yield return new ValidationResult(localizer["You may not select 'None of these children' with other options"], [nameof(ParentalLeaveChildrenIds)]);
         }
     }
 }

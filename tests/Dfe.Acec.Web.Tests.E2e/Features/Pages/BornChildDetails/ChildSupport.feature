@@ -38,7 +38,7 @@ Scenario: Continuing with none applicable while others are selected results in a
 	And I click on Continue
 	Then the page header is "Does Sara get any of the following support?"
 	And an error summary box should appear at the top of the page
-	And the error summary and inline validation should be "Select any support this child gets, or select 'No, none of these apply'"
+	And the error summary and inline validation should be "You may not select 'No, none of these apply' with other options"
 
 Scenario: Continue without selection
 	When I do not select a checkbox

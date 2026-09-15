@@ -27,6 +27,13 @@ Scenario: Checkbox selection
 		| Sara     |
 		| Aydin    |
 
+Scenario: None selection is validated without Javascript
+	When I select the "Sara" checkbox
+	And I select the "None of these children" checkbox
+	And I click on Continue
+	Then an error summary box should appear at the top of the page
+	And the error summary and inline validation should be "You may not select 'None of these children' with other options"
+
 Scenario: Continue without selection
 	When I do not select a checkbox
 	And I click on Continue

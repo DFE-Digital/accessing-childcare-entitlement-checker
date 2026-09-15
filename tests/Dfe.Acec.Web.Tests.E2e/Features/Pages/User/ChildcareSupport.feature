@@ -35,7 +35,7 @@ Scenario: None selection is validated without Javascript
 	And I select the "No, I do not get any of these" checkbox
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
-	And the error summary and inline validation should be "Select any of this childcare support you already get, or select 'No, I do not get any of these'"
+	And the error summary and inline validation should be "You may not select 'No, I do not get any of these' with other options"
 
 Scenario: Continue without selection
 	When I do not select a checkbox
