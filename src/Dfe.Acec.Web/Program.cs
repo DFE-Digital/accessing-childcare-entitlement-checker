@@ -20,7 +20,10 @@ ThreadPool.SetMinThreads(200, 200);
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
-var sessionTimeoutMinutes = builder.Configuration.GetValue<int>("SessionTimeoutMinutes");
+var sessionTimeoutMinutes =
+    builder.Configuration.GetValue<int?>("SessionTimeoutMinutes")
+    ?? throw new InvalidOperationException(
+        "SessionTimeoutMinutes configuration is missing.");
 var securePolicy = builder.Environment.IsDevelopment()
     ? CookieSecurePolicy.SameAsRequest
     : CookieSecurePolicy.Always;
