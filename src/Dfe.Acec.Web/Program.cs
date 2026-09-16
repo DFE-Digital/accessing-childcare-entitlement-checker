@@ -23,8 +23,6 @@ var services = builder.Services;
 
 var sessionTimeoutMinutes = builder.Configuration.GetValue<int>("SessionTimeoutMinutes");
 
-Console.WriteLine($"SessionTimeoutMinutes = {sessionTimeoutMinutes}");
-
 var securePolicy = builder.Environment.IsDevelopment()
     ? CookieSecurePolicy.SameAsRequest
     : CookieSecurePolicy.Always;
@@ -42,7 +40,7 @@ services
     .AddDistributedCacheConfiguration(builder.Configuration)
     .AddSession(options =>
     {
-        options.IdleTimeout = TimeSpan.FromMinutes(sessionTimeoutMinutes);
+        options.IdleTimeout = TimeSpan.FromMinutes(30);
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = securePolicy;
         options.Cookie.SameSite = SameSiteMode.Lax;
