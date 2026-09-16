@@ -5,14 +5,19 @@ using Microsoft.FeatureManagement;
 
 namespace Dfe.Acec.Web.Controllers;
 
-public class HomeController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager) : Controller
+public class HomeController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager, IConfiguration configuration) : Controller
 {
     public const string Name = "Home";
 
     [HttpGet]
     public IActionResult SessionExpired()
     {
-        return View();
+        var timeoutMinutes = configuration.GetValue<int>("SessionTimeoutMinutes");
+
+        return View(new SessionExpiredViewModel
+        {
+            SessionTimeoutMinutes = timeoutMinutes
+        });
     }
 
     [HttpGet]

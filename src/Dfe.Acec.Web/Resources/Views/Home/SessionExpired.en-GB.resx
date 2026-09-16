@@ -25,7 +25,7 @@
         <value>To protect your information, your answers have been deleted.</value>
     </data>
     <data name="Info2" xml:space="preserve">
-        <value>This happened because you did not do anything for 30 minutes.</value>
+        <value>This happened because you did not do anything for {0} minutes.</value>
     </data>
     <data name="Info3" xml:space="preserve">
         <value>You will need to start again.</value>
