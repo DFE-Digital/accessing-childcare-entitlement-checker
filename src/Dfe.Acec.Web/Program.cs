@@ -40,7 +40,7 @@ services
     .AddDistributedCacheConfiguration(builder.Configuration)
     .AddSession(options =>
     {
-        options.IdleTimeout = TimeSpan.FromMinutes(30);
+        options.IdleTimeout = TimeSpan.FromMinutes(sessionTimeoutMinutes);
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = securePolicy;
         options.Cookie.SameSite = SameSiteMode.Lax;

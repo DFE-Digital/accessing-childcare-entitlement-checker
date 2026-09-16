@@ -81,12 +81,13 @@ jobs:
 
       - name: Start app
         if: inputs.SUT == ''
+        working-directory: web-app
         env:
           ASPNETCORE_ENVIRONMENT: Development
           FeatureManagement__HmrcIntegration: ${{ inputs.hmrc_integration_enabled }}
         run: |
-          dotnet ./web-app/Dfe.Acec.Web.dll --urls http://127.0.0.1:5252 > app.log 2>&1 &
-          echo $! > app.pid
+          dotnet Dfe.Acec.Web.dll --urls http://127.0.0.1:5252 > ../app.log 2>&1 &
+          echo $! > ../app.pid
           echo "APP_STARTED=true" >> $GITHUB_ENV
           echo "TARGET_URL=http://127.0.0.1:5252/" >> $GITHUB_ENV
 
