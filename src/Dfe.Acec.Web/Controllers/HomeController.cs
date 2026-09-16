@@ -12,11 +12,9 @@ public class HomeController(JourneyState journeyState, IJourneySession journeySe
     [HttpGet]
     public IActionResult SessionExpired()
     {
-        var timeoutMinutes = configuration.GetValue<int>("SessionTimeoutMinutes");
-
         return View(new SessionExpiredViewModel
         {
-            SessionTimeoutMinutes = timeoutMinutes
+            SessionTimeoutMinutes = configuration.GetValue<int>("SessionTimeoutMinutes")
         });
     }
 
