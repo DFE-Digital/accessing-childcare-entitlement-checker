@@ -20,6 +20,9 @@ ThreadPool.SetMinThreads(200, 200);
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
+
+var sessionTimeoutMinutes = builder.Configuration.GetValue<int>("SessionTimeoutMinutes");
+
 var securePolicy = builder.Environment.IsDevelopment()
     ? CookieSecurePolicy.SameAsRequest
     : CookieSecurePolicy.Always;
@@ -37,6 +40,7 @@ services
     .AddDistributedCacheConfiguration(builder.Configuration)
     .AddSession(options =>
     {
+        options.IdleTimeout = TimeSpan.FromMinutes(sessionTimeoutMinutes);
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = securePolicy;
         options.Cookie.SameSite = SameSiteMode.Lax;

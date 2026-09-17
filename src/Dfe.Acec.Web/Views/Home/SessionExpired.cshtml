@@ -1,6 +1,7 @@
 @using Dfe.Acec.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+@model SessionExpiredViewModel
 
 @{
     ViewData["Title"] = Localizer["Title"];
@@ -13,7 +14,7 @@
 </p>
 
 <p class="govuk-body">
-    @Localizer["Info2"]
+    @Localizer["Info2", Model.SessionTimeoutMinutes]
 </p>
 
 <p class="govuk-body">

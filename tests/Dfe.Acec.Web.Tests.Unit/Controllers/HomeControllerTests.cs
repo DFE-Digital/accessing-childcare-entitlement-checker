@@ -3,6 +3,7 @@ using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.FeatureManagement;
 using NSubstitute;
 
@@ -20,7 +21,16 @@ public class HomeControllerTests : IDisposable
         _journeyState = new JourneyState();
         _journeySession = Substitute.For<IJourneySession>();
         _featureManager = Substitute.For<IFeatureManager>();
-        _controller = new HomeController(_journeyState, _journeySession, _featureManager)
+
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["SessionTimeoutMinutes"] = "30"
+            })
+            .Build();
+
+
+        _controller = new HomeController(_journeyState, _journeySession, _featureManager, configuration)
         {
             Url = Substitute.For<IUrlHelper>()
         };
@@ -114,10 +124,13 @@ public class HomeControllerTests : IDisposable
     }
 
     [Fact]
-    public void SessionExpiredReturnsView()
+    public void SessionExpiredReturnsViewWithConfiguredTimeout()
     {
-        var result = _controller.SessionExpired();
-        Assert.IsType<ViewResult>(result);
+        var result = Assert.IsType<ViewResult>(_controller.SessionExpired());
+
+        var model = Assert.IsType<SessionExpiredViewModel>(result.Model);
+
+        Assert.Equal(30, model.SessionTimeoutMinutes);
     }
 
     public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
