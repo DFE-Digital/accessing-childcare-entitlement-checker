@@ -266,3 +266,34 @@ Scenario: Removing a partner clears their parental leave answer from the summary
 		| Do you live with a partner?                                                               | No                             |
 	Then the page header is "Check your answers"
 	And I do not see a summary list for "Your partners details"
+
+Scenario: Change links have accessible hidden text
+	Then I should see a summary card with the title "Aydin" and the following summary:
+		| Question                       | Answer   | Change link             |
+		| What is this child's due date? | Tomorrow | Change due date (Aydin) |
+	And I should see a summary card with the title "Sara" and the following summary:
+		| Question                                    | Answer                                | Change link                        |
+		| What is Sara's date of birth?               | Yesterday                             | Change date of birth (Sara)        |
+		| Does Sara get any of the following support? | Education, health and care (EHC) plan | Change the support they get (Sara) |
+	And I should see a summary list for "Your details" with the following summary:
+		| Question                                                                                  | Answer                      | Change link                                             |
+		| Where do you live?                                                                        | England                     | Change where you live                                   |
+		| What is your age?                                                                         | Under 18                    | Change your age                                         |
+		| What is your nationality?                                                                 | British or Irish citizen    | Change your nationality                                 |
+		| Are you in paid work?                                                                     | Yes, I am currently in work | Change whether you are in paid work                     |
+		| How would you describe your work status?                                                  | Self-employed               | Change your work status                                 |
+		| Have you been self-employed for less than 12 months?                                      | No                          | Change how long you have been self-employed             |
+		| On average, do you expect to earn £128 a week or more before tax?                         | Yes                         | Change how much you expect to earn each week            |
+		| Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                          | Change your expected adjusted net income                |
+		| Does your household receive universal credit?                                             | Yes                         | Change whether your household receives universal credit |
+		| Do you get any of these benefits?                                                         | Carer's Allowance           | Change the benefits you get                             |
+		| Do you already get any of these to help pay for childcare?                                | Childcare vouchers          | Change the childcare support you already get            |
+		| How do you receive your childcare vouchers?                                               | A workplace nursery scheme  | Change how you receive your childcare vouchers          |
+		| Do you live with a partner?                                                               | Yes                         | Change whether you live with a partner                  |
+	And I should see a summary list for "Your partners details" with the following summary:
+		| Question                                                              | Answer                     | Change link                                            |
+		| What is your partner's age?                                           | 21 or over                 | Change your partner's age                              |
+		| Is your partner in paid work?                                         | No, they are not in work   | Change whether your partner is in paid work            |
+		| Does your partner get any of these benefits?                          | Carer's Allowance          | Change the benefits your partner gets                  |
+		| Does your partner already get any of these to help pay for childcare? | Childcare vouchers         | Change the childcare support your partner already gets |
+		| How does your partner receive childcare vouchers?                     | A workplace nursery scheme | Change how your partner receives childcare vouchers    |
