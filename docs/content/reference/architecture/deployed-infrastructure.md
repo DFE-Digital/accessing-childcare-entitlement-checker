@@ -15,15 +15,15 @@ This reference is generated automatically from the active Terraform configuratio
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.12.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 5.4.0 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.12.0  |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 5.5.0   |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.12.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 5.4.0 |
+| <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.12.0  |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 5.5.0   |
 
 ## Modules
 
