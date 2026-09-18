@@ -118,6 +118,8 @@ internal sealed class SummarySteps(IPage page, TestSettings settings)
                 await Expect(summaryRow.Locator(".govuk-summary-list__value"))
                     .ToContainTextAsync(answer);
             }
+
+            await ExpectChangeLinkName(summaryRow, row);
         }
     }
 
@@ -179,6 +181,17 @@ internal sealed class SummarySteps(IPage page, TestSettings settings)
 
             await Expect(summaryRow.Locator(".govuk-summary-list__value"))
                 .ToHaveTextAsync(answer);
+
+            if (!row.TryGetValue("Change link", out var changeLinkName))
+            {
+                continue;
+            }
+
+            await Expect(summaryRow.GetByRole(AriaRole.Link, new LocatorGetByRoleOptions
+            {
+                Name = changeLinkName,
+                Exact = true
+            })).ToBeVisibleAsync();
         }
     }
 

@@ -6,4 +6,5 @@ public record SummaryRowViewModel(
     string Value,
     string ChangeController,
     string ChangeAction,
+    string ChangeText,
     bool MaskValueForClarity = false);

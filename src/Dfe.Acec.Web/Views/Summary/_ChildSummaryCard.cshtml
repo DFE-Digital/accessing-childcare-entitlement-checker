@@ -18,10 +18,12 @@
                 <govuk-summary-list-row-value>@row.Value</govuk-summary-list-row-value>
                 <govuk-summary-list-row-actions>
                     <govuk-summary-list-row-action
+                        data-clarity-mask="true"
                         asp-controller="@row.ChangeController"
                         asp-action="@row.ChangeAction"
                         asp-route-returnTo="@Model.ReturnTo"
-                        asp-route-childId="@Model.ChildId">
+                        asp-route-childId="@Model.ChildId"
+                        visually-hidden-text="@row.ChangeText">
                         @Localizer["Change"]
                     </govuk-summary-list-row-action>
                 </govuk-summary-list-row-actions>
