@@ -2,11 +2,10 @@
 @inject IViewLocalizer Localizer
 
 <govuk-inset-text class="app-inset-text--warning">
-    <p class="govuk-body">
-        <strong>
-            @Localizer["You need to check if you can access public funds"]
-        </strong>
-    </p>
+    <h2 class="govuk-body govuk-!-font-weight-bold">
+        <span class="govuk-visually-hidden">@Localizer["Warning: "]</span>
+        @Localizer["You need to check if you can access public funds"]
+    </h2>
 
     <p class="govuk-body">
         @Localizer["You can only get some childcare support if your immigration status allows you to access public funds."]
