@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Title" xml:space="preserve">
+        <value>Check your answers</value>
+    </data>
+    <data name="Heading_Children" xml:space="preserve">
+        <value>Your children</value>
+    </data>
+    <data name="Heading_UserDetails" xml:space="preserve">
+        <value>Your details</value>
+    </data>
+    <data name="Heading_PartnerDetails" xml:space="preserve">
+        <value>Your partners details</value>
+    </data>
+    <data name="Notification_Success" xml:space="preserve">
+        <value>Success</value>
+    </data>
+    <data name="Notification_ChildRemoved" xml:space="preserve">
+        <value>{0} has been removed</value>
+    </data>
+    <data name="Info_NoChildren" xml:space="preserve">
+        <value>No children added.</value>
+    </data>
+    <data name="Info_AddChildToContinue" xml:space="preserve">
+        <value>You must add a child to continue.</value>
+    </data>
+    <data name="Button_AddAnotherChild" xml:space="preserve">
+        <value>Add another child</value>
+    </data>
+    <data name="Info_ContinueToResults" xml:space="preserve">
+        <value>Click 'Continue' to view your results.</value>
+    </data>
+    <data name="Info_NotAnApplication" xml:space="preserve">
+        <value>This is not an application, and none of your answers will be stored or shared. It will give you an estimate based on the answers you've provided.</value>
+    </data>
+    <data name="Home_Location" xml:space="preserve">
+        <value>where you live</value>
+    </data>
+    <data name="User_UserAge" xml:space="preserve">
+        <value>your age</value>
+    </data>
+    <data name="User_Nationality" xml:space="preserve">
+        <value>your nationality</value>
+    </data>
+    <data name="User_SettledStatus" xml:space="preserve">
+        <value>your settled status</value>
+    </data>
+    <data name="User_PaidWork" xml:space="preserve">
+        <value>whether you are in paid work</value>
+    </data>
+    <data name="User_ParentalLeave" xml:space="preserve">
+        <value>which child you are on leave for</value>
+    </data>
+    <data name="User_WorkStatus" xml:space="preserve">
+        <value>your work status</value>
+    </data>
+    <data name="User_SelfEmployedDuration" xml:space="preserve">
+        <value>how long you have been self-employed</value>
+    </data>
+    <data name="User_WeeklyEarnings" xml:space="preserve">
+        <value>how much you expect to earn each week</value>
+    </data>
+    <data name="User_YearlyEarnings" xml:space="preserve">
+        <value>your expected adjusted net income</value>
+    </data>
+    <data name="User_UniversalCredit" xml:space="preserve">
+        <value>whether your household receives universal credit</value>
+    </data>
+    <data name="User_Benefits" xml:space="preserve">
+        <value>the benefits you get</value>
+    </data>
+    <data name="User_ChildcareSupport" xml:space="preserve">
+        <value>the childcare support you already get</value>
+    </data>
+    <data name="User_ChildcareVoucherReceipt" xml:space="preserve">
+        <value>how you receive your childcare vouchers</value>
+    </data>
+    <data name="User_HasPartner" xml:space="preserve">
+        <value>whether you live with a partner</value>
+    </data>
+    <data name="Partner_PartnerAge" xml:space="preserve">
+        <value>your partner's age</value>
+    </data>
+    <data name="Partner_PartnerNationality" xml:space="preserve">
+        <value>your partner's nationality</value>
+    </data>
+    <data name="Partner_PartnerSettledStatus" xml:space="preserve">
+        <value>your partner's settled status</value>
+    </data>
+    <data name="Partner_PartnerPaidWork" xml:space="preserve">
+        <value>whether your partner is in paid work</value>
+    </data>
+    <data name="Partner_PartnerParentalLeave" xml:space="preserve">
+        <value>which child your partner is on leave for</value>
+    </data>
+    <data name="Partner_PartnerWorkStatus" xml:space="preserve">
+        <value>your partner's work status</value>
+    </data>
+    <data name="Partner_PartnerSelfEmployedDuration" xml:space="preserve">
+        <value>how long your partner has been self-employed</value>
+    </data>
+    <data name="Partner_PartnerWeeklyEarnings" xml:space="preserve">
+        <value>how much your partner expects to earn each week</value>
+    </data>
+    <data name="Partner_PartnerYearlyEarnings" xml:space="preserve">
+        <value>your partner's expected adjusted net income</value>
+    </data>
+    <data name="Partner_PartnerBenefits" xml:space="preserve">
+        <value>the benefits your partner gets</value>
+    </data>
+    <data name="Partner_PartnerChildcareSupport" xml:space="preserve">
+        <value>the childcare support your partner already gets</value>
+    </data>
+    <data name="Partner_PartnerChildcareVoucherReceipt" xml:space="preserve">
+        <value>how your partner receives childcare vouchers</value>
+    </data>
+</root>

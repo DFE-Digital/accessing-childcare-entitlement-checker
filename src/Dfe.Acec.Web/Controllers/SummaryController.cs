@@ -29,6 +29,8 @@ public partial class SummaryController(
 {
     public const string Name = "Summary";
     private const string StateMismatchView = "StateMismatch";
+    private const string CheckAnswersChangeTextResource = "Views.Summary.CheckAnswers";
+    private const string ChildCardChangeTextResource = "Views.Summary._ChildSummaryCard";
 
     [HttpGet]
     public ViewResult CheckChildDetails(string? childId = null)
@@ -174,14 +176,15 @@ public partial class SummaryController(
         var homeBuilder = new SummaryRowFactory(
             MetadataProvider,
             "Home",
-            stringLocalizerFactory);
+            stringLocalizerFactory,
+            CheckAnswersChangeTextResource);
 
         if (!await featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
         {
             homeBuilder.AddLocation(journeyState.CountryOfResidence);
         }
 
-        var userBuilder = new SummaryRowFactory(MetadataProvider, "User", stringLocalizerFactory)
+        var userBuilder = new SummaryRowFactory(MetadataProvider, "User", stringLocalizerFactory, CheckAnswersChangeTextResource)
             .AddUserAge(journeyState.UserAge)
             .Add((NationalityViewModel m) => m.NationalityOptions, journeyState.NationalityOptions, nameof(UserController.Nationality))
             .Add((SettledStatusViewModel m) => m.SettledStatus, journeyState.SettledStatus, nameof(UserController.SettledStatus))
@@ -197,7 +200,7 @@ public partial class SummaryController(
             .Add((ChildcareVoucherReceiptViewModel m) => m.ChildcareVoucherReceipt, journeyState.ChildcareVoucherReceipt, nameof(UserController.ChildcareVoucherReceipt))
             .AddHasPartner(journeyState.HasPartner);
 
-        var partnerBuilder = new SummaryRowFactory(MetadataProvider, "Partner", stringLocalizerFactory)
+        var partnerBuilder = new SummaryRowFactory(MetadataProvider, "Partner", stringLocalizerFactory, CheckAnswersChangeTextResource)
             .AddPartnerAge(journeyState.PartnerAge)
             .Add((PartnerNationalityViewModel m) => m.PartnerNationalityOptions, journeyState.PartnerNationalityOptions, nameof(PartnerController.PartnerNationality))
             .Add((PartnerSettledStatusViewModel m) => m.PartnerSettledStatus, journeyState.PartnerSettledStatus, nameof(PartnerController.PartnerSettledStatus))
@@ -231,11 +234,11 @@ public partial class SummaryController(
 
     private ChildSummaryViewModel ChildSummaryViewModelFactory(Child child, string returnTo)
     {
-        var born = new SummaryRowFactory(MetadataProvider, "BornChildDetails", stringLocalizerFactory)
+        var born = new SummaryRowFactory(MetadataProvider, "BornChildDetails", stringLocalizerFactory, ChildCardChangeTextResource)
             .Add((ChildBirthDateViewModel m) => m.ChildBirthDate, child.BirthDate, nameof(BornChildDetailsController.ChildBirthDate))
             .Add((ChildSupportViewModel m) => m.ChildSupportOptions, child.ChildSupportOptions, nameof(BornChildDetailsController.ChildSupport));
 
-        var expected = new SummaryRowFactory(MetadataProvider, "ExpectedChildDetails", stringLocalizerFactory)
+        var expected = new SummaryRowFactory(MetadataProvider, "ExpectedChildDetails", stringLocalizerFactory, ChildCardChangeTextResource)
             .Add((ChildDueDateViewModel m) => m.ChildDueDate, child.DueDate, nameof(ExpectedChildDetailsController.ChildDueDate));
 
         var summaryRows = born.ViewModels.Concat(expected.ViewModels).ToList().AsReadOnly();

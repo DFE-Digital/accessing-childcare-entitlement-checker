@@ -26,7 +26,8 @@
                 <govuk-summary-list-row-action
                     asp-controller="@row.ChangeController"
                     asp-action="@row.ChangeAction"
-                    asp-route-returnTo="@ReturnTo.CheckAnswers">
+                    asp-route-returnTo="@ReturnTo.CheckAnswers"
+                    visually-hidden-text="@row.ChangeText">
                     @Localizer["Change"]
                 </govuk-summary-list-row-action>
             </govuk-summary-list-row-actions>

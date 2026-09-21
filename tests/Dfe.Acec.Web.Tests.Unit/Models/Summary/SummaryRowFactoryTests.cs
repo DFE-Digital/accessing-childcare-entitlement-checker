@@ -62,10 +62,14 @@ public class SummaryRowFactoryTests
             .Returns(localizer);
 
         stringLocalizerFactory
+            .Create("Views.Test.ChangeText", Arg.Any<string>())
+            .Returns(localizer);
+
+        stringLocalizerFactory
             .Create(typeof(SharedResources))
             .Returns(localizer);
 
-        _summaryRowFactory = new SummaryRowFactory(metadataProvider, "Test", stringLocalizerFactory);
+        _summaryRowFactory = new SummaryRowFactory(metadataProvider, "Test", stringLocalizerFactory, "Views.Test.ChangeText");
     }
 
     [Fact]
@@ -78,6 +82,7 @@ public class SummaryRowFactoryTests
         Assert.Equal("Test Enum Property Title", row.Key);
         Assert.Equal("Value One", row.Value);
         Assert.Equal("test-action-name", row.ChangeAction);
+        Assert.Equal("Test_test-action-name", row.ChangeText);
         Assert.Equal("Test", row.ChangeController);
         Assert.False(row.IsLocalised);
     }
@@ -97,6 +102,7 @@ public class SummaryRowFactoryTests
         Assert.Equal("Test List<Enum> Property Title", row.Key);
         Assert.Equal(expectedValue, row.Value);
         Assert.Equal("test-action-name", row.ChangeAction);
+        Assert.Equal("Test_test-action-name", row.ChangeText);
         Assert.Equal("Test", row.ChangeController);
     }
 
@@ -110,6 +116,7 @@ public class SummaryRowFactoryTests
         Assert.Equal("Test DateOnly Property Title", row.Key);
         Assert.Equal("1 January 0001", row.Value);
         Assert.Equal("test-action-name", row.ChangeAction);
+        Assert.Equal("Test_test-action-name", row.ChangeText);
         Assert.Equal("Test", row.ChangeController);
     }
 
@@ -126,6 +133,7 @@ public class SummaryRowFactoryTests
         var row = Assert.Single(rows);
         Assert.Equal("Title", row.Key);
         Assert.Equal(rowValue, row.Value);
+        Assert.Equal("Test_Location", row.ChangeText);
         Assert.Equal("Location", row.ChangeAction);
         Assert.Equal("Test", row.ChangeController);
     }
