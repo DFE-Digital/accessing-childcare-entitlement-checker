@@ -34,12 +34,12 @@ order: 99
 | Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/svg+xml | 9 % |
 | Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type image/x-icon | 4 % |
 | Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/css | 4 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/html | 38 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/html | 40 % |
 | Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/javascript | 4 % |
 | Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with content type text/plain | 4 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with method GET | 80 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with method POST | 19 % |
-| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Count of total endpoints | 21    |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with method GET | 81 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of endpoints with method POST | 18 % |
+| Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Count of total endpoints | 22    |
 | Info | Informational | https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net | Percentage of slow responses | 100 % |
 
 
@@ -52,7 +52,7 @@ order: 99
 
 | Name | Risk Level | Number of Instances |
 | --- | --- | --- |
-| Re-examine Cache-control Directives | Informational | Systemic |
+| Re-examine Cache-control Directives | Informational | 1 |
 | User Agent Fuzzer | Informational | Systemic |
 | User Controllable HTML Element Attribute (Potential XSS) | Informational | 1 |
 | Private IP Disclosure | 				False Positives: | 1 |
@@ -76,13 +76,6 @@ order: 99
 
 The cache-control header has not been set properly or is missing, allowing the browser and proxies to cache content. For static assets like css, js, or image files this might be intended, however, the resources should be reviewed to ensure that no sensitive content will be cached.
 
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
-  * Method: `GET`
-  * Parameter: `cache-control`
-  * Attack: ``
-  * Evidence: `no-cache, no-store`
-  * Other Info: ``
 * URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json%3Fv=6.4.0
   * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/manifest.json (v)`
   * Method: `GET`
@@ -90,30 +83,9 @@ The cache-control header has not been set properly or is missing, allowing the b
   * Attack: ``
   * Evidence: `cache-control: public, max-age=31536000, immutable`
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/children/add-child-details`
-  * Method: `GET`
-  * Parameter: `cache-control`
-  * Attack: ``
-  * Evidence: `no-cache, no-store`
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies`
-  * Method: `GET`
-  * Parameter: `cache-control`
-  * Attack: ``
-  * Evidence: `no-cache, no-store`
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/robots.txt`
-  * Method: `GET`
-  * Parameter: `cache-control`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 
-Instances: Systemic
 
+Instances: 1
 
 ### Solution
 
@@ -144,23 +116,23 @@ For secure content, ensure the cache-control HTTP header is set with "no-cache, 
 
 Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.
 
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets`
   * Method: `GET`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets
-  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets`
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/assets/images`
   * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies
+  * Node Name: `https://s279t01-web-fd-endpoint-hxg0g6g7fvgudvcx.a02.azurefd.net/cookies ()(AnalyticsCookiesEnabled,__RequestVerificationToken)`
+  * Method: `POST`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
   * Evidence: ``
