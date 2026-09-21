@@ -5,7 +5,7 @@
 @model CheckAnswersViewModel
 
 @{
-    ViewData["Title"] = Localizer["Check your answers"];
+    ViewData["Title"] = Localizer["Title"];
 }
 
 @section BeforeContent {
@@ -23,31 +23,31 @@
         {
             <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
-                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">@Localizer["Success"]</h2>
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">@Localizer["Notification_Success"]</h2>
                 </div>
                 <div class="govuk-notification-banner__content">
-                    <h3 class="govuk-notification-banner__heading" data-clarity-mask="true">@Localizer["{0} has been removed", removedChildName]</h3>
+                    <h3 class="govuk-notification-banner__heading" data-clarity-mask="true">@Localizer["Notification_ChildRemoved", removedChildName]</h3>
                 </div>
             </div>
         }
 
-        <h1 class="govuk-heading-l">@Localizer["Check your answers"]</h1>
+        <h1 class="govuk-heading-l">@Localizer["Title"]</h1>
 
-        <h2 class="govuk-heading-m">@Localizer["Your children"]</h2>
+        <h2 class="govuk-heading-m">@Localizer["Heading_Children"]</h2>
 
         @if (!Model.HasChildren)
         {
             <p class="govuk-body">
-                @Localizer["No children added."]
+                @Localizer["Info_NoChildren"]
             </p>
 
             <p class="govuk-body">
-                @Localizer["You must add a child to continue."]
+                @Localizer["Info_AddChildToContinue"]
             </p>
 
             <div class="govuk-!-margin-bottom-4">
                 <govuk-button-link class="govuk-button--secondary" asp-controller="Introduction" asp-action="ChildName" asp-route-returnTo="@ReturnTo.CheckAnswers">
-                    @Localizer["Add another child"]
+                    @Localizer["Button_AddAnotherChild"]
                 </govuk-button-link>
             </div>
         }
@@ -60,23 +60,23 @@
 
             <div class="govuk-!-margin-bottom-4">
                 <govuk-button-link class="govuk-button--secondary" asp-controller="Introduction" asp-action="ChildName" asp-route-returnTo="@ReturnTo.CheckAnswers">
-                    @Localizer["Add another child"]
+                    @Localizer["Button_AddAnotherChild"]
                 </govuk-button-link>
             </div>
 
-            <h2 class="govuk-heading-m">@Localizer["Your details"]</h2>
+            <h2 class="govuk-heading-m">@Localizer["Heading_UserDetails"]</h2>
             <partial name="_SummaryList" model="Model.UserDetails" />
 
             @if (Model.PartnerDetails.Any())
             {
-                <h2 class="govuk-heading-m">@Localizer["Your partners details"]</h2>
+                <h2 class="govuk-heading-m">@Localizer["Heading_PartnerDetails"]</h2>
                 <partial name="_SummaryList" model="Model.PartnerDetails" />
             }
 
-            <p class="govuk-body">@Localizer["Click 'Continue' to view your results."]</p>
+            <p class="govuk-body">@Localizer["Info_ContinueToResults"]</p>
 
             <govuk-inset-text>
-                @Localizer["This is not an application, and none of your answers will be stored or shared. It will give you an estimate based on the answers you've provided."]
+                @Localizer["Info_NotAnApplication"]
             </govuk-inset-text>
 
             <div class="govuk-!-margin-top-3">

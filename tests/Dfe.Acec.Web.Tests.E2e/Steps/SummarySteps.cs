@@ -182,16 +182,7 @@ internal sealed class SummarySteps(IPage page, TestSettings settings)
             await Expect(summaryRow.Locator(".govuk-summary-list__value"))
                 .ToHaveTextAsync(answer);
 
-            if (!row.TryGetValue("Change link", out var changeLinkName))
-            {
-                continue;
-            }
-
-            await Expect(summaryRow.GetByRole(AriaRole.Link, new LocatorGetByRoleOptions
-            {
-                Name = changeLinkName,
-                Exact = true
-            })).ToBeVisibleAsync();
+            await ExpectChangeLinkName(summaryRow, row);
         }
     }
 
@@ -202,5 +193,19 @@ internal sealed class SummarySteps(IPage page, TestSettings settings)
                 .Filter(new LocatorFilterOptions { HasTextString = question });
 
         await Expect(summaryRow).Not.ToBeVisibleAsync();
+    }
+
+    private static async Task ExpectChangeLinkName(ILocator summaryRow, DataTableRow row)
+    {
+        if (!row.TryGetValue("Change link", out var changeLinkName))
+        {
+            return;
+        }
+
+        await Expect(summaryRow.GetByRole(AriaRole.Link, new LocatorGetByRoleOptions
+        {
+            Name = changeLinkName,
+            Exact = true
+        })).ToBeVisibleAsync();
     }
 }

@@ -18,37 +18,37 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Check your answers" xml:space="preserve">
+    <data name="Title" xml:space="preserve">
         <value>Check your answers</value>
     </data>
-    <data name="Your children" xml:space="preserve">
+    <data name="Heading_Children" xml:space="preserve">
         <value>Your children</value>
     </data>
-    <data name="Your details" xml:space="preserve">
+    <data name="Heading_UserDetails" xml:space="preserve">
         <value>Your details</value>
     </data>
-    <data name="Your partners details" xml:space="preserve">
+    <data name="Heading_PartnerDetails" xml:space="preserve">
         <value>Your partners details</value>
     </data>
-    <data name="Success" xml:space="preserve">
+    <data name="Notification_Success" xml:space="preserve">
         <value>Success</value>
     </data>
-    <data name="{0} has been removed" xml:space="preserve">
+    <data name="Notification_ChildRemoved" xml:space="preserve">
         <value>{0} has been removed</value>
     </data>
-    <data name="No children added." xml:space="preserve">
+    <data name="Info_NoChildren" xml:space="preserve">
         <value>No children added.</value>
     </data>
-    <data name="You must add a child to continue." xml:space="preserve">
+    <data name="Info_AddChildToContinue" xml:space="preserve">
         <value>You must add a child to continue.</value>
     </data>
-    <data name="Add another child" xml:space="preserve">
+    <data name="Button_AddAnotherChild" xml:space="preserve">
         <value>Add another child</value>
     </data>
-    <data name="Click 'Continue' to view your results." xml:space="preserve">
+    <data name="Info_ContinueToResults" xml:space="preserve">
         <value>Click 'Continue' to view your results.</value>
     </data>
-    <data name="This is not an application, and none of your answers will be stored or shared. It will give you an estimate based on the answers you've provided." xml:space="preserve">
+    <data name="Info_NotAnApplication" xml:space="preserve">
         <value>This is not an application, and none of your answers will be stored or shared. It will give you an estimate based on the answers you've provided.</value>
     </data>
     <data name="Home_Location" xml:space="preserve">

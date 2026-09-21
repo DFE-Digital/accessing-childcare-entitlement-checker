@@ -18,10 +18,10 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Change" xml:space="preserve">
+    <data name="Link_Change" xml:space="preserve">
         <value>Change</value>
     </data>
-    <data name="Remove" xml:space="preserve">
+    <data name="Link_Remove" xml:space="preserve">
         <value>Remove</value>
     </data>
     <data name="BornChildDetails_ChildBirthDate" xml:space="preserve">
