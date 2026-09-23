@@ -10,14 +10,12 @@
 @inject IConfiguration Configuration
 @{
     Layout = "_GovUkPageTemplate";
-
     var serviceName = Shared["ServiceName"];
     var serviceUrl = Url.Action(nameof(HomeController.Start), HomeController.Name);
     var googleTagManagerContainerId = Configuration["GoogleTagManager:ContainerId"];
     var cspNonce = ViewData[GovUkPageTemplateConstants.ViewDataKeys.CspNonce] as string ?? OptionsAccessor.Value.GetCspNonceForRequest?.Invoke(ViewContext.HttpContext);
     var shouldLoadGoogleTagManager = CookiePolicyService.HasConsented && !string.IsNullOrWhiteSpace(googleTagManagerContainerId);
 }
-
 @section Head {
     @if (shouldLoadGoogleTagManager)
     {
@@ -32,7 +30,6 @@
     {
         <partial name="_GoogleTagManagerBody" model="googleTagManagerContainerId" />
     }
-
     @if (!CookiePolicyService.HasUserPreference)
     {
         <partial name="_CookieBanner" />
@@ -139,6 +136,5 @@
     {
         <partial name="_CookieBannerScript" />
     }
-
     @Html.GovUkFrontendScriptImports(cspNonce)
 }
