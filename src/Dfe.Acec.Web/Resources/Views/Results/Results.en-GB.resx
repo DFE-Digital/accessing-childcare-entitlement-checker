@@ -120,8 +120,8 @@
     <data name="read the step by step guide about childcare (opens in new tab)" xml:space="preserve">
         <value>read the step by step guide about childcare (opens in new tab)</value>
     </data>
-    <data name="This is a summary of {0}'s childcare support." xml:space="preserve">
-        <value>This is a summary of {0}'s childcare support.</value>
+    <data name="This table shows a summary of {0}'s childcare support." xml:space="preserve">
+        <value>This table shows a summary of {0}'s childcare support.</value>
     </data>
     <data name="Scheme" xml:space="preserve">
         <value>Scheme</value>
@@ -135,8 +135,8 @@
     <data name="Full information about {0}'s childcare support" xml:space="preserve">
         <value>Full information about {0}'s childcare support</value>
     </data>
-    <data name="View {0}'s full childcare support information" xml:space="preserve">
-        <value>View {0}'s full childcare support information</value>
+    <data name="View {0}'s full results" xml:space="preserve">
+        <value>View {0}'s full results</value>
     </data>
     <data name="This includes more details about each scheme such as when support starts and ends." xml:space="preserve">
         <value>This includes more details about each scheme such as when support starts and ends.</value>
@@ -164,5 +164,35 @@
     </data>
     <data name="Back to top" xml:space="preserve">
         <value>Back to top</value>
+    </data>
+    <data name="Estimate your childcare costs and find a provider" xml:space="preserve">
+        <value>Estimate your childcare costs and find a provider</value>
+    </data>
+    <data name="You can use the Best Start in Life website to:" xml:space="preserve">
+        <value>You can use the Best Start in Life website to:</value>
+    </data>
+    <data name="get an estimate of your childcare costs (opens in new tab)" xml:space="preserve">
+        <value>get an estimate of your childcare costs (opens in new tab)</value>
+    </data>
+    <data name="search for childcare providers near you (opens in new tab)" xml:space="preserve">
+        <value>search for childcare providers near you (opens in new tab)</value>
+    </data>
+    <data name="Breakfast clubs and wraparound childcare for primary school-aged children" xml:space="preserve">
+        <value>Breakfast clubs and wraparound childcare for primary school-aged children</value>
+    </data>
+    <data name="Find out about free breakfast clubs and before and after school wraparound childcare (opens in new tab)" xml:space="preserve">
+        <value>Find out about free breakfast clubs and before and after school wraparound childcare (opens in new tab)</value>
+    </data>
+    <data name="If you are eligible for Tax-Free Childcare or Universal Credit and childcare, you could use that to help pay for wraparound childcare." xml:space="preserve">
+        <value>If you are eligible for Tax-Free Childcare or Universal Credit and childcare, you could use that to help pay for wraparound childcare.</value>
+    </data>
+    <data name="If you are studying" xml:space="preserve">
+        <value>If you are studying</value>
+    </data>
+    <data name="You may be able to get other help with childcare costs while you study." xml:space="preserve">
+        <value>You may be able to get other help with childcare costs while you study.</value>
+    </data>
+    <data name="Find out about help with childcare while you study (opens in new tab)" xml:space="preserve">
+        <value>Find out about help with childcare while you study (opens in new tab)</value>
     </data>
 </root>
