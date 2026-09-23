@@ -132,6 +132,9 @@
     <data name="When to apply" xml:space="preserve">
         <value>When to apply</value>
     </data>
+    <data name="(opens in new tab)" xml:space="preserve">
+        <value>(opens in new tab)</value>
+    </data>
     <data name="Full information about {0}'s childcare support" xml:space="preserve">
         <value>Full information about {0}'s childcare support</value>
     </data>
