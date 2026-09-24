@@ -483,7 +483,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
 
         await Page.GetByRole(
                 AriaRole.Link,
-                new PageGetByRoleOptions { Name = $"View {DefaultChildName}'s full childcare support information" })
+                new PageGetByRoleOptions { Name = $"View {DefaultChildName}'s full results" })
             .ClickAsync();
 
         await ExpectPathAndQuery($"/Results/ResultsDetailed?childId={childId}");
