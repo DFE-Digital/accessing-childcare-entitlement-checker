@@ -3,6 +3,11 @@ resource "azurerm_cdn_frontdoor_rule_set" "security_rules" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
 }
 
+resource "azurerm_cdn_frontdoor_rule_set" "security_redirects" {
+  name                     = "${var.environment_prefix}SecurityRedirects"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
+}
+
 resource "azurerm_cdn_frontdoor_rule" "security_txt_rule" {
   depends_on = [azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group, azurerm_cdn_frontdoor_origin.frontdoor-web-origin]
 

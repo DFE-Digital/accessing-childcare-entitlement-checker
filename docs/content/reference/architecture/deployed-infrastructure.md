@@ -49,6 +49,7 @@ No modules.
 | [azurerm_cdn_frontdoor_rule.security_txt_rule](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_rule) | resource |
 | [azurerm_cdn_frontdoor_rule.shutter_rewrite_rule](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_rule) | resource |
 | [azurerm_cdn_frontdoor_rule.thanks_txt_rule](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_rule) | resource |
+| [azurerm_cdn_frontdoor_rule_set.security_redirects](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_rule_set) | resource |
 | [azurerm_cdn_frontdoor_rule_set.security_rules](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_rule_set) | resource |
 | [azurerm_cdn_frontdoor_rule_set.shutter_rules](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_rule_set) | resource |
 | [azurerm_cdn_frontdoor_security_policy.frontdoor-web-security-policy](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_security_policy) | resource |
