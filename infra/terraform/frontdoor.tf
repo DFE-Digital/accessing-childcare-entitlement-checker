@@ -61,7 +61,6 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
     ignore_changes = [
       cdn_frontdoor_origin_group_id,
       cdn_frontdoor_origin_ids,
-      cdn_frontdoor_rule_set_ids,
       cdn_frontdoor_origin_path
     ]
   }
