@@ -19,7 +19,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
     public async Task GivenIClickTheLinkToStartTheJourney()
     {
         var startPage = new StartPage(page);
-        await startPage.ContinueAsync();
+        await startPage.StartNowAsync();
     }
 
     [Given("I answer {string} as {string}")]
@@ -35,7 +35,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
         var pageObj = factory.GetPage(question);
         await pageObj.AssertHeaderAsync();
         await pageObj.AnswerAsync(answer);
-        await pageObj.ContinueAsync();
+        await pageObj.StartNowAsync();
     }
 
     [Given("I answer questions as follows:")]
@@ -52,7 +52,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
             var pageObj = factory.GetPage(pageName);
             await pageObj.AssertHeaderAsync();
             await pageObj.AnswerAsync(answer);
-            await pageObj.ContinueAsync();
+            await pageObj.StartNowAsync();
         }
     }
 
@@ -66,24 +66,24 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
             var locationPage = new LocationPage(page);
             await locationPage.AssertHeaderAsync();
             await locationPage.AnswerAsync("England");
-            await locationPage.ContinueAsync();
+            await locationPage.StartNowAsync();
         }
 
         // Aydin details
         var childName = new ChildNamePage(page);
         await childName.AssertHeaderAsync();
         await childName.AnswerAsync("Aydin");
-        await childName.ContinueAsync();
+        await childName.StartNowAsync();
 
         var childIsBorn = new ChildIsBornPage(page);
         await childIsBorn.AssertHeaderAsync();
         await childIsBorn.AnswerAsync("No");
-        await childIsBorn.ContinueAsync();
+        await childIsBorn.StartNowAsync();
 
         var childDueDate = new ChildDueDatePage(page);
         await childDueDate.AssertHeaderAsync();
         await childDueDate.AnswerAsync("Tomorrow");
-        await childDueDate.ContinueAsync();
+        await childDueDate.StartNowAsync();
 
         // Add another child
         await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Add another child" }).ClickAsync();
@@ -91,21 +91,21 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
         // Sara details
         await childName.AssertHeaderAsync();
         await childName.AnswerAsync("Sara");
-        await childName.ContinueAsync();
+        await childName.StartNowAsync();
 
         await childIsBorn.AssertHeaderAsync();
         await childIsBorn.AnswerAsync("Yes");
-        await childIsBorn.ContinueAsync();
+        await childIsBorn.StartNowAsync();
 
         var childBirthDate = new ChildBirthDatePage(page);
         await childBirthDate.AssertHeaderAsync();
         await childBirthDate.AnswerAsync("Yesterday");
-        await childBirthDate.ContinueAsync();
+        await childBirthDate.StartNowAsync();
 
         var childSupport = new ChildSupportPage(page);
         await childSupport.AssertHeaderAsync();
         await childSupport.AnswerAsync("Education, health and care (EHC) plan");
-        await childSupport.ContinueAsync();
+        await childSupport.StartNowAsync();
     }
 
     [Given("I check my children's details and click on Continue")]
@@ -138,7 +138,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
             var pageObj = factory.GetPage(pageName);
             await pageObj.AssertHeaderAsync();
             await pageObj.AnswerAsync(answer);
-            await pageObj.ContinueAsync();
+            await pageObj.StartNowAsync();
         }
     }
 
@@ -161,7 +161,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
             var pageObj = factory.GetPage(pageName);
             await pageObj.AssertHeaderAsync();
             await pageObj.AnswerAsync(answer);
-            await pageObj.ContinueAsync();
+            await pageObj.StartNowAsync();
         }
     }
 
@@ -180,7 +180,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
         {
             var uri = new Uri(page.Url);
             expectedHeader = uri.AbsolutePath == "/" || string.IsNullOrEmpty(uri.AbsolutePath.Trim('/'))
-                ? "Before you continue"
+                ? "Check if you are eligible for childcare funding"
                 : "Add details about your children";
         }
         await Expect(page.GetByRole(AriaRole.Heading, new PageGetByRoleOptions { Level = 1 })).ToHaveTextAsync(expectedHeader);

@@ -55,4 +55,4 @@ Scenario: Continue to check child details when I already have children
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "Before you continue"
+	Then the page header is "Check if you are eligible for childcare funding"

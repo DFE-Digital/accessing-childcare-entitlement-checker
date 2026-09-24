@@ -12,7 +12,7 @@ internal abstract class BasePage(IPage page) : IPageObject
 
     public abstract Task AnswerAsync(string answer);
 
-    public virtual async Task ContinueAsync()
+    public virtual async Task StartNowAsync()
     {
         await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
     }
