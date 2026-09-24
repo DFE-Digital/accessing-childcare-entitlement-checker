@@ -31,7 +31,7 @@ internal sealed class UseCaseSteps(IPage page, TestSettings settings)
                     var pageObj = factory.GetPage(answer.PageName);
                     await pageObj.AssertHeaderAsync();
                     await pageObj.AnswerAsync(answer.Answer);
-                    await pageObj.ContinueAsync();
+                    await pageObj.StartNowAsync();
                     break;
             }
         }

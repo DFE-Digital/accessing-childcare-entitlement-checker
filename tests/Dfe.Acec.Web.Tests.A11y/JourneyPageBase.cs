@@ -12,7 +12,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
     {
         await Page.GotoAsync("/");
         await ExpectPathAndQuery("/");
-        await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Start now" }).ClickAsync();
 
         if (Settings.HmrcIntegrationEnabled)
         {
