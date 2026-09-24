@@ -25,6 +25,7 @@ public class SchemeResultsViewModel
 {
     public SchemeCode SchemeCode { get; set; }
     public string Name { get; set; } = string.Empty;
+    public string Url { get; set; } = string.Empty;
     public string WhatYouGet { get; set; } = string.Empty;
     public string WhenToApply { get; set; } = string.Empty;
 }

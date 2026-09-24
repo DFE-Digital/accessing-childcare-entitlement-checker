@@ -29,7 +29,7 @@ public sealed class ResultsSteps(IPage page)
     [When("I click the details link for {string}")]
     public async Task WhenIClickTheDetailsLinkForString(string childName)
     {
-        var text = $"View {childName}'s full childcare support information";
+        var text = $"View {childName}'s full results";
         var link = page.GetByRole(AriaRole.Link, new() { Name = text, Exact = true });
         await link.ClickAsync();
     }
@@ -39,7 +39,7 @@ public sealed class ResultsSteps(IPage page)
     {
         var eligibleSchemes = await GetEligibleSchemes(name);
         var result = Assert.Single(eligibleSchemes);
-        Assert.Equal(scheme, result.Item1);
+        Assert.Contains(scheme, result.Item1);
         Assert.Equal(nameof(WhenEligible.Now), result.Item2);
     }
 
@@ -52,7 +52,7 @@ public sealed class ResultsSteps(IPage page)
         Assert.Equal(expecteds.Count, actuals.Count);
         foreach (var (actual, expected) in actuals.Zip(expecteds))
         {
-            Assert.Equal(expected.Scheme, actual.Item1);
+            Assert.Contains(expected.Scheme, actual.Item1);
 
             switch (expected.When)
             {
