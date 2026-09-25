@@ -14,14 +14,14 @@ This reference is generated automatically from the active Terraform configuratio
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.12.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 5.6.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.12.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 5.6.0 |
 
@@ -32,7 +32,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azapi_update_resource.shutter_origin_group_auth](https://registry.terraform.io/providers/Azure/azapi/2.12.0/docs/resources/update_resource) | resource |
 | [azurerm_application_insights.application-insights](https://registry.terraform.io/providers/hashicorp/azurerm/5.6.0/docs/resources/application_insights) | resource |
 | [azurerm_application_insights_standard_web_test.web-app-test](https://registry.terraform.io/providers/hashicorp/azurerm/5.6.0/docs/resources/application_insights_standard_web_test) | resource |
@@ -93,7 +93,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_alert_email_address"></a> [alert\_email\_address](#input\_alert\_email\_address) | The email address to send alert notifications to | `string` | `""` | no |
 | <a name="input_application_insights_daily_data_cap_in_gb"></a> [application\_insights\_daily\_data\_cap\_in\_gb](#input\_application\_insights\_daily\_data\_cap\_in\_gb) | The daily data cap in GB for Application Insights | `number` | n/a | yes |
 | <a name="input_application_insights_sampling_percentage"></a> [application\_insights\_sampling\_percentage](#input\_application\_insights\_sampling\_percentage) | The sampling percentage for Application Insights | `number` | n/a | yes |
@@ -127,7 +127,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_frontdoor_hostname"></a> [frontdoor\_hostname](#output\_frontdoor\_hostname) | n/a |
 | <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | n/a |
 | <a name="output_shutter_storage_account_name"></a> [shutter\_storage\_account\_name](#output\_shutter\_storage\_account\_name) | The name of the Storage Account used for the static shutter site. |
