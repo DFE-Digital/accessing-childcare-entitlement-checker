@@ -77,8 +77,14 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
 
                         When(x => x.SelfEmployedDuration == SelfEmployedDurationOption.NotLessThan12Months, () =>
                         {
-                            RuleFor(x => x.YearlyEarnings)
+                            RuleFor(x => x.WeeklyEarnings)
                                 .NotNull();
+
+                            When(x => x.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold, () =>
+                            {
+                                RuleFor(x => x.YearlyEarnings)
+                                    .NotNull();
+                            });
                         });
                     });
 
@@ -192,8 +198,14 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
 
                                 When(x => x.PartnerSelfEmployedDuration == SelfEmployedDurationOption.NotLessThan12Months, () =>
                                 {
-                                    RuleFor(x => x.PartnerYearlyEarnings)
+                                    RuleFor(x => x.PartnerWeeklyEarnings)
                                         .NotNull();
+
+                                    When(x => x.PartnerWeeklyEarnings == WeeklyEarningsOption.AboveThreshold, () =>
+                                    {
+                                        RuleFor(x => x.PartnerYearlyEarnings)
+                                            .NotNull();
+                                    });
                                 });
                             });
 
