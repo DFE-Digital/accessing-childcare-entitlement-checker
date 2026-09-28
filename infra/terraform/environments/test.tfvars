@@ -26,5 +26,5 @@ application_insights_daily_data_cap_in_gb = 1
 application_insights_sampling_percentage  = 50
 
 feature_flags = {
-  "HmrcIntegration" = "true"
+  "FlagSkipLocation" = "true"
 }

@@ -45,7 +45,7 @@ public class SummaryControllerTests : IDisposable
         };
         _journeySession = Substitute.For<IJourneySession>();
         _featureManager = Substitute.For<IFeatureManager>();
-        _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(false);
+        _featureManager.IsEnabledAsync(FeatureFlags.FlagSkipLocation).Returns(false);
         var stringLocalizerFactory = AcecSubstitute.ForLocalizerFactory();
 
 
@@ -251,7 +251,7 @@ public class SummaryControllerTests : IDisposable
 
     public async Task CheckAnswersSuppressesLocationRowWhenFeatureFlagEnabled()
     {
-        _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(true);
+        _featureManager.IsEnabledAsync(FeatureFlags.FlagSkipLocation).Returns(true);
         _journeyState.HasPartner = false;
         _journeyState.CountryOfResidence = CountryOfResidence.England;
 

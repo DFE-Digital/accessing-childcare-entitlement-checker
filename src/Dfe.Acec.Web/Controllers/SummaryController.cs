@@ -179,7 +179,7 @@ public partial class SummaryController(
             stringLocalizerFactory,
             CheckAnswersChangeTextResource);
 
-        if (!await featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
+        if (!await featureManager.IsEnabledAsync(FeatureFlags.FlagSkipLocation))
         {
             homeBuilder.AddLocation(journeyState.CountryOfResidence);
         }

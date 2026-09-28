@@ -154,7 +154,7 @@ internal sealed class SummarySteps(IPage page, TestSettings settings)
             var question = row["Question"];
             var answer = row["Answer"];
 
-            if (question == "Where do you live?" && settings.HmrcIntegrationEnabled)
+            if (question == "Where do you live?" && settings.FlagSkipLocationEnabled)
             {
                 continue;
             }

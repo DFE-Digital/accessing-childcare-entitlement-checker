@@ -14,7 +14,7 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
     {
         await using var host = factory.CreateClientWithFeatureFlags(new()
         {
-            { "FeatureManagement:HmrcIntegration", "true" }
+            { "FeatureManagement:FlagSkipLocation", "true" }
         });
 
         using var client = host.CreateClient();

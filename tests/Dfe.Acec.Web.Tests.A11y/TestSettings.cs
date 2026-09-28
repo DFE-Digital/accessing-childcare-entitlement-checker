@@ -13,5 +13,5 @@ internal sealed class TestSettings
     public int SlowMo { get; set; }
     public string UserAgent { get; set; } = "playwright-a11y";
     public string[] Impacts { get; set; } = ["critical", "serious"];
-    public bool HmrcIntegrationEnabled { get; set; } = true;
+    public bool FlagSkipLocationEnabled { get; set; } = true;
 }
