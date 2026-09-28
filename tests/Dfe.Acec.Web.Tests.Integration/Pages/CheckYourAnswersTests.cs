@@ -17,7 +17,7 @@ public class CheckYourAnswersTests(IntegrationTestFixture factory) : IClassFixtu
     {
         await using var host = factory.CreateClientWithJourneyStateAndFeatureFlags(
             new JourneyState { CountryOfResidence = CountryOfResidence.England, HasPartner = false, },
-            new() { { "FeatureManagement:HmrcIntegration", "true" } });
+            new() { { "FeatureManagement:FlagSkipLocation", "true" } });
 
         using var client = host.CreateClient();
 

@@ -26,7 +26,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
     [When("I answer {string} as {string}")]
     public async Task GivenIAnswerStringAsString(string question, string answer)
     {
-        if (question == "Where do you live?" && settings.HmrcIntegrationEnabled)
+        if (question == "Where do you live?" && settings.FlagSkipLocationEnabled)
         {
             return;
         }
@@ -45,7 +45,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
         var factory = new PageFactory(page);
         foreach (var (pageName, answer) in answers.ToPageAnswerPairs())
         {
-            if (pageName == "Where do you live?" && settings.HmrcIntegrationEnabled)
+            if (pageName == "Where do you live?" && settings.FlagSkipLocationEnabled)
             {
                 continue;
             }
@@ -61,7 +61,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
     {
         await GivenIClickTheLinkToStartTheJourney();
 
-        if (!settings.HmrcIntegrationEnabled)
+        if (!settings.FlagSkipLocationEnabled)
         {
             var locationPage = new LocationPage(page);
             await locationPage.AssertHeaderAsync();
@@ -176,7 +176,7 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
     [Then(@"the page header is ""(.*)""")]
     public async Task WhenThePageHeaderIs(string expectedHeader)
     {
-        if (expectedHeader == "Where do you live?" && settings.HmrcIntegrationEnabled)
+        if (expectedHeader == "Where do you live?" && settings.FlagSkipLocationEnabled)
         {
             var uri = new Uri(page.Url);
             expectedHeader = uri.AbsolutePath == "/" || string.IsNullOrEmpty(uri.AbsolutePath.Trim('/'))

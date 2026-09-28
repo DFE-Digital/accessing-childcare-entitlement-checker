@@ -14,7 +14,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await ExpectPathAndQuery("/");
         await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Start now" }).ClickAsync();
 
-        if (Settings.HmrcIntegrationEnabled)
+        if (Settings.FlagSkipLocationEnabled)
         {
             await ExpectPathAndQuery("/children/add-child-details");
         }
@@ -26,7 +26,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
 
     protected async Task AnswerLocation(string location = "England")
     {
-        if (Settings.HmrcIntegrationEnabled)
+        if (Settings.FlagSkipLocationEnabled)
         {
             return;
         }

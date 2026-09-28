@@ -48,7 +48,7 @@ public class HomeControllerTests : IDisposable
     [Fact]
     public async Task LocationGetPopulatesModelFromStateWhenFeatureFlagDisabled()
     {
-        _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(false);
+        _featureManager.IsEnabledAsync(FeatureFlags.FlagSkipLocation).Returns(false);
         _journeyState.CountryOfResidence = CountryOfResidence.England;
         var result = await _controller.Location();
         var viewResult = Assert.IsType<ViewResult>(result);
@@ -59,7 +59,7 @@ public class HomeControllerTests : IDisposable
     [Fact]
     public async Task LocationGetRedirectsAndSetsEnglandWhenFeatureFlagEnabled()
     {
-        _featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration).Returns(true);
+        _featureManager.IsEnabledAsync(FeatureFlags.FlagSkipLocation).Returns(true);
         var result = await _controller.Location();
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
 

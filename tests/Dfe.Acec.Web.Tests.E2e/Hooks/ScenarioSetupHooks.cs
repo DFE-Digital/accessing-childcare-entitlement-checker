@@ -17,9 +17,9 @@ internal sealed class ScenarioSetupHooks(
         var settings = objectContainer.Resolve<TestSettings>();
         var isLocationPage = scenarioContext.ScenarioInfo.Tags.Contains("RequiresLocationPage")
             || featureContext.FeatureInfo.Tags.Contains("RequiresLocationPage");
-        if (settings.HmrcIntegrationEnabled && isLocationPage)
+        if (settings.FlagSkipLocationEnabled && isLocationPage)
         {
-            Assert.Skip("Location page is bypassed when HmrcIntegration is enabled.");
+            Assert.Skip("Location page is bypassed when FlagSkipLocation is enabled.");
         }
     }
 
