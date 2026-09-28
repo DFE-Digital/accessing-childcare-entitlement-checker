@@ -117,6 +117,7 @@ No modules.
 | <a name="input_log_analytics_daily_quota_gb"></a> [log\_analytics\_daily\_quota\_gb](#input\_log\_analytics\_daily\_quota\_gb) | The daily quota in GB for the Log Analytics workspace | `number` | n/a | yes |
 | <a name="input_log_analytics_retention_in_days"></a> [log\_analytics\_retention\_in\_days](#input\_log\_analytics\_retention\_in\_days) | The retention period in days for the Log Analytics workspace | `number` | n/a | yes |
 | <a name="input_redis_sku_name"></a> [redis\_sku\_name](#input\_redis\_sku\_name) | The SKU of the Managed Redis instance | `string` | `"Balanced_B1"` | no |
+| <a name="input_service_shuttered"></a> [service\_shuttered](#input\_service\_shuttered) | Whether the service is currently shuttered | `bool` | `false` | no |
 | <a name="input_waf_enable_managed_rules"></a> [waf\_enable\_managed\_rules](#input\_waf\_enable\_managed\_rules) | Enable managed rule sets in WAF | `bool` | `false` | no |
 | <a name="input_waf_mode"></a> [waf\_mode](#input\_waf\_mode) | The mode the WAF should be deployed in (Prevention or Detection) | `string` | `"Prevention"` | no |
 | <a name="input_webapp_enable_staging_slot"></a> [webapp\_enable\_staging\_slot](#input\_webapp\_enable\_staging\_slot) | Enable staging slot for web app | `bool` | `false` | no |
