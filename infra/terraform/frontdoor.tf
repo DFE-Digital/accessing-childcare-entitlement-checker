@@ -54,8 +54,8 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = flatten([
-  azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[*].id,
-  azurerm_cdn_frontdoor_custom_domain.fd-service-custom-domain[*].id
+    azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[*].id,
+    azurerm_cdn_frontdoor_custom_domain.fd-service-custom-domain[*].id
   ])
 
   link_to_default_domain = var.education_custom_domain == "" && var.service_custom_domain == ""
