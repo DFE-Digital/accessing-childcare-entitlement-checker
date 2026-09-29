@@ -7,9 +7,9 @@ public class LocationPageAccessibilityTests(ITestOutputHelper output) : JourneyP
     [Fact]
     public async Task LocationPageHasNoAccessibilityViolations()
     {
-        if (Settings.HmrcIntegrationEnabled)
+        if (Settings.FlagSkipLocationEnabled)
         {
-            Assert.Skip("Location page is bypassed when HmrcIntegration is enabled.");
+            Assert.Skip("Location page is bypassed when FlagSkipLocation is enabled.");
         }
 
         await StartJourney();
@@ -20,9 +20,9 @@ public class LocationPageAccessibilityTests(ITestOutputHelper output) : JourneyP
     [Fact]
     public async Task LocationPageWithValidationErrorHasNoAccessibilityViolations()
     {
-        if (Settings.HmrcIntegrationEnabled)
+        if (Settings.FlagSkipLocationEnabled)
         {
-            Assert.Skip("Location page is bypassed when HmrcIntegration is enabled.");
+            Assert.Skip("Location page is bypassed when FlagSkipLocation is enabled.");
         }
 
         await StartJourney();

@@ -19,20 +19,20 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 id="top" class="govuk-heading-xl">@Localizer["Childcare support you could get"]</h1>
-        
+
         <button class="app-print-link" type="button">
             @Localizer["Print this page"]
         </button>
-        
+
         @if (Model.Children.Count > 0)
         {
             <p class="govuk-body">
                 @Localizer["Based on your answers, this is the support you can get now or in the future."]
             </p>
-    
+
             <p class="govuk-body">
                 @Localizer["You should check again if your circumstances change as this may change the support you can get."]
-            </p>   
+            </p>
         }
 
         @if (!Model.HasAccessToPublicFunds)
@@ -65,9 +65,9 @@
 
                     continue;
                 }
-                
+
                 <p class="govuk-body" data-clarity-mask="true">
-                    @Localizer["This is a summary of {0}'s childcare support.", child.Name]
+                    @Localizer["This table shows a summary of {0}'s childcare support.", child.Name]
                 </p>
 
                 <table class="govuk-table app-results-table">
@@ -84,7 +84,10 @@
                     {
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell">
-                                @scheme.Name
+                                <a class="govuk-link" href="@scheme.Url" target="_blank" rel="noopener noreferrer">
+                                    @scheme.Name
+                                    <span class="govuk-visually-hidden">@Localizer["(opens in new tab)"]</span>
+                                </a>
                             </td>
 
                             <td class="govuk-table__cell">
@@ -100,19 +103,14 @@
                 </table>
             </div>
 
-            <h3 class="govuk-heading-m" data-clarity-mask="true">
-                @Localizer["Full information about {0}'s childcare support", child.Name]
-            </h3>
-            
-
             <p class="govuk-body">
                 <a asp-action="ResultsDetailed"
                    asp-route-childId="@child.ChildId"
                    data-clarity-mask="true"
                    class="govuk-link">
-                    @Localizer["View {0}'s full childcare support information", child.Name]</a>.
+                    @Localizer["View {0}'s full results", child.Name]</a>.
             </p>
-            
+
             <p class="govuk-body">
                 @Localizer["This includes more details about each scheme such as when support starts and ends."]
             </p>
@@ -124,6 +122,63 @@
                 </div>
             }
         }
+
+        <div class="app-getHelp">
+            <h2 class="govuk-heading-l">
+                @Localizer["Estimate your childcare costs and find a provider"]
+            </h2>
+
+            <p class="govuk-body">
+                @Localizer["You can use the Best Start in Life website to:"]
+            </p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>
+                    <a href="https://childcare.beststartinlife.gov.uk/costs"
+                       class="govuk-link"
+                       target="_blank"
+                       rel="noopener noreferrer">@Localizer["get an estimate of your childcare costs (opens in new tab)"]</a>.
+                </li>
+                <li>
+                    <a href="https://childcare.beststartinlife.gov.uk/providers"
+                       class="govuk-link"
+                       target="_blank"
+                       rel="noopener noreferrer">@Localizer["search for childcare providers near you (opens in new tab)"]</a>.
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="app-getHelp">
+            <h2 class="govuk-heading-l">
+                @Localizer["Breakfast clubs and wraparound childcare for primary school-aged children"]
+            </h2>
+            <p class="govuk-body">
+                <a href="https://beststartinlife.gov.uk/childcare-early-years-education/breakfast-clubs-and-wraparound-childcare/"
+                   class="govuk-link"
+                   target="_blank"
+                   rel="noopener noreferrer">@Localizer["Find out about free breakfast clubs and before and after school wraparound childcare (opens in new tab)"]</a>.
+            </p>
+            <p class="govuk-body">
+                @Localizer["If you are eligible for Tax-Free Childcare or Universal Credit and childcare, you could use that to help pay for wraparound childcare."]
+            </p>
+        </div>
+
+        <div class="app-getHelp">
+            <h2 class="govuk-heading-l">
+                @Localizer["If you are studying"]
+            </h2>
+            <p class="govuk-body">
+                @Localizer["You may be able to get other help with childcare costs while you study."]
+            </p>
+            <p class="govuk-body">
+                <a href="https://www.gov.uk/help-with-childcare-costs/support-while-you-study"
+                   class="govuk-link"
+                   target="_blank"
+                   rel="noopener noreferrer">@Localizer["Find out about help with childcare while you study (opens in new tab)"]</a>.
+            </p>
+        </div>
+
 
         <div class="app-getHelp">
             <h2 class="govuk-heading-l">
@@ -156,11 +211,11 @@
                     @Localizer["Find out if there's a family hub in your area (opens in new tab)"]</a>.
             </p>
         </div>
-        
+
         <button class="app-print-link" type="button">
             @Localizer["Print this page"]
         </button>
-        
+
         <div class="app-back-to-top">
             <a class="govuk-link govuk-link--no-visited-state app-back-to-top__link"
                href="#top">
@@ -177,9 +232,9 @@
                 @Localizer["Back to top"]
             </a>
         </div>
-        
+
     </div>
-    
+
     <script add-nonce="true">
         document
             .querySelectorAll('.app-print-link')

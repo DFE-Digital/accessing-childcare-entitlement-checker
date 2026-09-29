@@ -12,9 +12,9 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
     {
         await Page.GotoAsync("/");
         await ExpectPathAndQuery("/");
-        await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Start now" }).ClickAsync();
 
-        if (Settings.HmrcIntegrationEnabled)
+        if (Settings.FlagSkipLocationEnabled)
         {
             await ExpectPathAndQuery("/children/add-child-details");
         }
@@ -26,7 +26,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
 
     protected async Task AnswerLocation(string location = "England")
     {
-        if (Settings.HmrcIntegrationEnabled)
+        if (Settings.FlagSkipLocationEnabled)
         {
             return;
         }
@@ -483,7 +483,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
 
         await Page.GetByRole(
                 AriaRole.Link,
-                new PageGetByRoleOptions { Name = $"View {DefaultChildName}'s full childcare support information" })
+                new PageGetByRoleOptions { Name = $"View {DefaultChildName}'s full results" })
             .ClickAsync();
 
         await ExpectPathAndQuery($"/Results/ResultsDetailed?childId={childId}");

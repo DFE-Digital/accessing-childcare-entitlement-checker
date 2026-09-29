@@ -7,6 +7,6 @@ internal interface IPageObject
     [UsedImplicitly]
     string PageTitle { get; }
     Task AnswerAsync(string answer);
-    Task ContinueAsync();
+    Task StartNowAsync();
     Task AssertHeaderAsync();
 }

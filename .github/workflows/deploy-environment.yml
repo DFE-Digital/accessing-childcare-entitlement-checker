@@ -45,6 +45,7 @@ jobs:
       DEPLOY_ZIP_PATH: "../../.artifacts/webapp.zip"
       TF_VAR_development_basic_auth_password: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
       TF_VAR_google_tag_manager_container_id: ${{ vars.GOOGLE_TAG_MANAGER_CONTAINER_ID }}
+      TF_VAR_service_shuttered: ${{ vars.SERVICE_SHUTTERED == 'true' }}
       BOOTSTRAP_TF: ${{ vars.BOOTSTRAP_TF }}
 
     steps:

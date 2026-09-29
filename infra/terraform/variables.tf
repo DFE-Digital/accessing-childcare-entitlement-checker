@@ -1,3 +1,9 @@
+variable "service_shuttered" {
+  description = "Whether the service is currently shuttered"
+  type        = bool
+  default     = false
+}
+
 variable "elz_environment" {
   description = "The ELZ environment to match subscription (e.g. Dev)"
   type        = string

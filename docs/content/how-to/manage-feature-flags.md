@@ -19,7 +19,7 @@ Manage feature flags for local execution by editing the local JSON configuration
    ```json
    {
      "FeatureManagement": {
-       "HmrcIntegration": true
+       "FlagSkipLocation": true
      }
    }
    ```
@@ -39,8 +39,8 @@ Our Playwright test suites (E2E and A11y) load flag states via `TestSettings`.
    {
      "TestSettings": {
        "TestUrl": "http://localhost:5252/",
-       "HmrcIntegrationEnabled": true
+       "FlagSkipLocationEnabled": true
      }
    }
    ```
-3. **Change the value** of `HmrcIntegrationEnabled` to toggle the simulated integration state during browser automation runs.
+3. **Change the value** of `FlagSkipLocationEnabled` to toggle the skipping of the location page during browser automation runs.

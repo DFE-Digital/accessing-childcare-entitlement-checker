@@ -43,10 +43,16 @@ resource "azurerm_cdn_frontdoor_endpoint" "frontdoor-web-endpoint" {
 resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   name                          = "${local.prefix}-web-fd-route"
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
-  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group.id
-  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.frontdoor-web-origin.id]
-  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.security_rules.id]
-  enabled                       = true
+  cdn_frontdoor_origin_group_id = var.service_shuttered ? azurerm_cdn_frontdoor_origin_group.shutter-origin-group.id : azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group.id
+  cdn_frontdoor_origin_ids      = var.service_shuttered ? [azurerm_cdn_frontdoor_origin.frontdoor-shutter-origin.id] : [azurerm_cdn_frontdoor_origin.frontdoor-web-origin.id]
+  cdn_frontdoor_rule_set_ids = var.service_shuttered ? [
+    azurerm_cdn_frontdoor_rule_set.security_rules.id,
+    azurerm_cdn_frontdoor_rule_set.shutter_rules.id
+    ] : [
+    azurerm_cdn_frontdoor_rule_set.security_rules.id
+  ]
+  cdn_frontdoor_origin_path = var.service_shuttered ? "/shutter" : null
+  enabled                   = true
 
   forwarding_protocol    = "HttpsOnly"
   https_redirect_enabled = true
@@ -59,15 +65,6 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   ])
 
   link_to_default_domain = var.education_custom_domain == "" && var.service_custom_domain == ""
-
-  lifecycle {
-    ignore_changes = [
-      cdn_frontdoor_origin_group_id,
-      cdn_frontdoor_origin_ids,
-      cdn_frontdoor_rule_set_ids,
-      cdn_frontdoor_origin_path
-    ]
-  }
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "shutter-origin-group" {

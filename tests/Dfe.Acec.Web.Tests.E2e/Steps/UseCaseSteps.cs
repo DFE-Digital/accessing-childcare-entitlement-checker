@@ -24,14 +24,14 @@ internal sealed class UseCaseSteps(IPage page, TestSettings settings)
                     await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = action.ActionName }).ClickAsync();
                     break;
                 case AnswerStep answer:
-                    if (answer.PageName == "Where do you live?" && settings.HmrcIntegrationEnabled)
+                    if (answer.PageName == "Where do you live?" && settings.FlagSkipLocationEnabled)
                     {
                         break;
                     }
                     var pageObj = factory.GetPage(answer.PageName);
                     await pageObj.AssertHeaderAsync();
                     await pageObj.AnswerAsync(answer.Answer);
-                    await pageObj.ContinueAsync();
+                    await pageObj.StartNowAsync();
                     break;
             }
         }

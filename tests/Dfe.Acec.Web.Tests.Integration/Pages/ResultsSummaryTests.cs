@@ -268,7 +268,7 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
         doc.AssertResultsSection("CHILD-1")
-            .AssertContainsText("This is a summary of CHILD-1's childcare support.");
+            .AssertContainsText("This table shows a summary of CHILD-1's childcare support.");
 
         doc.AssertResultsSection("CHILD-2")
             .AssertContainsText("You cannot currently get any of the childcare support this service checks for CHILD-2.");
@@ -336,7 +336,6 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
 
         var childName = document.QuerySelector("h2.results-name");
         var summary = document.QuerySelector(".app-results-section > p.govuk-body");
-        var fullInformationHeading = document.QuerySelector("h3.govuk-heading-m");
         var fullInformationLink = document.QuerySelector("a[href^=\"/Results/ResultsDetailed\"]");
 
         Assert.NotNull(childName);
@@ -344,9 +343,6 @@ public class ResultsSummaryTests(IntegrationTestFixture factory) : IClassFixture
 
         Assert.NotNull(summary);
         Assert.Equal("true", summary.GetAttribute("data-clarity-mask"));
-
-        Assert.NotNull(fullInformationHeading);
-        Assert.Equal("true", fullInformationHeading.GetAttribute("data-clarity-mask"));
 
         Assert.NotNull(fullInformationLink);
         Assert.Equal("true", fullInformationLink.GetAttribute("data-clarity-mask"));

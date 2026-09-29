@@ -12,14 +12,6 @@ on:
           - test
           - staging
           - production
-      action:
-        description: 'Action'
-        required: true
-        type: choice
-        options:
-          - shutter
-          - restore
-        default: shutter
 
 jobs:
   shutter:
@@ -58,9 +50,16 @@ jobs:
 
       - name: Execute Failover Action
         shell: bash
+        env:
+          SERVICE_SHUTTERED: ${{ vars.SERVICE_SHUTTERED }}
         run: |
           ENV_PREFIX="${{ env.ENV_PREFIX }}"
-          ACTION="${{ inputs.action }}"
+          
+          if [ "$SERVICE_SHUTTERED" = "true" ]; then
+              ACTION="shutter"
+          else
+              ACTION="restore"
+          fi
 
           PROJECT_ID="s279"
           PREFIX="${PROJECT_ID}${ENV_PREFIX}"

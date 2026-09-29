@@ -11,9 +11,9 @@ internal sealed class StartPage(IPage page) : BasePage(page)
 
     public override Task AnswerAsync(string answer) => Task.CompletedTask; // No question to answer
 
-    public override async Task ContinueAsync()
+    public override async Task StartNowAsync()
     {
-        await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Continue" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Start now" }).ClickAsync();
     }
 }
 

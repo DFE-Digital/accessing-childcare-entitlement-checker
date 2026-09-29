@@ -18,8 +18,8 @@ on:
         required: false
         type: string
         default: 'chromium'
-      hmrc_integration_enabled:
-        description: 'Whether the hmrc-integration feature flag is enabled'
+      flag_skip_location:
+        description: 'Whether the FlagSkipLocation feature flag is enabled'
         required: false
         type: string
         default: 'true'
@@ -84,7 +84,7 @@ jobs:
         working-directory: web-app
         env:
           ASPNETCORE_ENVIRONMENT: Development
-          FeatureManagement__HmrcIntegration: ${{ inputs.hmrc_integration_enabled }}
+          FeatureManagement__FlagSkipLocation: ${{ inputs.flag_skip_location }}
         run: |
           dotnet Dfe.Acec.Web.dll --urls http://127.0.0.1:5252 > ../app.log 2>&1 &
           echo $! > ../app.pid
@@ -118,7 +118,7 @@ jobs:
           PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
           TestSettings__BasicAuthPassword: ${{ secrets.DEVELOPMENT_BASIC_AUTH_PASSWORD }}
           TestSettings__Browser: ${{ inputs.browser }}
-          TestSettings__HmrcIntegrationEnabled: ${{ inputs.hmrc_integration_enabled }}
+          TestSettings__FlagSkipLocation: ${{ inputs.flag_skip_location }}
         run: |
           ./a11y-tests/Dfe.Acec.Web.Tests.A11y \
             --report-ctrf \

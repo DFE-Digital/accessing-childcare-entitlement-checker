@@ -27,7 +27,7 @@ public class HomeController(JourneyState journeyState, IJourneySession journeySe
     [HttpGet]
     public async Task<IActionResult> Location(string? returnTo = null)
     {
-        if (await featureManager.IsEnabledAsync(FeatureFlags.HmrcIntegration))
+        if (await featureManager.IsEnabledAsync(FeatureFlags.FlagSkipLocation))
         {
             journeyState.CountryOfResidence = CountryOfResidence.England;
             journeySession.SetState(journeyState);

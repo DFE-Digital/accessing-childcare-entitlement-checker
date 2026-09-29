@@ -243,12 +243,29 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
+    public void CheckAnswersWhenSelfEmployedForNotLessThan12MonthsAndWeeklyEarningsIsMissingIsInvalid()
+    {
+        var journeyState = CreateValidUserOnlyJourneyState();
+        journeyState.PaidWork = PaidWorkOption.Yes;
+        journeyState.WorkStatus = [WorkStatusOption.SelfEmployed];
+        journeyState.SelfEmployedDuration = SelfEmployedDurationOption.NotLessThan12Months;
+
+        var result = Validate(journeyState);
+
+        Assert.False(result.IsValid);
+        Assert.Contains(
+            result.Errors,
+            error => error.PropertyName == nameof(JourneyState.WeeklyEarnings));
+    }
+
+    [Fact]
     public void CheckAnswersWhenSelfEmployedDurationRequiresYearlyEarningsAndYearlyEarningsIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.PaidWork = PaidWorkOption.Yes;
         journeyState.WorkStatus = [WorkStatusOption.SelfEmployed];
         journeyState.SelfEmployedDuration = SelfEmployedDurationOption.NotLessThan12Months;
+        journeyState.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
 
         var result = Validate(journeyState);
 
@@ -415,12 +432,29 @@ public class JourneyStateValidatorCheckAnswersTests
     }
 
     [Fact]
+    public void CheckAnswersWhenPartnerSelfEmployedForNotLessThan12MonthsAndWeeklyEarningsIsMissingIsInvalid()
+    {
+        var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
+        journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
+        journeyState.PartnerWorkStatus = [WorkStatusOption.SelfEmployed];
+        journeyState.PartnerSelfEmployedDuration = SelfEmployedDurationOption.NotLessThan12Months;
+
+        var result = Validate(journeyState);
+
+        Assert.False(result.IsValid);
+        Assert.Contains(
+            result.Errors,
+            error => error.PropertyName == nameof(JourneyState.PartnerWeeklyEarnings));
+    }
+
+    [Fact]
     public void CheckAnswersWhenPartnerSelfEmployedDurationRequiresYearlyEarningsAndYearlyEarningsIsMissingIsInvalid()
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
         journeyState.PartnerWorkStatus = [WorkStatusOption.SelfEmployed];
         journeyState.PartnerSelfEmployedDuration = SelfEmployedDurationOption.NotLessThan12Months;
+        journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
 
         var result = Validate(journeyState);
 
