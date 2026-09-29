@@ -31,6 +31,7 @@ jobs:
       - name: Generate Terraform documentation
         uses: terraform-docs/gh-actions@v1.4.1
         with:
+          version: v0.24.0
           working-dir: infra/terraform
           config-file: ${{ github.workspace }}/.terraform-docs.yml
           output-file: ${{ github.workspace }}/${{ env.TERRAFORM_DOCS_OUTPUT_FILE }}
