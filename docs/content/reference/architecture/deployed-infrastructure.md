@@ -9,7 +9,6 @@ eleventyNavigation:
   key: Deployed infrastructure
 ---
 This reference is generated automatically from the active Terraform configuration.
-
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -37,7 +36,9 @@ No modules.
 | [azurerm_application_insights.application-insights](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/application_insights) | resource |
 | [azurerm_application_insights_standard_web_test.web-app-test](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/application_insights_standard_web_test) | resource |
 | [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_custom_domain) | resource |
+| [azurerm_cdn_frontdoor_custom_domain.fd-service-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_custom_domain) | resource |
 | [azurerm_cdn_frontdoor_custom_domain_association.web-app-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_custom_domain_association) | resource |
+| [azurerm_cdn_frontdoor_custom_domain_association.web-app-service-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_custom_domain_association) | resource |
 | [azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_endpoint) | resource |
 | [azurerm_cdn_frontdoor_firewall_policy.web_firewall_policy](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_firewall_policy) | resource |
 | [azurerm_cdn_frontdoor_origin.frontdoor-shutter-origin](https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0/docs/resources/cdn_frontdoor_origin) | resource |
@@ -104,8 +105,8 @@ No modules.
 | <a name="input_budget_alert_threshold_forecast"></a> [budget\_alert\_threshold\_forecast](#input\_budget\_alert\_threshold\_forecast) | The threshold percentage for forecasted budget alerts | `number` | `90` | no |
 | <a name="input_budget_amount_load_test"></a> [budget\_amount\_load\_test](#input\_budget\_amount\_load\_test) | The budget amount for the load test resource group | `number` | n/a | yes |
 | <a name="input_budget_amount_web"></a> [budget\_amount\_web](#input\_budget\_amount\_web) | The budget amount for the web resource group | `number` | n/a | yes |
-| <a name="input_custom_domain"></a> [custom\_domain](#input\_custom\_domain) | Custom front-door domain | `string` | `""` | no |
 | <a name="input_development_basic_auth_password"></a> [development\_basic\_auth\_password](#input\_development\_basic\_auth\_password) | Shared password for development-only basic auth | `string` | `""` | no |
+| <a name="input_education_custom_domain"></a> [education\_custom\_domain](#input\_education\_custom\_domain) | Education custom front-door domain | `string` | `""` | no |
 | <a name="input_elz_environment"></a> [elz\_environment](#input\_elz\_environment) | The ELZ environment to match subscription (e.g. Dev) | `string` | n/a | yes |
 | <a name="input_enable_alerts"></a> [enable\_alerts](#input\_enable\_alerts) | Toggle to enable/disable Azure Monitor alerts | `bool` | `false` | no |
 | <a name="input_enable_load_testing"></a> [enable\_load\_testing](#input\_enable\_load\_testing) | Enable Azure Load Testing | `bool` | `false` | no |
@@ -118,6 +119,7 @@ No modules.
 | <a name="input_log_analytics_daily_quota_gb"></a> [log\_analytics\_daily\_quota\_gb](#input\_log\_analytics\_daily\_quota\_gb) | The daily quota in GB for the Log Analytics workspace | `number` | n/a | yes |
 | <a name="input_log_analytics_retention_in_days"></a> [log\_analytics\_retention\_in\_days](#input\_log\_analytics\_retention\_in\_days) | The retention period in days for the Log Analytics workspace | `number` | n/a | yes |
 | <a name="input_redis_sku_name"></a> [redis\_sku\_name](#input\_redis\_sku\_name) | The SKU of the Managed Redis instance | `string` | `"Balanced_B1"` | no |
+| <a name="input_service_custom_domain"></a> [service\_custom\_domain](#input\_service\_custom\_domain) | Service custom front-door domain | `string` | `""` | no |
 | <a name="input_waf_enable_managed_rules"></a> [waf\_enable\_managed\_rules](#input\_waf\_enable\_managed\_rules) | Enable managed rule sets in WAF | `bool` | `false` | no |
 | <a name="input_waf_mode"></a> [waf\_mode](#input\_waf\_mode) | The mode the WAF should be deployed in (Prevention or Detection) | `string` | `"Prevention"` | no |
 | <a name="input_webapp_enable_staging_slot"></a> [webapp\_enable\_staging\_slot](#input\_webapp\_enable\_staging\_slot) | Enable staging slot for web app | `bool` | `false` | no |

@@ -53,9 +53,12 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   patterns_to_match      = ["/*"]
   supported_protocols    = ["Http", "Https"]
 
-  cdn_frontdoor_custom_domain_ids = var.custom_domain == "" ? [] : [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id]
+  cdn_frontdoor_custom_domain_ids = flatten([
+    azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[*].id,
+    azurerm_cdn_frontdoor_custom_domain.fd-service-custom-domain[*].id
+  ])
 
-  link_to_default_domain = var.custom_domain == ""
+  link_to_default_domain = var.education_custom_domain == "" && var.service_custom_domain == ""
 
   lifecycle {
     ignore_changes = [
@@ -122,9 +125,16 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
         }
 
         dynamic "domain" {
-          for_each = var.custom_domain == "" ? [] : ["apply"]
+          for_each = var.education_custom_domain == "" ? [] : ["apply"]
           content {
             cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
+          }
+        }
+
+        dynamic "domain" {
+          for_each = var.service_custom_domain == "" ? [] : ["apply"]
+          content {
+            cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-service-custom-domain[0].id
           }
         }
 
@@ -135,10 +145,10 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
-  count                    = var.custom_domain == "" ? 0 : 1
+  count                    = var.education_custom_domain == "" ? 0 : 1
   name                     = "${local.prefix}-fd-custom-domain"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
-  host_name                = var.custom_domain
+  host_name                = var.education_custom_domain
 
   tls {
     certificate_type = "ManagedCertificate"
@@ -146,8 +156,25 @@ resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain_association" "web-app-custom-domain" {
-  count                          = var.custom_domain == "" ? 0 : 1
+  count                          = var.education_custom_domain == "" ? 0 : 1
   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
+  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.frontdoor-web-route.id]
+}
+
+resource "azurerm_cdn_frontdoor_custom_domain" "fd-service-custom-domain" {
+  count                    = var.service_custom_domain == "" ? 0 : 1
+  name                     = "${local.prefix}-fd-service-custom-domain"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
+  host_name                = var.service_custom_domain
+
+  tls {
+    certificate_type = "ManagedCertificate"
+  }
+}
+
+resource "azurerm_cdn_frontdoor_custom_domain_association" "web-app-service-custom-domain" {
+  count                          = var.service_custom_domain == "" ? 0 : 1
+  cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-service-custom-domain[0].id
   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.frontdoor-web-route.id]
 }
 
