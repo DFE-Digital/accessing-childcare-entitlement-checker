@@ -66,7 +66,7 @@ To secure deployment, write access is strictly limited to the GitHub Actions wor
 ### 2. Front Door routing and URL rewriting
 
 - **Normal Operation**: Azure Front Door routes all traffic (`/*`) to the main Web App App Service using the `SecurityRules` rule set.
-- **Shutter Operation**: Using our automated GitHub Actions workflow, we update the route's origin group to point to the `shutter-origin-group`, attach both `SecurityRules` and `ShutterRules` rule sets, and set the origin path to `/shutter`.
+- **Shutter Operation**: We manage the shutter state declaratively using the `service_shuttered` Terraform variable, aligned with the `SERVICE_SHUTTERED` GitHub Environment variable. Both our standard Terraform deployments and our rapid GitHub Actions workflow update the route's origin group to point to the `shutter-origin-group`, attach both `SecurityRules` and `ShutterRules` rule sets, and set the origin path to `/shutter`.
 - **Path Rewriting**: The `ShutterRules` rule set applies a `url_rewrite` rule. This rule rewrites any requested path (e.g. `/about` or `/help`) to `/index.html` before requesting the file from the blob origin, provided the path does not begin with `/assets/`. This ensures the user stays on their requested URL in their address bar but receives the "Service Unavailable" page, while still letting critical assets and security redirects (like `/security.txt` from `SecurityRules`) load successfully.
 
 #### Why we use a single route toggle
@@ -75,7 +75,7 @@ You might wonder if we could simplify the GitHub Actions workflow by defining tw
 
 However, Azure Front Door enforces a strict uniqueness constraint on the combination of **Domain + Protocol + Path Pattern** at the resource level. Attempting to deploy or configure a second route with an identical combination will cause Azure Resource Manager to reject it with a `BadRequest` conflict error—even if one of the routes is set to `Disabled`. 
 
-As a result, using a single route and modifying its properties (origin group, origin path, and rule-sets) via the CLI is the standard and necessary approach for toggling the shutter service. We use Terraform's `lifecycle { ignore_changes = [...] }` block on the `frontdoor-web-route` resource to ensure that subsequent Terraform runs do not drift-correct the route back to its normal state while the application is shuttered.
+As a result, using a single route and modifying its properties (origin group, origin path, and rule-sets) is the standard and necessary approach for toggling the shutter service. By defining these dynamically using the `service_shuttered` Terraform variable, we ensure that both Terraform runs and our rapid CLI workflow align on the same configuration, removing any need for unstable `ignore_changes` lifecycle blocks.
 
 ## Managing shutter content like code
 

@@ -19,35 +19,45 @@ We have two methods for toggling the shutter state:
 
 ## Using GitHub Actions Workflow (Recommended)
 
-This method triggers the **Shutter Service** GitHub Actions workflow, which automatically runs the necessary Azure CLI commands securely.
+This method utilizes the central **SERVICE_SHUTTERED** GitHub environment variable. Setting this variable and then triggering the workflow automatically runs the necessary Azure CLI commands securely, keeping the environment variables, workflow, and Terraform configurations perfectly in sync.
 
-### Step 1: Open the Shutter Service Workflow
+### Step 1: Update the SERVICE_SHUTTERED GitHub Environment Variable
 
 1. Navigate to the repository on GitHub.
-2. Click the **Actions** tab at the top of the page.
-3. In the left-hand sidebar under **All workflows**, select **Shutter Service**.
+2. Go to **Settings** > **Environments** in the left-hand menu.
+3. Select the environment you wish to modify (e.g., `development`, `test`, `staging`, `production`).
+4. Under **Environment variables**, locate `SERVICE_SHUTTERED`.
+5. Click **Edit** and set its value to:
+   - `true` (to enable the shutter page)
+   - `false` (to restore normal operations and route to the web app)
+6. Click **Save**.
 
-### Step 2: Run the Workflow
+### Step 2: Run the Shutter Service Workflow
 
-1. On the right-hand side, click the **Run workflow** dropdown button.
-2. Configure the following inputs:
-   - **Target Environment**: Select the target environment (e.g., `development`, `test`, `staging`, `production`).
-   - **Action**: Choose either `shutter` (to enable the shutter page) or `restore` (to restore the live service).
-3. Click the green **Run workflow** button to execute.
+While a full deployment will also apply the shutter state, you can run the **Shutter Service** workflow to apply the change instantly (in about 10 seconds):
+1. Click the **Actions** tab at the top of the page.
+2. In the left-hand sidebar under **All workflows**, select **Shutter Service**.
+3. On the right-hand side, click the **Run workflow** dropdown button.
+4. Select the target environment matching the environment variable you edited in Step 1.
+5. Click the green **Run workflow** button to execute.
 
 This workflow will perform the following actions:
 - Authenticate securely to Azure via OpenID Connect (OIDC).
 - Automatically resolve the correct Azure resource group and Front Door route names for your selected environment.
-- **For Shuttering**:
+- Read the environment's `SERVICE_SHUTTERED` GitHub variable.
+- **For Shuttering (`SERVICE_SHUTTERED` is true)**:
   - Safely update the Front Door Route (`<prefix>-web-fd-route`) to forward traffic to the `shutter-origin-group`.
   - Set the route's **Origin path** to `/shutter` so assets are fetched from the correct container directory.
   - Associate both the `SecurityRules` and `ShutterRules` rule sets, ensuring that critical security redirects remain functional while the site is shuttered.
-- **For Restoring**:
+- **For Restoring (`SERVICE_SHUTTERED` is false)**:
   - Revert the Front Door Route to point back to the main App Service `web-fd-origin-group`.
   - Clear the route's **Origin path** (sets it to empty).
   - Restore the route's association to use only the `SecurityRules` rule set.
 
 ## Manual Toggle via Azure Portal (ClickOps)
+
+> [!WARNING]
+> **Operational Drift Warning:** Changing the shutter state manually in the Azure Portal will cause configuration drift. The next automated Terraform deployment (`deploy-environment.yml`) will overwrite these manual changes to match the value of the `SERVICE_SHUTTERED` GitHub environment variable. If you perform a manual Portal override, you **must** also update the `SERVICE_SHUTTERED` variable in GitHub to keep them aligned.
 
 Use this method if you do not have permission to run GitHub Actions workflows or prefer using the graphical user interface.
 
