@@ -94,4 +94,28 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
         postDocument.AssertValidationError()
             .AssertBackLink(backLinkUrl);
     }
+
+    [Fact]
+    public async Task GetWhenFeatureFlagEnabledAndChildExistsRedirectsToCheckChildDetails()
+    {
+        var journeyState = new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                { "child1", new Child("child1", "Child 1") }
+            }
+        };
+
+        await using var host = factory.CreateClientWithJourneyStateAndFeatureFlags(journeyState,
+            new()
+            {
+                { "FeatureManagement:FlagSkipLocation", "true" }
+            });
+
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+
+        response.AssertRedirect("/children/check-childs-details");
+    }
 }

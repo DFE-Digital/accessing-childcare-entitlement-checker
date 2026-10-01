@@ -31,6 +31,12 @@ public class HomeController(JourneyState journeyState, IJourneySession journeySe
         {
             journeyState.CountryOfResidence = CountryOfResidence.England;
             journeySession.SetState(journeyState);
+
+            if (journeyState.Children.Count > 0)
+            {
+                return RedirectToAction(nameof(SummaryController.CheckChildDetails), SummaryController.Name);
+            }
+
             return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name);
         }
 
