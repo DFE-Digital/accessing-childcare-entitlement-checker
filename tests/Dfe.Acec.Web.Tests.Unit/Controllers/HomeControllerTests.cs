@@ -70,6 +70,22 @@ public class HomeControllerTests : IDisposable
     }
 
     [Fact]
+    public async Task LocationGetRedirectsToCheckChildDetailsWhenFeatureFlagEnabledAndChildrenExist()
+    {
+        _featureManager.IsEnabledAsync(FeatureFlags.FlagSkipLocation).Returns(true);
+        _journeyState.Children["child1"] = new Child("child1", "Child 1");
+
+        var result = await _controller.Location();
+
+        var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+
+        Assert.Equal(CountryOfResidence.England, _journeyState.CountryOfResidence);
+        _journeySession.Received(1).SetState(_journeyState);
+        Assert.Equal(nameof(SummaryController.CheckChildDetails), redirectResult.ActionName);
+        Assert.Equal(SummaryController.Name, redirectResult.ControllerName);
+    }
+
+    [Fact]
     public void LocationPostValidSelectionSavesStateAndRedirects()
     {
         var model = new LocationViewModel

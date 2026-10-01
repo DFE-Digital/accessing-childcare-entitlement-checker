@@ -24,6 +24,7 @@ public class HomeController(JourneyState journeyState, IJourneySession journeySe
         return View();
     }
 
+
     [HttpGet]
     public async Task<IActionResult> Location(string? returnTo = null)
     {
@@ -31,6 +32,12 @@ public class HomeController(JourneyState journeyState, IJourneySession journeySe
         {
             journeyState.CountryOfResidence = CountryOfResidence.England;
             journeySession.SetState(journeyState);
+
+            if (journeyState.Children.Count > 0)
+            {
+                return RedirectToAction(nameof(SummaryController.CheckChildDetails), SummaryController.Name);
+            }
+
             return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name);
         }
 
