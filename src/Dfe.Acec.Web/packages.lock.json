@@ -41,11 +41,11 @@
       },
       "GovUk.Frontend.AspNetCore": {
         "type": "Direct",
-        "requested": "[4.4.0, )",
-        "resolved": "4.4.0",
-        "contentHash": "KJ/dnGQ04bna1DyXNz9z3U3uPUfMjHuAfnDRTgsZN4rsU4W22rfMh7Kydb17gOKjoUxArj585pOqhrVna7FraQ==",
+        "requested": "[4.4.1, )",
+        "resolved": "4.4.1",
+        "contentHash": "qlGpbeN9DPvd9EwGSNcsu6TI+cDMM6wR3x0drxV/zvw/HoWoMTPIrI1lLY+MGOGQRIE9VMtCBQzHuHttFwU1xQ==",
         "dependencies": {
-          "Microsoft.Extensions.FileProviders.Embedded": "10.0.10"
+          "Microsoft.Extensions.FileProviders.Embedded": "10.0.12"
         }
       },
       "JetBrains.Annotations": {
@@ -140,8 +140,8 @@
       },
       "Microsoft.Extensions.FileProviders.Embedded": {
         "type": "Transitive",
-        "resolved": "10.0.10",
-        "contentHash": "TZQQIZ1wFmQX7WdRAyhaDlv3splUPOYheTP3aZtoLpxMlVnLOFRjiLaDB0PZX/d27N52+FLbiNkwL02x4hZgjg=="
+        "resolved": "10.0.12",
+        "contentHash": "u9y/tTPnkv+lsIqN4NRjhzh5XGv7pPCXjPEdbYVK9daidg+xFFEHv//gTlrjZJAKLMcHbArnCU/wVl0KrPJEJA=="
       },
       "Microsoft.FeatureManagement": {
         "type": "Transitive",
