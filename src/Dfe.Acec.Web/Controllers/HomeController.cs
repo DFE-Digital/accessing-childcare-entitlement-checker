@@ -24,7 +24,6 @@ public class HomeController(JourneyState journeyState, IJourneySession journeySe
         return View();
     }
 
-
     [HttpGet]
     public async Task<IActionResult> Location(string? returnTo = null)
     {
