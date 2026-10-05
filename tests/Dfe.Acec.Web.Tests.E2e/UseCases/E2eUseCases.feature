@@ -6,7 +6,7 @@ Note that "Funded hours for working parents" in the lucid = "Free Childcare for 
 Background:
     Given I am on the childcare entitlement checker website
     And I click the link to start the journey
-    
+
 Scenario: Scenario 01 - Single parent earning below the threshold, household receives Universal Credit, child is not born yet
     Given I complete the journey for the use case "Single parent earning below the threshold, household receives Universal Credit, child is not born yet"
     Then the page header is "Check your answers"
@@ -62,15 +62,15 @@ Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
         | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
         | On average, does your partner expect to earn £__PLACEHOLDER__ a week or more before tax?              | Yes                                       |
     When I click on Continue
-    Then the page header is "Childcare support you could get"          
+    Then the page header is "Childcare support you could get"
     And I can see that "Katherine" is now eligible for "Tax-Free Childcare"
     And I can see that "Tom" is eligible for:
         | Scheme                                        | When          |
         | Tax-Free Childcare                            | now           |
-        | Free Childcare for Working Parents            | now           | 
+        | Free Childcare for Working Parents            | now           |
         | Early learning for 2-year-olds                | now           |
         | 15 hours free childcare for 3 and 4-year-olds | in the future |
-    
+
 Scenario: Scenario 03 - One parent is earning under the threshold, household receives Universal Credit
     Given I complete the journey for the use case "One parent is earning under the threshold, household receives Universal Credit"
     Then the page header is "Check your answers"
@@ -160,13 +160,13 @@ Scenario: Scenario 05 - Single parent who is self employed, child is not born ye
         | Do you already get any of these to help pay for childcare? | No, I do not get any of these          |
         | Do you live with a partner?                                | No                                     |
     When I click on Continue
-    Then the page header is "Childcare support you could get"    
+    Then the page header is "Childcare support you could get"
     And I can see that "Baby" is eligible for:
         | Scheme                                        | When            |
         | Tax-Free Childcare                            | birth           |
         | Free Childcare for Working Parents            | nine months old |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
-        
+
 Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one parent earning under the threshold
     Given I complete the journey for the use case "Both parents under 18, one parent an apprentice, one parent earning under the threshold"
     Then the page header is "Check your answers"
@@ -253,7 +253,6 @@ Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a di
         | What is your age?                                                                         | 21 or over                             |
         | What is your nationality?                                                                 | Citizen of a different country         |
         | Are you in paid work?                                                                     | Yes, but I am on sick leave            |
-        | How would you describe your work status?                                                  | Paid employment                        |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
         | Does your household receive universal credit?                                             | Yes                                    |
         | Do you get any of these benefits?                                                         | No, I do not get any of these benefits |
@@ -343,7 +342,7 @@ Scenario: Scenario 10 - Parent is a non-UK national without pre-settled or settl
         | Tax-Free Childcare                            | now                        | true   |
         | Free Childcare for Working Parents            | nine months old            | true   |
         | 15 hours free childcare for 3 and 4-year-olds | in the future              | true   |
-        
+
     And I can see that "Jeremy" is not eligible for any childcare entitlement schemes
 
 Scenario: Scenario 11 - Single parent not working, on carer's allowance
@@ -366,4 +365,3 @@ Scenario: Scenario 11 - Single parent not working, on carer's allowance
         | Scheme                                        | When            |
         | Early learning for 2-year-olds                | two years old   |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
-    

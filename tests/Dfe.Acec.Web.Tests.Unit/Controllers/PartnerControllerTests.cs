@@ -212,7 +212,7 @@ public class PartnerControllerTests : IDisposable
     [InlineData(PartnerPaidWorkOption.Yes, nameof(PartnerController.PartnerWorkStatus))]
     [InlineData(PartnerPaidWorkOption.No, nameof(PartnerController.PartnerBenefits))]
     [InlineData(PartnerPaidWorkOption.ParentalLeave, nameof(PartnerController.PartnerParentalLeave))]
-    [InlineData(PartnerPaidWorkOption.SickLeave, nameof(PartnerController.PartnerWorkStatus))]
+    [InlineData(PartnerPaidWorkOption.SickLeave, nameof(PartnerController.PartnerYearlyEarnings))]
     public void PartnerPaidWorkPostSameSelectionKeepsLaterAnswers(PartnerPaidWorkOption option, string actionName)
     {
         _journeyState.PartnerPaidWork = option;

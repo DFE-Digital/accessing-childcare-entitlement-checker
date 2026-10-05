@@ -280,7 +280,7 @@ public class UserControllerTests : IDisposable
     [Theory]
     [InlineData(PaidWorkOption.No, nameof(UserController.UniversalCredit))]
     [InlineData(PaidWorkOption.ParentalLeave, nameof(UserController.ParentalLeave))]
-    [InlineData(PaidWorkOption.SickLeave, nameof(UserController.WorkStatus))]
+    [InlineData(PaidWorkOption.SickLeave, nameof(UserController.YearlyEarnings))]
     [InlineData(PaidWorkOption.Yes, nameof(UserController.WorkStatus))]
     public void PaidWorkPostSameSelectionKeepsLaterAnswers(PaidWorkOption option, string actionName)
     {

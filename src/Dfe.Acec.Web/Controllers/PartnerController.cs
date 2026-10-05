@@ -110,7 +110,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         {
             PartnerPaidWorkOption.Yes => nameof(PartnerWorkStatus),
             PartnerPaidWorkOption.ParentalLeave => nameof(PartnerParentalLeave),
-            PartnerPaidWorkOption.SickLeave => nameof(PartnerWorkStatus),
+            PartnerPaidWorkOption.SickLeave => nameof(PartnerYearlyEarnings),
             PartnerPaidWorkOption.No => nameof(PartnerBenefits),
             _ => throw new UnreachableException($"Unexpected PartnerPaidWork: {journeyState.PartnerPaidWork}"),
         };
@@ -163,10 +163,6 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         {
             nextAction = nameof(PartnerSelfEmployedDuration);
         }
-        else if (journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
-        {
-            nextAction = nameof(PartnerYearlyEarnings);
-        }
 
         return RedirectToAction(nextAction);
     }
@@ -211,12 +207,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         journeyState.Apply(model);
         journeySession.SetState(journeyState);
 
-        // Complex logic for sick leave falls through
         var nextAction = nameof(PartnerWeeklyEarnings);
-        if (journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
-        {
-            nextAction = nameof(PartnerYearlyEarnings);
-        }
 
         if (journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
         {
@@ -261,7 +252,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
     [HttpGet]
     public IActionResult PartnerYearlyEarnings(string? returnTo = null)
     {
-        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(PartnerWeeklyEarnings));
+        var backLink = GetPartnerYearlyEarningsBackLink(returnTo);
         return View(new PartnerYearlyEarningsViewModel(journeyState, backLink, returnTo));
     }
 
@@ -270,7 +261,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(PartnerWeeklyEarnings));
+            model.BackLink = GetPartnerYearlyEarningsBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -367,6 +358,21 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         return Url.ActionOrThrow(nameof(PartnerWorkStatus));
     }
 
+    private string GetPartnerYearlyEarningsBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        if (journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
+        {
+            return Url.ActionOrThrow(nameof(PartnerPaidWork));
+        }
+
+        return Url.ActionOrThrow(nameof(PartnerWeeklyEarnings));
+    }
+
     private string GetPartnerBenefitsBackLink(string? returnTo)
     {
         if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
@@ -392,6 +398,11 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         if (journeyState.PartnerPaidWork == PartnerPaidWorkOption.No)
         {
             return Url.ActionOrThrow(nameof(PartnerPaidWork));
+        }
+
+        if (journeyState.PartnerPaidWork == PartnerPaidWorkOption.SickLeave)
+        {
+            return Url.ActionOrThrow(nameof(PartnerYearlyEarnings));
         }
 
         return Url.ActionOrThrow(nameof(PartnerWeeklyEarnings));

@@ -40,15 +40,14 @@ public class PaidWorkStatusTests(IntegrationTestFixture factory) : IClassFixture
     [InlineData(null, PaidWorkOption.Yes, false, null, null, "/work-status/work-status")]
     [InlineData(null, PaidWorkOption.No, false, null, null, "/benefits/universal-credit")]
     [InlineData(null, PaidWorkOption.ParentalLeave, true, null, null, "/leave/parental-leave")]
-    [InlineData(null, PaidWorkOption.SickLeave, false, null, null, "/work-status/work-status")]
+    [InlineData(null, PaidWorkOption.SickLeave, false, null, null, "/earnings/adjusted-net-income")]
     [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.Yes, false, null, null, "/work-status/work-status")]
     [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.Yes, false, WorkStatusOption.PaidEmployment, null, "/work-status/work-status")]
     [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.No, false, null, null, "/benefits/universal-credit")]
     [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.No, false, null, UniversalCreditOption.Receives, "/benefits/universal-credit")]
     [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.ParentalLeave, true, null, null, "/leave/parental-leave")]
     [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.ParentalLeave, false, null, null, "/leave/parental-leave")]
-    [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.SickLeave, false, null, null, "/work-status/work-status")]
-    [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.SickLeave, false, WorkStatusOption.PaidEmployment, null, "/work-status/work-status")]
+    [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.SickLeave, false, null, null, "/earnings/adjusted-net-income")]
     public async Task PostValidRedirects(
         string? returnTo,
         PaidWorkOption paidWork,

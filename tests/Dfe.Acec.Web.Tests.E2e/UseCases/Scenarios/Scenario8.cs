@@ -26,7 +26,6 @@ internal sealed class Scenario8 : IUseCase
             .SetUserAge("21 or over")
             .SetNationality("Citizen of a different country")
             .SetPaidWork("Yes, but I am on sick leave")
-            .SetWorkStatus("Paid employment")
             .SetYearlyEarnings("No")
             .SetUniversalCredit("Yes")
             .SetBenefits("No, I do not get any of these benefits")
