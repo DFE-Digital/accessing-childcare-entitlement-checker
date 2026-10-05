@@ -772,5 +772,17 @@ public class UserControllerTests : IDisposable
         Assert.NotNull(result.Model<ChildcareVoucherReceiptViewModel>());
     }
 
+    [Fact]
+    public void YearlyEarningsGetBackLinkReturnsPaidWorkWhenOnSickLeave()
+    {
+        _journeyState.PaidWork = PaidWorkOption.SickLeave;
+
+        _controller.Url.Action(Arg.Is<UrlActionContext>(x => x.Action == nameof(UserController.PaidWork))).Returns("work");
+
+        var result = Assert.IsType<ViewResult>(_controller.YearlyEarnings());
+
+        Assert.Equal("work", result.Model<YearlyEarningsViewModel>().BackLink);
+    }
+
     public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
 }

@@ -635,5 +635,17 @@ public class PartnerControllerTests : IDisposable
         Assert.NotNull(result.Model<PartnerChildcareVoucherReceiptViewModel>());
     }
 
+    [Fact]
+    public void YearlyEarningsGetBackLinkReturnsPaidWorkWhenOnSickLeave()
+    {
+        _journeyState.PartnerPaidWork = PartnerPaidWorkOption.SickLeave;
+
+        _controller.Url.Action(Arg.Is<UrlActionContext>(x => x.Action == nameof(PartnerController.PartnerPaidWork))).Returns("work-partner");
+
+        var result = Assert.IsType<ViewResult>(_controller.PartnerYearlyEarnings());
+
+        Assert.Equal("work-partner", result.Model<PartnerYearlyEarningsViewModel>().BackLink);
+    }
+
     public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
 }
