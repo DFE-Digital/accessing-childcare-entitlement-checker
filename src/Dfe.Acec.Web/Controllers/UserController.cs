@@ -101,7 +101,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
         {
             PaidWorkOption.Yes => nameof(WorkStatus),
             PaidWorkOption.ParentalLeave => nameof(ParentalLeave),
-            PaidWorkOption.SickLeave => nameof(WorkStatus),
+            PaidWorkOption.SickLeave => nameof(YearlyEarnings),
             PaidWorkOption.No => nameof(UniversalCredit),
             _ => throw new UnreachableException($"Unexpected PaidWork: {journeyState.PaidWork}"),
         };
@@ -155,10 +155,6 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
         {
             nextAction = nameof(SelfEmployedDuration);
         }
-        else if (journeyState.PaidWork == PaidWorkOption.SickLeave)
-        {
-            nextAction = nameof(YearlyEarnings);
-        }
 
         return RedirectToAction(nextAction);
     }
@@ -182,12 +178,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
         journeyState.Apply(model);
         journeySession.SetState(journeyState);
 
-        // Complex logic for sick leave falls through
         var nextAction = nameof(WeeklyEarnings);
-        if (journeyState.PaidWork == PaidWorkOption.SickLeave)
-        {
-            nextAction = nameof(YearlyEarnings);
-        }
 
         if (journeyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)
         {
@@ -200,7 +191,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
     [HttpGet]
     public IActionResult YearlyEarnings(string? returnTo = null)
     {
-        var backLink = Url.GetBackLinkOrAction(returnTo, nameof(WeeklyEarnings));
+        var backLink = GetYearlyEarningsBackLink(returnTo);
         return View(new YearlyEarningsViewModel(journeyState, backLink, returnTo));
     }
 
@@ -209,7 +200,7 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
     {
         if (!ModelState.IsValid)
         {
-            model.BackLink = Url.GetBackLinkOrAction(model.ReturnTo, nameof(WeeklyEarnings));
+            model.BackLink = GetYearlyEarningsBackLink(model.ReturnTo);
             return View(model);
         }
 
@@ -408,6 +399,21 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
         return Url.ActionOrThrow(nameof(WorkStatus));
     }
 
+    private string GetYearlyEarningsBackLink(string? returnTo)
+    {
+        if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
+        {
+            return url;
+        }
+
+        if (journeyState.PaidWork == PaidWorkOption.SickLeave)
+        {
+            return Url.ActionOrThrow(nameof(PaidWork));
+        }
+
+        return Url.ActionOrThrow(nameof(WeeklyEarnings));
+    }
+
     private string GetUniversalCreditBackLink(string? returnTo)
     {
         if (ReturnTo.TryGetReturnToUrl(Url, returnTo, out var url))
@@ -418,6 +424,11 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
         if (journeyState.PaidWork == PaidWorkOption.No)
         {
             return Url.ActionOrThrow(nameof(PaidWork));
+        }
+
+        if (journeyState.PaidWork == PaidWorkOption.SickLeave)
+        {
+            return Url.ActionOrThrow(nameof(YearlyEarnings));
         }
 
         if (journeyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months)

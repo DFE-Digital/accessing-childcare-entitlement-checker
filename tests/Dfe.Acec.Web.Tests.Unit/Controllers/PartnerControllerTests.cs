@@ -212,7 +212,7 @@ public class PartnerControllerTests : IDisposable
     [InlineData(PartnerPaidWorkOption.Yes, nameof(PartnerController.PartnerWorkStatus))]
     [InlineData(PartnerPaidWorkOption.No, nameof(PartnerController.PartnerBenefits))]
     [InlineData(PartnerPaidWorkOption.ParentalLeave, nameof(PartnerController.PartnerParentalLeave))]
-    [InlineData(PartnerPaidWorkOption.SickLeave, nameof(PartnerController.PartnerWorkStatus))]
+    [InlineData(PartnerPaidWorkOption.SickLeave, nameof(PartnerController.PartnerYearlyEarnings))]
     public void PartnerPaidWorkPostSameSelectionKeepsLaterAnswers(PartnerPaidWorkOption option, string actionName)
     {
         _journeyState.PartnerPaidWork = option;
@@ -633,6 +633,18 @@ public class PartnerControllerTests : IDisposable
     {
         var result = Assert.IsType<ViewResult>(_controller.PartnerChildcareVoucherReceipt());
         Assert.NotNull(result.Model<PartnerChildcareVoucherReceiptViewModel>());
+    }
+
+    [Fact]
+    public void YearlyEarningsGetBackLinkReturnsPaidWorkWhenOnSickLeave()
+    {
+        _journeyState.PartnerPaidWork = PartnerPaidWorkOption.SickLeave;
+
+        _controller.Url.Action(Arg.Is<UrlActionContext>(x => x.Action == nameof(PartnerController.PartnerPaidWork))).Returns("work-partner");
+
+        var result = Assert.IsType<ViewResult>(_controller.PartnerYearlyEarnings());
+
+        Assert.Equal("work-partner", result.Model<PartnerYearlyEarningsViewModel>().BackLink);
     }
 
     public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
