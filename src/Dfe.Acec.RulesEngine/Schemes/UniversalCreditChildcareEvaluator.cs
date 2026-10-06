@@ -12,7 +12,7 @@ public class UniversalCreditChildcareEvaluator : ISchemeEvaluator
     public SchemeResultDto? Evaluate(DerivedContext context, ChildFacts child)
     {
         var meetsHouseholdRequirements =
-            context.Household is { HasAccessToPublicFunds: true, LivesInGreatBritain: true, ReceivesUniversalCredit: true } &&
+            context.Household is { LivesInGreatBritain: true, ReceivesUniversalCredit: true } &&
             MeetsWorkRequirements(context);
 
         var eligibleNow =
