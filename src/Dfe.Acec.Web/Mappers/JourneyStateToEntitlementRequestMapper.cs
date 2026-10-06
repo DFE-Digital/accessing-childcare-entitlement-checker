@@ -43,13 +43,11 @@ public class JourneyStateToEntitlementRequestMapper
             AgeRange = MapAgeRange(journeyState.UserAge),
             PaidWorkStatus = MapPaidWorkStatus(journeyState.PaidWork),
             WorkStatuses = [.. journeyState.WorkStatus.Select(MapWorkStatus)],
-            SelfEmployedLessThan12Months =
-                journeyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months,
+            SelfEmployedLessThan12Months = journeyState.SelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months,
             EarnsAboveThreshold = journeyState.WeeklyEarnings == WeeklyEarningsOption.AboveThreshold,
             ExceedsAdjustedNetIncomeLimit = journeyState.YearlyEarnings == YearlyEarningsOption.AboveThreshold,
             Benefits = [.. journeyState.Benefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
-            ChildcareSupport =
-                [.. journeyState.ChildcareSupport.Select(MapChildcareSupport).OfType<ChildcareSupport>()],
+            ChildcareSupport = [.. journeyState.ChildcareSupport.Select(MapChildcareSupport).OfType<ChildcareSupport>()],
             Nationalities = MapNationalities(journeyState.NationalityOptions),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.SettledStatus),
             ChildcareVoucherReceipt = MapChildcareVoucherReceiptOption(journeyState.ChildcareVoucherReceipt)
@@ -69,13 +67,11 @@ public class JourneyStateToEntitlementRequestMapper
             AgeRange = MapAgeRange(journeyState.PartnerAge),
             PaidWorkStatus = MapPaidWorkStatus(journeyState.PartnerPaidWork),
             WorkStatuses = [.. journeyState.PartnerWorkStatus.Select(MapWorkStatus)],
-            SelfEmployedLessThan12Months =
-                journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months,
+            SelfEmployedLessThan12Months = journeyState.PartnerSelfEmployedDuration == SelfEmployedDurationOption.LessThan12Months,
             EarnsAboveThreshold = journeyState.PartnerWeeklyEarnings == WeeklyEarningsOption.AboveThreshold,
             ExceedsAdjustedNetIncomeLimit = journeyState.PartnerYearlyEarnings == YearlyEarningsOption.AboveThreshold,
             Benefits = [.. journeyState.PartnerBenefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
-            ChildcareSupport =
-                [.. journeyState.PartnerChildcareSupport.Select(MapPartnerChildcareSupport).OfType<ChildcareSupport>()],
+            ChildcareSupport = [.. journeyState.PartnerChildcareSupport.Select(MapPartnerChildcareSupport).OfType<ChildcareSupport>()],
             Nationalities = MapNationalities(journeyState.PartnerNationalityOptions),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.PartnerSettledStatus),
             ChildcareVoucherReceipt = MapChildcareVoucherReceiptOption(journeyState.PartnerChildcareVoucherReceipt),

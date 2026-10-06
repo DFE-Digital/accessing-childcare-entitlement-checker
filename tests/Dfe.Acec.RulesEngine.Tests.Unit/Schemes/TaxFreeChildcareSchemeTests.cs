@@ -436,7 +436,7 @@ public class TaxFreeChildcareSchemeTests
     }
 
     [Fact]
-    public void EvaluateWhenParentWorkingAReceivesChildcareVouchersThroughWorkplaceNurserySchemeReturnsResult()
+    public void EvaluateWhenParentWorkingReceivesChildcareVouchersThroughWorkplaceNurserySchemeReturnsResult()
     {
         var scheme = CreateEvaluator();
 
