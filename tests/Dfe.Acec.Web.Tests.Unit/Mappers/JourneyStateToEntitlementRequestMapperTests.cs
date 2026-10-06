@@ -48,6 +48,7 @@ public class JourneyStateToEntitlementRequestMapperTests
             ChildcareSupport = [
                 ChildcareSupportOption.ChildcareBursaryOrGrant
             ],
+            ChildcareVoucherReceipt = ChildcareVoucherReceiptOption.WorkplaceNurseryScheme,
             PartnerAge = AgeRange.EighteenToTwenty,
             PartnerPaidWork = PartnerPaidWorkOption.No,
             PartnerBenefits =
@@ -57,6 +58,7 @@ public class JourneyStateToEntitlementRequestMapperTests
             PartnerChildcareSupport = [
                 PartnerChildcareSupportOption.ChildcareVouchers
             ],
+            PartnerChildcareVoucherReceipt = ChildcareVoucherReceiptOption.ThroughSalarySacrifice,
 
             Children =
             {
@@ -91,6 +93,7 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Equal([Nationality.BritishOrIrishCitizen], result.User.Nationalities);
         Assert.Equal(PaidWorkStatus.Yes, result.User.PaidWorkStatus);
         Assert.Contains(ChildcareSupport.ChildcareBursaryOrGrant, result.User.ChildcareSupport);
+        Assert.Equal(ChildcareVoucherReceipt.WorkplaceNurseryScheme, result.User.ChildcareVoucherReceipt);
 
         // Partner
         Assert.NotNull(result.Partner);
@@ -98,6 +101,7 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Contains(PersonBenefit.ContributionBasedEmploymentAndSupportAllowance, result.Partner.Benefits);
         Assert.Equal(PaidWorkStatus.No, result.Partner.PaidWorkStatus);
         Assert.Contains(ChildcareSupport.ChildcareVouchers, result.Partner.ChildcareSupport);
+        Assert.Equal(ChildcareVoucherReceipt.ThroughSalarySacrifice, result.Partner.ChildcareVoucherReceipt);
 
         // Child
         var child = Assert.Single(result.Children);

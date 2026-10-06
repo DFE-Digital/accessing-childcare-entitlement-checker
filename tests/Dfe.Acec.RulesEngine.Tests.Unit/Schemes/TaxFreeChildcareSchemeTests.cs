@@ -435,6 +435,43 @@ public class TaxFreeChildcareSchemeTests
         Assert.Null(result);
     }
 
+    [Fact]
+    public void EvaluateWhenParentWorkingAReceivesChildcareVouchersThroughWorkplaceNurserySchemeReturnsResult()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = false,
+                HasAccessToPublicFunds = true
+            },
+
+            User = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.Yes,
+                EarnsAboveThreshold = true,
+                ExceedsAdjustedNetIncomeLimit = false,
+                ChildcareSupport =
+                [
+                    ChildcareSupport.ChildcareVouchers
+                ],
+                ChildcareVoucherReceipt = ChildcareVoucherReceipt.WorkplaceNurseryScheme
+            },
+
+        };
+
+        var child = CreateBornChild(new DateOnly(2020, 1, 1));
+
+        var result = scheme.Evaluate(context, child);
+
+        Assert.NotNull(result);
+        Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
+        Assert.True(result.EligibleNow);
+        Assert.False(result.EligibleInFuture);
+    }
+
 
     [Fact]
     public void EvaluateHouseholdReceivesChildcareBursaryReturnsNull()
