@@ -268,6 +268,7 @@ Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a di
         #| 15 hours free childcare for 3 and 4-year-olds | three years old |
     And I can see that "Lee" is eligible for:
         | Scheme                                        | When            |
+        | Universal Credit and childcare                | now             |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
 
 Scenario: Scenario 09 - One parent not working, one parent receiving ESA
