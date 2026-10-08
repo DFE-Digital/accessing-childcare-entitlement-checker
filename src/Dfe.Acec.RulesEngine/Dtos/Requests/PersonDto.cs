@@ -15,4 +15,5 @@ public class PersonDto
     public List<ChildcareSupport> ChildcareSupport { get; init; } = [];
     public List<Nationality> Nationalities { get; init; } = [];
     public bool? HasSettledOrPreSettledStatus { get; init; }
+    public ChildcareVoucherReceipt? ChildcareVoucherReceipt { get; init; }
 }

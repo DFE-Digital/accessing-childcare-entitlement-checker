@@ -50,6 +50,8 @@ public class JourneyStateToEntitlementRequestMapper
             ChildcareSupport = [.. journeyState.ChildcareSupport.Select(MapChildcareSupport).OfType<ChildcareSupport>()],
             Nationalities = MapNationalities(journeyState.NationalityOptions),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.SettledStatus),
+            ChildcareVoucherReceipt = MapChildcareVoucherReceiptOption(journeyState.ChildcareVoucherReceipt)
+
         };
     }
 
@@ -72,6 +74,7 @@ public class JourneyStateToEntitlementRequestMapper
             ChildcareSupport = [.. journeyState.PartnerChildcareSupport.Select(MapPartnerChildcareSupport).OfType<ChildcareSupport>()],
             Nationalities = MapNationalities(journeyState.PartnerNationalityOptions),
             HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.PartnerSettledStatus),
+            ChildcareVoucherReceipt = MapChildcareVoucherReceiptOption(journeyState.PartnerChildcareVoucherReceipt),
         };
     }
 
@@ -284,21 +287,24 @@ public class JourneyStateToEntitlementRequestMapper
 
     private static List<Nationality> MapNationalities(List<NationalityOption> nationalities)
     {
-        return [.. nationalities.Select(nationality => nationality switch
-        {
-            NationalityOption.BritishOrIrishCitizen =>
-                Nationality.BritishOrIrishCitizen,
+        return
+        [
+            .. nationalities.Select(nationality => nationality switch
+            {
+                NationalityOption.BritishOrIrishCitizen =>
+                    Nationality.BritishOrIrishCitizen,
 
-            NationalityOption.CitizenOfADifferentCountry =>
-                Nationality.Other,
+                NationalityOption.CitizenOfADifferentCountry =>
+                    Nationality.Other,
 
-            NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland =>
-                Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
+                NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland =>
+                    Nationality.EuropeanUnionEuropeanEconomicAreaOrSwissCitizen,
 
-            _ => throw new ArgumentException(
+                _ => throw new ArgumentException(
                     $"Unsupported nationality option: {nationality}",
                     nameof(nationality))
-        })];
+            })
+        ];
     }
 
     private static bool? MapSettledStatus(
@@ -337,9 +343,12 @@ public class JourneyStateToEntitlementRequestMapper
     private static List<ChildRelatedBenefit> MapChildBenefits(
         Child child)
     {
-        return [.. child.ChildSupportOptions
-            .Select(MapChildBenefit)
-            .OfType<ChildRelatedBenefit>()];
+        return
+        [
+            .. child.ChildSupportOptions
+                .Select(MapChildBenefit)
+                .OfType<ChildRelatedBenefit>()
+        ];
     }
 
     private static ChildRelatedBenefit? MapChildBenefit(ChildSupport childSupport)
@@ -366,6 +375,27 @@ public class JourneyStateToEntitlementRequestMapper
 
             _ => throw new ArgumentOutOfRangeException(
                 nameof(childSupport))
+        };
+    }
+
+    private static ChildcareVoucherReceipt? MapChildcareVoucherReceiptOption(
+        ChildcareVoucherReceiptOption? voucherReceiptOption)
+    {
+        return voucherReceiptOption switch
+        {
+            ChildcareVoucherReceiptOption.EmployerArrangesWithProvider =>
+                ChildcareVoucherReceipt.EmployerArrangesWithProvider,
+
+            ChildcareVoucherReceiptOption.ThroughSalarySacrifice =>
+                ChildcareVoucherReceipt.ThroughSalarySacrifice,
+
+            ChildcareVoucherReceiptOption.WorkplaceNurseryScheme =>
+                ChildcareVoucherReceipt.WorkplaceNurseryScheme,
+
+            null => null,
+
+            _ => throw new ArgumentOutOfRangeException(
+                nameof(voucherReceiptOption))
         };
     }
 }
