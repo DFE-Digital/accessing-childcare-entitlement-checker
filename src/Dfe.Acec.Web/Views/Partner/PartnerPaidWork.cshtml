@@ -14,15 +14,12 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Html.DisplayNameFor(model => model.PartnerPaidWork)
-        </h1>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
             <govuk-radios for="PartnerPaidWork">
                 <govuk-radios-fieldset>
-                    <govuk-radios-fieldset-legend class="govuk-visually-hidden">
+                    <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
                         @Html.DisplayNameFor(model => model.PartnerPaidWork)
                     </govuk-radios-fieldset-legend>
                     <govuk-radios-error-message />

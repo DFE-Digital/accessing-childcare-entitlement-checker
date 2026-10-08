@@ -156,10 +156,10 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
 
         var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
-        var heading = document.QuerySelector("h1.govuk-heading-l");
+        var legend = document.QuerySelector("legend");
 
-        Assert.NotNull(heading);
-        Assert.Equal("true", heading.GetAttribute("data-clarity-mask"));
-        Assert.Contains("Sara", heading.TextContent);
+        Assert.NotNull(legend);
+        Assert.Equal("true", legend.GetAttribute("data-clarity-mask"));
+        Assert.Contains("Sara", legend.TextContent);
     }
 }
