@@ -22,6 +22,7 @@ public class HasPartnerTests(IntegrationTestFixture factory) : IClassFixture<Int
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(2)
             .AssertBackLink("/benefits/childcare-support")
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

@@ -35,6 +35,7 @@ public class PartnerParentalLeaveTests(IntegrationTestFixture factory) : IClassF
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertCheckboxCount(2)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner()
             .AssertGroupHint("Select all that apply");

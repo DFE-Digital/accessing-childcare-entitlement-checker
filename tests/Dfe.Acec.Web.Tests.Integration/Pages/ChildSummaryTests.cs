@@ -186,6 +186,7 @@ public class ChildSummaryTests(IntegrationTestFixture factory) : IClassFixture<I
         response.EnsureSuccessStatusCode();
 
         var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+        document.AssertLegendIsPageHeading();
 
         var legend = document.QuerySelector("legend.govuk-fieldset__legend");
 

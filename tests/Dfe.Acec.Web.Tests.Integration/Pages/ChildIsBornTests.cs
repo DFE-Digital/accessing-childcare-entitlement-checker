@@ -37,6 +37,7 @@ public class ChildIsBornTests(IntegrationTestFixture factory) : IClassFixture<In
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(2)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

@@ -86,6 +86,8 @@ public class AppCheckboxesTagHelperTests
         Assert.NotNull(_generatedOptions?.Fieldset?.Legend?.Text);
         var actual = _generatedOptions.Fieldset.Legend.Text.ToHtmlString();
         Assert.Equal("Do you already get any of these to help pay for childcare?", actual);
+        Assert.True(_generatedOptions.Fieldset.Legend.IsPageHeading);
+        Assert.Equal("govuk-fieldset__legend--l", _generatedOptions.Fieldset.Legend.Classes?.ToHtmlString());
 
         Assert.NotNull(_generatedOptions?.Items);
         Assert.Equal(3, _generatedOptions.Items.Count);
@@ -204,6 +206,72 @@ public class AppCheckboxesTagHelperTests
         Assert.NotNull(_generatedOptions?.Fieldset?.Legend?.Html);
         var actual = _generatedOptions.Fieldset.Legend.Html.ToHtmlString();
         Assert.Equal("Custom Legend", actual);
+    }
+
+    [Fact]
+    public async Task ProcessAsyncWithEnumCollectionAndEncodedLegendDoesNotEncodeAgain()
+    {
+        var modelExpression = new ModelExpression(
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
+
+        const string legend = "Does O&#x27;Brien get <strong>any</strong> support?";
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
+        {
+            For = modelExpression,
+            Legend = new HtmlString(legend),
+            ViewContext = _viewContext
+        };
+
+        await helper.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+
+        Assert.NotNull(_generatedOptions?.Fieldset?.Legend?.Html);
+        var actual = _generatedOptions.Fieldset.Legend.Html.ToHtmlString();
+        Assert.Equal(legend, actual);
+    }
+
+    [Fact]
+    public async Task ProcessAsyncWithEnumCollectionAndChildContentGeneratesBeforeInputs()
+    {
+        var modelExpression = new ModelExpression(
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
+
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
+        {
+            For = modelExpression,
+            ViewContext = _viewContext
+        };
+
+        var output = new TagHelperOutput(
+            "app-checkboxes",
+            attributes: [],
+            getChildContentAsync: (_, _) => Task.FromResult(new DefaultTagHelperContent().SetHtmlContent("<p>Intro</p>")));
+
+        await helper.ProcessAsync(_tagHelperContext, output);
+
+        Assert.NotNull(_generatedOptions?.FormGroup?.BeforeInputs?.Html);
+        var actual = _generatedOptions.FormGroup.BeforeInputs.Html.ToHtmlString();
+        Assert.Equal("<p>Intro</p>", actual);
+    }
+
+    [Fact]
+    public async Task ProcessAsyncWithEnumCollectionAndNoChildContentDoesNotGenerateBeforeInputs()
+    {
+        var modelExpression = new ModelExpression(
+            nameof(ChildcareSupportViewModel.ChildcareSupport),
+            new ModelExplorer(_metadataProvider, _modelMetadata, _childcareSupportViewModel.ChildcareSupport));
+
+        var helper = new AppCheckboxesTagHelper(_componentGenerator)
+        {
+            For = modelExpression,
+            ViewContext = _viewContext
+        };
+
+        await helper.ProcessAsync(_tagHelperContext, _tagHelperOutput);
+
+        Assert.NotNull(_generatedOptions);
+        Assert.Null(_generatedOptions.FormGroup);
     }
 
     [Fact]

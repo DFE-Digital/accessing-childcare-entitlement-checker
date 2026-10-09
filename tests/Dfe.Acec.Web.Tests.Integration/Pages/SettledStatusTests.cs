@@ -27,6 +27,7 @@ public class SettledStatusTests(IntegrationTestFixture factory) : IClassFixture<
         doc
             .AssertRadioButtonCount(3)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

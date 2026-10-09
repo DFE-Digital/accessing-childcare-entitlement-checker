@@ -25,6 +25,7 @@ public class PartnerSelfEmployedDurationTests(IntegrationTestFixture factory) : 
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

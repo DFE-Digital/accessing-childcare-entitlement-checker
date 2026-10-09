@@ -25,6 +25,7 @@ public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassF
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

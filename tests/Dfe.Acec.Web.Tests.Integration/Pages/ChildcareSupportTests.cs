@@ -26,6 +26,7 @@ public class ChildcareSupportTests(IntegrationTestFixture factory) : IClassFixtu
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertCheckboxCount(3)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner()
             .AssertGroupHint("Select all that apply");

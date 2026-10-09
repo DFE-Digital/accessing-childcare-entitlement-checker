@@ -26,6 +26,7 @@ public class PartnerChildcareVoucherReceiptTests(IntegrationTestFixture factory)
         doc
             .AssertRadioButtonCount(3)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

@@ -44,6 +44,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertCheckboxCount(9)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner()
             .AssertGroupHint("Select all that apply");

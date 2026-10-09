@@ -36,6 +36,7 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
 
         doc.AssertCheckboxCount(6)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner()
             .AssertGroupHint("Select all that apply");
@@ -149,5 +150,32 @@ public class ChildSupportTests(IntegrationTestFixture factory) : IClassFixture<I
 
         Assert.NotNull(legend);
         Assert.Equal("true", legend.GetAttribute("data-clarity-mask"));
+    }
+
+    [Fact]
+    public async Task GetHeadingShowsChildNameWithApostrophe()
+    {
+        await using var host = factory.CreateClientWithJourneyState(new JourneyState
+        {
+            Children = new Dictionary<string, Child>
+            {
+                {
+                    ChildId,
+                    new Child(ChildId, "O'Brien")
+                }
+            }
+        });
+
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync(Url, TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
+        var heading = document.QuerySelector("legend h1");
+
+        Assert.NotNull(heading);
+        Assert.Contains("Does O'Brien get", heading.TextContent);
     }
 }
