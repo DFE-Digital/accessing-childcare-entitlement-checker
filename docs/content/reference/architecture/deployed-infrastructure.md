@@ -15,14 +15,14 @@ This reference is generated automatically from the active Terraform configuratio
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.12.0 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.13.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 5.7.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.12.0 |
+| <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.13.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 5.7.0 |
 
 ## Modules
@@ -33,7 +33,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azapi_update_resource.shutter_origin_group_auth](https://registry.terraform.io/providers/Azure/azapi/2.12.0/docs/resources/update_resource) | resource |
+| [azapi_update_resource.shutter_origin_group_auth](https://registry.terraform.io/providers/Azure/azapi/2.13.0/docs/resources/update_resource) | resource |
 | [azurerm_application_insights.application-insights](https://registry.terraform.io/providers/hashicorp/azurerm/5.7.0/docs/resources/application_insights) | resource |
 | [azurerm_application_insights_standard_web_test.web-app-test](https://registry.terraform.io/providers/hashicorp/azurerm/5.7.0/docs/resources/application_insights_standard_web_test) | resource |
 | [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain](https://registry.terraform.io/providers/hashicorp/azurerm/5.7.0/docs/resources/cdn_frontdoor_custom_domain) | resource |

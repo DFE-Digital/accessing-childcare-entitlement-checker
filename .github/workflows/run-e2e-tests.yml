@@ -136,7 +136,7 @@ jobs:
 
       - name: Publish E2E test results
         if: always()
-        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
+        uses: dorny/test-reporter@d1b5dff021aa968b288b02285a8bf47471c5928a
         with:
           name: E2E Test Results (${{ inputs.browser }})
           path: ".test-results/*.trx"

@@ -21,7 +21,6 @@ public class UniversalCreditChildcareSchemeTests
             {
                 HasPartner = false,
                 ReceivesUniversalCredit = true,
-                HasAccessToPublicFunds = true,
                 LivesInGreatBritain = true
             },
 
