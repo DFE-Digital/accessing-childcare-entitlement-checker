@@ -40,6 +40,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(4)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
-using System.Text.Encodings.Web;
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ComponentGeneration;
 using Microsoft.AspNetCore.Html;
@@ -13,7 +12,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Dfe.Acec.Web.TagHelpers;
 
-[HtmlTargetElement("app-checkboxes", TagStructure = TagStructure.WithoutEndTag)]
+[HtmlTargetElement("app-checkboxes")]
 [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
     : TagHelper
@@ -26,9 +25,6 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
 
     [HtmlAttributeName("legend")]
     public IHtmlContent? Legend { get; set; }
-
-    [HtmlAttributeName("legend-is-page-heading")]
-    public bool LegendIsPageHeading { get; set; }
 
     [HtmlAttributeName(DictionaryAttributePrefix = "legend-")]
     public Dictionary<string, string?> LegendAttributes { get; } = [];
@@ -52,7 +48,7 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
         var fieldName = ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(For.Name);
         var idPrefix = TagBuilder.CreateSanitizedId(fieldName, "_");
 
-        var legendHtml = BuildLegendHtml();
+        var formGroup = await BuildFormGroup(output);
         var items = BuildCheckboxItems(fieldName, modelType);
         var errorMessageOptions = BuildError(fieldName, idPrefix);
         var text = For.Metadata.DisplayName ?? For.Name;
@@ -67,9 +63,9 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
                 Legend = new FieldsetOptionsLegend
                 {
                     Text = text,
-                    Html = legendHtml,
-                    Classes = LegendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-visually-hidden",
-                    IsPageHeading = LegendIsPageHeading,
+                    Html = Legend?.ToTemplateString(),
+                    Classes = "govuk-fieldset__legend--l",
+                    IsPageHeading = true,
                     Attributes = LegendAttributes.Count > 0
                         ? new AttributeCollection(LegendAttributes)
                         : null
@@ -77,10 +73,25 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
             },
             Hint = hint,
             ErrorMessage = errorMessageOptions,
+            FormGroup = formGroup,
             Items = items
         });
 
         component.ApplyToTagHelper(output);
+    }
+
+    private static async Task<CheckboxesOptionsFormGroup?> BuildFormGroup(TagHelperOutput output)
+    {
+        var childContent = await output.GetChildContentAsync();
+        if (childContent.IsEmptyOrWhiteSpace)
+        {
+            return null;
+        }
+
+        return new CheckboxesOptionsFormGroup
+        {
+            BeforeInputs = new CheckboxesOptionsBeforeInputs { Html = childContent.ToTemplateString() }
+        };
     }
 
     private ErrorMessageOptions? BuildError(string fieldName, string idPrefix)
@@ -129,18 +140,6 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
         }
 
         return items;
-    }
-
-    private TemplateString? BuildLegendHtml()
-    {
-        if (Legend == null)
-        {
-            return null;
-        }
-
-        using var writer = new StringWriter(CultureInfo.CurrentCulture);
-        Legend.WriteTo(writer, HtmlEncoder.Default);
-        return new TemplateString(writer.ToString());
     }
 
     private HashSet<string> GetSelectedValues(string fieldName, IEnumerable<Enum> model)

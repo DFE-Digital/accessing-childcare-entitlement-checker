@@ -36,6 +36,7 @@ public class ChildBirthDateTests(IntegrationTestFixture factory) : IClassFixture
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertDateInput()
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }
