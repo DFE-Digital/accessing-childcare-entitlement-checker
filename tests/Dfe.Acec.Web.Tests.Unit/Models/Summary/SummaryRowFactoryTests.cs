@@ -54,11 +54,19 @@ public class SummaryRowFactoryTests
             .Returns(localizer);
 
         stringLocalizerFactory
+            .Create("Views.User.ParentalLeave", Arg.Any<string>())
+            .Returns(localizer);
+
+        stringLocalizerFactory
             .Create("Views.User.HasPartner", Arg.Any<string>())
             .Returns(localizer);
 
         stringLocalizerFactory
             .Create("Views.Partner.PartnerAge", Arg.Any<string>())
+            .Returns(localizer);
+
+        stringLocalizerFactory
+            .Create("Views.Partner.PartnerParentalLeave", Arg.Any<string>())
             .Returns(localizer);
 
         stringLocalizerFactory
@@ -218,6 +226,7 @@ public class SummaryRowFactoryTests
     {
         var journeyState = new JourneyState
         {
+            PaidWork = PaidWorkOption.ParentalLeave,
             Children = new Dictionary<string, Child>
             {
                 { "1", new Child("1", "Child One") },
@@ -233,6 +242,28 @@ public class SummaryRowFactoryTests
         Assert.Equal("Child One, Child Two", rows[0].Value);
         Assert.Equal("ParentalLeave", rows[0].ChangeAction);
         Assert.Equal("Test", rows[0].ChangeController);
+    }
+
+    [Fact]
+    public void ParentalLeaveReturnsNoneWhenNoChildrenSelected()
+    {
+        var journeyState = new JourneyState
+        {
+            PaidWork = PaidWorkOption.ParentalLeave,
+            Children = new Dictionary<string, Child>
+            {
+                { "1", new Child("1", "Child One") },
+                { "2", new Child("2", "Child Two") }
+            },
+            ParentalLeaveChildrenIds = []
+        };
+
+        _summaryRowFactory.AddParentalLeave(journeyState);
+
+        var rows = _summaryRowFactory.ViewModels;
+
+        Assert.Single(rows);
+        Assert.Equal("None of these children", rows[0].Value);
     }
 
     [Fact]
@@ -268,6 +299,7 @@ public class SummaryRowFactoryTests
     {
         var journeyState = new JourneyState
         {
+            PartnerPaidWork = PartnerPaidWorkOption.ParentalLeave,
             Children = new Dictionary<string, Child>
             {
                 { "1", new Child("1", "Child One") },
@@ -283,6 +315,28 @@ public class SummaryRowFactoryTests
         Assert.Equal("Child One, Child Two", rows[0].Value);
         Assert.Equal("PartnerParentalLeave", rows[0].ChangeAction);
         Assert.Equal("Test", rows[0].ChangeController);
+    }
+
+    [Fact]
+    public void PartnerParentalLeaveReturnsNoneWhenNoChildrenSelected()
+    {
+        var journeyState = new JourneyState
+        {
+            PartnerPaidWork = PartnerPaidWorkOption.ParentalLeave,
+            Children = new Dictionary<string, Child>
+            {
+                { "1", new Child("1", "Child One") },
+                { "2", new Child("2", "Child Two") }
+            },
+            PartnerParentalLeaveChildrenIds = []
+        };
+
+        _summaryRowFactory.AddPartnerParentalLeave(journeyState);
+
+        var rows = _summaryRowFactory.ViewModels;
+
+        Assert.Single(rows);
+        Assert.Equal("None of these children", rows[0].Value);
     }
 
     [Theory]
