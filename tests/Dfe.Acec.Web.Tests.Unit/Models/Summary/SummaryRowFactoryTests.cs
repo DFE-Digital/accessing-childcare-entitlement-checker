@@ -262,8 +262,8 @@ public class SummaryRowFactoryTests
 
         var rows = _summaryRowFactory.ViewModels;
 
-        Assert.Single(rows);
-        Assert.Equal("None of these children", rows[0].Value);
+        var row = Assert.Single(rows);
+        Assert.Equal("None of these children", row.Value);
     }
 
     [Fact]
@@ -335,8 +335,8 @@ public class SummaryRowFactoryTests
 
         var rows = _summaryRowFactory.ViewModels;
 
-        Assert.Single(rows);
-        Assert.Equal("None of these children", rows[0].Value);
+        var row = Assert.Single(rows);
+        Assert.Equal("None of these children", row.Value);
     }
 
     [Theory]
