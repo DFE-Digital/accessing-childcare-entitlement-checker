@@ -57,7 +57,8 @@ public static class DerivedContextBuilder
             EarnsAboveThreshold = person.EarnsAboveThreshold == true,
             ExceedsAdjustedNetIncomeLimit = person.ExceedsAdjustedNetIncomeLimit == true,
             Benefits = [.. person.Benefits],
-            ChildcareSupport = [.. person.ChildcareSupport]
+            ChildcareSupport = [.. person.ChildcareSupport],
+            ChildcareVoucherReceipt = person.ChildcareVoucherReceipt
         };
     }
 

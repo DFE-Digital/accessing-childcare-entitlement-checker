@@ -10,4 +10,5 @@ public class PersonFacts
     public bool ExceedsAdjustedNetIncomeLimit { get; init; }
     public List<PersonBenefit> Benefits { get; init; } = [];
     public List<ChildcareSupport> ChildcareSupport { get; init; } = [];
+    public ChildcareVoucherReceipt? ChildcareVoucherReceipt { get; init; }
 }

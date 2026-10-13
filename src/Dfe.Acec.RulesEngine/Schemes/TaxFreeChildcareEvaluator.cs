@@ -236,11 +236,9 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
     private static bool ReceivesDisqualifyingChildcareSupport(PersonFacts person)
     {
         return
-            person.ChildcareSupport.Contains(
-                ChildcareSupport.ChildcareVouchers)
+            (person.ChildcareSupport.Contains(ChildcareSupport.ChildcareVouchers) && person.ChildcareVoucherReceipt != ChildcareVoucherReceipt.WorkplaceNurseryScheme)
 
-            || person.ChildcareSupport.Contains(
-                ChildcareSupport.ChildcareBursaryOrGrant);
+            || person.ChildcareSupport.Contains(ChildcareSupport.ChildcareBursaryOrGrant);
     }
 
     private static bool HasQualifyingExemptionBenefit(PersonFacts person)
