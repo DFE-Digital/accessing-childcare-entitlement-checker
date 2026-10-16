@@ -25,6 +25,7 @@ public class PartnerAgeTests(IntegrationTestFixture factory) : IClassFixture<Int
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(3)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

@@ -24,6 +24,7 @@ public class PartnerWorkStatusTests(IntegrationTestFixture factory) : IClassFixt
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner()
             .AssertCheckboxCount(3)
