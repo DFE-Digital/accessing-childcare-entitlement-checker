@@ -153,6 +153,7 @@ public class JourneyStateToEntitlementRequestMapperTests
                 BenefitsOption.LimitedCapabilityForWork,
                 BenefitsOption.LimitedCapabilityForWorkRelatedActivity,
                 BenefitsOption.SevereDisablementAllowance,
+                BenefitsOption.NationalInsuranceCredits,
                 BenefitsOption.None
             ],
 
@@ -181,6 +182,14 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Contains(ChildRelatedBenefit.CertificateOfVisualImpairment, mappedChild.ChildRelatedBenefits);
         Assert.Contains(ChildRelatedBenefit.EducationHealthAndCarePlan, mappedChild.ChildRelatedBenefits);
         Assert.Contains(ChildRelatedBenefit.PersonalIndependencePayment, mappedChild.ChildRelatedBenefits);
+
+        Assert.Contains(PersonBenefit.EmploymentAndSupportAllowance, result.User.Benefits);
+        Assert.Contains(PersonBenefit.GuaranteedElementOfPensionCredit, result.User.Benefits);
+        Assert.Contains(PersonBenefit.IncapacityBenefit, result.User.Benefits);
+        Assert.Contains(PersonBenefit.LimitedCapabilityForWork, result.User.Benefits);
+        Assert.Contains(PersonBenefit.LimitedCapabilityForWorkRelatedActivity, result.User.Benefits);
+        Assert.Contains(PersonBenefit.NationalInsuranceCredits, result.User.Benefits);
+        Assert.Contains(PersonBenefit.SevereDisablementAllowance, result.User.Benefits);
     }
 
     [Fact]

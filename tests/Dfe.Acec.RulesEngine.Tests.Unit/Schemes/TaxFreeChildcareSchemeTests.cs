@@ -324,8 +324,14 @@ public class TaxFreeChildcareSchemeTests
         Assert.False(result.EligibleInFuture);
     }
 
-    [Fact]
-    public void EvaluateOneParentWorkingOtherParentReceivingQualifyingBenefitReturnsSchemeResult()
+    [Theory]
+    [InlineData(PersonBenefit.CarersAllowance)]
+    [InlineData(PersonBenefit.ContributionBasedEmploymentAndSupportAllowance)]
+    [InlineData(PersonBenefit.IncapacityBenefit)]
+    [InlineData(PersonBenefit.SevereDisablementAllowance)]
+    [InlineData(PersonBenefit.NationalInsuranceCredits)]
+    public void EvaluateOneParentWorkingOtherParentReceivingQualifyingBenefitReturnsSchemeResult(
+        PersonBenefit benefit)
     {
         var scheme = CreateEvaluator();
 
@@ -349,10 +355,7 @@ public class TaxFreeChildcareSchemeTests
                 PaidWorkStatus = PaidWorkStatus.No,
                 ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = false,
-                Benefits =
-                [
-                    PersonBenefit.IncapacityBenefit
-                ]
+                Benefits = [benefit]
             }
         };
 

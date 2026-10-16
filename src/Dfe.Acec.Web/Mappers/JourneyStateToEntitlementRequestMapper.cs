@@ -222,6 +222,9 @@ public class JourneyStateToEntitlementRequestMapper
             BenefitsOption.LimitedCapabilityForWorkRelatedActivity =>
                 PersonBenefit.LimitedCapabilityForWorkRelatedActivity,
 
+            BenefitsOption.NationalInsuranceCredits =>
+                PersonBenefit.NationalInsuranceCredits,
+
             BenefitsOption.SevereDisablementAllowance =>
                 PersonBenefit.SevereDisablementAllowance,
 

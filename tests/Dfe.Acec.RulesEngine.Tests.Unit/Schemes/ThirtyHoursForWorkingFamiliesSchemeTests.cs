@@ -234,8 +234,14 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         Assert.False(result.EligibleInFuture);
     }
 
-    [Fact]
-    public void EvaluateOneParentWorkingOtherParentReceivingQualifyingBenefitReturnsSchemeResult()
+    [Theory]
+    [InlineData(PersonBenefit.CarersAllowance)]
+    [InlineData(PersonBenefit.ContributionBasedEmploymentAndSupportAllowance)]
+    [InlineData(PersonBenefit.IncapacityBenefit)]
+    [InlineData(PersonBenefit.SevereDisablementAllowance)]
+    [InlineData(PersonBenefit.LimitedCapabilityForWork)]
+    [InlineData(PersonBenefit.NationalInsuranceCredits)]
+    public void EvaluateOneParentWorkingOtherParentReceivingQualifyingBenefitReturnsSchemeResult(PersonBenefit benefit)
     {
         var scheme = CreateEvaluator();
 
@@ -259,10 +265,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
                 PaidWorkStatus = PaidWorkStatus.No,
                 ExceedsAdjustedNetIncomeLimit = false,
                 EarnsAboveThreshold = false,
-                Benefits =
-                [
-                    PersonBenefit.IncapacityBenefit
-                ]
+                Benefits = [benefit]
             }
         };
 

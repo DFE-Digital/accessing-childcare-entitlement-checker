@@ -25,6 +25,9 @@ public enum PartnerBenefitsOption
     [Display(Name = "Limited capability for work related activity (LCWRA)")]
     LimitedCapabilityForWorkRelatedActivity,
 
+    [Display(Name = "National Insurance Credits")]
+    NationalInsuranceCredits,
+
     [Display(Name = "Severe Disablement Allowance")]
     SevereDisablementAllowance,
 
