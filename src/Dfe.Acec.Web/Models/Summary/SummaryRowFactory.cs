@@ -85,30 +85,41 @@ public class SummaryRowFactory(
 
     public SummaryRowFactory AddParentalLeave(JourneyState journeyState)
     {
+        if (journeyState.PaidWork != PaidWorkOption.ParentalLeave)
+        {
+            return this;
+        }
+
         var value = journeyState.ParentalLeaveChildrenIds;
         var childrenNames = journeyState.Children
             .Where(c => value.Contains(c.Key))
-            .Select(c => c.Value.Name)
-            .ToList();
+            .Select(c => c.Value.Name);
 
-        var displayValue = string.Join(", ", childrenNames);
-        return displayValue == string.Empty
-            ? this
-            : Add((ParentalLeaveViewModel s) => s.ParentalLeaveChildrenIds, displayValue, nameof(UserController.ParentalLeave), true);
+        var noneDisplayValue = GetResourceValueFromViewForLocale("Views.User.ParentalLeave", "None of these children");
+
+        var displayValue = string.Join(", ", childrenNames.DefaultIfEmpty(noneDisplayValue));
+
+        return Add((ParentalLeaveViewModel s) => s.ParentalLeaveChildrenIds, displayValue, nameof(UserController.ParentalLeave), true);
     }
 
     public SummaryRowFactory AddPartnerParentalLeave(JourneyState journeyState)
     {
+        if (journeyState.PartnerPaidWork != PartnerPaidWorkOption.ParentalLeave)
+        {
+            return this;
+        }
+
         var value = journeyState.PartnerParentalLeaveChildrenIds;
         var childrenNames = journeyState.Children
             .Where(c => value.Contains(c.Key))
             .Select(c => c.Value.Name)
             .ToList();
 
-        var displayValue = string.Join(", ", childrenNames);
-        return displayValue == string.Empty
-            ? this
-            : Add((PartnerParentalLeaveViewModel s) => s.PartnerParentalLeaveChildrenIds, displayValue, nameof(PartnerController.PartnerParentalLeave), true);
+        var noneDisplayValue = GetResourceValueFromViewForLocale("Views.Partner.PartnerParentalLeave", "None of these children");
+
+        var displayValue = string.Join(", ", childrenNames.DefaultIfEmpty(noneDisplayValue));
+
+        return Add((PartnerParentalLeaveViewModel s) => s.PartnerParentalLeaveChildrenIds, displayValue, nameof(PartnerController.PartnerParentalLeave), true);
     }
 
     [PublicAPI]
