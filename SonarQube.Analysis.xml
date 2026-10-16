@@ -7,7 +7,7 @@
   <Property Name="sonar.cs.opencover.reportsPaths">**/coverage.opencover*.xml</Property>
   <Property Name="sonar.exclusions">**/Dfe.Acec.Shutter/**,**/scripts/**,**/docs/**,**/infra/**,**/.github/**,**/.devcontainer/**,**/*.html,**/*.json,**/*.scss,**/wwwroot/**</Property>
   <Property Name="sonar.coverage.exclusions">**/Program.cs</Property>
-  <Property Name="sonar.cpd.exclusions">**/PartnerParentalLeave.cshtml,**/JourneyStateValidator.cs,**/PartnerBenefitsOption.cs</Property>
+  <Property Name="sonar.cpd.exclusions">**/PartnerParentalLeave.cshtml,**/JourneyStateValidator.cs</Property>
   <Property Name="sonar.issue.ignore.block">e1</Property>
   <Property Name="sonar.issue.ignore.block.e1.beginBlockRegexp">sonarignore:start</Property>
   <Property Name="sonar.issue.ignore.block.e1.endBlockRegexp">sonarignore:end</Property>
