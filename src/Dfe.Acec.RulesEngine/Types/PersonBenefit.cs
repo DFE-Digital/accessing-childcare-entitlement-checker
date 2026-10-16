@@ -9,5 +9,6 @@ public enum PersonBenefit
     IncapacityBenefit,
     LimitedCapabilityForWork,
     LimitedCapabilityForWorkRelatedActivity,
+    NationalInsuranceCredits,
     SevereDisablementAllowance
 }

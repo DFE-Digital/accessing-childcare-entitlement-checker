@@ -252,7 +252,8 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
         PersonBenefit.CarersAllowance,
         PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
         PersonBenefit.IncapacityBenefit,
-        PersonBenefit.SevereDisablementAllowance
+        PersonBenefit.SevereDisablementAllowance,
+        PersonBenefit.NationalInsuranceCredits
     ];
 
     private static readonly List<ChildRelatedBenefit> _childRelatedBenefitsIncreasingEligibleAge =

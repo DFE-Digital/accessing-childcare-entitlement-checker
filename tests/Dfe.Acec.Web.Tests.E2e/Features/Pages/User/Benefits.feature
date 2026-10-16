@@ -24,6 +24,7 @@ Scenario: Page load
 		| Incapacity Benefit                                   |
 		| Limited capability for work (LCW)                    |
 		| Limited capability for work related activity (LCWRA) |
+		| National Insurance Credits                           |
 		| Severe Disablement Allowance                         |
 		| No, I do not get any of these benefits               |
 	And no checkboxes are selected
