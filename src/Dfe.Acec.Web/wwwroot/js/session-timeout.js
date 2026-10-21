@@ -73,7 +73,7 @@
                 deadline = Date.now() + timeoutMs;
                 shownMinutes = 0;
                 dialog.close();
-            } else if (response.status === 401) {
+            } else if (response.status === 410) {
                 expire();
             }
         } catch (error) {

@@ -1,5 +1,6 @@
 using Dfe.Acec.Web.Controllers;
 using Dfe.Acec.Web.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 
@@ -24,11 +25,12 @@ public class SessionControllerTests : IDisposable
     }
 
     [Fact]
-    public void KeepAliveReturnsUnauthorizedWhenSessionHasExpired()
+    public void KeepAliveReturnsGoneWhenSessionHasExpired()
     {
         _journeySession.HasSession.Returns(false);
 
-        Assert.IsType<UnauthorizedResult>(_controller.KeepAlive());
+        var result = Assert.IsType<StatusCodeResult>(_controller.KeepAlive());
+        Assert.Equal(StatusCodes.Status410Gone, result.StatusCode);
     }
 
     public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }

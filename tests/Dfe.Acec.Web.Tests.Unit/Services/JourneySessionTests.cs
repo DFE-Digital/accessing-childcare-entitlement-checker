@@ -145,4 +145,22 @@ public class JourneySessionTests
 
         Assert.False(_journeySession.HasSession);
     }
+
+    [Fact]
+    public void ClearRemovesJourneyStateFromSession()
+    {
+        _journeySession.Clear();
+
+        _session.Received(1).Remove("JourneyState");
+    }
+
+    [Fact]
+    public void ClearDoesNothingIfHttpContextIsNull()
+    {
+        _httpContextAccessor.HttpContext.ReturnsNull();
+
+        _journeySession.Clear();
+
+        _session.DidNotReceive().Remove(Arg.Any<string>());
+    }
 }

@@ -36,4 +36,11 @@ public class JourneySession(IHttpContextAccessor accessor) : IJourneySession
             .Session
             .SetString(Key, json);
     }
+
+    public void Clear()
+    {
+        accessor.HttpContext?
+            .Session
+            .Remove(Key);
+    }
 }

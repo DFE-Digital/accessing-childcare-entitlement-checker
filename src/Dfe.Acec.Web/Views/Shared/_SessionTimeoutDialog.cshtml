@@ -12,8 +12,8 @@
     var keepAliveUrl = Url.Action(nameof(SessionController.KeepAlive), SessionController.Name);
     var expiredUrl = Url.Action(nameof(HomeController.SessionExpired), HomeController.Name);
     var remainingText = warningMinutes == 1
-        ? Shared["SessionTimeoutOneMinute"]
-        : Shared["SessionTimeoutManyMinutes", warningMinutes];
+        ? Shared["SessionTimeout_OneMinute"]
+        : Shared["SessionTimeout_ManyMinutes", warningMinutes];
 }
 
 <dialog id="session-timeout-dialog"
@@ -25,12 +25,12 @@
         data-keep-alive-url="@keepAliveUrl"
         data-expired-url="@expiredUrl"
         data-token="@antiforgeryToken"
-        data-message-template="@Shared["SessionTimeoutMessage"].Value"
-        data-one-minute="@Shared["SessionTimeoutOneMinute"].Value"
-        data-many-minutes="@Shared["SessionTimeoutManyMinutes"].Value">
-    <h2 class="govuk-heading-m" id="session-timeout-title">@Shared["SessionTimeoutTitle"]</h2>
-    <p class="govuk-body" id="session-timeout-message" aria-live="polite">@Shared["SessionTimeoutMessage", remainingText.Value]</p>
-    <button type="button" class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button" id="session-timeout-continue">@Shared["SessionTimeoutContinue"]</button>
+        data-message-template="@Shared["SessionTimeout_Message"].Value"
+        data-one-minute="@Shared["SessionTimeout_OneMinute"].Value"
+        data-many-minutes="@Shared["SessionTimeout_ManyMinutes"].Value">
+    <h2 class="govuk-heading-m" id="session-timeout-title">@Shared["SessionTimeout_Title"]</h2>
+    <p class="govuk-body" id="session-timeout-message" aria-live="polite">@Shared["SessionTimeout_Message", remainingText.Value]</p>
+    <button type="button" class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button" id="session-timeout-continue">@Shared["Button_Continue"]</button>
 </dialog>
 
 <script src="~/js/session-timeout.js" asp-append-version="true" defer></script>

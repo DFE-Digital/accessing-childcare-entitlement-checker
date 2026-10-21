@@ -8,8 +8,9 @@ public class SessionController(IJourneySession journeySession) : Controller
     public const string Name = "Session";
 
     [HttpPost]
+    [SkipStatusCodePages]
     public IActionResult KeepAlive()
     {
-        return journeySession.HasSession ? NoContent() : Unauthorized();
+        return journeySession.HasSession ? NoContent() : StatusCode(StatusCodes.Status410Gone);
     }
 }

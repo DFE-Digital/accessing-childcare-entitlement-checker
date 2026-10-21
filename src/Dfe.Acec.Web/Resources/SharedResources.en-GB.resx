@@ -90,19 +90,16 @@
     <data name="© Crown copyright" xml:space="preserve">
         <value>© Crown copyright</value>
     </data>
-    <data name="SessionTimeoutTitle" xml:space="preserve">
+    <data name="SessionTimeout_Title" xml:space="preserve">
         <value>Your answers will be deleted soon</value>
     </data>
-    <data name="SessionTimeoutMessage" xml:space="preserve">
+    <data name="SessionTimeout_Message" xml:space="preserve">
         <value>We will delete your answers if you do not continue in the next {0}. This is to protect your information.</value>
     </data>
-    <data name="SessionTimeoutOneMinute" xml:space="preserve">
+    <data name="SessionTimeout_OneMinute" xml:space="preserve">
         <value>1 minute</value>
     </data>
-    <data name="SessionTimeoutManyMinutes" xml:space="preserve">
+    <data name="SessionTimeout_ManyMinutes" xml:space="preserve">
         <value>{0} minutes</value>
-    </data>
-    <data name="SessionTimeoutContinue" xml:space="preserve">
-        <value>Continue</value>
     </data>
 </root>
