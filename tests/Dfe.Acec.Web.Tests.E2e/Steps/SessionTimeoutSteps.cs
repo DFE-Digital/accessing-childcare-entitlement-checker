@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Microsoft.Playwright;
 using Reqnroll;
 using static Microsoft.Playwright.Assertions;
@@ -5,7 +6,7 @@ using static Microsoft.Playwright.Assertions;
 namespace Dfe.Acec.Web.Tests.E2e.Steps;
 
 [Binding]
-internal sealed class SessionTimeoutSteps(IPage page)
+internal sealed partial class SessionTimeoutSteps(IPage page)
 {
     private const string DialogSelector = "#session-timeout-dialog";
 
@@ -74,7 +75,7 @@ internal sealed class SessionTimeoutSteps(IPage page)
     [Then("I am on the session expired page")]
     public async Task ThenIAmOnTheSessionExpiredPage()
     {
-        await Expect(page).ToHaveURLAsync(new System.Text.RegularExpressions.Regex("/session-expired$"));
+        await Expect(page).ToHaveURLAsync(SessionExpiredUrlRegex());
         await Expect(page.GetByRole(AriaRole.Heading, new() { Level = 1 })).ToHaveTextAsync("Your answers have been deleted");
     }
 
@@ -90,4 +91,7 @@ internal sealed class SessionTimeoutSteps(IPage page)
     {
         await page.Clock.FastForwardAsync(seconds * 1000);
     }
+
+    [GeneratedRegex("/session-expired$")]
+    private static partial Regex SessionExpiredUrlRegex();
 }
