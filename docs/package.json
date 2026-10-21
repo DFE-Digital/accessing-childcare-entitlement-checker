@@ -10,7 +10,7 @@
     "start": "npm run clean && npm run prebuild:css && eleventy --serve"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.6",
+    "@11ty/eleventy": "^3.1.7",
     "@x-govuk/govuk-eleventy-plugin": "^9.0.2"
   },
   "dependencies": {
