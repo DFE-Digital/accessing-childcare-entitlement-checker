@@ -26,6 +26,7 @@ public class ChildcareVoucherReceiptTests(IntegrationTestFixture factory) : ICla
         doc
             .AssertRadioButtonCount(3)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

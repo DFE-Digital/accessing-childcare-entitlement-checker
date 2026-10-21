@@ -26,6 +26,7 @@ public class UserAgeTests(IntegrationTestFixture factory) : IClassFixture<Integr
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertRadioButtonCount(3)
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

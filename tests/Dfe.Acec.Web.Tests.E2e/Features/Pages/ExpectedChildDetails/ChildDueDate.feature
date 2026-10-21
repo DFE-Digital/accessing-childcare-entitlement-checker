@@ -11,7 +11,7 @@ Background:
 
 Scenario: Page load
 	When the page header is "What is this child's due date?"
-	Then I should see the hint text "For example, 30 9 2026"
+	Then I should see the hint text "We use this date to give you accurate results, including when you may be able to apply and when your childcare support could start and end. For example, 30 9 2026"
 	And I should see a date entry input
 	And the date entry input is empty
 

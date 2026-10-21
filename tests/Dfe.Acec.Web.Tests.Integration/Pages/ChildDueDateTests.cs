@@ -35,6 +35,7 @@ public class ChildDueDateTests(IntegrationTestFixture factory) : IClassFixture<I
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc.AssertDateInput()
             .AssertBackLink(backLinkUrl)
+            .AssertLegendIsPageHeading()
             .AssertNavigationBar()
             .AssertBetaBanner();
     }

@@ -60,6 +60,20 @@ public static class DocumentAsserts
         return document;
     }
 
+    public static IDocument AssertLegendIsPageHeading(this IDocument document)
+    {
+        var heading = Assert.Single(document.QuerySelectorAll("h1"));
+        Assert.NotNull(heading.Closest("legend"));
+
+        var headingText = heading.TextContent.Trim();
+        var hiddenDuplicates = document
+            .QuerySelectorAll(".govuk-visually-hidden")
+            .Where(element => element.TextContent.Trim() == headingText);
+        Assert.Empty(hiddenDuplicates);
+
+        return document;
+    }
+
     public static IDocument AssertValidationError(this IDocument document)
     {
         var errorMessage = document.QuerySelector(".govuk-error-message");

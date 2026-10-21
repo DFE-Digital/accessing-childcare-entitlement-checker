@@ -16,15 +16,12 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Html.DisplayNameFor(model => model.PartnerParentalLeaveChildrenIds)
-        </h1>
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
             <govuk-checkboxes for="PartnerParentalLeaveChildrenIds">
                 <govuk-checkboxes-fieldset>
-                    <govuk-checkboxes-fieldset-legend class="govuk-visually-hidden">
+                    <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
                         @Html.DisplayNameFor(model => model.PartnerParentalLeaveChildrenIds)
                     </govuk-checkboxes-fieldset-legend>
                     <govuk-checkboxes-error-message />

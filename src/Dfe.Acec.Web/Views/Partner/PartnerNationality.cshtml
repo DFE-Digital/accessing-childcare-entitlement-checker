@@ -15,21 +15,17 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">
-            @Html.DisplayNameFor(model => model.PartnerNationalityOptions)
-        </h1>
-
-        <p class="govuk-body">
-            @Localizer["This helps us give you more accurate results."]
-        </p>
-        <p class="govuk-body">
-            @Localizer["Your answers will not be shared and will not affect your immigration status, benefits, funding or any applications."]
-        </p>
-
         <form method="post" novalidate>
             <input type="hidden" asp-for="ReturnTo" />
 
-            <app-checkboxes for="PartnerNationalityOptions" legend-is-page-heading="false" />
+            <app-checkboxes for="PartnerNationalityOptions">
+                <p class="govuk-body">
+                    @Localizer["This helps us give you more accurate results."]
+                </p>
+                <p class="govuk-body">
+                    @Localizer["Your answers will not be shared and will not affect your immigration status, benefits, funding or any applications."]
+                </p>
+            </app-checkboxes>
 
             <govuk-button type="submit">
                 @Shared["Button_Continue"]
