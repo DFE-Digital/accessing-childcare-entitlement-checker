@@ -21,6 +21,7 @@ public static class WebApplicationExtensions
         app.MapControllerRoute(name: "root", pattern: "", defaults: new { controller = Home, action = nameof(HomeController.Start) });
         app.MapControllerRoute(name: "start-page", pattern: "start-page", defaults: new { controller = Home, action = nameof(HomeController.Start) });
         app.MapControllerRoute(name: "session-expired", pattern: "session-expired", defaults: new { controller = Home, action = nameof(HomeController.SessionExpired) });
+        app.MapControllerRoute(name: "session-keep-alive", pattern: "session-keep-alive", defaults: new { controller = SessionController.Name, action = nameof(SessionController.KeepAlive) });
         app.MapControllerRoute(name: "where-do-you-live", pattern: "where-do-you-live", defaults: new { controller = Home, action = nameof(HomeController.Location) });
 
         app.MapControllerRoute(name: "children-add-child-details-childId", pattern: "children/add-child-details/{childId?}", defaults: new { controller = Introduction, action = nameof(IntroductionController.ChildName) });
