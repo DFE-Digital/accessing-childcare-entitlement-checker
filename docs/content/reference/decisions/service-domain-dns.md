@@ -9,11 +9,11 @@ eleventyNavigation:
 ---
 ## Context
 
-The service moves from an `education.gov.uk` hostname to `check-if-you-are-eligible-for-childcare-funding.service.gov.uk`. The production Front Door profile already has a custom domain for this hostname. The domain needs a DNS zone, an apex record that points to Front Door, and a TXT record for domain validation.
+We're moving the service from an `education.gov.uk` hostname to `check-if-you-are-eligible-for-childcare-funding.service.gov.uk`. The production Front Door profile already has a custom domain for this hostname. The domain needs a DNS zone, an apex record that points to Front Door, and a TXT record for domain validation.
 
 Each environment uses a different Azure subscription. The zone is in the production subscription.
 
-Other DfE services, for example [publish-teacher-training](https://github.com/DFE-Digital/publish-teacher-training), use the shared [DfE Terraform modules](https://github.com/DFE-Digital/terraform-modules) for their domains.
+Other DfE services, for example [publish-teacher-training](https://github.com/DFE-Digital/publish-teacher-training), use the shared [DfE Terraform modules](https://github.com/DFE-Digital/terraform-modules) for their domains. However; they have a single front door for every environment, whereas we have one front door for each environment.
 
 ## Options considered
 
@@ -25,7 +25,7 @@ Other DfE services, for example [publish-teacher-training](https://github.com/DF
 
 ## Decision
 
-Only production uses the `service.gov.uk` domain. Development, test and staging keep their current hostnames.
+For now, only production uses the `service.gov.uk` domain. Development, test and staging keep their current hostnames. This is the minimum possible change to achieve our objective. We can review and/or improve this later.
 
 | Component | Owner |
 | :--- | :--- |
@@ -42,11 +42,15 @@ The production deployment reads the zone with a data source. It creates the A al
 
 The production hostname is a zone apex. Front Door cannot renew an apex certificate automatically. When the domain shows *Pending revalidation*, an operator must regenerate the token and run the production deployment. See [SSL certificate expiry](/reference/operational/ssl-certificate-expiry/).
 
+This appears to be how other servies manage expiry. It should be possible to automate this with a script running on a schedule - this is deferred for a future enhancement.
+
 ### Deployment order
 
 1. Merge the change. The domains workflow creates the zone and shows its name servers in the job summary.
-2. Ask GDS to delegate the domain to those name servers.
+2. Ask GDS to delegate the domain to those name servers. You can do this before or after step 3.
 3. Run the production deployment. It creates the apex and validation records.
+
+If the validation token expires before the delegation is live, regenerate it in the portal and run the production deployment again.
 
 If the zone does not exist, the production plan fails at the zone data source. Do step 1 first.
 
@@ -54,5 +58,5 @@ If the zone does not exist, the production plan fails at the zone data source. D
 
 * All DNS resources are in the production subscription. No cross-subscription access is necessary.
 * Non-production environments do not get `service.gov.uk` hostnames. A later change can add them.
-* The apex certificate needs manual revalidation.
+* The apex certificate needs manual revalidation. A later change can automate this.
 * The education hostname and the `service.gov.uk` hostname serve the application at the same time. A later change removes the education hostname.
