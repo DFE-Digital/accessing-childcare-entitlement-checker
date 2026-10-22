@@ -1,0 +1,12 @@
+.acec-session-timeout {
+  width: calc(100% - 30px);
+  max-width: 480px;
+  padding: 30px;
+  border: 0;
+  color: #0b0c0c;
+  background: #ffffff;
+}
+
+.acec-session-timeout::backdrop {
+  background: rgba(11, 12, 12, 0.8);
+}

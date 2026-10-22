@@ -12,6 +12,8 @@ public class HomeController(JourneyState journeyState, IJourneySession journeySe
     [HttpGet]
     public IActionResult SessionExpired()
     {
+        journeySession.Clear();
+
         return View(new SessionExpiredViewModel
         {
             SessionTimeoutMinutes = configuration.GetValue<int>("SessionTimeoutMinutes")

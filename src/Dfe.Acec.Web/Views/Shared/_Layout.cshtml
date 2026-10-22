@@ -8,6 +8,7 @@
 @inject ICookiePolicyService CookiePolicyService
 @inject IOptions<GovUkFrontendOptions> OptionsAccessor
 @inject IConfiguration Configuration
+@inject IJourneySession JourneySession
 @{
     Layout = "_GovUkPageTemplate";
 
@@ -24,6 +25,11 @@
     }
 
     @Html.GovUkFrontendStyleImports()
+
+    @if (JourneySession.HasSession)
+    {
+        <link rel="stylesheet" href="~/css/session-timeout.css" asp-append-version="true" />
+    }
 }
 
 @section BodyStart {
@@ -134,6 +140,11 @@
 }
 
 @section BodyEnd {
+    @if (JourneySession.HasSession)
+    {
+        <partial name="_SessionTimeoutDialog" />
+    }
+
     @if (!CookiePolicyService.HasUserPreference)
     {
         <partial name="_CookieBannerScript" />

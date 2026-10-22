@@ -2,9 +2,11 @@ using Dfe.Acec.Web.Services;
 using Dfe.Acec.Web.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Internal;
 
 namespace Dfe.Acec.Web.Tests.Integration.Fixtures;
 
@@ -77,12 +79,26 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
         return webHost;
     }
 
+    public WebApplicationFactory<Program> CreateClientWithSessionClock(ISystemClock clock)
+    {
+        var webHost = WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureServices(services =>
+            {
+                services.Configure<MemoryDistributedCacheOptions>(options => options.Clock = clock);
+            });
+        });
+        webHost.ClientOptions.AllowAutoRedirect = false;
+        return webHost;
+    }
+
     private sealed class TestJourneySession(JourneyState state) : IJourneySession
     {
         public bool HasSession => true;
         private JourneyState _state = state;
         public JourneyState GetState() => _state;
         public void SetState(JourneyState journeyState) => _state = journeyState;
+        public void Clear() { }
     }
 
     private sealed class MissingJourneySession : IJourneySession
@@ -90,5 +106,6 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
         public bool HasSession => false;
         public JourneyState GetState() => new();
         public void SetState(JourneyState journeyState) { }
+        public void Clear() { }
     }
 }

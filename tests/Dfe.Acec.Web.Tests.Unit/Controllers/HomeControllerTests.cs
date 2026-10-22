@@ -149,5 +149,13 @@ public class HomeControllerTests : IDisposable
         Assert.Equal(30, model.SessionTimeoutMinutes);
     }
 
+    [Fact]
+    public void SessionExpiredClearsJourneySession()
+    {
+        _controller.SessionExpired();
+
+        _journeySession.Received(1).Clear();
+    }
+
     public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
 }

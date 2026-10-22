@@ -1,0 +1,36 @@
+@using Dfe.Acec.Web.Controllers
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery Antiforgery
+@inject IConfiguration Configuration
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Shared
+
+@{
+    var antiforgeryToken = Antiforgery.GetAndStoreTokens(Context).RequestToken
+        ?? throw new InvalidOperationException("Could not generate antiforgery token.");
+    var timeoutMinutes = Configuration.GetValue<int>("SessionTimeoutMinutes");
+    var warningMinutes = Math.Clamp(Configuration.GetValue<int>("SessionWarningMinutes"), 1, Math.Max(timeoutMinutes, 1));
+    var keepAliveUrl = Url.Action(nameof(SessionController.KeepAlive), SessionController.Name);
+    var expiredUrl = Url.Action(nameof(HomeController.SessionExpired), HomeController.Name);
+    var remainingText = warningMinutes == 1
+        ? Shared["SessionTimeout_OneMinute"]
+        : Shared["SessionTimeout_ManyMinutes", warningMinutes];
+}
+
+<dialog id="session-timeout-dialog"
+        class="acec-session-timeout"
+        aria-labelledby="session-timeout-title"
+        aria-describedby="session-timeout-message"
+        data-timeout-minutes="@timeoutMinutes"
+        data-warning-minutes="@warningMinutes"
+        data-keep-alive-url="@keepAliveUrl"
+        data-expired-url="@expiredUrl"
+        data-token="@antiforgeryToken"
+        data-message-template="@Shared["SessionTimeout_Message"].Value"
+        data-one-minute="@Shared["SessionTimeout_OneMinute"].Value"
+        data-many-minutes="@Shared["SessionTimeout_ManyMinutes"].Value">
+    <h2 class="govuk-heading-m" id="session-timeout-title">@Shared["SessionTimeout_Title"]</h2>
+    <p class="govuk-body" id="session-timeout-message" aria-live="polite">@Shared["SessionTimeout_Message", remainingText.Value]</p>
+    <button type="button" class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button" id="session-timeout-continue">@Shared["Button_Continue"]</button>
+</dialog>
+
+<script src="~/js/session-timeout.js" asp-append-version="true" defer></script>

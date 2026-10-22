@@ -86,6 +86,7 @@ public class SessionExpiryTests(IntegrationTestFixture factory) : IClassFixture<
         {
             "/",
             "/session-expired",
+            "/session-keep-alive",
             "/privacy-notice",
             "/accessibility-statement",
             "/cookies",
