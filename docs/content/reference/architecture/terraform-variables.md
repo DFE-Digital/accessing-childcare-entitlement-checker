@@ -21,7 +21,8 @@ These parameters are defined in the Terraform configuration files and allow for 
 | `aspnetcore_environment` | `string` | *No default* | ASP.NET Core environment |
 | `development_basic_auth_password` | `string` | `""` | Shared password for development-only basic auth |
 | `azure_frontdoor_sku` | `string` | `"Standard"` | Azure Front Door SKU |
-| `custom_domain` | `string` | `""` | Custom front-door domain |
+| `education_custom_domain` | `string` | `""` | Education custom Front Door domain |
+| `service_custom_domain` | `string` | `""` | Service custom Front Door domain |
 | `waf_enable_managed_rules` | `bool` | `false` | Enable managed rule sets in WAF |
 | `webapp_sku` | `string` | `"B1"` | Web App SKU (e.g. B1) |
 | `webapp_zone_balancing` | `bool` | `false` | Enable zone balancing on web app |

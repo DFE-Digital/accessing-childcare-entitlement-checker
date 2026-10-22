@@ -24,18 +24,18 @@ Manage the four primary conditional aspects in our Terraform configurations:
 
 ## Configure Azure Front Door custom domains
 
-* Variables: `custom_domain` (string, default: `""`)
-* Trigger: Active when `custom_domain` is set to any non-empty string.
+* Variables: `education_custom_domain` and `service_custom_domain` (strings, default: `""`)
+* Trigger: Each non-empty domain variable creates its own hostname and managed certificate.
 * Relevant Files: `infra/terraform/frontdoor.tf`
 
 ### Route custom domain traffic
 Specify a custom domain to execute these routing and security tasks:
-* **Provision Custom Domain**: Terraform provisions an `azurerm_cdn_frontdoor_custom_domain` resource named `${local.service_prefix}-fd-custom-domain` for custom DNS routing.
+* **Provision Custom Domain**: Terraform creates `${local.prefix}-fd-custom-domain` for the education hostname and `${local.prefix}-fd-service-custom-domain` for the service hostname when each variable is set.
 * **Manage Certificates**: Configure managed TLS certificates (`certificate_type = "ManagedCertificate"`) automatically through Azure Front Door.
 * **Associate Domain**: Configure an `azurerm_cdn_frontdoor_custom_domain_association` to bind the custom domain to the primary Front Door routing rules.
 * **Route Security Policy**: Dynamically include a `domain` association block inside the WAF policy (`azurerm_cdn_frontdoor_security_policy.frontdoor-web-security-policy`) to protect traffic hitting the custom domain with web application firewall rules.
 
-Leave `custom_domain` blank to skip provisioning custom domain resources and access the application only via the default Front Door endpoint (`*.azurefd.net`).
+Leave both domain variables blank to skip custom domains and use the default Front Door endpoint (`*.azurefd.net`). Set both variables to serve the application through both hostnames without a redirect. The hostname output and availability test continue to use the education domain when it is set.
 
 ## Configure Azure Front Door premium features
 
