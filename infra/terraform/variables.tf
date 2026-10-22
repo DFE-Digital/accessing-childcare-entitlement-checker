@@ -32,8 +32,14 @@ variable "azure_frontdoor_sku" {
   default     = "Standard"
 }
 
-variable "custom_domain" {
-  description = "Custom front-door domain"
+variable "education_custom_domain" {
+  description = "Education custom front-door domain"
+  type        = string
+  default     = ""
+}
+
+variable "service_custom_domain" {
+  description = "Service custom front-door domain"
   type        = string
   default     = ""
 }

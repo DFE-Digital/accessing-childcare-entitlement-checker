@@ -80,7 +80,11 @@ services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto;
     options.KnownProxies.Clear();
     options.KnownIPNetworks.Clear();
-    options.AllowedHosts = ["*.azurefd.net", "check-if-you-are-eligible-for-childcare-funding.education.gov.uk"];
+    options.AllowedHosts = [
+        "*.azurefd.net",
+        "check-if-you-are-eligible-for-childcare-funding.education.gov.uk",
+        "check-if-you-are-eligible-for-childcare-funding.service.gov.uk"
+    ];
 });
 
 var app = builder.Build();
