@@ -6,6 +6,8 @@ on:
       - main
     paths-ignore:
       - docs/**
+      - infra/terraform-domains/**
+      - .github/workflows/workflow-domains.yml
 
 concurrency:
   group: ${{ github.workflow }}

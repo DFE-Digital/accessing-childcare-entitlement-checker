@@ -41,9 +41,9 @@ These commands run development pipelines, verify code format, execute testing ta
 
 | Command | Action description |
 | :--- | :--- |
-| `make tf-i` | Initialises Terraform configuration locally without a backend. |
-| `make tf-f` | Spacially cleans and recursively formats all Terraform configuration files in the `infra/` folder. |
-| `make tf-v` | Validates Terraform configuration syntax, rules, and resource parameters. |
+| `make tf-i` | Initialises the application and domains Terraform configurations locally without a backend. |
+| `make tf-f` | Recursively formats the Terraform configuration files in `infra/terraform/` and `infra/terraform-domains/`. |
+| `make tf-v` | Validates the syntax, rules, and resource parameters of the application and domains Terraform configurations. |
 | `make tf-d` | Generates architectural documentation from Terraform variables and injects it into the deployed infrastructure guide. |
 | `make tf` | Executes all local Terraform checks (`tf-i`, `tf-f`, `tf-v`, and `tf-d`). |
 
