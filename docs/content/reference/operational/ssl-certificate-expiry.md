@@ -16,7 +16,8 @@ Browsers display a security warning ("Your connection is not private"), preventi
 ## Prevention
 
 - Front Door Managed Certificates: Custom domains associated with Azure Front Door are configured with managed TLS.
-- Zero-Touch Renewal: Azure Front Door automatically manages domain validation, renewal, and installation of SSL certificates (using authorities such as DigiCert or Let's Encrypt) 45 days before expiry. No manual key vault rotations or human procedures are required.
+- Automatic renewal: Azure Front Door renews managed certificates 45 days before expiry for hostnames with a CNAME record to the Front Door endpoint.
+- Apex domain: The production `service.gov.uk` hostname is a zone apex with an alias record, not a CNAME record. Front Door cannot renew this certificate automatically. When the domain shows *Pending revalidation*, follow the response steps below. See [apex domains in Azure Front Door](https://learn.microsoft.com/en-us/azure/frontdoor/apex-domain).
 
 ## Detection
 
@@ -28,6 +29,11 @@ Browsers display a security warning ("Your connection is not private"), preventi
 If a managed certificate fails to auto-renew (typically due to DNS validation record removal):
 1. Verification of CNAME/TXT validation records on the custom domain DNS to ensure they match required values.
 2. Triggering of manual validation via the Azure Portal or Terraform to force certificate renewal.
+
+For the production `service.gov.uk` apex domain:
+1. In the Azure Portal, open the production Front Door profile and go to **Domains**.
+2. Select **Pending revalidation** for the `service.gov.uk` domain, then select **Regenerate**.
+3. Run the production deployment. Terraform reads the new token and updates the `_dnsauth` TXT record.
 
 ## Related runbooks
 

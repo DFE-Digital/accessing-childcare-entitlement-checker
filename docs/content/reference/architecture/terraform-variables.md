@@ -23,6 +23,7 @@ These parameters are defined in the Terraform configuration files and allow for 
 | `azure_frontdoor_sku` | `string` | `"Standard"` | Azure Front Door SKU |
 | `education_custom_domain` | `string` | `""` | Education custom Front Door domain |
 | `service_custom_domain` | `string` | `""` | Service custom Front Door domain |
+| `service_domain_resource_group_name` | `string` | `""` | Resource group of the Azure DNS zone for `service_custom_domain`. Empty skips DNS records. |
 | `waf_enable_managed_rules` | `bool` | `false` | Enable managed rule sets in WAF |
 | `webapp_sku` | `string` | `"B1"` | Web App SKU (e.g. B1) |
 | `webapp_zone_balancing` | `bool` | `false` | Enable zone balancing on web app |

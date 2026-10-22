@@ -44,6 +44,12 @@ variable "service_custom_domain" {
   default     = ""
 }
 
+variable "service_domain_resource_group_name" {
+  description = "Resource group of the Azure DNS zone for service_custom_domain. Empty skips DNS records."
+  type        = string
+  default     = ""
+}
+
 variable "waf_enable_managed_rules" {
   description = "Enable managed rule sets in WAF"
   type        = bool

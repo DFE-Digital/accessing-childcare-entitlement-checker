@@ -1,0 +1,152 @@
+name: Domains Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - infra/terraform-domains/**
+      - .github/workflows/workflow-domains.yml
+  pull_request:
+    paths:
+      - infra/terraform-domains/**
+      - .github/workflows/workflow-domains.yml
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  TF_DIR: infra/terraform-domains
+
+jobs:
+  validate:
+    name: Validate domains infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+        with:
+          terraform_version: ${{ vars.TERRAFORM_VERSION || '1.9.8' }}
+
+      - name: Terraform Init
+        run: terraform init -input=false -backend=false
+        working-directory: ${{ env.TF_DIR }}
+
+      - name: Terraform Format check
+        run: terraform fmt -check
+        working-directory: ${{ env.TF_DIR }}
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ${{ env.TF_DIR }}
+
+      - name: Run Checkov scan
+        env:
+          WORKSPACE: ${{ github.workspace }}
+        run: |
+          docker run --rm \
+            -v "$WORKSPACE/$TF_DIR:/tf" \
+            ghcr.io/dfe-digital/dfe-checkov-policies/checkov-elz:ELZ-2026.07.1 \
+            -d /tf --var-file "/tf/domains.tfvars" \
+            -o cli
+
+  deploy:
+    name: Deploy domains infrastructure
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      group: terraform-state-access-production
+      cancel-in-progress: false
+    permissions:
+      id-token: write
+      contents: read
+
+    defaults:
+      run:
+        working-directory: ./infra/terraform-domains
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get Terraform State Details
+        id: tf-backend
+        working-directory: .
+        run: |
+          RG_NAME=$(jq -r '.resourceGroupName.value' infra/bicep/environments/production.params.json)
+          ACC_NAME=$(jq -r '.storageAccountName.value' infra/bicep/environments/production.params.json)
+          echo "resourceGroupName=$RG_NAME" >> "$GITHUB_OUTPUT"
+          echo "storageAccountName=$ACC_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+        with:
+          terraform_wrapper: false
+          terraform_version: ${{ vars.TERRAFORM_VERSION || '1.9.8' }}
+
+      - name: Unlock Terraform State
+        working-directory: ./infra
+        env:
+          ACC_NAME: ${{ steps.tf-backend.outputs.storageAccountName }}
+          RG_NAME: ${{ steps.tf-backend.outputs.resourceGroupName }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-storage-access.sh
+          ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "true"
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ steps.tf-backend.outputs.resourceGroupName }}" \
+            -backend-config="storage_account_name=${{ steps.tf-backend.outputs.storageAccountName }}"
+
+      - name: Terraform Plan
+        run: terraform plan -no-color -out=domains.tfplan -var-file="domains.tfvars"
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve domains.tfplan
+
+      - name: Publish name servers
+        run: |
+          {
+            echo "### $(terraform output -raw zone_name)"
+            echo
+            echo "Name servers for the service.gov.uk delegation:"
+            echo
+            terraform output -json name_servers | jq -r '.[] | "- `\(.)`"'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Lock Terraform State
+        if: ${{ always() }}
+        working-directory: ./infra
+        env:
+          ACC_NAME: ${{ steps.tf-backend.outputs.storageAccountName }}
+          RG_NAME: ${{ steps.tf-backend.outputs.resourceGroupName }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-storage-access.sh
+          ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"

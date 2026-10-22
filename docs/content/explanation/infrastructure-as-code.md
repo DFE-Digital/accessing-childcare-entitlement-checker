@@ -18,6 +18,7 @@ We provision cloud resources on Azure using Terraform. Instead of combining all 
 The main infrastructure folders are:
 - `infra/terraform/`: This folder has core resource declarations. These include App Service, Azure Front Door, Redis, and Web Application Firewall.
 - `infra/terraform/environments/`: This folder has environment parameters. These cover Development, Staging, and Production.
+- `infra/terraform-domains/`: This folder has the Azure DNS zone for the `service.gov.uk` domain. It uses the shared DfE `dns/zones` module. For more details, see the [service domain decision record](/reference/decisions/service-domain-dns/).
 - `infra/bicep/`: This folder contains Bicep files used exclusively for bootstrapping the initial Terraform state. For more details on when and how this is used, see the [Terraform bootstrap
   guide](/how-to/terraform-bootstrap) and the [bootstrap decision record](/reference/decisions/bootstrap-tf).
 
