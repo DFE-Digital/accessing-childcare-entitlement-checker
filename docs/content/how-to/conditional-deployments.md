@@ -35,6 +35,8 @@ Specify a custom domain to execute these routing and security tasks:
 * **Associate Domain**: Configure an `azurerm_cdn_frontdoor_custom_domain_association` to bind the custom domain to the primary Front Door routing rules.
 * **Route Security Policy**: Dynamically include a `domain` association block inside the WAF policy (`azurerm_cdn_frontdoor_security_policy.frontdoor-web-security-policy`) to protect traffic hitting the custom domain with web application firewall rules.
 
+Set `service_domain_resource_group_name` to the resource group of the Azure DNS zone for `service_custom_domain`. Terraform then creates the apex alias record (`@`) and the validation record (`_dnsauth`) in that zone. Only production sets this variable. The zone must exist before the deployment runs.
+
 Leave both domain variables blank to skip custom domains and use the default Front Door endpoint (`*.azurefd.net`). Set both variables to serve the application through both hostnames without a redirect. The hostname output and availability test continue to use the education domain when it is set.
 
 ## Configure Azure Front Door premium features
