@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Dfe.Acec.Web.TagHelpers.GovAnalytics;
 
-[HtmlTargetElement("div", Attributes = "data-gov-form-error")]
-[HtmlTargetElement("p", Attributes = "data-gov-form-error")]
+[HtmlTargetElement("div", Attributes = "gov-form-error")]
+[HtmlTargetElement("p", Attributes = "gov-form-error")]
 public class GovFormErrorTagHelper : GovTagHelperBase
 {
     [EditorRequired]
-    [HtmlAttributeName("data-gov-outcome")]
+    [HtmlAttributeName("gov-outcome")]
     public string Outcome { get; set; } = string.Empty;
 
     protected override GovEventPayload ValidateAndCreatePayload()
@@ -17,7 +17,7 @@ public class GovFormErrorTagHelper : GovTagHelperBase
         if (string.IsNullOrWhiteSpace(Outcome))
         {
             throw new GovAnalyticsMissingParamaterException(
-                "'data-gov-form-error' requires 'data-gov-outcome'.");
+                "'gov-form-error' requires 'gov-outcome'.");
         }
 
         return new FormErrorEvent
