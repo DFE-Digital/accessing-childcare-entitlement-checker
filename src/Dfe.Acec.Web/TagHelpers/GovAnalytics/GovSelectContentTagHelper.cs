@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace Dfe.Acec.Web.TagHelpers.GovAnalytics;
 
 
-[HtmlTargetElement("button", Attributes = "data-gov-select-content")]
-[HtmlTargetElement("a", Attributes = "data-gov-select-content")]
+[HtmlTargetElement("button", Attributes = "gov-select-content")]
+[HtmlTargetElement("a", Attributes = "gov-select-content")]
 public class GovSelectContentTagHelper : GovTagHelperBase
 {
     protected override GovEventPayload ValidateAndCreatePayload()
@@ -13,7 +13,7 @@ public class GovSelectContentTagHelper : GovTagHelperBase
         if (string.IsNullOrWhiteSpace(Action) || string.IsNullOrWhiteSpace(UiText))
         {
             throw new GovAnalyticsMissingParamaterException(
-                "'data-gov-select-content' requires both 'data-gov-action' and 'data-gov-ui-text'.");
+                "'gov-select-content' requires both 'gov-action' and 'gov-ui-text'.");
         }
 
         return new SelectContentEvent
