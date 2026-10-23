@@ -8,26 +8,26 @@ namespace Dfe.Acec.Web.TagHelpers;
 public abstract class GovTagHelperBase : TagHelper
 {
     [EditorRequired]
-    [HtmlAttributeName("data-gov-tool-name")]
+    [HtmlAttributeName("gov-tool-name")]
     public string ToolName { get; set; } = string.Empty;
 
     [EditorRequired]
-    [HtmlAttributeName("data-gov-section")]
+    [HtmlAttributeName("gov-section")]
     public string Section { get; set; } = string.Empty;
 
-    [HtmlAttributeName("data-gov-action")]
+    [HtmlAttributeName("gov-action")]
     public string Action { get; set; } = string.Empty;
 
-    [HtmlAttributeName("data-gov-ui-text")]
+    [HtmlAttributeName("gov-ui-text")]
     public string UiText { get; set; } = string.Empty;
 
-    [HtmlAttributeName("data-gov-type")]
+    [HtmlAttributeName("gov-type")]
     public string Type { get; set; } = string.Empty;
 
-    [HtmlAttributeName("data-gov-metric-name")]
+    [HtmlAttributeName("gov-metric-name")]
     public string? MetricName { get; set; }
 
-    [HtmlAttributeName("data-gov-metric-value")]
+    [HtmlAttributeName("gov-metric-value")]
     public object? MetricValue { get; set; }
 
     protected abstract GovEventPayload ValidateAndCreatePayload();
@@ -39,7 +39,7 @@ public abstract class GovTagHelperBase : TagHelper
         if (string.IsNullOrWhiteSpace(Section))
         {
             throw new InvalidOperationException(
-                $"'{context.AllAttributes[0].Name}' requires 'data-gov-section'.");
+                $"'{context.AllAttributes[0].Name}' requires 'gov-section'.");
         }
 
         var payload = ValidateAndCreatePayload();
@@ -52,18 +52,18 @@ public abstract class GovTagHelperBase : TagHelper
     private static void CleanupDom(TagHelperOutput output)
     {
         // Clean up helper attributes so they aren't rendered into the raw DOM
-        output.Attributes.RemoveAll("data-gov-select-content");
-        output.Attributes.RemoveAll("data-gov-form-response");
-        output.Attributes.RemoveAll("data-gov-form-error");
-        output.Attributes.RemoveAll("data-gov-tool-name");
-        output.Attributes.RemoveAll("data-gov-section");
-        output.Attributes.RemoveAll("data-gov-action");
-        output.Attributes.RemoveAll("data-gov-ui-text");
-        output.Attributes.RemoveAll("data-gov-type");
-        output.Attributes.RemoveAll("data-gov-outcome");
-        output.Attributes.RemoveAll("data-gov-response");
-        output.Attributes.RemoveAll("data-gov-metric-name");
-        output.Attributes.RemoveAll("data-gov-metric-value");
+        output.Attributes.RemoveAll("gov-select-content");
+        output.Attributes.RemoveAll("gov-form-response");
+        output.Attributes.RemoveAll("gov-form-error");
+        output.Attributes.RemoveAll("gov-tool-name");
+        output.Attributes.RemoveAll("gov-section");
+        output.Attributes.RemoveAll("gov-action");
+        output.Attributes.RemoveAll("gov-ui-text");
+        output.Attributes.RemoveAll("gov-type");
+        output.Attributes.RemoveAll("gov-outcome");
+        output.Attributes.RemoveAll("gov-response");
+        output.Attributes.RemoveAll("gov-metric-name");
+        output.Attributes.RemoveAll("gov-metric-value");
     }
 
     protected class GovAnalyticsMissingParamaterException(string message) : InvalidOperationException( "[GovAnalytics] " + message);

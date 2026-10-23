@@ -9,7 +9,7 @@ namespace Dfe.Acec.Web.Tests.Integration;
 public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
     [Fact]
-    public async Task GetWithoutCookieShowsBanner()
+    public async Task GetWithoutCookieShowsBannerAndIncludesGtmScript()
     {
         var sessionRequiredEndpoints = GetCookieBannerRequiredEndpoints();
         var children = new Dictionary<string, Child>
@@ -41,11 +41,12 @@ public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixt
             var getResponse = await getClient.GetAsync(url, TestContext.Current.CancellationToken);
             var document = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
             document.AssertCookieBanner();
+            document.AssertGtmTagCodePresent();
         }
     }
 
     [Fact]
-    public async Task GetWithCookieDoesNotShowBanner()
+    public async Task GetWithCookieDoesNotShowBannerAndOmitsGtmScript()
     {
         var sessionRequiredEndpoints = GetCookieBannerRequiredEndpoints();
         var children = new Dictionary<string, Child>
@@ -79,6 +80,7 @@ public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixt
             var getResponse = await getClient.SendAsync(request, TestContext.Current.CancellationToken);
             var document = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
             document.AssertNoCookieBanner();
+            document.AssertNoGtmTagCode();
         }
     }
 
