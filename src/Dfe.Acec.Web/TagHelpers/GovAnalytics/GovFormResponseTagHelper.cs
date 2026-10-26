@@ -27,7 +27,7 @@ public class GovFormResponseTagHelper : GovTagHelperBase
             Response = Response,
             Action = string.IsNullOrWhiteSpace(Action) ? "submit" : Action,
             UiText = string.IsNullOrWhiteSpace(UiText) ? "Continue" : UiText,
-            Type = string.IsNullOrWhiteSpace(Type) ? "contact" : Type,
+            Type = string.IsNullOrWhiteSpace(Type) ? "form" : Type,
             MetricName = MetricName,
             MetricValue = MetricValue
         };

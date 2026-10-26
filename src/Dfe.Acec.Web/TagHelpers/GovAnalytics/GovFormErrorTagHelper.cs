@@ -27,7 +27,7 @@ public class GovFormErrorTagHelper : GovTagHelperBase
             Outcome = Outcome,
             Action = string.IsNullOrWhiteSpace(Action) ? "error" : Action,
             UiText = string.IsNullOrWhiteSpace(UiText) ? "Continue" : UiText,
-            Type = string.IsNullOrWhiteSpace(Type) ? "contact" : Type,
+            Type = string.IsNullOrWhiteSpace(Type) ? "form" : Type,
             MetricName = MetricName,
             MetricValue = MetricValue
         };

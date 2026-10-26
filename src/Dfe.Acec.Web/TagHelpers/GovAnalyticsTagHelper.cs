@@ -66,5 +66,5 @@ public abstract class GovTagHelperBase : TagHelper
         output.Attributes.RemoveAll("gov-metric-value");
     }
 
-    protected class GovAnalyticsMissingParamaterException(string message) : InvalidOperationException( "[GovAnalytics] " + message);
+    public class GovAnalyticsMissingParamaterException(string message) : InvalidOperationException( "[GovAnalytics] " + message);
 }
