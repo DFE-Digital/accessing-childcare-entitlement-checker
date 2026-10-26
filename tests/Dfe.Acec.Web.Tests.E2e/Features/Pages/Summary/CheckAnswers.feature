@@ -58,25 +58,6 @@ Scenario: Change whether Sara gets any support
 		| Question                                                                                  | Answer                           |
 		| Does Sara get any of the following support?                                               | Certificate of visual impairment |
 	And I click on Continue
-	And I answer the questions as follows:
-		| Question                                                                                  | Answer                      |
-		| What is your age?                                                                         | 21 or over                  |
-		| What is your nationality?                                                                 | British or Irish citizen    |
-		| Are you in paid work?                                                                     | Yes, I am currently in work |
-		| How would you describe your work status?                                                  | Self-employed               |
-		| Have you been self-employed for less than 12 months?                                      | No                          |
-		| On average, do you expect to earn £225 a week or more before tax?                         | Yes                         |
-		| Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                          |
-		| Does your household receive universal credit?                                             | Yes                         |
-		| Do you get any of these benefits?                                                         | Carer's Allowance           |
-		| Do you already get any of these to help pay for childcare?                                | Childcare vouchers          |
-		| How do you receive your childcare vouchers?                                               | A workplace nursery scheme  |
-		| Do you live with a partner?                                                               | Yes                         |
-		| What is your partner's age?                                                               | 21 or over                  |
-		| Is your partner in paid work?                                                             | No, they are not in work    |
-		| Does your partner get any of these benefits?                                              | Carer's Allowance           |
-		| Does your partner already get any of these to help pay for childcare?                     | Childcare vouchers          |
-		| How does your partner receive childcare vouchers?                                         | A workplace nursery scheme  |
 	Then the page header is "Check your answers"
 	And I should see 2 summary cards
 	And I should see a summary card with the title "Sara" and the following summary:

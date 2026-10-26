@@ -48,6 +48,14 @@ public partial class SummaryController(
             var result = journeyStateValidator.Validate(journeyState, options => options.IncludeRuleSets(JourneyStateValidator.CheckChildDetailsRuleSet));
             if (result.IsValid)
             {
+                if (journeyState.JourneyMode == JourneyMode.ChangeChildDetails)
+                {
+                    journeyState.JourneyMode = JourneyMode.Normal;
+                    journeySession.SetState(journeyState);
+
+                    return RedirectToAction(nameof(CheckAnswers));
+                }
+
                 return RedirectToAction(nameof(UserController.UserAge), UserController.Name);
             }
 
@@ -63,6 +71,12 @@ public partial class SummaryController(
     [HttpGet]
     public async Task<IActionResult> CheckAnswers(string? fromChildId = null)
     {
+        if (journeyState.JourneyMode != JourneyMode.Normal)
+        {
+            journeyState.JourneyMode = JourneyMode.Normal;
+            journeySession.SetState(journeyState);
+        }
+
         var removedChildNames = CheckForIncompleteChildren();
 
         return View(await BuildCheckAnswersViewModel(fromChildId, removedChildNames));
@@ -288,5 +302,33 @@ public partial class SummaryController(
         }
 
         return Url.ActionOrThrow(nameof(UserController.HasPartner), UserController.Name);
+    }
+
+    [HttpGet]
+    public IActionResult ChangeChildAnswer(string targetController, string targetAction, string childId)
+    {
+        if (!journeyState.Children.TryGetValue(childId, out var child))
+        {
+            return RedirectToAction(nameof(CheckAnswers));
+        }
+
+        if (!ChildChangeDestinationValidator.IsValid(child.BirthStatus, targetController, targetAction))
+        {
+            return RedirectToAction(nameof(CheckAnswers));
+        }
+
+        journeyState.JourneyMode = JourneyMode.ChangeChildDetails;
+        journeySession.SetState(journeyState);
+
+        return RedirectToAction(targetAction, targetController, new { childId, returnTo = ReturnTo.CheckAnswers });
+    }
+
+    [HttpGet]
+    public IActionResult AddChild()
+    {
+        journeyState.JourneyMode = JourneyMode.ChangeChildDetails;
+        journeySession.SetState(journeyState);
+
+        return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name, new { returnTo = ReturnTo.CheckAnswers });
     }
 }
