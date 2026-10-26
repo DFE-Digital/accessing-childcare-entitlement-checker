@@ -16,6 +16,7 @@ using Microsoft.FeatureManagement;
 namespace Dfe.Acec.Web.Controllers;
 
 #pragma warning disable CA1506 // Excessive class coupling
+#pragma warning disable CA1502 // SummaryController exceeds complexity threshold by one point
 
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
 public partial class SummaryController(
@@ -24,7 +25,8 @@ public partial class SummaryController(
     IStringLocalizerFactory stringLocalizerFactory,
     IValidator<JourneyState> journeyStateValidator,
     ILogger<SummaryController> logger,
-    IFeatureManager featureManager)
+    IFeatureManager featureManager,
+    IncompleteChildHandler incompleteChildHandler)
     : Controller
 {
     public const string Name = "Summary";
@@ -35,7 +37,7 @@ public partial class SummaryController(
     [HttpGet]
     public ViewResult CheckChildDetails(string? childId = null)
     {
-        var removedChildNames = CheckForIncompleteChildren();
+        var removedChildNames = incompleteChildHandler.CheckForIncompleteChildren();
 
         return View(BuildCheckChildDetailsViewModel(childId, removedChildNames));
     }
@@ -77,7 +79,7 @@ public partial class SummaryController(
             journeySession.SetState(journeyState);
         }
 
-        var removedChildNames = CheckForIncompleteChildren();
+        var removedChildNames = incompleteChildHandler.CheckForIncompleteChildren();
 
         return View(await BuildCheckAnswersViewModel(fromChildId, removedChildNames));
     }
@@ -139,37 +141,6 @@ public partial class SummaryController(
         }
 
         return this.RedirectToReturnTo(model.ReturnTo);
-    }
-
-    private List<string> CheckForIncompleteChildren()
-    {
-        var removedChildNames = new List<string>();
-
-        var result = journeyStateValidator.Validate(journeyState, options => options.IncludeRuleSets(JourneyStateValidator.CheckChildDetailsRuleSet));
-
-        if (!result.IsValid)
-        {
-            var invalidChildIds = result.Errors
-                .Select(error => error.CustomState)
-                .OfType<string>()
-                .Distinct()
-                .ToList();
-
-            var invalidChildren = journeyState.Children
-                .Where(x => invalidChildIds.Contains(x.Key))
-                .ToList();
-
-            removedChildNames = [.. invalidChildren.Select(x => x.Value.Name)];
-
-            foreach (var child in invalidChildren)
-            {
-                journeyState.Children.Remove(child.Key);
-            }
-
-            journeySession.SetState(journeyState);
-        }
-
-        return removedChildNames;
     }
 
     private CheckChildDetailsViewModel BuildCheckChildDetailsViewModel(string? childId = null, IReadOnlyList<string>? removedChildNames = null)

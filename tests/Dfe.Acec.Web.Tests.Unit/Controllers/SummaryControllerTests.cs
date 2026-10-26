@@ -58,13 +58,21 @@ public class SummaryControllerTests : IDisposable
             .BuildServiceProvider()
             .GetRequiredService<IModelMetadataProvider>();
 
+        var validator = new JourneyStateValidator();
+
+        var incompleteChildHandler = new IncompleteChildHandler(
+            _journeyState,
+            _journeySession,
+            validator);
+
         _controller = new SummaryController(
             _journeyState,
             _journeySession,
             stringLocalizerFactory,
             new JourneyStateValidator(),
             _logger,
-            _featureManager)
+            _featureManager,
+            incompleteChildHandler)
         {
             ControllerContext = new ControllerContext
             {
@@ -301,13 +309,19 @@ public class SummaryControllerTests : IDisposable
     {
         var validator = Substitute.For<IValidator<JourneyState>>();
 
+        var incompleteChildHandler = new IncompleteChildHandler(
+            _journeyState,
+            _journeySession,
+            validator);
+
         using var controller = new SummaryController(
             _journeyState,
             _journeySession,
             AcecSubstitute.ForLocalizerFactory(),
             validator,
             _logger,
-            _featureManager);
+            _featureManager,
+            incompleteChildHandler);
 
         controller.ControllerContext = _controller.ControllerContext;
         controller.MetadataProvider = _controller.MetadataProvider;
@@ -328,6 +342,11 @@ public class SummaryControllerTests : IDisposable
         var validationResult = new ValidationResult(new[] { new ValidationFailure("Children", "Child validation error") });
         mockValidator.Validate(Arg.Any<ValidationContext<JourneyState>>()).Returns(validationResult);
 
+        var incompleteChildHandler = new IncompleteChildHandler(
+            _journeyState,
+            _journeySession,
+            mockValidator);
+
         var localizerFactory = AcecSubstitute.ForLocalizerFactory();
         using var controller = new SummaryController(
             _journeyState,
@@ -335,7 +354,8 @@ public class SummaryControllerTests : IDisposable
             localizerFactory,
             mockValidator,
             _logger,
-            _featureManager);
+            _featureManager,
+            incompleteChildHandler);
 
         controller.ControllerContext = _controller.ControllerContext;
         controller.MetadataProvider = _controller.MetadataProvider;
@@ -373,13 +393,19 @@ public class SummaryControllerTests : IDisposable
             .Validate(Arg.Any<ValidationContext<JourneyState>>())
             .Returns(validationResult);
 
+        var incompleteChildHandler = new IncompleteChildHandler(
+            _journeyState,
+            _journeySession,
+            mockValidator);
+
         using var controller = new SummaryController(
             _journeyState,
             _journeySession,
             AcecSubstitute.ForLocalizerFactory(),
             mockValidator,
             _logger,
-            _featureManager);
+            _featureManager,
+            incompleteChildHandler);
 
         controller.ControllerContext = _controller.ControllerContext;
         controller.MetadataProvider = _controller.MetadataProvider;
