@@ -43,8 +43,8 @@ public abstract class GovTagHelperBase : TagHelper
         }
 
         var payload = ValidateAndCreatePayload();
-
-        output.Attributes.SetAttribute("data-gov-event", JsonSerializer.Serialize(payload, _jsonOptions));
+        var json = JsonSerializer.Serialize(payload, payload.GetType(), _jsonOptions);
+        output.Attributes.SetAttribute("data-gov-event", json);
 
         CleanupDom(output);
     }

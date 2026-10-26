@@ -3,6 +3,7 @@ using System.Text.Json;
 using Dfe.Acec.Web.TagHelpers;
 using Dfe.Acec.Web.TagHelpers.GovAnalytics;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using NSubstitute.Exceptions;
 
 namespace Dfe.Acec.Web.Tests.Unit.TagHelpers;
 
@@ -103,8 +104,10 @@ public class GovAnalyticsTagHelperTests
     private static (GovTagHelperBase concrete, TagHelperAttributeList inputAttributes, Dictionary<string, string> expectedProperties)
         GetExpectedAttributes(Type type)
     {
-        var expectedModel = (GovTagHelperBase)Activator.CreateInstance(type)!; //create instance via reflection cause Theory doesnt like generics...
-
+        if (Activator.CreateInstance(type) is not GovTagHelperBase expectedModel)
+        {
+            throw new ArgumentException($"Unsupported TagHelper type: {type.Name}, unable to cast to GovTagHelperBase");
+        }
         // base model defaults
         expectedModel.ToolName = "checker";
         expectedModel.Section = "details";
