@@ -16,13 +16,13 @@ Optimize your environment configuration to reduce costs in lower environments wh
 
 Manage the four primary conditional aspects in our Terraform configurations:
 
-1. [Configure Azure Front Door Custom Domains](#configure-azure-front-door-custom-domains)
+1. [Configure Azure Front Door Custom Domains and DNS](#configure-azure-front-door-custom-domains-and-dns)
 2. [Configure Azure Front Door Premium Features](#configure-azure-front-door-premium-features)
 3. [Configure Staging Deployment Slots](#configure-staging-deployment-slots)
 4. [Configure Non-Production Basic Authentication](#configure-non-production-basic-authentication)
 
 
-## Configure Azure Front Door custom domains
+## Configure Azure Front Door custom domains and DNS
 
 * Variables: `education_custom_domain` and `service_custom_domain` (strings, default: `""`)
 * Trigger: Each non-empty domain variable creates its own hostname and managed certificate.
@@ -35,9 +35,31 @@ Specify a custom domain to execute these routing and security tasks:
 * **Associate Domain**: Configure an `azurerm_cdn_frontdoor_custom_domain_association` to bind the custom domain to the primary Front Door routing rules.
 * **Route Security Policy**: Dynamically include a `domain` association block inside the WAF policy (`azurerm_cdn_frontdoor_security_policy.frontdoor-web-security-policy`) to protect traffic hitting the custom domain with web application firewall rules.
 
-Set `service_domain_resource_group_name` to the resource group of the Azure DNS zone for `service_custom_domain`. Terraform then creates the apex alias record (`@`) and the validation record (`_dnsauth`) in that zone. Only production sets this variable. The zone must exist before the deployment runs.
+Set `service_domain_resource_group_name` to the resource group of the Azure DNS zone for `service_custom_domain`. Terraform then creates the apex alias record (`@`) and the validation record (`_dnsauth`) in that zone. Only production sets this variable. The zone must exist before the deployment runs. For the reasons, see the [service domain decision record](/reference/decisions/service-domain-dns/).
 
 Leave both domain variables blank to skip custom domains and use the default Front Door endpoint (`*.azurefd.net`). Set both variables to serve the application through both hostnames without a redirect. The hostname output and availability test continue to use the education domain when it is set.
+
+### Keep the domain values the same
+
+The `infra/terraform-domains/` root module owns the zone. The production deployment reads the zone by name. Make sure that these values are the same:
+
+| `infra/terraform/environments/production.tfvars` | `infra/terraform-domains/domains.tfvars` |
+| :--- | :--- |
+| `service_custom_domain` | `service_domain_zone_name` |
+| `service_domain_resource_group_name` | `service_domain_resource_group_name` |
+
+### Deploy the service domain for the first time
+
+Do these steps one time only. After the zone exists, releases do not need a special order.
+
+1. Merge the change to `main`. The *Domains Infrastructure* workflow applies `infra/terraform-domains/`. This workflow uses the `production` environment, so it can wait for approval.
+2. Make sure that the workflow completed. Get the name servers from the job summary.
+3. Send the name servers to GDS and ask them to delegate the domain. You can do this before or after step 4.
+4. Create the release branch. The production deployment creates the apex record and the validation record.
+
+Do not create the release branch before step 2 is complete. If the zone does not exist, the production plan fails at `data.azurerm_dns_zone.service-zone` with a "not found" error. To fix this, run the *Domains Infrastructure* workflow manually, then run the release again.
+
+If the validation token expires before the delegation is live, regenerate the token in the Azure portal. Then run the production deployment again.
 
 ## Configure Azure Front Door premium features
 

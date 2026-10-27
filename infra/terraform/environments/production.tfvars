@@ -1,3 +1,5 @@
+# `service_custom_domain` and `service_domain_resource_group_name`
+# must be given the same values as in infra/terraform-domains/domains.tfvars.
 elz_environment                           = "Prod"
 environment_prefix                        = "p01"
 aspnetcore_environment                    = "Production"
