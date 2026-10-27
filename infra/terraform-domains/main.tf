@@ -7,7 +7,8 @@ resource "azurerm_resource_group" "domains-rg" {
 # Shared DfE module for the zone and its default CAA, SPF and DMARC records.
 # The production Terraform root owns the Front Door records in this zone.
 module "dns" {
-  source = "git::https://github.com/DFE-Digital/terraform-modules.git//dns/zones?ref=v0.86.0"
+  # v0.86.0
+  source = "git::https://github.com/DFE-Digital/terraform-modules.git//dns/zones?ref=27bc86537d000840b0e5ca28550fb024659f8ef7"
 
   hosted_zone = {
     (var.service_domain_zone_name) = {
