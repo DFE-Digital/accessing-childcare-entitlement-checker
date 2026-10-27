@@ -101,7 +101,7 @@ tf-f:
 
 tf-v:
 	terraform -chdir=infra/terraform-domains validate
- 	terraform -chdir=infra/terraform validate
+	terraform -chdir=infra/terraform validate
 
 tf-d:
 	terraform-docs -c .terraform-docs.yml \
