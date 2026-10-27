@@ -16,7 +16,6 @@ using Microsoft.FeatureManagement;
 namespace Dfe.Acec.Web.Controllers;
 
 #pragma warning disable CA1506 // Excessive class coupling
-#pragma warning disable CA1502 // SummaryController exceeds complexity threshold by one point
 
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
 public partial class SummaryController(
@@ -45,29 +44,30 @@ public partial class SummaryController(
     [HttpPost]
     public IActionResult CheckChildDetails(CheckChildDetailsSubmitModel model)
     {
-        if (model.CorrelationId == journeyState.CorrelationId)
+        if (model.CorrelationId != journeyState.CorrelationId)
         {
-            var result = journeyStateValidator.Validate(journeyState, options => options.IncludeRuleSets(JourneyStateValidator.CheckChildDetailsRuleSet));
-            if (result.IsValid)
-            {
-                if (journeyState.JourneyMode == JourneyMode.ChangeChildDetails)
-                {
-                    journeyState.JourneyMode = JourneyMode.Normal;
-                    journeySession.SetState(journeyState);
+            LogCorrelationIdMismatch();
+            Response.StatusCode = 400;
+            return View(StateMismatchView);
+        }
 
-                    return RedirectToAction(nameof(CheckAnswers));
-                }
+        var result = journeyStateValidator.Validate(journeyState, options => options.IncludeRuleSets(JourneyStateValidator.CheckChildDetailsRuleSet));
 
-                return RedirectToAction(nameof(UserController.UserAge), UserController.Name);
-            }
-
+        if (!result.IsValid)
+        {
             ModelState.AddValidationErrors(result);
             return View(BuildCheckChildDetailsViewModel());
         }
 
-        LogCorrelationIdMismatch();
-        Response.StatusCode = 400;
-        return View(StateMismatchView);
+        if (journeyState.JourneyMode == JourneyMode.ChangeChildDetails)
+        {
+            journeyState.JourneyMode = JourneyMode.Normal;
+            journeySession.SetState(journeyState);
+
+            return RedirectToAction(nameof(CheckAnswers));
+        }
+
+        return RedirectToAction(nameof(UserController.UserAge), UserController.Name);
     }
 
     [HttpGet]
@@ -147,7 +147,7 @@ public partial class SummaryController(
     {
         var summaries = journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckChildDetails)).ToList().AsReadOnly();
         var hasChildren = journeyState.Children.Count > 0;
-        var lastEditedChild = ResolveLastEditedChild(journeyState, childId);
+        var lastEditedChild = journeyState.Children.ResolveLastEditedChild(childId);
         var backLink = GetCheckChildDetailsBackLink(lastEditedChild);
         return new CheckChildDetailsViewModel(summaries, hasChildren, lastEditedChild, backLink, journeyState.CorrelationId, removedChildNames ?? []);
     }
@@ -156,7 +156,7 @@ public partial class SummaryController(
     {
         var summaries = journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckAnswers)).ToList().AsReadOnly();
         var hasChildren = journeyState.Children.Count > 0;
-        var lastEditedChild = ResolveLastEditedChild(journeyState, fromChildId);
+        var lastEditedChild = journeyState.Children.ResolveLastEditedChild(fromChildId);
 
         var homeBuilder = new SummaryRowFactory(
             MetadataProvider,
@@ -228,16 +228,6 @@ public partial class SummaryController(
 
         var summaryRows = born.ViewModels.Concat(expected.ViewModels).ToList().AsReadOnly();
         return new ChildSummaryViewModel(child.ChildId, child.Name, returnTo, summaryRows);
-    }
-
-    private static Child? ResolveLastEditedChild(JourneyState journeyState, string? childId)
-    {
-        if (childId is not null && journeyState.Children.TryGetValue(childId, out var child))
-        {
-            return child;
-        }
-
-        return journeyState.Children.Values.LastOrDefault();
     }
 
     private string GetCheckChildDetailsBackLink(Child? child)
