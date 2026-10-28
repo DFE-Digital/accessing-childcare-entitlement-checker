@@ -24,8 +24,7 @@ public partial class SummaryController(
     IStringLocalizerFactory stringLocalizerFactory,
     IValidator<JourneyState> journeyStateValidator,
     ILogger<SummaryController> logger,
-    IFeatureManager featureManager,
-    IncompleteChildHandler incompleteChildHandler)
+    IFeatureManager featureManager)
     : Controller
 {
     public const string Name = "Summary";
@@ -33,10 +32,12 @@ public partial class SummaryController(
     private const string CheckAnswersChangeTextResource = "Views.Summary.CheckAnswers";
     private const string ChildCardChangeTextResource = "Views.Summary._ChildSummaryCard";
 
+    private readonly IncompleteChildHandler _incompleteChildHandler = new(journeyState, journeySession, journeyStateValidator);
+
     [HttpGet]
     public ViewResult CheckChildDetails(string? childId = null)
     {
-        var removedChildNames = incompleteChildHandler.CheckForIncompleteChildren();
+        var removedChildNames = _incompleteChildHandler.CheckForIncompleteChildren();
 
         return View(BuildCheckChildDetailsViewModel(childId, removedChildNames));
     }
@@ -79,7 +80,7 @@ public partial class SummaryController(
             journeySession.SetState(journeyState);
         }
 
-        var removedChildNames = incompleteChildHandler.CheckForIncompleteChildren();
+        var removedChildNames = _incompleteChildHandler.CheckForIncompleteChildren();
 
         return View(await BuildCheckAnswersViewModel(fromChildId, removedChildNames));
     }
