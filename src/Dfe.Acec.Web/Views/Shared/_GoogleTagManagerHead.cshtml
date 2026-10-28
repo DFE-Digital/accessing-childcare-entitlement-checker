@@ -32,23 +32,23 @@
             f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','@Model');
 
-        // Listener for our tag helper 'data-gov-event' attribute
-        // On any click, check if the clicked element (or any of its parent wrappers) has the data-gov-event attribute
+        // Listener for our tag helper 'data-govg4-event' attribute
+        // On any click, check if the clicked element (or any of its parent wrappers) has the data-govg4-event attribute
         // take the pre-generated json string and push it as an object to GTM
         document.addEventListener('DOMContentLoaded', function () {
             document.addEventListener('click', function (e) {
-                const target = e.target.closest('[data-gov-event]');
+                const target = e.target.closest('[data-govg4-event]');
                 if (!target) return;
 
                 try {
-                    const rawPayload = target.getAttribute('data-gov-event');
+                    const rawPayload = target.getAttribute('data-govg4-event');
                     if (!rawPayload) return;
-
+build
                     const payload = JSON.parse(rawPayload);
                     window['dataLayer'] = window['dataLayer'] || [];
                     window['dataLayer'].push(payload);
                 } catch (err) {
-                    console.error('[GovAnalytics] Failed to parse data-gov-event payload:', err);
+                    console.error('[GovAnalytics] Failed to parse data-govg4-event payload:', err);
                 }
             });
         });

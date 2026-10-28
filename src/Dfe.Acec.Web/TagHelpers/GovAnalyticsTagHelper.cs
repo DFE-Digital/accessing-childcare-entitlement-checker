@@ -8,43 +8,48 @@ namespace Dfe.Acec.Web.TagHelpers;
 public abstract class GovTagHelperBase : TagHelper
 {
     [EditorRequired]
-    [HtmlAttributeName("gov-tool-name")]
+    [HtmlAttributeName("govg4-tool-name")]
     public string ToolName { get; set; } = string.Empty;
 
     [EditorRequired]
-    [HtmlAttributeName("gov-section")]
+    [HtmlAttributeName("govg4-section")]
     public string Section { get; set; } = string.Empty;
 
-    [HtmlAttributeName("gov-action")]
+    [HtmlAttributeName("govg4-action")]
     public string Action { get; set; } = string.Empty;
 
-    [HtmlAttributeName("gov-ui-text")]
+    [HtmlAttributeName("govg4-ui-text")]
     public string UiText { get; set; } = string.Empty;
 
-    [HtmlAttributeName("gov-type")]
+    [HtmlAttributeName("govg4-type")]
     public string Type { get; set; } = string.Empty;
 
-    [HtmlAttributeName("gov-metric-name")]
+    [HtmlAttributeName("govg4-metric-name")]
     public string? MetricName { get; set; }
 
-    [HtmlAttributeName("gov-metric-value")]
+    [HtmlAttributeName("govg4-metric-value")]
     public object? MetricValue { get; set; }
 
     protected abstract GovEventPayload ValidateAndCreatePayload();
 
     private static readonly JsonSerializerOptions
         _jsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
-    public override void Process(TagHelperContext context, TagHelperOutput output)
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
+        if (string.IsNullOrWhiteSpace(UiText))
+        {
+            var childContent = await output.GetChildContentAsync();
+            UiText = childContent.GetContent().Trim();
+        }
         if (string.IsNullOrWhiteSpace(Section))
         {
             throw new InvalidOperationException(
-                $"'{context.AllAttributes[0].Name}' requires 'gov-section'.");
+                $"'{context.AllAttributes[0].Name}' requires 'govg4-section'.");
         }
 
         var payload = ValidateAndCreatePayload();
         var json = JsonSerializer.Serialize(payload, payload.GetType(), _jsonOptions);
-        output.Attributes.SetAttribute("data-gov-event", json);
+        output.Attributes.SetAttribute("data-govg4-event", json);
 
         CleanupDom(output);
     }
@@ -52,18 +57,18 @@ public abstract class GovTagHelperBase : TagHelper
     private static void CleanupDom(TagHelperOutput output)
     {
         // Clean up helper attributes so they aren't rendered into the raw DOM
-        output.Attributes.RemoveAll("gov-select-content");
-        output.Attributes.RemoveAll("gov-form-response");
-        output.Attributes.RemoveAll("gov-form-error");
-        output.Attributes.RemoveAll("gov-tool-name");
-        output.Attributes.RemoveAll("gov-section");
-        output.Attributes.RemoveAll("gov-action");
-        output.Attributes.RemoveAll("gov-ui-text");
-        output.Attributes.RemoveAll("gov-type");
-        output.Attributes.RemoveAll("gov-outcome");
-        output.Attributes.RemoveAll("gov-response");
-        output.Attributes.RemoveAll("gov-metric-name");
-        output.Attributes.RemoveAll("gov-metric-value");
+        output.Attributes.RemoveAll("govg4-select-content");
+        output.Attributes.RemoveAll("govg4-form-response");
+        output.Attributes.RemoveAll("govg4-form-error");
+        output.Attributes.RemoveAll("govg4-tool-name");
+        output.Attributes.RemoveAll("govg4-section");
+        output.Attributes.RemoveAll("govg4-action");
+        output.Attributes.RemoveAll("govg4-ui-text");
+        output.Attributes.RemoveAll("govg4-type");
+        output.Attributes.RemoveAll("govg4-outcome");
+        output.Attributes.RemoveAll("govg4-response");
+        output.Attributes.RemoveAll("govg4-metric-name");
+        output.Attributes.RemoveAll("govg4-metric-value");
     }
 
     public class GovAnalyticsMissingParamaterException(string message) : InvalidOperationException( "[GovAnalytics] " + message);
