@@ -76,7 +76,9 @@ updates:
           - "minor"
 
   - package-ecosystem: "terraform"
-    directory: "/infra/terraform"
+    directories:
+      - "/infra/terraform"
+      - "/infra/terraform-domains"
     target-branch: "main"
     schedule:
       interval: "weekly"

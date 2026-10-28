@@ -164,6 +164,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "fd-service-custom-domain" {
   name                     = "${local.prefix}-fd-service-custom-domain"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
   host_name                = var.service_custom_domain
+  dns_zone_id              = try(data.azurerm_dns_zone.service-zone[0].id, null)
 
   tls {
     certificate_type = "ManagedCertificate"

@@ -92,12 +92,15 @@ playwright-i:
 # ---------------------------------------------------------------------------
 
 tf-i:
+	terraform -chdir=infra/terraform-domains init -input=false -backend=false -upgrade
 	terraform -chdir=infra/terraform init -input=false -backend=false -upgrade
 
 tf-f:
+	terraform -chdir=infra/terraform-domains fmt -recursive
 	terraform -chdir=infra/terraform fmt -recursive
 
 tf-v:
+	terraform -chdir=infra/terraform-domains validate
 	terraform -chdir=infra/terraform validate
 
 tf-d:

@@ -1,9 +1,12 @@
+# `service_custom_domain` and `service_domain_resource_group_name`
+# must be given the same values as in infra/terraform-domains/domains.tfvars.
 elz_environment                           = "Prod"
 environment_prefix                        = "p01"
 aspnetcore_environment                    = "Production"
 azure_frontdoor_sku                       = "Premium"
 education_custom_domain                   = "check-if-you-are-eligible-for-childcare-funding.education.gov.uk"
 service_custom_domain                     = "check-if-you-are-eligible-for-childcare-funding.service.gov.uk"
+service_domain_resource_group_name        = "s279p01rg-uks-cec-domains"
 waf_enable_managed_rules                  = true
 webapp_sku                                = "P1v3"
 webapp_zone_balancing                     = true

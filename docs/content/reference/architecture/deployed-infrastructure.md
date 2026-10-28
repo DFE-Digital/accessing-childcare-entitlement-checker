@@ -56,6 +56,8 @@ No modules.
 | [azurerm_cdn_frontdoor_security_policy.frontdoor-web-security-policy](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/resources/cdn_frontdoor_security_policy) | resource |
 | [azurerm_consumption_budget_resource_group.load_test_rg_budget](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/resources/consumption_budget_resource_group) | resource |
 | [azurerm_consumption_budget_resource_group.web_rg_budget](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/resources/consumption_budget_resource_group) | resource |
+| [azurerm_dns_a_record.service-apex](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/resources/dns_a_record) | resource |
+| [azurerm_dns_txt_record.service-apex-validation](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/resources/dns_txt_record) | resource |
 | [azurerm_linux_web_app.web-app-service](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/resources/linux_web_app) | resource |
 | [azurerm_linux_web_app_slot.staging](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/resources/linux_web_app_slot) | resource |
 | [azurerm_load_test.load_test](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/resources/load_test) | resource |
@@ -91,6 +93,7 @@ No modules.
 | [azurerm_user_assigned_identity.app_identity](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/resources/user_assigned_identity) | resource |
 | [azurerm_user_assigned_identity.frontdoor_identity](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/resources/user_assigned_identity) | resource |
 | [azurerm_client_config.client](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/data-sources/client_config) | data source |
+| [azurerm_dns_zone.service-zone](https://registry.terraform.io/providers/hashicorp/azurerm/5.10.0/docs/data-sources/dns_zone) | data source |
 
 ## Inputs
 
@@ -120,6 +123,7 @@ No modules.
 | <a name="input_log_analytics_retention_in_days"></a> [log\_analytics\_retention\_in\_days](#input\_log\_analytics\_retention\_in\_days) | The retention period in days for the Log Analytics workspace | `number` | n/a | yes |
 | <a name="input_redis_sku_name"></a> [redis\_sku\_name](#input\_redis\_sku\_name) | The SKU of the Managed Redis instance | `string` | `"Balanced_B1"` | no |
 | <a name="input_service_custom_domain"></a> [service\_custom\_domain](#input\_service\_custom\_domain) | Service custom front-door domain | `string` | `""` | no |
+| <a name="input_service_domain_resource_group_name"></a> [service\_domain\_resource\_group\_name](#input\_service\_domain\_resource\_group\_name) | Resource group of the Azure DNS zone for service\_custom\_domain. Empty skips DNS records. | `string` | `""` | no |
 | <a name="input_service_shuttered"></a> [service\_shuttered](#input\_service\_shuttered) | Whether the service is currently shuttered | `bool` | `false` | no |
 | <a name="input_waf_enable_managed_rules"></a> [waf\_enable\_managed\_rules](#input\_waf\_enable\_managed\_rules) | Enable managed rule sets in WAF | `bool` | `false` | no |
 | <a name="input_waf_mode"></a> [waf\_mode](#input\_waf\_mode) | The mode the WAF should be deployed in (Prevention or Detection) | `string` | `"Prevention"` | no |
