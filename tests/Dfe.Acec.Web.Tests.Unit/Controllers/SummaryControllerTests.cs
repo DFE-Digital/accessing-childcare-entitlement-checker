@@ -58,8 +58,6 @@ public class SummaryControllerTests : IDisposable
             .BuildServiceProvider()
             .GetRequiredService<IModelMetadataProvider>();
 
-        var validator = new JourneyStateValidator();
-
         _controller = new SummaryController(
             _journeyState,
             _journeySession,
