@@ -3,10 +3,7 @@ name: Domains Infrastructure
 on:
   push:
     branches:
-      - main
-    paths:
-      - infra/terraform-domains/**
-      - .github/workflows/workflow-domains.yml
+      - 'releases/**'
   pull_request:
     paths:
       - infra/terraform-domains/**
@@ -62,7 +59,7 @@ jobs:
   deploy:
     name: Deploy domains infrastructure
     needs: validate
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: startsWith(github.ref, 'refs/heads/releases/') && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment: production
     concurrency:
@@ -125,9 +122,20 @@ jobs:
             -backend-config="storage_account_name=${{ steps.tf-backend.outputs.storageAccountName }}"
 
       - name: Terraform Plan
-        run: terraform plan -no-color -out=domains.tfplan -var-file="domains.tfvars"
+        id: plan
+        run: |
+          set +e
+          terraform plan -no-color -detailed-exitcode -out=domains.tfplan -var-file="domains.tfvars"
+          EXIT_CODE=$?
+          set -e
+          # 0 = no changes, 1 = error, 2 = changes to apply
+          if [ "$EXIT_CODE" -eq 1 ]; then
+            exit 1
+          fi
+          echo "hasChanges=$([ "$EXIT_CODE" -eq 2 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
       - name: Terraform Apply
+        if: steps.plan.outputs.hasChanges == 'true'
         run: terraform apply -auto-approve domains.tfplan
 
       - name: Publish name servers
