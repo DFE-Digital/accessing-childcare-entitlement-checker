@@ -1,7 +1,9 @@
 using Dfe.Acec.Web.Services;
 using Dfe.Acec.Web.Validators;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,11 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
     protected override IHost CreateHost(IHostBuilder builder)
     {
         builder.UseEnvironment("Development");
+
+        // File versions are used for cachbusters on resources. (asp-append-version)
+        // Don't do this during tests - it blows a standard 256 inotify handler budget on linux.
+        builder.ConfigureServices(services =>
+            services.AddSingleton<IFileVersionProvider, UnversionedFileVersionProvider>());
         return base.CreateHost(builder);
     }
 
@@ -90,6 +97,11 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
         });
         webHost.ClientOptions.AllowAutoRedirect = false;
         return webHost;
+    }
+
+    private sealed class UnversionedFileVersionProvider : IFileVersionProvider
+    {
+        public string AddFileVersionToPath(PathString requestPathBase, string path) => path;
     }
 
     private sealed class TestJourneySession(JourneyState state) : IJourneySession
