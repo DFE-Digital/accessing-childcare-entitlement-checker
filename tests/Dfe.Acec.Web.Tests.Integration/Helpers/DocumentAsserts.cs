@@ -161,10 +161,10 @@ public static class DocumentAsserts
         // assert the GTM script loads
         Assert.NotNull(gtmScript);
 
-        // assert Listener for our tag helper 'data-gov-event' attribute loaded (and cover any refactor mistakes)
+        // assert Listener for our tag helper 'data-govg4-event' attribute loaded (and cover any refactor mistakes)
         Assert.Contains("DOMContentLoaded", gtmScript.TextContent);
         Assert.Contains("addEventListener('click'", gtmScript.TextContent); //make sure we are doing something on click
-        Assert.Contains("data-gov-event", gtmScript.TextContent); //make sure we are using the data-gov-event
+        Assert.Contains("data-govg4-event", gtmScript.TextContent); //make sure we are using the data-govg4-event
         Assert.Contains("JSON.parse", gtmScript.TextContent); //make sure we are parsing
         Assert.Contains("window['dataLayer'].push", gtmScript.TextContent); //make sure we are pushing to the datalayer
         return document;

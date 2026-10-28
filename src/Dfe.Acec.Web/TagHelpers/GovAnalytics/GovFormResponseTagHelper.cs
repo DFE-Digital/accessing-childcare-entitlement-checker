@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace Dfe.Acec.Web.TagHelpers.GovAnalytics;
 
 
-[HtmlTargetElement("button", Attributes = "gov-form-response")]
+[HtmlTargetElement("button", Attributes = "govg4-form-response")]
 public class GovFormResponseTagHelper : GovTagHelperBase
 {
     [EditorRequired]
-    [HtmlAttributeName("gov-response")]
+    [HtmlAttributeName("govg4-response")]
     public string Response { get; set; } = string.Empty;
 
     protected override GovEventPayload ValidateAndCreatePayload()
@@ -17,7 +17,7 @@ public class GovFormResponseTagHelper : GovTagHelperBase
         if (string.IsNullOrWhiteSpace(Response))
         {
             throw new GovAnalyticsMissingParamaterException(
-                "'gov-form-response' requires 'gov-response'.");
+                "'govg4-form-response' requires 'govg4-response'.");
         }
 
         return new FormResponseEvent
