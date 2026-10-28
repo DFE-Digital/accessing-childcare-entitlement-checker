@@ -3,7 +3,6 @@ using System.Text.Json;
 using Dfe.Acec.Web.TagHelpers;
 using Dfe.Acec.Web.TagHelpers.GovAnalytics;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using NSubstitute.Exceptions;
 
 namespace Dfe.Acec.Web.Tests.Unit.TagHelpers;
 
@@ -12,23 +11,27 @@ public class GovAnalyticsTagHelperTests
 {
     private static (TagHelperContext context, TagHelperOutput output) CreateTagHelperContextAndOutput(
         string tagName,
-        TagHelperAttributeList attributes)
+        TagHelperAttributeList attributes,
+        string innerText = "Default Button Text")
     {
         var context = new TagHelperContext(
             attributes,
             new Dictionary<object, object>(),
             Guid.NewGuid().ToString("N"));
 
+        var tagHelperContent = new DefaultTagHelperContent();
+        tagHelperContent.SetContent(innerText);
+
         var output = new TagHelperOutput(
             tagName,
             attributes,
-            getChildContentAsync: (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+            getChildContentAsync: (_, _) => Task.FromResult<TagHelperContent>(tagHelperContent));
 
         return (context, output);
     }
 
     [Fact]
-    public void SelectContentTagHelper_ThrowsException_WhenRequiredAttributesAreMissing()
+    public async Task SelectContentTagHelper_ThrowsException_WhenRequiredAttributesAreMissing()
     {
         // Arrange
         var tagHelper = new GovSelectContentTagHelper
@@ -40,21 +43,21 @@ public class GovAnalyticsTagHelperTests
 
         var attributes = new TagHelperAttributeList
         {
-            { "gov-select-content", null },
-            { "gov-tool-name", "childcare_eligibility_checker" },
-            { "gov-section", "children details" }
+            { "govg4-select-content", null },
+            { "govg4-tool-name", "childcare_eligibility_checker" },
+            { "govg4-section", "children details" }
         };
 
         var (context, output) = CreateTagHelperContextAndOutput("button", attributes);
 
         // Act & Assert
-        var exception = Assert.Throws<GovTagHelperBase.GovAnalyticsMissingParamaterException>(() => tagHelper.Process(context, output));
-        Assert.Contains("gov-select-content", exception.Message);
+        var exception = await Assert.ThrowsAsync<GovTagHelperBase.GovAnalyticsMissingParamaterException>(() => tagHelper.ProcessAsync(context, output));
+        Assert.Contains("govg4-select-content", exception.Message);
     }
 
 
     [Fact]
-    public void FormResponseTagHelper_ThrowsException_WhenResponseIsMissing()
+    public async Task FormResponseTagHelper_ThrowsException_WhenResponseIsMissing()
     {
         // Arrange
         var tagHelper = new GovFormResponseTagHelper
@@ -66,19 +69,19 @@ public class GovAnalyticsTagHelperTests
 
         var attributes = new TagHelperAttributeList
         {
-            { "gov-form-response", null },
-            { "gov-tool-name", "childcare_eligibility_checker" },
-            { "gov-section", "children details" }
+            { "govg4-form-response", null },
+            { "govg4-tool-name", "childcare_eligibility_checker" },
+            { "govg4-section", "children details" }
         };
 
         var (context, output) = CreateTagHelperContextAndOutput("button", attributes);
 
         // Act & Assert
-        Assert.Throws<GovTagHelperBase.GovAnalyticsMissingParamaterException>(() => tagHelper.Process(context, output));
+        await Assert.ThrowsAsync<GovTagHelperBase.GovAnalyticsMissingParamaterException>(() => tagHelper.ProcessAsync(context, output));
     }
 
     [Fact]
-    public void FormErrorTagHelper_ThrowsException_WhenResponseIsMissing()
+    public async Task FormErrorTagHelper_ThrowsException_WhenResponseIsMissing()
     {
         // Arrange
         var tagHelper = new GovFormErrorTagHelper()
@@ -90,15 +93,15 @@ public class GovAnalyticsTagHelperTests
 
         var attributes = new TagHelperAttributeList
         {
-            { "gov-form-response", null },
-            { "gov-tool-name", "childcare_eligibility_checker" },
-            { "gov-section", "children details" }
+            { "govg4-form-response", null },
+            { "govg4-tool-name", "childcare_eligibility_checker" },
+            { "govg4-section", "children details" }
         };
 
         var (context, output) = CreateTagHelperContextAndOutput("button", attributes);
 
         // Act & Assert
-        Assert.Throws<GovTagHelperBase.GovAnalyticsMissingParamaterException>(() => tagHelper.Process(context, output));
+        await Assert.ThrowsAsync<GovTagHelperBase.GovAnalyticsMissingParamaterException>(() => tagHelper.ProcessAsync(context, output));
     }
 
     private static (GovTagHelperBase concrete, TagHelperAttributeList inputAttributes, Dictionary<string, string> expectedProperties)
@@ -125,7 +128,7 @@ public class GovAnalyticsTagHelperTests
                 select.Action = "Add";
                 select.Type = "button";
                 expectedEventName = "select_content";
-                markerAttributeName = "gov-select-content";
+                markerAttributeName = "govg4-select-content";
                 break;
 
             case GovFormResponseTagHelper response:
@@ -133,7 +136,7 @@ public class GovAnalyticsTagHelperTests
                 response.Type = "form";
                 response.Response = "a response";
                 expectedEventName = "form_response";
-                markerAttributeName = "gov-form-response";
+                markerAttributeName = "govg4-form-response";
                 break;
 
             case GovFormErrorTagHelper error:
@@ -141,7 +144,7 @@ public class GovAnalyticsTagHelperTests
                 error.Type = "form";
                 error.Outcome = "an outcome message";
                 expectedEventName = "form_error";
-                markerAttributeName = "gov-form-error";
+                markerAttributeName = "govg4-form-error";
                 break;
 
             default:
@@ -152,12 +155,12 @@ public class GovAnalyticsTagHelperTests
         var inputAttributes = new TagHelperAttributeList
         {
             { markerAttributeName, null },
-            { "gov-tool-name", expectedModel.ToolName },
-            { "gov-section", expectedModel.Section },
-            { "gov-action", expectedModel.Action },
-            { "gov-ui-text", expectedModel.UiText },
-            { "gov-metric-name", expectedModel.MetricName },
-            { "gov-metric-value", expectedModel.MetricValue }
+            { "govg4-tool-name", expectedModel.ToolName },
+            { "govg4-section", expectedModel.Section },
+            { "govg4-action", expectedModel.Action },
+            { "govg4-ui-text", expectedModel.UiText },
+            { "govg4-metric-name", expectedModel.MetricName },
+            { "govg4-metric-value", expectedModel.MetricValue }
         };
 
 
@@ -178,11 +181,11 @@ public class GovAnalyticsTagHelperTests
         {
 
             case GovFormResponseTagHelper respModel:
-                inputAttributes.Add("gov-response", respModel.Response);
+                inputAttributes.Add("govg4-response", respModel.Response);
                 expectedPropertyMap.Add("response", respModel.Response);
                 break;
             case GovFormErrorTagHelper errModel:
-                inputAttributes.Add("gov-outcome", errModel.Outcome);
+                inputAttributes.Add("govg4-outcome", errModel.Outcome);
                 expectedPropertyMap.Add("outcome", errModel.Outcome);
                 break;
         }
@@ -194,7 +197,7 @@ public class GovAnalyticsTagHelperTests
     [InlineData(typeof(GovSelectContentTagHelper))]
     [InlineData(typeof(GovFormResponseTagHelper))]
     [InlineData(typeof(GovFormErrorTagHelper))]
-    public void TagHelperSerializesCorrectDataGovEventAndCleansUpAttributes(Type type)
+    public async Task TagHelperSerializesCorrectDataGovEventAndCleansUpAttributes(Type type)
     {
         // Arrange
         var (concrete, inputAttributes, expectedPropertyMap) = GetExpectedAttributes(type);
@@ -202,11 +205,11 @@ public class GovAnalyticsTagHelperTests
         var (context, output) = CreateTagHelperContextAndOutput("button", inputAttributes);
 
         // Act
-        concrete.Process(context, output);
+        await concrete.ProcessAsync(context, output);
 
         // Assert
-        // verify data-gov-event payload structure
-        var jsonAttribute = output.Attributes["data-gov-event"];
+        // verify data-govg4-event payload structure
+        var jsonAttribute = output.Attributes["data-govg4-event"];
         Assert.NotNull(jsonAttribute);
 
         using var jsonDoc = JsonDocument.Parse(jsonAttribute.Value.ToString()!);
@@ -227,7 +230,7 @@ public class GovAnalyticsTagHelperTests
             );
         }
 
-        // verify gov-* attributes were stripped
+        // verify govg4-* attributes were stripped
         foreach (var attr in expectedRemovedTags)
         {
             var attributeName = attr.Name;
@@ -238,6 +241,51 @@ public class GovAnalyticsTagHelperTests
                 $"Expected temporary attribute '{attributeName}' to be stripped from output, but it was retained."
             );
         }
+    }
+
+    [Fact]
+    public async Task Process_OmittedUiText_FallsBackToInnerHtml()
+    {
+        // Arrange: UiText is intentionally left null
+        var tagHelper = new GovSelectContentTagHelper
+        {
+            ToolName = "childcare_eligibility_checker",
+            Section = "applicant_details",
+            Action = "continue"
+        };
+
+        var inputAttributes = new TagHelperAttributeList
+        {
+            { "govg4-select-content", null },
+            { "govg4-tool-name", tagHelper.ToolName },
+            { "govg4-section", tagHelper.Section },
+            { "govg4-action", tagHelper.Action }
+        };
+
+        const string expectedButtonText = "Save and continue";
+        var (context, output) = CreateTagHelperContextAndOutput(
+            "button",
+            inputAttributes,
+            innerText: expectedButtonText
+        );
+
+        // Act
+        await tagHelper.ProcessAsync(context, output);
+
+        // Assert
+        var jsonAttr = output.Attributes["data-govg4-event"]?.Value?.ToString();
+        Assert.True(
+            jsonAttr is not null,
+            "Expected 'data-govg4-event' attribute to be emitted."
+        );
+
+        using var doc = JsonDocument.Parse(jsonAttr!);
+        var actualUiText = doc.RootElement.GetProperty("ui_text").GetString();
+
+        Assert.True(
+            expectedButtonText == actualUiText,
+            $"ui_text fallback mismatch. Expected '{expectedButtonText}', but found '{actualUiText}'."
+        );
     }
 
 }
