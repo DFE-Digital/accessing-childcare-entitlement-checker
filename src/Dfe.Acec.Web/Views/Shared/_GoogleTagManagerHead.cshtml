@@ -13,7 +13,7 @@
         });
     </script>
 
-    
+
     <!-- Google Tag Manager -->
     <script add-nonce="true">
         (function(w,d,s,l,i){
@@ -23,7 +23,7 @@
                 event: 'gtm.js'
             });
 
-            var f=d.getElementsByTagName(s)[0],
+            const f=d.getElementsByTagName(s)[0],
                 j=d.createElement(s),
                 dl=l!='dataLayer' ? '&l=' + l : '';
 
@@ -31,5 +31,26 @@
             j.src='https://www.googletagmanager.com/gtm.js?id=' + i + dl;
             f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','@Model');
+
+        // Listener for our tag helper 'data-govg4-event' attribute
+        // On any click, check if the clicked element (or any of its parent wrappers) has the data-govg4-event attribute
+        // take the pre-generated json string and push it as an object to GTM
+        document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('click', function (e) {
+                const target = e.target.closest('[data-govg4-event]');
+                if (!target) return;
+
+                try {
+                    const rawPayload = target.getAttribute('data-govg4-event');
+                    if (!rawPayload) return;
+build
+                    const payload = JSON.parse(rawPayload);
+                    window['dataLayer'] = window['dataLayer'] || [];
+                    window['dataLayer'].push(payload);
+                } catch (err) {
+                    console.error('[GovAnalytics] Failed to parse data-govg4-event payload:', err);
+                }
+            });
+        });
     </script>
 

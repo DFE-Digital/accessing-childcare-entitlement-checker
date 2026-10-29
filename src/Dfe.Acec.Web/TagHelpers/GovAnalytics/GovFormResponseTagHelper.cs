@@ -1,0 +1,35 @@
+using Dfe.Acec.Web.Models.Analytics;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+
+namespace Dfe.Acec.Web.TagHelpers.GovAnalytics;
+
+
+[HtmlTargetElement("button", Attributes = "govg4-form-response")]
+public class GovFormResponseTagHelper : GovTagHelperBase
+{
+    [EditorRequired]
+    [HtmlAttributeName("govg4-response")]
+    public string Response { get; set; } = string.Empty;
+
+    protected override GovEventPayload ValidateAndCreatePayload()
+    {
+        if (string.IsNullOrWhiteSpace(Response))
+        {
+            throw new GovAnalyticsMissingParamaterException(
+                "'govg4-form-response' requires 'govg4-response'.");
+        }
+
+        return new FormResponseEvent
+        {
+            ToolName = ToolName,
+            Section = Section,
+            Response = Response,
+            Action = string.IsNullOrWhiteSpace(Action) ? "submit" : Action,
+            UiText = string.IsNullOrWhiteSpace(UiText) ? "Continue" : UiText,
+            Type = string.IsNullOrWhiteSpace(Type) ? "form" : Type,
+            MetricName = MetricName,
+            MetricValue = MetricValue
+        };
+    }
+}
