@@ -63,6 +63,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<ICookiePolicyService, CookiePolicyService>();
         services.AddScoped<IValidator<JourneyState>, JourneyStateValidator>();
+
         return services;
     }
 

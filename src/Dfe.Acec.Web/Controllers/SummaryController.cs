@@ -32,10 +32,12 @@ public partial class SummaryController(
     private const string CheckAnswersChangeTextResource = "Views.Summary.CheckAnswers";
     private const string ChildCardChangeTextResource = "Views.Summary._ChildSummaryCard";
 
+    private readonly IncompleteChildHandler _incompleteChildHandler = new(journeyState, journeySession, journeyStateValidator);
+
     [HttpGet]
     public ViewResult CheckChildDetails(string? childId = null)
     {
-        var removedChildNames = CheckForIncompleteChildren();
+        var removedChildNames = _incompleteChildHandler.CheckForIncompleteChildren();
 
         return View(BuildCheckChildDetailsViewModel(childId, removedChildNames));
     }
@@ -43,27 +45,42 @@ public partial class SummaryController(
     [HttpPost]
     public IActionResult CheckChildDetails(CheckChildDetailsSubmitModel model)
     {
-        if (model.CorrelationId == journeyState.CorrelationId)
+        if (model.CorrelationId != journeyState.CorrelationId)
         {
-            var result = journeyStateValidator.Validate(journeyState, options => options.IncludeRuleSets(JourneyStateValidator.CheckChildDetailsRuleSet));
-            if (result.IsValid)
-            {
-                return RedirectToAction(nameof(UserController.UserAge), UserController.Name);
-            }
+            LogCorrelationIdMismatch();
+            Response.StatusCode = 400;
+            return View(StateMismatchView);
+        }
 
+        var result = journeyStateValidator.Validate(journeyState, options => options.IncludeRuleSets(JourneyStateValidator.CheckChildDetailsRuleSet));
+
+        if (!result.IsValid)
+        {
             ModelState.AddValidationErrors(result);
             return View(BuildCheckChildDetailsViewModel());
         }
 
-        LogCorrelationIdMismatch();
-        Response.StatusCode = 400;
-        return View(StateMismatchView);
+        if (journeyState.JourneyMode == JourneyMode.ChangeChildDetails)
+        {
+            journeyState.JourneyMode = JourneyMode.Normal;
+            journeySession.SetState(journeyState);
+
+            return RedirectToAction(nameof(CheckAnswers));
+        }
+
+        return RedirectToAction(nameof(UserController.UserAge), UserController.Name);
     }
 
     [HttpGet]
     public async Task<IActionResult> CheckAnswers(string? fromChildId = null)
     {
-        var removedChildNames = CheckForIncompleteChildren();
+        if (journeyState.JourneyMode != JourneyMode.Normal)
+        {
+            journeyState.JourneyMode = JourneyMode.Normal;
+            journeySession.SetState(journeyState);
+        }
+
+        var removedChildNames = _incompleteChildHandler.CheckForIncompleteChildren();
 
         return View(await BuildCheckAnswersViewModel(fromChildId, removedChildNames));
     }
@@ -127,42 +144,11 @@ public partial class SummaryController(
         return this.RedirectToReturnTo(model.ReturnTo);
     }
 
-    private List<string> CheckForIncompleteChildren()
-    {
-        var removedChildNames = new List<string>();
-
-        var result = journeyStateValidator.Validate(journeyState, options => options.IncludeRuleSets(JourneyStateValidator.CheckChildDetailsRuleSet));
-
-        if (!result.IsValid)
-        {
-            var invalidChildIds = result.Errors
-                .Select(error => error.CustomState)
-                .OfType<string>()
-                .Distinct()
-                .ToList();
-
-            var invalidChildren = journeyState.Children
-                .Where(x => invalidChildIds.Contains(x.Key))
-                .ToList();
-
-            removedChildNames = [.. invalidChildren.Select(x => x.Value.Name)];
-
-            foreach (var child in invalidChildren)
-            {
-                journeyState.Children.Remove(child.Key);
-            }
-
-            journeySession.SetState(journeyState);
-        }
-
-        return removedChildNames;
-    }
-
     private CheckChildDetailsViewModel BuildCheckChildDetailsViewModel(string? childId = null, IReadOnlyList<string>? removedChildNames = null)
     {
         var summaries = journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckChildDetails)).ToList().AsReadOnly();
         var hasChildren = journeyState.Children.Count > 0;
-        var lastEditedChild = ResolveLastEditedChild(journeyState, childId);
+        var lastEditedChild = journeyState.Children.ResolveLastEditedChild(childId);
         var backLink = GetCheckChildDetailsBackLink(lastEditedChild);
         return new CheckChildDetailsViewModel(summaries, hasChildren, lastEditedChild, backLink, journeyState.CorrelationId, removedChildNames ?? []);
     }
@@ -171,7 +157,7 @@ public partial class SummaryController(
     {
         var summaries = journeyState.Children.Values.Select(child => ChildSummaryViewModelFactory(child, ReturnTo.CheckAnswers)).ToList().AsReadOnly();
         var hasChildren = journeyState.Children.Count > 0;
-        var lastEditedChild = ResolveLastEditedChild(journeyState, fromChildId);
+        var lastEditedChild = journeyState.Children.ResolveLastEditedChild(fromChildId);
 
         var homeBuilder = new SummaryRowFactory(
             MetadataProvider,
@@ -245,16 +231,6 @@ public partial class SummaryController(
         return new ChildSummaryViewModel(child.ChildId, child.Name, returnTo, summaryRows);
     }
 
-    private static Child? ResolveLastEditedChild(JourneyState journeyState, string? childId)
-    {
-        if (childId is not null && journeyState.Children.TryGetValue(childId, out var child))
-        {
-            return child;
-        }
-
-        return journeyState.Children.Values.LastOrDefault();
-    }
-
     private string GetCheckChildDetailsBackLink(Child? child)
     {
         if (child?.BirthStatus == BirthStatus.Born)
@@ -288,5 +264,33 @@ public partial class SummaryController(
         }
 
         return Url.ActionOrThrow(nameof(UserController.HasPartner), UserController.Name);
+    }
+
+    [HttpGet]
+    public IActionResult ChangeChildAnswer(string targetController, string targetAction, string childId)
+    {
+        if (!journeyState.Children.TryGetValue(childId, out var child))
+        {
+            return RedirectToAction(nameof(CheckAnswers));
+        }
+
+        if (!ChildChangeDestinationValidator.IsValid(child.BirthStatus, targetController, targetAction))
+        {
+            return RedirectToAction(nameof(CheckAnswers));
+        }
+
+        journeyState.JourneyMode = JourneyMode.ChangeChildDetails;
+        journeySession.SetState(journeyState);
+
+        return RedirectToAction(targetAction, targetController, new { childId, returnTo = ReturnTo.CheckAnswers });
+    }
+
+    [HttpGet]
+    public IActionResult AddChild()
+    {
+        journeyState.JourneyMode = JourneyMode.ChangeChildDetails;
+        journeySession.SetState(journeyState);
+
+        return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name, new { returnTo = ReturnTo.CheckAnswers });
     }
 }

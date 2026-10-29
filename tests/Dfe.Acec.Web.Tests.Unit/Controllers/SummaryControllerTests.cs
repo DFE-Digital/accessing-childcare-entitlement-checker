@@ -395,5 +395,79 @@ public class SummaryControllerTests : IDisposable
         Assert.Equal(400, controller.Response.StatusCode);
     }
 
+    [Fact]
+    public void ChangeChildAnswerSetsJourneyModeAndRedirects()
+    {
+        const string targetController = BornChildDetailsController.Name;
+        const string targetAction = nameof(BornChildDetailsController.ChildBirthDate);
+
+        var result = Assert.IsType<RedirectToActionResult>(_controller.ChangeChildAnswer(targetController, targetAction, ChildId));
+
+        Assert.Equal(JourneyMode.ChangeChildDetails, _journeyState.JourneyMode);
+
+        _journeySession.Received(1).SetState(_journeyState);
+
+        Assert.Equal(targetController, result.ControllerName);
+        Assert.Equal(targetAction, result.ActionName);
+        Assert.Equal(ChildId, result.RouteValues!["childId"]);
+        Assert.Equal(ReturnTo.CheckAnswers, result.RouteValues["returnTo"]);
+    }
+
+    [Fact]
+    public void AddChildSetsJourneyModeAndRedirectsToChildName()
+    {
+        var result = Assert.IsType<RedirectToActionResult>(_controller.AddChild());
+
+        Assert.Equal(JourneyMode.ChangeChildDetails, _journeyState.JourneyMode);
+
+        _journeySession.Received(1).SetState(_journeyState);
+
+        Assert.Equal(nameof(IntroductionController.ChildName), result.ActionName);
+        Assert.Equal(IntroductionController.Name, result.ControllerName);
+        Assert.Equal(ReturnTo.CheckAnswers, result.RouteValues!["returnTo"]);
+    }
+
+    [Fact]
+    public void CheckChildDetailsPostRedirectsToCheckAnswersWhenChangingChildDetails()
+    {
+        _journeyState.JourneyMode = JourneyMode.ChangeChildDetails;
+
+        var model = new CheckChildDetailsSubmitModel(_journeyState.CorrelationId);
+
+        var result = Assert.IsType<RedirectToActionResult>(_controller.CheckChildDetails(model));
+
+        Assert.Equal(nameof(SummaryController.CheckAnswers), result.ActionName);
+
+        Assert.Equal(JourneyMode.Normal, _journeyState.JourneyMode);
+
+        _journeySession.Received(1).SetState(_journeyState);
+    }
+
+    [Fact]
+    public async Task CheckAnswersGetResetsJourneyMode()
+    {
+        _journeyState.HasPartner = false;
+        _journeyState.JourneyMode = JourneyMode.ChangeChildDetails;
+
+        var result = await _controller.CheckAnswers();
+
+        Assert.IsType<ViewResult>(result);
+
+        Assert.Equal(JourneyMode.Normal, _journeyState.JourneyMode);
+
+        _journeySession.Received(1).SetState(_journeyState);
+    }
+
+    [Fact]
+    public async Task CheckAnswersGetDoesNotPersistWhenJourneyModeIsAlreadyNormal()
+    {
+        _journeyState.HasPartner = false;
+        _journeyState.JourneyMode = JourneyMode.Normal;
+
+        await _controller.CheckAnswers();
+
+        _journeySession.DidNotReceive().SetState(_journeyState);
+    }
+
     public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
 }

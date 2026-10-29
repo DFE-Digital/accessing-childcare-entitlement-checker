@@ -69,6 +69,8 @@ public class JourneyState
 
     public ChildcareVoucherReceiptOption? PartnerChildcareVoucherReceipt { get; set; }
 
+    public JourneyMode JourneyMode { get; set; } = JourneyMode.Normal;
+
     public void Apply(LocationViewModel model)
     {
         CountryOfResidence = model.Country;
