@@ -32,6 +32,19 @@
             f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','@Model');
 
+        //impressions listener
+        document.querySelectorAll('[data-gov-event]').forEach(function (el) {
+            try {
+                const payload = JSON.parse(el.getAttribute('data-gov-event'));
+                if (payload && payload.event_name === 'view_item_list') {
+                    window['dataLayer'] = window['dataLayer'] || [];
+                    window['dataLayer'].push(payload);
+                }
+            } catch (err) {
+                console.error('[GovAnalytics] Failed to parse impression payload:', err);
+            }
+        });
+
         // Listener for our tag helper 'data-govg4-event' attribute
         // On any click, check if the clicked element (or any of its parent wrappers) has the data-govg4-event attribute
         // take the pre-generated json string and push it as an object to GTM
