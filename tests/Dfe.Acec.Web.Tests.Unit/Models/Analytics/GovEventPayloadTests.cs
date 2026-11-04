@@ -29,7 +29,7 @@ public class GovEventPayloadTests
         // Assert
         using var jsonDoc = JsonDocument.Parse(json);
         var root = jsonDoc.RootElement;
-            //test the mappings are the json names
+        //test the mappings are the json names
         Assert.Equal("gov_event", root.GetProperty("event").GetString());
         Assert.Equal("select_content", root.GetProperty("event_name").GetString());
         Assert.Equal("childcare_eligibility_checker", root.GetProperty("tool_name").GetString());
@@ -37,7 +37,7 @@ public class GovEventPayloadTests
         Assert.Equal("add child", root.GetProperty("action").GetString());
         Assert.Equal("Add a Child", root.GetProperty("ui_text").GetString());
 
-            // optional metrics must not be present in JSON output
+        // optional metrics must not be present in JSON output
         Assert.False(root.TryGetProperty("metric_name", out _));
         Assert.False(root.TryGetProperty("metric_value", out _));
     }
@@ -62,7 +62,7 @@ public class GovEventPayloadTests
         // Assert
         using var jsonDoc = JsonDocument.Parse(json);
         var root = jsonDoc.RootElement;
-            //test the mappings are the json names
+        //test the mappings are the json names
         Assert.Equal("gov_event", root.GetProperty("event").GetString());
         Assert.Equal("form_error", root.GetProperty("event_name").GetString());
         Assert.Equal("Select if you have a partner", root.GetProperty("outcome").GetString());

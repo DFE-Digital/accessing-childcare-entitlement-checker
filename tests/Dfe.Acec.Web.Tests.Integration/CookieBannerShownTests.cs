@@ -10,9 +10,9 @@ public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixt
 {
 
     [Theory]
-    [InlineData("cookie_policy=enabled", false,true)] //Consent given: No banner, Include GTM code
-    [InlineData("cookie_policy=disabled", false,false)] // Consent NOT given, No banner, DON'T include GTM code
-    [InlineData(null, true,false)] // no cookie set, show the banner,  DON'T include GTM code
+    [InlineData("cookie_policy=enabled", false, true)] //Consent given: No banner, Include GTM code
+    [InlineData("cookie_policy=disabled", false, false)] // Consent NOT given, No banner, DON'T include GTM code
+    [InlineData(null, true, false)] // no cookie set, show the banner,  DON'T include GTM code
     public async Task CookieControlsBannerAndGtmScript(string? cookieHeader, bool expectBanner, bool expectGtm)
     {
         var sessionRequiredEndpoints = GetCookieBannerRequiredEndpoints();
@@ -60,7 +60,7 @@ public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixt
                 document.AssertNoCookieBanner();
             }
 
-            if(expectGtm)
+            if (expectGtm)
             {
                 document.AssertGtmTagCodePresent();
             }
