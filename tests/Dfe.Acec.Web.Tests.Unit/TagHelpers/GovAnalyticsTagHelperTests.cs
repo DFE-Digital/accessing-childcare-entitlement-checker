@@ -104,7 +104,7 @@ public class GovAnalyticsTagHelperTests
         await Assert.ThrowsAsync<GovTagHelperBase.GovAnalyticsMissingParamaterException>(() => tagHelper.ProcessAsync(context, output));
     }
 
-    private static (GovTagHelperBase concrete, TagHelperAttributeList inputAttributes, Dictionary<string, string> expectedProperties)
+    private static (GovTagHelperBase concrete, TagHelperAttributeList inputAttributes, Dictionary<string, object> expectedProperties)
         GetExpectedAttributes(Type type)
     {
         if (Activator.CreateInstance(type) is not GovTagHelperBase expectedModel)
@@ -118,8 +118,8 @@ public class GovAnalyticsTagHelperTests
         expectedModel.MetricName = "count";
         expectedModel.MetricValue = 2;
 
-        string? expectedEventName = null;
-        string? markerAttributeName = null;
+        string? expectedEventName;
+        string? markerAttributeName;
 
         // Type-specific model, markers, names
         switch (expectedModel)
@@ -164,16 +164,16 @@ public class GovAnalyticsTagHelperTests
         };
 
 
-        var expectedPropertyMap = new Dictionary<string, string>
+        var expectedPropertyMap = new Dictionary<string, object>
         {
             { "event", "gov_event" },
-            { "event_name", expectedEventName! },
+            { "event_name", expectedEventName },
             { "tool_name", expectedModel.ToolName },
             { "section", expectedModel.Section },
             { "action", expectedModel.Action },
             { "ui_text", expectedModel.UiText },
             { "metric_name", expectedModel.MetricName },
-           // { "metric_value", expectedModel.MetricValue.ToString()! }
+            { "metric_value", expectedModel.MetricValue }
         };
 
         // type specific attributes and expected properties
@@ -222,11 +222,11 @@ public class GovAnalyticsTagHelperTests
                 $"JSON payload on {type.Name} is missing the expected property '{propertyName}'."
             );
 
-            var actualValue = propertyElement.GetString();
-
+            var actualValueAsStr = propertyElement.ToString();
+            var expectedValueAsStr = expectedValue.ToString();
             Assert.True(
-                expectedValue == actualValue,
-                $"JSON property '{propertyName}' mismatch on {type.Name}. Expected '{expectedValue}', but found '{actualValue}'."
+                actualValueAsStr == expectedValueAsStr,
+                $"JSON property '{propertyName}' mismatch on {type.Name}. Expected '{expectedValue}', but found '{actualValueAsStr}'."
             );
         }
 
@@ -279,7 +279,7 @@ public class GovAnalyticsTagHelperTests
             "Expected 'data-govg4-event' attribute to be emitted."
         );
 
-        using var doc = JsonDocument.Parse(jsonAttr!);
+        using var doc = JsonDocument.Parse(jsonAttr);
         var actualUiText = doc.RootElement.GetProperty("ui_text").GetString();
 
         Assert.True(
