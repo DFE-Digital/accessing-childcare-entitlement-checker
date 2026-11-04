@@ -56,7 +56,6 @@
                 try {
                     const rawPayload = target.getAttribute('data-govg4-event');
                     if (!rawPayload) return;
-build
                     const payload = JSON.parse(rawPayload);
                     window['dataLayer'] = window['dataLayer'] || [];
                     window['dataLayer'].push(payload);
