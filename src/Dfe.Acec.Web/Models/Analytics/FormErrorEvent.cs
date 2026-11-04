@@ -7,10 +7,14 @@ namespace Dfe.Acec.Web.Models.Analytics;
 /// Based on Gov.Uk GA4 naming conventions, with sensible defaults
 /// Reference: https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/?#form-events
 /// </summary>
-public sealed record FormErrorEvent(string UiText = "Continue",
-                                    string Action = "error",
-                                    string Type = "contact") : GovEventPayload
+public sealed record FormErrorEvent : GovEventPayload
 {
+    public FormErrorEvent()
+    {
+        UiText = "Continue";
+        Action = "error";
+        Type = "contact";
+    }
     public override string EventName => "form_error";
 
     [JsonPropertyName("outcome")]
