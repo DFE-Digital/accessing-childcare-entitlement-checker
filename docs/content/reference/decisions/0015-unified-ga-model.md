@@ -21,7 +21,7 @@ Without a standardized front-end data contract, tracking new interaction events 
 - **Developer Experience & Maintainability**: A single, predictable ASP.NET Core Tag Helper contract (`govg4-*` / `data-gov-event`) reduces cognitive load and enforces PII safety at compile time.
 - **Alignment with GDS Standards**: Aligning directly with established [GOV.UK GA4 implementation guidelines](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/) ensures consistent reporting across government services.
 - **Analytics Stability**: Decoupling immutable backend join keys (`action`) from localized, presentational copy (`ui_text`) prevents content updates from breaking analytics dashboards and BigQuery queries.
-
+- **Generic Names**: Wherever possible we have chosen generic names (e.g. metric_name: impression) over specific ones, instead relying on a combination of parameters to drill down into specific data. This allows for more flexibility with how our Data Analyst can use the data 
 ## Considered options
 
 1. **Option 1: Ad-hoc GTM triggers per interaction type**  
@@ -55,8 +55,8 @@ The base JSON payload structure (`GovEventPayload`) contains the following prope
 | `items` | `array` | Optional array of cut-back GA4 item objects (`item_id`, `item_name`) for top-level list impressions. |
 | `method` | `string` | GOV.UK sub-channel mechanism identifier (omitted by default). |
 | `search_term` | `string` | On-site search query string (omitted by default). |
-| `percent_scrolled` | `string` | Scroll depth tracking percentage (omitted by default). |
-
+| `percent_scrolled` | `string` | Scroll depth tracking percentage (added by GTM "Scroll Depth"). |
+| `clarity_session_id` | `string` | The specific session id provided by clarity in "window.clarity.getSessionId()", included to help analysts link up GA4 data with Clairty Data  |
 ---
 
 ### Item Object Schema (Cut-back GA4 Standard)
@@ -69,6 +69,36 @@ When tracking array-based impressions (e.g., `view_item_list`), the `items` prop
 *(Note: Positional properties like `index` are intentionally omitted to avoid data fragmentation and noise in standard results reporting).*
 
 ---
+### Naming convention / guidance
+
+#### General advice
+- Snake case will be used, in line with GA standards
+- Prefer generic to specific
+- Avoid dynamic names
+
+#### event_name
+Wherever possible the event name will re-use and existing GOV standard and if that doesnt exist, use a GA standard, because
+- This is in line with the Gov approach
+- Using these standard terms will make it easier to understand for those already familiar
+- Using the standard events most likely has deeper meaning to GA allowing for better dashboards
+  
+##### Example `view_item_list`
+Comes from the [GovUK Events Page](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#search-events) and this is based on [GA recommended events](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=805636615090646734-EU&client_type=gtag#view_item_list)
+
+As a standard "result list" type event and structure. Creating our own event name here might seem more inuitive to us now, but might cost us in the long run.
+
+#### metric_name
+Should be kept as generic as possible and never dynamic so instead of
+`children_count_for_x_session` we simply use `children_count`
+and instead of
+`impression_EligibleForTaxFreeChildcare` we simple use `impression`
+
+Because we can use combination of parameters to drill down into specific data, overly specific names here would reduce the flexibility with how our Data Analyst can use the data AND create more maintance issues with the dashboards.
+
+### Metric guidance
+Remember that if you have 2 tagged items shown, they will have their own event, which GA will add up itself, so for example "1" is a sensible metric value for essentially all impression events to avoid double counting
+
+---
 
 ### Parameter Taxonomy Matrix
 
@@ -77,7 +107,7 @@ When tracking array-based impressions (e.g., `view_item_list`), the `items` prop
 | **event** | Universal GTM Trigger | `gov_event` | `gov_event` | `gov_event` | `gov_event` | Internal GTM Trigger Pattern |
 | **event_name** | Standard GA4 Event Name | `select_content` | `view_item_list` | `form_response` | `form_error` | [GA4 Standard Events](https://support.google.com/analytics/answer/13316687) / [GOV.UK Form Events](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#form-events) |
 | **type** | GOV.UK Component Type | `button` | `card` | `contact` | `contact` | [GOV.UK Naming Conventions](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#govuk-ga4-naming-conventions) |
-| **action** | GOV.UK Action Type / Immutable Key | `add child` | `EligibleForTaxFreeChildcare` | `submit` | `error` | [GOV.UK Naming Conventions](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#govuk-ga4-naming-conventions) |
+| **action** | GOV.UK Action Type / Immutable Key | `add child` | `eligible_for_tax_free_childcare` | `submit` | `error` | [GOV.UK Naming Conventions](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#govuk-ga4-naming-conventions) |
 | **ui_text** | UI Label / Button Text | `Add Child` | `Tax-Free Childcare` | `Continue` | `Continue` | [GOV.UK Form Events](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#form-events) |
 | **section** | Form / Question Context | `children details` | `results_details` | `How old is X` | `How old is X` | [GOV.UK Form Events](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#form-events) |
 | **tool_name** | Overall Form Identifier | `childcare_eligibility_checker` | `childcare_eligibility_checker` | `childcare_eligibility_checker` | `childcare_eligibility_checker` | [GOV.UK Form Events](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#form-events) |
@@ -89,6 +119,7 @@ When tracking array-based impressions (e.g., `view_item_list`), the `items` prop
 | **search_term** | GOV.UK On-site Search Term | `[omit]` | `[omit]` | `[omit]` | `[omit]` | [GOV.UK Naming Conventions](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#govuk-ga4-naming-conventions) |
 | **percent_scrolled**| GOV.UK Scroll Depth Percentage | `[omit]` | `[omit]` | `[omit]` | `[omit]` | [GOV.UK Naming Conventions](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#govuk-ga4-naming-conventions) |
 | **items** | GOV.UK "Result" Items Array | `[omit]` | `[{"item_id": "TaxFreeChildcare", "item_name": "Tax-Free Childcare"}]` | `[omit]` | `[omit]` | [GOV.UK Ecommerce Events](https://docs.data-community.publishing.service.gov.uk/analysis/govuk-ga4/understand-govuk-ga4/#ecommerce-events) |
+| **clarity_session_id** | Clarity documentation/their package | 123 | 123 | 123 | 123 |  https://github.com/microsoft/clarity/blob/b5e0944ef053be9b6ce4faeee6dacf37b206e724/packages/clarity-js/src/data/metadata.ts#L119 & https://learn.microsoft.com/en-us/clarity/setup-and-installation/identify-api  |
 
 ---
 
