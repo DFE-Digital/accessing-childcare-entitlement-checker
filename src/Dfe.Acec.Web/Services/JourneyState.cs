@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.BornChildDetails;
 using Dfe.Acec.Web.Models.ExpectedChildDetails;
@@ -70,6 +71,12 @@ public class JourneyState
     public ChildcareVoucherReceiptOption? PartnerChildcareVoucherReceipt { get; set; }
 
     public JourneyMode JourneyMode { get; set; } = JourneyMode.Normal;
+
+    public bool RequiresPartnerNationality()
+    {
+        return !NationalityOptions.IsBritishOrIrishCitizen() &&
+               SettledStatus != SettledStatusOption.Yes;
+    }
 
     public void Apply(LocationViewModel model)
     {

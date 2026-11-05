@@ -293,4 +293,13 @@ public partial class SummaryController(
 
         return RedirectToAction(nameof(IntroductionController.ChildName), IntroductionController.Name, new { returnTo = ReturnTo.CheckAnswers });
     }
+
+    [HttpGet]
+    public IActionResult ChangeUserAnswer(string changeController, string changeAction)
+    {
+        journeyState.JourneyMode = JourneyMode.ChangeUserDetails;
+        journeySession.SetState(journeyState);
+
+        return RedirectToAction(changeAction, changeController, new { returnTo = ReturnTo.CheckAnswers });
+    }
 }

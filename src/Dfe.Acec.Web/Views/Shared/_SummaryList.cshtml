@@ -1,10 +1,14 @@
 @using Dfe.Acec.Web.Models.Summary
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-@model IEnumerable<SummaryRowViewModel>
+@model SummaryListViewModel
+
+@{
+    var isUserDetails = ViewData["IsUserDetails"] is true;
+}
 
 <govuk-summary-list>
-    @foreach (var row in Model)
+    @foreach (var row in Model.Rows)
     {
         <govuk-summary-list-row>
             <govuk-summary-list-row-key>@Localizer[row.Key]</govuk-summary-list-row-key>
@@ -23,13 +27,28 @@
                 </govuk-summary-list-row-value>
             }
             <govuk-summary-list-row-actions>
-                <govuk-summary-list-row-action
-                    asp-controller="@row.ChangeController"
-                    asp-action="@row.ChangeAction"
-                    asp-route-returnTo="@ReturnTo.CheckAnswers"
-                    visually-hidden-text="@row.ChangeText">
-                    @Localizer["Change"]
-                </govuk-summary-list-row-action>
+                @if (Model.IsUserDetails)
+                {
+                    <govuk-summary-list-row-action
+                        asp-controller="Summary"
+                        asp-action="ChangeUserAnswer"
+                        asp-route-changeController="@row.ChangeController"
+                        asp-route-changeAction="@row.ChangeAction"
+                        asp-route-returnTo="@ReturnTo.CheckAnswers"
+                        visually-hidden-text="@row.ChangeText">
+                        @Localizer["Change"]
+                    </govuk-summary-list-row-action>
+                }
+                else
+                {
+                    <govuk-summary-list-row-action
+                        asp-controller="@row.ChangeController"
+                        asp-action="@row.ChangeAction"
+                        asp-route-returnTo="@ReturnTo.CheckAnswers"
+                        visually-hidden-text="@row.ChangeText">
+                        @Localizer["Change"]
+                    </govuk-summary-list-row-action>
+                }
             </govuk-summary-list-row-actions>
         </govuk-summary-list-row>
     }

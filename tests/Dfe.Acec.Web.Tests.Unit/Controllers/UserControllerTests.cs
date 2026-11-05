@@ -196,6 +196,31 @@ public class UserControllerTests : IDisposable
         _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
+    [Fact]
+    public void HasPartnerWhenNationalityChangesAndPartnerNationalityIsMissingRedirectsToPartnerAge()
+    {
+
+        _journeyState.JourneyMode = JourneyMode.ChangeUserDetails;
+        _journeyState.HasPartner = true;
+        _journeyState.NationalityOptions = [NationalityOption.CitizenOfADifferentCountry];
+        _journeyState.SettledStatus = SettledStatusOption.No;
+        _journeyState.PartnerNationalityOptions = [];
+
+        var model = new HasPartnerViewModel
+        {
+            HasPartner = true
+        };
+
+        var result = _controller.HasPartner(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+
+        Assert.Equal(nameof(PartnerController.PartnerAge), redirect.ActionName);
+        Assert.Equal(PartnerController.Name, redirect.ControllerName);
+    }
+
+
+
     [Theory]
     [InlineData(SettledStatusOption.Yes, null, nameof(UserController.PaidWork))]
     [InlineData(SettledStatusOption.No, null, nameof(UserController.PaidWork))]

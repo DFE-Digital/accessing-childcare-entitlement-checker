@@ -469,5 +469,21 @@ public class SummaryControllerTests : IDisposable
         _journeySession.DidNotReceive().SetState(_journeyState);
     }
 
+    [Fact]
+    public void ChangeUserAnswerSetsJourneyModeAndRedirects()
+    {
+        const string changeController = UserController.Name;
+        const string changeAction = nameof(UserController.UserAge);
+
+        var result = Assert.IsType<RedirectToActionResult>(_controller.ChangeUserAnswer(changeController, changeAction));
+
+        Assert.Equal(JourneyMode.ChangeUserDetails, _journeyState.JourneyMode);
+
+        _journeySession.Received(1).SetState(_journeyState);
+
+        Assert.Equal(changeController, result.ControllerName);
+        Assert.Equal(changeAction, result.ActionName);
+    }
+
     public void Dispose() { _controller.Dispose(); GC.SuppressFinalize(this); }
 }

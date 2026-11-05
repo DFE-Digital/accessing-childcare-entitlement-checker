@@ -65,12 +65,12 @@
             </div>
 
             <h2 class="govuk-heading-m">@Localizer["Heading_UserDetails"]</h2>
-            <partial name="_SummaryList" model="Model.UserDetails" />
+            <partial name="_SummaryList" model="new SummaryListViewModel(Model.UserDetails, true)" />
 
             @if (Model.PartnerDetails.Any())
             {
                 <h2 class="govuk-heading-m">@Localizer["Heading_PartnerDetails"]</h2>
-                <partial name="_SummaryList" model="Model.PartnerDetails" />
+                <partial name="_SummaryList" model="new SummaryListViewModel(Model.PartnerDetails)" />
             }
 
             <p class="govuk-body">@Localizer["Info_ContinueToResults"]</p>
