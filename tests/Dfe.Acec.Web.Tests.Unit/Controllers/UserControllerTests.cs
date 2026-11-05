@@ -219,6 +219,51 @@ public class UserControllerTests : IDisposable
         Assert.Equal(PartnerController.Name, redirect.ControllerName);
     }
 
+    [Fact]
+    public void HasPartnerChangeJourneyFromNoToYesRedirectsToPartnerAge()
+    {
+
+        _journeyState.JourneyMode = JourneyMode.ChangeUserDetails;
+        _journeyState.HasPartner = false;
+
+
+        var model = new HasPartnerViewModel
+        {
+            HasPartner = true
+        };
+
+        var result = _controller.HasPartner(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+
+        Assert.Equal(nameof(PartnerController.PartnerAge), redirect.ActionName);
+        Assert.Equal(PartnerController.Name, redirect.ControllerName);
+
+        Assert.True(_journeyState.HasPartner);
+        _journeySession.Received(1).SetState(_journeyState);
+    }
+
+    [Fact]
+    public void HasPartnerChangeJourneyWhenAnswerRemainsYesRedirectsToCheckAnswers()
+    {
+        _journeyState.JourneyMode = JourneyMode.ChangeUserDetails;
+        _journeyState.HasPartner = true;
+        _journeyState.NationalityOptions = [NationalityOption.BritishOrIrishCitizen];
+
+        var model = new HasPartnerViewModel
+        {
+            HasPartner = true
+        };
+
+        var result = _controller.HasPartner(model);
+
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+
+        Assert.Equal(nameof(SummaryController.CheckAnswers), redirect.ActionName);
+        Assert.Equal(SummaryController.Name, redirect.ControllerName);
+
+        _journeySession.Received(1).SetState(_journeyState);
+    }
 
 
     [Theory]

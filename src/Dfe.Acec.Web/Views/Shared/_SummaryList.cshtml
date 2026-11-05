@@ -3,10 +3,6 @@
 @inject IViewLocalizer Localizer
 @model SummaryListViewModel
 
-@{
-    var isUserDetails = ViewData["IsUserDetails"] is true;
-}
-
 <govuk-summary-list>
     @foreach (var row in Model.Rows)
     {
