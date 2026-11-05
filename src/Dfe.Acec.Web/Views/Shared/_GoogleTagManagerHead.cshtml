@@ -15,8 +15,9 @@
         window.clarity(function(status) {
             if (status && status.sessionId) {
                 window.dataLayer = window.dataLayer || [];
-                // Note because of how datalayer works, adding it once here, will mean its in every payload (untill its overwritten)
-                window.dataLayer.push({
+                // Note: because of how datalayer works, adding it once here, will mean it's in every payload (until its overwritten)
+                window['dataLayer'] = window['dataLayer'] || [];
+                window['dataLayer'].push({
                     'clarity_session_id': status.sessionId
                 });
             }
@@ -45,7 +46,7 @@
         // helpers
         function pushGovModel(element, isImpression){
 
-            //parse
+            // parse
             try {
                 const attribute = element.getAttribute('data-govg4-event');
                 const payload = JSON.parse(attribute);
@@ -62,14 +63,14 @@
                     return;
                 }
 
-                //push to GA
+                // push to GA
                 window['dataLayer'] = window['dataLayer'] || [];
                 window['dataLayer'].push(payload);
 
-                //push to clarity
+                // push to clarity
                 if(window.clarity && payload.action)
                 {
-                    window.clarity("set", "action", payload.action);
+                    window.clarity("set", "gov_action", payload.action);
                 }
 
             } catch (err) {
