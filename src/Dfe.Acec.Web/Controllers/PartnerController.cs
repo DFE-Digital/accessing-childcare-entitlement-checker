@@ -35,8 +35,7 @@ public class PartnerController(JourneyState journeyState, IJourneySession journe
         journeySession.SetState(journeyState);
 
         var nextAction = nameof(PartnerPaidWork);
-        if (!journeyState.NationalityOptions.IsBritishOrIrishCitizen()
-            && journeyState.SettledStatus != SettledStatusOption.Yes)
+        if (journeyState.RequiresPartnerNationality())
         {
             nextAction = nameof(PartnerNationality);
         }

@@ -354,8 +354,35 @@ public class UserController(JourneyState journeyState, IJourneySession journeySe
             return View(model);
         }
 
+        var previousHasPartnerAnswer = journeyState.HasPartner;
+
         journeyState.Apply(model);
         journeySession.SetState(journeyState);
+
+        if (journeyState.JourneyMode == JourneyMode.ChangeUserDetails)
+        {
+            // User has changed from No to Yes, so complete the partner journey
+            if (previousHasPartnerAnswer == false && journeyState.HasPartner == true)
+            {
+                return RedirectToAction(
+                    nameof(PartnerController.PartnerAge),
+                    PartnerController.Name);
+
+            }
+            // Partner nationality is now required but hasn't been captured
+            if (journeyState.HasPartner == true &&
+                journeyState.RequiresPartnerNationality() &&
+                journeyState.PartnerNationalityOptions.Count == 0)
+            {
+                return RedirectToAction(
+                    nameof(PartnerController.PartnerAge),
+                    PartnerController.Name);
+            }
+
+            return RedirectToAction(
+                nameof(SummaryController.CheckAnswers),
+                SummaryController.Name);
+        }
 
         if (journeyState.HasPartner == true)
         {
