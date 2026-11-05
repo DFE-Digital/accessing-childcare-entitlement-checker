@@ -49,28 +49,23 @@
             // parse
             try {
                 const attribute = element.getAttribute('data-govg4-event');
-                const payload = JSON.parse(attribute);
+                if (!attribute) return;
 
-                if(!payload) {
-                    return
-                }
+                const payload = JSON.parse(attribute);
+                if(!payload) return;
+
                 // Impression events should ignore Click events
-                if(isImpression && payload.event_name !== 'view_item_list'){
-                    return;
-                }
+                if(isImpression && payload.event_name !== 'view_item_list') return;
                 // Click events should ignore Impression events
-                if(!isImpression && payload.event_name === 'view_item_list'){
-                    return;
-                }
+                if(!isImpression && payload.event_name === 'view_item_list') return;
 
                 // push to GA
                 window['dataLayer'] = window['dataLayer'] || [];
                 window['dataLayer'].push(payload);
 
                 // push to clarity
-                if(window.clarity && payload.action)
-                {
-                    window.clarity("set", "gov_action", payload.action);
+                if(window['clarity'] && payload.action){
+                    window['clarity']("set", "gov_action", payload.action);
                 }
 
             } catch (err) {
@@ -84,13 +79,13 @@
         document.addEventListener('DOMContentLoaded', function () {
 
             // Impressions listener
-            document.querySelectorAll('[data-govg4-event]').forEach(function (el) {
-                pushGovModel(el, true);
+            document.querySelectorAll('[data-govg4-event]').forEach(function (element) {
+                pushGovModel(element, true);
             });
 
             // Click Listener
-            document.addEventListener('click', function (ev) {
-                const element = ev.target.closest('[data-govg4-event]');
+            document.addEventListener('click', function (event) {
+                const element = event.target.closest('[data-govg4-event]');
                 if (!element) return;
                 pushGovModel(element, false);
 
