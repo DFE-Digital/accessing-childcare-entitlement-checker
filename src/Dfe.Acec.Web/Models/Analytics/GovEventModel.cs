@@ -9,7 +9,7 @@ namespace Dfe.Acec.Web.Models.Analytics;
 /// </summary>
 public abstract record GovEventPayload
 {
-    internal GovEventPayload() { }
+    private protected GovEventPayload() { }
 
     [JsonPropertyName("event")]
     public string Event => "gov_event";
