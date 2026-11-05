@@ -11,6 +11,16 @@
             ad_Storage: 'denied',
             analytics_Storage: 'granted'
         });
+
+        window.clarity(function(status) {
+            if (status && status.sessionId) {
+                window.dataLayer = window.dataLayer || [];
+                // Note because of how datalayer works, adding it once here, will mean its in every payload (untill its overwritten)
+                window.dataLayer.push({
+                    'clarity_session_id': status.sessionId
+                });
+            }
+        });
     </script>
 
 
@@ -32,36 +42,57 @@
             f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','@Model');
 
-        //impressions listener
-        document.querySelectorAll('[data-gov-event]').forEach(function (el) {
+        // helpers
+        function pushGovModel(element, isImpression){
+
+            //parse
             try {
-                const payload = JSON.parse(el.getAttribute('data-gov-event'));
-                if (payload && payload.event_name === 'view_item_list') {
-                    window['dataLayer'] = window['dataLayer'] || [];
-                    window['dataLayer'].push(payload);
+                const attribute = element.getAttribute('data-govg4-event');
+                const payload = JSON.parse(attribute);
+
+                if(!payload) {
+                    return
                 }
+                // Impression events should ignore Click events
+                if(isImpression && payload.event_name !== 'view_item_list'){
+                    return;
+                }
+                // Click events should ignore Impression events
+                if(!isImpression && payload.event_name === 'view_item_list'){
+                    return;
+                }
+
+                //push to GA
+                window['dataLayer'] = window['dataLayer'] || [];
+                window['dataLayer'].push(payload);
+
+                //push to clarity
+                if(window.clarity && payload.action)
+                {
+                    window.clarity("set", "action", payload.action);
+                }
+
             } catch (err) {
-                console.error('[GovAnalytics] Failed to parse impression payload:', err);
+                const type = isImpression ? 'impression' : 'click';
+                console.error(`[GovAnalytics] Failed to parse ${type} payload:`, err);
             }
-        });
 
-        // Listener for our tag helper 'data-govg4-event' attribute
-        // On any click, check if the clicked element (or any of its parent wrappers) has the data-govg4-event attribute
-        // take the pre-generated json string and push it as an object to GTM
+        }
+
+
         document.addEventListener('DOMContentLoaded', function () {
-            document.addEventListener('click', function (e) {
-                const target = e.target.closest('[data-govg4-event]');
-                if (!target) return;
 
-                try {
-                    const rawPayload = target.getAttribute('data-govg4-event');
-                    if (!rawPayload) return;
-                    const payload = JSON.parse(rawPayload);
-                    window['dataLayer'] = window['dataLayer'] || [];
-                    window['dataLayer'].push(payload);
-                } catch (err) {
-                    console.error('[GovAnalytics] Failed to parse data-govg4-event payload:', err);
-                }
+            // Impressions listener
+            document.querySelectorAll('[data-govg4-event]').forEach(function (el) {
+                pushGovModel(el, true);
+            });
+
+            // Click Listener
+            document.addEventListener('click', function (ev) {
+                const element = ev.target.closest('[data-govg4-event]');
+                if (!element) return;
+                pushGovModel(element, false);
+
             });
         });
     </script>
