@@ -17,7 +17,7 @@ Follow this runbook when a new GA4 data element is needed, which hopefully will 
 Can we re-use an existing standardized payload field (`action`, `ui_text`, `section`, `metric_name`, `metric_value`) Avoid creating bespoke parameters if one of these fits
 
 ## Step 1.2: PII Evaluation
-Esnure we will never intentionally or unintentionally capture Personally Identifiable Information.
+Ensure we will never intentionally or unintentionally capture Personally Identifiable Information.
 
 ## Step 1.3: Naming conventions Evaluations
 Are we following the naming conventions establised in (the ADR)[#reference/decisions/0015-unified-ga-model.md]
@@ -34,8 +34,8 @@ Are we following the naming conventions establised in (the ADR)[#reference/decis
 - Navigate to Tabs
 - Select the custom `ga event`  
 - Event Parameters -> Add Row
-    - *Parameter Name*: snake_case (no squiggly brackets {{}}) for how it should appear in GA
-    - *Value*: Press + and select variable from step 1 (this will have squiggly brackets {{}})
+    - *Parameter Name*: snake_case (no squiggly brackets `{{ "{{}}" }}`) for how it should appear in GA
+    - *Value*: Press + and select variable from step 1 (this will have squiggly brackets `{{ "{{}}" }}`)
 - (Optional) if the param applies to all events , put it in the GA4 Configuration Tag
 - Save
 
@@ -62,14 +62,14 @@ Are we following the naming conventions establised in (the ADR)[#reference/decis
 - Save
 
 # Checklist
-[] parameter confirmed needed
-[] parameter confirmed PII risk-free
-[] GTM Variable Created
-[] GTM Tag updated and mapped
-[] GA4 Custom dimension/metric registered in GA4 Admin
-[] Tested using Debug View
-[] ADR 0015 taxonmony followed,
-[] new ADR created with reasons for new parameter
+- Parameter confirmed needed
+- Parameter confirmed PII risk-free
+- GTM Variable Created
+- GTM Tag updated and mapped
+- GA4 Custom dimension/metric registered in GA4 Admin
+- Tested using Debug View
+- ADR 0015 taxonmony followed,
+- new ADR created with reasons for new parameter
 
 
 
