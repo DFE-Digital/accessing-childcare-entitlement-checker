@@ -14,7 +14,7 @@ Follow this runbook when a new GA4 data element is needed, which hopefully will 
 
 # 1 Pre-Check
 ## Step 1.1: Is it needed?
-Can we re-use an existing standardized payload field (`action`, `ui_text`, `section`, `metric_name`, `metric_value`) Avoid creating bespoke paramaters if one of these fits
+Can we re-use an existing standardized payload field (`action`, `ui_text`, `section`, `metric_name`, `metric_value`) Avoid creating bespoke parameters if one of these fits
 
 ## Step 1.2: PII Evaluation
 Esnure we will never intentionally or unintentionally capture Personally Identifiable Information.
@@ -30,7 +30,7 @@ Are we following the naming conventions establised in (the ADR)[#reference/decis
     - *Version*: Version 2 (or latest)
     - Save
 
-## Step 2.2: Attach Paramater to our Tag
+## Step 2.2: Attach parameter to our Tag
 - Navigate to Tabs
 - Select the custom `ga event`  
 - Event Parameters -> Add Row
@@ -48,7 +48,7 @@ Are we following the naming conventions establised in (the ADR)[#reference/decis
     - *Dimension Name*: Human readable (not snake case)
     - *Scope*: Event
     - *Description*: Describe what is captures and where it comes from
-    - *Event Paramater*: Select (or type) the exact paramater key used in GTM
+    - *Event parameter*: Select (or type) the exact parameter key used in GTM
 
 ## Step 3.2: Register Custom Metric (Numeric)
 - Admin (gear icon)
@@ -57,13 +57,13 @@ Are we following the naming conventions establised in (the ADR)[#reference/decis
     - *Metric Name*: Human readable (not snake case)
     - *Scope*: Event
     - *Description*: Describe what is captures and where it comes from
-    - *Event Paramater*: Select (or type) the exact paramater key used in GTM
+    - *Event parameter*: Select (or type) the exact parameter key used in GTM
     - *Unit of measurement*: Select appropriate
 - Save
 
 # Checklist
-[] Paramater confirmed needed
-[] Paramater confirmed PII risk-free
+[] parameter confirmed needed
+[] parameter confirmed PII risk-free
 [] GTM Variable Created
 [] GTM Tag updated and mapped
 [] GA4 Custom dimension/metric registered in GA4 Admin
