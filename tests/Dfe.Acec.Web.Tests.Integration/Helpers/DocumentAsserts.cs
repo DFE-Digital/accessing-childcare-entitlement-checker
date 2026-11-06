@@ -153,6 +153,34 @@ public static class DocumentAsserts
     }
 
     [PublicAPI]
+    public static IDocument AssertGtmTagCodePresent(this IDocument document)
+    {
+        var scripts = document.QuerySelectorAll("script");
+        var gtmScript = scripts.FirstOrDefault(s => s.TextContent.Contains("googletagmanager.com/gtm.js"));
+
+        // assert the GTM script loads
+        Assert.NotNull(gtmScript);
+
+        // assert Listener for our tag helper 'data-govg4-event' attribute loaded (and cover any refactor mistakes)
+        Assert.Contains("DOMContentLoaded", gtmScript.TextContent);
+        Assert.Contains("addEventListener('click'", gtmScript.TextContent); //make sure we are doing something on click
+        Assert.Contains("data-govg4-event", gtmScript.TextContent); //make sure we are using the data-govg4-event
+        Assert.Contains("JSON.parse", gtmScript.TextContent); //make sure we are parsing
+        Assert.Contains("window['dataLayer'].push", gtmScript.TextContent); //make sure we are pushing to the datalayer
+        return document;
+    }
+
+    [PublicAPI]
+    public static IDocument AssertNoGtmTagCode(this IDocument document)
+    {
+        var scripts = document.QuerySelectorAll("script");
+        var gtmScript = scripts.FirstOrDefault(s => s.TextContent.Contains("googletagmanager.com/gtm.js"));
+
+        Assert.Null(gtmScript);
+        return document;
+    }
+
+    [PublicAPI]
     public static IDocument AssertGroupHint(this IDocument document, string expectedHint)
     {
         var hint = document.QuerySelector(".govuk-fieldset > .govuk-hint");
