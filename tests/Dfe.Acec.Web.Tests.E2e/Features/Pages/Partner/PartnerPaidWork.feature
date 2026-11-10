@@ -93,7 +93,7 @@ Scenario: Back navigation from Does your partner have settled or pre-settled sta
 		| How do you receive your childcare vouchers?                                          | A workplace nursery scheme                           |
 		| Do you live with a partner?                                                          | Yes                                                  |
 		| What is your partner's age?                                                          | 21 or over                                           |
-		| Which of these best describes your partners nationality?                             | Citizen of an EU country, EEA country or Switzerland |
+		| What is your partner's nationality?                                                  | Citizen of an EU country, EEA country or Switzerland |
 		| Does your partner have settled or pre-settled status under the EU Settlement Scheme? | Yes                                                  |
 	When I click the back link
 	Then the page header is "Does your partner have settled or pre-settled status under the EU Settlement Scheme?"

@@ -16,7 +16,7 @@ Background:
 		| Question                                                 | Answer                                               |
 		| Do you live with a partner?                              | Yes                                                  |
 		| What is your partner's age?                              | 21 or over                                           |
-		| Which of these best describes your partners nationality? | Citizen of an EU country, EEA country or Switzerland |
+		| What is your partner's nationality? | Citizen of an EU country, EEA country or Switzerland |
 
 Scenario: Page load
 	When the page header is "Does your partner have settled or pre-settled status under the EU Settlement Scheme?"
@@ -46,4 +46,4 @@ Scenario: Continue with Yes
 
 Scenario: Back navigation
 	When I click the back link
-	Then the page header is "Which of these best describes your partners nationality?"
+	Then the page header is "What is your partner's nationality?"

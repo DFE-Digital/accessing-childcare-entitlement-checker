@@ -29,7 +29,7 @@ internal static class PageNames
     public const string PartnerSelfEmployedDuration = "Has your partner been self-employed for less than 12 months?";
     public const string PartnerWeeklyEarnings = "On average, __PLACEHOLDER__ your partner expect to earn __PLACEHOLDER__ a week or more __PLACEHOLDER__";
     public const string PartnerYearlyEarnings = "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?";
-    public const string PartnerNationality = "Which of these best describes your partners nationality?";
+    public const string PartnerNationality = "What is your partner's nationality?";
     public const string PartnerSettledStatus = "Does your partner have settled or pre-settled status under the EU Settlement Scheme?";
     public const string PartnerBenefits = "Does your partner get any of these benefits?";
     public const string PartnerChildcareSupport = "Does your partner already get any of these to help pay for childcare?";
