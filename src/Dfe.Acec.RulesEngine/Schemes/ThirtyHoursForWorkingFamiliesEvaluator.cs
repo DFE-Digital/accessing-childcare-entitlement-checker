@@ -119,12 +119,7 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
 
     private static bool SingleParentMeetsRequirements(PersonFacts person, bool canUseTemporaryIncomeExemption)
     {
-        var meetsIncomeRequirement = MeetsMinimumIncomeRequirement(person) || canUseTemporaryIncomeExemption;
-
-        return
-            HasQualifyingPaidWorkStatus(person)
-            && meetsIncomeRequirement
-            && !person.ExceedsAdjustedNetIncomeLimit;
+        return MeetsWorkingRequirements(person, canUseTemporaryIncomeExemption) && !person.ExceedsAdjustedNetIncomeLimit;
     }
 
     private static bool CoupleMeetsRequirements(PersonFacts user, PersonFacts partner, ParentalLeaveAssessment parentalLeaveAssessment)
@@ -160,7 +155,9 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
 
     private static bool MeetsWorkingRequirements(PersonFacts person, bool canUseTemporaryIncomeExemption)
     {
-        var meetsIncomeRequirement = MeetsMinimumIncomeRequirement(person) || canUseTemporaryIncomeExemption;
+        var meetsIncomeRequirement = MeetsMinimumIncomeRequirement(person)
+                                     || canUseTemporaryIncomeExemption
+                                     || person.PaidWorkStatus == PaidWorkStatus.SickLeave;
 
         return
             HasQualifyingPaidWorkStatus(person)

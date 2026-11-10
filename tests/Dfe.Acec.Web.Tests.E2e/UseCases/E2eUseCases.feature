@@ -260,16 +260,13 @@ Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a di
         | Do you live with a partner?                                                               | No                                     |
     When I click on Continue
     Then the page header is "Childcare support you could get"
-    # EXPECTED FROM LUCID: Three additional schemes. I double checked the scenario setup and couldn't see any errors.
-        #| Scheme                                        | When            |
-        #| Universal Credit and childcare                | now             |
-        #| 30 hours for working parents                  | now             |
-        #| Early learning for 2-year-olds                | two years old   |
-        #| 15 hours free childcare for 3 and 4-year-olds | three years old |
     And I can see that "Lee" is eligible for:
         | Scheme                                        | When            |
         | Universal Credit and childcare                | now             |
+        | Free Childcare for Working Parents            | now             |
+        | Early learning for 2-year-olds                | two years old   |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
+
 
 Scenario: Scenario 09 - One parent not working, one parent receiving ESA
     Given I complete the journey for the use case "One parent not working, one parent receiving ESA"
