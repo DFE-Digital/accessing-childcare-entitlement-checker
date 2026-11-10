@@ -133,13 +133,35 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
                 Text = display?.GetName() ?? value.ToString(),
                 Value = valueText,
                 Checked = selected.Contains(valueText),
-                Hint = hint is null ? null : new HintOptions { Text = hint },
+                Hint = ProcessHint(hint),
                 Behaviour = isExclusive ? "exclusive" : null,
                 Label = new LabelOptions()
             });
         }
 
         return items;
+    }
+
+    private static HintOptions? ProcessHint(string? hintText)
+    {
+        if (hintText is null)
+        {
+            return null;
+        }
+
+        if (hintText.StartsWith("<a", StringComparison.InvariantCulture))
+        {
+            // Process Links
+            return new HintOptions
+            {
+                Html = hintText,
+            };
+        }
+
+        return new HintOptions
+        {
+            Text = hintText,
+        };
     }
 
     private HashSet<string> GetSelectedValues(string fieldName, IEnumerable<Enum> model)
