@@ -26,7 +26,7 @@ public class PartnerNationalityViewModel : IValidatableObject
 
     public string? ReturnTo { get; set; }
 
-    [Display(Name = "Which of these best describes your partners nationality?")]
+    [Display(Name = "What is your partner's nationality?")]
     public List<NationalityOption> PartnerNationalityOptions { get; set; } = [];
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
