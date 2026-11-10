@@ -552,4 +552,32 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
         Assert.Null(result.ApplyAndStartAffectedByParentalLeave);
         Assert.Null(result.EligibilityEndsWithParentalLeaveFor);
     }
+
+    [Fact]
+    public void EvaluateWhenParentIsOnSickLeaveAndBelowIncomeLimitReturnsSchemeResult()
+    {
+        var scheme = CreateEvaluator();
+
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = false,
+                CountryOfResidence = CountryOfResidence.England
+            },
+
+            User = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.SickLeave,
+                ExceedsAdjustedNetIncomeLimit = false,
+            }
+        };
+
+        var child = CreateBornChild(new DateOnly(2023, 12, 1));
+
+        var result = scheme.Evaluate(context, child);
+
+        Assert.NotNull(result);
+        Assert.True(result.EligibleNow);
+    }
 }

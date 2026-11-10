@@ -83,7 +83,8 @@ public class FifteenHoursForDisadvantagedChildrenEvaluator : ISchemeEvaluator
         DerivedContext context)
     {
         return
-            context.Household is { CountryOfResidence: CountryOfResidence.England, HasAccessToPublicFunds: true } &&
+            //Will need to re instate HasAccessToPublicFunds once the question is surfaced to users
+            context.Household is { CountryOfResidence: CountryOfResidence.England } &&
             HouseholdReceivesQualifyingBenefit(context);
     }
 
