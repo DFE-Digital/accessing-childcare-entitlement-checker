@@ -151,7 +151,6 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
 
         if (hintText.StartsWith("<a", StringComparison.InvariantCulture))
         {
-            // Process Links
             return new HintOptions
             {
                 Html = hintText,
