@@ -27,7 +27,7 @@ public static class HintService
         };
     }
 
-    private static HintOptions? ProcessLinkHint(ExternalLinkAttribute externalLinkAttribute)
+    private static HintOptions ProcessLinkHint(ExternalLinkAttribute externalLinkAttribute)
     {
         var builder = new TagBuilder("a");
         builder.MergeAttribute("href", externalLinkAttribute.To);
