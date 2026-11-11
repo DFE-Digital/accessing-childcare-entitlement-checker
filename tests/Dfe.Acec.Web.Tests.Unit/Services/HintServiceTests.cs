@@ -1,6 +1,5 @@
 using Dfe.Acec.Web.Attributes;
 using Dfe.Acec.Web.Services;
-using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ComponentGeneration;
 
 namespace Dfe.Acec.Web.Tests.Unit.Services;
@@ -51,7 +50,7 @@ public class HintServiceTests
         Assert.True(result.Html.Equals(expected));
     }
 
-[Fact]
+    [Fact]
     public void ProcessHintWhenDescriptionIsNullAndExternalLinkIsNotNullWithOpenInNewTabReturnsHtmlHintWithTargetBlank()
     {
         string? description = null;

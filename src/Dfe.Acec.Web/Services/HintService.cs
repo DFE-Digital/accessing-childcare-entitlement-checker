@@ -35,7 +35,7 @@ public static class HintService
         {
             builder.MergeAttribute("target", "_blank");
         }
-        
+
         builder.InnerHtml.Append(externalLinkAttribute.Description);
         var htmlText = builder.ToHtmlString();
 
