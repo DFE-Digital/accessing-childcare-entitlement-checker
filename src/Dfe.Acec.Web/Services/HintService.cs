@@ -9,34 +9,38 @@ public static class HintService
 {
     public static HintOptions? ProcessHint(string? textDescription, ExternalLinkAttribute? externalLinkAttribute)
     {
-        return (textDescription, externalLinkAttribute) switch
+        if (textDescription is null)
         {
-            (null, null) => null,
-            // Taking the view that if both the Description & ExternalLink are configured, set the hint as the Description
-            (not null, not null) => ProcessTextHint(textDescription),
-            (not null, null) => ProcessTextHint(textDescription),
-            (null, not null) => ProcessLinkHint(externalLinkAttribute)
-        };
+            return null;
+        }
+
+        if (externalLinkAttribute is null)
+        {
+            return ProcessTextHint(textDescription);
+        }
+
+        return ProcessLinkHint(textDescription, externalLinkAttribute);
     }
 
-    private static HintOptions? ProcessTextHint(string? description)
+    private static HintOptions ProcessTextHint(string description)
     {
-        return description is null ? null : new HintOptions
+        return new HintOptions
         {
             Text = description,
         };
     }
 
-    private static HintOptions ProcessLinkHint(ExternalLinkAttribute externalLinkAttribute)
+    private static HintOptions ProcessLinkHint(string description, ExternalLinkAttribute externalLinkAttribute)
     {
         var builder = new TagBuilder("a");
         builder.MergeAttribute("href", externalLinkAttribute.To);
+        builder.MergeAttribute("rel", "noreferrer");
         if (externalLinkAttribute.OpenInNewTab)
         {
             builder.MergeAttribute("target", "_blank");
         }
 
-        builder.InnerHtml.Append(externalLinkAttribute.Description);
+        builder.InnerHtml.Append(description);
         var htmlText = builder.ToHtmlString();
 
         return new HintOptions

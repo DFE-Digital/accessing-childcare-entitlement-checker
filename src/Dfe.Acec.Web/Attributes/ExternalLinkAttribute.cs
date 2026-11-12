@@ -4,6 +4,5 @@ namespace Dfe.Acec.Web.Attributes;
 public class ExternalLinkAttribute : Attribute
 {
     public required string To { get; init; }
-    public required string Description { get; init; }
     public required bool OpenInNewTab { get; init; }
 }
