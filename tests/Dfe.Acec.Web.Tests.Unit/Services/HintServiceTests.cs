@@ -10,9 +10,9 @@ public class HintServiceTests
     public void ProcessHintWhenDescriptionAndExternalLinkAreNullReturnsNull()
     {
         string? description = null;
-        ExternalLinkAttribute? externalLinkAttribute = null;
+        ExternalLinkAttribute? link = null;
 
-        var result = HintService.ProcessHint(description, externalLinkAttribute);
+        var result = HintService.ProcessHint(description, link);
 
         Assert.Null(result);
     }
@@ -31,61 +31,51 @@ public class HintServiceTests
     }
 
     [Fact]
-    public void ProcessHintWhenDescriptionIsNullAndExternalLinkIsNotNullReturnsHtmlHintWithoutTargetBlank()
+    public void ProcessHintWhenDescriptionIsNullAndExternalLinkIsNotNullReturnsNull()
     {
         string? description = null;
-        var externalLinkAttribute = new ExternalLinkAttribute
+        var link = new ExternalLinkAttribute
         {
-            To = "MyTestLink",
-            Description = "MyTestDescription",
+            To = "MySite",
             OpenInNewTab = false,
         };
 
-        var result = HintService.ProcessHint(description, externalLinkAttribute);
+        var result = HintService.ProcessHint(description, link);
 
-        Assert.NotNull(result?.Html);
-        Assert.Null(result.Text);
-
-        var expected = new TemplateString("<a href=\"MyTestLink\">MyTestDescription</a>");
-        Assert.True(result.Html.Equals(expected));
+        Assert.Null(result);
     }
 
     [Fact]
-    public void ProcessHintWhenDescriptionIsNullAndExternalLinkIsNotNullWithOpenInNewTabReturnsHtmlHintWithTargetBlank()
+    public void ProcessHintWhenDescriptionIsNotNullAndExternalLinkIsNotNullReturnsHtmlHint()
     {
-        string? description = null;
-        var externalLinkAttribute = new ExternalLinkAttribute
+        var description = "My link description";
+        var link = new ExternalLinkAttribute
         {
-            To = "MyTestLink",
-            Description = "MyTestDescription",
-            OpenInNewTab = true,
+            To = "MySite",
+            OpenInNewTab = false
         };
 
-        var result = HintService.ProcessHint(description, externalLinkAttribute);
+        var result = HintService.ProcessHint(description, link);
 
+        var expectedTag = new TemplateString("<a href=\"MySite\" rel=\"noreferrer\">My link description</a>");
         Assert.NotNull(result?.Html);
-        Assert.Null(result.Text);
-
-        var expected = new TemplateString("<a href=\"MyTestLink\" target=\"_blank\">MyTestDescription</a>");
-        Assert.True(result.Html.Equals(expected));
+        Assert.Equal(expectedTag, result.Html);
     }
 
     [Fact]
-    public void ProcessHintWhenDescriptionIsNotNullAndExternalLinkIsNotNullPrioritiesDescription()
+    public void ProcessHintWhenDescriptionIsNotNullAndExternalLinkIsNotNullAndOpenInNewTabIsTrueReturnsHtmlHint()
     {
-        var description = "MyTextDescription";
-        var externalLinkAttribute = new ExternalLinkAttribute
+        var description = "My link description";
+        var link = new ExternalLinkAttribute
         {
-            To = "MyTestLink",
-            Description = "MyLinkDescription",
-            OpenInNewTab = false,
+            To = "MySite",
+            OpenInNewTab = true
         };
 
-        var result = HintService.ProcessHint(description, externalLinkAttribute);
+        var result = HintService.ProcessHint(description, link);
 
-        Assert.NotNull(result?.Text);
-        Assert.Null(result.Html);
-
-        Assert.Equal(description, result.Text);
+        var expectedTag = new TemplateString("<a href=\"MySite\" rel=\"noreferrer\" target=\"_blank\">My link description</a>");
+        Assert.NotNull(result?.Html);
+        Assert.Equal(expectedTag, result.Html);
     }
 }
