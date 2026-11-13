@@ -82,7 +82,7 @@
         <value>your expected adjusted net income</value>
     </data>
     <data name="User_UniversalCredit" xml:space="preserve">
-        <value>whether your household receives universal credit</value>
+        <value>whether your household receives Universal Credit</value>
     </data>
     <data name="User_Benefits" xml:space="preserve">
         <value>the benefits you get</value>

@@ -49,7 +49,7 @@ Scenario: Continue with No
 	Given I answer "What is your nationality?" as "British or Irish citizen"
 	When I select the "No, I am not in work" radio button
 	And I click on Continue
-	Then the page header is "Does your household receive universal credit?"
+	Then the page header is "Does your household receive Universal Credit?"
 
 Scenario: Back navigation from What is your nationality?
 	Given I answer "What is your nationality?" as "British or Irish citizen"
