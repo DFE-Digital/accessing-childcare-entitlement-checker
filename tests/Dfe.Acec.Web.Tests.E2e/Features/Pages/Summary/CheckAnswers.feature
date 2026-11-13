@@ -278,7 +278,7 @@ Scenario: Change links have accessible hidden text
 		| Have you been self-employed for less than 12 months?                                      | No                          | Change how long you have been self-employed             |
 		| On average, do you expect to earn £128 a week or more before tax?                         | Yes                         | Change how much you expect to earn each week            |
 		| Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                          | Change your expected adjusted net income                |
-		| Does your household receive Universal Credit?                                             | Yes                         | Change whether your household receives universal credit |
+		| Does your household receive Universal Credit?                                             | Yes                         | Change whether your household receives Universal Credit |
 		| Do you get any of these benefits?                                                         | Carer's Allowance           | Change the benefits you get                             |
 		| Do you already get any of these to help pay for childcare?                                | Childcare vouchers          | Change the childcare support you already get            |
 		| How do you receive your childcare vouchers?                                               | A workplace nursery scheme  | Change how you receive your childcare vouchers          |

@@ -26,6 +26,6 @@ public class UniversalCreditViewModel
     public string? ReturnTo { get; set; }
 
     [Display(Name = "Does your household receive Universal Credit?")]
-    [Required(ErrorMessage = "Select if your household receives universal credit")]
+    [Required(ErrorMessage = "Select if your household receives Universal Credit")]
     public UniversalCreditOption? UniversalCredit { get; set; }
 }
