@@ -29,12 +29,12 @@ Scenario: Scenario 01 - Single parent earning below the threshold, household rec
     And I can see that "Baby" is eligible for:
         | Scheme                                        | When            |
         | Universal Credit and childcare                | birth           |
-        | Early learning for 2-year-olds                | two years old   |
+        | Early Learning for 2 year olds                | two years old   |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
     And I can see that "Frankie" is eligible for:
         | Scheme                                        | When          |
         | Universal Credit and childcare                | now           |
-        | Early learning for 2-year-olds                | now           |
+        | Early Learning for 2 year olds                | now           |
         | 15 hours free childcare for 3 and 4-year-olds | in the future |
 
 
@@ -68,7 +68,7 @@ Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
         | Scheme                                        | When          |
         | Tax-Free Childcare                            | now           |
         | Free Childcare for Working Parents            | now           |
-        | Early learning for 2-year-olds                | now           |
+        | Early Learning for 2 year olds                | now           |
         | 15 hours free childcare for 3 and 4-year-olds | in the future |
 
 Scenario: Scenario 03 - One parent is earning under the threshold, household receives Universal Credit
@@ -105,7 +105,7 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
         #| 15 hours free childcare for 3 and 4-year-olds | in the future |
         | Scheme                                        | When          |
         | Universal Credit and childcare                | now           |
-        | Early learning for 2-year-olds                | now           |
+        | Early Learning for 2 year olds                | now           |
         | 15 hours free childcare for 3 and 4-year-olds | in the future |
 
 Scenario: Scenario 04 - One parent aged 18-20, child not yet born
@@ -197,7 +197,7 @@ Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one par
     And I can see that "Winston" is eligible for:
         | Scheme                                        | When            |
         | Universal Credit and childcare                | now             |
-        | Early learning for 2-year-olds                | two years old   |
+        | Early Learning for 2 year olds                | two years old   |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
 
 Scenario: Scenario 07 - One parent on parental leave
@@ -264,7 +264,7 @@ Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a di
         | Scheme                                        | When            |
         | Universal Credit and childcare                | now             |
         | Free Childcare for Working Parents            | now             |
-        | Early learning for 2-year-olds                | two years old   |
+        | Early Learning for 2 year olds                | two years old   |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
 
 
@@ -301,7 +301,7 @@ Scenario: Scenario 09 - One parent not working, one parent receiving ESA
     And I can see that "Isabel" is eligible for:
         | Scheme                                        | When          |
         | Free Childcare for Working Parents            | now           |
-        | Early learning for 2-year-olds                | now           |
+        | Early Learning for 2 year olds                | now           |
         | 15 hours free childcare for 3 and 4-year-olds | in the future |
     # EXPECTED FROM LUCID:
         #| Scheme                                        | When            |
@@ -311,7 +311,7 @@ Scenario: Scenario 09 - One parent not working, one parent receiving ESA
     And I can see that "Mary" is eligible for:
         | Scheme                                        | When            |
         | Free Childcare for Working Parents            | two years old   |
-        | Early learning for 2-year-olds                | two years old   |
+        | Early Learning for 2 year olds                | two years old   |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
 
 Scenario: Scenario 10 - Parent is a non-UK national without pre-settled or settled status
@@ -361,5 +361,5 @@ Scenario: Scenario 11 - Single parent not working, on carer's allowance
     Then the page header is "Childcare support you could get"
     And I can see that "Kurt" is eligible for:
         | Scheme                                        | When            |
-        | Early learning for 2-year-olds                | two years old   |
+        | Early Learning for 2 year olds                | two years old   |
         | 15 hours free childcare for 3 and 4-year-olds | three years old |
