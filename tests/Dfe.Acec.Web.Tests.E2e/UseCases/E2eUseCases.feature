@@ -81,7 +81,7 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
         | What is your age?                                                             | 21 or over                             |
         | What is your nationality?                                                     | British or Irish citizen               |
         | Are you in paid work?                                                         | Yes, I am currently in work            |
-        | How would you describe your work status?                                      | Paid employment                        |
+        | How would you describe your work status?                                      | Employee                      |
         | Does your household receive Universal Credit?                                 | Yes                                    |
         | Do you get any of these benefits?                                             | No, I do not get any of these benefits |
         | Do you already get any of these to help pay for childcare?                    | No, I do not get any of these          |
