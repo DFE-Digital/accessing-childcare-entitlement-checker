@@ -1,4 +1,4 @@
-Feature: Does your household receive universal credit?
+Feature: Does your household receive Universal Credit?
 
 Background:
 	Given I am on the childcare entitlement checker website
@@ -11,7 +11,7 @@ Background:
 
 Scenario: Page load
 	Given I answer "Are you in paid work?" as "No, I am not in work"
-	When the page header is "Does your household receive universal credit?"
+	When the page header is "Does your household receive Universal Credit?"
 	Then I should see 2 radio buttons with the following options:
 		| Option |
 		| Yes    |

@@ -34,7 +34,7 @@ Scenario: Continue without selection
 Scenario: Continue with Yes
 	When I select the "Yes" radio button
 	And I click on Continue
-	Then the page header is "Does your household receive universal credit?"
+	Then the page header is "Does your household receive Universal Credit?"
 
 Scenario: Continue with No
 	When I select the "No" radio button

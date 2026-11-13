@@ -48,7 +48,7 @@ Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
         | What is your age?                                          | 21 or over                    |
         | What is your nationality?                                  | British or Irish citizen      |
         | Are you in paid work?                                      | No, I am not in work          |
-        | Does your household receive universal credit?              | No                            |
+        | Does your household receive Universal Credit?              | No                            |
         | Do you get any of these benefits?                          | Carer's Allowance             |
         | Do you already get any of these to help pay for childcare? | No, I do not get any of these |
         | Do you live with a partner?                                | Yes                           |
@@ -81,8 +81,8 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
         | What is your age?                                                             | 21 or over                             |
         | What is your nationality?                                                     | British or Irish citizen               |
         | Are you in paid work?                                                         | Yes, I am currently in work            |
-        | How would you describe your work status?                                      | Employee                               |
-        | Does your household receive universal credit?                                 | Yes                                    |
+        | How would you describe your work status?                                      | Paid employment                        |
+        | Does your household receive Universal Credit?                                 | Yes                                    |
         | Do you get any of these benefits?                                             | No, I do not get any of these benefits |
         | Do you already get any of these to help pay for childcare?                    | No, I do not get any of these          |
         | Do you live with a partner?                                                   | Yes                                    |
@@ -120,7 +120,7 @@ Scenario: Scenario 04 - One parent aged 18-20, child not yet born
         | Are you in paid work?                                                                     | Yes, I am currently in work            |
         | How would you describe your work status?                                                  | Employee                               |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
-        | Does your household receive universal credit?                                             | No                                     |
+        | Does your household receive Universal Credit?                                             | No                                     |
         | Do you get any of these benefits?                                                         | No, I do not get any of these benefits |
         | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
         | Do you live with a partner?                                                               | Yes                                    |
@@ -155,7 +155,7 @@ Scenario: Scenario 05 - Single parent who is self employed, child is not born ye
         | Are you in paid work?                                      | Yes, I am currently in work            |
         | How would you describe your work status?                   | Self-employed                          |
         | Have you been self-employed for less than 12 months?       | Yes                                    |
-        | Does your household receive universal credit?              | No                                     |
+        | Does your household receive Universal Credit?              | No                                     |
         | Do you get any of these benefits?                          | No, I do not get any of these benefits |
         | Do you already get any of these to help pay for childcare? | No, I do not get any of these          |
         | Do you live with a partner?                                | No                                     |
@@ -179,7 +179,7 @@ Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one par
         | Are you in paid work?                                                                     | Yes, I am currently in work            |
         | How would you describe your work status?                                                  | Apprentice                             |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
-        | Does your household receive universal credit?                                             | Yes                                    |
+        | Does your household receive Universal Credit?                                             | Yes                                    |
         | Do you get any of these benefits?                                                         | No, I do not get any of these benefits |
         | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
         | Do you live with a partner?                                                               | Yes                                    |
@@ -212,7 +212,7 @@ Scenario: Scenario 07 - One parent on parental leave
         | Are you in paid work?                                                                     | Yes, I am currently in work            |
         | How would you describe your work status?                                                  | Employee                               |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
-        | Does your household receive universal credit?                                             | No                                     |
+        | Does your household receive Universal Credit?                                             | No                                     |
         | Do you get any of these benefits?                                                         | No, I do not get any of these benefits |
         | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
         | Do you live with a partner?                                                               | Yes                                    |
@@ -254,7 +254,7 @@ Scenario: Scenario 08 - Single parent on sick leave, parent is a citizen of a di
         | What is your nationality?                                                                 | Citizen of a different country         |
         | Are you in paid work?                                                                     | Yes, but I am on sick leave            |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
-        | Does your household receive universal credit?                                             | Yes                                    |
+        | Does your household receive Universal Credit?                                             | Yes                                    |
         | Do you get any of these benefits?                                                         | No, I do not get any of these benefits |
         | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
         | Do you live with a partner?                                                               | No                                     |
@@ -278,7 +278,7 @@ Scenario: Scenario 09 - One parent not working, one parent receiving ESA
         | What is your age?                                          | 21 or over                                          |
         | What is your nationality?                                  | British or Irish citizen                            |
         | Are you in paid work?                                      | No, I am not in work                                |
-        | Does your household receive universal credit?              | Yes                                                 |
+        | Does your household receive Universal Credit?              | Yes                                                 |
         | Do you get any of these benefits?                          | Contribution-based Employment and Support Allowance |
         | Do you already get any of these to help pay for childcare? | No, I do not get any of these                       |
         | Do you live with a partner?                                | Yes                                                 |
@@ -327,7 +327,7 @@ Scenario: Scenario 10 - Parent is a non-UK national without pre-settled or settl
         | Are you in paid work?                                                                     | Yes, I am currently in work                          |
         | How would you describe your work status?                                                  | Employee                                             |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                                   |
-        | Does your household receive universal credit?                                             | No                                                   |
+        | Does your household receive Universal Credit?                                             | No                                                   |
         | Do you get any of these benefits?                                                         | No, I do not get any of these benefits               |
         | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these                        |
         | Do you live with a partner?                                                               | No                                                   |
@@ -353,7 +353,7 @@ Scenario: Scenario 11 - Single parent not working, on carer's allowance
         | What is your age?                                          | 21 or over                    |
         | What is your nationality?                                  | British or Irish citizen      |
         | Are you in paid work?                                      | No, I am not in work          |
-        | Does your household receive universal credit?              | Yes                           |
+        | Does your household receive Universal Credit?              | Yes                           |
         | Do you get any of these benefits?                          | Carer's Allowance             |
         | Do you already get any of these to help pay for childcare? | No, I do not get any of these |
         | Do you live with a partner?                                | No                            |
