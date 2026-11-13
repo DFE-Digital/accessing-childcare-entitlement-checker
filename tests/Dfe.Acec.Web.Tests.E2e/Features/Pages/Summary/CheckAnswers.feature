@@ -106,7 +106,7 @@ Scenario: Changing nationality requires partner nationality details
         | How do you receive your childcare vouchers?                                               | A workplace nursery scheme      |
         | Do you live with a partner?                                                               | Yes                             |
         | What is your partner's age?                                                               | 21 or over                      |
-        | Which of these best describes your partners nationality?                                  | British or Irish citizen        |
+        | What is your partner's nationality?                                                       | British or Irish citizen        |
         | Is your partner in paid work?                                                             | No, they are not in work        |
         | Does your partner get any of these benefits?                                              | Carer's Allowance               |
         | Does your partner already get any of these to help pay for childcare?                     | Childcare vouchers              |
@@ -117,7 +117,7 @@ Scenario: Changing nationality requires partner nationality details
         | What is your nationality?                                                                 | Citizen of a different country  |
     And I should see a summary list for "Your partners details" with the following summary:
         | Question                                                                                  | Answer                          |
-        | Which of these best describes your partners nationality?                                  | British or Irish citizen        |
+        | What is your partner's nationality?                                                       | British or Irish citizen        |
 
 Scenario: Change my partner's employment status and age to trigger a different threshold
 	When I click the Change link in the "Your partners details" summary list for "Is your partner in paid work?"

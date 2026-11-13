@@ -1,0 +1,8 @@
+namespace Dfe.Acec.Web.Attributes;
+
+[AttributeUsage(AttributeTargets.Field)]
+public class ExternalLinkAttribute : Attribute
+{
+    public required string To { get; init; }
+    public required bool OpenInNewTab { get; init; }
+}

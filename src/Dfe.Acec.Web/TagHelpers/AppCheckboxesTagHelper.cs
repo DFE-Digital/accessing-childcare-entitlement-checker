@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
+using Dfe.Acec.Web.Attributes;
+using Dfe.Acec.Web.Services;
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ComponentGeneration;
 using Microsoft.AspNetCore.Html;
@@ -121,7 +123,9 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
             var valueText = Convert.ToUInt64(value, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
             var display = enumType.GetField(value.ToString())?.GetCustomAttribute<DisplayAttribute>();
             var isExclusive = valueText == exclusiveValueText;
-            var hint = display?.GetDescription();
+            var description = display?.GetDescription();
+            var externalLink = enumType.GetField(value.ToString())?.GetCustomAttribute<ExternalLinkAttribute>();
+            var hint = HintService.ProcessHint(description, externalLink);
 
             if (isExclusive)
             {
@@ -133,7 +137,7 @@ public class AppCheckboxesTagHelper(IComponentGenerator componentGenerator)
                 Text = display?.GetName() ?? value.ToString(),
                 Value = valueText,
                 Checked = selected.Contains(valueText),
-                Hint = hint is null ? null : new HintOptions { Text = hint },
+                Hint = hint,
                 Behaviour = isExclusive ? "exclusive" : null,
                 Label = new LabelOptions()
             });

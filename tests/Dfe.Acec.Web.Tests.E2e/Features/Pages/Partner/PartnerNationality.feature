@@ -1,4 +1,4 @@
-Feature: Which of these best describes your partners nationality?
+Feature: What is your partner's nationality?
 
 Background:
 	Given I am on the childcare entitlement checker website
@@ -18,7 +18,7 @@ Background:
 		| What is your partner's age? | 21 or over |
 
 Scenario: Page load
-	When the page header is "Which of these best describes your partners nationality?"
+	When the page header is "What is your partner's nationality?"
 		Then I should see the following checkboxes:
 		| Option                                               |
 		| British or Irish citizen                             |
