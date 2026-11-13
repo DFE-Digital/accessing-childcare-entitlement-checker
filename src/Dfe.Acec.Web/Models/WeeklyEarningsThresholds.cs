@@ -6,7 +6,7 @@ public record WeeklyEarningsThresholds(string PerWeek, string PerMonth, string P
 {
     private static readonly WeeklyEarningsThresholds _under18OrApprentice = new("128", "554", "6,656");
     private static readonly WeeklyEarningsThresholds _eighteenToTwenty = new("173", "752", "9,027");
-    private static readonly WeeklyEarningsThresholds _twentyOneOrOver = new("203", "879", "10,574");
+    private static readonly WeeklyEarningsThresholds _twentyOneOrOver = new("203", "881", "10,574");
 
     public static WeeklyEarningsThresholds Create(AgeRange? age, List<WorkStatusOption> workStatus)
     {
