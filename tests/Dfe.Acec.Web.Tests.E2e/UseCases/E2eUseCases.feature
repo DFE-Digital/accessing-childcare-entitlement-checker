@@ -52,7 +52,7 @@ Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
         | Do you get any of these benefits?                          | Carer's Allowance             |
         | Do you already get any of these to help pay for childcare? | No, I do not get any of these |
         | Do you live with a partner?                                | Yes                           |
-    And I should see a summary list for "Your partners details" with the following summary:
+    And I should see a summary list for "Your partner’s details" with the following summary:
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
         | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
@@ -87,7 +87,7 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
         | Do you already get any of these to help pay for childcare?                    | No, I do not get any of these          |
         | Do you live with a partner?                                                   | Yes                                    |
         | On average, do you expect to earn £__PLACEHOLDER__ a week or more before tax? | No                                     |
-    And I should see a summary list for "Your partners details" with the following summary:
+    And I should see a summary list for "Your partner’s details" with the following summary:
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
         | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
@@ -125,7 +125,7 @@ Scenario: Scenario 04 - One parent aged 18-20, child not yet born
         | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
         | Do you live with a partner?                                                               | Yes                                    |
         | On average, do you expect to earn £__PLACEHOLDER__ a week or more before tax?             | Yes                                    |
-    And I should see a summary list for "Your partners details" with the following summary:
+    And I should see a summary list for "Your partner’s details" with the following summary:
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
         | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
@@ -184,7 +184,7 @@ Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one par
         | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
         | Do you live with a partner?                                                               | Yes                                    |
         | On average, do you expect to earn £__PLACEHOLDER__ a week or more before tax?             | Yes                                    |
-    And I should see a summary list for "Your partners details" with the following summary:
+    And I should see a summary list for "Your partner’s details" with the following summary:
         | Question                                                                                 | Answer                                    |
         | What is your partner's age?                                                              | Under 18                                  |
         | Is your partner in paid work?                                                            | Yes, they are currently in work           |
@@ -217,7 +217,7 @@ Scenario: Scenario 07 - One parent on parental leave
         | Do you already get any of these to help pay for childcare?                                | No, I do not get any of these          |
         | Do you live with a partner?                                                               | Yes                                    |
         | On average, do you expect to earn £__PLACEHOLDER__ a week or more before tax?             | Yes                                    |
-    And I should see a summary list for "Your partners details" with the following summary:
+    And I should see a summary list for "Your partner’s details" with the following summary:
         | Question                                                                                                                | Answer                                    |
         | What is your partner's age?                                                                                             | 21 or over                                |
         | Is your partner in paid work?                                                                                           | Yes, but they are on parental leave       |
@@ -282,7 +282,7 @@ Scenario: Scenario 09 - One parent not working, one parent receiving ESA
         | Do you get any of these benefits?                          | Contribution-based Employment and Support Allowance |
         | Do you already get any of these to help pay for childcare? | No, I do not get any of these                       |
         | Do you live with a partner?                                | Yes                                                 |
-    And I should see a summary list for "Your partners details" with the following summary:
+    And I should see a summary list for "Your partner’s details" with the following summary:
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
         | Is your partner in paid work?                                                                         | Yes, they are currently in work           |

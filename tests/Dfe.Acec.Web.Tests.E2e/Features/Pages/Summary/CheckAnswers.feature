@@ -32,7 +32,7 @@ Scenario: Page Load
 		| Do you already get any of these to help pay for childcare?                                | Childcare vouchers          |
 		| How do you receive your childcare vouchers?                                               | A workplace nursery scheme  |
 		| Do you live with a partner?                                                               | Yes                         |
-	And I should see a summary list for "Your partners details" with the following summary:
+	And I should see a summary list for "Your partner’s details" with the following summary:
 		| Question                                                              | Answer                     |
 		| What is your partner's age?                                           | 21 or over                 |
 		| Is your partner in paid work?                                         | No, they are not in work   |
@@ -115,12 +115,12 @@ Scenario: Changing nationality requires partner nationality details
     And I should see a summary list for "Your details" with the following summary:
         | Question                                                                                  | Answer                          |
         | What is your nationality?                                                                 | Citizen of a different country  |
-    And I should see a summary list for "Your partners details" with the following summary:
+    And I should see a summary list for "Your partner’s details" with the following summary:
         | Question                                                                                  | Answer                          |
         | What is your partner's nationality?                                                       | British or Irish citizen        |
 
 Scenario: Change my partner's employment status and age to trigger a different threshold
-	When I click the Change link in the "Your partners details" summary list for "Is your partner in paid work?"
+	When I click the Change link in the "Your partner’s details" summary list for "Is your partner in paid work?"
 	And I answer the questions as follows:
 		| Question                                                                                              | Answer                          |
 		| Is your partner in paid work?                                                                         | Yes, they are currently in work |
@@ -130,7 +130,7 @@ Scenario: Change my partner's employment status and age to trigger a different t
 		| Does your partner get any of these benefits?                                                          | Carer's Allowance               |
 		| Does your partner already get any of these to help pay for childcare?                                 | Childcare vouchers              |
 		| How does your partner receive childcare vouchers?                                                     | A workplace nursery scheme      |
-	And I click the Change link in the "Your partners details" summary list for "What is your partner's age?"
+	And I click the Change link in the "Your partner’s details" summary list for "What is your partner's age?"
 	And I answer the questions as follows:
 		| Question                                                                                              | Answer                          |
 		| What is your partner's age?                                                                           | 18 to 20                        |
@@ -142,7 +142,7 @@ Scenario: Change my partner's employment status and age to trigger a different t
 		| Does your partner already get any of these to help pay for childcare?                                 | Childcare vouchers              |
 		| How does your partner receive childcare vouchers?                                                     | A workplace nursery scheme      |
 	Then the page header is "Check your answers"
-	And I should see a summary list for "Your partners details" with the following summary:
+	And I should see a summary list for "Your partner’s details" with the following summary:
 		| Question                                                                                              | Answer   |
 		| What is your partner's age?                                                                           | 18 to 20 |
 		| On average, does your partner expect to earn £173 a week or more before tax?                          | Yes      |
@@ -169,7 +169,7 @@ Scenario: Partner details are not shown when I don't have a partner
 	And I select the "No" radio button
 	And I click on Continue
 	Then the page header is "Check your answers"
-	And I do not see a summary list for "Your partners details"
+	And I do not see a summary list for "Your partner’s details"
 
 Scenario: Self employed details are not shown when I change my answer
 	When I click the Change link in the "Your details" summary list for "How would you describe your work status?"
@@ -216,7 +216,7 @@ Scenario: Weekly earnings are kept when I re-confirm that I am on parental leave
 	And the "Yes" radio button should be selected
 
 Scenario: Back navigation to Does your partner already get any of these to help pay for childcare?
-	When I click the Change link in the "Your partners details" summary list for "Does your partner already get any of these to help pay for childcare?"
+	When I click the Change link in the "Your partner’s details" summary list for "Does your partner already get any of these to help pay for childcare?"
 	And I deselect the "Childcare vouchers" checkbox
 	And I select the "No, they do not get any of these" checkbox
 	And I click on Continue
@@ -233,7 +233,7 @@ Scenario: Back navigation to Do you live with a partner?
 	Then the page header is "Do you live with a partner?"
 
 Scenario: Removing a partner clears their parental leave answer from the summary
-	When I click the Change link in the "Your partners details" summary list for "Is your partner in paid work?"
+	When I click the Change link in the "Your partner’s details" summary list for "Is your partner in paid work?"
 	And I answer the questions as follows:
 		| Question                                                              | Answer                          |
 		| Is your partner in paid work?                                         | Yes, but they are on parental leave |
@@ -245,7 +245,7 @@ Scenario: Removing a partner clears their parental leave answer from the summary
 		| Does your partner already get any of these to help pay for childcare? | Childcare vouchers              |
 		| How does your partner receive childcare vouchers?                    | A workplace nursery scheme      |
 	Then the page header is "Check your answers"
-	And I should see a summary list for "Your partners details" with the following summary:
+	And I should see a summary list for "Your partner’s details" with the following summary:
 		| Question                                   | Answer |
 		| Which child is your partner on leave for?  | Sara   |
 	When I click the Change link in the "Your details" summary list for "Are you in paid work?"
@@ -258,7 +258,7 @@ Scenario: Removing a partner clears their parental leave answer from the summary
 		| How do you receive your childcare vouchers?                                               | A workplace nursery scheme     |
 		| Do you live with a partner?                                                               | No                             |
 	Then the page header is "Check your answers"
-	And I do not see a summary list for "Your partners details"
+	And I do not see a summary list for "Your partner’s details"
 
 Scenario: Change links have accessible hidden text
 	Then I should see a summary card with the title "Aydin" and the following summary:
@@ -283,7 +283,7 @@ Scenario: Change links have accessible hidden text
 		| Do you already get any of these to help pay for childcare?                                | Childcare vouchers          | Change the childcare support you already get            |
 		| How do you receive your childcare vouchers?                                               | A workplace nursery scheme  | Change how you receive your childcare vouchers          |
 		| Do you live with a partner?                                                               | Yes                         | Change whether you live with a partner                  |
-	And I should see a summary list for "Your partners details" with the following summary:
+	And I should see a summary list for "Your partner’s details" with the following summary:
 		| Question                                                              | Answer                     | Change link                                            |
 		| What is your partner's age?                                           | 21 or over                 | Change your partner's age                              |
 		| Is your partner in paid work?                                         | No, they are not in work   | Change whether your partner is in paid work            |
