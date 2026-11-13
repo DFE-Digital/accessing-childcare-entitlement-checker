@@ -183,7 +183,7 @@ public class JourneyStateToEntitlementRequestMapper
     {
         return workStatus switch
         {
-            WorkStatusOption.PaidEmployment =>
+            WorkStatusOption.Employee =>
                 WorkStatus.PaidEmployment,
 
             WorkStatusOption.SelfEmployed =>

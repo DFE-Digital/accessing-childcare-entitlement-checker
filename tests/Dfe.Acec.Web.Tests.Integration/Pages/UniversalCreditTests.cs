@@ -14,12 +14,12 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     /// N.b. Skips type of leave - design is pending.
     /// </remarks>
     [Theory]
-    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/earnings/adjusted-net-income")]
-    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.BelowThreshold, null, "/earnings/wage")]
+    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.Employee, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/earnings/adjusted-net-income")]
+    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.Employee, null, WeeklyEarningsOption.BelowThreshold, null, "/earnings/wage")]
     [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, null, "/work-status/self-employed")]
     [InlineData(null, PaidWorkOption.No, null, null, null, null, "/work-status/work")]
-    [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckChildDetails, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.Yes, WorkStatusOption.Employee, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, PaidWorkOption.Yes, WorkStatusOption.Employee, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/children/check-childs-details")]
     public async Task Get(
         string? returnTo,
         PaidWorkOption? paidWork,
@@ -84,12 +84,12 @@ public class UniversalCreditTests(IntegrationTestFixture factory) : IClassFixtur
     }
 
     [Theory]
-    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/earnings/adjusted-net-income")]
-    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.BelowThreshold, null, "/earnings/wage")]
+    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.Employee, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/earnings/adjusted-net-income")]
+    [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.Employee, null, WeeklyEarningsOption.BelowThreshold, null, "/earnings/wage")]
     [InlineData(null, PaidWorkOption.Yes, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, null, "/work-status/self-employed")]
     [InlineData(null, PaidWorkOption.No, null, null, null, null, "/work-status/work")]
-    [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckChildDetails, PaidWorkOption.Yes, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, PaidWorkOption.Yes, WorkStatusOption.Employee, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, PaidWorkOption.Yes, WorkStatusOption.Employee, null, WeeklyEarningsOption.AboveThreshold, YearlyEarningsOption.BelowThreshold, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(
         string? returnTo,
         PaidWorkOption? paidWork,

@@ -90,7 +90,7 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
 
                     When(x =>
                             !x.WorkStatus.Contains(WorkStatusOption.SelfEmployed) &&
-                            (x.WorkStatus.Contains(WorkStatusOption.PaidEmployment) ||
+                            (x.WorkStatus.Contains(WorkStatusOption.Employee) ||
                              x.WorkStatus.Contains(WorkStatusOption.Apprentice)),
                         () =>
                         {
@@ -188,7 +188,7 @@ public class JourneyStateValidator : AbstractValidator<JourneyState>
 
                             When(x =>
                                     !x.PartnerWorkStatus.Contains(WorkStatusOption.SelfEmployed) &&
-                                    (x.PartnerWorkStatus.Contains(WorkStatusOption.PaidEmployment) ||
+                                    (x.PartnerWorkStatus.Contains(WorkStatusOption.Employee) ||
                                      x.PartnerWorkStatus.Contains(WorkStatusOption.Apprentice)),
                                 () =>
                                 {

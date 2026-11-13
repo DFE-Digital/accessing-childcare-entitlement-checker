@@ -426,7 +426,7 @@ public class UserControllerTests : IDisposable
     }
 
     [Theory]
-    [InlineData(WorkStatusOption.PaidEmployment, null, nameof(UserController.WeeklyEarnings))]
+    [InlineData(WorkStatusOption.Employee, null, nameof(UserController.WeeklyEarnings))]
     [InlineData(WorkStatusOption.SelfEmployed, null, nameof(UserController.SelfEmployedDuration))]
     [InlineData(WorkStatusOption.Apprentice, null, nameof(UserController.WeeklyEarnings))]
     [InlineData(WorkStatusOption.Apprentice, ReturnTo.CheckAnswers, nameof(UserController.WeeklyEarnings))]
@@ -461,9 +461,9 @@ public class UserControllerTests : IDisposable
     [Fact]
     public void WorkStatusGetPopulatesModelFromState()
     {
-        _journeyState.WorkStatus = [WorkStatusOption.PaidEmployment];
+        _journeyState.WorkStatus = [WorkStatusOption.Employee];
         var result = Assert.IsType<ViewResult>(_controller.WorkStatus());
-        Assert.Equal([WorkStatusOption.PaidEmployment], result.Model<WorkStatusViewModel>().WorkStatus);
+        Assert.Equal([WorkStatusOption.Employee], result.Model<WorkStatusViewModel>().WorkStatus);
     }
 
     [Fact]
@@ -600,7 +600,7 @@ public class UserControllerTests : IDisposable
     public void WeeklyEarningsPostInvalidSelectionReturnsViewWithError()
     {
         _journeyState.UserAge = AgeRange.UnderEighteen;
-        _journeyState.WorkStatus = [WorkStatusOption.PaidEmployment];
+        _journeyState.WorkStatus = [WorkStatusOption.Employee];
 
         var model = new WeeklyEarningsViewModel();
         _controller.ModelState.AddModelError(nameof(model.WeeklyEarnings), "Faked Model Binding Error");
@@ -615,7 +615,7 @@ public class UserControllerTests : IDisposable
     public void WeeklyEarningsGetPopulatesModelFromState()
     {
         _journeyState.UserAge = AgeRange.UnderEighteen;
-        _journeyState.WorkStatus = [WorkStatusOption.PaidEmployment];
+        _journeyState.WorkStatus = [WorkStatusOption.Employee];
         _journeyState.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
         var result = Assert.IsType<ViewResult>(_controller.WeeklyEarnings());
         Assert.Equal(WeeklyEarningsOption.AboveThreshold, result.Model<WeeklyEarningsViewModel>().WeeklyEarnings);
@@ -625,7 +625,7 @@ public class UserControllerTests : IDisposable
     public void WeeklyEarningsReturnsView()
     {
         _journeyState.UserAge = AgeRange.UnderEighteen;
-        _journeyState.WorkStatus = [WorkStatusOption.PaidEmployment];
+        _journeyState.WorkStatus = [WorkStatusOption.Employee];
         var result = Assert.IsType<ViewResult>(_controller.WeeklyEarnings());
         Assert.NotNull(result.Model<WeeklyEarningsViewModel>());
     }

@@ -350,7 +350,7 @@ public class SummaryRowFactoryTests
         {
             UserAge = AgeRange.UnderEighteen,
             PaidWork = paidWorkOption,
-            WorkStatus = [WorkStatusOption.PaidEmployment],
+            WorkStatus = [WorkStatusOption.Employee],
             WeeklyEarnings = WeeklyEarningsOption.BelowThreshold,
         };
 
@@ -383,7 +383,7 @@ public class SummaryRowFactoryTests
         {
             PartnerAge = AgeRange.UnderEighteen,
             PartnerPaidWork = paidWorkOption,
-            PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
+            PartnerWorkStatus = [WorkStatusOption.Employee],
             PartnerWeeklyEarnings = WeeklyEarningsOption.BelowThreshold,
         };
 

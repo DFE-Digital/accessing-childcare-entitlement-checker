@@ -48,9 +48,9 @@ public class SessionExpiryTests(IntegrationTestFixture factory) : IClassFixture<
             {
                 Children = children,
                 UserAge = AgeRange.UnderEighteen,
-                WorkStatus = [WorkStatusOption.PaidEmployment],
+                WorkStatus = [WorkStatusOption.Employee],
                 PartnerAge = AgeRange.UnderEighteen,
-                PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
+                PartnerWorkStatus = [WorkStatusOption.Employee],
                 HasPartner = true
             });
 
