@@ -26,7 +26,7 @@ internal sealed class Scenario3 : IUseCase
             .SetUserAge("21 or over")
             .SetNationality("British or Irish citizen")
             .SetPaidWork("Yes, I am currently in work")
-            .SetWorkStatus("Paid employment")
+            .SetWorkStatus("Employee")
             .SetWeeklyEarnings("No")
             .SetUniversalCredit("Yes")
             .SetBenefits("No, I do not get any of these benefits")
@@ -35,7 +35,7 @@ internal sealed class Scenario3 : IUseCase
 
             .SetPartnerAge("21 or over")
             .SetPartnerPaidWork("Yes, they are currently in work")
-            .SetPartnerWorkStatus("Paid employment")
+            .SetPartnerWorkStatus("Employee")
             .SetPartnerWeeklyEarnings("Yes")
             .SetPartnerYearlyEarnings("No")
             .SetPartnerBenefits("No, they do not get any of these benefits")

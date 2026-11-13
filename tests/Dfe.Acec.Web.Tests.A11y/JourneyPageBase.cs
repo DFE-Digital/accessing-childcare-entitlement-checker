@@ -147,7 +147,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await ExpectPathAndQuery("/leave/parental-leave");
     }
 
-    private async Task AnswerUserWorkStatus(string workStatus = "Paid employment")
+    private async Task AnswerUserWorkStatus(string workStatus = "Employee")
     {
         await ExpectPathAndQuery("/work-status/work-status");
         await Page.GetByLabel(workStatus).CheckAsync();
@@ -155,7 +155,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         await ExpectPathAndQuery("/earnings/wage");
     }
 
-    private async Task AnswerPartnerWorkStatus(string workStatus = "Paid employment")
+    private async Task AnswerPartnerWorkStatus(string workStatus = "Employee")
     {
         await ExpectPathAndQuery("/work-status/work-status-partner");
         await Page.GetByLabel(workStatus).CheckAsync();

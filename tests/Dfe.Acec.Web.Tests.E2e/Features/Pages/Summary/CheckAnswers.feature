@@ -124,7 +124,7 @@ Scenario: Change my partner's employment status and age to trigger a different t
 	And I answer the questions as follows:
 		| Question                                                                                              | Answer                          |
 		| Is your partner in paid work?                                                                         | Yes, they are currently in work |
-		| How would you describe your partner's work status?                                                    | Paid employment                 |
+		| How would you describe your partner's work status?                                                    | Employee                        |
 		| On average, does your partner expect to earn £208 a week or more before tax?                          | Yes                             |
 		| Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                              |
 		| Does your partner get any of these benefits?                                                          | Carer's Allowance               |
@@ -135,7 +135,7 @@ Scenario: Change my partner's employment status and age to trigger a different t
 		| Question                                                                                              | Answer                          |
 		| What is your partner's age?                                                                           | 18 to 20                        |
 		| Is your partner in paid work?                                                                         | Yes, they are currently in work |
-		| How would you describe your partner's work status?                                                    | Paid employment                 |
+		| How would you describe your partner's work status?                                                    | Employee                        |
 		| On average, does your partner expect to earn £173 a week or more before tax?                          | Yes                             |
 		| Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                              |
 		| Does your partner get any of these benefits?                                                          | Carer's Allowance               |
@@ -174,7 +174,7 @@ Scenario: Partner details are not shown when I don't have a partner
 Scenario: Self employed details are not shown when I change my answer
 	When I click the Change link in the "Your details" summary list for "How would you describe your work status?"
 	And the page header is "How would you describe your work status?"
-	And I select the "Paid employment" checkbox
+	And I select the "Employee" checkbox
 	And I deselect the "Self-employed" checkbox
 	And I click on Continue
 	And I answer the questions as follows:
@@ -238,7 +238,7 @@ Scenario: Removing a partner clears their parental leave answer from the summary
 		| Question                                                              | Answer                          |
 		| Is your partner in paid work?                                         | Yes, but they are on parental leave |
 		| Which child is your partner on leave for?                            | Sara                            |
-		| How would you describe your partner's work status?                   | Paid employment                 |
+		| How would you describe your partner's work status?                   | Employee                       |
 		| On average, will your partner expect to earn £203 a week or more before tax when their parental leave ends? | Yes |
 		| Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No |
 		| Does your partner get any of these benefits?                         | Carer's Allowance               |

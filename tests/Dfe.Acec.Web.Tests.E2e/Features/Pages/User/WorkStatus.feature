@@ -13,19 +13,19 @@ Background:
 Scenario: Page load
 	When the page header is "How would you describe your work status?"
 	Then I should see the following checkboxes:
-		| Name            |
-		| Paid employment |
-		| Self-employed   |
-		| Apprentice      |
+		| Name          |
+		| Employee      |
+		| Self-employed |
+		| Apprentice    |
 	And no checkboxes are selected
 
 Scenario: Checkbox selection
-	When I select the "Paid employment" checkbox
+	When I select the "Employee" checkbox
 	And I select the "Self-employed" checkbox
 	Then the following checkboxes should be selected:
-		| Checkbox        |
-		| Paid employment |
-		| Self-employed   |
+		| Checkbox      |
+		| Employee      |
+		| Self-employed |
 
 Scenario: Continue without selection
 	When I do not select a checkbox
@@ -38,8 +38,8 @@ Scenario: Continue with Self-employed
 	And I click on Continue
 	Then the page header is "Have you been self-employed for less than 12 months?"
 
-Scenario: Continue with Paid employment
-	When I select the "Paid employment" checkbox
+Scenario: Continue with Employee
+	When I select the "Employee" checkbox
 	And I click on Continue
 	Then the page header is "On average, do you expect to earn £128 a week or more before tax?"
 
