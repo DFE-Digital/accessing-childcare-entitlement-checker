@@ -24,9 +24,9 @@ Scenario Outline: Page load for different age groups and employment statuses
 
 Examples:
 	| Age        | Work Status     | Earnings |
-	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      173 |
-	| 21 or over | Paid employment |      203 |
+	| Under 18   | Employee        |      128 |
+	| 18 to 20   | Employee        |      173 |
+	| 21 or over | Employee        |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |
 	| 21 or over | Apprentice      |      128 |
@@ -47,9 +47,9 @@ Scenario Outline: Page load for different age groups on parental leave
 
 Examples:
 	| Age        | Work Status     | Earnings |
-	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      173 |
-	| 21 or over | Paid employment |      203 |
+	| Under 18   | Employee        |      128 |
+	| 18 to 20   | Employee        |      173 |
+	| 21 or over | Employee        |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |
 	| 21 or over | Apprentice      |      128 |
@@ -67,9 +67,9 @@ Scenario Outline: Continue without selection for different age groups and employ
 
 Examples:
 	| Age        | Work Status     | Earnings |
-	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      173 |
-	| 21 or over | Paid employment |      203 |
+	| Under 18   | Employee        |      128 |
+	| 18 to 20   | Employee        |      173 |
+	| 21 or over | Employee        |      203 |
 	| Under 18   | Apprentice      |      128 |
 	| 18 to 20   | Apprentice      |      128 |
 	| 21 or over | Apprentice      |      128 |
@@ -79,7 +79,7 @@ Scenario: Radio button selection
 		| Question                                           | Answer                          |
 		| What is your partner's age?                        | 21 or over                      |
 		| Is your partner in paid work?                      | Yes, they are currently in work |
-		| How would you describe your partner's work status? | Paid employment                 |
+		| How would you describe your partner's work status? | Employee                        |
 	When I select the "Yes" radio button
 	And I select the "No" radio button
 	Then the "No" radio button should be selected
@@ -90,7 +90,7 @@ Scenario: Continue without selection
 		| Question                                           | Answer                          |
 		| What is your partner's age?                        | 21 or over                      |
 		| Is your partner in paid work?                      | Yes, they are currently in work |
-		| How would you describe your partner's work status? | Paid employment                 |
+		| How would you describe your partner's work status? | Employee                        |
 	When I do not select a radio button
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
@@ -101,7 +101,7 @@ Scenario: Continue with Yes
 		| Question                                           | Answer                          |
 		| What is your partner's age?                        | 21 or over                      |
 		| Is your partner in paid work?                      | Yes, they are currently in work |
-		| How would you describe your partner's work status? | Paid employment                 |
+		| How would you describe your partner's work status? | Employee                        |
 	When I select the "Yes" radio button
 	And I click on Continue
 	Then the page header is "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?"
@@ -111,7 +111,7 @@ Scenario: Continue with No
 		| Question                                           | Answer                          |
 		| What is your partner's age?                        | 21 or over                      |
 		| Is your partner in paid work?                      | Yes, they are currently in work |
-		| How would you describe your partner's work status? | Paid employment                 |
+		| How would you describe your partner's work status? | Employee                        |
 	When I select the "No" radio button
 	And I click on Continue
 	Then the page header is "Does your partner get any of these benefits?"
@@ -121,7 +121,7 @@ Scenario: Back navigation
 		| Question                                           | Answer                          |
 		| What is your partner's age?                        | 21 or over                      |
 		| Is your partner in paid work?                      | Yes, they are currently in work |
-		| How would you describe your partner's work status? | Paid employment                 |
+		| How would you describe your partner's work status? | Employee                        |
 	When I click the back link
 	Then the page header is "How would you describe your partner's work status?"
 

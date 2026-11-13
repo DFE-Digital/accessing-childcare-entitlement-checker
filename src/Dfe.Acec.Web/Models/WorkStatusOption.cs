@@ -4,8 +4,8 @@ namespace Dfe.Acec.Web.Models;
 
 public enum WorkStatusOption
 {
-    [Display(Name = "Paid employment")]
-    PaidEmployment,
+    [Display(Name = "Employee")]
+    Employee,
 
     [Display(Name = "Self-employed")]
     SelfEmployed,

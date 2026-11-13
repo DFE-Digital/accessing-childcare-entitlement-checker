@@ -31,9 +31,9 @@ public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixt
             {
                 Children = children,
                 UserAge = AgeRange.UnderEighteen,
-                WorkStatus = [WorkStatusOption.PaidEmployment],
+                WorkStatus = [WorkStatusOption.Employee],
                 PartnerAge = AgeRange.UnderEighteen,
-                PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
+                PartnerWorkStatus = [WorkStatusOption.Employee],
             });
 
             using var getClient = getHost.CreateClient();
@@ -67,9 +67,9 @@ public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixt
             {
                 Children = children,
                 UserAge = AgeRange.UnderEighteen,
-                WorkStatus = [WorkStatusOption.PaidEmployment],
+                WorkStatus = [WorkStatusOption.Employee],
                 PartnerAge = AgeRange.UnderEighteen,
-                PartnerWorkStatus = [WorkStatusOption.PaidEmployment],
+                PartnerWorkStatus = [WorkStatusOption.Employee],
             });
 
             using var getClient = getHost.CreateClient();

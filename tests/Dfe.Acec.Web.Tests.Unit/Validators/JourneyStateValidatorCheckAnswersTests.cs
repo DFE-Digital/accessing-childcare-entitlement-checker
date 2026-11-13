@@ -280,7 +280,7 @@ public class JourneyStateValidatorCheckAnswersTests
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.PaidWork = PaidWorkOption.Yes;
-        journeyState.WorkStatus = [WorkStatusOption.PaidEmployment];
+        journeyState.WorkStatus = [WorkStatusOption.Employee];
 
         var result = Validate(journeyState);
 
@@ -310,7 +310,7 @@ public class JourneyStateValidatorCheckAnswersTests
     {
         var journeyState = CreateValidUserOnlyJourneyState();
         journeyState.PaidWork = PaidWorkOption.Yes;
-        journeyState.WorkStatus = [WorkStatusOption.PaidEmployment];
+        journeyState.WorkStatus = [WorkStatusOption.Employee];
         journeyState.WeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
 
         var result = Validate(journeyState);
@@ -469,7 +469,7 @@ public class JourneyStateValidatorCheckAnswersTests
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
-        journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
+        journeyState.PartnerWorkStatus = [WorkStatusOption.Employee];
 
         var result = Validate(journeyState);
 
@@ -499,7 +499,7 @@ public class JourneyStateValidatorCheckAnswersTests
     {
         var journeyState = CreateValidUserAndPartnerOnlyJourneyState();
         journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
-        journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
+        journeyState.PartnerWorkStatus = [WorkStatusOption.Employee];
         journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
 
         var result = Validate(journeyState);

@@ -20,13 +20,13 @@ Scenario Outline: Page load for different age groups and employment statuses
 	And no radio buttons are selected
 
 Examples:
-	| Age        | Work Status     | Earnings |
-	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      173 |
-	| 21 or over | Paid employment |      203 |
-	| Under 18   | Apprentice      |      128 |
-	| 18 to 20   | Apprentice      |      128 |
-	| 21 or over | Apprentice      |      128 |
+	| Age        | Work Status | Earnings |
+	| Under 18   | Employee    |      128 |
+	| 18 to 20   | Employee    |      173 |
+	| 21 or over | Employee    |      203 |
+	| Under 18   | Apprentice  |      128 |
+	| 18 to 20   | Apprentice  |      128 |
+	| 21 or over | Apprentice  |      128 |
 
 Scenario Outline: Page load for different age groups on parental leave
 	Given I answer questions as follows:
@@ -44,13 +44,13 @@ Scenario Outline: Page load for different age groups on parental leave
 	And no radio buttons are selected
 
 Examples:
-	| Age        | Work Status     | Earnings |
-	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      173 |
-	| 21 or over | Paid employment |      203 |
-	| Under 18   | Apprentice      |      128 |
-	| 18 to 20   | Apprentice      |      128 |
-	| 21 or over | Apprentice      |      128 |
+	| Age        | Work Status | Earnings |
+	| Under 18   | Employee    |      128 |
+	| 18 to 20   | Employee    |      173 |
+	| 21 or over | Employee    |      203 |
+	| Under 18   | Apprentice  |      128 |
+	| 18 to 20   | Apprentice  |      128 |
+	| 21 or over | Apprentice  |      128 |
 
 Scenario Outline: Continue without selection for different age groups and employment statuses
 	Given I answer questions as follows:
@@ -65,13 +65,13 @@ Scenario Outline: Continue without selection for different age groups and employ
 	And the error summary and inline validation should be "Select if you earn £<Earnings> a week or more before tax"
 
 Examples:
-	| Age        | Work Status     | Earnings |
-	| Under 18   | Paid employment |      128 |
-	| 18 to 20   | Paid employment |      173 |
-	| 21 or over | Paid employment |      203 |
-	| Under 18   | Apprentice      |      128 |
-	| 18 to 20   | Apprentice      |      128 |
-	| 21 or over | Apprentice      |      128 |
+	| Age        | Work Status | Earnings |
+	| Under 18   | Employee    |      128 |
+	| 18 to 20   | Employee    |      173 |
+	| 21 or over | Employee    |      203 |
+	| Under 18   | Apprentice  |      128 |
+	| 18 to 20   | Apprentice  |      128 |
+	| 21 or over | Apprentice  |      128 |
 
 Scenario: Radio button selection
 	Given I answer questions as follows:
@@ -79,7 +79,7 @@ Scenario: Radio button selection
 		| What is your age?                        | Under 18                    |
 		| What is your nationality?                | British or Irish citizen    |
 		| Are you in paid work?                    | Yes, I am currently in work |
-		| How would you describe your work status? | Paid employment             |
+		| How would you describe your work status? | Employee                    |
 	When I select the "Yes" radio button
 	And I select the "No" radio button
 	Then the "No" radio button should be selected
@@ -91,7 +91,7 @@ Scenario: Continue with Yes
 		| What is your age?                        | Under 18                    |
 		| What is your nationality?                | British or Irish citizen    |
 		| Are you in paid work?                    | Yes, I am currently in work |
-		| How would you describe your work status? | Paid employment             |
+		| How would you describe your work status? | Employee                    |
 	When I select the "Yes" radio button
 	And I click on Continue
 	Then the page header is "Do you expect your adjusted net income to be more than £100,000 for the current tax year?"
@@ -102,7 +102,7 @@ Scenario: Continue with No
 		| What is your age?                        | Under 18                    |
 		| What is your nationality?                | British or Irish citizen    |
 		| Are you in paid work?                    | Yes, I am currently in work |
-		| How would you describe your work status? | Paid employment             |
+		| How would you describe your work status? | Employee                    |
 	When I select the "No" radio button
 	And I click on Continue
 	Then the page header is "Does your household receive universal credit?"
@@ -113,7 +113,7 @@ Scenario: Back navigation
 		| What is your age?                        | Under 18                    |
 		| What is your nationality?                | British or Irish citizen    |
 		| Are you in paid work?                    | Yes, I am currently in work |
-		| How would you describe your work status? | Paid employment             |
+		| How would you describe your work status? | Employee                    |
 	When I click the back link
 	Then the page header is "How would you describe your work status?"
 

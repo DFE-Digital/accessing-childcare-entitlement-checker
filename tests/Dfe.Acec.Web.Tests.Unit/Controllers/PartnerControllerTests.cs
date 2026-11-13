@@ -194,7 +194,7 @@ public class PartnerControllerTests : IDisposable
     [InlineData(PartnerPaidWorkOption.Yes, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerWorkStatus))]
     public void PartnerPaidWorkPostSavesStateAndRedirects(PartnerPaidWorkOption option, string? returnTo, string actionName)
     {
-        _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
+        _journeyState.PartnerWorkStatus = [WorkStatusOption.Employee];
         var model = new PartnerPaidWorkViewModel
         {
             PartnerPaidWork = option,
@@ -277,7 +277,7 @@ public class PartnerControllerTests : IDisposable
     }
 
     [Theory]
-    [InlineData(WorkStatusOption.PaidEmployment, null, nameof(PartnerController.PartnerWeeklyEarnings))]
+    [InlineData(WorkStatusOption.Employee, null, nameof(PartnerController.PartnerWeeklyEarnings))]
     [InlineData(WorkStatusOption.SelfEmployed, null, nameof(PartnerController.PartnerSelfEmployedDuration))]
     [InlineData(WorkStatusOption.Apprentice, null, nameof(PartnerController.PartnerWeeklyEarnings))]
     [InlineData(WorkStatusOption.Apprentice, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerWeeklyEarnings))]
@@ -312,9 +312,9 @@ public class PartnerControllerTests : IDisposable
     [Fact]
     public void PartnerWorkStatusGetPopulatesModelFromState()
     {
-        _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
+        _journeyState.PartnerWorkStatus = [WorkStatusOption.Employee];
         var result = Assert.IsType<ViewResult>(_controller.PartnerWorkStatus());
-        Assert.Equal([WorkStatusOption.PaidEmployment], result.Model<PartnerWorkStatusViewModel>().PartnerWorkStatus);
+        Assert.Equal([WorkStatusOption.Employee], result.Model<PartnerWorkStatusViewModel>().PartnerWorkStatus);
     }
 
     [Fact]
@@ -451,7 +451,7 @@ public class PartnerControllerTests : IDisposable
     public void PartnerWeeklyEarningsPostInvalidSelectionReturnsViewWithError()
     {
         _journeyState.PartnerAge = AgeRange.UnderEighteen;
-        _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
+        _journeyState.PartnerWorkStatus = [WorkStatusOption.Employee];
 
         var model = new PartnerWeeklyEarningsViewModel();
         _controller.ModelState.AddModelError(nameof(model.PartnerWeeklyEarnings), "Faked Model Binding Error");
@@ -466,7 +466,7 @@ public class PartnerControllerTests : IDisposable
     public void PartnerWeeklyEarningsGetPopulatesModelFromState()
     {
         _journeyState.PartnerAge = AgeRange.UnderEighteen;
-        _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
+        _journeyState.PartnerWorkStatus = [WorkStatusOption.Employee];
         _journeyState.PartnerWeeklyEarnings = WeeklyEarningsOption.AboveThreshold;
         var result = Assert.IsType<ViewResult>(_controller.PartnerWeeklyEarnings());
         Assert.Equal(WeeklyEarningsOption.AboveThreshold, result.Model<PartnerWeeklyEarningsViewModel>().PartnerWeeklyEarnings);
@@ -476,7 +476,7 @@ public class PartnerControllerTests : IDisposable
     public void PartnerWeeklyEarningsReturnsView()
     {
         _journeyState.PartnerAge = AgeRange.UnderEighteen;
-        _journeyState.PartnerWorkStatus = [WorkStatusOption.PaidEmployment];
+        _journeyState.PartnerWorkStatus = [WorkStatusOption.Employee];
         var result = Assert.IsType<ViewResult>(_controller.PartnerWeeklyEarnings());
         Assert.NotNull(result.Model<PartnerWeeklyEarningsViewModel>());
     }

@@ -11,7 +11,7 @@ public class WeeklyEarningsThresholdsTests
     [InlineData(AgeRange.TwentyOneOrOver, "203")]
     public void ReturnsExpectedWeeklyThreshold(AgeRange ageRange, string expected)
     {
-        var actual = WeeklyEarningsThresholds.Create(ageRange, [WorkStatusOption.PaidEmployment]);
+        var actual = WeeklyEarningsThresholds.Create(ageRange, [WorkStatusOption.Employee]);
         Assert.Equal(expected, actual.PerWeek);
     }
 
@@ -31,6 +31,6 @@ public class WeeklyEarningsThresholdsTests
     public void CoverageThrowsIfInvalidAgeRangePassed()
     {
         var invalid = (AgeRange)99;
-        Assert.Throws<UnreachableException>(() => WeeklyEarningsThresholds.Create(invalid, [WorkStatusOption.PaidEmployment]));
+        Assert.Throws<UnreachableException>(() => WeeklyEarningsThresholds.Create(invalid, [WorkStatusOption.Employee]));
     }
 }

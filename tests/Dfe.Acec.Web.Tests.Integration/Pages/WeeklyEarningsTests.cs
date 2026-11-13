@@ -11,11 +11,11 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     private const string Url = "/earnings/wage";
 
     [Theory]
-    [InlineData(null, WorkStatusOption.PaidEmployment, null, "/work-status/work-status")]
+    [InlineData(null, WorkStatusOption.Employee, null, "/work-status/work-status")]
     [InlineData(null, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.NotLessThan12Months, "/work-status/self-employed")]
     [InlineData(null, WorkStatusOption.Apprentice, null, "/work-status/work-status")]
-    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.PaidEmployment, null, "/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.Employee, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.Employee, null, "/children/check-childs-details")]
     public async Task Get(
         string? returnTo,
         WorkStatusOption workStatus,
@@ -54,7 +54,7 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {
             UserAge = AgeRange.UnderEighteen,
-            WorkStatus = [WorkStatusOption.PaidEmployment],
+            WorkStatus = [WorkStatusOption.Employee],
             WeeklyEarnings = weeklyEarnings,
             YearlyEarnings = yearlyEarnings,
             UniversalCredit = universalCredit,
@@ -79,11 +79,11 @@ public class WeeklyEarningsTests(IntegrationTestFixture factory) : IClassFixture
     }
 
     [Theory]
-    [InlineData(null, WorkStatusOption.PaidEmployment, null, "/work-status/work-status")]
+    [InlineData(null, WorkStatusOption.Employee, null, "/work-status/work-status")]
     [InlineData(null, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.NotLessThan12Months, "/work-status/self-employed")]
     [InlineData(null, WorkStatusOption.Apprentice, null, "/work-status/work-status")]
-    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, "/check-your-answers")]
-    [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.PaidEmployment, null, "/children/check-childs-details")]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.Employee, null, "/check-your-answers")]
+    [InlineData(ReturnTo.CheckChildDetails, WorkStatusOption.Employee, null, "/children/check-childs-details")]
     public async Task PostInvalidShowsValidationError(
         string? returnTo,
         WorkStatusOption workStatus,

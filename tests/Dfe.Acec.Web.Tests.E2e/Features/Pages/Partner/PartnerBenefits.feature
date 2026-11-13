@@ -71,14 +71,14 @@ Scenario: Back navigation from Has your partner been self-employed for less than
 
 Scenario: Back navigation from On average, does your partner expect to earn £203 a week or more before tax?
 	Given I answer "Is your partner in paid work?" as "Yes, they are currently in work"
-	And I answer "How would you describe your partner's work status?" as "Paid employment"
+	And I answer "How would you describe your partner's work status?" as "Employee"
 	And I answer "On average, does your partner expect to earn £203 a week or more before tax?" as "No"
 	When I click the back link
 	Then the page header is "On average, does your partner expect to earn £203 a week or more before tax?"
 
 Scenario: Back navigation from Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?
 	Given I answer "Is your partner in paid work?" as "Yes, they are currently in work"
-	And I answer "How would you describe your partner's work status?" as "Paid employment"
+	And I answer "How would you describe your partner's work status?" as "Employee"
 	And I answer "On average, does your partner expect to earn £203 a week or more before tax?" as "Yes"
 	And I answer "Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?" as "Yes"
 	When I click the back link

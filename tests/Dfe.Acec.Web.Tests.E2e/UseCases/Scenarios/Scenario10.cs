@@ -37,7 +37,7 @@ internal sealed class Scenario10 : IUseCase
             .SetNationality("Citizen of an EU country, EEA country or Switzerland")
             .SetSettledStatus("No")
             .SetPaidWork("Yes, I am currently in work")
-            .SetWorkStatus("Paid employment")
+            .SetWorkStatus("Employee")
             .SetWeeklyEarnings("Yes")
             .SetYearlyEarnings("No")
             .SetUniversalCredit("No")

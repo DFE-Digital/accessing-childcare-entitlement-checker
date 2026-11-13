@@ -10,7 +10,7 @@ Background:
 		| What is your nationality?                                         | British or Irish citizen               |
 		| Are you in paid work?                                             | Yes, but I am on parental leave        |
 		| Which child are you on leave for?                                 | Sara                                   |
-		| How would you describe your work status?                          | Paid employment                        |
+		| How would you describe your work status?                          | Employee                               |
 		| On average, do you expect to earn £203 a week or more before tax? | No                                     |
 		| Does your household receive universal credit?                     | No                                     |
 		| Do you get any of these benefits?                                 | No, I do not get any of these benefits |

@@ -33,11 +33,11 @@ public class WorkStatusTests(IntegrationTestFixture factory) : IClassFixture<Int
 
     [Theory]
     [InlineData(null, WorkStatusOption.SelfEmployed, null, null, "/work-status/self-employed")]
-    [InlineData(null, WorkStatusOption.PaidEmployment, null, null, "/earnings/wage")]
+    [InlineData(null, WorkStatusOption.Employee, null, null, "/earnings/wage")]
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.SelfEmployed, null, null, "/work-status/self-employed")]
     [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.SelfEmployed, SelfEmployedDurationOption.LessThan12Months, null, "/work-status/self-employed")]
-    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, null, "/earnings/wage")]
-    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.PaidEmployment, null, WeeklyEarningsOption.AboveThreshold, "/earnings/wage")]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.Employee, null, null, "/earnings/wage")]
+    [InlineData(ReturnTo.CheckAnswers, WorkStatusOption.Employee, null, WeeklyEarningsOption.AboveThreshold, "/earnings/wage")]
     public async Task PostValidRedirects(string? returnTo, WorkStatusOption workStatus, SelfEmployedDurationOption? selfEmployedDuration, WeeklyEarningsOption? weeklyEarnings, string continueUrl)
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState

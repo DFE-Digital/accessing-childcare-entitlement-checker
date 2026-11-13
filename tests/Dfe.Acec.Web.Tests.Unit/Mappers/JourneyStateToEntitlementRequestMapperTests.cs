@@ -42,7 +42,7 @@ public class JourneyStateToEntitlementRequestMapperTests
             NationalityOptions = [NationalityOption.BritishOrIrishCitizen],
             PaidWork = PaidWorkOption.Yes,
             WorkStatus = [
-                WorkStatusOption.PaidEmployment,
+                WorkStatusOption.Employee,
                 WorkStatusOption.SelfEmployed
             ],
             ChildcareSupport = [

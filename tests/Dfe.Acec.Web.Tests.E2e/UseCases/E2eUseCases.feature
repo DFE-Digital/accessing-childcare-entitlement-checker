@@ -17,7 +17,7 @@ Scenario: Scenario 01 - Single parent earning below the threshold, household rec
         | What is your age?                                                             | 21 or over                             |
         | What is your nationality?                                                     | British or Irish citizen               |
         | Are you in paid work?                                                         | Yes, I am currently in work            |
-        | How would you describe your work status?                                      | Paid employment                        |
+        | How would you describe your work status?                                      | Employee                               |
         | Does your household receive universal credit?                                 | Yes                                    |
         | Do you get any of these benefits?                                             | No, I do not get any of these benefits |
         | Do you already get any of these to help pay for childcare?                    | No, I do not get any of these          |
@@ -56,7 +56,7 @@ Scenario: Scenario 02 - One parent on carer's allowance, child receives DLA
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
         | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
-        | How would you describe your partner's work status?                                                    | Paid employment                           |
+        | How would you describe your partner's work status?                                                    | Employee                                  |
         | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
         | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
         | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
@@ -81,7 +81,7 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
         | What is your age?                                                             | 21 or over                             |
         | What is your nationality?                                                     | British or Irish citizen               |
         | Are you in paid work?                                                         | Yes, I am currently in work            |
-        | How would you describe your work status?                                      | Paid employment                        |
+        | How would you describe your work status?                                      | Employee                               |
         | Does your household receive universal credit?                                 | Yes                                    |
         | Do you get any of these benefits?                                             | No, I do not get any of these benefits |
         | Do you already get any of these to help pay for childcare?                    | No, I do not get any of these          |
@@ -91,7 +91,7 @@ Scenario: Scenario 03 - One parent is earning under the threshold, household rec
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
         | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
-        | How would you describe your partner's work status?                                                    | Paid employment                           |
+        | How would you describe your partner's work status?                                                    | Employee                                  |
         | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
         | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
         | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
@@ -118,7 +118,7 @@ Scenario: Scenario 04 - One parent aged 18-20, child not yet born
         | What is your age?                                                                         | 18 to 20                               |
         | What is your nationality?                                                                 | British or Irish citizen               |
         | Are you in paid work?                                                                     | Yes, I am currently in work            |
-        | How would you describe your work status?                                                  | Paid employment                        |
+        | How would you describe your work status?                                                  | Employee                               |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
         | Does your household receive universal credit?                                             | No                                     |
         | Do you get any of these benefits?                                                         | No, I do not get any of these benefits |
@@ -129,7 +129,7 @@ Scenario: Scenario 04 - One parent aged 18-20, child not yet born
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
         | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
-        | How would you describe your partner's work status?                                                    | Paid employment                           |
+        | How would you describe your partner's work status?                                                    | Employee                                  |
         | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
         | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
         | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
@@ -188,7 +188,7 @@ Scenario: Scenario 06 - Both parents under 18, one parent an apprentice, one par
         | Question                                                                                 | Answer                                    |
         | What is your partner's age?                                                              | Under 18                                  |
         | Is your partner in paid work?                                                            | Yes, they are currently in work           |
-        | How would you describe your partner's work status?                                       | Paid employment                           |
+        | How would you describe your partner's work status?                                       | Employee                                  |
         | Does your partner get any of these benefits?                                             | No, they do not get any of these benefits |
         | Does your partner already get any of these to help pay for childcare?                    | No, they do not get any of these          |
         | On average, does your partner expect to earn £__PLACEHOLDER__ a week or more before tax? | No                                        |
@@ -210,7 +210,7 @@ Scenario: Scenario 07 - One parent on parental leave
         | What is your age?                                                                         | 21 or over                             |
         | What is your nationality?                                                                 | British or Irish citizen               |
         | Are you in paid work?                                                                     | Yes, I am currently in work            |
-        | How would you describe your work status?                                                  | Paid employment                        |
+        | How would you describe your work status?                                                  | Employee                               |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                     |
         | Does your household receive universal credit?                                             | No                                     |
         | Do you get any of these benefits?                                                         | No, I do not get any of these benefits |
@@ -222,7 +222,7 @@ Scenario: Scenario 07 - One parent on parental leave
         | What is your partner's age?                                                                                             | 21 or over                                |
         | Is your partner in paid work?                                                                                           | Yes, but they are on parental leave       |
         | Which child is your partner on leave for?                                                                               | Paula                                     |
-        | How would you describe your partner's work status?                                                                      | Paid employment                           |
+        | How would you describe your partner's work status?                                                                      | Employee                                  |
         | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year?                   | No                                        |
         | Does your partner get any of these benefits?                                                                            | No, they do not get any of these benefits |
         | Does your partner already get any of these to help pay for childcare?                                                   | No, they do not get any of these          |
@@ -286,7 +286,7 @@ Scenario: Scenario 09 - One parent not working, one parent receiving ESA
         | Question                                                                                              | Answer                                    |
         | What is your partner's age?                                                                           | 21 or over                                |
         | Is your partner in paid work?                                                                         | Yes, they are currently in work           |
-        | How would you describe your partner's work status?                                                    | Paid employment                           |
+        | How would you describe your partner's work status?                                                    | Employee                                  |
         | Does your partner expect their adjusted net income to be more than £100,000 for the current tax year? | No                                        |
         | Does your partner get any of these benefits?                                                          | No, they do not get any of these benefits |
         | Does your partner already get any of these to help pay for childcare?                                 | No, they do not get any of these          |
@@ -325,7 +325,7 @@ Scenario: Scenario 10 - Parent is a non-UK national without pre-settled or settl
         | What is your nationality?                                                                 | Citizen of an EU country, EEA country or Switzerland |
         | Do you have settled or pre-settled status under the EU Settlement Scheme?                 | No                                                   |
         | Are you in paid work?                                                                     | Yes, I am currently in work                          |
-        | How would you describe your work status?                                                  | Paid employment                                      |
+        | How would you describe your work status?                                                  | Employee                                             |
         | Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                                                   |
         | Does your household receive universal credit?                                             | No                                                   |
         | Do you get any of these benefits?                                                         | No, I do not get any of these benefits               |

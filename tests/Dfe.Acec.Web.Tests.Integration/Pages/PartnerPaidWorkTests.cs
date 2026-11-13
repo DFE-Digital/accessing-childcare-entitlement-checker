@@ -51,7 +51,7 @@ public class PartnerPaidWorkTests(IntegrationTestFixture factory) : IClassFixtur
     [InlineData(null, PartnerPaidWorkOption.ParentalLeave, true, null, null, "/leave/parental-leave-partner")]
     [InlineData(null, PartnerPaidWorkOption.SickLeave, false, null, null, "/earnings/adjusted-net-income-partner")]
     [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.Yes, false, null, null, "/work-status/work-status-partner")]
-    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.Yes, false, WorkStatusOption.PaidEmployment, null, "/work-status/work-status-partner")]
+    [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.Yes, false, WorkStatusOption.Employee, null, "/work-status/work-status-partner")]
     [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.No, false, null, null, "/Partner/PartnerBenefits")]
     [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.No, false, null, PartnerBenefitsOption.CarersAllowance, "/Partner/PartnerBenefits")]
     [InlineData(ReturnTo.CheckAnswers, PartnerPaidWorkOption.ParentalLeave, false, null, null, "/leave/parental-leave-partner")]

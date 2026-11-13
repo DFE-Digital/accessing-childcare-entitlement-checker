@@ -45,7 +45,7 @@ internal sealed class Scenario1 : IUseCase
             .SetUserAge("21 or over")
             .SetNationality("British or Irish citizen")
             .SetPaidWork("Yes, I am currently in work")
-            .SetWorkStatus("Paid employment")
+            .SetWorkStatus("Employee")
             .SetWeeklyEarnings("No")
             .SetUniversalCredit("Yes")
             .SetBenefits("No, I do not get any of these benefits")
