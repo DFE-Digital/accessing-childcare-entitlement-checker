@@ -281,4 +281,64 @@ public class JourneyStateToEntitlementRequestMapperTests
         journeyState.NationalityOptions = [((NationalityOption)99)];
         Assert.Throws<ArgumentException>(() => mapper.Map(journeyState));
     }
+
+    [Theory]
+    [InlineData(SettledStatusOption.Yes, true)]
+    [InlineData(SettledStatusOption.No, false)]
+    [InlineData(SettledStatusOption.StillWaiting, true)]
+    [InlineData(null, null)]
+    public void MapUserSettledStatusReturnsExpectedValue(SettledStatusOption? settledStatus, bool? expected)
+    {
+        var mapper = new JourneyStateToEntitlementRequestMapper();
+        var journeyState = CreateJourneyState();
+
+        journeyState.SettledStatus = settledStatus;
+
+        var result = mapper.Map(journeyState);
+
+        Assert.Equal(expected, result.User.HasSettledOrPreSettledStatus);
+    }
+
+    [Fact]
+    public void MapThrowsForUnknownUserSettledStatus()
+    {
+        var mapper = new JourneyStateToEntitlementRequestMapper();
+        var journeyState = CreateJourneyState();
+
+        journeyState.SettledStatus = (SettledStatusOption)99;
+
+        Assert.Throws<ArgumentOutOfRangeException>(() => mapper.Map(journeyState));
+    }
+
+    [Theory]
+    [InlineData(PartnerSettledStatusOption.Yes, true)]
+    [InlineData(PartnerSettledStatusOption.No, false)]
+    [InlineData(PartnerSettledStatusOption.StillWaiting, true)]
+    [InlineData(null, null)]
+    public void MapPartnerSettledStatusReturnsExpectedValue(
+        PartnerSettledStatusOption? settledStatus,
+        bool? expected)
+    {
+        var mapper = new JourneyStateToEntitlementRequestMapper();
+        var journeyState = CreateJourneyState();
+
+        journeyState.PartnerSettledStatus = settledStatus;
+
+        var result = mapper.Map(journeyState);
+
+        Assert.NotNull(result.Partner);
+        Assert.Equal(expected, result.Partner.HasSettledOrPreSettledStatus);
+    }
+
+    [Fact]
+    public void MapThrowsForUnknownPartnerSettledStatus()
+    {
+        var mapper = new JourneyStateToEntitlementRequestMapper();
+        var journeyState = CreateJourneyState();
+
+        journeyState.PartnerSettledStatus = (PartnerSettledStatusOption)99;
+
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => mapper.Map(journeyState));
+    }
 }
