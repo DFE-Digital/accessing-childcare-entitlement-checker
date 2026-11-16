@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.Partner;
@@ -7,6 +8,7 @@ using FluentValidation;
 
 namespace Dfe.Acec.Web.Validators;
 
+[SuppressMessage("Maintainability", "CA1506:Avoid excessive class coupling", Justification = "Existing journey validation requires multiple model dependencies. Refactoring is outside the scope of this change.")]
 public class JourneyStateValidator : AbstractValidator<JourneyState>
 {
     public const string CheckChildDetailsRuleSet = "CheckChildDetails";
