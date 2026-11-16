@@ -18,7 +18,7 @@ Scenario: Scenario 01 - Single parent earning below the threshold, household rec
         | What is your nationality?                                                     | British or Irish citizen               |
         | Are you in paid work?                                                         | Yes, I am currently in work            |
         | How would you describe your work status?                                      | Employee                               |
-        | Does your household receive universal credit?                                 | Yes                                    |
+        | Does your household receive Universal Credit?                                 | Yes                                    |
         | Do you get any of these benefits?                                             | No, I do not get any of these benefits |
         | Do you already get any of these to help pay for childcare?                    | No, I do not get any of these          |
         | Do you live with a partner?                                                   | No                                     |
