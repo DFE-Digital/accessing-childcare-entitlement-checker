@@ -702,4 +702,47 @@ public class TaxFreeChildcareSchemeTests
         Assert.Null(result.ApplyAndStartAffectedByParentalLeave);
         Assert.Null(result.EligibilityEndsWithParentalLeaveFor);
     }
+
+    [Fact]
+    public void EvaluateUserOnParentalLeaveAndPartnerOnSickLeaveReturnsSchemeResult()
+    {
+        var evaluator = CreateEvaluator();
+
+        var context = new DerivedContext
+        {
+            Household = new HouseholdFacts
+            {
+                HasPartner = true,
+                HasAccessToPublicFunds = true
+            },
+
+            User = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.ParentalLeave,
+                EarnsAboveThreshold = true,
+                ExceedsAdjustedNetIncomeLimit = false
+            },
+
+            Partner = new PersonFacts
+            {
+                PaidWorkStatus = PaidWorkStatus.SickLeave,
+                EarnsAboveThreshold = false,
+                SelfEmployedLessThan12Months = false,
+                ExceedsAdjustedNetIncomeLimit = false
+            }
+        };
+
+        var child = CreateBornChild(new DateOnly(2022, 1, 1));
+
+        child.UserIsOnParentalLeaveForChild = true;
+
+        var result = evaluator.Evaluate(context, child);
+
+        Assert.NotNull(result);
+        Assert.Equal(SchemeCode.TaxFreeChildcare, result.SchemeCode);
+        Assert.True(result.EligibleNow);
+        Assert.False(result.EligibleInFuture);
+        Assert.Equal(ParentalLeaveParty.User, result.ApplyAndStartAffectedByParentalLeave);
+        Assert.Null(result.EligibilityEndsWithParentalLeaveFor);
+    }
 }
