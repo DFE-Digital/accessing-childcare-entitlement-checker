@@ -9,7 +9,7 @@ Background:
 		| What is your age?                                          | Under 18                 |
 		| What is your nationality?                                  | British or Irish citizen |
 		| Are you in paid work?                                      | No, I am not in work     |
-		| Does your household receive universal credit?              | Yes                      |
+		| Does your household receive Universal Credit?              | Yes                      |
 		| Do you get any of these benefits?                          | Carer's Allowance        |
 		| Do you already get any of these to help pay for childcare? | Childcare vouchers       |
 

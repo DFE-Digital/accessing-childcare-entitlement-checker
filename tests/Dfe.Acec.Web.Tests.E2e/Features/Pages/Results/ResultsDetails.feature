@@ -9,7 +9,7 @@ Scenario: Results details does not show a public funds warning if i'm a British 
 		| What is your age?                                          | Under 18                               |
 		| What is your nationality?                                  | British or Irish citizen               |
 		| Are you in paid work?                                      | No, I am not in work                   |
-		| Does your household receive universal credit?              | No                                     |
+		| Does your household receive Universal Credit?              | No                                     |
 		| Do you get any of these benefits?                          | No, I do not get any of these benefits |
 		| Do you already get any of these to help pay for childcare? | No, I do not get any of these          |
 		| Do you live with a partner?                                | No                                     |
@@ -27,7 +27,7 @@ Scenario: Results details shows a public funds warning if i'm from a different c
 		| What is your age?                                          | Under 18                               |
 		| What is your nationality?                                  | Citizen of a different country         |
 		| Are you in paid work?                                      | No, I am not in work                   |
-		| Does your household receive universal credit?              | No                                     |
+		| Does your household receive Universal Credit?              | No                                     |
 		| Do you get any of these benefits?                          | No, I do not get any of these benefits |
 		| Do you already get any of these to help pay for childcare? | No, I do not get any of these          |
 		| Do you live with a partner?                                | No                                     |
@@ -46,7 +46,7 @@ Scenario Outline: Results details may show a public funds warning if i'm from th
 		| What is your nationality?                                                 | Citizen of an EU country, EEA country or Switzerland |
 		| Do you have settled or pre-settled status under the EU Settlement Scheme? | <Settled Status>                                     |
 		| Are you in paid work?                                                     | No, I am not in work                                 |
-		| Does your household receive universal credit?                             | No                                                   |
+		| Does your household receive Universal Credit?                             | No                                                   |
 		| Do you get any of these benefits?                                         | No, I do not get any of these benefits               |
 		| Do you already get any of these to help pay for childcare?                | No, I do not get any of these                        |
 		| Do you live with a partner?                                               | No                                                   |

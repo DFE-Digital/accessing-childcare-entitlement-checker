@@ -105,7 +105,7 @@ Scenario: Continue with No
 		| How would you describe your work status? | Employee                    |
 	When I select the "No" radio button
 	And I click on Continue
-	Then the page header is "Does your household receive universal credit?"
+	Then the page header is "Does your household receive Universal Credit?"
 
 Scenario: Back navigation
 	Given I answer questions as follows:

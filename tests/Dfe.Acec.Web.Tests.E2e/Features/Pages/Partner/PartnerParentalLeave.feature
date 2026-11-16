@@ -12,7 +12,7 @@ Background:
 		| Which child are you on leave for?                                 | Sara                                   |
 		| How would you describe your work status?                          | Employee                               |
 		| On average, do you expect to earn £203 a week or more before tax? | No                                     |
-		| Does your household receive universal credit?                     | No                                     |
+		| Does your household receive Universal Credit?                     | No                                     |
 		| Do you get any of these benefits?                                 | No, I do not get any of these benefits |
 		| Do you already get any of these to help pay for childcare?        | No, I do not get any of these          |
 		| Do you live with a partner?                                       | Yes                                    |

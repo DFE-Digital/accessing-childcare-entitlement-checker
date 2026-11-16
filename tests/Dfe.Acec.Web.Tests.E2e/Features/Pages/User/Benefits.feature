@@ -13,7 +13,7 @@ Scenario: Page load
 	Given I answer questions as follows:
 		| Question                                      | Answer               |
 		| Are you in paid work?                         | No, I am not in work |
-		| Does your household receive universal credit? | Yes                  |
+		| Does your household receive Universal Credit? | Yes                  |
 	When the page header is "Do you get any of these benefits?"
 	Then I should see the following checkboxes:
 		| Name                                                 |
@@ -33,7 +33,7 @@ Scenario: Checkbox selection
 	Given I answer questions as follows:
 		| Question                                      | Answer               |
 		| Are you in paid work?                         | No, I am not in work |
-		| Does your household receive universal credit? | Yes                  |
+		| Does your household receive Universal Credit? | Yes                  |
 	When I select the "Carer's Allowance" checkbox
 	And I select the "Contribution-based Employment and Support Allowance" checkbox
 	Then the following checkboxes should be selected:
@@ -45,7 +45,7 @@ Scenario: Selecting both a valid option and None is validated when JavaScript is
 	Given I answer questions as follows:
 		| Question                                      | Answer               |
 		| Are you in paid work?                         | No, I am not in work |
-		| Does your household receive universal credit? | Yes                  |
+		| Does your household receive Universal Credit? | Yes                  |
 	When I select the "Carer's Allowance" checkbox
 	And I select the "No, I do not get any of these benefits" checkbox
 	And I click on Continue
@@ -56,7 +56,7 @@ Scenario: Continue without selection
 	Given I answer questions as follows:
 		| Question                                      | Answer               |
 		| Are you in paid work?                         | No, I am not in work |
-		| Does your household receive universal credit? | Yes                  |
+		| Does your household receive Universal Credit? | Yes                  |
 	When I do not select a checkbox
 	And I click on Continue
 	Then an error summary box should appear at the top of the page
@@ -66,7 +66,7 @@ Scenario: Continue with Carer's Allowance
 	Given I answer questions as follows:
 		| Question                                      | Answer               |
 		| Are you in paid work?                         | No, I am not in work |
-		| Does your household receive universal credit? | Yes                  |
+		| Does your household receive Universal Credit? | Yes                  |
 	When I select the "Carer's Allowance" checkbox
 	And I click on Continue
 	Then the page header is "Do you already get any of these to help pay for childcare?"
@@ -83,6 +83,6 @@ Scenario: Back navigation
 	Given I answer questions as follows:
 		| Question                                      | Answer               |
 		| Are you in paid work?                         | No, I am not in work |
-		| Does your household receive universal credit? | Yes                  |
+		| Does your household receive Universal Credit? | Yes                  |
 	When I click the back link
-	Then the page header is "Does your household receive universal credit?"
+	Then the page header is "Does your household receive Universal Credit?"

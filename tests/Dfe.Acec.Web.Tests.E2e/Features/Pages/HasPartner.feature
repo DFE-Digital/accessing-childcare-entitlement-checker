@@ -63,7 +63,7 @@ Scenario: Back navigation from Do you already get any of these to help pay for c
 		| Have you been self-employed for less than 12 months?                                      | No                            |
 		| On average, do you expect to earn £203 a week or more before tax?                         | Yes                           |
 		| Do you expect your adjusted net income to be more than £100,000 for the current tax year? | No                            |
-		| Does your household receive universal credit?                                             | Yes                           |
+		| Does your household receive Universal Credit?                                             | Yes                           |
 		| Do you get any of these benefits?                                                         | Carer's Allowance             |
 		| Do you already get any of these to help pay for childcare?                                | No, I do not get any of these |
 	When I click the back link

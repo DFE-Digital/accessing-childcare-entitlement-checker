@@ -13,7 +13,7 @@ internal static class PageNames
     public const string SelfEmployedDuration = "Have you been self-employed for less than 12 months?";
     public const string WeeklyEarnings = "On average, __PLACEHOLDER__ you expect to earn __PLACEHOLDER__ a week or more __PLACEHOLDER__";
     public const string YearlyEarnings = "Do you expect your adjusted net income to be more than £100,000 for the current tax year?";
-    public const string UniversalCredit = "Does your household receive universal credit?";
+    public const string UniversalCredit = "Does your household receive Universal Credit?";
     public const string Benefits = "Do you get any of these benefits?";
     public const string ChildcareSupport = "Do you already get any of these to help pay for childcare?";
     public const string ChildcareVoucherReceipt = "How do you receive your childcare vouchers?";

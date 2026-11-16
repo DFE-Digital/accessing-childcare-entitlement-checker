@@ -40,7 +40,7 @@ Scenario: Continue with Yes
 Scenario: Continue with No
 	When I select the "No" radio button
 	And I click on Continue
-	Then the page header is "Does your household receive universal credit?"
+	Then the page header is "Does your household receive Universal Credit?"
 
 Scenario: Back navigation
 	When I click the back link
