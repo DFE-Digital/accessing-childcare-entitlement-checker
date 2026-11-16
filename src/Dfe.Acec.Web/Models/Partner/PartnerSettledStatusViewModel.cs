@@ -27,5 +27,5 @@ public class PartnerSettledStatusViewModel
 
     [Display(Name = "Does your partner have settled or pre-settled status under the EU Settlement Scheme?")]
     [Required(ErrorMessage = "Select if your partner has settled or pre-settled status")]
-    public SettledStatusOption? PartnerSettledStatus { get; set; }
+    public PartnerSettledStatusOption? PartnerSettledStatus { get; set; }
 }

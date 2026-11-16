@@ -97,7 +97,7 @@ public class PartnerControllerTests : IDisposable
     {
         _journeyState.PartnerNationalityOptions = [NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland];
         _journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
-        _journeyState.PartnerSettledStatus = SettledStatusOption.Yes;
+        _journeyState.PartnerSettledStatus = PartnerSettledStatusOption.Yes;
         var model = new PartnerNationalityViewModel
         {
             PartnerNationalityOptions = [option],
@@ -140,11 +140,11 @@ public class PartnerControllerTests : IDisposable
     }
 
     [Theory]
-    [InlineData(SettledStatusOption.Yes, null, nameof(PartnerController.PartnerPaidWork))]
-    [InlineData(SettledStatusOption.No, null, nameof(PartnerController.PartnerPaidWork))]
-    [InlineData(SettledStatusOption.StillWaiting, null, nameof(PartnerController.PartnerPaidWork))]
-    [InlineData(SettledStatusOption.Yes, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
-    public void PartnerSettledStatusPostSavesStateAndRedirects(SettledStatusOption option, string? returnTo, string actionName)
+    [InlineData(PartnerSettledStatusOption.Yes, null, nameof(PartnerController.PartnerPaidWork))]
+    [InlineData(PartnerSettledStatusOption.No, null, nameof(PartnerController.PartnerPaidWork))]
+    [InlineData(PartnerSettledStatusOption.StillWaiting, null, nameof(PartnerController.PartnerPaidWork))]
+    [InlineData(PartnerSettledStatusOption.Yes, ReturnTo.CheckAnswers, nameof(PartnerController.PartnerPaidWork))]
+    public void PartnerSettledStatusPostSavesStateAndRedirects(PartnerSettledStatusOption option, string? returnTo, string actionName)
     {
         _journeyState.PartnerPaidWork = PartnerPaidWorkOption.Yes;
         var model = new PartnerSettledStatusViewModel
@@ -175,9 +175,9 @@ public class PartnerControllerTests : IDisposable
     [Fact]
     public void PartnerSettledStatusGetPopulatesModelFromState()
     {
-        _journeyState.PartnerSettledStatus = SettledStatusOption.Yes;
+        _journeyState.PartnerSettledStatus = PartnerSettledStatusOption.Yes;
         var result = Assert.IsType<ViewResult>(_controller.PartnerSettledStatus());
-        Assert.Equal(SettledStatusOption.Yes, result.Model<PartnerSettledStatusViewModel>().PartnerSettledStatus);
+        Assert.Equal(PartnerSettledStatusOption.Yes, result.Model<PartnerSettledStatusViewModel>().PartnerSettledStatus);
     }
 
     [Fact]
