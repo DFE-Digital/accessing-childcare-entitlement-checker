@@ -22,15 +22,15 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 id="top" class="govuk-heading-xl" data-clarity-mask="true">@Localizer["{0}'s childcare support", Model.ChildName ]</h1>
-        
+
         <button class="app-print-link" type="button">
             @Localizer["Print this page"]
         </button>
-        
+
         <p class="govuk-body" data-clarity-mask="true">
             @Localizer["Based on your answers, this is the support you can get for {0} now or as they get older.", Model.ChildName]
-        </p> 
-        
+        </p>
+
         <p class="govuk-body">
             @Localizer["You may not be able to use some of this straight away."]
         </p>
@@ -74,7 +74,7 @@
                         throw new InvalidOperationException(
                             $"Unknown section type: {section.SectionType}");
                 }
-                
+
                 @if (section.ShowThirtyHourWarning)
                 {
                     <p class="govuk-body">@Localizer["You can only get up to 30 hours of funded childcare per child each week, even if your child is eligible for more than one scheme."]</p>
@@ -87,7 +87,9 @@
                 @foreach (var scheme in section.Schemes)
                 {
                     <div class="app-results-scheme">
-                        <h3 class="govuk-heading-m">
+                        <h3 class="govuk-heading-m"
+                            
+                            govg4-impression>
                             @scheme.Name
                         </h3>
 
@@ -134,7 +136,7 @@
                                     @scheme.Ends
                                 </dd>
                             </div>
-                            
+
                             @if (scheme.CanBeUsedWith.Count > 0)
                             {
                                 <div class="govuk-summary-list__row">
@@ -153,13 +155,24 @@
                                     </dd>
                                 </div>
                             }
-                            
+
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">
                                     @Localizer["Next steps"]
                                 </dt>
                                 <dd class="govuk-summary-list__value">
-                                    <a class="govuk-link" href="@scheme.Url" target="_blank" rel="noopener noreferrer">
+                                    <a class="govuk-link"
+                                       href="@scheme.Url"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+
+                                       govg4-type="link"
+                                       govg4-action=@($"{scheme.Name}-link")
+                                       govg4-metric-name=@($"{scheme.SchemeCode}")
+                                       govg4-metric-value=1
+                                       govg4-section="scheme-results"
+                                       govg4-select-content
+                                       >
                                         @Localizer["Find out more about {0} and how to apply (opens in new tab)", scheme.Name]
                                     </a>
                                 </dd>
@@ -175,7 +188,7 @@
         <button class="app-print-link" type="button">
             @Localizer["Print this page"]
         </button>
-        
+
         <div class="app-back-to-top">
             <a class="govuk-link govuk-link--no-visited-state app-back-to-top__link"
                href="#top">
@@ -194,7 +207,7 @@
         </div>
 
     </div>
-    
+
     <script add-nonce="true">
         document
             .querySelectorAll('.app-print-link')

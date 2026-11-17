@@ -30,29 +30,70 @@ public abstract class GovTagHelperBase : TagHelper
     [HtmlAttributeName("govg4-metric-value")]
     public object? MetricValue { get; set; }
 
-    protected abstract GovEventPayload ValidateAndCreatePayload();
+    private string _attributeName = "govg4";
+
+    protected abstract GovEventPayload CreatePayload();
 
     private static readonly JsonSerializerOptions
         _jsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        _attributeName =  context.AllAttributes.FirstOrDefault()?.Name ?? _attributeName;
+        await ResolveDefaultsAsync(context, output);
+        Validate();
+        var payload = CreatePayload();
+        var json = JsonSerializer.Serialize(payload, payload.GetType(), _jsonOptions);
+        output.Attributes.SetAttribute("data-govg4-event", json);
+
+        CleanupDom(output);
+    }
+
+    private async Task ResolveDefaultsAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (string.IsNullOrWhiteSpace(UiText))
         {
             var childContent = await output.GetChildContentAsync();
             UiText = childContent.GetContent().Trim();
         }
+
+        if (string.IsNullOrWhiteSpace(Type))
+        {
+            Type = ResolveDefaultType(context.TagName);
+        }
+    }
+
+    protected virtual void Validate()
+    {
+
         if (string.IsNullOrWhiteSpace(Section))
         {
-            throw new InvalidOperationException(
-                $"'{context.AllAttributes[0].Name}' requires 'govg4-section'.");
+            throw new GovAnalyticsMissingParamaterException(
+                $"'{_attributeName}' requires 'govg4-section'.");
         }
 
-        var payload = ValidateAndCreatePayload();
-        var json = JsonSerializer.Serialize(payload, payload.GetType(), _jsonOptions);
-        output.Attributes.SetAttribute("data-govg4-event", json);
+        if (string.IsNullOrWhiteSpace(Action))
+        {
+            throw new GovAnalyticsMissingParamaterException(
+                "Analytics attribute requires 'govg4-action' and 'govg4-ui-text'");
+        }
 
-        CleanupDom(output);
+        var hasMetricName = !string.IsNullOrWhiteSpace(MetricName);
+        var hasMetricValue = MetricValue is not null && !(MetricValue is string s && string.IsNullOrWhiteSpace(s));
+
+        if (hasMetricName && !hasMetricValue)
+        {
+            throw new GovAnalyticsMissingParamaterException(
+                "When setting 'govg4-metric-name', you must also provide 'govg4-metric-value'.");
+        }
+        if (!hasMetricName && hasMetricValue)
+        {
+            throw new GovAnalyticsMissingParamaterException(
+                "When setting 'govg4-metric-value', you must also provide 'govg4-metric-name'.");
+        }
     }
+
+    protected virtual string ResolveDefaultType(string tagName) => tagName.ToLowerInvariant();
+
 
     private static void CleanupDom(TagHelperOutput output)
     {
