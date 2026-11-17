@@ -12,24 +12,26 @@ public class GovFormErrorTagHelper : GovTagHelperBase
     [HtmlAttributeName("govg4-outcome")]
     public string Outcome { get; set; } = string.Empty;
 
-    protected override GovEventPayload ValidateAndCreatePayload()
+    protected override void Validate()
     {
+        base.Validate();
         if (string.IsNullOrWhiteSpace(Outcome))
         {
             throw new GovAnalyticsMissingParamaterException(
                 "'govg4-form-error' requires 'govg4-outcome'.");
         }
+    }
 
-        return new FormErrorEvent
+    protected override GovEventPayload CreatePayload() =>
+        new FormErrorEvent()
         {
             ToolName = ToolName,
             Section = Section,
             Outcome = Outcome,
-            Action = string.IsNullOrWhiteSpace(Action) ? "error" : Action,
-            UiText = string.IsNullOrWhiteSpace(UiText) ? "Continue" : UiText,
-            Type = string.IsNullOrWhiteSpace(Type) ? "form" : Type,
+            Action =  Action,
+            UiText =  UiText,
+            Type = Type,
             MetricName = MetricName,
             MetricValue = MetricValue
         };
-    }
 }
