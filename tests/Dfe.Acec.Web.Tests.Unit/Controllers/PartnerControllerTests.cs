@@ -330,7 +330,7 @@ public class PartnerControllerTests : IDisposable
     [InlineData(PartnerBenefitsOption.EmploymentAndSupportAllowance, null, nameof(PartnerController.PartnerChildcareSupport))]
     [InlineData(PartnerBenefitsOption.GuaranteedElementOfPensionCredit, null, nameof(PartnerController.PartnerChildcareSupport))]
     [InlineData(PartnerBenefitsOption.IncapacityBenefit, null, nameof(PartnerController.PartnerChildcareSupport))]
-    [InlineData(PartnerBenefitsOption.LimitedCapabilityForWork, null, nameof(PartnerController.PartnerChildcareSupport))]
+    [InlineData(PartnerBenefitsOption.LimitedCapabilityForWorkElementOfUC, null, nameof(PartnerController.PartnerChildcareSupport))]
     [InlineData(PartnerBenefitsOption.LimitedCapabilityForWorkRelatedActivity, null, nameof(PartnerController.PartnerChildcareSupport))]
     [InlineData(PartnerBenefitsOption.SevereDisablementAllowance, null, nameof(PartnerController.PartnerChildcareSupport))]
     [InlineData(PartnerBenefitsOption.None, null, nameof(PartnerController.PartnerChildcareSupport))]

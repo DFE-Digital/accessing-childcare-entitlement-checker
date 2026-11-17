@@ -19,9 +19,6 @@ public enum PartnerBenefitsOption
     [Display(Name = "Incapacity Benefit")]
     IncapacityBenefit,
 
-    [Display(Name = "Limited capability for work (LCW)")]
-    LimitedCapabilityForWork,
-
     [Display(Name = "Limited capability for work related activity (LCWRA)")]
     LimitedCapabilityForWorkRelatedActivity,
 
@@ -30,6 +27,9 @@ public enum PartnerBenefitsOption
 
     [Display(Name = "Severe Disablement Allowance")]
     SevereDisablementAllowance,
+
+    [Display(Name = "The limited capability for work element of Universal Credit")]
+    LimitedCapabilityForWorkElementOfUC,
 
     [Display(Name = "No, they do not get any of these benefits")]
     None,
