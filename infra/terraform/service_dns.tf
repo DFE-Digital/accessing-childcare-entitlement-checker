@@ -1,5 +1,17 @@
 # Apex records for the service domain. The zone comes from infra/terraform-domains.
 # Follows the apex pattern in DFE-Digital/terraform-modules domains/environment_domains.
+# temporary import
+import {
+  to = azurerm_dns_a_record.service-apex[0]
+  id = "/subscriptions/2334dd74-b2dc-4253-b111-97803e5d2912/resourceGroups/s279p01rg-uks-cec-domains/providers/Microsoft.Network/dnsZones/check-if-you-are-eligible-for-childcare-funding.service.gov.uk/A/@"
+}
+
+import {
+  to = azurerm_dns_txt_record.service-apex-validation[0]
+  id = "/subscriptions/2334dd74-b2dc-4253-b111-97803e5d2912/resourceGroups/s279p01rg-uks-cec-domains/providers/Microsoft.Network/dnsZones/check-if-you-are-eligible-for-childcare-funding.service.gov.uk/TXT/_dnsauth"
+}
+#eof temporary import
+
 locals {
   manage_service_dns = var.service_custom_domain != "" && var.service_domain_resource_group_name != ""
 }
