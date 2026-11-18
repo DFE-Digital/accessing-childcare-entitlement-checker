@@ -31,16 +31,16 @@ public class PartnerSettledStatusTests(IntegrationTestFixture factory) : IClassF
     }
 
     [Theory]
-    [InlineData(null, SettledStatusOption.Yes, null)]
-    [InlineData(null, SettledStatusOption.No, null)]
-    [InlineData(null, SettledStatusOption.StillWaiting, null)]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.Yes, null)]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.Yes, PartnerPaidWorkOption.Yes)]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, null)]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.No, PartnerPaidWorkOption.Yes)]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, null)]
-    [InlineData(ReturnTo.CheckAnswers, SettledStatusOption.StillWaiting, PartnerPaidWorkOption.Yes)]
-    public async Task PostValidRedirects(string? returnTo, SettledStatusOption partnerSettledStatus, PartnerPaidWorkOption? partnerPaidWork)
+    [InlineData(null, PartnerSettledStatusOption.Yes, null)]
+    [InlineData(null, PartnerSettledStatusOption.No, null)]
+    [InlineData(null, PartnerSettledStatusOption.StillWaiting, null)]
+    [InlineData(ReturnTo.CheckAnswers, PartnerSettledStatusOption.Yes, null)]
+    [InlineData(ReturnTo.CheckAnswers, PartnerSettledStatusOption.Yes, PartnerPaidWorkOption.Yes)]
+    [InlineData(ReturnTo.CheckAnswers, PartnerSettledStatusOption.No, null)]
+    [InlineData(ReturnTo.CheckAnswers, PartnerSettledStatusOption.No, PartnerPaidWorkOption.Yes)]
+    [InlineData(ReturnTo.CheckAnswers, PartnerSettledStatusOption.StillWaiting, null)]
+    [InlineData(ReturnTo.CheckAnswers, PartnerSettledStatusOption.StillWaiting, PartnerPaidWorkOption.Yes)]
+    public async Task PostValidRedirects(string? returnTo, PartnerSettledStatusOption partnerSettledStatus, PartnerPaidWorkOption? partnerPaidWork)
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {

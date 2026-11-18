@@ -50,7 +50,7 @@ public class JourneyState
 
     public List<NationalityOption> PartnerNationalityOptions { get; set; } = [];
 
-    public SettledStatusOption? PartnerSettledStatus { get; set; }
+    public PartnerSettledStatusOption? PartnerSettledStatus { get; set; }
 
     public PartnerPaidWorkOption? PartnerPaidWork { get; set; }
 

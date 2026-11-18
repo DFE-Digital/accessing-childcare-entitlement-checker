@@ -1,4 +1,5 @@
 using Dfe.Acec.Web.Models;
+using Dfe.Acec.Web.Models.User;
 using Dfe.Acec.Web.Services;
 using Dfe.Acec.Web.Tests.Integration.Fixtures;
 using Dfe.Acec.Web.Tests.Integration.Helpers;

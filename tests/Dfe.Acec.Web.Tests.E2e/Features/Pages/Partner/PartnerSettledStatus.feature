@@ -24,7 +24,7 @@ Scenario: Page load
 		| Option                                                           |
 		| Yes                                                              |
 		| No                                                               |
-		| I applied before 1 July 2021 and am still waiting for a decision |
+		| They applied before 1 July 2021 and are still waiting for a decision |
 	And no radio buttons are selected
 
 Scenario: Radio button selection

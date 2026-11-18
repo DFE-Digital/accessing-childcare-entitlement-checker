@@ -4,6 +4,7 @@ using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Filters;
 using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Models.Partner;
+using Dfe.Acec.Web.Models.User;
 using Dfe.Acec.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 

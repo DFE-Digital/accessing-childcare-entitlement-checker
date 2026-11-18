@@ -36,12 +36,12 @@ public class PartnerNationalityTests(IntegrationTestFixture factory) : IClassFix
     [InlineData(null, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work-partner")]
     [InlineData(null, NationalityOption.CitizenOfADifferentCountry, null, null, "/work-status/work-partner")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, null, null, "/nationality/settled-status-partner")]
-    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, SettledStatusOption.Yes, null, "/nationality/settled-status-partner")]
+    [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfAnEuCountryEeaCountryOrSwitzerland, PartnerSettledStatusOption.Yes, null, "/nationality/settled-status-partner")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, null, "/work-status/work-partner")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.BritishOrIrishCitizen, null, PartnerPaidWorkOption.Yes, "/work-status/work-partner")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, null, null, "/work-status/work-partner")]
     [InlineData(ReturnTo.CheckAnswers, NationalityOption.CitizenOfADifferentCountry, null, PartnerPaidWorkOption.Yes, "/work-status/work-partner")]
-    public async Task PostValidRedirects(string? returnTo, NationalityOption partnerNationality, SettledStatusOption? partnerSettledStatus, PartnerPaidWorkOption? partnerPaidWork, string continueUrl)
+    public async Task PostValidRedirects(string? returnTo, NationalityOption partnerNationality, PartnerSettledStatusOption? partnerSettledStatus, PartnerPaidWorkOption? partnerPaidWork, string continueUrl)
     {
         await using var host = factory.CreateClientWithJourneyState(new JourneyState
         {

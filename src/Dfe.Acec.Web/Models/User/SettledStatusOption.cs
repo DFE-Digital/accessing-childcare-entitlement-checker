@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Dfe.Acec.Web.Models;
+namespace Dfe.Acec.Web.Models.User;
 
 public enum SettledStatusOption
 {

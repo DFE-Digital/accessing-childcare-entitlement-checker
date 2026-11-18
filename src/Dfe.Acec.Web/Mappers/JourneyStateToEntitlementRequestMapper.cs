@@ -73,7 +73,7 @@ public class JourneyStateToEntitlementRequestMapper
             Benefits = [.. journeyState.PartnerBenefits.Select(MapPersonBenefit).OfType<PersonBenefit>()],
             ChildcareSupport = [.. journeyState.PartnerChildcareSupport.Select(MapPartnerChildcareSupport).OfType<ChildcareSupport>()],
             Nationalities = MapNationalities(journeyState.PartnerNationalityOptions),
-            HasSettledOrPreSettledStatus = MapSettledStatus(journeyState.PartnerSettledStatus),
+            HasSettledOrPreSettledStatus = MapPartnerSettledStatus(journeyState.PartnerSettledStatus),
             ChildcareVoucherReceipt = MapChildcareVoucherReceiptOption(journeyState.PartnerChildcareVoucherReceipt),
         };
     }
@@ -310,8 +310,7 @@ public class JourneyStateToEntitlementRequestMapper
         ];
     }
 
-    private static bool? MapSettledStatus(
-        SettledStatusOption? settledStatus)
+    private static bool? MapSettledStatus(SettledStatusOption? settledStatus)
     {
         return settledStatus switch
         {
@@ -323,6 +322,20 @@ public class JourneyStateToEntitlementRequestMapper
 
             _ => throw new ArgumentOutOfRangeException(
                 nameof(settledStatus))
+        };
+    }
+
+    private static bool? MapPartnerSettledStatus(PartnerSettledStatusOption? partnerSettledStatus)
+    {
+        return partnerSettledStatus switch
+        {
+            PartnerSettledStatusOption.Yes or PartnerSettledStatusOption.StillWaiting => true,
+
+            PartnerSettledStatusOption.No => false,
+
+            null => null,
+
+            _ => throw new ArgumentOutOfRangeException(nameof(partnerSettledStatus))
         };
     }
 
