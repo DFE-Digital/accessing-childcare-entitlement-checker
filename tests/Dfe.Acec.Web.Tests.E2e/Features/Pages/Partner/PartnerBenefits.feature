@@ -20,7 +20,7 @@ Scenario: Page load
 		| Employment and support allowance (ESA)               |
 		| Guaranteed element of Pension Credit                 |
 		| Incapacity Benefit                                   |
-		| Limited capability for work (LCW)                    |
+		| The limited capability for work element of Universal Credit                    |
 		| Limited capability for work related activity (LCWRA) |
 		| National Insurance Credits                           |
 		| Severe Disablement Allowance                         |

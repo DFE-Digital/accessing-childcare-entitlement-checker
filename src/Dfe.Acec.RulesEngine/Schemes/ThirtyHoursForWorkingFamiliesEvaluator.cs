@@ -234,7 +234,7 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
         PersonBenefit.IncapacityBenefit,
         PersonBenefit.SevereDisablementAllowance,
         PersonBenefit.CarersAllowance,
-        PersonBenefit.LimitedCapabilityForWork,
+        PersonBenefit.LimitedCapabilityForWorkElementOfUC,
         PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
         PersonBenefit.NationalInsuranceCredits
     ];

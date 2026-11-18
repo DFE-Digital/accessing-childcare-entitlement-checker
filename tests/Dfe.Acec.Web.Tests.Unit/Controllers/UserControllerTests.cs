@@ -695,7 +695,7 @@ public class UserControllerTests : IDisposable
     [InlineData(BenefitsOption.EmploymentAndSupportAllowance, null, nameof(UserController.ChildcareSupport))]
     [InlineData(BenefitsOption.GuaranteedElementOfPensionCredit, null, nameof(UserController.ChildcareSupport))]
     [InlineData(BenefitsOption.IncapacityBenefit, null, nameof(UserController.ChildcareSupport))]
-    [InlineData(BenefitsOption.LimitedCapabilityForWork, null, nameof(UserController.ChildcareSupport))]
+    [InlineData(BenefitsOption.LimitedCapabilityForWorkElementOfUC, null, nameof(UserController.ChildcareSupport))]
     [InlineData(BenefitsOption.LimitedCapabilityForWorkRelatedActivity, null, nameof(UserController.ChildcareSupport))]
     [InlineData(BenefitsOption.SevereDisablementAllowance, null, nameof(UserController.ChildcareSupport))]
     [InlineData(BenefitsOption.None, null, nameof(UserController.ChildcareSupport))]

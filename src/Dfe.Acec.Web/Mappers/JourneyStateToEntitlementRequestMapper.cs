@@ -216,8 +216,8 @@ public class JourneyStateToEntitlementRequestMapper
             BenefitsOption.IncapacityBenefit =>
                 PersonBenefit.IncapacityBenefit,
 
-            BenefitsOption.LimitedCapabilityForWork =>
-                PersonBenefit.LimitedCapabilityForWork,
+            BenefitsOption.LimitedCapabilityForWorkElementOfUC =>
+                PersonBenefit.LimitedCapabilityForWorkElementOfUC,
 
             BenefitsOption.LimitedCapabilityForWorkRelatedActivity =>
                 PersonBenefit.LimitedCapabilityForWorkRelatedActivity,

@@ -239,7 +239,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     [InlineData(PersonBenefit.ContributionBasedEmploymentAndSupportAllowance)]
     [InlineData(PersonBenefit.IncapacityBenefit)]
     [InlineData(PersonBenefit.SevereDisablementAllowance)]
-    [InlineData(PersonBenefit.LimitedCapabilityForWork)]
+    [InlineData(PersonBenefit.LimitedCapabilityForWorkElementOfUC)]
     [InlineData(PersonBenefit.NationalInsuranceCredits)]
     public void EvaluateOneParentWorkingOtherParentReceivingQualifyingBenefitReturnsSchemeResult(PersonBenefit benefit)
     {
