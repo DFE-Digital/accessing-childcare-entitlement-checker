@@ -163,6 +163,7 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
     {
         var meetsIncomeRequirement =
             MeetsMinimumIncomeRequirement(person) ||
+            IsOnQualifyingSickLeave(person) ||
             canUseTemporaryIncomeExemption;
 
         return
@@ -176,6 +177,11 @@ public class TaxFreeChildcareEvaluator : ISchemeEvaluator
             PaidWorkStatus.Yes
             or PaidWorkStatus.ParentalLeave
             or PaidWorkStatus.SickLeave;
+    }
+
+    private static bool IsOnQualifyingSickLeave(PersonFacts person)
+    {
+        return person.PaidWorkStatus == PaidWorkStatus.SickLeave;
     }
 
     private static bool MeetsMinimumIncomeRequirement(PersonFacts person)
