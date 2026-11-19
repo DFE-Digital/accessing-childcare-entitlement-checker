@@ -236,7 +236,8 @@ public class ThirtyHoursForWorkingFamiliesEvaluator : ISchemeEvaluator
         PersonBenefit.CarersAllowance,
         PersonBenefit.LimitedCapabilityForWorkElementOfUC,
         PersonBenefit.ContributionBasedEmploymentAndSupportAllowance,
-        PersonBenefit.NationalInsuranceCredits
+        PersonBenefit.NationalInsuranceCredits,
+        PersonBenefit.CarersElementOfUC
     ];
 
     private sealed record ParentalLeaveAssessment(

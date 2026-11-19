@@ -42,7 +42,7 @@ public class PartnerBenefitsTests(IntegrationTestFixture factory) : IClassFixtur
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertCheckboxCount(10)
+        doc.AssertCheckboxCount(11)
             .AssertBackLink(backLinkUrl)
             .AssertLegendIsPageHeading()
             .AssertNavigationBar()

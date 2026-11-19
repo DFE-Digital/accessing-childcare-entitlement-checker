@@ -241,6 +241,7 @@ public class ThirtyHoursForWorkingFamiliesSchemeTests
     [InlineData(PersonBenefit.SevereDisablementAllowance)]
     [InlineData(PersonBenefit.LimitedCapabilityForWorkElementOfUC)]
     [InlineData(PersonBenefit.NationalInsuranceCredits)]
+    [InlineData(PersonBenefit.CarersElementOfUC)]
     public void EvaluateOneParentWorkingOtherParentReceivingQualifyingBenefitReturnsSchemeResult(PersonBenefit benefit)
     {
         var scheme = CreateEvaluator();
