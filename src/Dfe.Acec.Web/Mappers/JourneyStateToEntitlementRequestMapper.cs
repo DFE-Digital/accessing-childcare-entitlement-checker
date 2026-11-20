@@ -225,6 +225,9 @@ public class JourneyStateToEntitlementRequestMapper
             BenefitsOption.NationalInsuranceCredits =>
                 PersonBenefit.NationalInsuranceCredits,
 
+            BenefitsOption.CarersElementOfUC =>
+                PersonBenefit.CarersElementOfUC,
+
             BenefitsOption.SevereDisablementAllowance =>
                 PersonBenefit.SevereDisablementAllowance,
 
