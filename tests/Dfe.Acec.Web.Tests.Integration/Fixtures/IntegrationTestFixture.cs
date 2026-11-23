@@ -43,6 +43,13 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
     {
         var webHost = WithWebHostBuilder(builder =>
         {
+            builder.ConfigureAppConfiguration((_, config) =>
+            {
+                config.AddInMemoryCollection(new Dictionary<string, string?>
+                {
+                    ["GoogleTagManager:ContainerId"] = "GTM-TEST123"
+                });
+            });
             builder.ConfigureServices(services =>
             {
                 services.AddScoped<IJourneySession>(_ => new TestJourneySession(state));
