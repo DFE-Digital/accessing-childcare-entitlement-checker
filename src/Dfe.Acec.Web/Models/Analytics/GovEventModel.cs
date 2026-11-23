@@ -38,5 +38,5 @@ public abstract record GovEventPayload
 
     [JsonPropertyName("metric_value")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public object? MetricValue { get; init; }
+    public int? MetricValue { get; init; }
 }

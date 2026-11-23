@@ -28,7 +28,7 @@ public abstract class GovTagHelperBase : TagHelper
     public string? MetricName { get; set; }
 
     [HtmlAttributeName("govg4-metric-value")]
-    public object? MetricValue { get; set; }
+    public int? MetricValue { get; set; }
 
     protected abstract GovEventPayload ValidateAndCreatePayload();
 
