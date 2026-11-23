@@ -78,7 +78,7 @@ public abstract class GovTagHelperBase : TagHelper
         }
 
         var hasMetricName = !string.IsNullOrWhiteSpace(MetricName);
-        var hasMetricValue = MetricValue is not null && !(MetricValue is string s && string.IsNullOrWhiteSpace(s));
+        var hasMetricValue = MetricValue is not null;
 
         if (hasMetricName && !hasMetricValue)
         {

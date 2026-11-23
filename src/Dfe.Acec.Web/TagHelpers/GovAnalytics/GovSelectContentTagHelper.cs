@@ -13,9 +13,8 @@ public class GovSelectContentTagHelper : GovTagHelperBase
             Section = Section,
             Action = Action,
             UiText = UiText,
-            Type =  Type,
+            Type = Type,
             MetricName = MetricName,
             MetricValue = MetricValue
         };
 }
-
