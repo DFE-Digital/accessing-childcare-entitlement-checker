@@ -12,6 +12,10 @@ on:
           - test
           - staging
           - production
+      shutter:
+        description: 'Shutter environment?'
+        required: true
+        type: boolean
 
 jobs:
   shutter:
@@ -51,7 +55,7 @@ jobs:
       - name: Execute Failover Action
         shell: bash
         env:
-          SERVICE_SHUTTERED: ${{ vars.SERVICE_SHUTTERED }}
+          SERVICE_SHUTTERED: ${{ inputs.shutter }}
         run: |
           ENV_PREFIX="${{ env.ENV_PREFIX }}"
           
