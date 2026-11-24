@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Models.Analytics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -53,7 +54,13 @@ public abstract class GovTagHelperBase : TagHelper
         if (string.IsNullOrWhiteSpace(UiText))
         {
             var childContent = await output.GetChildContentAsync();
-            UiText = childContent.GetContent().Trim();
+            UiText = System.Net.WebUtility.HtmlDecode(childContent.GetContent()).Trim();
+
+            if (UiText.ContainsHtml())
+            {
+                throw new GovAnalyticsMissingParamaterException(
+                    $"'{_attributeName}' inferred 'govg4-ui-text' from child content containing HTML ('{UiText}'). Please specify 'govg4-ui-text' explicitly.");
+            }
         }
 
         if (string.IsNullOrWhiteSpace(Type))

@@ -9,6 +9,15 @@ namespace Dfe.Acec.Web.Extensions;
 
 public static class HtmlHelperExtensions
 {
+
+    /// <summary>
+    /// simple extension method to validate if something contains html, can be expanded when needed
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    public static bool ContainsHtml(this string str) => !string.IsNullOrEmpty(str) && str.Contains("</");
+
+
     /// <remarks>
     /// Could potentially be replaced with a custom tag helper if the team can agree on it. See AC-605.
     /// Because of that, we won't bother unit testing this method - the radio buttons are asserted by the UI tests anyway.
