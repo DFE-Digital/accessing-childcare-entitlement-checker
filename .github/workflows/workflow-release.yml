@@ -207,6 +207,7 @@ jobs:
           tag_name: ${{ needs.version.outputs.version }}
           name: Release ${{ needs.version.outputs.version }}
           body: Successfully deployed to production.
+          generate_release_notes: true
           files: |
             webapp.zip
             shutter-content.zip

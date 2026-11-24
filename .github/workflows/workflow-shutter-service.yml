@@ -1,4 +1,5 @@
 name: Shutter Service
+run-name: "${{ vars.SERVICE_SHUTTERED == 'true' && 'Shuttering' || 'Restoring' }} ${{ inputs.environment }}"
 
 on:
   workflow_dispatch:
