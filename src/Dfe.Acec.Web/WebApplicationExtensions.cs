@@ -18,8 +18,7 @@ public static class WebApplicationExtensions
     [PublicAPI]
     public static WebApplication MapControllerRoutes(this WebApplication app)
     {
-        app.MapControllerRoute(name: "root", pattern: "", defaults: new { controller = Home, action = nameof(HomeController.Start) });
-        app.MapControllerRoute(name: "start-page", pattern: "start-page", defaults: new { controller = Home, action = nameof(HomeController.Start) });
+        app.MapControllerRoute(name: "root", pattern: "", defaults: new { controller = Home, action = nameof(HomeController.Location) });
         app.MapControllerRoute(name: "session-expired", pattern: "session-expired", defaults: new { controller = Home, action = nameof(HomeController.SessionExpired) });
         app.MapControllerRoute(name: "session-keep-alive", pattern: "session-keep-alive", defaults: new { controller = SessionController.Name, action = nameof(SessionController.KeepAlive) });
         app.MapControllerRoute(name: "where-do-you-live", pattern: "where-do-you-live", defaults: new { controller = Home, action = nameof(HomeController.Location) });
@@ -74,7 +73,7 @@ public static class WebApplicationExtensions
         app.MapControllerRoute(name: "Error-statusCode-int", pattern: "Error/{statusCode:int}", defaults: new { controller = Error, action = nameof(ErrorController.StatusCodePage) });
         app.MapControllerRoute(name: "Cookies", pattern: "cookies", defaults: new { controller = CookiesController.Name, action = nameof(CookiesController.Cookies) });
 
-        app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Start}/{id?}", defaults: new { });
+        app.MapControllerRoute(name: "default", pattern: "{controller=Introduction}/{action=ChildName}/{id?}", defaults: new { });
 
         return app;
     }

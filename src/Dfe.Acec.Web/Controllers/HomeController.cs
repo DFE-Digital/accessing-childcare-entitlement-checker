@@ -21,12 +21,6 @@ public class HomeController(JourneyState journeyState, IJourneySession journeySe
     }
 
     [HttpGet]
-    public IActionResult Start()
-    {
-        return View();
-    }
-
-    [HttpGet]
     public async Task<IActionResult> Location(string? returnTo = null)
     {
         if (await featureManager.IsEnabledAsync(FeatureFlags.FlagSkipLocation))
@@ -72,6 +66,6 @@ public class HomeController(JourneyState journeyState, IJourneySession journeySe
             return url;
         }
 
-        return Url.ActionOrThrow(nameof(Start));
+        return Url.ActionOrThrow(nameof(IntroductionController.ChildName), "Introduction");
     }
 }

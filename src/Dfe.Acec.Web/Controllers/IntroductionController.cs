@@ -99,7 +99,7 @@ public class IntroductionController(JourneyState journeyState, IJourneySession j
         }
 
         return await featureManager.IsEnabledAsync(FeatureFlags.FlagSkipLocation)
-                ? Url.ActionOrThrow(nameof(HomeController.Start), HomeController.Name)
+                ? Url.ActionOrThrow(nameof(ChildName), Name)
                 : Url.ActionOrThrow(nameof(HomeController.Location), HomeController.Name);
     }
 

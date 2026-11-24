@@ -11,8 +11,6 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
     protected async Task StartJourney()
     {
         await Page.GotoAsync("/");
-        await ExpectPathAndQuery("/");
-        await Page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Start now" }).ClickAsync();
 
         if (Settings.FlagSkipLocationEnabled)
         {
@@ -20,7 +18,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
         }
         else
         {
-            await ExpectPathAndQuery("/where-do-you-live");
+            await ExpectPathAndQuery("/");
         }
     }
 
@@ -31,7 +29,7 @@ public abstract class JourneyPageBase(ITestOutputHelper output) : PageBase(outpu
             return;
         }
 
-        await ExpectPathAndQuery("/where-do-you-live");
+        await ExpectPathAndQuery("/");
         await Page.GetByLabel(location).CheckAsync();
         await Continue();
         await ExpectPathAndQuery("/children/add-child-details");

@@ -37,13 +37,6 @@ public class HomeControllerTests : IDisposable
         _controller.Url.Action(Arg.Any<UrlActionContext>()).Returns("backlink");
     }
 
-    [Fact]
-    public void StartReturnsView()
-    {
-        var result = _controller.Start();
-        Assert.IsType<ViewResult>(result);
-    }
-
 
     [Fact]
     public async Task LocationGetPopulatesModelFromStateWhenFeatureFlagDisabled()

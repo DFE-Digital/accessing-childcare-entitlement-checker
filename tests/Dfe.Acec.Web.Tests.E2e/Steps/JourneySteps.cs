@@ -15,13 +15,6 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
         await page.GotoAsync("/");
     }
 
-    [Given("I click the link to start the journey")]
-    public async Task GivenIClickTheLinkToStartTheJourney()
-    {
-        var startPage = new StartPage(page);
-        await startPage.StartNowAsync();
-    }
-
     [Given("I answer {string} as {string}")]
     [When("I answer {string} as {string}")]
     public async Task GivenIAnswerStringAsString(string question, string answer)
@@ -59,7 +52,6 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
     [Given("I start the journey, filling in Aydin's and Sara's details")]
     public async Task GivenIStartTheJourneyFillingInAydinsDetails()
     {
-        await GivenIClickTheLinkToStartTheJourney();
 
         if (!settings.FlagSkipLocationEnabled)
         {

@@ -5,7 +5,6 @@ Note that "Funded hours for working parents" in the lucid = "Free Childcare for 
 
 Background:
     Given I am on the childcare entitlement checker website
-    And I click the link to start the journey
 
 Scenario: Scenario 01 - Single parent earning below the threshold, household receives Universal Credit, child is not born yet
     Given I complete the journey for the use case "Single parent earning below the threshold, household receives Universal Credit, child is not born yet"

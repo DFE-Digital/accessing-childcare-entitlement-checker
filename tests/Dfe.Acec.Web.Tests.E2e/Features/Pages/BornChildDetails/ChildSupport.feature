@@ -2,7 +2,6 @@
 
 Background:
 	Given I am on the childcare entitlement checker website
-	And I click the link to start the journey
 	And I answer "Where do you live?" as "England"
 	And I answer questions as follows:
 		| Question                           | Answer    |
