@@ -28,6 +28,9 @@ public enum PartnerBenefitsOption
     [Display(Name = "Severe Disablement Allowance")]
     SevereDisablementAllowance,
 
+    [Display(Name = "The carer's element of Universal Credit")]
+    CarersElementOfUC,
+
     [Display(Name = "The limited capability for work element of Universal Credit")]
     LimitedCapabilityForWorkElementOfUC,
 

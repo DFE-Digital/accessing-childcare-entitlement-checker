@@ -30,8 +30,9 @@ public class BenefitsTests(IntegrationTestFixture factory) : IClassFixture<Integ
         var url = $"{Url}?returnTo={returnTo}";
         var response = await client.GetAsync(url, TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
+        var expectedNumberOfCheckBoxes = Enum.GetNames<BenefitsOption>().Length;
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
-        doc.AssertCheckboxCount(10)
+        doc.AssertCheckboxCount(expectedNumberOfCheckBoxes)
             .AssertBackLink(backLinkUrl)
             .AssertLegendIsPageHeading()
             .AssertNavigationBar()

@@ -15,15 +15,16 @@ Scenario: Page load
 	When the page header is "Does your partner get any of these benefits?"
 	Then I should see the following checkboxes:
 		| Name                                                 |
-		| Carer's Allowance                                    |
+        | Carer's Allowance                                    |
 		| Contribution-based Employment and Support Allowance  |
 		| Employment and support allowance (ESA)               |
 		| Guaranteed element of Pension Credit                 |
 		| Incapacity Benefit                                   |
-		| The limited capability for work element of Universal Credit                    |
 		| Limited capability for work related activity (LCWRA) |
 		| National Insurance Credits                           |
 		| Severe Disablement Allowance                         |
+		| The carer's element of Universal Credit              |
+		| The limited capability for work element of Universal Credit                    |
 		| No, they do not get any of these benefits            |
 	And no checkboxes are selected
 

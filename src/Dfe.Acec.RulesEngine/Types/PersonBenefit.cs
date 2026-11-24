@@ -7,8 +7,9 @@ public enum PersonBenefit
     EmploymentAndSupportAllowance,
     GuaranteedElementOfPensionCredit,
     IncapacityBenefit,
-    LimitedCapabilityForWorkElementOfUC,
     LimitedCapabilityForWorkRelatedActivity,
     NationalInsuranceCredits,
-    SevereDisablementAllowance
+    SevereDisablementAllowance,
+    CarersElementOfUC,
+    LimitedCapabilityForWorkElementOfUC
 }

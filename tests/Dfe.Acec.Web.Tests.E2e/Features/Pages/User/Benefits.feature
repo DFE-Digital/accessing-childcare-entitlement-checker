@@ -22,10 +22,11 @@ Scenario: Page load
 		| Employment and support allowance (ESA)               |
 		| Guaranteed element of Pension Credit                 |
 		| Incapacity Benefit                                   |
-		| The limited capability for work element of Universal Credit                    |
 		| Limited capability for work related activity (LCWRA) |
 		| National Insurance Credits                           |
 		| Severe Disablement Allowance                         |
+		| The carer's element of Universal Credit              |
+		| The limited capability for work element of Universal Credit                    |
 		| No, I do not get any of these benefits               |
 	And no checkboxes are selected
 

@@ -154,6 +154,7 @@ public class JourneyStateToEntitlementRequestMapperTests
                 BenefitsOption.LimitedCapabilityForWorkRelatedActivity,
                 BenefitsOption.SevereDisablementAllowance,
                 BenefitsOption.NationalInsuranceCredits,
+                BenefitsOption.CarersElementOfUC,
                 BenefitsOption.None
             ],
 
@@ -190,6 +191,7 @@ public class JourneyStateToEntitlementRequestMapperTests
         Assert.Contains(PersonBenefit.LimitedCapabilityForWorkRelatedActivity, result.User.Benefits);
         Assert.Contains(PersonBenefit.NationalInsuranceCredits, result.User.Benefits);
         Assert.Contains(PersonBenefit.SevereDisablementAllowance, result.User.Benefits);
+        Assert.Contains(PersonBenefit.CarersElementOfUC, result.User.Benefits);
     }
 
     [Fact]
