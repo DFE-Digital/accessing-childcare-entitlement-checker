@@ -13,10 +13,6 @@ on:
           - test
           - staging
           - production
-      shutter:
-        description: 'Shutter environment?'
-        required: true
-        type: boolean
 
 jobs:
   shutter:
