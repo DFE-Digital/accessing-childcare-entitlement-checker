@@ -50,11 +50,14 @@ public class GovAnalyticsTagHelperTests
 
         var (context, output) = CreateTagHelperContextAndOutput("button", attributes);
 
-        // Act & Assert
+        // Act
         var exception = await Assert.ThrowsAsync<GovTagHelperBase.GovAnalyticsMissingParamaterException>(() => tagHelper.ProcessAsync(context, output));
-        Assert.Contains("govg4-select-content", exception.Message);
-    }
 
+        // Assert (the keywords)
+        Assert.Contains("requires", exception.Message);
+        Assert.Contains("govg4-ui-text", exception.Message);
+        Assert.Contains("govg4-action", exception.Message);
+    }
 
     [Fact]
     public async Task FormResponseTagHelper_ThrowsException_WhenResponseIsMissing()
