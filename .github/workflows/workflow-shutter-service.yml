@@ -1,5 +1,5 @@
 name: Shutter Service
-run-name: "${{ inputs.shutter == true && format('Shuttering') || format('Restoring') }} ${{ inputs.environment }}"
+run-name: "${{ vars.SERVICE_SHUTTERED == 'true' && format('Shuttering') || format('Restoring') }} ${{ inputs.environment }}"
 
 on:
   workflow_dispatch:
@@ -56,7 +56,7 @@ jobs:
       - name: Execute Failover Action
         shell: bash
         env:
-          SERVICE_SHUTTERED: ${{ inputs.shutter }}
+          SERVICE_SHUTTERED: ${{ vars.SERVICE_SHUTTERED }}
         run: |
           ENV_PREFIX="${{ env.ENV_PREFIX }}"
           
