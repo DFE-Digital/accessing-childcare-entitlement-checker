@@ -28,8 +28,8 @@ public class GovFormErrorTagHelper : GovTagHelperBase
             ToolName = ToolName,
             Section = Section,
             Outcome = Outcome,
-            Action =  Action,
-            UiText =  UiText,
+            Action = Action,
+            UiText = UiText,
             Type = Type,
             MetricName = MetricName,
             MetricValue = MetricValue

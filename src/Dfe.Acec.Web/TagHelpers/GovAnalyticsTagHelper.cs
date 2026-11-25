@@ -39,7 +39,7 @@ public abstract class GovTagHelperBase : TagHelper
         _jsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        _attributeName =  context.AllAttributes.FirstOrDefault()?.Name ?? _attributeName;
+        _attributeName = context.AllAttributes.FirstOrDefault()?.Name ?? _attributeName;
         await ResolveDefaultsAsync(context, output);
         Validate();
         var payload = CreatePayload();
@@ -119,5 +119,5 @@ public abstract class GovTagHelperBase : TagHelper
         output.Attributes.RemoveAll("govg4-metric-value");
     }
 
-    public class GovAnalyticsMissingParamaterException(string message) : InvalidOperationException( "[GovAnalytics] " + message);
+    public class GovAnalyticsMissingParamaterException(string message) : InvalidOperationException("[GovAnalytics] " + message);
 }
