@@ -4,14 +4,14 @@
     "net10.0": {
       "coverlet.MTP": {
         "type": "Direct",
-        "requested": "[10.1.0, )",
-        "resolved": "10.1.0",
-        "contentHash": "FbW1D7OFFUmITgKzYhasyaX0m/oQzuU3ab4ooOURngztKK/QulCT/YuADhRDSGrE79S2dVoEQPgNkg2qBz29tg==",
+        "requested": "[10.1.1, )",
+        "resolved": "10.1.1",
+        "contentHash": "dxxUyMyMa8AHnaglNC6aWkvYYV9PE4Z5mcyRXSWWinQ0OeSJ+kdcD7wNg8Dau/Lj9VK79VIC+QbYXdv1M+TVXA==",
         "dependencies": {
-          "Microsoft.Extensions.Configuration": "10.0.12",
-          "Microsoft.Extensions.Configuration.Json": "10.0.12",
-          "Microsoft.Extensions.DependencyInjection": "10.0.12",
-          "Microsoft.Testing.Platform": "2.4.1"
+          "Microsoft.Extensions.Configuration": "10.0.14",
+          "Microsoft.Extensions.Configuration.Json": "10.0.14",
+          "Microsoft.Extensions.DependencyInjection": "10.0.14",
+          "Microsoft.Testing.Platform": "2.5.2"
         }
       },
       "JetBrains.Annotations": {
@@ -153,8 +153,8 @@
       },
       "Microsoft.Extensions.Compliance.Abstractions": {
         "type": "Transitive",
-        "resolved": "10.11.0",
-        "contentHash": "2mjAb3Sm5k6uNeI+IyXpggYMpfdDDGgZSwUm9QQsm5QgZboJWbm2eU+6wNMrlfFEao11yq6JS1zXI7SVQQ0NuQ==",
+        "resolved": "10.11.1",
+        "contentHash": "2tjl8N8Nz8SbE78lW7bCDQjIneH8/WNsDtcJm/n/vTBpPbfdKq1sf8n+aliTNYbI93ZIkphUHLZA+td4q5tDBg==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.13",
           "Microsoft.Extensions.ObjectPool": "10.0.13"
@@ -709,7 +709,7 @@
           "JetBrains.Annotations": "[2026.2.0, )",
           "Microsoft.Azure.StackExchangeRedis": "[3.3.1, )",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[10.0.15, )",
-          "Microsoft.Extensions.Telemetry.Abstractions": "[10.11.0, )",
+          "Microsoft.Extensions.Telemetry.Abstractions": "[10.11.1, )",
           "Microsoft.FeatureManagement.AspNetCore": "[4.8.0, )"
         }
       },
@@ -833,11 +833,11 @@
       },
       "Microsoft.Extensions.Telemetry.Abstractions": {
         "type": "CentralTransitive",
-        "requested": "[10.11.0, )",
-        "resolved": "10.11.0",
-        "contentHash": "FzcHRan/C2g5X5KD0kPlL4tTROFRpM8sqcXfOIi6FGLsw/d2yoOYMbLJ5hyb8N5QgOVW7e1TdwEN4zVUfcwfdw==",
+        "requested": "[10.11.1, )",
+        "resolved": "10.11.1",
+        "contentHash": "d36MCo5y/IjxqX1C7pvvO98TlaM5LO8DmBIEdzT9TaX0omxywnmMaoUS6Q0dC/LafJCVOrfRJdwSr9YTU0uSNg==",
         "dependencies": {
-          "Microsoft.Extensions.Compliance.Abstractions": "10.11.0",
+          "Microsoft.Extensions.Compliance.Abstractions": "10.11.1",
           "Microsoft.Extensions.Logging.Abstractions": "10.0.13",
           "Microsoft.Extensions.ObjectPool": "10.0.13",
           "Microsoft.Extensions.Options": "10.0.13"

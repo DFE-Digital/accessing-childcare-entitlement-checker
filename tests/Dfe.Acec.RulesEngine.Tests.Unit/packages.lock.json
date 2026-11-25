@@ -4,14 +4,14 @@
     "net10.0": {
       "coverlet.MTP": {
         "type": "Direct",
-        "requested": "[10.1.0, )",
-        "resolved": "10.1.0",
-        "contentHash": "FbW1D7OFFUmITgKzYhasyaX0m/oQzuU3ab4ooOURngztKK/QulCT/YuADhRDSGrE79S2dVoEQPgNkg2qBz29tg==",
+        "requested": "[10.1.1, )",
+        "resolved": "10.1.1",
+        "contentHash": "dxxUyMyMa8AHnaglNC6aWkvYYV9PE4Z5mcyRXSWWinQ0OeSJ+kdcD7wNg8Dau/Lj9VK79VIC+QbYXdv1M+TVXA==",
         "dependencies": {
-          "Microsoft.Extensions.Configuration": "10.0.12",
-          "Microsoft.Extensions.Configuration.Json": "10.0.12",
-          "Microsoft.Extensions.DependencyInjection": "10.0.12",
-          "Microsoft.Testing.Platform": "2.4.1"
+          "Microsoft.Extensions.Configuration": "10.0.14",
+          "Microsoft.Extensions.Configuration.Json": "10.0.14",
+          "Microsoft.Extensions.DependencyInjection": "10.0.14",
+          "Microsoft.Testing.Platform": "2.5.2"
         }
       },
       "JetBrains.Annotations": {
