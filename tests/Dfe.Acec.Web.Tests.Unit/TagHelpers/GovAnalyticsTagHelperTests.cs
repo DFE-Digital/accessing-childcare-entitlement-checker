@@ -150,6 +150,13 @@ public class GovAnalyticsTagHelperTests
                 markerAttributeName = "govg4-form-error";
                 break;
 
+            case GovImpressionTagHelper impression:
+                impression.Action = "impression";
+                impression.Type = "heading";
+                expectedEventName = "impression";
+                markerAttributeName = "govg4-impression";
+                break;
+
             default:
                 throw new ArgumentException($"Unsupported TagHelper type: {type.Name}");
         }
@@ -200,6 +207,7 @@ public class GovAnalyticsTagHelperTests
     [InlineData(typeof(GovSelectContentTagHelper))]
     [InlineData(typeof(GovFormResponseTagHelper))]
     [InlineData(typeof(GovFormErrorTagHelper))]
+    [InlineData(typeof(GovImpressionTagHelper))]
     public async Task TagHelperSerializesCorrectDataGovEventAndCleansUpAttributes(Type type)
     {
         // Arrange
