@@ -2,7 +2,6 @@ Feature: Cookies
 
 Background:
 	Given I am on the childcare entitlement checker website
-	And I click the link to start the journey
 
 Scenario: Banner is not shown with no javascript
 	Then the page header is "Where do you live?"

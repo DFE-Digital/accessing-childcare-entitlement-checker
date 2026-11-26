@@ -92,8 +92,7 @@ public class SessionExpiryTests(IntegrationTestFixture factory) : IClassFixture<
             "/cookies",
             "/throw",
             "/robots.txt",
-            "/{controller=Home}/{action=Start}/{id?}",
-            "/start-page",
+            "/{controller=Introduction}/{action=ChildName}/{id?}",
             "/where-do-you-live"
         };
 

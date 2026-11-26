@@ -2,7 +2,6 @@ Feature: Add details about your children
 
 Background:
 	Given I am on the childcare entitlement checker website
-	And I click the link to start the journey
 	And I answer "Where do you live?" as "England"
 
 Scenario: Page load

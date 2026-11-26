@@ -3,7 +3,6 @@ Feature: Location
 
 Background:
 	Given I am on the childcare entitlement checker website
-	And I click the link to start the journey
 
 Scenario: Page load
 	When the page header is "Where do you live?"

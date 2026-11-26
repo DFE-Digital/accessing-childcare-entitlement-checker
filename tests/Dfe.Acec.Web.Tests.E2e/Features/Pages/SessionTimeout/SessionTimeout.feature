@@ -2,7 +2,6 @@ Feature: Session timeout
 
 Background:
 	Given I am on the childcare entitlement checker website
-	And I click the link to start the journey
 	And the browser clock is controlled
 
 @javascript-enabled

@@ -119,4 +119,41 @@ public class LocationTests(IntegrationTestFixture factory) : IClassFixture<Integ
 
         response.AssertRedirect("/children/check-childs-details");
     }
+
+    [Fact]
+    public async Task GetRootWhenFeatureFlagEnabledRedirectsToChildName()
+    {
+        await using var host = factory.CreateClientWithFeatureFlags(new()
+        {
+            { "FeatureManagement:FlagSkipLocation", "true" }
+        });
+
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
+
+        response.AssertRedirect("/children/add-child-details");
+    }
+
+    [Fact]
+    public async Task GetRootWhenFeatureFlagDisabledDisplaysLocation()
+    {
+        await using var host = factory.CreateClientWithFeatureFlags(new()
+        {
+            { "FeatureManagement:FlagSkipLocation", "false" }
+        });
+
+        using var client = host.CreateClient();
+
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
+
+        doc.AssertRadioButtonCount(4)
+            .AssertLegendIsPageHeading()
+            .AssertNavigationBar()
+            .AssertBetaBanner();
+    }
 }

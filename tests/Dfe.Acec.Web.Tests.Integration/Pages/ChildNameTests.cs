@@ -10,7 +10,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     private const string Url = "/children/add-child-details";
 
     [Theory]
-    [InlineData(null, "/where-do-you-live")]
+    [InlineData(null, "/")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task Get(string? returnTo, string backLinkUrl)
@@ -60,7 +60,7 @@ public class ChildNameTests(IntegrationTestFixture factory) : IClassFixture<Inte
     }
 
     [Theory]
-    [InlineData(null, "/where-do-you-live")]
+    [InlineData(null, "/")]
     [InlineData(ReturnTo.CheckAnswers, "/check-your-answers")]
     [InlineData(ReturnTo.CheckChildDetails, "/children/check-childs-details")]
     public async Task PostWithLongNameShowsValidationErrorAndBackLink(string? returnTo, string backLinkUrl)
