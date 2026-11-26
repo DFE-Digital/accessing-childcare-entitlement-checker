@@ -105,7 +105,7 @@ public abstract class GovTagHelperBase : TagHelper
     private static void CleanupDom(TagHelperOutput output)
     {
         // Clean up helper attributes so they aren't rendered into the raw DOM
-        var attributesToRemove = output.Attributes.Where(x => x.Name?.StartsWith("govg4-") ?? false).ToList();
+        var attributesToRemove = output.Attributes.Where(x => x.Name?.StartsWith("govg4-", StringComparison.InvariantCulture) ?? false).ToList();
         foreach (var tagHelperAttribute in attributesToRemove)
         {
             output.Attributes.Remove(tagHelperAttribute);
