@@ -153,7 +153,7 @@ public class GovAnalyticsTagHelperTests
             case GovImpressionTagHelper impression:
                 impression.Action = "impression";
                 impression.Type = "heading";
-                expectedEventName = "impression";
+                expectedEventName = "view_item_list";
                 markerAttributeName = "govg4-impression";
                 break;
 

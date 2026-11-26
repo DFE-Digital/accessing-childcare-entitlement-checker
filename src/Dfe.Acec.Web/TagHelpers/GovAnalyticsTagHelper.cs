@@ -105,18 +105,12 @@ public abstract class GovTagHelperBase : TagHelper
     private static void CleanupDom(TagHelperOutput output)
     {
         // Clean up helper attributes so they aren't rendered into the raw DOM
-        output.Attributes.RemoveAll("govg4-select-content");
-        output.Attributes.RemoveAll("govg4-form-response");
-        output.Attributes.RemoveAll("govg4-form-error");
-        output.Attributes.RemoveAll("govg4-tool-name");
-        output.Attributes.RemoveAll("govg4-section");
-        output.Attributes.RemoveAll("govg4-action");
-        output.Attributes.RemoveAll("govg4-ui-text");
-        output.Attributes.RemoveAll("govg4-type");
-        output.Attributes.RemoveAll("govg4-outcome");
-        output.Attributes.RemoveAll("govg4-response");
-        output.Attributes.RemoveAll("govg4-metric-name");
-        output.Attributes.RemoveAll("govg4-metric-value");
+        var attributesToRemove = output.Attributes.Where(x => x.Name?.StartsWith("govg4-") ?? false).ToList();
+        foreach (var tagHelperAttribute in attributesToRemove)
+        {
+            output.Attributes.Remove(tagHelperAttribute);
+        }
+
     }
 
     public class GovAnalyticsMissingParamaterException(string message) : InvalidOperationException("[GovAnalytics] " + message);
