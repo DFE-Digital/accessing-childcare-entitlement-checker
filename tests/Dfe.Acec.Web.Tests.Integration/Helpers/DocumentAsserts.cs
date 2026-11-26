@@ -102,7 +102,7 @@ public static class DocumentAsserts
         Assert.NotNull(serviceName);
 
         var href = serviceName.GetAttribute("href");
-        Assert.Equal("/", href);
+        Assert.Equal("https://www.gov.uk/check-childcare-funding", href);
 
         return document;
     }
