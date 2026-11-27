@@ -1,6 +1,8 @@
 using Dfe.Acec.Web.Services;
+using Dfe.Acec.Web.Tests.Integration.Helpers;
 using Dfe.Acec.Web.Validators;
 using FluentValidation;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -9,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Acec.Web.Tests.Integration.Fixtures;
 
@@ -19,12 +22,24 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
     {
         builder.UseEnvironment("Development");
 
-        // File versions are used for cachbusters on resources. (asp-append-version)
-        // Don't do this during tests - it blows a standard 256 inotify handler budget on linux.
+
         builder.ConfigureServices(services =>
-            services.AddSingleton<IFileVersionProvider, UnversionedFileVersionProvider>());
+        {
+            // File versions are used for cachbusters on resources. (asp-append-version)
+            // Don't do this during tests - it blows a standard 256 inotify handler budget on linux.
+            services.AddSingleton<IFileVersionProvider, UnversionedFileVersionProvider>();
+
+        });
+        builder.ConfigureLogging(logging =>
+        {
+            logging.AddProvider(new XunitLoggerProvider());
+        });
+
+
         return base.CreateHost(builder);
     }
+
+
 
     public WebApplicationFactory<Program> CreateClientWithFeatureFlags(Dictionary<string, string?> featureFlags)
     {
@@ -43,12 +58,27 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
     {
         var webHost = WithWebHostBuilder(builder =>
         {
+            builder.ConfigureAppConfiguration((_, config) =>
+            {
+                config.AddInMemoryCollection(new Dictionary<string, string?>
+                {
+                    ["GoogleTagManager:ContainerId"] = "GTM-TEST123"
+                });
+            });
+
             builder.ConfigureServices(services =>
             {
                 services.AddScoped<IJourneySession>(_ => new TestJourneySession(state));
                 services.AddScoped(_ => state);
                 services.AddScoped<IValidator<JourneyState>, JourneyStateValidator>();
+
+                services.AddExceptionHandler<AddMessagesToPageExceptionHandler>();
             });
+            builder.ConfigureLogging(logging =>
+            {
+                logging.AddProvider(new XunitLoggerProvider());
+            });
+
         });
         webHost.ClientOptions.AllowAutoRedirect = false;
         return webHost;

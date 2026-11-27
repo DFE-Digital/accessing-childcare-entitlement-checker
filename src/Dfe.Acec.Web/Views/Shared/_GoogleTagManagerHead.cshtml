@@ -11,9 +11,19 @@
             ad_Storage: 'denied',
             analytics_Storage: 'granted'
         });
+
+        window.clarity(function(status) {
+            if (status && status.sessionId) {
+                window.dataLayer = window.dataLayer || [];
+                // Note: because of how datalayer works, adding it once here, will mean it's in every payload (until its overwritten)
+                window['dataLayer'] = window['dataLayer'] || [];
+                window['dataLayer'].push({
+                    'clarity_session_id': status.sessionId
+                });
+            }
+        });
     </script>
 
-    
     <!-- Google Tag Manager -->
     <script add-nonce="true">
         (function(w,d,s,l,i){
@@ -23,7 +33,7 @@
                 event: 'gtm.js'
             });
 
-            var f=d.getElementsByTagName(s)[0],
+            const f=d.getElementsByTagName(s)[0],
                 j=d.createElement(s),
                 dl=l!='dataLayer' ? '&l=' + l : '';
 
@@ -31,5 +41,51 @@
             j.src='https://www.googletagmanager.com/gtm.js?id=' + i + dl;
             f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','@Model');
-    </script>
 
+        // helpers
+        function pushGovModel(element, isImpression){
+
+            // parse
+            try {
+                const attribute = element.getAttribute('data-govg4-event');
+                if (!attribute) return;
+
+                const payload = JSON.parse(attribute);
+                if(!payload) return;
+
+                // Impression events should ignore Click events
+                if(isImpression && payload.event_name !== 'view_item_list') return;
+                // Click events should ignore Impression events
+                if(!isImpression && payload.event_name === 'view_item_list') return;
+
+                // push to GA
+                window['dataLayer'] = window['dataLayer'] || [];
+                window['dataLayer'].push(payload);
+
+                // push to clarity
+                if(window['clarity'] && payload.action){
+                    window['clarity']("set", "gov_action", payload.action);
+                }
+
+            } catch (err) {
+                const type = isImpression ? 'impression' : 'click';
+                console.error(`[GovAnalytics] Failed to parse ${type} payload:`, err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Impressions listener
+            document.querySelectorAll('[data-govg4-event]').forEach(function (element) {
+                pushGovModel(element, true);
+            });
+
+            // Click Listener
+            document.addEventListener('click', function (event) {
+                const element = event.target.closest('[data-govg4-event]');
+                if (!element) return;
+                pushGovModel(element, false);
+
+            });
+        });
+    </script>

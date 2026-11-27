@@ -137,19 +137,35 @@ public static class DocumentAsserts
     }
 
     [PublicAPI]
-    public static IDocument AssertCookieBanner(this IDocument document)
+    public static bool HasCookieBanner(this IDocument document)
     {
         var cookieBanner = document.QuerySelector(".govuk-cookie-banner");
-        Assert.NotNull(cookieBanner);
-        return document;
+        return cookieBanner != null;
     }
 
     [PublicAPI]
-    public static IDocument AssertNoCookieBanner(this IDocument document)
+    public static bool HasGtmTagCodePresent(this IDocument document)
     {
-        var cookieBanner = document.QuerySelector(".govuk-cookie-banner");
-        Assert.Null(cookieBanner);
-        return document;
+        var scripts = document.QuerySelectorAll("script");
+        var gtmScript = scripts.FirstOrDefault(s => s.TextContent.Contains("googletagmanager.com/gtm.js"));
+        if (gtmScript == null)
+        {
+            return false;
+        }
+
+        AssertGtmTagCodeIsCorrect(gtmScript);
+        return true;
+    }
+
+    [PublicAPI]
+    public static void AssertGtmTagCodeIsCorrect(IElement gtmScript)
+    {
+        // assert Listener for our tag helper 'data-govg4-event' attribute loaded (and cover any refactor mistakes)
+        Assert.Contains("DOMContentLoaded", gtmScript.TextContent);
+        Assert.Contains("addEventListener('click'", gtmScript.TextContent); //make sure we are doing something on click
+        Assert.Contains("data-govg4-event", gtmScript.TextContent); //make sure we are using the data-govg4-event
+        Assert.Contains("JSON.parse", gtmScript.TextContent); //make sure we are parsing
+        Assert.Contains("window['dataLayer'].push", gtmScript.TextContent); //make sure we are pushing to the datalayer
     }
 
     [PublicAPI]

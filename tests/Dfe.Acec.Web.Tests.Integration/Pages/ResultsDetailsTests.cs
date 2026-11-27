@@ -41,7 +41,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         doc
@@ -58,7 +58,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         var backLink = doc.QuerySelector(".govuk-back-link");
@@ -75,7 +75,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         var printButtons = doc.QuerySelectorAll(".app-print-link");
@@ -92,7 +92,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
         var heading = doc.QuerySelector("h1");
@@ -111,7 +111,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
@@ -128,7 +128,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
@@ -145,7 +145,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
@@ -161,7 +161,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
@@ -178,7 +178,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
@@ -194,7 +194,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
@@ -218,7 +218,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var doc = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
@@ -241,7 +241,7 @@ public class ResultsDetailsTests(IntegrationTestFixture factory) : IClassFixture
 
         var response = await client.GetAsync("/Results/ResultsDetailed?childId=child-1", TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccessStatusCodeWithMessage();
 
         var document = await HtmlHelpers.ParseHtmlAsync(response.Content);
 
