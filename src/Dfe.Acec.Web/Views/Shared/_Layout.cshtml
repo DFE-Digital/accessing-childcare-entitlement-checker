@@ -13,7 +13,7 @@
     Layout = "_GovUkPageTemplate";
 
     var serviceName = Shared["ServiceName"];
-    var serviceUrl = Url.RouteUrl("root");
+    var serviceUrl = Configuration["ServiceUrls:StartPage"];
     var googleTagManagerContainerId = Configuration["GoogleTagManager:ContainerId"];
     var cspNonce = ViewData[GovUkPageTemplateConstants.ViewDataKeys.CspNonce] as string ?? OptionsAccessor.Value.GetCspNonceForRequest?.Invoke(ViewContext.HttpContext);
     var shouldLoadGoogleTagManager = CookiePolicyService.HasConsented && !string.IsNullOrWhiteSpace(googleTagManagerContainerId);
