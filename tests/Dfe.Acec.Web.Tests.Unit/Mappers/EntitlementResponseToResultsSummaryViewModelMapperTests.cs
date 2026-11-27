@@ -53,7 +53,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
         _mapper = new EntitlementResponseToResultsSummaryViewModelMapper(localizerFactory);
     }
 
-    private static EntitlementResponse CreateTestEntitlementResponse(bool hasAccessToPublicFunds = true, bool userOrPartnerIsOnSickLeave = false )
+    private static EntitlementResponse CreateTestEntitlementResponse(bool hasAccessToPublicFunds = true, bool userOrPartnerIsOnSickLeave = false)
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
 
