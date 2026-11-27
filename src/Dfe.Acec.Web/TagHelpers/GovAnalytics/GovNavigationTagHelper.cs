@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Dfe.Acec.Web.TagHelpers.GovAnalytics;
 
-[HtmlTargetElement("a", Attributes = "govg4-navigation")]
+[HtmlTargetElement("a", Attributes = GovG4EventAttributes.Navigation)]
 public class GovNavigationTagHelper : GovTagHelperBase
 {
     protected override string ResolveDefaultType(string tagName) => "link";

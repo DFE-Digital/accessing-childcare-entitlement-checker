@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Dfe.Acec.Web.TagHelpers.GovAnalytics;
 
-[HtmlTargetElement("div", Attributes = "govg4-form-error")]
-[HtmlTargetElement("p", Attributes = "govg4-form-error")]
+[HtmlTargetElement("div", Attributes = GovG4EventAttributes.FormError)]
+[HtmlTargetElement("p", Attributes = GovG4EventAttributes.FormError)]
 public class GovFormErrorTagHelper : GovTagHelperBase
 {
     [EditorRequired]

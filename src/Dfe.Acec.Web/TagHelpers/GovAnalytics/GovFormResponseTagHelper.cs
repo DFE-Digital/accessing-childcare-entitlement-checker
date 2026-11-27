@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Dfe.Acec.Web.TagHelpers.GovAnalytics;
 
-
-[HtmlTargetElement("button", Attributes = "govg4-form-response")]
+[HtmlTargetElement("button", Attributes = GovG4EventAttributes.FormResponse)]
 public class GovFormResponseTagHelper : GovTagHelperBase
 {
     [EditorRequired]

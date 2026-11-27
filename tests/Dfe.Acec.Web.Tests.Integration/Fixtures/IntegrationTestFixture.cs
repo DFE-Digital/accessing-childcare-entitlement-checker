@@ -1,6 +1,9 @@
 using Dfe.Acec.Web.Services;
+using Dfe.Acec.Web.Tests.Integration.Helpers;
 using Dfe.Acec.Web.Validators;
 using FluentValidation;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -9,22 +12,63 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Acec.Web.Tests.Integration.Fixtures;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class IntegrationTestFixture : WebApplicationFactory<Program>
 {
+    public sealed class XunitLoggerProvider : ILoggerProvider
+    {
+        public ILogger CreateLogger(string categoryName) => new XunitLogger(categoryName);
+        public void Dispose() { }
+
+        private sealed class XunitLogger(string categoryName) : ILogger
+        {
+            public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
+            public bool IsEnabled(LogLevel logLevel) => logLevel >= LogLevel.Error;
+
+            public void Log<TState>(
+                LogLevel logLevel,
+                EventId eventId,
+                TState state,
+                Exception? exception,
+                Func<TState, Exception?, string> formatter)
+            {
+                var output = TestContext.Current?.TestOutputHelper;
+                if (output is null) return;
+
+                output.WriteLine($"[{logLevel}] {categoryName}: {formatter(state, exception)}");
+                if (exception is not null)
+                {
+                    output.WriteLine(exception.ToString());
+                }
+            }
+        }
+    }
     protected override IHost CreateHost(IHostBuilder builder)
     {
         builder.UseEnvironment("Development");
 
-        // File versions are used for cachbusters on resources. (asp-append-version)
-        // Don't do this during tests - it blows a standard 256 inotify handler budget on linux.
+
         builder.ConfigureServices(services =>
-            services.AddSingleton<IFileVersionProvider, UnversionedFileVersionProvider>());
+        {
+            // File versions are used for cachbusters on resources. (asp-append-version)
+            // Don't do this during tests - it blows a standard 256 inotify handler budget on linux.
+            services.AddSingleton<IFileVersionProvider, UnversionedFileVersionProvider>();
+
+        });
+        builder.ConfigureLogging(logging =>
+        {
+            logging.AddProvider(new XunitLoggerProvider());
+        });
+
+
         return base.CreateHost(builder);
     }
+
+
 
     public WebApplicationFactory<Program> CreateClientWithFeatureFlags(Dictionary<string, string?> featureFlags)
     {
@@ -50,12 +94,20 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
                     ["GoogleTagManager:ContainerId"] = "GTM-TEST123"
                 });
             });
+
             builder.ConfigureServices(services =>
             {
                 services.AddScoped<IJourneySession>(_ => new TestJourneySession(state));
                 services.AddScoped(_ => state);
                 services.AddScoped<IValidator<JourneyState>, JourneyStateValidator>();
+
+                services.AddExceptionHandler<AddMessagesToPageExceptionHandler>();
             });
+            builder.ConfigureLogging(logging =>
+            {
+                logging.AddProvider(new XunitLoggerProvider());
+            });
+
         });
         webHost.ClientOptions.AllowAutoRedirect = false;
         return webHost;

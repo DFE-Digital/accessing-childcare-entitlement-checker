@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Dfe.Acec.Web.TagHelpers.GovAnalytics;
 
-[HtmlTargetElement("button", Attributes = "govg4-select-content")]
+[HtmlTargetElement("button", Attributes = GovG4EventAttributes.Interaction)]
 public class GovSelectContentTagHelper : GovTagHelperBase
 {
     protected override GovEventPayload CreatePayload() =>

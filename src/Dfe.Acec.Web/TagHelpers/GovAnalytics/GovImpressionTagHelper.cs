@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Dfe.Acec.Web.TagHelpers.GovAnalytics;
 
-[HtmlTargetElement("h1", Attributes = "govg4-impression")]
-[HtmlTargetElement("h2", Attributes = "govg4-impression")]
-[HtmlTargetElement("h3", Attributes = "govg4-impression")]
+[HtmlTargetElement("h1", Attributes = GovG4EventAttributes.Impression)]
+[HtmlTargetElement("h2", Attributes = GovG4EventAttributes.Impression)]
+[HtmlTargetElement("h3", Attributes = GovG4EventAttributes.Impression)]
 public class GovImpressionTagHelper : GovTagHelperBase
 {
     protected override GovEventPayload CreatePayload() =>

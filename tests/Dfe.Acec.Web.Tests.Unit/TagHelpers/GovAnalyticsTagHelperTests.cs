@@ -60,6 +60,35 @@ public class GovAnalyticsTagHelperTests
     }
 
     [Fact]
+    public async Task GovNavigationTagHelper_ThrowsException_WhenRequiredAttributesAreMissing()
+    {
+        // Arrange
+        var tagHelper = new GovNavigationTagHelper
+        {
+            ToolName = "childcare_eligibility_checker",
+            Section = "children details"
+            // Action and UiText deliberately omitted
+        };
+
+        var attributes = new TagHelperAttributeList
+        {
+            { "govg4-select-content", null },
+            { "govg4-tool-name", "childcare_eligibility_checker" },
+            { "govg4-section", "children details" }
+        };
+
+        var (context, output) = CreateTagHelperContextAndOutput("button", attributes);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<GovTagHelperBase.GovAnalyticsMissingParamaterException>(() => tagHelper.ProcessAsync(context, output));
+
+        // Assert (the keywords)
+        Assert.Contains("requires", exception.Message);
+        Assert.Contains("govg4-ui-text", exception.Message);
+        Assert.Contains("govg4-action", exception.Message);
+    }
+
+    [Fact]
     public async Task FormResponseTagHelper_ThrowsException_WhenResponseIsMissing()
     {
         // Arrange

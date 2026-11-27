@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Models.Analytics;
+using Dfe.Acec.Web.TagHelpers.GovAnalytics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
@@ -39,7 +40,13 @@ public abstract class GovTagHelperBase : TagHelper
         _jsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        _attributeName = context.AllAttributes.FirstOrDefault()?.Name ?? _attributeName;
+        var g4Attributes = output.GetGovG4Attributes();
+        var attribute = g4Attributes.FirstOrDefault(x => GovG4EventAttributes.All.Contains(x.Name));
+        if (attribute is null)
+        {
+            throw new InvalidOperationException("All G4 event tag helpers must be triggered by a 'govg4-event-name' attribute.");
+        }
+        _attributeName = attribute.Name;
         await ResolveDefaultsAsync(context, output);
         Validate();
         var payload = CreatePayload();
@@ -105,7 +112,7 @@ public abstract class GovTagHelperBase : TagHelper
     private static void CleanupDom(TagHelperOutput output)
     {
         // Clean up helper attributes so they aren't rendered into the raw DOM
-        var attributesToRemove = output.Attributes.Where(x => x.Name?.StartsWith("govg4-", StringComparison.InvariantCulture) ?? false).ToList();
+        var attributesToRemove = output.GetGovG4Attributes().ToList();
         foreach (var tagHelperAttribute in attributesToRemove)
         {
             output.Attributes.Remove(tagHelperAttribute);
