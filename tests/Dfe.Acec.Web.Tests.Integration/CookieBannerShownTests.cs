@@ -9,6 +9,7 @@ namespace Dfe.Acec.Web.Tests.Integration;
 public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixture<IntegrationTestFixture>
 {
 
+
     [Theory]
     [InlineData("cookie_policy=enabled", false, true)] //Consent given: No banner, Include GTM code
     [InlineData("cookie_policy=disabled", false, false)] // Consent NOT given, No banner, DON'T include GTM code
@@ -29,6 +30,7 @@ public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixt
                    }
                };
 
+        var checks = new List<Action>();
         foreach (var url in sessionRequiredEndpoints)
         {
             await using var getHost = factory.CreateClientWithJourneyState(new JourneyState
@@ -37,6 +39,7 @@ public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixt
                 UserAge = AgeRange.UnderEighteen,
                 WorkStatus = [WorkStatusOption.Employee],
                 PartnerAge = AgeRange.UnderEighteen,
+                HasPartner = true,
                 PartnerWorkStatus = [WorkStatusOption.Employee],
             });
 
@@ -51,24 +54,20 @@ public class CookieBannerShownTests(IntegrationTestFixture factory) : IClassFixt
             var getResponse = await getClient.SendAsync(request, TestContext.Current.CancellationToken);
             var document = await HtmlHelpers.ParseHtmlAsync(getResponse.Content);
 
-            if (expectBanner)
-            {
-                document.AssertCookieBanner();
-            }
-            else
-            {
-                document.AssertNoCookieBanner();
-            }
+            checks.Add(() => Assert.True(
+                expectBanner == document.HasCookieBanner(),
+                expectBanner
+                    ? $"{url} does not have cookie banner when it was expected"
+                    : $"{url} has cookie banner when it wasn't expected"));
 
-            if (expectGtm)
-            {
-                document.AssertGtmTagCodePresent();
-            }
-            else
-            {
-                document.AssertNoGtmTagCode();
-            }
+            checks.Add(() => Assert.True(
+                expectGtm == document.HasGtmTagCodePresent(),
+                expectGtm
+                    ? $"{url} does not have GTM tag code when it was expected"
+                    : $"{url} has GTM tag code when it wasn't expected"));
+
         }
+        Assert.Multiple([.. checks]);
     }
 
     private IEnumerable<string> GetCookieBannerRequiredEndpoints()
