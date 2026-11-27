@@ -132,6 +132,7 @@ public class GovEventPayloadTests
         var root = jsonDoc.RootElement;
 
         Assert.Equal("gov_event", root.GetProperty("event").GetString());
+        Assert.Equal(payload.EventName, expectedEventName);
         Assert.Equal(expectedEventName, root.GetProperty("event_name").GetString());
         Assert.Equal(payload.ToolName, root.GetProperty("tool_name").GetString());
         Assert.Equal(payload.Section, root.GetProperty("section").GetString());
