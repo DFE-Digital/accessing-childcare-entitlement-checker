@@ -104,7 +104,8 @@ public abstract class GovTagHelperBase : TagHelper
         }
     }
 
-    protected virtual string ResolveDefaultType(string tagName) => tagName.ToLowerInvariant() ?? "none";
+    // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
+    protected virtual string ResolveDefaultType(string tagName) => tagName?.ToLowerInvariant() ?? "none";
 
 
     private static void CleanupDom(TagHelperOutput output)

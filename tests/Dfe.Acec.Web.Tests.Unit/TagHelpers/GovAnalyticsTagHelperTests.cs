@@ -186,6 +186,14 @@ public class GovAnalyticsTagHelperTests
                 markerAttributeName = "govg4-impression";
                 break;
 
+            case GovNavigationTagHelper impression:
+                impression.Action = "navigation";
+                impression.Type = "a";
+                expectedEventName = "navigation";
+                markerAttributeName = "govg4-impression";
+                break;
+
+
             default:
                 throw new ArgumentException($"Unsupported TagHelper type: {type.Name}");
         }

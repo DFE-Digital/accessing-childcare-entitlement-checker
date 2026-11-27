@@ -1,5 +1,7 @@
+using System.Reflection;
 using System.Text.Json;
 using Dfe.Acec.Web.Models.Analytics;
+using Dfe.Acec.Web.TagHelpers;
 
 namespace Dfe.Acec.Web.Tests.Unit.Models.Analytics;
 
@@ -11,6 +13,19 @@ public class GovEventPayloadTests
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
     };
+
+    [Fact]
+    public void GovG4EventAttributesAllContainsEveryDefinedAttributeConstant()
+    {
+        var constants = typeof(GovG4EventAttributes)
+            .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+            .Where(f => f.IsLiteral && !f.IsInitOnly)
+            .Select(f => (string)f.GetRawConstantValue()!)
+            .ToList();
+
+        Assert.Equal(constants.Count, GovG4EventAttributes.All.Count);
+        Assert.All(constants, c => Assert.Contains(c, GovG4EventAttributes.All.ToList()));
+    }
 
     [Fact]
     public void ImpressionEventSerializesToExpectedJsonStructure()
