@@ -42,6 +42,7 @@ public class EntitlementRulesEngine(IEnumerable<ISchemeEvaluator> schemeEvaluato
         {
             ChildResults = childResults,
             HasAccessToPublicFunds = context.Household.HasAccessToPublicFunds,
+            UserOrPartnerIsOnSickLeave = context.Household.UserOrPartnerIsOnSickLeave
         };
     }
 }

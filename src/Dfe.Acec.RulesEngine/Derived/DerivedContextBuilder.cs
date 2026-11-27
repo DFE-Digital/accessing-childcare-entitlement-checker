@@ -44,7 +44,9 @@ public static class DerivedContextBuilder
                     or CountryOfResidence.Scotland
                     or CountryOfResidence.Wales,
 
-            CountryOfResidence = request.Household.CountryOfResidence
+            CountryOfResidence = request.Household.CountryOfResidence,
+
+            UserOrPartnerIsOnSickLeave = UserOrPartnerIsOnSickLeave(request.User, request.Partner),
         };
     }
 
@@ -93,5 +95,11 @@ public static class DerivedContextBuilder
     {
         return person.Nationalities.Contains(Nationality.BritishOrIrishCitizen)
                || person.HasSettledOrPreSettledStatus == true;
+    }
+
+    private static bool UserOrPartnerIsOnSickLeave(PersonDto user, PersonDto? partner)
+    {
+        return user.PaidWorkStatus == PaidWorkStatus.SickLeave
+               || partner?.PaidWorkStatus == PaidWorkStatus.SickLeave;
     }
 }

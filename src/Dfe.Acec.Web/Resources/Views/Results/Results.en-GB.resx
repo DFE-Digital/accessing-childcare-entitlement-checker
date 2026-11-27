@@ -198,4 +198,13 @@
     <data name="Find out about help with childcare while you study (opens in new tab)" xml:space="preserve">
         <value>Find out about help with childcare while you study (opens in new tab)</value>
     </data>
+    <data name="Sick leave" xml:space="preserve">
+        <value>Sick leave</value>
+    </data>
+    <data name="For most schemes, you can get childcare support while you or your partner are on sick leave." xml:space="preserve">
+        <value>For most schemes, you can get childcare support while you or your partner are on sick leave.</value>
+    </data>
+    <data name="You should still check the sick leave rules for each scheme before you apply." xml:space="preserve">
+        <value>You should still check the sick leave rules for each scheme before you apply.</value>
+    </data>
 </root>

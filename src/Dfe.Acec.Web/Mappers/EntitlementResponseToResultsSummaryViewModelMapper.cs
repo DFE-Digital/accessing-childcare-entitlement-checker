@@ -21,6 +21,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapper(
         {
             Children = [.. response.ChildResults.Select(MapChildResults)],
             HasAccessToPublicFunds = response.HasAccessToPublicFunds,
+            UserOrPartnerIsOnSickLeave = response.UserOrPartnerIsOnSickLeave
         };
 
     }
