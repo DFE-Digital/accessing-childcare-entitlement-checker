@@ -53,7 +53,7 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
         _mapper = new EntitlementResponseToResultsSummaryViewModelMapper(localizerFactory);
     }
 
-    private static EntitlementResponse CreateTestEntitlementResponse()
+    private static EntitlementResponse CreateTestEntitlementResponse(bool hasAccessToPublicFunds = true, bool userOrPartnerIsOnSickLeave = false )
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
 
@@ -284,8 +284,13 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
                         }
                     ]
                 }
-            ]
+            ],
+
+            HasAccessToPublicFunds = hasAccessToPublicFunds,
+            UserOrPartnerIsOnSickLeave = userOrPartnerIsOnSickLeave,
         };
+
+
     }
 
     [Fact]
@@ -585,6 +590,30 @@ public class EntitlementResponseToResultsSummaryViewModelMapperTests
         var scheme = child.Schemes.Single(x => x.SchemeCode == SchemeCode.TaxFreeChildcare);
 
         Assert.Equal("https://www.gov.uk/tax-free-childcare", scheme.Url);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void MapHasAccessToPublicFunds(bool hasAccessToPublicFunds)
+    {
+        var response = CreateTestEntitlementResponse(hasAccessToPublicFunds: hasAccessToPublicFunds);
+
+        var result = _mapper.Map(response);
+
+        Assert.Equal(hasAccessToPublicFunds, result.HasAccessToPublicFunds);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void MapUserOrPartnerIsOnSickLeave(bool userOrPartnerIsOnSickLeave)
+    {
+        var response = CreateTestEntitlementResponse(userOrPartnerIsOnSickLeave: userOrPartnerIsOnSickLeave);
+
+        var result = _mapper.Map(response);
+
+        Assert.Equal(userOrPartnerIsOnSickLeave, result.UserOrPartnerIsOnSickLeave);
     }
 
 }

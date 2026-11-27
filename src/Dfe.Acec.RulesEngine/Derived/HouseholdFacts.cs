@@ -9,4 +9,5 @@ public class HouseholdFacts
     public bool HasAccessToPublicFunds { get; init; }
     public bool LivesInGreatBritain { get; init; }
     public CountryOfResidence? CountryOfResidence { get; init; }
+    public bool UserOrPartnerIsOnSickLeave { get; init; }
 }

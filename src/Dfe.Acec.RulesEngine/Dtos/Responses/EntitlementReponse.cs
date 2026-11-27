@@ -5,4 +5,6 @@ public class EntitlementResponse
     public List<ChildResultDto> ChildResults { get; init; } = [];
 
     public bool HasAccessToPublicFunds { get; init; }
+
+    public bool UserOrPartnerIsOnSickLeave { get; init; }
 }

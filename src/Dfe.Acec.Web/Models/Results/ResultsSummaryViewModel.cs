@@ -9,6 +9,8 @@ public class ResultsSummaryViewModel
     public List<ChildResultsViewModel> Children { get; set; } = [];
 
     public bool HasAccessToPublicFunds { get; set; }
+
+    public bool UserOrPartnerIsOnSickLeave { get; set; }
 }
 
 [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]

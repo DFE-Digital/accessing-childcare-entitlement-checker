@@ -35,6 +35,20 @@
             </p>
         }
 
+        @if (@Model.UserOrPartnerIsOnSickLeave)
+        {
+            <h2 class="govuk-heading-l results-name">
+                @Localizer["Sick leave"]
+            </h2>
+            <p class="govuk-body">
+                @Localizer["For most schemes, you can get childcare support while you or your partner are on sick leave."]
+            </p>
+            <p class="govuk-body">
+                @Localizer["You should still check the sick leave rules for each scheme before you apply."]
+            </p>
+        }
+
+
         @if (!Model.HasAccessToPublicFunds)
         {
             <partial name="_PublicFundsWarning" />
