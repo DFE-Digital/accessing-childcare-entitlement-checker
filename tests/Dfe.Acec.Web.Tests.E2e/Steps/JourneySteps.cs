@@ -168,10 +168,12 @@ internal sealed class JourneySteps(IPage page, TestSettings settings)
     [Then(@"the page header is ""(.*)""")]
     public async Task WhenThePageHeaderIs(string expectedHeader)
     {
+        // If Where do you live is disabled, the back button will redirect to the GDS homepage
+        // Dynamically replace the expectedHeader until this feature flag is re-enabled
         if (expectedHeader == "Where do you live?" && settings.FlagSkipLocationEnabled)
         {
             var uri = new Uri(page.Url);
-            expectedHeader = uri.AbsolutePath == "/" || string.IsNullOrEmpty(uri.AbsolutePath.Trim('/'))
+            expectedHeader = uri.AbsolutePath == "/check-childcare-funding"
                 ? "Check if you are eligible for childcare funding"
                 : "Add details about your children";
         }
