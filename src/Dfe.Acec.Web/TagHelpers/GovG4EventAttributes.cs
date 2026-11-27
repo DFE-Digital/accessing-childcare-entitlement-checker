@@ -18,5 +18,4 @@ public static class GovG4EventAttributes
         Navigation,
         Interaction
     }.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
-    //chris todo: create a spreadsheet for Jack (and make the ticket, and add column for "PII??"
 }
