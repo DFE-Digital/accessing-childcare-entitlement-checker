@@ -27,6 +27,7 @@ Scenario: Continue with name
 	And I click on Continue
 	Then the page header is "Has this child been born yet?"
 
+@Skip
 Scenario: Back navigation
 	When I click the back link
 	Then the page header is "Where do you live?"

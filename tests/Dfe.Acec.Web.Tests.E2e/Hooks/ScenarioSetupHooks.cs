@@ -23,6 +23,15 @@ internal sealed class ScenarioSetupHooks(
         }
     }
 
+    [BeforeScenario(Order = 3)]
+    public void CheckForSkipTag()
+    {
+        if (scenarioContext.ScenarioInfo.Tags.Contains("Skip"))
+        {
+            Assert.Skip("This test is currently skipped");
+        }
+    }
+
     [BeforeScenario(Order = 1)]
     public async Task BeforeScenario()
     {

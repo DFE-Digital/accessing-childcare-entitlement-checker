@@ -9,7 +9,7 @@ using Microsoft.FeatureManagement;
 namespace Dfe.Acec.Web.Controllers;
 
 [ServiceFilter(typeof(RequireJourneySessionFilter))]
-public class IntroductionController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager) : Controller
+public class IntroductionController(JourneyState journeyState, IJourneySession journeySession, IFeatureManager featureManager, IConfiguration configuration) : Controller
 {
     public const string Name = "Introduction";
 
@@ -98,8 +98,12 @@ public class IntroductionController(JourneyState journeyState, IJourneySession j
             return url;
         }
 
+        var serviceUrls = configuration.GetRequiredSection("ServiceUrls");
+        var startPage = serviceUrls.GetValue<string>("StartPage")
+            ?? throw new KeyNotFoundException("Couldn't find StartPage url in configuration");
+
         return await featureManager.IsEnabledAsync(FeatureFlags.FlagSkipLocation)
-                ? Url.ActionOrThrow(nameof(ChildName), Name)
+                ? startPage
                 : Url.ActionOrThrow(nameof(HomeController.Location), HomeController.Name);
     }
 

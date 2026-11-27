@@ -4,6 +4,7 @@ using Dfe.Acec.Web.Models;
 using Dfe.Acec.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.FeatureManagement;
 using NSubstitute;
 
@@ -24,7 +25,8 @@ public class IntroductionControllerTests : IDisposable
         };
         _journeySession = Substitute.For<IJourneySession>();
         var featureManager = Substitute.For<IFeatureManager>();
-        _controller = new IntroductionController(_journeyState, _journeySession, featureManager)
+        var configuration = Substitute.For<IConfiguration>();
+        _controller = new IntroductionController(_journeyState, _journeySession, featureManager, configuration)
         {
             Url = Substitute.For<IUrlHelper>()
         };
