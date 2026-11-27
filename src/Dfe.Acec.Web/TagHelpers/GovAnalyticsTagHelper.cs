@@ -104,7 +104,7 @@ public abstract class GovTagHelperBase : TagHelper
         }
     }
 
-    protected virtual string ResolveDefaultType(string tagName) => tagName?.ToLowerInvariant() ?? "none";
+    protected virtual string ResolveDefaultType(string tagName) => tagName.ToLowerInvariant() ?? "none";
 
 
     private static void CleanupDom(TagHelperOutput output)

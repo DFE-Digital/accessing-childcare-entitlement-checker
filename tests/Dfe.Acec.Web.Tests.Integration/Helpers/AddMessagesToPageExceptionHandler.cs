@@ -10,15 +10,14 @@ public class AddMessagesToPageExceptionHandler : IExceptionHandler
         Exception exception,
         CancellationToken cancellationToken)
     {
-
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
         await httpContext.Response.WriteAsJsonAsync(new
         {
-            StatusCode = httpContext.Response.StatusCode,
-            Message = exception.Message,
+            httpContext.Response.StatusCode,
+            exception.Message,
             Type = exception.GetType().Name,
-            StackTrace = exception.StackTrace
+            exception.StackTrace
         }, cancellationToken);
 
         return true;

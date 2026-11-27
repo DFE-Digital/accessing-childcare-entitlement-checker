@@ -1,6 +1,6 @@
 using System.Collections.Frozen;
 
-namespace Dfe.Acec.Web.TagHelpers.GovAnalytics;
+namespace Dfe.Acec.Web.TagHelpers;
 
 public static class GovG4EventAttributes
 {

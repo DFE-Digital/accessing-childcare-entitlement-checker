@@ -7,7 +7,7 @@ namespace Dfe.Acec.Web.Tests.Integration.Helpers;
 public static class ResponseAsserts
 {
 
-    public static async Task<HttpResponseMessage> EnsureSuccessStatusCodeWithMessage(this HttpResponseMessage response)
+    public static async Task EnsureSuccessStatusCodeWithMessage(this HttpResponseMessage response)
     {
         var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -15,8 +15,6 @@ public static class ResponseAsserts
             response.IsSuccessStatusCode,
             $"Request failed with status code {(int)response.StatusCode} ({response.StatusCode}).\n" +
             $"Response body:\n{responseBody}");
-
-        return response;
     }
 
     [SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Global")]
