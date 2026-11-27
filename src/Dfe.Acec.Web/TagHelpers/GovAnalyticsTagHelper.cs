@@ -41,11 +41,9 @@ public abstract class GovTagHelperBase : TagHelper
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         var g4Attributes = output.GetGovG4Attributes();
-        var attribute = g4Attributes.FirstOrDefault(x => GovG4EventAttributes.All.Contains(x.Name));
-        if (attribute is null)
-        {
-            throw new InvalidOperationException("All G4 event tag helpers must be triggered by a 'govg4-event-name' attribute.");
-        }
+        var attribute = g4Attributes.FirstOrDefault(x => GovG4EventAttributes.All.Contains(x.Name))
+             ?? throw new InvalidOperationException("All G4 event tag helpers must be triggered by a 'govg4-event-name' attribute.");
+
         _attributeName = attribute.Name;
         await ResolveDefaultsAsync(context, output);
         Validate();

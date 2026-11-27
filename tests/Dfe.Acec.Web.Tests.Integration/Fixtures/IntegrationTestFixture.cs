@@ -2,7 +2,6 @@ using Dfe.Acec.Web.Services;
 using Dfe.Acec.Web.Tests.Integration.Helpers;
 using Dfe.Acec.Web.Validators;
 using FluentValidation;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -37,7 +36,7 @@ public class IntegrationTestFixture : WebApplicationFactory<Program>
                 Func<TState, Exception?, string> formatter)
             {
                 var output = TestContext.Current?.TestOutputHelper;
-                if (output is null) return;
+                if (output is null) { return; }
 
                 output.WriteLine($"[{logLevel}] {categoryName}: {formatter(state, exception)}");
                 if (exception is not null)
