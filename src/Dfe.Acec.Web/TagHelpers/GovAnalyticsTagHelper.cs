@@ -1,7 +1,6 @@
 using System.Text.Json;
 using Dfe.Acec.Web.Extensions;
 using Dfe.Acec.Web.Models.Analytics;
-using Dfe.Acec.Web.TagHelpers.GovAnalytics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 

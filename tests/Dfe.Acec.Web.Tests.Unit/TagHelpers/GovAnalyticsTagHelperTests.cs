@@ -186,9 +186,9 @@ public class GovAnalyticsTagHelperTests
                 markerAttributeName = "govg4-impression";
                 break;
 
-            case GovNavigationTagHelper impression:
-                impression.Action = "navigation";
-                impression.Type = "a";
+            case GovNavigationTagHelper navigation:
+                navigation.Action = "navigation";
+                navigation.Type = "a";
                 expectedEventName = "navigation";
                 markerAttributeName = "govg4-impression";
                 break;
