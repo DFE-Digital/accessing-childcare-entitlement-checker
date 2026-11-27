@@ -245,6 +245,7 @@ public class GovAnalyticsTagHelperTests
     [InlineData(typeof(GovFormResponseTagHelper))]
     [InlineData(typeof(GovFormErrorTagHelper))]
     [InlineData(typeof(GovImpressionTagHelper))]
+    [InlineData(typeof(GovNavigationTagHelper))]
     public async Task TagHelperSerializesCorrectDataGovEventAndCleansUpAttributes(Type type)
     {
         // Arrange
